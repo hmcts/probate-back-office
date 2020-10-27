@@ -283,7 +283,7 @@ public class BusinessValidationControllerTest {
     @Test
     public void shouldValidateWithSolicitorIHTFormIsNullError() throws Exception {
         caseDataBuilder.ihtFormId(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -300,7 +300,7 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
@@ -324,7 +324,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
         caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
         caseDataBuilder.solsSolicitorIsExec(NO);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
@@ -349,7 +349,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.solsSolicitorIsExec(NO);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
@@ -367,7 +367,7 @@ public class BusinessValidationControllerTest {
     @Test
     public void shouldValidateWithSolIsExecutorIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorIsExec(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -403,7 +403,7 @@ public class BusinessValidationControllerTest {
 
     private void validateDodIsNullError(String url) throws Exception {
         caseDataBuilder.deceasedDateOfDeath(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -418,7 +418,7 @@ public class BusinessValidationControllerTest {
 
     private void validateDobIsNullError(String url) throws Exception {
         caseDataBuilder.deceasedDateOfBirth(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -433,7 +433,7 @@ public class BusinessValidationControllerTest {
 
     private void validateForenameIsNullError(String url) throws Exception {
         caseDataBuilder.deceasedForenames(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -449,7 +449,7 @@ public class BusinessValidationControllerTest {
     private void validateSurnameIsNullError(String url) throws Exception {
         caseDataBuilder.deceasedSurname(null);
         caseDataBuilder.ukEstate(UK_ESTATE);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -464,7 +464,7 @@ public class BusinessValidationControllerTest {
 
     private void validateAddressIsNullError(String url) throws Exception {
         caseDataBuilder.primaryApplicantAddress(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);

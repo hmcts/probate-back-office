@@ -113,6 +113,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        /*
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         TaskListRenderer renderer = new TaskListRenderer();
 
@@ -129,8 +130,10 @@ public class CallbackResponseTransformer {
         String newTaskList = renderer.render(caseStoppedAlert);
 
         responseCaseDataBuilder.taskList(newTaskList);
+        */
+        ResponseCaseDataBuilder bldr = new TaskListUpdateService().generateTaskList(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformResponse(bldr.build());
     }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {

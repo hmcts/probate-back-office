@@ -14,10 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskListUpdateService {
 
-    public final TaskListRenderService taskListRendererService;
+    // public final TaskListRenderService taskListRendererService;
 
     public ResponseCaseDataBuilder generateTaskList(CaseDetails caseDetails, ResponseCaseDataBuilder builder) {
 
+        /*
         String newTaskList = "";
 
 //        if (caseDetails.getState().equals("BoCaseStopped")) {
@@ -33,8 +34,10 @@ public class TaskListUpdateService {
                             " from the applicant or solicitor is needed"));
             newTaskList = taskListRendererService.render(caseStoppedAlert);
 //        }
-
-        builder.taskList(newTaskList);
+*/
+        BaseTaskListRenderer progressTabRenderer = TaskListRendererFactory.getTaskListRenderer(caseDetails.getState());
+        String progressTabHtml = progressTabRenderer.renderHtml(caseDetails);
+        builder.taskList(progressTabHtml);
 
         return builder;
     }

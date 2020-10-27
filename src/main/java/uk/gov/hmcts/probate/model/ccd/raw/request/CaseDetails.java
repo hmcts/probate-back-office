@@ -16,6 +16,7 @@ public class CaseDetails {
     @JsonProperty(value = "last_modified")
     private final String[] lastModified;
 
+    @JsonProperty(value = "state")
     private final String state;
 
     @NotNull

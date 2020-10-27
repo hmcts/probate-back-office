@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+// Not used in VH implementation
 public class TaskListRenderer {
 
     public String render(Alert alert) {

@@ -57,7 +57,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithNoErrors() throws Exception {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -69,7 +69,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorFirmName(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -85,7 +85,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorAddress(SolsAddress.builder().addressLine1(CaseDataTestBuilder.SOLICITOR_FIRM_LINE1).build());
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -101,7 +101,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithSolsSOTForenamesIsNullError() throws Exception {
         caseDataBuilder.solsSOTForenames(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -117,7 +117,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithSolsSOTSurnameIsNullError() throws Exception {
         caseDataBuilder.solsSOTSurname(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -133,7 +133,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithSolsSOTJobTitleIsNullError() throws Exception {
         caseDataBuilder.solsSOTJobTitle(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -149,7 +149,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithPaymentMethodIsNullError() throws Exception {
         caseDataBuilder.solsPaymentMethods(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -167,7 +167,7 @@ public class NextStepsControllerTest {
     public void shouldConfirmNextStepsWithNullApplicationFeeError() throws Exception {
         caseDataBuilder.applicationFee(null);
 
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -185,7 +185,7 @@ public class NextStepsControllerTest {
     public void shouldConfirmNextStepsWithNullTotalFeeError() throws Exception {
         caseDataBuilder.totalFee(null);
 
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -203,7 +203,7 @@ public class NextStepsControllerTest {
     public void shouldConfirmNextStepsWithNullUKFeeError() throws Exception {
         caseDataBuilder.feeForUkCopies(null);
 
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -221,7 +221,7 @@ public class NextStepsControllerTest {
     public void shouldConfirmNextStepsWithNullNonUKFeeError() throws Exception {
         caseDataBuilder.feeForNonUkCopies(null);
 
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -238,7 +238,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldProduceEmptyConfirmNextStepsWithNoErrorsForReviewStateChange() throws Exception {
         caseDataBuilder.solsSOTNeedToUpdate("Yes");
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, "", ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);

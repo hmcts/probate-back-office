@@ -148,7 +148,7 @@ public class GenericMapperServiceTest {
                 .solsSOTName("John Thesolicitor")
                 .applicationType(ApplicationType.PERSONAL)
                 .build();
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, null, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
         images.put(CREST_IMAGE, CREST_FILE_PATH);

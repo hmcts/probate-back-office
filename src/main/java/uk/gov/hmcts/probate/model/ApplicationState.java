@@ -5,6 +5,9 @@ import lombok.Getter;
 @Getter
 // A state that is not actually 1:1 with AuthorisationCaseState.json, as several states in here may map to 1 ApplicationState
 // e.g. PAAppCreated and SolAppCreated map to CaseCreated.
+
+// VH 27/10/2020 Have parked work on this for now, still need to map each state but for case progress rendering I need CaseProgressState
+
 public enum ApplicationState {
     CASE_CREATED("Case created"),
     PAYMENT_FAILED( "Payment failed"),

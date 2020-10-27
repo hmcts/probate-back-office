@@ -100,7 +100,7 @@ public class NotificationControllerUnitTest {
 
     @Test
     public void shouldNotSendApplicationReceivedForPaper() throws NotificationClientException {
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, "", ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
         ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
@@ -111,7 +111,7 @@ public class NotificationControllerUnitTest {
 
     @Test
     public void shouldNotSendApplicationReceivedForPCitizenPaperAsNull() throws NotificationClientException {
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm(null).build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm(null).build(), LAST_MODIFIED, "", ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
         ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
@@ -123,7 +123,7 @@ public class NotificationControllerUnitTest {
     @Test
     public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, "", ID);
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -148,7 +148,7 @@ public class NotificationControllerUnitTest {
 
 
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
-        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, "", ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()
             .documentDateAdded(LocalDate.now())

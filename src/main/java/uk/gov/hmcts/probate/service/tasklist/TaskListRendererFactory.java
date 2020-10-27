@@ -1,15 +1,16 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import uk.gov.hmcts.probate.model.CaseProgressState;
+
 public class TaskListRendererFactory {
 
     public static BaseTaskListRenderer getTaskListRenderer(String applicationState) {
-        final String stopped = "BoCaseStopped";
-        final String escalated = "BORegistrarEscalation";
+        CaseProgressState progressState = CaseProgressState.MapCaseState(applicationState);
 
-        switch (applicationState) {
-            case stopped:
+        switch (progressState) {
+            case CASE_STOPPED:
                 return new StoppedTaskListRenderer();
-            case escalated:
+            case CASE_ESCALATED:
                 return new EscalatedTaskListRenderer();
             default:
                 return new DefaultTaskListRenderer();
