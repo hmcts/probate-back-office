@@ -88,6 +88,15 @@ public class ExceptionRecordOCRFields {
     private final String executorsApplying2applyingExecutorEmail;
     private final String executorsApplying2applyingExecutorDifferentNameToWill;
     private final String executorsApplying2applyingExecutorOtherNames;
+    private final String executorsApplying3applyingExecutorName;
+    private final String executorsApplying3applyingExecutorAddressLine1;
+    private final String executorsApplying3applyingExecutorAddressLine2;
+    private final String executorsApplying3applyingExecutorAddressTown;
+    private final String executorsApplying3applyingExecutorAddressCounty;
+    private final String executorsApplying3applyingExecutorAddressPostCode;
+    private final String executorsApplying3applyingExecutorEmail;
+    private final String executorsApplying3applyingExecutorDifferentNameToWill;
+    private final String executorsApplying3applyingExecutorOtherNames;
     private final String solsSolicitorIsApplying;
     private final String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;

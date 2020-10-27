@@ -64,6 +64,20 @@ public class OCRFieldAdditionalExecutorsApplyingMapper {
             ));
         }
 
+        if (ocrFields.getExecutorsApplying3applyingExecutorName() != null
+                && !ocrFields.getExecutorsApplying3applyingExecutorName().isEmpty()) {
+            collectionMemberList.add(buildExecutor(
+                    ocrFields.getExecutorsApplying3applyingExecutorName(),
+                    ocrFields.getExecutorsApplying3applyingExecutorOtherNames(),
+                    ocrFields.getExecutorsApplying3applyingExecutorAddressLine1(),
+                    ocrFields.getExecutorsApplying3applyingExecutorAddressLine2(),
+                    ocrFields.getExecutorsApplying3applyingExecutorAddressTown(),
+                    ocrFields.getExecutorsApplying3applyingExecutorAddressCounty(),
+                    ocrFields.getExecutorsApplying3applyingExecutorAddressPostCode(),
+                    ocrFields.getExecutorsApplying3applyingExecutorEmail()
+            ));
+        }
+
         return collectionMemberList;
     }
 

@@ -133,6 +133,17 @@ public class ExceptionRecordRequest {
                 .executorsApplying2applyingExecutorDifferentNameToWill(get(ocrFields,
                         "executorsApplying_2_applyingExecutorDifferentNameToWill"))
                 .executorsApplying2applyingExecutorOtherNames(get(ocrFields, "executorsApplying_2_applyingExecutorOtherNames"))
+                .executorsApplying3applyingExecutorName(get(ocrFields, "executorsApplying_3_applyingExecutorForenames",
+                        "executorsApplying_3_applyingExecutorMiddleNames", "executorsApplying_3_applyingExecutorSurname"))
+                .executorsApplying3applyingExecutorAddressLine1(get(ocrFields, "executorsApplying_3_applyingExecutorAddressLine1"))
+                .executorsApplying3applyingExecutorAddressLine2(get(ocrFields, "executorsApplying_3_applyingExecutorAddressLine2"))
+                .executorsApplying3applyingExecutorAddressTown(get(ocrFields, "executorsApplying_3_applyingExecutorAddressTown"))
+                .executorsApplying3applyingExecutorAddressCounty(get(ocrFields, "executorsApplying_3_applyingExecutorAddressCounty"))
+                .executorsApplying3applyingExecutorAddressPostCode(get(ocrFields, "executorsApplying_3_applyingExecutorAddressPostCode"))
+                .executorsApplying3applyingExecutorEmail(get(ocrFields, "executorsApplying_3_applyingExecutorEmail"))
+                .executorsApplying3applyingExecutorDifferentNameToWill(get(ocrFields,
+                        "executorsApplying_3_applyingExecutorDifferentNameToWill"))
+                .executorsApplying3applyingExecutorOtherNames(get(ocrFields, "executorsApplying_3_applyingExecutorOtherNames"))
                 .solsSolicitorIsApplying(get(ocrFields,"solsSolicitorIsApplying"))
                 .solsSolicitorRepresentativeName(get(ocrFields,"solsSolicitorRepresentativeName"))
                 .solsSolicitorFirmName(get(ocrFields,"solsSolicitorFirmName"))
