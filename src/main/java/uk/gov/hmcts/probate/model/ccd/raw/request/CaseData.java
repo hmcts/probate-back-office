@@ -554,6 +554,7 @@ public class CaseData {
 
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
+    private LocalDate escalatedDate;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;
