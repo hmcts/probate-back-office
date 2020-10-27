@@ -17,7 +17,7 @@ public class CaseDetails {
     private final String[] lastModified;
 
     @JsonProperty(value = "state")
-    private final String state;
+    private String state;
 
     @NotNull
     private final Long id;

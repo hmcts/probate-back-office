@@ -93,7 +93,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
         CaseData caseData = CaseData.builder()
                 .registryLocation("leeds")
                 .build();
-        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, null, ID);
+        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         caseDetails.setRegistryTelephone("123456789");
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());

@@ -96,7 +96,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("last")
                 .primaryApplicantAddress(address)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
@@ -139,7 +139,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(6L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
@@ -182,7 +182,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(6L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
@@ -221,7 +221,7 @@ public class BulkPrintServiceTest {
             .primaryApplicantAddress(address)
             .extraCopiesOfGrant(6L)
             .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
             .documentUrl("http://localhost")
@@ -260,7 +260,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(6L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
@@ -464,7 +464,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
                 .build();
-        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
@@ -521,7 +521,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
                 .build();
-        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
@@ -568,7 +568,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
                 .build();
-        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         assertNull(bulkPrintService.optionallySendToBulkPrint(callbackRequest, Document.builder().build(),
                 Document.builder().build(), false));
@@ -588,7 +588,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(50L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
@@ -632,7 +632,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(50L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
@@ -676,7 +676,7 @@ public class BulkPrintServiceTest {
                 .primaryApplicantAddress(address)
                 .extraCopiesOfGrant(50L)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
@@ -723,7 +723,7 @@ public class BulkPrintServiceTest {
             .primaryApplicantAddress(address)
             .reprintNumberOfCopies("10")
             .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
             .documentUrl("http://localhost")
             .build();
@@ -775,7 +775,7 @@ public class BulkPrintServiceTest {
             .primaryApplicantAddress(address)
             .reprintNumberOfCopies("10")
             .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
             .documentUrl("http://localhost")
             .build();
@@ -825,7 +825,7 @@ public class BulkPrintServiceTest {
             .primaryApplicantAddress(address)
             .reprintNumberOfCopies("10")
             .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, null, 0L));
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
             .documentUrl("http://localhost")
             .build();

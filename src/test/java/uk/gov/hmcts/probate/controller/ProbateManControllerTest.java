@@ -136,7 +136,7 @@ public class ProbateManControllerTest {
     public void shouldPostLegacySearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, null, null);
+        CaseDetails caseDetails = new CaseDetails(caseData, null, null);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -156,7 +156,7 @@ public class ProbateManControllerTest {
     public void shouldPostDoImport() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, null, null);
+        CaseDetails caseDetails = new CaseDetails(caseData, null, null);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -177,7 +177,7 @@ public class ProbateManControllerTest {
     public void shouldResetSearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, null, null);
+        CaseDetails caseDetails = new CaseDetails(caseData, null, null);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         ObjectMapper objectMapper = new ObjectMapper();

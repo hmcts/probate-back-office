@@ -32,7 +32,7 @@ public class CaseStoppedServiceTest {
             .caseType("gop")
             .applicationType(ApplicationType.PERSONAL)
             .build(),
-            LAST_MODIFIED, null, CASE_ID);
+            LAST_MODIFIED, CASE_ID);
     }
 
     @Test
