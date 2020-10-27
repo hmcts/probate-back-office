@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -368,6 +369,9 @@ public class CallbackResponseTransformerTest {
     private SolicitorExecutorService solicitorExecutorService;
 
     @Mock
+    private TaskListUpdateService taskListUpdateService;
+
+    @Mock
     private CallbackRequest callbackRequestMock;
 
     @Mock
@@ -654,6 +658,8 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(taskListUpdateService.generateTaskList(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class)))
+                .thenAnswer(invocation -> invocation.getArgument(1));
     }
 
     @Test
