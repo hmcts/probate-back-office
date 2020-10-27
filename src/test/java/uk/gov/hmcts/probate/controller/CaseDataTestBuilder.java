@@ -29,7 +29,7 @@ public class CaseDataTestBuilder {
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String SOLICITOR_APPLYING = "Yes";
     public static final String IHT_FORM = "IHT207";
-    public static final String PAYMENT_METHOD = "Fee account";
+    public static final String PAYMENT_METHOD = "Cheque";
     public static final String WILL_HAS_CODICLIS = "Yes";
     public static final String NUMBER_OF_CODICLIS = "1";
     public static final BigDecimal NET = BigDecimal.valueOf(1000f);

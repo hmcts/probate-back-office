@@ -48,7 +48,7 @@
         "PostCode": "2",
         "Country": ""
       },
-      "solsPaymentMethods": "fee account",
+      "solsPaymentMethods": "cheque",
       "solsFeeAccountNumber": "12345"
     },
     "data_classification": {
