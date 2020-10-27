@@ -689,7 +689,9 @@ public class CallbackResponseTransformer {
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
                 .registrySequenceNumber(caseData.getRegistrySequenceNumber())
-                .taskList(caseData.getTaskList());
+                .taskList(caseData.getTaskList())
+                .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                    .map(dateTimeFormatter::format).orElse(null));
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
