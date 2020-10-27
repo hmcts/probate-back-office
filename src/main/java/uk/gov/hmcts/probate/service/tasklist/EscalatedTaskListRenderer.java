@@ -6,11 +6,13 @@ import uk.gov.hmcts.probate.model.htmlTemplate.CaseEscalatedToRegistrarHtmlTempl
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 public class EscalatedTaskListRenderer extends NoTaskListRenderer {
     public String renderBody(CaseDetails details) {
         // TODO implement getEscalationDate and get added to model
         DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-        return CaseEscalatedToRegistrarHtmlTemplate.baseTemplate.replaceFirst("<escalationDate>", dateFormat.format(details.getData().getGrantStoppedDate()));
+        LocalDate stoppedDate = details.getData().getGrantStoppedDate();
+        return CaseEscalatedToRegistrarHtmlTemplate.baseTemplate.replaceFirst("<escalationDate>", stoppedDate == null ? "Unknown" : dateFormat.format(stoppedDate));
     }
 }
