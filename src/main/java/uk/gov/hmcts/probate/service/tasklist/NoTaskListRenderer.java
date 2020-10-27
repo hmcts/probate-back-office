@@ -28,8 +28,13 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     }
 
     private String renderInset(CaseDetails caseDetails) {
-        CaseProgressState progressState = CaseProgressState.MapCaseState(caseDetails.getState());
-        return format("<div class=\"govuk-inset-text\">%s</div>", progressState.name());
+        String caseState = caseDetails.getState();
+        String progressStateName = "Unknown";
+        if (caseState != null) {
+            CaseProgressState progressState = CaseProgressState.MapCaseState(caseState);
+            progressStateName = progressState.name();
+        }
+        return format("<div class=\"govuk-inset-text\">%s</div>", progressStateName);
     }
 
     private String renderBodyHeader() {

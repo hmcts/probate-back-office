@@ -5,6 +5,9 @@ import uk.gov.hmcts.probate.model.CaseProgressState;
 public class TaskListRendererFactory {
 
     public static BaseTaskListRenderer getTaskListRenderer(String applicationState) {
+        if (applicationState == null) {
+            return new DefaultTaskListRenderer();
+        }
         CaseProgressState progressState = CaseProgressState.MapCaseState(applicationState);
 
         switch (progressState) {
