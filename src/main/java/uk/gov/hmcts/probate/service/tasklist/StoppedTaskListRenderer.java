@@ -12,7 +12,7 @@ import java.time.LocalDate;
 // import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 public class StoppedTaskListRenderer extends NoTaskListRenderer {
-    public String renderBody(CaseDetails details) {
+    protected String renderBody(CaseDetails details) {
         DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         LocalDate stoppedDate = details.getData().getGrantStoppedDate();
 

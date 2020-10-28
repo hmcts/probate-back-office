@@ -10,7 +10,7 @@ import static java.lang.String.format;
 public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     public String renderHtml(CaseDetails caseDetails) {
         StringBuilder sb = new StringBuilder("<div class='width-50'>");
-        sb.append(new HeaderRenderer().render("Case progress"));
+        sb.append(renderMainHeader());
         String inset = renderInset(caseDetails);
         sb.append(inset);
         sb.append("\n");
