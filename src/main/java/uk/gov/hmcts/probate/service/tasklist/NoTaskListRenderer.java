@@ -33,7 +33,7 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
         String progressStateName = "Unknown";
         if (caseState != null) {
             CaseProgressState progressState = CaseProgressState.MapCaseState(caseState);
-            progressStateName = progressState.name();
+            progressStateName = progressState.getDisplayText();
         }
 
         return format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>", progressStateName);
