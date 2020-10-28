@@ -660,7 +660,10 @@ public class CallbackResponseTransformer {
                 .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
-                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+                .taskList(caseData.getTaskList())
+                .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                    .map(dateTimeFormatter::format).orElse(null));
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

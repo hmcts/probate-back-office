@@ -1,4 +1,6 @@
 [
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskList", "Label": "Case progress", "FieldType": "Text", "SecurityClassification": "PUBLIC"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "taskListLabel", "Label": "${taskList}", "FieldType": "Label", "SecurityClassification": "PUBLIC"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationID", "Label": "Application ID", "FieldType": "Number", "SecurityClassification": "Public"},
@@ -333,6 +335,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationSent", "Label": "Has a grant delayed notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationDate", "Label": "Grant delayed notification date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantStoppedDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "escalatedDate", "Label": "Case escalated date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentationNotificationDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentatioNotificationSent", "Label": "Has a grant awaiting documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "pcqId", "Label": "PCQ ID", "FieldType": "Text", "SecurityClassification": "Public"},
