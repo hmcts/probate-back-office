@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -82,6 +83,7 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
+    private final TaskListUpdateService taskListUpdateService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
 
@@ -107,6 +109,14 @@ public class CallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+
+
+    public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -674,6 +684,8 @@ public class CallbackResponseTransformer {
         }
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
 
         return builder;
