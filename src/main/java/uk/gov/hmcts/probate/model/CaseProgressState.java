@@ -1,16 +1,17 @@
 package uk.gov.hmcts.probate.model;
+
 import lombok.Getter;
 
 @Getter
 public enum CaseProgressState {
-    DEFAULT("Default"), // name is not used for this state
-    CASE_ESCALATED("Case escalated to the Registrar"), // name here is displayed in the inset in Case Progress html
-    CASE_STOPPED( "Case stopped"); // name here is displayed in the inset in Case Progress html
+    DEFAULT("Default"),
+    CASE_ESCALATED("Case escalated to the Registrar"),
+    CASE_STOPPED( "Case stopped");
 
-    private String name;
+    private String displayText;
 
-    CaseProgressState(String name) {
-        this.name = name;
+    CaseProgressState(String displayText) {
+        this.displayText = displayText;
     }
 
     public static CaseProgressState MapCaseState(String caseState) {
