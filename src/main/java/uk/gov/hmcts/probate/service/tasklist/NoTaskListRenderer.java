@@ -4,27 +4,28 @@ import uk.gov.hmcts.probate.htmlRendering.HeaderRenderer;
 import uk.gov.hmcts.probate.model.CaseProgressState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static java.lang.String.format;
 
 // A render to render case progress html for when we don't want to display a task list
 public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
+
     public String renderHtml(CaseDetails caseDetails) {
-        StringBuilder sb = new StringBuilder("<div class='width-50'>");
-        sb.append(renderMainHeader());
-        String inset = renderInset(caseDetails);
-        sb.append(inset);
-        sb.append("\n");
 
-        String header = renderBodyHeader();
-        sb.append("\n");
+        final List<String> lines = new LinkedList<>();
 
-        sb.append(header);
-        String body = renderBody(caseDetails);
-        sb.append("\n");
+        lines.add("<div class=\"width-50\">");
 
-        sb.append(body);
-        sb.append("</div>"); // close the wrapper div
-        return sb.toString();
+        lines.add(renderMainHeader());
+        lines.add(renderInset(caseDetails));
+        lines.add(renderBodyHeader());
+        lines.add(renderBody(caseDetails));
+
+        lines.add("</div>");
+
+        return String.join("\n\n", lines);
     }
 
     private String renderInset(CaseDetails caseDetails) {
@@ -32,9 +33,10 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
         String progressStateName = "Unknown";
         if (caseState != null) {
             CaseProgressState progressState = CaseProgressState.MapCaseState(caseState);
-            progressStateName = progressState.name();
+            progressStateName = progressState.getDisplayText();
         }
-        return format("<div class=\"govuk-inset-text\">%s</div>", progressStateName);
+
+        return format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>", progressStateName);
     }
 
     private String renderBodyHeader() {

@@ -111,29 +111,12 @@ public class CallbackResponseTransformer {
 
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
+
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
-        /*
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        TaskListRenderer renderer = new TaskListRenderer();
 
-        Alert caseStoppedAlert = Alert.builder()
-                .inset("Case stopped")
-                .body("The case was stopped on <date> for one of two reasons:\n<list>\nYou will be notified by email" +
-                        "if we need any information from you to progress the case.\nOnly contact the CTSC" +
-                        "staff if your case has been stopped for XX weeks or more and you have not received any" +
-                        "communication since then.")
-                .date("09/10/2020")
-                .build()
-                .withList(List.of("an internal review is needed", "further information" +
-                        " from the applicant or solicitor is needed"));
-        String newTaskList = renderer.render(caseStoppedAlert);
-
-        responseCaseDataBuilder.taskList(newTaskList);
-        */
-        ResponseCaseDataBuilder bldr = new TaskListUpdateService().generateTaskList(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
-
-        return transformResponse(bldr.build());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {

@@ -5,12 +5,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
-import uk.gov.hmcts.probate.controller.CaseDataTestBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.tasklist.EscalatedTaskListRenderer;
-import uk.gov.hmcts.probate.service.tasklist.StoppedTaskListRenderer;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -60,12 +58,12 @@ public class EscalatedTaskListRendererTest {
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
 
-    private final String expectedHtml = "<div class='width-50'>## Case progress<div class=\"govuk-inset-text\">CASE_ESCALATED</div>\n" +
+    private final String expectedHtml = "<div class=\"width-50\">\n\n## Case progress\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case escalated to the Registrar</div>\n" +
             "\n" +
-            "## What happens next\n" +
+            "## What happens next\n\n" +
             "<p class=\"govuk-body-s\">The case was escalated on Unknown.</p>\n" +
             "<p class=\"govuk-body-s\">The case will be reviewed by the Registrar and you will be notified by email if we need any information from you to progress the case.</p>\n" +
-            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>\n</div>";
+            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>\n\n</div>";
     @Before
     public void setup() {
         OBJECT_MAPPER.registerModule(new JavaTimeModule());

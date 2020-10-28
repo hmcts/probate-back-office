@@ -3,14 +3,14 @@ import lombok.Getter;
 
 @Getter
 public enum CaseProgressState {
-    IN_PROGRESS(Constants.STATE_DESC_IN_PROGRESS), // name is not used for this state
-    CASE_ESCALATED(Constants.STATE_DESC_ESCALATED), // name here is displayed in the inset in Case Progress html
-    CASE_STOPPED( Constants.STATE_DESC_CASE_STOPPED); // name here is displayed in the inset in Case Progress html
+    DEFAULT(Constants.STATE_DESC_DEFAULT),
+    CASE_ESCALATED(Constants.STATE_DESC_ESCALATED),
+    CASE_STOPPED(Constants.STATE_DESC_CASE_STOPPED);
 
-    private String name;
+    private String displayText;
 
-    CaseProgressState(String name) {
-        this.name = name;
+    CaseProgressState(String displayText) {
+        this.displayText = displayText;
     }
 
     public static CaseProgressState MapCaseState(String caseState) {
@@ -28,7 +28,7 @@ public enum CaseProgressState {
                 return CASE_ESCALATED;
 
             default:
-                return IN_PROGRESS;
+                return DEFAULT;
         }
     }
 
@@ -38,7 +38,7 @@ public enum CaseProgressState {
         public static final String STATE_BO_CASE_STOPPED_AWAIT_REDEC = "BOCaseStoppedAwaitRedec";
         public static final String STATE_BO_REGISTRAR_ESCALATION = "BORegistrarEscalation";
 
-        public static final String STATE_DESC_IN_PROGRESS = "In progress";
+        public static final String STATE_DESC_DEFAULT = "Default";
         public static final String STATE_DESC_ESCALATED = "Case escalated to the Registrar";
         public static final String STATE_DESC_CASE_STOPPED = "Case stopped";
 

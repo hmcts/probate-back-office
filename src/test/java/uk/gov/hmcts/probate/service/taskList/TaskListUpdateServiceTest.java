@@ -81,9 +81,9 @@ public class TaskListUpdateServiceTest {
 
     private final String expectedDefaultHtml = ""; // TODO set this when TaskList (showing a list of tasks and their status for case progress) story coded
 
-    private static final String expectedStoppedHtml = "<div class='width-50'>## Case progress<div class=\"govuk-inset-text\">CASE_STOPPED</div>\n" +
+    private static final String expectedStoppedHtml = "<div class=\"width-50\">\n\n## Case progress\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case stopped</div>\n" +
             "\n" +
-            "## What happens next\n" +
+            "## What happens next\n\n" +
             "<p class=\"govuk-body-s\">The case was stopped on Unknown for one of two reasons:</p>\n" +
             "<ul class=\"govuk-list govuk-list--bullet\">\n" +
             "<li>an internal review is needed</li>\n" +
@@ -91,14 +91,14 @@ public class TaskListUpdateServiceTest {
             "</ul>\n" +
             "\n" +
             "<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to progress the case.</p>\n" +
-            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then</p></div>";
+            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>\n\n</div>";
 
-    private final String expectedEscalatedHtml = "<div class='width-50'>## Case progress<div class=\"govuk-inset-text\">CASE_ESCALATED</div>\n" +
+    private final String expectedEscalatedHtml = "<div class=\"width-50\">\n\n## Case progress\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case escalated to the Registrar</div>\n" +
             "\n" +
-            "## What happens next\n" +
+            "## What happens next\n\n" +
             "<p class=\"govuk-body-s\">The case was escalated on Unknown.</p>\n" +
             "<p class=\"govuk-body-s\">The case will be reviewed by the Registrar and you will be notified by email if we need any information from you to progress the case.</p>\n" +
-            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>\n</div>";
+            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>\n\n</div>";
 
     private String getPrimaryApplicantHasAlias(CaseData caseData) {
         if (PERSONAL.equals(caseData.getApplicationType())) {

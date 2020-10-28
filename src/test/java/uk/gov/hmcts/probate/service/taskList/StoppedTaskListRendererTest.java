@@ -58,9 +58,9 @@ public class StoppedTaskListRendererTest {
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
 
-    private static final String expectedHtml = "<div class='width-50'>## Case progress<div class=\"govuk-inset-text\">CASE_STOPPED</div>\n" +
+    private static final String expectedHtml = "<div class=\"width-50\">\n\n## Case progress\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case stopped</div>\n" +
             "\n" +
-            "## What happens next\n" +
+            "## What happens next\n\n" +
             "<p class=\"govuk-body-s\">The case was stopped on Unknown for one of two reasons:</p>\n" +
             "<ul class=\"govuk-list govuk-list--bullet\">\n" +
             "<li>an internal review is needed</li>\n" +
@@ -68,7 +68,7 @@ public class StoppedTaskListRendererTest {
             "</ul>\n" +
             "\n" +
             "<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to progress the case.</p>\n" +
-            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then</p></div>";
+            "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>\n\n</div>";
 
     @Before
     public void setup() {
