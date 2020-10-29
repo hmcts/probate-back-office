@@ -4,7 +4,7 @@ import uk.gov.hmcts.probate.model.CaseProgressState;
 
 public class TaskListRendererFactory {
 
-    public static BaseTaskListRenderer getTaskListRenderer(String applicationState) {
+    public BaseTaskListRenderer getTaskListRenderer(String applicationState) {
         if (applicationState == null) {
             return new DefaultTaskListRenderer();
         }
