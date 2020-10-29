@@ -1,8 +1,12 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import uk.gov.hmcts.probate.htmlRendering.HeaderRenderer;
+import uk.gov.hmcts.probate.htmlRendering.HeadingRenderer;
+import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
+import uk.gov.hmcts.probate.htmlRendering.ParagraphRenderer;
+import uk.gov.hmcts.probate.htmlRendering.SubheadingRenderer;
 import uk.gov.hmcts.probate.model.CaseProgressState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.htmlTemplate.ContactDetailsHtmlTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +26,7 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
         lines.add(renderInset(caseDetails));
         lines.add(renderBodyHeader());
         lines.add(renderBody(caseDetails));
+        lines.add(renderContactDetails());
 
         lines.add("</div>");
 
@@ -40,7 +45,25 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     }
 
     private String renderBodyHeader() {
-        return new HeaderRenderer().render("What happens next");
+        return HeadingRenderer.render("What happens next");
+    }
+
+    public String renderContactDetails() {
+        final List<String> lines = new LinkedList<>();
+
+        lines.add(HeadingRenderer.render("Get help with your application"));
+        lines.add(SubheadingRenderer.render("Telephone"));
+        lines.add(ParagraphRenderer.render(ContactDetailsHtmlTemplate.contactTemplate)
+                .replaceFirst("<englishPhoneNumber>", "0300 303 0648")
+                .replaceFirst("<welshPhoneNumber>", "0300 303 0654")
+        );
+        lines.add(LinkRenderer.render("Find out about call charges", "https://www.gov.uk/call-charges"));
+        lines.add(SubheadingRenderer.render("Email"));
+        lines.add(ParagraphRenderer.render(ContactDetailsHtmlTemplate.emailTemplate)
+                .replaceFirst("<email>", LinkRenderer.render("contactprobate@justice.gov.uk", "mailto:contactprobate@justice.gov.uk"))
+        );
+
+        return String.join("\n\n", lines);
     }
 
     abstract protected String renderBody(CaseDetails caseDetails);
