@@ -16,7 +16,7 @@ public class ParagraphRendererTest {
     @Test
     public void shouldRenderParagraphCorrectly() {
         String expectedValue = "<p class=\"govuk-body-s\">This is a paragraph.</p>";
-        String result = paraRenderer.render("<p>This is a paragraph.</p>");
+        String result = paraRenderer.renderByReplace("<p>This is a paragraph.</p>");
         assertTrue(result.equals(expectedValue));
     }
 }

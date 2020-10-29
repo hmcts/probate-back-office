@@ -14,7 +14,7 @@ public class StoppedTaskListRenderer extends NoTaskListRenderer {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate stoppedDate = details.getData().getGrantStoppedDate();
 
-        return ParagraphRenderer.render(CaseStoppedHtmlTemplate.baseTemplate)
+        return ParagraphRenderer.renderByReplace(CaseStoppedHtmlTemplate.baseTemplate)
                 .replaceFirst("<stopDate>", stoppedDate == null ? "Unknown" : stoppedDate.format(dateFormat))
                 .replaceFirst("<caseStopReasonsList>", UnorderedListRenderer.render(CaseStoppedHtmlTemplate.caseStopReasons))
                 .replaceFirst("<numWeeks>", "4"); // TODO - pick up from config (env var) so we can change without code change
