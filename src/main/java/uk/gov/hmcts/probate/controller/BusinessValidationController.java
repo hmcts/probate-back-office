@@ -72,6 +72,11 @@ public class BusinessValidationController {
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
+    @PostMapping(path = "/update-task-list")
+    public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
+
     @PostMapping(path = "/sols-apply-as-exec")
     public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
