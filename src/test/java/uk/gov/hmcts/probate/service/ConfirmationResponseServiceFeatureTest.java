@@ -49,7 +49,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
-    private static final String PAYMENT_METHOD = "Cheque";
+    private static final String PAYMENT_METHOD = "fee account";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     private static final BigDecimal FEE_UK = new BigDecimal(100);
