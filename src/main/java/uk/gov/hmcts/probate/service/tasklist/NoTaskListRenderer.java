@@ -4,7 +4,7 @@ import uk.gov.hmcts.probate.htmlRendering.HeadingRenderer;
 import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
 import uk.gov.hmcts.probate.htmlRendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.htmlRendering.SubheadingRenderer;
-import uk.gov.hmcts.probate.model.CaseProgressState;
+import uk.gov.hmcts.probate.model.caseProgress.CaseProgressState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmlTemplate.ContactDetailsHtmlTemplate;
 

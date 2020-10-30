@@ -1,5 +1,6 @@
-package uk.gov.hmcts.probate.model;
+package uk.gov.hmcts.probate.model.caseProgress;
 import lombok.Getter;
+import uk.gov.hmcts.probate.model.StateConstants;
 
 @Getter
 public enum CaseProgressState {
@@ -22,6 +23,9 @@ public enum CaseProgressState {
                 return CASE_STOPPED;
 
             case StateConstants.STATE_BO_CASE_STOPPED_AWAIT_REDEC:
+                return CASE_STOPPED;
+
+            case StateConstants.STATE_BO_CAVEAT_PERMANENT:
                 return CASE_STOPPED;
 
             case StateConstants.STATE_BO_REGISTRAR_ESCALATION:

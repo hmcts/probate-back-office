@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import uk.gov.hmcts.probate.model.CaseProgressState;
+import uk.gov.hmcts.probate.model.caseProgress.CaseProgressState;
 
 public class TaskListRendererFactory {
 

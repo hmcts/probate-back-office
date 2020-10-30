@@ -35,7 +35,7 @@ public class CaseTaskListHtmlTemplate {
             "<h>4. Grant of representation</h>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>This step is completed by HM Courts and Tribunals Service staff.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
-            "<gridRow><gridCol-two-thirds><p>Issue grant of representation</p></gridCol-two-thirds><gridCol-one-third><status-reviewAndSubmit></gridCol-one-third></gridRow>\n" +
+            "<gridRow><gridCol-two-thirds><p>Issue grant of representation</p></gridCol-two-thirds><gridCol-one-third><status-issueGrant></gridCol-one-third></gridRow>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>The grant will be delivered in the post a few days after issuing.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n";
 
