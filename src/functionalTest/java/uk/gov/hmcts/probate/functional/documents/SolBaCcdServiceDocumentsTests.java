@@ -50,7 +50,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
-    private static final String SOLICITOR_ON_THEIR_BEHALF = "They have authorised Firm Name to sign a statement of truth on their behalf.";
 
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
@@ -172,6 +171,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
@@ -185,6 +185,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
@@ -198,51 +199,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
-    }
-
-    @Test
-    public void verifySolOnTheirBehalfNotExistPdfLegalStatementProbate() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
-        assertTrue(!response.contains(SOLICITOR_ON_THEIR_BEHALF));
-    }
-
-    @Test
-    public void verifySolOnTheirBehalfNotExistPdfLegalStatementIntestacy() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
-        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
-        assertTrue(!response.contains(SOLICITOR_ON_THEIR_BEHALF));
-    }
-
-    @Test
-    public void verifySolOnTheirBehalfNotExistPdfLegalStatementAdmonWillSols() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
-        assertTrue(!response.contains(SOLICITOR_ON_THEIR_BEHALF));
     }
 
     @Test
