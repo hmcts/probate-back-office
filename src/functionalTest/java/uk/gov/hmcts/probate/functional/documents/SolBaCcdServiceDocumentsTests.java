@@ -677,8 +677,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
-
-
+    
     //Commented out due to Docmosis not allowing screen readers as images overlay all text
     //@Test
     //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
