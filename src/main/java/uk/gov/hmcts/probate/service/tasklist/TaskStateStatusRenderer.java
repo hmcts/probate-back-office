@@ -30,7 +30,7 @@ public class TaskStateStatusRenderer {
     }
 
     private static String renderTaskStateTag (TaskState taskState) {
-        return format("<strong class=\"govuk-tag %1$\">%2$</strong>", renderTagColourClass(taskState), taskState.displayText);
+        return format("<strong class=\"govuk-tag %1$s\">%2$s</strong>", renderTagColourClass(taskState), taskState.displayText);
     }
 
     private static String renderTagColourClass(TaskState taskState)  {

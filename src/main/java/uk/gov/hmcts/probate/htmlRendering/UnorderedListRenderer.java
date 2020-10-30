@@ -10,10 +10,12 @@ public class UnorderedListRenderer {
 
     public static String render(List<String> listItems) {
         StringBuilder sb = new StringBuilder(openTag);
+        sb.append("\n");
         for (String item : listItems) {
             sb.append(format("<li>%s</li>\n", item));
         }
         sb.append(closeTag);
+        sb.append("\n");
         return sb.toString();
     }
 
