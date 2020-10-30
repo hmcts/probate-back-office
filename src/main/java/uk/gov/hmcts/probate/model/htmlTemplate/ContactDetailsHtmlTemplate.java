@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.model.htmlTemplate;
 
-import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
-
 public class ContactDetailsHtmlTemplate {
 
     public static String contactTemplate = "<p>You will need the case reference or the deceased's full name when you call.</p><br/>" +
