@@ -299,7 +299,7 @@ services:
       - shared-database
 
   payments-api:
-    image: hmctspublic.azurecr.io/payment/api:latest
+    image: hmctspublic.azurecr.io/payment/api:prod-30948907
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080/
