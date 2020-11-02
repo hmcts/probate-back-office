@@ -343,27 +343,29 @@ public class CaveatNotificationServiceTest {
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
 
-        documents.add(sentEmail);
-
-        responseCaveatData = ResponseCaveatData.builder()
-                .notificationsGenerated(DOCUMENTS_LIST)
-                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
-                .build();
+//        documents.add(sentEmail);
+//
+//        responseCaveatData = ResponseCaveatData.builder()
+//                .notificationsGenerated(DOCUMENTS_LIST)
+//                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
+//                .build();
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
-        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
-                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
-        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
-                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+//        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+//                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+//        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+//                .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
-        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+//        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+//        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
 
-        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+//        caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertNotNull(caveatCallbackResponse.getCaveatData().getExpiryDate());
+        caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
@@ -373,27 +375,27 @@ public class CaveatNotificationServiceTest {
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
 
-        documents.add(sentEmail);
+//        documents.add(sentEmail);
 
-        responseCaveatData = ResponseCaveatData.builder()
-                .notificationsGenerated(DOCUMENTS_LIST)
-                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
-                .build();
+//        responseCaveatData = ResponseCaveatData.builder()
+//                .notificationsGenerated(DOCUMENTS_LIST)
+//                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
+//                .build();
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
-        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
-                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
-        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
-                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+//        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+//                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+//        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+//                .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
-        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+//        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+//        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
 
-        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+        caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertNotNull(caveatCallbackResponse.getCaveatData().getExpiryDate());
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
