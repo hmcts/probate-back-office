@@ -363,7 +363,7 @@ public class CaveatNotificationServiceTest {
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertNotNull(caveatCallbackResponse.getCaveatData().getExpiryDate());
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
@@ -393,7 +393,7 @@ public class CaveatNotificationServiceTest {
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertNotNull(caveatCallbackResponse.getCaveatData().getExpiryDate());
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
