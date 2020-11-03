@@ -1,45 +1,58 @@
 package uk.gov.hmcts.probate.service.taskList;
 
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import uk.gov.hmcts.probate.service.tasklist.BaseTaskListRenderer;
+import uk.gov.hmcts.probate.service.tasklist.DefaultTaskListRenderer;
+import uk.gov.hmcts.probate.service.tasklist.EscalatedTaskListRenderer;
+import uk.gov.hmcts.probate.service.tasklist.StoppedTaskListRenderer;
+import uk.gov.hmcts.probate.service.tasklist.TaskListRendererFactory;
 
-import uk.gov.hmcts.probate.service.tasklist.*;
+import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CREATED;
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_REDEC;
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_REISSUE;
+import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
+import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
+
 
 public class TaskListRendererFactoryTest {
-    private TaskListRendererFactory rendererFactory = new TaskListRendererFactory();
+
+    private BaseTaskListRenderer renderer;
+    private TaskListRendererFactory taskListRendererFactory = new TaskListRendererFactory();
 
     @Test
     public void shouldReturnCorrectRenderForState_CaseCreated() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("CaseCreated", "");
-        assertTrue(renderer.getClass() == DefaultTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(CASE_CREATED.getId());
+        assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOExamining() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOExamining", "");
-        assertTrue(renderer.getClass() == DefaultTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(EXAMINING.getId());
+        assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStopped() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStopped", "");
-        assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(BO_CASE_STOPPED.getId());
+        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStoppedReissue() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedReissue", "");
-        assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_REISSUE.getId());
+        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStoppedAwaitRedec() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedAwaitRedec", "");
-        assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_AWAIT_REDEC.getId());
+        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BORegistrarEscalation() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BORegistrarEscalation", "");
-        assertTrue(renderer.getClass() == EscalatedTaskListRenderer.class);
+        renderer = taskListRendererFactory.getTaskListRenderer(REGISTRAR_ESCALATION.getId());
+        assertEquals(EscalatedTaskListRenderer.class, renderer.getClass());
     }
 }

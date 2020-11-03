@@ -13,9 +13,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 @RequiredArgsConstructor
 public class TaskListUpdateService {
 
+    TaskListRendererFactory factory = new TaskListRendererFactory();
+
     public ResponseCaseDataBuilder generateTaskList(CaseDetails caseDetails, ResponseCaseDataBuilder builder) {
 
-        BaseTaskListRenderer progressTabRenderer = TaskListRendererFactory.getTaskListRenderer(caseDetails.getState());
+        BaseTaskListRenderer progressTabRenderer = factory.getTaskListRenderer(caseDetails.getState());
         String progressTabHtml = progressTabRenderer.renderHtml(caseDetails);
         builder.taskList(progressTabHtml);
 

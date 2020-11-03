@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import uk.gov.hmcts.probate.controller.CaseDataTestBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -122,8 +122,7 @@ public class DefaultTaskListRendererTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState("BOExamining");
         String result = renderer.renderHtml(caseDetails);
-        // TODO!
-        // assertTrue(result.equals(expectedHtml));
+        assertEquals(expectedHtml, result);
     }
 
 }
