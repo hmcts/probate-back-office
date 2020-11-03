@@ -32,7 +32,7 @@ import static uk.gov.hmcts.probate.model.Constants.*;
 
 
 public class TaskListUpdateServiceTest {
-    private final TaskListUpdateService taskListSvc = new TaskListUpdateService();;
+    private final TaskListUpdateService taskListSvc = new TaskListUpdateService();
     private CaseData.CaseDataBuilder caseDataBuilder;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String FORENAME = "Andy";

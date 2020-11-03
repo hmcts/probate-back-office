@@ -112,9 +112,7 @@ public class CallbackResponseTransformer {
 
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
-
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
-
         return transformResponse(responseCaseDataBuilder.build());
     }
 

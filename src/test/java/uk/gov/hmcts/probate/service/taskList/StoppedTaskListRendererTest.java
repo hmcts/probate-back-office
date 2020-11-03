@@ -20,7 +20,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class StoppedTaskListRendererTest {
-    private final StoppedTaskListRenderer renderer = new StoppedTaskListRenderer();
+    private final StoppedTaskListRenderer renderer = new StoppedTaskListRenderer("");
     private CaseData.CaseDataBuilder caseDataBuilder;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String FORENAME = "Andy";

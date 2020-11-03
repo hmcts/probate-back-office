@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class EscalatedTaskListRenderer extends NoTaskListRenderer {
+
     public String renderBody(CaseDetails details) {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");

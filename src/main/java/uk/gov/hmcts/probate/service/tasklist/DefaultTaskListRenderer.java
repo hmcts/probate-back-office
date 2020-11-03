@@ -6,17 +6,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmlTemplate.CaseTaskListHtmlTemplate;
 
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
+
     public String renderHtml(CaseDetails details) {
         TaskListState tlState = TaskListState.MapCaseState(details.getState());
         if (tlState == TaskListState.TL_STATE_NOT_APPLICABLE) {
             return "";
         }
         return
-            TaskStateStatusRenderer.renderByReplace(tlState,
+            TaskStateRenderer.renderByReplace(tlState,
                     ParagraphRenderer.renderByReplace(
                         GridRenderer.renderByReplace(
                                 SecondaryTextRenderer.renderByReplace(
                                         HeadingRenderer.renderByReplace(
-                                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.taskListTemplate))))));
+                                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.taskListTemplate))))), details.getId());
     }
 }

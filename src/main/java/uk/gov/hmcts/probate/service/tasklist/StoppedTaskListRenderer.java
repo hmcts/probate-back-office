@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class StoppedTaskListRenderer extends NoTaskListRenderer {
+
     public String renderBody(CaseDetails details) {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");

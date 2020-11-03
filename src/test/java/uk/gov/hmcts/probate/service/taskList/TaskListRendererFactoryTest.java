@@ -10,36 +10,36 @@ public class TaskListRendererFactoryTest {
 
     @Test
     public void shouldReturnCorrectRenderForState_CaseCreated() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("CaseCreated");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("CaseCreated", "");
         assertTrue(renderer.getClass() == DefaultTaskListRenderer.class);
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOExamining() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOExamining");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOExamining", "");
         assertTrue(renderer.getClass() == DefaultTaskListRenderer.class);
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStopped() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStopped");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStopped", "");
         assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
     }
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStoppedReissue() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedReissue");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedReissue", "");
         assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BOCaseStoppedAwaitRedec() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedAwaitRedec");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BOCaseStoppedAwaitRedec", "");
         assertTrue(renderer.getClass() == StoppedTaskListRenderer.class);
     }
 
     @Test
     public void shouldReturnCorrectRenderForState_BORegistrarEscalation() {
-        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BORegistrarEscalation");
+        BaseTaskListRenderer renderer = rendererFactory.getTaskListRenderer("BORegistrarEscalation", "");
         assertTrue(renderer.getClass() == EscalatedTaskListRenderer.class);
     }
 }
