@@ -116,6 +116,7 @@ notifications:
       english:
         personal:
           applicationReceived: "pa-application-received"
+          applicationReceivedPaperFormCaseworker: "pa-application-received-cw"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
           caseStoppedCaveat: "pa-case-stopped-caveat"
