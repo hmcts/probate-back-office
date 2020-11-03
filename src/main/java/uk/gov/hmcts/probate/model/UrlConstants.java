@@ -8,6 +8,6 @@ public class UrlConstants {
             "v2/case/<CASE_ID>/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1";
     public static final String reviewOrSubmitUrlTemplate =
             "v2/case/<CASE_ID>/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1";
-
-
+    public static final String viewDocumentsToBeSentInUrlTemplate =
+            null; // TODO - await from Narm
 }

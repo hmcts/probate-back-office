@@ -5,6 +5,8 @@ import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmlTemplate.CaseTaskListHtmlTemplate;
 
+import java.time.LocalDate;
+
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
 
     public String renderHtml(CaseDetails details) {
@@ -12,12 +14,16 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
         if (tlState == TaskListState.TL_STATE_NOT_APPLICABLE) {
             return "";
         }
+        String submitDate = details.getData().getApplicationSubmittedDate();
+        LocalDate submitLocalDate = submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
+
         return
             TaskStateRenderer.renderByReplace(tlState,
                     ParagraphRenderer.renderByReplace(
                         GridRenderer.renderByReplace(
                                 SecondaryTextRenderer.renderByReplace(
                                         HeadingRenderer.renderByReplace(
-                                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.taskListTemplate))))), details.getId());
+                                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.taskListTemplate))))),
+                                                    details.getId(), null, submitLocalDate);
     }
 }

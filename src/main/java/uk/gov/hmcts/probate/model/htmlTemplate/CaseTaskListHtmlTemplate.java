@@ -17,15 +17,17 @@ public class CaseTaskListHtmlTemplate {
             "<gridRow><gridCol-two-thirds><p><secText>These steps are to be completed by the legal professional.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
             "<gridRow><gridCol-two-thirds><p><rvwLink/></p></gridCol-two-thirds><gridCol-one-third><status-reviewAndSubmit/></gridCol-one-third></gridRow>\n" +
+            "<reviewAndSubmitDate/>" +
             "<gridRow><gridCol-two-thirds><p><secText>The legal statement is generated. You can review, change any details, then sign and submit your application.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
-            "<gridRow><gridCol-two-thirds><p><sendDocsLink/></p></gridCol-two-thirds><gridCol-one-third><status-sendDocuments/></gridCol-one-third></gridRow>\n" +
+            "<gridRow><gridCol-two-thirds><p>Send documents<br/><sendDocsLink/></p></gridCol-two-thirds><gridCol-one-third><status-sendDocuments/></gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
             "<br/>\n" +
             "<h>3. Review application</h>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
             "<gridRow><gridCol-two-thirds><p><authDocsLink/></p></gridCol-two-thirds><gridCol-one-third><status-authDocuments/></gridCol-one-third></gridRow>\n" +
+            "<authenticatedDate/>" +
             "<gridRow><gridCol-two-thirds><p><secText>We will authenticate your documents and match them with your application.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
             "<gridRow><gridCol-two-thirds><p><examAppLink/></p></gridCol-two-thirds><gridCol-one-third><status-examineApp/></gridCol-one-third></gridRow>\n" +

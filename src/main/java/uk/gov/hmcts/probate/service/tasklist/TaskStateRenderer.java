@@ -1,8 +1,14 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import uk.gov.hmcts.probate.htmlRendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
 import uk.gov.hmcts.probate.model.caseProgress.TaskState;
+import uk.gov.hmcts.probate.model.htmlTemplate.StateChangeDateHtmlTemplate;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.UrlConstants.*;
@@ -13,7 +19,7 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
-    private static final String SEND_DOCS_TEXT = "Send documents";
+    private static final String SEND_DOCS_TEXT = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
@@ -23,8 +29,10 @@ public class TaskStateRenderer {
     private static final String BLUE_CLS_PART = "--blue";
     private static final String GREY_CLS_PART = "--grey";
 
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+
     // isProbate - true if application for probate, false if for caveat
-    public static String renderByReplace(TaskListState currState, String html, Long caseId) {
+    public static String renderByReplace(TaskListState currState, String html, Long caseId, LocalDate authDate, LocalDate submitDate) {
         final TaskState addSolState = GetTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS);
         final TaskState addDeceasedState = GetTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS);
         final TaskState addAppState = GetTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS);
@@ -43,11 +51,13 @@ public class TaskStateRenderer {
                 .replaceFirst("<status-addDeceasedDetails/>", renderTaskStateTag(addDeceasedState))
                 .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr))
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
-                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr))
+                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
+                .replaceFirst("<submitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<sendDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_SEND_DOCUMENTS, sendDocsState, SEND_DOCS_TEXT, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr))
+                .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
                 .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, examineState, EXAMINE_APP_TEXT, caseIdStr))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
@@ -107,9 +117,26 @@ public class TaskStateRenderer {
 */
 
     private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId) {
-        return (currState == TaskState.NOT_STARTED || currState == TaskState.IN_PROGRESS) ?
-                LinkRenderer.render(linkText, getLinkUrlTemplate(taskListState).replaceFirst("<CASE_ID>", caseId), false)
+        String linkUrlTemplate = getLinkUrlTemplate(taskListState);
+        return linkUrlTemplate != null && (currState == TaskState.NOT_STARTED || currState == TaskState.IN_PROGRESS) ?
+                LinkRenderer.render(linkText, getLinkUrlTemplate(taskListState).replaceFirst("<CASE_ID>", caseId))
                 : linkText;
+    }
+
+    private static String renderAuthenticatedDate(LocalDate authDate) {
+        if (authDate == null) {
+            return null;
+        }
+        String authDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Authenticated on %s", authDate.format(dateFormat)));
+        return GridRenderer.renderByReplace(authDateTemplate);
+    }
+
+    private static String renderSubmitDate(LocalDate submitDate) {
+        if (submitDate == null) {
+            return null;
+        }
+        String submitDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Submitted on %s", submitDate.format(dateFormat)));
+        return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
     private static String getLinkUrlTemplate(TaskListState taskListState) {
@@ -121,7 +148,9 @@ public class TaskStateRenderer {
             case TL_STATE_ADD_APPLICATION_DETAILS:
                 return addApplicationDetailsUrlTemplate;
             case TL_STATE_REVIEW_AND_SUBMIT:
-                return addApplicationDetailsUrlTemplate;
+                return reviewOrSubmitUrlTemplate;
+            case TL_STATE_SEND_DOCUMENTS:
+                return viewDocumentsToBeSentInUrlTemplate;
             default:
                 return null;
 
