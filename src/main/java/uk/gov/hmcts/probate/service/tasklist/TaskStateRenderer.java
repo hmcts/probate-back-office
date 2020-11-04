@@ -61,6 +61,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
                 .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT, issueState, ISSUE_GRANT_TEXT, caseIdStr))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState));
+
     }
 
     private static TaskState GetTaskState  (TaskListState currState, TaskListState renderState) {
@@ -123,7 +124,7 @@ public class TaskStateRenderer {
 
     private static String renderAuthenticatedDate(LocalDate authDate) {
         if (authDate == null) {
-            return null;
+            return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
         String authDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Authenticated on %s", authDate.format(dateFormat)));
         return GridRenderer.renderByReplace(authDateTemplate);
@@ -131,7 +132,7 @@ public class TaskStateRenderer {
 
     private static String renderSubmitDate(LocalDate submitDate) {
         if (submitDate == null) {
-            return null;
+            return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
         String submitDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Submitted on %s", submitDate.format(dateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
