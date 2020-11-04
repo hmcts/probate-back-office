@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -125,9 +126,13 @@ public class PDFManagementService {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
+
+            Optional<Link> self = store.getLink("self");
+            Optional<Link> binary = store.getLink("binary");
+
             DocumentLink documentLink = DocumentLink.builder()
-                    .documentBinaryUrl(store.getLink("binary").getHref())
-                    .documentUrl(store.getLink(Link.REL_SELF).getHref())
+                    .documentBinaryUrl(binary.get().toUri().toString())
+                    .documentUrl(self.get().toUri().toString())
                     .documentFilename(documentType.getTemplateName() + ".pdf")
                     .build();
 

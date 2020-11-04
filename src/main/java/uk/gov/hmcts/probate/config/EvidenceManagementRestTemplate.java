@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
+import com.microsoft.applicationinsights.core.dependencies.io.grpc.netty.shaded.io.netty.util.internal.ObjectUtil;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.RequestConfig;
@@ -11,7 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -25,13 +26,15 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
+import java.util.Objects;
+
 import static java.util.Arrays.asList;
 
 @Component
 public class EvidenceManagementRestTemplate extends RestTemplate {
     private static final MediaType MEDIA_TYPE_HAL_JSON =
             new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
-                    MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
+                MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
     private static final MediaType MEDIA_TYPE_DOC = new MediaType("application",
             "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
 
