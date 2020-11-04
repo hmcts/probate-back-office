@@ -193,7 +193,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '1.1.0.2',
+        probateCommonsVersion           : '1.1.2.1',
         ccdClient                       : '4.7.3',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
