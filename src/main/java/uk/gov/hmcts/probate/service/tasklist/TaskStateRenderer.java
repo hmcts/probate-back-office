@@ -19,7 +19,6 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
-    private static final String SEND_DOCS_TEXT = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
@@ -54,7 +53,6 @@ public class TaskStateRenderer {
                 .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<submitDate/>", renderSubmitDate(submitDate))
-                .replaceFirst("<sendDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_SEND_DOCUMENTS, sendDocsState, SEND_DOCS_TEXT, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
