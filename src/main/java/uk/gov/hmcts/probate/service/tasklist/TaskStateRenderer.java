@@ -7,10 +7,10 @@ import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
 import uk.gov.hmcts.probate.model.caseProgress.TaskState;
 import uk.gov.hmcts.probate.model.htmlTemplate.SendDocumentsDetailsHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmlTemplate.StateChangeDateHtmlTemplate;
+import uk.gov.hmcts.probate.model.htmlTemplate.StatusTagHtmlTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.UrlConstants.*;
@@ -25,11 +25,6 @@ public class TaskStateRenderer {
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
-
-    private static final String TAG_CLS_PREFIX = "govuk-tag";
-    // private static final String CUST_CLS_PART = "--custom-status";
-    private static final String BLUE_CLS_PART = "--blue";
-    private static final String GREY_CLS_PART = "--grey";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
@@ -82,42 +77,10 @@ public class TaskStateRenderer {
         if (taskState == TaskState.NOT_AVAILABLE) {
             return "";
         }
-        return format("<strong class=\"govuk-tag %1$s\">%2$s</strong>",
-                renderTagColourClass(taskState), taskState.displayText);
+        return StatusTagHtmlTemplate.statusTag
+                .replaceFirst("<imgSrc/>", taskState.imageUrl)
+                .replaceFirst("<imgAlt/>", taskState.displayText);
     }
-
-    private static String renderTagColourClass(TaskState taskState)  {
-        if (taskState == TaskState.NOT_STARTED) {
-            return format("%1$s%2$s", TAG_CLS_PREFIX, GREY_CLS_PART);
-        }
-        if (taskState == TaskState.IN_PROGRESS) {
-            return format("%1$s%2$s", TAG_CLS_PREFIX, BLUE_CLS_PART);
-        }
-        return ""; // completed
-    }
-/*
-    private static String renderTagCustomClass(TaskState taskState)  {
-        if (taskState == TaskState.NOT_STARTED) {
-            return format("%1$s%2$s%3$s", TAG_CLS_PREFIX, CUST_CLS_PART, "--grey");
-        }
-        if (taskState == TaskState.IN_PROGRESS) {
-            return format("%1$s%2$s%3$s", TAG_CLS_PREFIX, CUST_CLS_PART, GREY_CLS_PART);
-        }
-        return ""; // completed
-    }*/
-
-    // govuk-tag--grey & govuk-tag--blue don't appear to be enabled in stylesheet supplied by ccd npx component
-    /*
-    private static String renderTagInlineStyles(TaskState taskState)  {
-        if (taskState == TaskState.NOT_STARTED) {
-            return "color:#383f43;background-color:#eeefef";
-        }
-        if (taskState == TaskState.IN_PROGRESS) {
-            return "color:#144e81;background-color:#d2e2f1";
-        }
-        return ""; // completed
-    }
-*/
 
     private static String renderSendDocsDetails(TaskState sendDocsState, String caseId) {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
@@ -165,6 +128,4 @@ public class TaskStateRenderer {
 
         }
     }
-
-
 }
