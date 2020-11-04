@@ -20,7 +20,7 @@ public class CaseTaskListHtmlTemplate {
             "<reviewAndSubmitDate/>" +
             "<gridRow><gridCol-two-thirds><p><secText>The legal statement is generated. You can review, change any details, then sign and submit your application.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
-            "<gridRow><gridCol-two-thirds><p>Send documents<br/></p></gridCol-two-thirds><gridCol-one-third><status-sendDocuments/></gridCol-one-third></gridRow>\n" +
+            "<gridRow><gridCol-two-thirds><p>Send documents<br/><sendDocsLink/></p></gridCol-two-thirds><gridCol-one-third><status-sendDocuments/></gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
             "<br/>\n" +
             "<h>3. Review application</h>\n" +

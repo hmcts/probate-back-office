@@ -1,9 +1,11 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import uk.gov.hmcts.probate.htmlRendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlRendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
 import uk.gov.hmcts.probate.model.caseProgress.TaskState;
+import uk.gov.hmcts.probate.model.htmlTemplate.SendDocumentsDetailsHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmlTemplate.StateChangeDateHtmlTemplate;
 
 import java.time.LocalDate;
@@ -19,12 +21,13 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
+    private static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
 
     private static final String TAG_CLS_PREFIX = "govuk-tag";
-    private static final String CUST_CLS_PART = "--custom-status";
+    // private static final String CUST_CLS_PART = "--custom-status";
     private static final String BLUE_CLS_PART = "--blue";
     private static final String GREY_CLS_PART = "--grey";
 
@@ -53,6 +56,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<submitDate/>", renderSubmitDate(submitDate))
+                .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
@@ -114,6 +118,12 @@ public class TaskStateRenderer {
         return ""; // completed
     }
 */
+
+    private static String renderSendDocsDetails(TaskState sendDocsState, String caseId) {
+        return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
+                DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
+                        SendDocumentsDetailsHtmlTemplate.docDetails.replaceFirst("<refNum/>", caseId));
+    }
 
     private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId) {
         String linkUrlTemplate = getLinkUrlTemplate(taskListState);

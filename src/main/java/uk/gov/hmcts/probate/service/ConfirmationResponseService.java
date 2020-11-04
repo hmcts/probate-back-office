@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
+import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -266,10 +268,10 @@ public class ConfirmationResponseService {
 
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
+            iht400 = format("*   %s\n", PageTextConstants.documentIht421);
         }
 
-        String legalPhotocopy = "*   a photocopy of the signed legal statement and declaration";
+        String legalPhotocopy = format("*   %s", PageTextConstants.documentLegalStatementPhotocopy);
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
