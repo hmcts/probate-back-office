@@ -22,7 +22,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class DefaultTaskListRendererTest {
 
-    private final DefaultTaskListRenderer renderer = new DefaultTaskListRenderer("");
+    private final DefaultTaskListRenderer renderer = new DefaultTaskListRenderer();
     private CaseData.CaseDataBuilder caseDataBuilder;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String FORENAME = "Andy";
