@@ -79,7 +79,8 @@ public class TaskStateRenderer {
         }
         return StatusTagHtmlTemplate.statusTag
                 .replaceFirst("<imgSrc/>", taskState.imageUrl)
-                .replaceFirst("<imgAlt/>", taskState.displayText);
+                .replaceFirst("<imgAlt/>", taskState.displayText)
+                .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
     private static String renderSendDocsDetails(TaskState sendDocsState, String caseId) {
