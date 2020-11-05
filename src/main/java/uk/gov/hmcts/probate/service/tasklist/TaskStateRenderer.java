@@ -39,7 +39,8 @@ public class TaskStateRenderer {
         final TaskState examineState = GetTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION);
         final TaskState issueState = GetTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT);
 
-        final String caseIdStr = caseId.toString();
+        // the only time caseId will be null is when running unit tests!
+        final String caseIdStr = caseId == null ? "" : caseId.toString();
 
         return html == null ? null : html
                 .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr))
