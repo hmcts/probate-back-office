@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -96,6 +97,11 @@ public class NotificationService {
 
     public Document sendEmail(State state, CaseDetails caseDetails)
         throws NotificationClientException {
+        return sendEmail(state, caseDetails, Optional.empty());
+    }
+    
+    public Document sendEmail(State state, CaseDetails caseDetails, Optional<CaseOrigin> caseOriginOptional)
+        throws NotificationClientException {
 
         CaseData caseData = caseDetails.getData();
         log.info("sendEmail for case: {}", caseDetails.getId());
@@ -103,7 +109,7 @@ public class NotificationService {
         log.info("template params, state={}, applicationType()={}, regLocation={}, language={},  for case: {}", 
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseDetails.getId());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm());
+            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);

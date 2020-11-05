@@ -222,6 +222,7 @@
       "grantIssuedEmailNotificationRequested": true,
       "docsReceivedEmailNotificationRequested": true,
       "primaryApplicantFullName": "fname lname",
+      "primaryApplicantEmailAddress": "fname@fttest.com",
       "deceasedFullName": "deceasedfname deceasedlname",
       "primaryApplicantApplying": true
     },
