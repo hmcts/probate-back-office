@@ -5,8 +5,8 @@ public class SecondaryTextRenderer {
     // and potentially <gridRow></gridRow> & <gridRowSeparator> tags
     public static String renderByReplace(String htmlTemplate) {
         return htmlTemplate == null ? null :
-                htmlTemplate.replaceAll("<secText>", "<span style=\"color:#505a5f\">")
-                .replaceAll("</secText>", "</span>");
+                htmlTemplate.replaceAll("<secText>", "<font color=\"#505a5f\">")
+                .replaceAll("</secText>", "</font>");
 
     }
 }

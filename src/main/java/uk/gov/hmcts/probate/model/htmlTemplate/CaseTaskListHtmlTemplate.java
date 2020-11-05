@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.htmlTemplate;
 
 public class CaseTaskListHtmlTemplate {
     public static String taskListTemplate =
-            //"<style>.govuk-tag--custom-status--grey,.govuk-tag--custom-status--blue{line-height:3;margin-top:0.4rem};.govuk-tag--custom-status--grey{color:#383f43;background-color:#eeefef};.govuk-tag--custom-status-blue{color:#144e81;background-color:#d2e2f1}</style><h>1. Enter application details</h>\n" +
             "<h>1. Enter application details</h>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>These steps are to be completed by the legal professional.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
