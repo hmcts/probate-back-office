@@ -7,7 +7,7 @@
     "last_modified": null,
     "security_classification": "PUBLIC",
     "case_data": {
-      "solsPaymentMethods": "card",
+      "solsPaymentMethods": "fee account",
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
