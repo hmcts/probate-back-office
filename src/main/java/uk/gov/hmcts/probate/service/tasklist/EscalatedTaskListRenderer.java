@@ -15,6 +15,6 @@ public class EscalatedTaskListRenderer extends NoTaskListRenderer {
 
         return ParagraphRenderer.renderByReplace(CaseEscalatedToRegistrarHtmlTemplate.baseTemplate
                 .replaceFirst("<escalationDate>", escalatedDate == null ? "Unknown" : escalatedDate.format(dateFormat))
-                .replaceFirst("<numWeeks>", "6")); // TODO - pick up from config (env var) so we can change without code change
+                .replaceFirst("<numWeeks>", "6"));
     }
 }
