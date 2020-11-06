@@ -27,6 +27,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end grantOfProbatePath",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbatePath",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
         }
+
     ]
 }
