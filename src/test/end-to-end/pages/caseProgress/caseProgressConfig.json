@@ -1,0 +1,14 @@
+{
+    "page1_solFirmName": "TestSolicitor",
+    "page1_solFirstname": "Fred",
+    "page1_solSurname": "Flintstone",
+    "page1_solAddr1": "1 The High St",
+    "page1_solAddrTown": "Swindon",
+    "page1_solAddrCounty": "Wilts",
+    "page1_solAddrCountry": "UK",
+    "page1_solAddrPostcode": "SN15JU",
+    "page1_ref": "XYZ",
+    "page1_solEmail": "testsol@test.com",
+    "page1_solPhone": "07777665432"
+}
+

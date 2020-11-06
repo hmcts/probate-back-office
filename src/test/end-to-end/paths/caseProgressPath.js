@@ -4,6 +4,9 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgress/caseProgressConfig');
+
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig');
@@ -37,12 +40,13 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
-
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.enterCaseProgressPage1();
         console.info('Create new case clicked');
 
     } catch (e) {
-        console.error(e.message);
+        console.error(`case progress error:${e.message}\nStack:${e.stack}`);
         return Promise.reject(e);
     }
 
-}).retry(testConfig.TestRetryScenarios);
+}).retry(0); //testConfig.TestRetryScenarios);

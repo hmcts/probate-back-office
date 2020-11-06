@@ -29,6 +29,7 @@ module.exports = function () {
         enterGrantOfProbatePage7: steps.createGrantOfProbate.page7,
         enterGrantOfProbatePage8: steps.createGrantOfProbate.page8,
         enterGrantOfProbatePage9: steps.createGrantOfProbate.page9,
+        enterCaseProgressPage1: steps.caseProgress.page1,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
