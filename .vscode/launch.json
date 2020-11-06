@@ -15,6 +15,18 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caveatPath4",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caveatPath4",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
         }
     ]
 }
