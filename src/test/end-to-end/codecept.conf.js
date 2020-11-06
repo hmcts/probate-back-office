@@ -8,7 +8,7 @@ exports.config = {
             'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': 1500,
+            'waitForAction': testConfig.TestActionWaitTime,
             'show': testConfig.TestShowBrowserWindow,
             'chrome': {
                 'ignoreHTTPSErrors': true,
@@ -34,7 +34,7 @@ exports.config = {
     },
     'plugins': {
         'autoDelay': {
-            'enabled': true
+            'enabled': testConfig.TestAutoDelayEnabled
         }
     },
     'multiple': {

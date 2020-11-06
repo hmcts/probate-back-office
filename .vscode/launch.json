@@ -39,7 +39,18 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressPath",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgress",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
         }
-
     ]
 }
