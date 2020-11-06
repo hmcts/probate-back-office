@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.htmlTemplate;
 
 public class CaseTaskListHtmlTemplate {
     public static String taskListTemplate =
+            "<gridRow><gridCol-two-thirds>\n" +
             "<h>1. Enter application details</h>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>These steps are to be completed by the legal professional.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
             "<gridRowSeparator>\n" +
@@ -39,6 +40,9 @@ public class CaseTaskListHtmlTemplate {
             "<gridRowSeparator>\n" +
             "<gridRow><gridCol-two-thirds><p><issueGrantLink/>/p></gridCol-two-thirds><gridCol-one-third><status-issueGrant/></gridCol-one-third></gridRow>\n" +
             "<gridRow><gridCol-two-thirds><p><secText>The grant will be delivered in the post a few days after issuing.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
-            "<gridRowSeparator>\n";
+            "<gridRowSeparator>\n" +
+            "</gridCol-two-thirds>\n" +
+            "</gridRow>\n" +
+            "</grid>";
 
 }
