@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EvidenceManagementFile extends RepresentationModel {
+public class EvidenceManagementFile extends RepresentationModel<EvidenceManagementFile> {
 
     private String documentType;
     private long size;

@@ -380,7 +380,6 @@ public class PDFManagementServiceTest {
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         optionalLink = Optional.of(link);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
-        when(link.getHref()).thenReturn("href");
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
@@ -394,7 +393,6 @@ public class PDFManagementServiceTest {
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         optionalLink = Optional.of(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
-        when(link.getHref()).thenReturn("href");
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
