@@ -28,6 +28,7 @@ import javax.crypto.BadPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -61,6 +62,8 @@ public class PDFManagementServiceTest {
     private EvidenceManagementFileUpload evidenceManagementFileUpload;
     @Mock
     private EvidenceManagementFile evidenceManagementFile;
+
+    private Optional<Link> optionalLink;
     @Mock
     private Link link;
     @Mock
@@ -111,12 +114,9 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
-
+        mockLinks(href);
+        
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
 
         String fileName = "legalStatementProbate.pdf";
@@ -132,11 +132,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_INTESTACY, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY);
 
@@ -153,11 +150,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_ADMON, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON);
 
@@ -174,11 +168,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(DIGITAL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, DIGITAL_GRANT);
 
@@ -195,11 +186,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(INTESTACY_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, INTESTACY_GRANT);
 
@@ -216,11 +204,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(ADMON_WILL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, ADMON_WILL_GRANT);
 
@@ -237,11 +222,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(willLodgementCallbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(WILL_LODGEMENT_DEPOSIT_RECEIPT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(willLodgementCallbackRequestMock, WILL_LODGEMENT_DEPOSIT_RECEIPT);
 
@@ -259,11 +241,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(sentEmailMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(SENT_EMAIL, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(sentEmailMock, SENT_EMAIL);
 
@@ -281,11 +260,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(CAVEAT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(caveatCallbackRequestMock, CAVEAT_RAISED);
 
@@ -304,11 +280,8 @@ public class PDFManagementServiceTest {
                 .generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock))
                 .thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED);
 
@@ -326,11 +299,8 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(GRANT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, GRANT_RAISED);
 
@@ -349,11 +319,8 @@ public class PDFManagementServiceTest {
                 .generateDocmosisDocumentFrom(GRANT_RAISED.getTemplateName(), placeholdersMock))
                 .thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-
         String href = "href";
-        when(link.getHref()).thenReturn(href);
+        mockLinks(href);
 
         Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, GRANT_RAISED);
 
@@ -402,5 +369,12 @@ public class PDFManagementServiceTest {
     @Test
     public void testGetDecodedSignatureReturnsBase64String() {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
+    }
+
+    private void mockLinks(String href) {
+        optionalLink = Optional.of(link);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
+        when(link.getHref()).thenReturn(href);
     }
 }

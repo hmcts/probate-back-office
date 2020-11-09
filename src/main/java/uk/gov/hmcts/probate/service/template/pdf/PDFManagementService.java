@@ -126,8 +126,8 @@ public class PDFManagementService {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()
-                    .documentBinaryUrl(store.getLink("binary").getHref())
-                    .documentUrl(store.getLink(Link.REL_SELF).getHref())
+                    .documentBinaryUrl(((Link) store.getLink("binary").get()).getHref())
+                    .documentUrl(((Link) store.getLink(Link.REL_SELF).get()).getHref())
                     .documentFilename(documentType.getTemplateName() + ".pdf")
                     .build();
 
