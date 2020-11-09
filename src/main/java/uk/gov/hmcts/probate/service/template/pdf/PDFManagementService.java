@@ -135,8 +135,8 @@ public class PDFManagementService {
                 throw new IOException("self link is not present");
             }
             DocumentLink documentLink = DocumentLink.builder()
-                    .documentBinaryUrl(((Link) store.getLink("binary").get()).getHref())
-                    .documentUrl(((Link) store.getLink(Link.REL_SELF).get()).getHref())
+                    .documentBinaryUrl(((Link) binaryOptionalLink.get()).getHref())
+                    .documentUrl(((Link) selfOptionalLink.get()).getHref())
                     .documentFilename(documentType.getTemplateName() + ".pdf")
                     .build();
 
