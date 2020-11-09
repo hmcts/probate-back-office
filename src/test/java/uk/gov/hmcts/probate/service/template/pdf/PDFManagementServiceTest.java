@@ -371,6 +371,34 @@ public class PDFManagementServiceTest {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
     }
 
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        optionalLink = Optional.of(link);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
+        when(link.getHref()).thenReturn("href");
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionWhenSelfLinkNotPresent() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        optionalLink = Optional.of(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
+        when(link.getHref()).thenReturn("href");
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
     private void mockLinks(String href) {
         optionalLink = Optional.of(link);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
