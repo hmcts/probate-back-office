@@ -5,10 +5,10 @@ const helperName = 'Puppeteer';
 
 class PuppeteerHelper extends Helper {
 
-    clickBrowserBackButton() {
+    async clickBrowserBackButton() {
         const page = this.helpers[helperName].page;
 
-        return page.goBack();
+        return await page.goBack();
     }
 
     async waitForNavigationToComplete(locator) {
@@ -31,5 +31,6 @@ class PuppeteerHelper extends Helper {
             await page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle0']})
         ]);
     }
+
 }
 module.exports = PuppeteerHelper;

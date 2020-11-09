@@ -41,8 +41,24 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-        await I.enterCaseProgressPage1();
-        console.info('Create new case clicked');
+        await I.caseProgressPage1();
+        await I.caseProgressPage2();
+        await I.caseProgressPage3();
+        await I.caseProgressPage4();        
+        await I.caseProgressPage5();        
+        await I.caseProgressPage6();        
+        await I.caseProgressPage7();                
+        await I.caseProgressPage8();                
+        await I.caseProgressPage9();       
+        await I.caseProgressPage10();                    
+        await I.caseProgressPage11();                    
+        await I.caseProgressPage12();                    
+        await I.caseProgressPage13();                    
+        await I.caseProgressPage14();                    
+        await I.caseProgressPage15();   
+        await I.caseProgressPage16();   
+        await I.caseProgressPage17();   
+        console.info('01 BO Case Progress E2E complete');
 
     } catch (e) {
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);

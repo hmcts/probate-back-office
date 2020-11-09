@@ -9,6 +9,26 @@
     "page1_solAddrPostcode": "SN15JU",
     "page1_ref": "XYZ",
     "page1_solEmail": "testsol@test.com",
-    "page1_solPhone": "07777665432"
+    "page1_solPhone": "07777665432",
+    "page4_deceasedFirstname": "Barney",
+    "page4_deceasedSurname": "Rubble",
+    "page4_deceased": "Rubble",
+    "page4_deathDay": "10",
+    "page4_deathMonth": "10",
+    "page4_deathYear": "2020",
+    "page4_deceasedDobDay": "10",
+    "page4_deceasedDobMonth": "10",
+    "page4_deceasedDobYear": "1967",
+    "page5_groundsForApplication": "Test application grounds",
+    "page5_deceasedAddr1": "2 The High St",
+    "page5_deceasedAddrTown": "Swindon",
+    "page5_deceasedAddrCounty": "Wilts",
+    "page5_deceasedAddrCountry": "UK",
+    "page5_deceasedAddrPostcode": "SN15JU",
+    "page5_IHTSelectValue": "1: IHT205",
+    "page5_IHTGross": "200000",
+    "page5_IHTNet": "150000",
+    "page17_JobTitle": "Solicitor"
+
 }
 
