@@ -36,13 +36,12 @@ import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @Api(tags = "Manage bulk scanning exception record data")
 public class ExceptionRecordController {
 
@@ -63,7 +62,7 @@ public class ExceptionRecordController {
             @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-exception-record",
-            consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+            consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulTransformationResponse> transformCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
         log.info("Transform exception record data for form type: {}, case: {}", erRequest.getFormType(), erRequest.getId());
@@ -109,7 +108,7 @@ public class ExceptionRecordController {
             @ApiResponse(code = 404, message = "Form type not found")
     })
     @PostMapping(path = "/update-case",
-            consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+            consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulCaveatUpdateResponse> updateCase(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
         logRequest(erCaseUpdateRequest);

@@ -637,10 +637,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
         String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
 
-        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value(REDEC_NOTIFICATION_SENT_STATE))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
@@ -649,10 +649,10 @@ public class BusinessValidationControllerTest {
 
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test

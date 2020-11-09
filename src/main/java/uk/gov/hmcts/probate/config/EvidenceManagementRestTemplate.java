@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
-import com.microsoft.applicationinsights.core.dependencies.io.grpc.netty.shaded.io.netty.util.internal.ObjectUtil;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.RequestConfig;
@@ -26,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
-import java.util.Objects;
+import java.nio.charset.Charset;
 
 import static java.util.Arrays.asList;
 
@@ -34,7 +33,7 @@ import static java.util.Arrays.asList;
 public class EvidenceManagementRestTemplate extends RestTemplate {
     private static final MediaType MEDIA_TYPE_HAL_JSON =
             new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
-                MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
+                Charset.forName("utf8"));
     private static final MediaType MEDIA_TYPE_DOC = new MediaType("application",
             "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
 
