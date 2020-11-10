@@ -240,6 +240,7 @@
    ]]></notes>
         <cve>CVE-2019-7614</cve>
         <cve>CVE-2020-7019</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
