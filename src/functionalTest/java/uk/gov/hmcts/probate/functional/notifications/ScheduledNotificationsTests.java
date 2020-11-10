@@ -71,10 +71,12 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String expectedText = utils.getJsonFromFile(GRANT_DELAY_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
+        log.info("createCaseAndVerifyGrantDelayed.delayedCaseJson:"+delayedCaseJson);
         String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "1"));
+        log.info("createCaseAndVerifyGrantDelayed.documentUrl:"+documentUrl);
         String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
-        emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         log.info("createCaseAndVerifyGrantDelayed.emailDocText:"+emailDocText);
+        emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
     }
 
@@ -97,11 +99,14 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String expectedText = utils.replaceAttribute(utils.getJsonFromFile(AWAITING_DOCS_RESPONSE), RESPONSE_CASE_NUM_PARM, caseId);
         String docCase = utils.findCaseAsCaseworker(caseId);
         JsonPath docCaseJson = JsonPath.from(docCase);
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation.docCaseJson:"+docCaseJson);
         String documentAtIndex = utils.replaceAttribute(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL, DOC_INDEX, "0");
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentAtIndex:"+documentAtIndex);
         String documentUrl = docCaseJson.get(documentAtIndex);
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentUrl:"+documentUrl);
         String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
-        emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         log.info("createCaseAndVerifyGrantAwaitingDocumentation.emailDocText:"+emailDocText);
+        emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
 
     }
