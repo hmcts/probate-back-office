@@ -2010,7 +2010,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2128,7 +2129,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2140,6 +2142,22 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
         assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldGetPaperGOPApplicationWithDocument() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.paperForm(YES);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
     }
 
     @Test
@@ -2162,7 +2180,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
     }
@@ -2173,8 +2192,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(null, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(null, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(null, callbackResponse.getData().getSolsSOTJobTitle());
@@ -2191,7 +2211,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertSolsDetails(callbackResponse);
     }
 
@@ -2202,7 +2223,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
@@ -2214,7 +2236,8 @@ public class CallbackResponseTransformerTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2226,7 +2249,8 @@ public class CallbackResponseTransformerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2270,7 +2294,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
     }
 
@@ -2293,7 +2319,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("SOT.pdf", callbackResponse.getData().getStatementOfTruthDocument().getDocumentFilename());
     }
 
