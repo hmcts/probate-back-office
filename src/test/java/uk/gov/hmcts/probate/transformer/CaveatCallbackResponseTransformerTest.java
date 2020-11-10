@@ -88,7 +88,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_LEGACY_CASE_URL = "someUrl";
     private static final String CAV_LEGACY_CASE_TYPE = "someCaseType";
 
-    private static final String SOLS_PAYMENT_METHOD = "cheque";
+    private static final String SOLS_PAYMENT_METHOD = "fee account";
     private static final String SOLS_FEE_ACC = "1234";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";

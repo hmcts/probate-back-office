@@ -86,7 +86,7 @@
             ],
             "deceasedDomicileInEngWales": "Yes",
             "outsideUKGrantCopies":1,
-            "solsPaymentMethods":"cheque",
+            "solsPaymentMethods":"fee account",
             "extraCopiesOfGrant":1,
             "ihtNetValue": "90009",
             "deceasedSurname": "deceasedLastName",
