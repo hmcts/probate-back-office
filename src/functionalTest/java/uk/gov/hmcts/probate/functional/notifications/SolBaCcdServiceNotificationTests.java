@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNull;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -29,11 +30,26 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GRANT_RAISED = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED = "/notify/application-received";
     private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
+    private static final String PAPER_FORM = "/case/paperForm";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String EMAIL_NOTIFICATION_DOCUMENT_URL = "DocumentLink.document_binary_url";
 
+    @Test
+    public void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() {
+        postNotificationEmailAndVerifyContents(PAPER_FORM, "paperApplicationRecievedCitizenFromCaseworkerPayload.json", "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL, "verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent");
+    }
+
+    @Test
+    public void verifySolicitorPaperApplicationReceivedByCaseworkerNotificationNOTSent() {
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedSolicitorFromCaseworkerPayload.json", PAPER_FORM);
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
+        assertNull(documentUrl);
+}
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
         ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);

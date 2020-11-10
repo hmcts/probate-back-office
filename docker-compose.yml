@@ -131,7 +131,7 @@ services:
       - dm-store
 
   service-auth-provider-api:
-    image: "hmctspublic.azurecr.io/rpe/service-auth-provider:latest"
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -154,6 +154,7 @@ services:
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
+      MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
     ports:
       - 4502:8080
 
@@ -302,8 +303,11 @@ services:
     image: hmctspublic.azurecr.io/payment/api:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
-      - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080/
+      - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080
       - auth.idam.client.baseUrl=http://sidam-api:5000
+      - idam.s2s-auth.totp_secret=AAAAAAAAAAAAAAAB
+      - idam.s2s-auth.microservice=payment_app
+      - idam.s2s-auth.url=http://service-auth-provider-api:8080
       - CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
       - CARD_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
       - CARD_PAYMENTS_EMAIL_TO=pepito@grillo.com
@@ -358,7 +362,7 @@ services:
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST=*
       - SPRING_MAIL_PORT=25
       - SPRING_MAIL_HOST=smtp-server
-      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
+      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
       - PAYBUBBLE_HOME_URL=https://ccpay-bubble-frontend-aat.service.core-compute-aat.internal
       - PCI_PAL_CALLBACK_URL=https://core-api-mgmt-aat.azure-api.net/telephony-api/telephony/callback
       - ASB_CONNECTION_STRING=some-azure-service-bus-connection-string
