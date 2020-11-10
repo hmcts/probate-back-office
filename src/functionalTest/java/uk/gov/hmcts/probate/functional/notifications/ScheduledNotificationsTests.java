@@ -32,7 +32,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
     private static final String EVENT_PARM = "EVENT_PARM";
     private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
-    private static final long ES_DELAY = 30000l;
+    private static final long ES_DELAY = 20000l;
     
     private static final String EVENT_APPLY = "applyforGrantPaperApplicationMan";
     private static final String EVENT_PRINT_CASE = "boPrintCase";
@@ -72,7 +72,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
         log.info("createCaseAndVerifyGrantDelayed.delayedCaseJson:"+delayedCaseJson);
-        String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "1"));
+        String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "2"));
         log.info("createCaseAndVerifyGrantDelayed.documentUrl:"+documentUrl);
         String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
         log.info("createCaseAndVerifyGrantDelayed.emailDocText:"+emailDocText);
@@ -100,7 +100,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String docCase = utils.findCaseAsCaseworker(caseId);
         JsonPath docCaseJson = JsonPath.from(docCase);
         log.info("createCaseAndVerifyGrantAwaitingDocumentation.docCaseJson:"+docCaseJson);
-        String documentAtIndex = utils.replaceAttribute(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL, DOC_INDEX, "0");
+        String documentAtIndex = utils.replaceAttribute(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL, DOC_INDEX, "1");
         log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentAtIndex:"+documentAtIndex);
         String documentUrl = docCaseJson.get(documentAtIndex);
         log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentUrl:"+documentUrl);
