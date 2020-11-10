@@ -63,7 +63,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateJson, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = utils.replaceAttribute(markAsReadyForExaminationUpdateJson, EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
-        log.info("markAsReadyForExaminationUpdateJson:"+markAsReadyForExaminationUpdateJson);
         String markAsReadyForExaminationUpdateResponse = utils.continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
 
         postAndAssertAsScheduler(GRANT_DELAYED, delayedDate, caseId);
@@ -71,11 +70,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String expectedText = utils.getJsonFromFile(GRANT_DELAY_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
-        log.info("createCaseAndVerifyGrantDelayed.delayedCaseJson:"+delayedCaseJson);
         String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "2"));
-        log.info("createCaseAndVerifyGrantDelayed.documentUrl:"+documentUrl);
         String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
-        log.info("createCaseAndVerifyGrantDelayed.emailDocText:"+emailDocText);
         emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
     }
@@ -87,7 +83,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson, EVENT_APPLY);
-        log.info("applyforGrantPaperApplicationManResponse:"+applyforGrantPaperApplicationManResponse);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
@@ -99,13 +94,9 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String expectedText = utils.replaceAttribute(utils.getJsonFromFile(AWAITING_DOCS_RESPONSE), RESPONSE_CASE_NUM_PARM, caseId);
         String docCase = utils.findCaseAsCaseworker(caseId);
         JsonPath docCaseJson = JsonPath.from(docCase);
-        log.info("createCaseAndVerifyGrantAwaitingDocumentation.docCaseJson:"+docCaseJson);
         String documentAtIndex = utils.replaceAttribute(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL, DOC_INDEX, "1");
-        log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentAtIndex:"+documentAtIndex);
         String documentUrl = docCaseJson.get(documentAtIndex);
-        log.info("createCaseAndVerifyGrantAwaitingDocumentation.documentUrl:"+documentUrl);
         String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
-        log.info("createCaseAndVerifyGrantAwaitingDocumentation.emailDocText:"+emailDocText);
         emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
 
