@@ -1,11 +1,14 @@
+// solsPaymentMethods
+const assert = require('assert');
 const caseProgressConfig = require('./caseProgressConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-// grant of probate details part 8 - statement of truth
+// grant of probate details part 10 - fee payment
 module.exports = async function () {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('#solsSOTJobTitle');
-    await I.fillField('#solsSOTJobTitle', caseProgressConfig.page17_JobTitle);
+    await I.waitForElement('#solsPaymentMethods');
+    await I.selectOption('select', caseProgressConfig.page19_FeeAccount);
+    await I.fillField('#solsFeeAccountNumber', caseProgressConfig.page19_FeeAccountNumber)
     await I.waitForNavigationToComplete(commonConfig.continueButton);    
 };

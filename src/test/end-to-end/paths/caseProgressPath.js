@@ -58,6 +58,11 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.caseProgressPage15();   
         await I.caseProgressPage16();   
         await I.caseProgressPage17();   
+        await I.caseProgressPage18();   
+        await I.caseProgressPage19();   
+        await I.caseProgressPage20();   
+        await I.caseProgressPage21();   
+        await I.caseProgressPage22();   
         console.info('01 BO Case Progress E2E complete');
 
     } catch (e) {

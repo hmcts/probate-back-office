@@ -32,5 +32,21 @@ class PuppeteerHelper extends Helper {
         ]);
     }
 
+    replaceAll(string, search, replace) {
+        return string.split(search).join(replace);
+    }
+
+    htmlEquals(html1, html2) {
+        if ((html1 && !html2) || (html2 && !html1)) {
+            return false;
+        }
+        if (!html1 && !html2) {
+            return true;
+        }
+        return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
+            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18') ? true : false;
+        
+    }
+
 }
 module.exports = PuppeteerHelper;

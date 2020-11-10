@@ -6,6 +6,6 @@ module.exports = async function () {
     const I = this;
     await I.waitForElement('form');
     const formHtml = await I.grabAttributeFrom('form', 'outerHTML');
-    assert (formHtml === page2HtmlCheck.htmlCheck);
+    assert (I.htmlEquals(formHtml, page2HtmlCheck.htmlCheck));
     await I.waitForNavigationToComplete(commonConfig.continueButton);      
 }

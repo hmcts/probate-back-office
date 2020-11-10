@@ -28,7 +28,9 @@
     "page5_IHTSelectValue": "1: IHT205",
     "page5_IHTGross": "200000",
     "page5_IHTNet": "150000",
-    "page17_JobTitle": "Solicitor"
+    "page17_JobTitle": "Solicitor",
+    "page19_FeeAccount": "1: fee account",
+    "page19_FeeAccountNumber": "001234"
 
 }
 
