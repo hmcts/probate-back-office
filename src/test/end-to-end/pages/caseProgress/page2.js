@@ -1,3 +1,4 @@
+'use strict';
 const page2HtmlCheck = require('./page2-html-check');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const assert = require('assert');

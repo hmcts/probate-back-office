@@ -1,5 +1,5 @@
+'use strict';
 const assert = require('assert');
-
 
 // back to case details after applying
 module.exports = async function () {
@@ -20,6 +20,10 @@ module.exports = async function () {
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 0);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]', 1);
 
+    const caseRef = await I.grabTextFrom('h1.heading-h1');
+
     // sign out
-    await I.waitForNavigationToComplete('div.proposition-right a');
+    await I.click('div.proposition-right a');
+    await I.waitForNavigationToComplete();
+    return caseRef.replace('#','');
 }

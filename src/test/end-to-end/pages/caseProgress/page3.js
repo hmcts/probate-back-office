@@ -1,6 +1,3 @@
-const caseProgressConfig = require('./caseProgressConfig');
-const page2HtmlCheck = require('./page2-html-check');
-const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const assert = require('assert');
 
 module.exports = async function () {

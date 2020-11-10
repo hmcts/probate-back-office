@@ -1,3 +1,4 @@
+'use strict';
 const caseProgressConfig = require('./caseProgressConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 

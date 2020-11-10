@@ -62,7 +62,21 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.caseProgressPage19();   
         await I.caseProgressPage20();   
         await I.caseProgressPage21();   
-        await I.caseProgressPage22();   
+        const caseRef = await I.caseProgressPage22();   
+        await I.authenticateWithIdamIfAvailable(false);
+        await I.caseProgressPage23(caseRef);   
+        await I.caseProgressPage24();   
+        await I.caseProgressPage25();   
+        await I.caseProgressPage26();   
+        await I.caseProgressPage27();   
+        await I.caseProgressPage28();   
+        await I.caseProgressPage29();   
+        await I.caseProgressPage30();   
+        await I.caseProgressPage31(caseRef);   
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true); 
+        await I.caseProgressPage32();   
+
         console.info('01 BO Case Progress E2E complete');
 
     } catch (e) {

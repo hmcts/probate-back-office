@@ -1,5 +1,4 @@
-// confirmation-body
-const assert = require('assert');
+'use strict';
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 // grant of probate details part 12 - final confirmation

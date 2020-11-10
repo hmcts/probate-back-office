@@ -1,3 +1,4 @@
+'use strict';
 const page13HtmlCheck = require('./page13-html-check');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const assert = require('assert');

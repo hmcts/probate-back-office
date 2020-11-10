@@ -1,5 +1,5 @@
+'use strict';
 const assert = require('assert');
-
 
 // grant of probate details part 5
 module.exports = async function () {
@@ -21,6 +21,8 @@ module.exports = async function () {
 
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', 3);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 1);
+    
 
-    await I.waitForNavigationToComplete('p.govuk-body-s a');
+    await I.click('p.govuk-body-s a');
+    await I.waitForNavigationToComplete();
 }
