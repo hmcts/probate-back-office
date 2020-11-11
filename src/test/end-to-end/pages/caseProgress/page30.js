@@ -7,4 +7,6 @@ module.exports = async function () {
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails    
     await I.waitForElement({css: 'select option[value="1: Object"]'});
     await I.click('div.proposition-right a');
+    await I.waitForNavigationToComplete();   
+
 };

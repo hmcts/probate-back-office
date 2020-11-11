@@ -32,8 +32,9 @@ class PuppeteerHelper extends Helper {
     }
 
     async navigateToPage(url) {
-        const page = this.helpers[helperName].page;
-        await page.goto(url);
+        // const page = this.helpers[helperName].page;
+        // await page.goto(url);
+        await this.amOnPage(url);
         return await this.waitForNavigationToComplete();
     }
 

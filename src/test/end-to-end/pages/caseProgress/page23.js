@@ -22,6 +22,7 @@ module.exports = async function (caseRef) {
     await I.waitForElement({css: locator});
     await I.click({css: locator});
     */
-    await I.navigateToPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);
+    await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);
+    await I.waitForNavigationToComplete();
 
 };

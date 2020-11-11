@@ -63,7 +63,7 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.caseProgressPage20();   
         await I.caseProgressPage21();   
         const caseRef = await I.caseProgressPage22();   
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressPage23(caseRef);   
         await I.caseProgressPage24();   
         await I.caseProgressPage25();   
@@ -72,9 +72,9 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.caseProgressPage28();   
         await I.caseProgressPage29();   
         await I.caseProgressPage30();   
-        await I.caseProgressPage31(caseRef);   
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true); 
+        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.caseProgressPage31(caseRef);   
         await I.caseProgressPage32();   
 
         console.info('01 BO Case Progress E2E complete');

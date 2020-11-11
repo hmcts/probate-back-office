@@ -2,13 +2,13 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser) {
+module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     const I = this;
-    // await I.navigateToPage('/');
-    // await I.waitForNavigationToComplete();
-    await I.amOnPage('/');
-    await I.waitForNavigationToComplete();
+    if (!isAlreadyAtSignOnPage) {
+        await I.amOnPage('/');
+        await I.waitForNavigationToComplete();    
+    }
 
     const textToWaitFor = useProfessionalUser ? 'Sign in or create an account' : 'Sign in';
     await I.waitForText(textToWaitFor);
