@@ -46,9 +46,9 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.caseProgressStopEscalateIssuePage26();   
         await I.caseProgressStopEscalateIssuePage27();   
         await I.caseProgressStopEscalateIssuePage28();   
-        await I.caseProgressStopEscalateIssuePage29();   
-        
+        await I.caseProgressStopEscalateIssuePage29();           
         await I.caseProgressStopEscalateIssuePage30();   
+        
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true); 
         await I.caseProgressStopEscalateIssuePage31(caseRef);   

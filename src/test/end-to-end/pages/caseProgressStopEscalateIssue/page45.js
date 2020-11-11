@@ -23,6 +23,7 @@ module.exports = async function () {
     const caseRef = await I.grabTextFrom('h1.heading-h1');
 
     // sign out
-    await I.clickLink({css: '#sign-out'});
+    await I.click({css: '#sign-out'});
+    await I.waitForNavigationToComplete();
     return caseRef.replace('#','');
 }
