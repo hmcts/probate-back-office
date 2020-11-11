@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
     private static final long serialVersionUID = 1L;
-    private static final String LOCALDATETIME_ISO8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private static final String LOCALDATETIME_ISO8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     public LocalDateTimeSerializer() {
         super(LocalDateTime.class);
