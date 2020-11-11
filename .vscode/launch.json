@@ -41,10 +41,22 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end caseProgressPath",
+            "name": "Mocha test end-end caseProgressStopEscalateIssue",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-caseProgress",
+                "test-e2e-caseProgressStopEscalateIssue",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStandard",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStandard",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

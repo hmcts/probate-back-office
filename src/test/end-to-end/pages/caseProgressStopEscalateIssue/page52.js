@@ -16,13 +16,13 @@ module.exports = async function () {
 
     await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);
 
-    await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', 7);
+    await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', 8);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 0);
-    await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]', 1);
+    await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]', 0);
 
     const caseRef = await I.grabTextFrom('h1.heading-h1');
 
     // sign out
-    await I.clickLink('div.proposition-right a');
+    await I.clickLink({css: '#sign-out'});
     return caseRef.replace('#','');
 }
