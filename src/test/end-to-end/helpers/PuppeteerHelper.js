@@ -45,41 +45,6 @@ class PuppeteerHelper extends Helper {
         return string.split(search).join(replace);
     }
 
-    /**
-     * Converts 1 based month to 3 char text field - e.g. Sep, Oct etc
-     * @param {number} month 
-     */
-    convertMonthToText(month) {
-        switch (month) {
-            case 1:
-                return 'Jan';
-            case 2:
-                return 'Feb';
-            case 3:
-                return 'Mar';
-            case 4:
-                return 'Apr';
-            case 5:
-                return 'May';
-            case 6:
-                return 'Jun';
-            case 7:
-                return 'Jul';
-            case 8:
-                return 'Aug';
-            case 9:
-                return 'Sep';
-            case 10:
-                return 'Oct';
-            case 11:
-                return 'Nov';
-            case 12:
-                return 'Dec';
-        }
-        return null;
-    }
-
-
     htmlEquals(html1, html2) {
         if ((html1 && !html2) || (html2 && !html1)) {
             return false;
@@ -89,6 +54,31 @@ class PuppeteerHelper extends Helper {
         }
         return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
             this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18') ? true : false;
+    }
+
+    async performAsyncActionForElements(locator, actionFunc) {
+        const elements = await this.helpers['Puppeteer']._locate(locator);
+        if (!elements || elements.length === 0) {
+            return;
+        }
+        for (let i = 0; i < elements.length; i++) {
+            await actionFunc(el[i]);
+        }
+    }
+
+    isArray(obj){
+        return !!obj && obj.constructor === Array;
+    }
+
+    async getNumElements(locator) {
+        const elements = await this.helpers['Puppeteer']._locate(locator);
+        if (!elements) {
+            return 0;
+        }
+        if (!isArray(elements)) {
+            return 1;
+        }
+        return elements.length;
     }
 }
 module.exports = PuppeteerHelper;

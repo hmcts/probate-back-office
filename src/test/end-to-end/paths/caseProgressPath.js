@@ -88,8 +88,29 @@ Scenario('01 BO Case Progress E2E', async function (I) {
         await I.authenticateWithIdamIfAvailable(true, true); 
         await I.caseProgressPage37(caseRef);   
         await I.caseProgressPage38();   
-        // log back in as case worker
+        // log back in as case worker and set to Find Matches (Issue grant)
         await I.authenticateWithIdamIfAvailable(false, true);
+        await I.caseProgressPage39(caseRef);   
+        await I.caseProgressPage40();   
+        await I.caseProgressPage41();   
+        await I.caseProgressPage42();   
+        await I.caseProgressPage43();   
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.caseProgressPage44(caseRef);   
+        await I.caseProgressPage45();   
+        // log back in as case worker and set to Issue grant
+        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.caseProgressPage46(caseRef);   
+        await I.caseProgressPage47();   
+        await I.caseProgressPage48();   
+        await I.caseProgressPage49();   
+        await I.caseProgressPage50();   
+
+        // log back in as solicitor & check all sections completed
+        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.caseProgressPage51(caseRef);   
+        await I.caseProgressPage52();   
 
         console.info('01 BO Case Progress E2E complete');
 

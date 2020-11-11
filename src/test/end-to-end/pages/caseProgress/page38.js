@@ -2,7 +2,7 @@
 const moment = require('moment');
 
 // Solicitor - navigate back to case
-module.exports = async function (caseRef) {
+module.exports = async function () {
     const I = this;
     
     // If this hangs, then case progress tab has not been generated / not been generated correctly and test fails.
@@ -14,6 +14,5 @@ module.exports = async function (caseRef) {
     await I.waitForText(`The case was escalated on ${moment().format("DD MMM yyyy")}.`);
 
     // sign out
-    await I.click('div.proposition-right a');
-    await I.waitForNavigationToComplete();   
+    await I.clickLink('div.proposition-right a');
 };

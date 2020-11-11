@@ -15,6 +15,5 @@ module.exports = async function (caseRef) {
     await I.waitForText(`The case was stopped on ${moment().format("DD MMM yyyy")} for one of two reasons:`);
 
     // sign out
-    await I.click('div.proposition-right a');
-    await I.waitForNavigationToComplete();   
+    await I.clickLink('div.proposition-right a');
 };
