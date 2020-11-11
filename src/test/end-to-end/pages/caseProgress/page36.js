@@ -8,5 +8,4 @@ module.exports = async function () {
     await I.waitForElement({css: 'div.proposition-right a'});
     await I.click('div.proposition-right a');
     await I.waitForNavigationToComplete();   
-
 };

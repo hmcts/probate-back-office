@@ -10,7 +10,7 @@ public class EscalatedTaskListRenderer extends NoTaskListRenderer {
 
     public String renderBody(CaseDetails details) {
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
         LocalDate escalatedDate = details.getData().getEscalatedDate();
 
         return ParagraphRenderer.renderByReplace(CaseEscalatedToRegistrarHtmlTemplate.baseTemplate
