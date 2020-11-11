@@ -14,7 +14,7 @@ module.exports = async function (caseRef) {
 
     // Check date format
 
-    await I.waitForText(`The case was stopped on ${moment().format("DD MMM yyyy")} for one of two reasons:`, 2, {css: '#wb-case-state option'});
+    await I.waitForText(`The case was stopped on ${moment().format("DD MMM yyyy")} for one of two reasons:`);
 
     // await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);
     await I.waitForNavigationToComplete();

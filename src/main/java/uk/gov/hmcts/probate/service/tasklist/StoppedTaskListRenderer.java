@@ -12,7 +12,7 @@ public class StoppedTaskListRenderer extends NoTaskListRenderer {
 
     public String renderBody(CaseDetails details) {
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM ddyyyy");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
         LocalDate stoppedDate = details.getData().getGrantStoppedDate();
 
         return ParagraphRenderer.renderByReplace(CaseStoppedHtmlTemplate.baseTemplate)
