@@ -39,7 +39,7 @@ import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/caveat", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/caveat", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 public class CaveatController {
 
@@ -108,7 +108,7 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> validate(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
@@ -125,7 +125,7 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> getNextSteps(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,

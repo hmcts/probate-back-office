@@ -481,7 +481,7 @@ public class DocumentControllerTest {
 
         mockMvc.perform(post("/document/generate-grant")
                 .content(personalPayload)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
                         .value("There is no email address for this applicant. "
@@ -499,7 +499,7 @@ public class DocumentControllerTest {
 
         mockMvc.perform(post("/document/generate-grant")
                 .content(personalPayload)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
@@ -574,46 +574,46 @@ public class DocumentControllerTest {
     public void shouldValidateWithPaperCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
-        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
     public void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
-        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
     public void shouldValidateAssembleLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/assembleLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post("/document/assembleLetter").content(payload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
     public void shouldValidatePreviewLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/previewLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post("/document/previewLetter").content(payload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
     public void shouldValidateGenerateLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/generateLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post("/document/generateLetter").content(payload).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test

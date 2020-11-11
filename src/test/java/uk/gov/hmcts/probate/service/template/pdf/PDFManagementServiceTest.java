@@ -61,7 +61,7 @@ public class PDFManagementServiceTest {
     private EvidenceManagementFileUpload evidenceManagementFileUpload;
     @Mock
     private EvidenceManagementFile evidenceManagementFile;
-    @Mock
+
     private Optional<Link> link;
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -221,6 +221,7 @@ public class PDFManagementServiceTest {
 
         String href = "href";
         when(link.get().toUri().toString()).thenReturn(href);
+
 
         Document response = underTest.generateAndUpload(callbackRequestMock, ADMON_WILL_GRANT);
 
