@@ -76,7 +76,8 @@ public class TaskListUpdateServiceTest {
     public void shouldBuildCaseProgressHtmlCorrectly_CaseCreated() {
         caseDetails.setState(CASE_CREATED.getId());
 
-        String expectedCaseProgressCaseCreatedHtml = "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n" +
+        String expectedCaseProgressCaseCreatedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n" +
+                "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n" +
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
                 "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
                 "\n" +
@@ -141,7 +142,9 @@ public class TaskListUpdateServiceTest {
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n" +
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
                 "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
-                "\n";
+                "\n" +
+                "</div>\n" +
+                "</div>\n";
 
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();
@@ -153,7 +156,8 @@ public class TaskListUpdateServiceTest {
     public void shouldBuildCaseProgressHtmlCorrectly_BOExamining() {
         caseDetails.setState(EXAMINING.getId());
 
-        String expectedCaseProgressCaseCreatedHtml = "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n" +
+        String expectedCaseProgressCaseCreatedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n" +
+                "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n" +
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
                 "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
                 "\n" +
@@ -220,7 +224,9 @@ public class TaskListUpdateServiceTest {
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n" +
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
                 "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
-                "\n";
+                "\n" +
+                "</div>\n" +
+                "</div>\n";
 
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();

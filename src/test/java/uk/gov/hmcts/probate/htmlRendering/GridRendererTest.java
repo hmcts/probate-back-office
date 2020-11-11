@@ -9,9 +9,9 @@ public class GridRendererTest {
     public void shouldRenderGridCorrectly() {
         final String testValue = "<h>A title</h>\n" +
                 "<gridRow><gridCol-two-thirds><p><secText>Some text</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +
-                "<gridRowSeparator>\n" +
+                "<gridRowSeparator/>\n" +
                 "<gridRow><gridCol-two-thirds><p>Some more text</p></gridCol-two-thirds><gridCol-one-third>xyz</gridCol-one-third></gridRow>\n" +
-                "<gridRowSeparator>\n";
+                "<gridRowSeparator/>\n";
 
         final String expectedValue = "<h>A title</h>\n" +
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><secText>Some text</secText></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +

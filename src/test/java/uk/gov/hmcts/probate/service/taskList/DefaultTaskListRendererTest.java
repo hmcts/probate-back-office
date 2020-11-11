@@ -130,8 +130,7 @@ public class DefaultTaskListRendererTest {
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
             "</div>\n" +
-            "</div>\n" +
-            "</grid>";
+            "</div>\n";
 
     @Before
     public void setup() {
