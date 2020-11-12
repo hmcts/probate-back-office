@@ -37,7 +37,7 @@ public class DocumentStoreClient {
 
 
         } catch (IOException e) {
-
+            e.printStackTrace();
             log.error("Failed to get bytes from document store for document {} in case Id {}",
                     document.getDocumentLink().getDocumentBinaryUrl());
             throw new IOException("Failed to get bytes from document store for "

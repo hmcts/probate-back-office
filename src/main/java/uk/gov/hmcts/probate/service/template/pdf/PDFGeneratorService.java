@@ -41,7 +41,7 @@ public class PDFGeneratorService {
         try {
             log.info("Generate pdf from template {}", documentType.getTemplateName());
             postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
-            log.info("Generated from templates with bytes size {}", postResult.length);
+            log.info("Generated from templates with bytes size {}", postResult != null ? postResult.length : "0");
         } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -51,7 +51,7 @@ public class PDFGeneratorService {
     }
 
     public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
-            placeholders) {
+        placeholders) {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
