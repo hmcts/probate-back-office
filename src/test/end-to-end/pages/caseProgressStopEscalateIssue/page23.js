@@ -24,5 +24,4 @@ module.exports = async function (caseRef) {
     */
     await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);
     await I.waitForNavigationToComplete();
-
 };

@@ -7,6 +7,6 @@ module.exports = async function () {
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails    
     const optText = 'Issue grant';
     await I.waitForElement({xpath: `//select/option[text()="${optText}"]`});
-    await I.selectOption('select', optText);
+    await I.selectOption({css: '#next-step'}, optText);
     await I.waitForNavigationToComplete(commonConfig.goButton);  
 };

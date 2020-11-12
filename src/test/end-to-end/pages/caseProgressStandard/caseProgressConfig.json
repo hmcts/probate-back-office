@@ -10,6 +10,7 @@
     "page1_ref": "ABC",
     "page1_solEmail": "bbloggs@test.com",
     "page1_solPhone": "07654321234",
+    "page2_pageHeader": "Apply for probate",
     "page4_deceasedFirstname": "Jane",
     "page4_deceasedSurname": "Smith",
     "page4_deathDay": "11",
@@ -25,9 +26,9 @@
     "page5_deceasedAddrCountry": "UK",
     "page5_deceasedAddrPostcode": "CN12JU",
     "page5_IHTSelectValue": "1: IHT205",
-    "page5_IHTGross": "200000",
-    "page5_IHTNet": "150000",
-    "page17_JobTitle": "Solicitor",
+    "page5_IHTGross": "175000",
+    "page5_IHTNet": "140000",
+    "page17_JobTitle": "Lawyer",
     "page19_FeeAccount": "1: fee account",
     "page19_FeeAccountNumber": "001234"
 

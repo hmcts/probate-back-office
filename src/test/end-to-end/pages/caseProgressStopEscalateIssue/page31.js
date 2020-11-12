@@ -18,8 +18,6 @@ module.exports = async function (caseRef) {
     const optValHtml = await I.grabAttributeFrom(locator, 'innerHTML');
     assert(optValHtml === 'Case stopped');
 
-
     await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);
     await I.waitForNavigationToComplete();
-
 };

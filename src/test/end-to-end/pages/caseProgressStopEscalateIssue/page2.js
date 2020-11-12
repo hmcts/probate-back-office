@@ -5,7 +5,7 @@ const assert = require('assert');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('form');
+    await I.waitForElement({css: 'form.check-your-answers'});
     const formHtml = await I.grabAttributeFrom('form', 'outerHTML');
     assert (I.htmlEquals(formHtml, page2HtmlCheck.htmlCheck));
     await I.waitForNavigationToComplete(commonConfig.continueButton);      

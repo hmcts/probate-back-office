@@ -42,5 +42,6 @@ module.exports = async function () {
     const imgSrcNotStarted = await I.grabAttributeFrom('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 'src');
     assert (imgSrcNotStarted.endsWith('not-started.png'));
 
-    await I.waitForNavigationToComplete('p.govuk-body-s a');
+    await I.click('p.govuk-body-s a');
+    await I.waitForNavigationToComplete();
 }
