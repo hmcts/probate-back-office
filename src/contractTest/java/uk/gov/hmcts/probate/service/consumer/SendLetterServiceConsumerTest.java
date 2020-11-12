@@ -11,7 +11,6 @@ import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,12 +47,13 @@ public class SendLetterServiceConsumerTest {
     ObjectMapper objectMapper;
 
     @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpe_sendLetterService", "localhost", 8486, this);
+    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpe_sendLetterService", "localhost", 8485, this);
 
-    @Pact(provider = "rpe_sendLetterService", consumer = "probate_backOffice")
+    @Pact(provider = "rpeSendLetterService_SendLetterController", consumer = "probate_backOffice")
     public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder) throws IOException, URISyntaxException {
         return builder
-            .uponReceiving("a request to send a letter")
+            .given("A valid send letter request is received")
+            .uponReceiving("a request to send that letter")
             .path("/letters")
             .method("POST")
             .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
