@@ -57,6 +57,21 @@ public enum TaskListState {
 
             // Note - we never actually stop at TL_STATE_AUTHENTICATE_DOCUMENTS!
 
+            case StateConstants.STATE_BO_READY_FOR_EXAMINATION:
+                return TL_STATE_EXAMINE_APPLICATION;
+
+            case StateConstants.STATE_BO_EXAMINING:
+                return TL_STATE_EXAMINE_APPLICATION;
+
+            case StateConstants.STATE_BO_EXAMINING_REISSUE:
+                return TL_STATE_EXAMINE_APPLICATION;
+
+            case StateConstants.STATE_BO_CASE_MATCHING_EXAMINING:
+                return TL_STATE_EXAMINE_APPLICATION;
+
+            case StateConstants.STATE_BO_READY_TO_ISSUE:
+                return TL_STATE_EXAMINE_APPLICATION;
+
             case StateConstants.STATE_BO_CASE_MATCHING_ISSUE_GRANT:
                 return TL_STATE_ISSUE_GRANT;
 
@@ -64,14 +79,7 @@ public enum TaskListState {
                 return TL_STATE_COMPLETE;
 
             default:
-                /* a number of states map to this state e.g.
-                    STATE_BO_READY_FOR_EXAMINATION:
-                    STATE_BO_EXAMINING:
-                    STATE_BO_EXAMINING_REISSUE:
-                    STATE_BO_CASE_MATCHING_EXAMINING:
-                    STATE_BO_READY_TO_ISSUE:
-                 */
-                return TL_STATE_EXAMINE_APPLICATION;
+                return TL_STATE_NOT_APPLICABLE;
         }
     }
 }
