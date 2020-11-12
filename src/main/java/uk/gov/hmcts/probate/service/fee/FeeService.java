@@ -95,6 +95,15 @@ public class FeeService {
             .queryParam("event", event)
             .queryParam("amount_or_volume", amount);
 
+        if (FEE_API_EVENT_TYPE_ISSUE.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+            double amountDouble = Double.valueOf(amount);
+            if (amountDouble > feeServiceConfiguration.getIhtMinAmt()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFee5kKeyword());
+            }
+        }
+
         if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
             if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
                 builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
