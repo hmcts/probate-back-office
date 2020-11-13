@@ -3,25 +3,37 @@ package uk.gov.hmcts.probate.functional.caseprogress;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-public class SolCcdTaskListTransformTests extends IntegrationTestBase  {
+public class SolCcdCaseProgressTests extends IntegrationTestBase  {
 
     private static final String TASKLIST_UPDATE_URL = "/tasklist/update";
     private static final String CASE_PRINTED_URL = "/case/casePrinted";
+    private static final String CASE_DOCS_RECEIVED_URL = "/case/documents-received";
+    private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
 
     @Test
-    public void shouldTransformInitialStateCorrectly() {
-        String response = postJson("caseprogress/test01-newcase-01.json", TASKLIST_UPDATE_URL);
-        assertEquals("", response); // make sure tasklist controller update in db works when called separately
+    @Ignore
+    // TODO - solicitor posts not currently working
+    public void shouldTransformAndStoreInitialStateCorrectly() {
+        String response = postSolJson("caseprogress/01-initialState.json", TASKLIST_UPDATE_URL);
+        assertEquals("", response); // make sure tasklist controller update in db works when called separately, which happens prior to first state change
+    }
 
-        response = postJson("caseprogress/test01-newcase-01.json", CASE_PRINTED_URL);
+    @Test
+    @Ignore
+    // TODO - solicitor posts not currently working
+    public void shouldCreateCaseProgressHtmlForInitialStateCorrectly() {
+        String response = postSolJson("caseprogress/02-preDeceasedDetailsSubmit.json", SOLS_VALIDATE_URL);
         JsonPath jsonPath = JsonPath.from(response);
         String taskList = jsonPath.get("data.taskList");
 
@@ -32,10 +44,7 @@ public class SolCcdTaskListTransformTests extends IntegrationTestBase  {
 
     @Test
     public void shouldTransformCaseCreatedStateCorrectly() {
-        String response = postJson("solicitorPayloadNotificationsAddExecs.json", TASKLIST_UPDATE_URL);
-        assertEquals("", response); // make sure tasklist controller update in db works when called separately
-
-        response = postJson("solicitorPayloadNotificationsAddExecs.json", CASE_PRINTED_URL);
+        String response = postCwJson("caseprogress/03-caseCreated.json", CASE_PRINTED_URL);
         JsonPath jsonPath = JsonPath.from(response);
         String taskList = jsonPath.get("data.taskList");
 
@@ -43,7 +52,21 @@ public class SolCcdTaskListTransformTests extends IntegrationTestBase  {
                 "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<reviewAndSubmitDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>your reference number 1528365719153338 written on a piece of paper</li><li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
                 taskList);
     }
-/*
+
+    @Test
+    @Ignore
+    // TODO - cw state change to BOReadyForExamination doesn't come to back office, we just get docs received notification
+    public void shouldTransformCasePrintedStateCorrectly() {
+        String response = postCwJson("caseprogress/04-casePrinted.json", CASE_DOCS_RECEIVED_URL);
+        JsonPath jsonPath = JsonPath.from(response);
+        String taskList = jsonPath.get("data.taskList");
+
+        assertEquals(
+                "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<reviewAndSubmitDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>your reference number 1528365719153338 written on a piece of paper</li><li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+                taskList);
+    }
+
+    /*
     private void validatePostSuccess(String jsonFileName, String URL) {
         RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -53,7 +76,7 @@ public class SolCcdTaskListTransformTests extends IntegrationTestBase  {
                 .then().assertThat().statusCode(200);
     }
 */
-    private String postJson(String jsonFileName, String path) {
+    private String postCwJson(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -64,4 +87,27 @@ public class SolCcdTaskListTransformTests extends IntegrationTestBase  {
 
         return jsonResponse.getBody().asString();
     }
+
+    private String postSolJson(String jsonFileName, String path) {
+
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getSolicitorHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path)
+                .andReturn();
+
+        return jsonResponse.getBody().asString();
+    }
+
+    public void validatePostRequestSuccessCYAForBeforeSignSOT() {
+        Response response = given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json")).
+                        when().post("/nextsteps/validate");
+
+        TestCase.assertEquals(200, response.getStatusCode());
+    }
+
 }
