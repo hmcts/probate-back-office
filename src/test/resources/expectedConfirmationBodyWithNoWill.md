@@ -22,9 +22,9 @@ Payment summary
 
 **Fee amount** &pound;0.10
 
-**Payment method** Cheque
+**Payment method** fee account
 
-**Payment reference number** Cheque (payable to 'HM Courts & Tribunals Service')
+**Payment reference number** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
@@ -38,7 +38,7 @@ Print a copy of this page for your records.
  
 You now need to send us:
 
-*   fee payment: your Cheque for &pound;0.10 (grant and copies)
+*   fee payment: your fee account for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT207
 *   a photocopy of the signed legal statement and declaration

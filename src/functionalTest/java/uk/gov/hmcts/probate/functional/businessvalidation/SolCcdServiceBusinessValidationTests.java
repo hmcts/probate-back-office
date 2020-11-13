@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -178,8 +179,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessPaperForm() {
-        validatePostSuccess("success.paperForm.json", PAPER_FORM_URL);
+    public void verifySuccessPaperFormYes() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "Yes");
+    }
+
+    @Test
+    public void verifySuccessPaperFormNo() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
     }
 
     @Test
@@ -367,6 +377,18 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
+    private void validatePostSuccessAndCheckValue(String jsonPayload, String URL, String caseDataAttribute, String caseDataValue) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(jsonPayload)
+            .when().post(URL)
+            .thenReturn();
+
+            response.then().assertThat().statusCode(200)
+                .and().body("data."+caseDataAttribute, equalTo(caseDataValue));
+    }
+    
     private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage, Integer statusCode) {
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_CASE_AMEND_URL);
