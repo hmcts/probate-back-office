@@ -53,14 +53,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
         ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
-        String expectedApplicationRecievedText = utils.getJsonFromFile("digitalApplicationRecievedEmailResponse.txt");
-        expectedApplicationRecievedText = expectedApplicationRecievedText.replace("\n", "").replace("\r", "");
-
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
-        assertTrue(response.contains(expectedApplicationRecievedText));
+        assertExpectedContents("digitalApplicationRecievedEmailResponse.txt", "DocumentLink.document_binary_url", responseBody);
     }
 
     @Test
@@ -84,13 +77,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
-        postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json", 
-            "documentReceivedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
-    }
-
-    @Test
     public void verifyPersonalApplicantDocumentsReceivedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", DOCUMENTS_RECEIVED);
     }
@@ -108,6 +94,53 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyPersonalApplicantGrantIssuedShouldReturnOkResponseCode() {
+        validatePostSuccess("personalPayloadNotifications.json", GRANT_ISSUED);
+    }
+
+    @Test
+    public void verifySolicitorGrantRaisedShouldReturnOkResponseCode() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
+            "grantRaisedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
+    }
+
+    @Test
+    public void verifySolicitorGrantRaisedIntestacyShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_RAISED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+        assertExpectedContents("grantRaisedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    @Test
+    public void verifySolicitorGrantRaisedAdmonWillShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_RAISED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
+        assertExpectedContents("grantRaisedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    @Test
+    public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
+        postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
+            "documentReceivedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
+    }
+
+    @Test
+    public void verifySolicitorDocumentsReceivedIntestacyShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+        assertExpectedContents("documentReceivedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    @Test
+    public void verifySolicitorDocumentsReceivedAdmonWillShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
+        assertExpectedContents("documentReceivedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    @Test
     public void verifySolicitorGrantIssuedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
             "grantIssuedSolicitorResponse.txt",
@@ -122,8 +155,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalApplicantGrantIssuedShouldReturnOkResponseCode() {
-        validatePostSuccess("personalPayloadNotifications.json", GRANT_ISSUED);
+    public void verifySolicitorGrantIssuedAdmonWillShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_ISSUED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
+        assertExpectedContents("grantIssuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Test
@@ -132,14 +167,21 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             "grantReissuedSolicitorResponse.txt",
             EMAIL_NOTIFICATION_URL, "sol");
     }
-
+    
     @Test
-    public void verifySolicitorGrantRaisedShouldReturnOkResponseCode() {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
-            "grantRaisedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+    public void verifySolicitorGrantReissuedIntestacyShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_REISSUED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+        assertExpectedContents("grantReissuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
-
+    
+    @Test
+    public void verifySolicitorGrantReissuedAdmonWillShouldReturnOkResponseCode() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_REISSUED,
+            "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
+        assertExpectedContents("grantReissuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+    
     @Test
     public void verifyPersonalApplicantGrantReissuedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", GRANT_REISSUED);
@@ -249,34 +291,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         return document;
     }
 
-    private ResponseBody validatePostSuccess(String jsonFileName, String path) {
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        return response.getBody();
-    }
-
-    private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
-        String request = utils.getJsonFromFile(jsonFileName);
-        request = request.replaceAll(originalAttr, updatedAttr);
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(request)
-            .when().post(path)
-            .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        return response.getBody();
-    }
-
     private void verifyPAEmailNotificationReceived(String document){
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
@@ -320,17 +334,41 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Declaration"));
     }
 
-    private void verifyPALetterInformationRequestRedec(String document) {
-        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("Executor name 1 "));
-        assertTrue(document.contains("1st January 2000"));
-        assertTrue(document.contains("PA stop details"));
-        assertTrue(document.contains("Declaration"));
+    private ResponseBody validatePostSuccess(String jsonFileName, String path) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path)
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
+    private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
+        String request = utils.getJsonFromFile(jsonFileName);
+        request = request.replaceAll(originalAttr, updatedAttr);
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(request)
+            .when().post(path)
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
     }
 
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
                                                         String responseDocumentUrl, String testId) {
         ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
+        assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
+    }
+
+    private void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl, ResponseBody responseBody) {
         String expectedText = utils.getJsonFromFile(expectedResponseFile);
         expectedText = expectedText.replace("\n", "").replace("\r", "");
 
@@ -341,20 +379,4 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
-    private String getProbateDocumentsGeneratedText(String payload, String path, int placeholder) {
-
-        Response jsonResponse = SerenityRest.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(payload))
-                .when().post(path).andReturn();
-
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        String documentUrl = jsonPath.get("data.probateDocumentsGenerated["
-                + placeholder
-                + "].value.DocumentLink.document_binary_url");
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
-        return response;
-    }
 }
