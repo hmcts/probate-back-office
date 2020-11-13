@@ -70,8 +70,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("The executors believe that all the information stated in the legal statement is true. They have authorised \n" +
-                "SolicitorFirmName to sign a statement of truth on their behalf.");
+        validatePostRequestSuccessForLegalStatement("The executors believe that all the information stated in the legal statement is true.");
     }
 
     @Test
