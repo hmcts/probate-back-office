@@ -695,6 +695,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <notes><![CDATA[
    file name: junit-4.12.jar
    ]]></notes>
+        <gav regex="true">^com:maven\junit\junit@.*$</gav>
         <cve>CVE-2020-15250</cve>
     </suppress>
 </suppressions>
