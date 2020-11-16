@@ -587,4 +587,8 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2020-5398</cve>
         <cve>CVE-2020-5421</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: junit-4.12.jar]]></notes>
+        <cve>CVE-2020-15250</cve>
+    </suppress>
 </suppressions>
