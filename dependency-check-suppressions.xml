@@ -556,6 +556,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cpe>cpe:/a:elastic:elasticsearch</cpe>
         <cve>CVE-2020-7019</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
    <suppress>
         <notes><![CDATA[
