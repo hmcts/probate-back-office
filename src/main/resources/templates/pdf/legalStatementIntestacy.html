@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The applicant believes that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
+            <p>The applicant believes that all the information stated in the legal statement is true.</p>
             <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
             <p>I, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
