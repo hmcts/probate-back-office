@@ -1,0 +1,95 @@
+{
+  "event": {
+    "id": "EVENT_PARM",
+    "description": "Probate Application created by FT",
+    "summary": "Probate application"
+  },
+  "ignore_warning": true,
+  "event_token": "TOKEN_PARM",
+  "data": {
+    "applicationID": "603",
+    "paperForm": "No",
+    "applicationSubmittedDate": "2020-01-01",
+    "deceasedDomicileInEngWales": "Yes",
+    "ihtFormCompletedOnline": "Yes",
+    "softStop": "No",
+    "registryLocation": "Birmingham",
+    "applicationType": "Personal",
+    "outsideUKGrantCopies": 0,
+    "extraCopiesOfGrant": 0,
+    "deceasedAnyOtherNames": "Yes",
+    "numberOfExecutors": 1,
+    "willHasCodicils": "Yes",
+    "willNumberOfCodicils": 1,
+    "deceasedForenames": "applyManFN",
+    "numberOfApplicants": 3,
+    "willAccessOriginal": "Yes",
+    "primaryApplicantEmailAddress": "sanjayaat2@mailinator.com",
+    "primaryApplicantIsApplying": "Yes",
+    "willExists": "Yes",
+    "primaryApplicantForenames": "Sanjay",
+    "primaryApplicantSurname": "AAT",
+    "ihtReferenceNumber": "12345678F12345",
+    "primaryApplicantPhoneNumber": "+643514579562",
+    "willLatestCodicilHasDate": "Yes",
+    "deceasedSurname": "applyManSN",
+    "deceasedDateOfDeath": "2020-01-31",
+    "willDate": "1984-02-27",
+    "willLatestCodicilDate": "1987-10-06",
+    "deceasedDateOfBirth": "1900-01-31",
+    "executorsNotApplying": [],
+    "executorsApplying": [],
+    "totalFee": "0",
+    "ihtGrossValue": "222200",
+    "ihtNetValue": "22200",
+    "deceasedAliasNameList": [
+      {
+        "value": {
+          "Forenames": "Giacomo",
+          "LastName": "Terrell"
+        }
+      },
+      {
+        "value": {
+          "Forenames": "Tom",
+          "LastName": "Thumb"
+        }
+      },
+      {
+        "value": {
+          "Forenames": "MS",
+          "LastName": "Dhoni"
+        }
+      }
+    ],
+    "declaration": {
+      "confirm": "We confirm that we will administer the estate of Suki Hammond, according to law. We will:",
+      "confirmItem1": "collect the whole estate",
+      "confirmItem2": "keep full details (an inventory) of the estate",
+      "confirmItem3": "keep a full account of how the estate has been administered",
+      "requests": "If the probate registry (court) asks us to do so, we will:",
+      "requestsItem1": "provide the full details of the estate and how it has been administered",
+      "requestsItem2": "return the grant of probate to the court",
+      "understand": "We understand that:",
+      "understandItem1": "our application will be rejected if we do not answer any questions about the information we have given",
+      "understandItem2": "criminal proceedings for fraud may be brought against us if we are found to have been deliberately untruthful or dishonest",
+      "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful."
+    },
+    "legalStatement": {
+      "applicant": "We, Amal Mason of ssssssssssssssssssssssssssssssssssssssss, Eric Lloyd4 of ddddddddddddddddddddddddddddd and Devin Wade5 of xxxxxxxxxxxxxxxxxxxxxxxxxxx, make the following statement:",
+      "deceased": "Suki Hammond was born on 6 October 1902 and died on 22 December 1983, domiciled in England and Wales.",
+      "deceasedOtherNames": "They were also known as Giacomo Terrell.",
+      "deceasedEstateValue": "The gross value for the estate amounts to &pound;2222 and the net value for the estate amounts to &pound;222.",
+      "deceasedEstateLand": "To the best of our knowledge, information and belief, there was no land vested in Suki Hammond which was settled previously to the death (and not by the will) of Suki Hammond and which remained settled land notwithstanding such death.",
+      "executorsNotApplying": [],
+      "executorsApplying": [],
+      "intro": "This statement is based on the information you&rsquo;ve given in your application. It will be stored as a public record."
+    },
+    "deceasedAddress": {
+      "AddressLine1": "dddddddddddxxxxxxxxxxxxxxxxxxxx"
+    },
+    "primaryApplicantAddress": {
+      "AddressLine1": "ssssssssssssssssssssssssssssssssssssssss"
+    }
+  }
+}
