@@ -691,11 +691,4 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^com\.github\.spullara\.mustache\.java:compiler:.*$</gav>
         <cve>CVE-2020-10518</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: junit-4.12.jar
-   ]]></notes>
-        <gav regex="true">^com:maven\junit\junit@.*$</gav>
-        <cve>CVE-2020-15250</cve>
-    </suppress>
 </suppressions>
