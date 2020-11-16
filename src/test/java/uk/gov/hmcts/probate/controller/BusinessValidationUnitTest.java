@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -32,11 +33,13 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +60,8 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationUnitTest {
 
+    @Mock
+    private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     @Mock
     private EventValidationService eventValidationServiceMock;
     @Mock
@@ -122,7 +127,8 @@ public class BusinessValidationUnitTest {
                 stateChangeServiceMock,
                 pdfManagementServiceMock,
                 redeclarationSoTValidationRuleMock,
-                caseStoppedServiceMock);
+                caseStoppedServiceMock,
+                emailAddressNotifyApplicantValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -443,6 +449,7 @@ public class BusinessValidationUnitTest {
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER))).thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
@@ -461,6 +468,7 @@ public class BusinessValidationUnitTest {
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER))).thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
@@ -500,6 +508,25 @@ public class BusinessValidationUnitTest {
         verify(notificationService, times(0)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormForPersonalWithoutEmail() throws NotificationClientException {
+        String paperFormValue = "YesOrNo";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Arrays.asList(FieldErrorResponse.builder().build()));
+        Document documentMock = Mockito.mock(Document.class);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+        verify(notificationService, times(0)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
     }
 
 }
