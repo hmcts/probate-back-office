@@ -2,7 +2,7 @@
   "case_details": {
     "id": 1528365719153338,
     "jurisdiction": "PROBATE",
-    "state": "CasePrinted",
+    "state": "SolProbateCreated",
     "case_type_id": "GrantOfRepresentation",
     "created_date": [
       2018,
@@ -70,6 +70,7 @@
         "AddressLine3": ""
       },
       "solsSolicitorEmail": "probBackosol@gmail.com",
+      "applicationGrounds": "application grounds",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "deceasedSurname": "Deceased Last Name",
@@ -197,8 +198,19 @@
         }
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
+      "boStopDetails": "SOLS stop details",
       "deceasedSurname": "PUBLIC",
       "solsLegalStatementDocument": "PUBLIC",
       "extraCopiesOfGrant": "PUBLIC",
@@ -271,6 +283,7 @@
         }
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
@@ -358,6 +371,7 @@
         "AddressLine3": ""
       },
       "solsSolicitorEmail": "probBackosol@gmail.com",
+      "applicationGrounds": "Grounds for application",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "deceasedSurname": "Deceased Last Name",
@@ -426,6 +440,7 @@
         "classification": "PUBLIC"
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
@@ -493,6 +508,7 @@
         "classification": "PUBLIC"
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
