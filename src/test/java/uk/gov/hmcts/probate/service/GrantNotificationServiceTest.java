@@ -92,7 +92,7 @@ public class GrantNotificationServiceTest {
             .primaryApplicantSurname("Surname2")
             .applicationType(ApplicationType.PERSONAL)
             .build();
-        caseData2.getProbateDocumentsGenerated().add(new CollectionMember("100", buildDocument()));
+        caseData2.getProbateNotificationsGenerated().add(new CollectionMember("100", buildDocument()));
 
         caseData3 = CaseData.builder()
             .registryLocation("Registry3")

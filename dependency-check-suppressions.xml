@@ -556,6 +556,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cpe>cpe:/a:elastic:elasticsearch</cpe>
         <cve>CVE-2020-7019</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
    <suppress>
         <notes><![CDATA[
@@ -585,5 +586,9 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
         <cve>CVE-2020-5398</cve>
         <cve>CVE-2020-5421</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: junit-4.12.jar]]></notes>
+        <cve>CVE-2020-15250</cve>
     </suppress>
 </suppressions>
