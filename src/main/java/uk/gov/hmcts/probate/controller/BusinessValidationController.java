@@ -314,10 +314,16 @@ public class BusinessValidationController {
         String primaryApplicantEmailAddress = data.getPrimaryApplicantEmailAddress() == null ? "" : data.getPrimaryApplicantEmailAddress();
 
         CCDData dataForEmailAddress = CCDData.builder()
-            .applicationType(data.getApplicationType().toString())
-            .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
-            .build();
-        List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
-        return ApplicationType.PERSONAL.equals(data.getApplicationType()) && emailErrors.isEmpty();
+                .applicationType(data.getApplicationType().toString())
+                .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
+                .build();
+        List<FieldErrorResponse> emailErrors;
+
+        if(ApplicationType.PERSONAL.equals(data.getApplicationType())){
+            emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
+            return emailErrors.isEmpty();
+        }
+
+        return false;
     }
 }
