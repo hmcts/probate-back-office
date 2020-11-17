@@ -311,8 +311,11 @@ public class BusinessValidationController {
     }
 
     private boolean personalApplicationHasPrimaryApplicantEmailAddress(CaseData data) {
+        String primaryApplicantEmailAddress = data.getPrimaryApplicantEmailAddress() == null ? "" : data.getPrimaryApplicantEmailAddress();
+
         CCDData dataForEmailAddress = CCDData.builder()
-            .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())
+            .applicationType(ApplicationType.PERSONAL.toString())
+            .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         return ApplicationType.PERSONAL.equals(data.getApplicationType()) && emailErrors.isEmpty();

@@ -193,6 +193,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessPaperFormNoEmail() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"primaryApplicantEmailAddress\": \"fname@fttest.com\",", "\"primaryApplicantEmailAddress\": null,");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+    }
+
+    @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
     }
