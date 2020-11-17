@@ -241,6 +241,7 @@ dependencies {
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
+  compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
   
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
