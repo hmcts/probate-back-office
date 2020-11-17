@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
@@ -191,6 +193,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
     }
+
+    @Test
+    public void verifySuccessPaperFormNoEmail() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"primaryApplicantEmailAddress\": \"fname@fttest.com\",", "\"primaryApplicantEmailAddress\": null,");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+    }
+
+//    @Test
+//    public void verifySuccessPaperFormNo() {
+//        String payload = utils.getJsonFromFile("success.paperForm.json");
+//        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+//        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+//    }
 
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {

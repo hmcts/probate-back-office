@@ -44,13 +44,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorPaperApplicationReceivedByCaseworkerNotificationNOTSent() {
-        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedSolicitorFromCaseworkerPayload.json", PAPER_FORM);
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
-        assertNull(documentUrl);
-}
-    @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
         ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
         assertExpectedContents("digitalApplicationRecievedEmailResponse.txt", "DocumentLink.document_binary_url", responseBody);
