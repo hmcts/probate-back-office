@@ -1,188 +1,536 @@
-version: '2.1'
+---
+version: '3'
 
 services:
-  back-office:
-    build:
-      context: .
-    #image: back-office
-    image: hmctspublic.azurecr.io/probate/back-office
-    container_name: back-office
+  ccd-user-profile-api:
+    image: "${CCD_USER_PROFILE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/user-profile-api:${CCD_USER_PROFILE_API_TAG:-latest}"
     environment:
-      - SERVER_PORT=4104
-      - S2S_AUTH_URL=http://service-auth-provider-api:8080/
-      - AUTHORISED_SERVICES=TEST
-      - PDF_SERVICE_URL=http://pdf-service-api:5500
-      - PDF_SERVICE_PDFAPI=/api/v1/pdf-generator/html
-      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-      - APPINSIGHTS_INSTRUMENTATIONKEY=false
-      # these environment variables are used by java-logging library
-      - REFORM_SERVICE_NAME=back-office
-      - REFORM_TEAM=probate
-      - REFORM_ENVIRONMENT
-      - ROOT_APPENDER
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - SEND_LETTER_SERIVCE_BASEURL=https://rpe-send-letter-service-aat.service.core-compute-aat.internal/
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      USER_PROFILE_DB_HOST: shared-database
+      USER_PROFILE_DB_PORT: 5432
+      USER_PROFILE_DB_USERNAME: "${DB_USERNAME}"
+      USER_PROFILE_DB_PASSWORD: "${DB_PASSWORD}"
+      USER_PROFILE_DB_USE_SSL: "false"
+      USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_definition,ccd_admin
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      REFORM_SERVICE_NAME: ccd-user-profile-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
     ports:
-     - 4104:4104
-     - 5005:5005
+      - 4453:4453
     depends_on:
-     - service-auth-provider-api
-     - pdf-service-api
+      - shared-database
+      - service-auth-provider-api
+
+  ccd-definition-store-api:
+    image: "${CCD_DEFINITION_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/definition-store-api:${CCD_DEFINITION_STORE_API_TAG:-latest}"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      DEFINITION_STORE_DB_HOST: shared-database
+      DEFINITION_STORE_DB_PORT: 5432
+      DEFINITION_STORE_DB_USERNAME: "${DB_USERNAME}"
+      DEFINITION_STORE_DB_PASSWORD: "${DB_PASSWORD}"
+      DEFINITION_STORE_DB_USE_SSL: "false"
+      DEFINITION_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
+      DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,probate_backend
+      USER_PROFILE_HOST: http://ccd-user-profile-api:4453
+      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      REFORM_SERVICE_NAME: ccd-definition-store-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      ELASTIC_SEARCH_ENABLED: "${ES_ENABLED_DOCKER}"
+      ELASTIC_SEARCH_HOST: "ccd-elasticsearch"
+      ELASTIC_SEARCH_FAIL_ON_IMPORT: "true"
+    ports:
+      - 4451:4451
+    depends_on:
+      - shared-database
+      - ccd-user-profile-api
+      - sidam-api
+      - service-auth-provider-api
+
+  ccd-data-store-api:
+    image: "${CCD_DATA_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/data-store-api:${CCD_DATA_STORE_API_TAG:-latest}"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      DATA_STORE_DB_HOST: shared-database
+      DATA_STORE_DB_PORT: 5432
+      DATA_STORE_DB_USERNAME: "${DB_USERNAME}"
+      DATA_STORE_DB_PASSWORD: "${DB_PASSWORD}"
+      DATA_STORE_DB_USE_SSL: "false"
+      DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
+      DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
+      CCD_DM_DOMAIN: http://dm-store:8080
+      DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
+      USER_PROFILE_HOST: http://ccd-user-profile-api:4453
+      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      REFORM_SERVICE_NAME: ccd-data-store-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      ELASTIC_SEARCH_ENABLED: "${ES_ENABLED_DOCKER}"
+      ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
+      ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
+      DATA_STORE_DEFAULT_LOG_LEVEL: INFO
+    ports:
+      - 4452:4452
+      - 5005:5005
+    depends_on:
+      - shared-database
+      - ccd-user-profile-api
+      - ccd-definition-store-api
+      - sidam-api
+      - service-auth-provider-api
+
+  ccd-case-management-web:
+    image: hmctspublic.azurecr.io/ccd/case-management-web:latest
+    environment:
+      IDAM_LOGIN_URL: http://localhost:3501/login
+      CCD_GATEWAY_BASE_URL: http://localhost:3453
+      CCD_ACTIVITY_BASE_URL:
+      DM_GATEWAY_BASE_URL: https://api-gateway.dev.dm.reform.hmcts.net
+      OAUTH2_CLIENT_ID: ccd_gateway
+      DM_URL: http://localhost:3453/documents
+      DM_URL_REMOTE: http://dm-store:8080/documents
+    ports:
+      - 3451:3451
+    depends_on:
+      - ccd-api-gateway
+
+  ccd-api-gateway:
+    image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
+    environment:
+      IDAM_BASE_URL: http://sidam-api:5000
+      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      IDAM_SERVICE_KEY: AAAAAAAAAAAAAAAA
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: http://sidam-api:5000/session/:token
+      IDAM_OAUTH2_CLIENT_ID: ccd_gateway
+      IDAM_OAUTH2_CLIENT_SECRET: ccd_gateway_secret
+      IDAM_OAUTH2_TOKEN_ENDPOINT: http://sidam-api:5000/oauth2/token
+      PROXY_DOCUMENT_MANAGEMENT: http://dm-store:8080
+      ADDRESS_LOOKUP_TOKEN:
+      PROXY_AGGREGATED: http://ccd-data-store-api:4452
+      PROXY_DATA: http://ccd-data-store-api:4452
+      PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api:4451
+      PROXY_DEFINITION_DATA: http://ccd-definition-store-api:4451/api/data
+      PROXY_DEFINITION_DISPLAY: http://ccd-definition-store-api:4451/api/display
+      PROXY_PAYMENTS: http://payments-api:8080
+      APPINSIGHTS_INSTRUMENTATIONKEY: 4
+    ports:
+      - 3453:3453
+    depends_on:
+      - ccd-user-profile-api
+      - ccd-definition-store-api
+      - ccd-data-store-api
+      - dm-store
 
   service-auth-provider-api:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
-    container_name: service-auth-provider-api
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 10
     environment:
-    - SERVER_PORT=8080
-    - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
-    - JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-    - MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
-    - MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
-    - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
-    - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
-    - MICROSERVICE_KEYS_CCD_PS=AAAAAAAAAAAAAAAA
-    - TESTING_SUPPORT_ENABLED=true
-    - MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
-    - MICROSERVICE_KEYS_PROBATE_FRONTEND=AAAAAAAAAAAAAAAA
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      SERVER_PORT: 8080
+      JWT_KEY: wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      MICROSERVICEKEYS_CCD_DATA: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_CCD_GW: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_CCD_DEFINITION: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_CCD_ADMIN: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_FPL_CASE_SERVICE: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_EM_GW: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_BULK_SCAN_PROCESSOR: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_BULK_SCAN_PROCESSOR_TESTS: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_BULK_SCAN_ORCHESTRATOR: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_PROBATE_BACKEND: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_PROBATE_FRONTEND: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
+      MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
+      TESTING_SUPPORT_ENABLED: "true"
+      MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
     ports:
-    - 4502:8080
+      - 4502:8080
+
+  shared-db:
+    image: hmctsprivate.azurecr.io/idam/shared-db:latest
+    ports:
+      - 5051:5432
+
+  sidam-api:
+    image: "hmctspublic.azurecr.io/idam/api:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      TESTING_SUPPORT_ENABLED: "true"
+      IDAMHEALTHCHECK_AM_ENABLED: "false"
+      IDAMHEALTHCHECK_IDM_ENABLED: "false"
+      STRATEGIC_ADMIN_URL: http://localhost:8082
+      STRATEGIC_WEBPUBLIC_URL: http://localhost:3501
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
+      SPRING_DATASOURCE_USERNAME: openidm
+      SPRING_DATASOURCE_PASSWORD: openidm
+      SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
+      SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
+      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://localhost:3501/login
+      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://localhost:3501/login
+      IDAM_SPI_FORGEROCK_AM_ROOT: http://fr-am:8080/openam
+      IDAM_SPI_FORGEROCK_AM_TOPLEVELHOST: fr-am
+      IDAM_SPI_FORGEROCK_AM_USERNAME: amadmin
+      IDAM_SPI_FORGEROCK_AM_PASSWORD: Pa55word11
+      IDAM_SPI_FORGEROCK_AM_JWKSURIFOROAUTH2CLIENTS: http://fr-am:8080/openam/oauth2/hmcts/connect/jwk_uri
+      IDAM_SPI_FORGEROCK_IDM_ROOT: http://fr-idm:18080/openidm
+      IDAM_SPI_FORGEROCK_IDM_USERNAME: openidm-admin
+      IDAM_SPI_FORGEROCK_IDM_PASSWORD: openidm-admin
+      APPSETTING_NODE_PATH: es/
+    ports:
+      - 5000:5000
+    depends_on:
+      - fr-am
+      - fr-idm
+      - shared-db
+
+  fr-am:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 2889:8080
+      - 1389:1389
+    depends_on:
+      - shared-db
+
+  fr-idm:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 18080:18080
+      - 9010:9010
+    depends_on:
+      - fr-am
+      - shared-db
+
+  shared-database:
+    image: postgres
+    volumes:
+      - ./compose/database:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment
+      DB_USERNAME:
+      DB_PASSWORD:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5050:5432
+
+  dm-store:
+    image: hmctspublic.azurecr.io/dm/store:latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/evidence
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=dev
+      - STORAGEACCOUNT_PRIMARY_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azure-storage-emulator-azurite:10000/devstoreaccount1
+      - STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME=hmctstestcontainer
+      - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
+      - ENABLE_TTL=false
+      - ENABLE_METADATA_MIGRATION=false
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+      - make-container-call
+    ports:
+      - 5006:8080
+
+  azure-storage-emulator-azurite:
+    image: arafato/azurite
+    ports:
+      - 10000:10000
+    environment:
+      executable: "blob"
+    volumes:
+      - ccd-docker-azure-blob-data:/opt/azurite/folder
+
+  make-container-call:
+    image: byrnedo/alpine-curl
+    command: --retry 10 --retry-connrefused -XPUT --verbose http://azure-storage-emulator-azurite:10000/devstoreaccount1/hmctstestcontainer?restype=container
+    links:
+      - azure-storage-emulator-azurite
+    depends_on:
+      - azure-storage-emulator-azurite
 
   pdf-service-api:
     image: hmctspublic.azurecr.io/cmc/pdf-service:latest
-    container_name: pdf-service-api
     environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m -Djavx.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
+      - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY=fake-key
+      - S2S_URL=http://service-auth-provider-api:8080
       - ROOT_APPENDER
       - JSON_CONSOLE_PRETTY_PRINT
       - ROOT_LOGGING_LEVEL
-      - REFORM_SERVICE_NAME
+      - REFORM_SERVICE_NAME=pdf-service
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
-    #volumes:
-    #  - ./build/install/pdf-service:/opt/app/
     ports:
       - 5500:5500
 
-  idam-api:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
-    container_name: idam-api
-    command: --wait-for-database 60
-    environment:
-      - IDAM_SUPERUSER_EMAIL=cmc-int-test@cmc.reform.hmcts.net
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
-      - SPRING_MAIL_HOST=smtp-server
-      - IDAM_TESTING_SUPPORT_ENABLED=true
-      - NOTIFY_API_KEY=${GOV_NOTIFY_API_KEY}
-      - NOTIFY_CMC_ACTIVATE_USER_TEMPLATE=76aa8695-64e8-4afd-ae13-bc8385302b1f
-      - IDAM_SECRET=cmc_it_test_secret_key
-      - NOTIFY=false
-      - NOTIFY_CMC_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_DIVORCE_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_SSCS_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_RESET_PASSWORD_TEMPLATE=fake
-      - NOTIFY_PROBATE_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_PROBATE_BACKEND_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_DIVORCE_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_SSCS_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_CCD_ACTIVATE_USER_TEMPLATE=fake
-      - http_proxy
-      - https_proxy
-      - no_proxy
-      # these environment variables are used by java-logging library
-      - ROOT_APPENDER=JSON_CONSOLE
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=idam-api
-      - REFORM_TEAM=cc
-      - REFORM_ENVIRONMENT=docker
-    ports:
-      - 4501:8080
-    links:
-      - smtp-server
-      - idam-database
-    depends_on:
-      - idam-database
-      - smtp-server
-
-  idam-database:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
-    container_name: idam-database
-    ports:
-      - 5430:5432
-
-  smtp-server:
-    container_name: smtp-server
-    image: mailhog/mailhog
-
-  document-management-store:
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store:latest
-    command: --wait-for-database 30
-    environment:
-      - SERVER_PORT=8080
-      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend
-      - IDAM_SUPERUSER_EMAIL
-      - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
-      - GOV_NOTIFY_API_KEY
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://document-management-store-database:5432/evidence
-      - SPRING_DATASOURCE_USERNAME=evidence
-      - SPRING_DATASOURCE_PASSWORD=evidence
-      - SPRING_PROFILES_ACTIVE=dev
-      - IDAM_TESTING_SUPPORT_ENABLED=true
-      - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
-      - IDAM_USER_BASE_URI=http://idam-api:8080
-      - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
-      - http_proxy=
-      - https_proxy=
-      - no_proxy=
-       # these environment variables are used by java-logging library
-      - ROOT_APPENDER=JSON_CONSOLE
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=document-management-store-app
-      - REFORM_TEAM=cc
-      - REFORM_ENVIRONMENT=docker
-#      healthcheck env vars
-      - PACKAGES_ENVIRONMENT=docker
-      - PACKAGES_PROJECT=evidence
-      - PACKAGES_NAME=document-management-store-app
-      - PACKAGES_VERSION=unknown
-#      debug mode
-      - JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-    links:
-     - document-management-store-database
-     - idam-api
-     - service-auth-provider-api
-    depends_on:
-     - document-management-store-database
-     - idam-api
-     - service-auth-provider-api
-    ports:
-     - 8080:8080
-
-  document-management-store-database:
-    build:
-      context: ./docker/database
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
-
   fees-api:
-    image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
+    image: hmctspublic.azurecr.io/fees-register/api
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://fees-database:5432/fees_register
-      - SPRING_DATASOURCE_USERNAME=fees_register
-      - SPRING_DATASOURCE_PASSWORD=fees_register
-      - SPRING_PROFILES_ACTIVE=embedded
-      #- AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
-      - ROOT_APPENDER=JSON_CONSOLE
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://shared-database:5432/fees_register"
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_USERNAME}
+      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
+      APPINSIGHTS_INSTRUMENTATIONKEY: "key"
+      SPRING_LIQUIBASE_ENABLED: "true"
+      ENABLE_FEE_LOADER: "true"
     ports:
       - 4411:8080
-    links:
-      #- idam-api
-      - fees-database
     depends_on:
-      #- idam-api
-      - fees-database
+      - sidam-api
+      - shared-database
 
-  fees-database:
-    image: docker.artifactory.reform.hmcts.net/fees-register/fees-database:${FEES_DATABASE_DOCKER_VERSION:-latest}
+  payments-api:
+    image: hmctspublic.azurecr.io/payment/api:latest
     environment:
-      - FEES_REGISTER_DB_USERNAME=fees_register
-      - FEES_REGISTER_DB_PASSWORD=fees_register
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080
+      - auth.idam.client.baseUrl=http://sidam-api:5000
+      - idam.s2s-auth.totp_secret=AAAAAAAAAAAAAAAB
+      - idam.s2s-auth.microservice=payment_app
+      - idam.s2s-auth.url=http://service-auth-provider-api:8080
+      - CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - CARD_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - CARD_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - CARD_PAYMENTS_EMAIL_MESSAGE=hi
+      - CARD_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - BAR_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - BAR_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - BAR_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - BAR_PAYMENTS_EMAIL_MESSAGE=hi
+      - BAR_PAYMENTS_EMAIL_SUBJECT=Docker Env Bar Payments Reconciliation Report
+      - FEATURE_PAYMENTS_SEARCH=true
+      - FEES_REGISTER_URL=https://fees-api:8080
+      - GOV_PAY_AUTH_KEY_CMC=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_OPERATIONAL_SERVICES=ccd_gw
+      - GOV_PAY_URL=https://publicapi.payments.service.gov.uk/v1/payments
+      - payments.report.file.location=.
+      - PBA_CMC_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_CMC_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_CMC_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_CMC_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_CMC_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_PROBATE_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_PROBATE_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_PROBATE_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_PROBATE_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_PROBATE_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_FINREM_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_FINREM_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_FINREM_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_FINREM_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_FINREM_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_DIVORCE_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_DIVORCE_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_DIVORCE_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_DIVORCE_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_DIVORCE_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_FPL_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_FPL_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_FPL_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_FPL_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_FPL_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - REFORM_ENVIRONMENT=aat
+      - REFORM_SERVICE_NAME=payment-api
+      - REFORM_TEAM=cc
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/payment
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_USERNAME}
+      - SPRING_LIQUIBASE_ENABLED=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST=*
+      - SPRING_MAIL_PORT=25
+      - SPRING_MAIL_HOST=smtp-server
+      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
+      - PAYBUBBLE_HOME_URL=https://ccpay-bubble-frontend-aat.service.core-compute-aat.internal
+      - PCI_PAL_CALLBACK_URL=https://core-api-mgmt-aat.azure-api.net/telephony-api/telephony/callback
+      - ASB_CONNECTION_STRING=some-azure-service-bus-connection-string
+      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+      - CORE_CASE_DATA_API_URL=http://ccd-data-store-api:4452
+    ports:
+      - 8383:8080
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+      - sidam-api
+
+  idam-web-admin:
+    image: "hmctspublic.azurecr.io/idam/web-admin:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      STRATEGIC_SERVICE_URL: http://sidam-api:5000
+    ports:
+      - 8082:8080
+    links:
+      - sidam-api
+    depends_on:
+      - sidam-api
+
+  idam-web-public:
+    image: "hmctspublic.azurecr.io/idam/web-public:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      STRATEGIC_SERVICE_URL: http://sidam-api:5000
+      IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS: "false"
+      REFORM_SERVICE_NAME: sidam-api
+      REFORM_TEAM: idam
+      REFORM_ENVIRONMENT: local
+    ports:
+      - 3501:8080
+    links:
+      - sidam-api
+    depends_on:
+      - sidam-api
+
+  ccd-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - ES_JAVA_OPTS= -Xms128m -Xmx400m
+      - cluster.name=ccd-docker-es-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - action.auto_create_index=.security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  ccd-logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash:probate-latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - XPACK_MONITORING_ENABLED=false
+      - DB_URL=jdbc:postgresql://shared-database:5432/ccd_data?stringtype=unspecified&ssl=false
+      - DB_USER=${DB_USERNAME}
+      - DB_PWD=${DB_PASSWORD}
+      - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
+      - LOG_LEVEL=warn
+    depends_on:
+      - ccd-elasticsearch
+      - shared-database
+
+  probate-back-office:
+    build:
+      context: .
+    dns:
+      - 172.16.0.10
+      - 172.16.0.14
+      - 8.8.8.8
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      S2S_AUTH_URL: http://service-auth-provider-api:8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/probate_man
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      EVIDENCE_MANAGEMENT_URL: http://dm-store:8080
+      PDF_SERVICE_URL: http://pdf-service-api:5500
+      PRINTSERVICE_HOST:
+      IDAM_SERVICE_HOST: http://sidam-api:5000
+      FEE_API_URL: http://fees-api:8080
+      EVIDENCE_MANAGEMENT_HOST: http://dm-store:8080
+      CCD_GATEWAY_HOST: http://ccd-api-gateway:3453
+      SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+      CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+    ports:
+      - 4104:4104
+    depends_on:
+      - sidam-api
+      - shared-database
+      - service-auth-provider-api
+      - dm-store
+
+  probate-frontend:
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    environment:
+      - IDAM_API_URL=http://sidam-api:5000
+      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
+      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - USE_REDIS=false
+      - REDIS_USE_TLS=false
+      - USE_IDAM=true
+      - REQUIRE_CCD_CASE_ID=true
+      - NODE_ENV=dev
+    ports:
+      - 3000:3000
+
+
+  probate-orchestrator:
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
+      SUBMIT_SERVICE_API_URL: http://probate-submit-service:8181
+      BUSINESS_SERVICE_API_URL:  http://probate-business-service:8081
+      BACK_OFFICE_API_URL: http://probate-back-office:4104
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+    ports:
+      - 8888:8888
+    depends_on:
+      - sidam-api
+      - service-auth-provider-api
+      - probate-back-office
+
+  probate-submit-service:
+    image: hmctspublic.azurecr.io/probate/submit-service:latest
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+    ports:
+      - 8181:8181
+    depends_on:
+      - sidam-api
+      - shared-database
+      - ccd-data-store-api
+      - service-auth-provider-api
+
+  probate-business-service:
+    image: hmctspublic.azurecr.io/probate/business-service:latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - SERVER_PORT=8081
+      - SPRING_APPLICATION_JSON={
+        "services.auth.provider.baseUrl":"http://service-auth-provider-api:8080",
+        "services.pdf.service.url":"http://pdf-service-api:5500",
+        "document_management.url":"http://dm-store:8080"
+        }
+    ports:
+      - 8081:8081
+
+volumes:
+  ccd-docker-azure-blob-data:
+  esdata1:
+    driver: local

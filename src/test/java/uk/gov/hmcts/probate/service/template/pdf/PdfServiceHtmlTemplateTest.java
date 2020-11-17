@@ -43,7 +43,7 @@ public class PdfServiceHtmlTemplateTest {
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
-    private static final String PAYMENT_METHOD = "Cheque";
+    private static final String PAYMENT_METHOD = "Fee account";
     private static final String WILL_HAS_CODICILS = "Yes";
     private static final String NUMBER_OF_CODICILS = "1";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;

@@ -7,9 +7,11 @@ import uk.gov.hmcts.probate.config.notifications.EmailTemplates;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
 
+import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -22,17 +24,27 @@ public class TemplateService {
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
-        return getTemplateId(state, applicationType, registryLocation, languagePreference, null);
+        return getTemplateId(state, applicationType, registryLocation, languagePreference, null, null);
 
     }
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference, String paperForm) {
+        return getTemplateId(state, applicationType, registryLocation, languagePreference, paperForm, null);
+
+    }
+
+    public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
+                                LanguagePreference languagePreference, String paperForm, CaseOrigin caseOrigin) {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
             case APPLICATION_RECEIVED:
-                return emailTemplates.getApplicationReceived();
+                if (YES.equalsIgnoreCase(paperForm) && caseOrigin.equals(CASEWORKER)) {
+                    return emailTemplates.getApplicationReceivedPaperFormCaseworker();
+                } else {
+                    return emailTemplates.getApplicationReceived();
+                }
             case DOCUMENTS_RECEIVED:
                 return emailTemplates.getDocumentReceived();
             case CASE_STOPPED:

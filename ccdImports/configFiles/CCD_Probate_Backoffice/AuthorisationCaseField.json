@@ -2061,6 +2061,11 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorEmail", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorPhoneNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitorIsMainApplicant", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}, 
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel3", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsOutsideUKGrantCopiesLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsOutsideUKGrantCopiesLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "extraCopiesOfGrant", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "outsideUKGrantCopies", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsPaymentMethods", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
@@ -2215,5 +2220,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grandChildrenSurvivedUnderEighteen", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateNotificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
 ]
