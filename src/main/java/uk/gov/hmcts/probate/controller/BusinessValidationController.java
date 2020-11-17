@@ -314,7 +314,7 @@ public class BusinessValidationController {
         String primaryApplicantEmailAddress = data.getPrimaryApplicantEmailAddress() == null ? "" : data.getPrimaryApplicantEmailAddress();
 
         CCDData dataForEmailAddress = CCDData.builder()
-            .applicationType(ApplicationType.PERSONAL.toString())
+            .applicationType(data.getApplicationType().toString())
             .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
