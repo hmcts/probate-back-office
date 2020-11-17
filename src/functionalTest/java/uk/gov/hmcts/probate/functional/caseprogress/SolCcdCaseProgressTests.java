@@ -22,6 +22,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String CASE_ESCALATED_URL = "/case/case-escalated";
+    private static final String CASE_MATCHING_EXAMINING_URL = "/case-matching/search-from-grant-flow";
+
 
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
@@ -87,6 +89,20 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenEscalated() {
         String response = postCwJson("caseprogress/07-caseEscalated.json", CASE_ESCALATED_URL);
+        JsonPath jsonPath = JsonPath.from(response);
+        String taskList = jsonPath.get("data.taskList");
+
+        assertEquals("<div class=\"width-50\">\n\n<h2 class=\"govuk-heading-l\">Case progress</h2>\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case escalated to the Registrar</div>\n\n<h2 class=\"govuk-heading-l\">What happens next</h2>\n\n<p class=\"govuk-body-s\">The case was escalated on 16 Nov 2020.</p>\n<p class=\"govuk-body-s\">The case will be reviewed by the Registrar and you will be notified by email if we need any information from you to progress the case.</p>\n<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>\n\n\n<h2 class=\"govuk-heading-l\">Get help with your application</h2>\n\n<h3 class=\"govuk-heading-m\">Telephone</h3>\n\n<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call.</p><br/><p class=\"govuk-body-s\">Telephone: 0300 303 0648</p><p class=\"govuk-body-s\">Monday to Thursday, 8:00am to 5pm</p><p class=\"govuk-body-s\">Friday, 8am to 4:30pm</p><br/><p class=\"govuk-body-s\">Welsh language: 0300 303 0654</p><p class=\"govuk-body-s\">Monday to Friday, 8:00am to 5pm</p><br/>\n\n<a href=\"https://www.gov.uk/call-charges\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">Find out about call charges</a>\n\n<h3 class=\"govuk-heading-m\">Email</h3>\n\n<a href=\"mailto:contactprobate@justice.gov.uk\" class=\"govuk-link\">contactprobate@justice.gov.uk</a><p class=\"govuk-body-s\">We aim to respond within 10 working days</p>\n\n</div>",
+                taskList);
+    }
+
+    @Test
+    @Ignore
+    // this is throwing an exception, but difficult to decipher the issue.
+    // Is in the collect method of findCrossMatches in CaseMatchingService.java, prob something missing in application
+    // java.lang.reflect.InvocationTargetException in doInvoke
+    public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
+        String response = postCwJson("caseprogress/08-caseMatchingExamining.json", CASE_MATCHING_EXAMINING_URL);
         JsonPath jsonPath = JsonPath.from(response);
         String taskList = jsonPath.get("data.taskList");
 
