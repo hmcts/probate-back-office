@@ -53,7 +53,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationNOTSent() {
-        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedCitizenFromCaseworkerPayload.json", PAPER_FORM);
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedCitizenFromCaseworkerPayloadNoPrimaryEmail.json", PAPER_FORM);
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
         assertNull(documentUrl);
