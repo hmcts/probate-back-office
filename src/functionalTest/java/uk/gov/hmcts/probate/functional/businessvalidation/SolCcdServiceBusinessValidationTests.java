@@ -29,6 +29,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
+    public static final String NOTIFICATION_DOCUMENT_BINARY_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
 
     @Test
@@ -201,7 +202,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContentsMissing("data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() {
+        String payload = getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"fname@fttest.com\",", "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -210,7 +221,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt", "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -219,13 +230,27 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt", "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationWithoutEmail() {
-        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", PAPER_FORM_URL, "\"solsSolicitorEmail\": \"probBackosol@gmail.com\",", "\"solsSolicitorEmail\": null,");
-        assertExpectedContentsMissing("data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithoutEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"probBackosol@gmail.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithoutEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"probBackosol@gmail.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -234,7 +259,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt", "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -243,7 +268,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt", "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url", responseBody);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
