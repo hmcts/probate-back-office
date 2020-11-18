@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
+            <p>The {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true.</p>
             <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
             <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingForLegalStatement %}

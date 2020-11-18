@@ -173,7 +173,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
@@ -187,7 +187,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
@@ -201,7 +201,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
@@ -701,7 +701,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
-
+    
     //Commented out due to Docmosis not allowing screen readers as images overlay all text
     //@Test
     //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
