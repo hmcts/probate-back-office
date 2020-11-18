@@ -312,7 +312,7 @@ public class BusinessValidationController {
     
     private boolean hasRequiredEmailAddress(CaseData data) {
         CCDData dataForEmailAddress = CCDData.builder()
-            .applicationType(data.getApplicationType().getCode())
+            .applicationType(data.getApplicationType().name())
             .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())
             .solsSolicitorEmail(data.getSolsSolicitorEmail())
             .build();

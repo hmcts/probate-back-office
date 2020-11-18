@@ -327,49 +327,11 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Declaration"));
     }
 
-    private ResponseBody validatePostSuccess(String jsonFileName, String path) {
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path)
-            .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        return response.getBody();
-    }
-
-    private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
-        String request = utils.getJsonFromFile(jsonFileName);
-        request = request.replaceAll(originalAttr, updatedAttr);
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(request)
-            .when().post(path)
-            .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        return response.getBody();
-    }
-
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
                                                         String responseDocumentUrl, String testId) {
         ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
         assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
     }
 
-    private void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl, ResponseBody responseBody) {
-        String expectedText = utils.getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
-
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
-        assertTrue(response.contains(expectedText));
-    }
 
 }
