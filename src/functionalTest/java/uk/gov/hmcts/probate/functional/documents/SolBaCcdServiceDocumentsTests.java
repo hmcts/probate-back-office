@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.functional.documents;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
+import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +52,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
-    private static final String CARDIFF_REGISTRY = "Probate Registry of Wales";
+    private static final String WALES_REGISTRY_NAME = "Probate Registry of Wales";
 
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
@@ -152,6 +154,42 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         return response;
     }
 
+    private String generateNonProbateDocument(String jsonFileName, String path) {
+
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+    }
+
+    private void assertExpectedContents(String expectedResponseFile, String response) {
+        String expectedText = utils.getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        response = response.replace("\n", "").replace("\r", "");
+        TestCase.assertTrue(response.contains(expectedText));
+    }
+
+    private ResponseBody validatePostSuccessWithReturn(String jsonFileName, String path) {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
     private String generatePdfDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -173,42 +211,48 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetAdmonWillGrantForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("admonWillGrantForCardiffResponse.txt", response);
     }
 
     @Test
     public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("admonWillGrantDraftForCardiffResponse.txt", response);
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("intestacyGrantForCardiffResponse.txt", response);
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("intestacyGrantDraftForCardiffResponse.txt", response);
     }
 
     @Test
     public void verifySuccessForGetGopGrantForCardiff() {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("gopGrantForCardiffResponse.txt", response);
     }
 
     @Test
     public void verifySuccessForGetGopGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(CARDIFF_REGISTRY));
+        assertExpectedContents("gopGrantDraftForCardiffResponse.txt", response);
+    }
+
+    @Test
+    public void verifySuccessForWillLodgementForCardiff() {
+        String response = generateNonProbateDocument(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
+        assertTrue(response.contains(WALES_REGISTRY_NAME));
     }
 
     @Test
