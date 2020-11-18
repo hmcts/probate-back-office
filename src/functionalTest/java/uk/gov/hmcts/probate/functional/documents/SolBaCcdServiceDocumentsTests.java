@@ -37,8 +37,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
-    private static final String IHT_NET = "8,000";
-    private static final String IHT_GROSS = "10,000";
+    private static final String IHT_NET = "8,000.00";
+    private static final String IHT_GROSS = "10,000.00";
+    private static final String IHT_NET_PENCE = "8,123.50";
+    private static final String IHT_GROSS_PENCE = "10,234.92";
     private static final String GOP = "Grant of Probate";
     private static final String DIED_ON = "Died on";
     private static final String DIED_ON_OR_SINCE = "Died on or since";
@@ -593,6 +595,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(IHT_NET));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantMoneyFormatWithPence() {
+        String response = generateDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(IHT_GROSS_PENCE));
+        assertTrue(response.contains(IHT_NET_PENCE));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftMoneyFormatWithPence() {
+        String response = generateDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json", GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(IHT_GROSS_PENCE));
+        assertTrue(response.contains(IHT_NET_PENCE));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
 
