@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -42,14 +40,14 @@ public class ProbateManController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private static final String SUBMISSION_NOT_ALLOWED = "Submission not allowed";
 
-    @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
                                                                             @PathVariable("id") String id) {
         ProbateManModel probateManModel = probateManService.getProbateManModel(Long.parseLong(id), probateManType);
         return ResponseEntity.ok(ProbateManCaseResponse.builder().probateManCase(probateManModel).build());
     }
 
-    @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> legacySearch(@RequestBody CallbackRequest callbackRequest,
                                                          HttpServletRequest request) {
         log.info("Performing legacy case search");
@@ -66,7 +64,7 @@ public class ProbateManController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/legacy/doImport", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/doImport", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> doImport(@RequestBody CallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
@@ -84,7 +82,7 @@ public class ProbateManController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/legacy/resetSearch", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/resetSearch", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> resetSearch(@RequestBody CallbackRequest callbackRequest,
                                                         BindingResult bindingResult,
                                                         HttpServletRequest request) {

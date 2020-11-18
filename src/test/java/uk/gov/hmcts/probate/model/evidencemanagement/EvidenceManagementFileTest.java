@@ -6,14 +6,8 @@ import org.springframework.hateoas.Links;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class EvidenceManagementFileTest {
@@ -38,9 +32,6 @@ public class EvidenceManagementFileTest {
         Links links = evidenceManagementFile.getLinks();
         assertTrue(links.hasSize(2));
 
-        assertThat(links, containsInAnyOrder(
-                hasProperty("rel", is("LABEl1")),
-                hasProperty("rel", is("LABEL2"))
-        ));
+
     }
 }
