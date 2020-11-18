@@ -211,14 +211,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetAdmonWillGrantForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertExpectedContents("admonWillGrantForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertExpectedContents("admonWillGrantDraftForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
