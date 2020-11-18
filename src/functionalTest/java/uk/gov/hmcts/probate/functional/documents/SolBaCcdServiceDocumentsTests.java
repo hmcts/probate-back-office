@@ -50,6 +50,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
+    private static final String CARDIFF_REGISTRY = "Probate Registry of Wales";
 
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
@@ -76,6 +77,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
+    private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
+    private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsIntestacyCardiff.json";
+    private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -163,6 +167,48 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
+    }
+
+    @Test
+    public void verifySuccessForGetAdmonWillGrantForCardiff() {
+        String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
+    }
+
+    @Test
+    public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
+        String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
+    }
+
+    @Test
+    public void verifySuccessForGetIntestacyGrantForCardiff() {
+        String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
+    }
+
+    @Test
+    public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
+        String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
+    }
+
+    @Test
+    public void verifySuccessForGetGopGrantForCardiff() {
+        String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
+    }
+
+    @Test
+    public void verifySuccessForGetGopGrantDraftForCardiff() {
+        String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(CARDIFF_REGISTRY));
     }
 
     @Test
