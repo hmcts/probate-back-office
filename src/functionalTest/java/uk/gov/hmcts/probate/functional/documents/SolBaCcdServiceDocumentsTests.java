@@ -3,12 +3,15 @@ package uk.gov.hmcts.probate.functional.documents;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+
 
 import static org.junit.Assert.assertTrue;
 
@@ -132,6 +135,36 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
+    private String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        int monthNum = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+
+        String month = "";
+        DateFormatSymbols dfs = new DateFormatSymbols();
+        String[] months = dfs.getMonths();
+        if (monthNum >= 0 && monthNum <= 11 ) {
+            month = months[monthNum];
+        }
+
+        switch (dayOfMonth) {
+            case 3:
+            case 23:
+                return dayOfMonth + "rd " + month + " " + String.valueOf(year);
+            case 2:
+            case 22:
+                return dayOfMonth + "nd " + month + " " + String.valueOf(year);
+            case 1:
+            case 21:
+            case 31:
+                return dayOfMonth + "st " + month + " " + String.valueOf(year);
+            default:
+                return dayOfMonth + "th " + month + " " + String.valueOf(year);
+        }
+
+    }
+
     private void validatePostSuccess(String jsonFileName, String path) {
         RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -179,19 +212,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         TestCase.assertTrue(response.contains(expectedText));
     }
 
-    private ResponseBody validatePostSuccessWithReturn(String jsonFileName, String path) {
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        return response.getBody();
-    }
-
     private String generatePdfDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -213,42 +233,67 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetAdmonWillGrantForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertExpectedContents("admonWillGrantForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
+
     }
 
     @Test
     public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertExpectedContents("admonWillGrantDraftForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertExpectedContents("intestacyGrantForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("intestacyGrantForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertExpectedContents("intestacyGrantDraftForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("intestacyGrantDraftForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetGopGrantForCardiff() {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        assertExpectedContents("gopGrantForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("gopGrantForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetGopGrantDraftForCardiff() {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertExpectedContents("gopGrantDraftForCardiffResponse.txt", response);
+        String expectedText = utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
