@@ -256,16 +256,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForWillLodgementForCardiff() {
         CaseData caseData = CaseData.builder().build();
-        Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("willLodgementPayloadNoDocuments.json"))
-                .when().post("/document/generate-deposit-receipt").andReturn();
-
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
         String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
