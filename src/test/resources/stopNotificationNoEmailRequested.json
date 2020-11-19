@@ -53,8 +53,6 @@
       "solsApplicantSiblings": null,
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "solicitor@hmcts-test.net",
-      "boCaveatStopEmailNotification": "No",
       "boCaveatStopSendToBulkPrint": "Yes",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {

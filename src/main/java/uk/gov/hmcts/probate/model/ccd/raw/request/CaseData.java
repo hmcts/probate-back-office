@@ -264,10 +264,13 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
@@ -532,6 +535,7 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailRequestInfoNotificationRequested;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
 
     private final Categories categories;
