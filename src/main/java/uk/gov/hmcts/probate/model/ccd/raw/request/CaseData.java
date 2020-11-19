@@ -66,9 +66,9 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper=true)
 @Data
-public class CaseData {
+public class CaseData extends CaseDataParent {
 
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
@@ -576,7 +576,6 @@ public class CaseData {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
-    private String registrySequenceNumber;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
