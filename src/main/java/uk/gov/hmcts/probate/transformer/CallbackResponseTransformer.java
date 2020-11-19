@@ -675,7 +675,9 @@ public class CallbackResponseTransformer {
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
                 .registrySequenceNumber(caseData.getRegistrySequenceNumber())
                 .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
-                .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate());
+                .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
+                .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
+                .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
