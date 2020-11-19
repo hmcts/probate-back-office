@@ -3,16 +3,12 @@ package uk.gov.hmcts.probate.functional.documents;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-
-
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import java.time.LocalDate;
 import static org.junit.Assert.assertTrue;
 
 
@@ -87,6 +83,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
     private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsIntestacyCardiff.json";
     private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
+    private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocuments.json";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -135,35 +132,35 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
-    private String getCurrentDate() {
-        Calendar cal = Calendar.getInstance();
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        int monthNum = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-
-        String month = "";
-        DateFormatSymbols dfs = new DateFormatSymbols();
-        String[] months = dfs.getMonths();
-        if (monthNum >= 0 && monthNum <= 11 ) {
-            month = months[monthNum];
-        }
-
-        switch (dayOfMonth) {
-            case 3:
-            case 23:
-                return dayOfMonth + "rd " + month + " " + String.valueOf(year);
-            case 2:
-            case 22:
-                return dayOfMonth + "nd " + month + " " + String.valueOf(year);
-            case 1:
-            case 21:
-            case 31:
-                return dayOfMonth + "st " + month + " " + String.valueOf(year);
-            default:
-                return dayOfMonth + "th " + month + " " + String.valueOf(year);
-        }
-
-    }
+//    private String getCurrentDate() {
+//        Calendar cal = Calendar.getInstance();
+//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+//        int monthNum = cal.get(Calendar.MONTH);
+//        int year = cal.get(Calendar.YEAR);
+//
+//        String month = "";
+//        DateFormatSymbols dfs = new DateFormatSymbols();
+//        String[] months = dfs.getMonths();
+//        if (monthNum >= 0 && monthNum <= 11 ) {
+//            month = months[monthNum];
+//        }
+//
+//        switch (dayOfMonth) {
+//            case 3:
+//            case 23:
+//                return dayOfMonth + "rd " + month + " " + String.valueOf(year);
+//            case 2:
+//            case 22:
+//                return dayOfMonth + "nd " + month + " " + String.valueOf(year);
+//            case 1:
+//            case 21:
+//            case 31:
+//                return dayOfMonth + "st " + month + " " + String.valueOf(year);
+//            default:
+//                return dayOfMonth + "th " + month + " " + String.valueOf(year);
+//        }
+//
+//    }
 
     private String generateDocument(String jsonFileName, String path) {
 
@@ -195,14 +192,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         return response;
     }
 
-    private void assertExpectedContents(String expectedResponseFile, String response) {
-        String expectedText = utils.getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
-
-        response = response.replace("\n", "").replace("\r", "");
-        TestCase.assertTrue(response.contains(expectedText));
-    }
-
     private String generatePdfDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -222,11 +211,13 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetAdmonWillGrantForCardiff() {
+        CaseData caseData = CaseData.builder().build();
+
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
 
@@ -234,63 +225,74 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
+        CaseData caseData = CaseData.builder().build();
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
+        CaseData caseData = CaseData.builder().build();
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("intestacyGrantForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
+        CaseData caseData = CaseData.builder().build();
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("intestacyGrantDraftForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetGopGrantForCardiff() {
+        CaseData caseData = CaseData.builder().build();
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("gopGrantForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForGetGopGrantDraftForCardiff() {
+        CaseData caseData = CaseData.builder().build();
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replaceAll("18th November 2020", getCurrentDate());
+        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifySuccessForWillLodgementForCardiff() {
-        String response = generateNonProbateDocument(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
-        assertTrue(response.contains(WALES_REGISTRY_NAME));
+        CaseData caseData = CaseData.builder().build();
+        String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
+
+        String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptExpectedResponse.txt");
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll("19th November 2020", caseData.convertDate(LocalDate.now()));
+
+        assertTrue(response.contains(expectedText));
     }
 
     @Test

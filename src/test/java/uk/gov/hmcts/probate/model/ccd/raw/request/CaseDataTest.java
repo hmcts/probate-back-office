@@ -461,6 +461,12 @@ public class    CaseDataTest {
     }
 
     @Test
+    public void shouldReturnDODFormattedWithSTPublic() {
+        CaseData caseData = CaseData.builder().build();
+        assertEquals("1st January 2000", caseData.convertDate(LOCAL_DATE));
+    }
+
+    @Test
     public void shouldReturnDODFormattedWithND() {
         final CaseData caseData = CaseData.builder()
                 .deceasedDateOfDeath(LocalDate.of(2000,01,02))
