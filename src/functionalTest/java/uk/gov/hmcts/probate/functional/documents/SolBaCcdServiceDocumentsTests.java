@@ -132,36 +132,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
-//    private String getCurrentDate() {
-//        Calendar cal = Calendar.getInstance();
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//        int monthNum = cal.get(Calendar.MONTH);
-//        int year = cal.get(Calendar.YEAR);
-//
-//        String month = "";
-//        DateFormatSymbols dfs = new DateFormatSymbols();
-//        String[] months = dfs.getMonths();
-//        if (monthNum >= 0 && monthNum <= 11 ) {
-//            month = months[monthNum];
-//        }
-//
-//        switch (dayOfMonth) {
-//            case 3:
-//            case 23:
-//                return dayOfMonth + "rd " + month + " " + String.valueOf(year);
-//            case 2:
-//            case 22:
-//                return dayOfMonth + "nd " + month + " " + String.valueOf(year);
-//            case 1:
-//            case 21:
-//            case 31:
-//                return dayOfMonth + "st " + month + " " + String.valueOf(year);
-//            default:
-//                return dayOfMonth + "th " + month + " " + String.valueOf(year);
-//        }
-//
-//    }
-
     private String generateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
