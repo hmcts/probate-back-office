@@ -8,4 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder
 @Data
 public class CaseDataParent {
+
+    private String registrySequenceNumber;
+
 }
