@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -47,7 +48,7 @@ public class SendLetterServiceConsumerTest {
     ObjectMapper objectMapper;
 
     @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpe_sendLetterService", "localhost", 8485, this);
+    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController", "localhost", 8486, this);
 
     @Pact(provider = "rpeSendLetterService_SendLetterController", consumer = "probate_backOffice")
     public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder) throws IOException, URISyntaxException {
@@ -59,6 +60,7 @@ public class SendLetterServiceConsumerTest {
             .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
             .body(createJsonObject(buildLetter()), "application/vnd.uk.gov.hmcts.letter-service.in.letter.v3+json")
             .willRespondWith()
+            .matchHeader(HttpHeaders.CONTENT_TYPE, "application/json")
             .body(new PactDslJsonBody()
                 .uuid("letter_id", "123e4567-e89b-12d3-a456-556642440000"))
             .status(HttpStatus.SC_OK)
@@ -68,9 +70,7 @@ public class SendLetterServiceConsumerTest {
     @Test
     @PactVerification(fragment = "createSendLetterServiceFragment")
     public void verifySendLetterPact() throws IOException, JSONException, URISyntaxException {
-
         SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(someServiceAuthToken, buildLetter());
-        // Assert.assertNotNull(sendLetterResponse);
     }
 
     private LetterV3 buildLetter() throws IOException, URISyntaxException {

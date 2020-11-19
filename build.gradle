@@ -333,7 +333,6 @@ dependencies {
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 }
