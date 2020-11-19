@@ -165,15 +165,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-    private void validatePostSuccess(String jsonFileName, String path) {
-        RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .then().assertThat().statusCode(200);
-    }
-
     private String generateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
