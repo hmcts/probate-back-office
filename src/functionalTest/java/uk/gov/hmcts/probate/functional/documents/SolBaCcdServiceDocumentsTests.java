@@ -259,7 +259,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("solicitorPayloadNotificationsGopCardiff.json"))
+                .body(utils.getJsonFromFile("willLodgementPayloadNoDocuments.json"))
                 .when().post("/document/generate-deposit-receipt").andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
