@@ -258,7 +258,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         CaseData caseData = CaseData.builder().build();
         String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
-        String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptExpectedResponse.txt");
+        String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
         expectedText = expectedText.replaceAll("19th November 2020", caseData.convertDate(LocalDate.now()));
 
