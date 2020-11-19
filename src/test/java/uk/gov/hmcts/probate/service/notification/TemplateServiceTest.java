@@ -331,7 +331,31 @@ public class TemplateServiceTest {
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES, CaseOrigin.CASEWORKER);
-        assertNull(response);
+        assertEquals("sol-application-received-cw", response);
+    }
+
+    @Test
+    public void getApplicationReceivedPACaseworkerOriginPaperFormNo() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH, NO, CaseOrigin.CASEWORKER);
+        assertEquals("pa-application-received", response);
+
+        response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
+            LanguagePreference.ENGLISH, NO, CaseOrigin.CASEWORKER);
+        assertEquals("sol-application-received", response);
+    }
+
+    @Test
+    public void getApplicationReceivedPACaseworkerOriginWelsh() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
+            LanguagePreference.WELSH, YES, CaseOrigin.CASEWORKER);
+        assertEquals("pa-application-received-cw-welsh", response);
+
+        response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
+            LanguagePreference.WELSH, YES, CaseOrigin.CASEWORKER);
+        assertEquals("sol-application-received-cw-welsh", response);
     }
 
     @Test
