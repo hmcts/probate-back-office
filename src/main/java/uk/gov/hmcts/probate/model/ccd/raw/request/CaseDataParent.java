@@ -9,6 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 public class CaseDataParent {
 
-    private String registrySequenceNumber;
+    protected String registrySequenceNumber;
 
 }
