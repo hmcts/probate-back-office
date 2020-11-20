@@ -581,7 +581,7 @@ public class ResponseCaseData extends ResponseCaseDataParent{
         return new ResponseCaseDataBuilder();
     }
 
-    public static class ResponseCaseDataBuilder  extends ResponseCaseDataParentBuilder{
+    public static class ResponseCaseDataBuilder extends ResponseCaseDataParentBuilder {
         private String state;
         private ApplicationType applicationType;
         private String registryLocation;
@@ -2138,6 +2138,30 @@ public class ResponseCaseData extends ResponseCaseDataParent{
         }
 
         @Override
+        public ResponseCaseDataBuilder deceasedDiedEngOrWales(String deceasedDiedEngOrWales) {
+            this.deceasedDiedEngOrWales = deceasedDiedEngOrWales;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder deceasedDeathCertificate(String deceasedDeathCertificate) {
+            this.deceasedDeathCertificate = deceasedDeathCertificate;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder deceasedForeignDeathCertInEnglish(String deceasedForeignDeathCertInEnglish) {
+            this.deceasedForeignDeathCertInEnglish = deceasedForeignDeathCertInEnglish;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder deceasedForeignDeathCertTranslation(String deceasedForeignDeathCertTranslation) {
+            this.deceasedForeignDeathCertTranslation = deceasedForeignDeathCertTranslation;
+            return this;
+        }
+
+        @Override
         public ResponseCaseDataBuilder numberOfExecutors(Long numberOfExecutors) {
             this.numberOfExecutors = numberOfExecutors;
             return this;
@@ -2191,7 +2215,7 @@ public class ResponseCaseData extends ResponseCaseDataParent{
                 solsAdoptedEnglandOrWales, solsMinorityInterest, solsApplicantSiblings, solsEntitledMinority, solsDiedOrNotApplying, solsResiduary, solsResiduaryType, solsLifeInterest, willExists, willAccessOriginal, willHasCodicils, willNumberOfCodicils, ihtNetValue, ihtGrossValue,
                 deceasedDomicileInEngWales, extraCopiesOfGrant, outsideUKGrantCopies, applicationFee, feeForUkCopies, feeForNonUkCopies, totalFee, solsPaymentMethods, solsFeeAccountNumber, paymentReferenceNumber, solsLegalStatementDocument, statementOfTruthDocument, probateDocumentsGenerated,
                 probateNotificationsGenerated, boDocumentsUploaded, caseMatches, solsSOTNeedToUpdate, solsNextStepsDocument, solsAdditionalInfo, primaryApplicantForenames, primaryApplicantSurname, primaryApplicantEmailAddress, primaryApplicantHasAlias, primaryApplicantIsApplying, solsPrimaryExecutorNotApplyingReason, otherExecutorExists, primaryApplicantAlias, primaryApplicantSameWillName, primaryApplicantAliasReason, primaryApplicantOtherReason, solsExecutorAliasNames, additionalExecutorsApplying, additionalExecutorsNotApplying, solsAdditionalExecutorList, deceasedAddress, deceasedAnyOtherNames, primaryApplicantAddress, solsDeceasedAliasNamesList, deceasedAliasNamesList, casePrinted, boEmailDocsReceivedNotificationRequested, boEmailGrantIssuedNotificationRequested, boEmailDocsReceivedNotification, boEmailGrantIssuedNotification, boCaseStopReasonList, boStopDetails, boDeceasedTitle, boDeceasedHonours, boWillMessage, boExecutorLimitation, boAdminClauseLimitation, boLimitationText, ihtReferenceNumber, ihtFormCompletedOnline, legalStatement, declaration, deceasedMarriedAfterWillOrCodicilDate, primaryApplicantPhoneNumber, boExaminationChecklistQ2, boExaminationChecklistQ1, boExaminationChecklistRequestQA, payments, applicationSubmittedDate, scannedDocuments, evidenceHandled, caseType, paperForm, languagePreferenceWelsh, primaryApplicantSecondPhoneNumber, primaryApplicantRelationshipToDeceased, paRelationshipToDeceasedOther, applicationFeePaperForm, feeForCopiesPaperForm, totalFeePaperForm, paperPaymentMethod, paymentReferenceNumberPaperform, entitledToApply, entitledToApplyOther, notifiedApplicants, foreignAsset, foreignAssetEstateValue, adopted, adoptiveRelatives, mentalCapacity, courtOfProtection, epaOrLpa, epaRegistered, domicilityCountry, ukEstate, domicilityIHTCert, applicationGrounds, willDispose, englishWill, appointExec, appointExecByDuties, appointExecNo, immovableEstate, willDatedBeforeApril, deceasedEnterMarriageOrCP, deceasedMaritalStatus, willsOutsideOfUK, courtOfDecree, dateOfMarriageOrCP, dateOfDivorcedCPJudicially, willGiftUnderEighteen, applyingAsAnAttorney, attorneyOnBehalfOfNameAndAddress, spouseOrPartner, childrenSurvived, childrenOverEighteenSurvived, childrenUnderEighteenSurvived, childrenDied, childrenDiedOverEighteen, childrenDiedUnderEighteen, parentsExistSurvived, parentsExistOverEighteenSurvived, parentsExistUnderEighteenSurvived, wholeBloodNeicesAndNephews, wholeBloodNeicesAndNephewsOverEighteen, wholeBloodNeicesAndNephewsUnderEighteen, wholeBloodSiblingsDied, wholeBloodSiblingsDiedOverEighteen, wholeBloodSiblingsDiedUnderEighteen, wholeBloodSiblingsSurvived, wholeBloodSiblingsSurvivedOverEighteen, wholeBloodSiblingsSurvivedUnderEighteen, halfBloodSiblingsDied, halfBloodSiblingsDiedOverEighteen, halfBloodSiblingsDiedUnderEighteen, halfBloodSiblingsSurvived, halfBloodSiblingsSurvivedOverEighteen, halfBloodSiblingsSurvivedUnderEighteen, grandparentsDied, grandparentsDiedOverEighteen, grandparentsDiedUnderEighteen, halfBloodNeicesAndNephews, halfBloodNeicesAndNephewsOverEighteen, halfBloodNeicesAndNephewsUnderEighteen, grandChildrenSurvived, grandChildrenSurvivedOverEighteen, grandChildrenSurvivedUnderEighteen, wholeBloodUnclesAndAuntsDied, wholeBloodUnclesAndAuntsDiedOverEighteen, wholeBloodUnclesAndAuntsDiedUnderEighteen, wholeBloodUnclesAndAuntsSurvived, wholeBloodUnclesAndAuntsSurvivedOverEighteen, wholeBloodUnclesAndAuntsSurvivedUnderEighteen, halfBloodUnclesAndAuntsSurvived, halfBloodUnclesAndAuntsSurvivedOverEighteen, halfBloodUnclesAndAuntsSurvivedUnderEighteen, halfBloodUnclesAndAuntsDied, halfBloodUnclesAndAuntsDiedOverEighteen, halfBloodUnclesAndAuntsDiedUnderEighteen, halfBloodCousinsSurvived, halfBloodCousinsSurvivedOverEighteen, halfBloodCousinsSurvivedUnderEighteen, wholeBloodCousinsSurvived, wholeBloodCousinsSurvivedOverEighteen, wholeBloodCousinsSurvivedUnderEighteen, boSendToBulkPrint, boSendToBulkPrintRequested, grantIssuedDate, dateOfDeathType, legacySearchResultRows, recordId, legacyType, legacyCaseViewUrl, bulkPrintSendLetterId, bulkPrintPdfSize, bulkPrintId, boCaveatStopNotificationRequested, boCaveatStopNotification, boCaseStopCaveatId, boCaveatStopEmailNotificationRequested, boCaveatStopEmailNotification, boCaveatStopSendToBulkPrintRequested, boCaveatStopSendToBulkPrint, boEmailGrantReissuedNotificationRequested, boEmailGrantReissuedNotification, boGrantReissueSendToBulkPrint, boGrantReissueSendToBulkPrintRequested, orderNeeded, reissueReason, reissueDate, reissueReasonNotation, latestGrantReissueDate, deceasedDivorcedInEnglandOrWales, primaryApplicantAdoptionInEnglandOrWales, deceasedSpouseNotApplyingReason, deceasedOtherChildren, allDeceasedChildrenOverEighteen, anyDeceasedChildrenDieBeforeDeceased, anyDeceasedGrandChildrenUnderEighteen, deceasedAnyChildren, deceasedHasAssetsOutsideUK, solicitorIsMainApplicant, boStopDetailsDeclarationParagraph, boEmailRequestInfoNotificationRequested, boEmailRequestInfoNotification, boRequestInfoSendToBulkPrint, boRequestInfoSendToBulkPrintRequested, boAssembleLetterSendToBulkPrint, boAssembleLetterSendToBulkPrintRequested, executorsApplyingNotifications, probateSotDocumentsGenerated, categories, previewLink, paragraphDetails, bulkScanCaseReference, grantDelayedNotificationDate, grantStoppedDate, grantDelayedNotificationIdentified, grantDelayedNotificationSent, grantAwaitingDocumentationNotificationDate, grantAwaitingDocumentatioNotificationSent, pcqId);
-            ResponseCaseDataParent responseCaseDataParent = new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, numberOfExecutors, numberOfApplicants, legalDeclarationJson,
+            ResponseCaseDataParent responseCaseDataParent = new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, deceasedDiedEngOrWales, deceasedDeathCertificate, deceasedForeignDeathCertInEnglish, deceasedForeignDeathCertTranslation, numberOfExecutors, numberOfApplicants, legalDeclarationJson,
                 checkAnswersSummaryJson, registryAddress,
                 registryEmailAddress, registrySequenceNumber);
             
@@ -2201,6 +2225,10 @@ public class ResponseCaseData extends ResponseCaseDataParent{
             responseCaseData.declarationCheckbox = responseCaseDataParent.declarationCheckbox;
             responseCaseData.ihtGrossValueField = responseCaseDataParent.ihtGrossValueField;
             responseCaseData.ihtNetValueField = responseCaseDataParent.ihtNetValueField;
+            responseCaseData.deceasedDiedEngOrWales = responseCaseDataParent.deceasedDiedEngOrWales;
+            responseCaseData.deceasedDeathCertificate = responseCaseDataParent.deceasedDeathCertificate;
+            responseCaseData.deceasedForeignDeathCertInEnglish = responseCaseDataParent.deceasedForeignDeathCertInEnglish;
+            responseCaseData.deceasedForeignDeathCertTranslation = responseCaseDataParent.deceasedForeignDeathCertTranslation;
             responseCaseData.numberOfExecutors = responseCaseDataParent.numberOfExecutors;
             responseCaseData.numberOfApplicants = responseCaseDataParent.numberOfApplicants;
             responseCaseData.legalDeclarationJson = responseCaseDataParent.legalDeclarationJson;
