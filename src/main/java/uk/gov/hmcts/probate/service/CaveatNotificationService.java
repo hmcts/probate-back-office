@@ -198,7 +198,8 @@ public class CaveatNotificationService {
     }
 
     private void setCaveatExpiryDate(CaveatData caveatData) {
-        caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
+//        caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
+        caveatData.setExpiryDate(LocalDate.now().plusWeeks(1));
     }
 
 
