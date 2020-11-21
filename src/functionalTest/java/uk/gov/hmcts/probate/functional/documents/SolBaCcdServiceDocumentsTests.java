@@ -53,7 +53,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
-    private static final String WALES_REGISTRY_NAME = "Probate Registry of Wales";
 
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
