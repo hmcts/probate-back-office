@@ -75,20 +75,7 @@
         }
       ],
       "withdrawReason": "Test",
-      "documentsGenerated": [{
-        "id": "6f6d159b-b5ce-49de-9974-4fda82ddd926",
-        "value": {
-          "DocumentLink": {
-            "document_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a",
-            "document_filename": "willLodgementDepositReceipt.pdf",
-            "document_binary_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a/binary"
-          },
-          "DocumentType": "willLodgementDepositReceipt",
-          "DocumentFileName": null,
-          "DocumentDateAdded": "2019-01-22",
-          "DocumentGeneratedBy": "32"
-        }
-      }]
+      "documentsGenerated": []
     },
     "data_classification": {
       "applicationType": "PUBLIC",
