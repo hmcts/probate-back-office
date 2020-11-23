@@ -255,7 +255,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForWillLodgementForCardiff() {
         CaseData caseData = CaseData.builder().build();
-        String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
+        String response = generateNonProbateDocument(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
         String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt");
         expectedText = expectedText.replace("\n", "").replace("\r", "");
