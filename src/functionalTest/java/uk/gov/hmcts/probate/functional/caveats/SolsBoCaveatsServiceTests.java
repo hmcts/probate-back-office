@@ -105,14 +105,14 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
         String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
-        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusWeeks(1) + "\""));
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN)+ "\""));
 
     }
 
     @Test
     public void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() {
         String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
-        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusWeeks(1) + "\""));
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
     }
 
     @Test
