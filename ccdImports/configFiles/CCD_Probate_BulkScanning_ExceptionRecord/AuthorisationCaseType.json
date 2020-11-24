@@ -1,5 +1,0 @@
-[
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
-]
