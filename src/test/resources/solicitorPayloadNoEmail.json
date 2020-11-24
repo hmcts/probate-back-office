@@ -52,7 +52,7 @@
       "ihtGrossValue": 200000.0,
       "primaryApplicantForenames": "exfn",
       "primaryApplicantSurname": "exfn1",
-      "primaryApplicantEmailAddress": "testemail@test.com",
+      "primaryApplicantEmailAddress": null,
       "primaryApplicantHasAlias": "Yes",
       "solsExecutorAliasNames": "Jane Doe",
       "primaryApplicantIsApplying": "Yes",
@@ -163,7 +163,7 @@
       "executorsNotApplying": [],
       "applicationType": "Solicitor",
       "registryLocation": null,
-
+      "boEmailDocsReceivedNotification": "Yes",
       "boEmailGrantIssuedNotification": "Yes",
       "primaryApplicantFullName": "exfn exfn1",
       "deceasedFullName": "fname lname",

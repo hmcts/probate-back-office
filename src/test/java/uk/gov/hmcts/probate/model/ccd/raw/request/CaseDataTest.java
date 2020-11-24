@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -83,6 +84,7 @@ public class    CaseDataTest {
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
+    @InjectMocks
     private CaseData underTest;
 
     @Before

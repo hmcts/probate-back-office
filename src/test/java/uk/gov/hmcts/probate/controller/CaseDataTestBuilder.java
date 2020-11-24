@@ -63,7 +63,6 @@ public class CaseDataTestBuilder {
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
     public static final String APPLICATION_GROUNDS = "Application grounds";
-    public static final String REGISTRY_SEQUENCE_NUMBER = "12345";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -137,8 +136,7 @@ public class CaseDataTestBuilder {
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-                .totalFee(TOTAL_FEE)
-                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER);
+                .totalFee(TOTAL_FEE);
     }
 
 }
