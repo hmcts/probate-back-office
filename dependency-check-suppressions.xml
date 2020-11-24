@@ -12,7 +12,7 @@
    file name: junit-4.13.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/junit/junit@.*$</packageUrl>
-        <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
+        <cve>CVE-2020-15250</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
