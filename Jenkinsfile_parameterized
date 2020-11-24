@@ -18,7 +18,9 @@ List<LinkedHashMap<String, Object>> secrets = [
         secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
         secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
         secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
-        secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST')
+        secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
+        secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
+        secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
