@@ -14,7 +14,7 @@
       "recordId": null,
       "paperForm": "No",
       "solsSolicitorAppReference": "firmReference",
-      "solsSolicitorEmail": "",
+      "solsSolicitorEmail": "solicitor@email.com",
       "solsSolicitorPhoneNumber": null,
       "deceasedForenames": "fname",
       "deceasedSurname": "lname",
