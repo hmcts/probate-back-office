@@ -542,7 +542,12 @@ public class BusinessValidationControllerTest {
     @Test
     public void shouldReturnSolicitorPaperFormSuccess() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
-        
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+            .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+            .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(emailDocument);
+
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -551,10 +556,26 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperForm() throws Exception {
+    public void shouldReturnPaperFormWithoutEmail() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(null);
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnPaperFormWithEmail() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("paperFormWithPrimaryApplicantEmail.json");
+
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

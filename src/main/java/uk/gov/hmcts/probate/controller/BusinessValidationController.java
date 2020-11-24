@@ -19,11 +19,14 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -35,6 +38,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -71,6 +75,7 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
+    private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -243,7 +248,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         Document document = null;
-        if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(ApplicationType.PERSONAL)) {
+        if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
             document = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
@@ -303,5 +308,15 @@ public class BusinessValidationController {
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }
+    }
+    
+    private boolean hasRequiredEmailAddress(CaseData data) {
+        CCDData dataForEmailAddress = CCDData.builder()
+            .applicationType(data.getApplicationType().name())
+            .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())
+            .solsSolicitorEmail(data.getSolsSolicitorEmail())
+            .build();
+        List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
+        return emailErrors.isEmpty();
     }
 }
