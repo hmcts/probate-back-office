@@ -551,8 +551,6 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(notificationService, times(0)).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
     }
 
     @Test
