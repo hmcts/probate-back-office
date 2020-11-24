@@ -20,3 +20,5 @@ spring:
         pdfServiceHealthUrl: docmosis.service.health.uri
         idam-secret-probate: auth.provider.client.secret
         idamRedirectUrl: auth.provider.client.redirect
+        schedulerCaseWorkerUser: SCHEDULER_CASEWORKER_USERNAME
+        schedulerCaseWorkerPass: SCHEDULER_CASEWORKER_PASSWORD
