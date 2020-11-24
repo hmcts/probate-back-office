@@ -39,7 +39,6 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
-      "paperForm": null,
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
@@ -83,7 +82,7 @@
         }
       ],
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "800000",
+      "ihtNetValue": "812350",
       "boStopDetails": "SOLS stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
@@ -112,7 +111,7 @@
       "solsSolicitorIsMainApplicant": null,
       "solsSolicitorIsApplying": null,
       "solsSolicitorNotApplyingReason": null,
-      "ihtGrossValue": "1000000",
+      "ihtGrossValue": "1023492",
       "ihtFormId": "IHT205",
       "registryLocation": "ctsc",
       "primaryApplicantSurname": "Executor Last Name 1",
