@@ -560,9 +560,9 @@ public class BusinessValidationControllerTest {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(null);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -572,9 +572,9 @@ public class BusinessValidationControllerTest {
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
