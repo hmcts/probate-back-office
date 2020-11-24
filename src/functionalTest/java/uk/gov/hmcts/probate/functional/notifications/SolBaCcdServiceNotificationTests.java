@@ -40,7 +40,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() {
         postNotificationEmailAndVerifyContents(PAPER_FORM, "paperApplicationRecievedCitizenFromCaseworkerPayload.json", "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL, "verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantRaisedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
             "grantRaisedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
             "documentReceivedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -148,14 +148,14 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantIssuedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
             "grantIssuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     public void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotificationsIntestacy.json",
             "grantIssuedIntestacySolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantReissuedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
             "grantReissuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
     
     @Test
