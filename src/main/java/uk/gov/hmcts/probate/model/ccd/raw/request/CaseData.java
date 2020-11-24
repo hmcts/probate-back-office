@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -61,9 +64,11 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder
+@SuperBuilder
+@Jacksonized
+@EqualsAndHashCode(callSuper=true)
 @Data
-public class CaseData {
+public class CaseData extends CaseDataParent {
 
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
@@ -259,10 +264,13 @@ public class CaseData {
 
     private final DocumentLink statementOfTruthDocument;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
@@ -527,6 +535,7 @@ public class CaseData {
 
     private final String boEmailRequestInfoNotificationRequested;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
 
     private final Categories categories;
@@ -571,7 +580,6 @@ public class CaseData {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
-    private String registrySequenceNumber;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
