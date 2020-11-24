@@ -5,6 +5,13 @@
    file name: commons-beanutils-1.9.3.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/commons\-beanutils/commons\-beanutils@.*$</packageUrl>
+        <cpe>cpe:/a:apache:commons_beanutils</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: commons-beanutils-1.9.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/commons\-beanutils/commons\-beanutils@.*$</packageUrl>
         <cve>CVE-2019-10086</cve>
     </suppress>
     <suppress>
@@ -19,7 +26,20 @@
    file name: postgresql-42.2.5.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+        <cpe>cpe:/a:postgresql:postgresql</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.2.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
         <cpe>cpe:/a:postgresql:postgresql_jdbc_driver</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.2.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
         <cve>CVE-2020-13692</cve>
     </suppress>
     <suppress>
@@ -28,6 +48,12 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-config@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-config-5.3.4.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-config@.*$</packageUrl>
         <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
@@ -36,6 +62,12 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.3.4.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
         <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
@@ -44,6 +76,12 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.3.4.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
@@ -52,6 +90,13 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.3.4.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    
 </suppressions>
