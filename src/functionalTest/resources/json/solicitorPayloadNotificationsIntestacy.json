@@ -25,6 +25,7 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "otherExecutorExists": "No",
+      "boSendToBulkPrint": "No",
       "outsideUKGrantCopies": null,
       "applicationType": "Solicitor",
       "deceasedAddress": {
@@ -63,22 +64,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "probateDocumentsGenerated": [
-        {
-          "id": "161186cd-24ee-4e37-8793-b388ebc94443",
-          "value": {
-            "DocumentLink": {
-              "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
-              "document_filename": "digitalGrantDraft.pdf",
-              "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
-            },
-            "DocumentType": "digitalGrantDraft",
-            "DocumentFileName": null,
-            "DocumentDateAdded": "2018-08-03",
-            "DocumentGeneratedBy": "30"
-          }
-        }
-      ],
+      "probateDocumentsGenerated": [],
       "solsSolicitorEmail": "solicitor@hmcts-test.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
@@ -112,7 +98,7 @@
       "solsSolicitorNotApplyingReason": null,
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
-      "registryLocation": "Birmingham",
+      "registryLocation": "CTSC",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
       "solsSOTJobTitle": "job title"
@@ -331,7 +317,7 @@
       "primaryApplicantHasAlias": "No",
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
-      "registryLocation": "Birmingham",
+      "registryLocation": "CTSC",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300"
     },
