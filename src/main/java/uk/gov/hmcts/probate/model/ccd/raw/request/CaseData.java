@@ -362,7 +362,7 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
 
     private final String caseType;
