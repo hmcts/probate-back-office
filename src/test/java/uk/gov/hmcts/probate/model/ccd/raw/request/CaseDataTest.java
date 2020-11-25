@@ -84,7 +84,6 @@ public class    CaseDataTest {
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
-    @InjectMocks
     private CaseData underTest;
 
     @Before
