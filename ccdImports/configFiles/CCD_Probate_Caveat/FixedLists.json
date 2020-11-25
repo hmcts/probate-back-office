@@ -34,6 +34,6 @@
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "coversheet", "ListElement": "Coversheet"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "form", "ListElement": "Form"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "other", "ListElement": "Other"},
-  {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "fee account", "ListElement": "Fee account"},
-  {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "cheque", "ListElement": "Cheque (Citizen's only)"}
+  {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "fee account", "ListElement": "Fee account", "DisplayOrder": 1},
+  {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "cheque", "ListElement": "Cheque - DO NOT USE", "DisplayOrder": 2}
 ]

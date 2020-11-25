@@ -35,8 +35,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
-    private static final String IHT_NET = "8,000";
-    private static final String IHT_GROSS = "10,000";
+    private static final String IHT_NET = "8,000.00";
+    private static final String IHT_GROSS = "10,000.00";
+    private static final String IHT_NET_PENCE = "8,123.50";
+    private static final String IHT_GROSS_PENCE = "10,234.92";
     private static final String GOP = "Grant of Probate";
     private static final String DIED_ON = "Died on";
     private static final String DIED_ON_OR_SINCE = "Died on or since";
@@ -124,15 +126,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
-    private void validatePostSuccess(String jsonFileName, String path) {
-        RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .then().assertThat().statusCode(200);
-    }
-
     private String generateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -171,7 +164,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
@@ -185,7 +178,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
@@ -199,7 +192,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
@@ -509,6 +502,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGetDigitalGrantMoneyFormatWithPence() {
+        String response = generateDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(IHT_GROSS_PENCE));
+        assertTrue(response.contains(IHT_NET_PENCE));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftMoneyFormatWithPence() {
+        String response = generateDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json", GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(IHT_GROSS_PENCE));
+        assertTrue(response.contains(IHT_NET_PENCE));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+
+    }
+
+    @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT_DRAFT);
 
@@ -677,7 +692,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
-
+    
     //Commented out due to Docmosis not allowing screen readers as images overlay all text
     //@Test
     //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
