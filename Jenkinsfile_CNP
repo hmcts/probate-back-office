@@ -91,15 +91,6 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "back-office Code Coverage Report"
     ]
-
-    publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "build/reports/findbugs",
-            reportFiles          : "main.html",
-            reportName           : "back-office find Bugs Report"
-    ]
   }
 
   before('smoketest:preview') {
