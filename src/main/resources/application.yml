@@ -230,7 +230,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
       welsh:
         personal:
-          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
           applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
