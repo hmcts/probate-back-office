@@ -1,7 +1,0 @@
-[
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "deliveryDate", "Label": "Delivery Date", "DisplayOrder": 1},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "openingDate", "Label": "Openning Date", "DisplayOrder": 2},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "poBox", "Label": "POBox", "DisplayOrder": 3},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "poBoxJurisdiction", "Label": "POBox Jurisdiction", "DisplayOrder": 4},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "attachToCaseReference", "Label": "Attach to Case Reference", "DisplayOrder": 5}
-]
