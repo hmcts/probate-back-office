@@ -20,7 +20,7 @@ postgresql:
     enabled: false
 
 idam-pr:
-  enabled: true
+  enabled: false
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
   redirect_uris:
     Probate:
