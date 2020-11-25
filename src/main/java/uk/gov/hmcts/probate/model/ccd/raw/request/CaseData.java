@@ -243,15 +243,11 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailDocsReceivedNotification;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailGrantIssuedNotification;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
@@ -264,10 +260,13 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
@@ -495,17 +494,14 @@ public class CaseData extends CaseDataParent {
     private final String boCaseStopCaveatId;
 
     private final String boCaveatStopEmailNotificationRequested;
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boCaveatStopEmailNotification = getDefaultValueForCaveatStopEmailNotification();
+
+    private final String boCaveatStopEmailNotification;
 
     private final String boCaveatStopSendToBulkPrintRequested;
 
     private final String boEmailGrantReIssuedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantReissuedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailGrantReissuedNotification;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
@@ -532,6 +528,7 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailRequestInfoNotificationRequested;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
 
     private final Categories categories;
@@ -540,9 +537,7 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailRequestInfoNotification;
 
     @Getter(lazy = true)
     private final String boRequestInfoSendToBulkPrint = YES;
