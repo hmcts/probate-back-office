@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -904,6 +905,26 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
+        if (caseData.getBoEmailGrantReissuedNotification() == null) {
+            builder.boEmailGrantReissuedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoEmailDocsReceivedNotification() == null) {
+            builder.boEmailDocsReceivedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoEmailGrantIssuedNotification() == null) {
+            builder.boEmailGrantIssuedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoCaveatStopEmailNotification() == null) {
+            builder.boCaveatStopEmailNotification(getDefaultValueForCaveatStopEmailNotification(caseData));
+        }
+
+        if (caseData.getBoEmailRequestInfoNotification() == null) {
+            builder.boEmailRequestInfoNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
         if (isIntestacy(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
@@ -1115,6 +1136,26 @@ public class CallbackResponseTransformer {
         } else {
             builder
                     .willExists(ANSWER_NO);
+        }
+
+        if (caseData.getBoEmailGrantReissuedNotification() == null) {
+            builder.boEmailGrantReissuedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoEmailDocsReceivedNotification() == null) {
+            builder.boEmailDocsReceivedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoEmailGrantIssuedNotification() == null) {
+            builder.boEmailGrantIssuedNotification(getDefaultValueForEmailNotifications(caseData));
+        }
+
+        if (caseData.getBoCaveatStopEmailNotification() == null) {
+            builder.boCaveatStopEmailNotification(getDefaultValueForCaveatStopEmailNotification(caseData));
+        }
+
+        if (caseData.getBoEmailRequestInfoNotification() == null) {
+            builder.boEmailRequestInfoNotification(getDefaultValueForEmailNotifications(caseData));
         }
 
         if (isIntestacy(caseData)) {
@@ -1438,5 +1479,15 @@ public class CallbackResponseTransformer {
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+    }
+
+
+    public String getDefaultValueForEmailNotifications(CaseData caseData) {
+        return (caseData.getPrimaryApplicantEmailAddress() == null || caseData.getPrimaryApplicantEmailAddress().isEmpty())
+                && (caseData.getSolsSolicitorEmail() == null || caseData.getSolsSolicitorEmail().isEmpty()) ? NO : YES;
+    }
+
+    public String getDefaultValueForCaveatStopEmailNotification(CaseData caseData) {
+        return caseData.getPrimaryApplicantEmailAddress() == null || caseData.getPrimaryApplicantEmailAddress().isEmpty() ? NO : YES;
     }
 }
