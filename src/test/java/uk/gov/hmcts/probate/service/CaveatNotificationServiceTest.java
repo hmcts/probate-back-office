@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,13 +25,14 @@ import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,6 +41,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
@@ -330,6 +333,67 @@ public class CaveatNotificationServiceTest {
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testGenerateExpiryDateWithCaveatorEmailAddress() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .caveatorEmailAddress("caveator@email.com")
+                .applicationType(ApplicationType.SOLICITOR)
+                .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+                .notificationsGenerated(DOCUMENTS_LIST)
+                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
+    }
+
+    @Test
+    public void testGenerateExpiryDateWithoutCaveatorEmailAddress() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .applicationType(ApplicationType.SOLICITOR)
+                .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+                .notificationsGenerated(DOCUMENTS_LIST)
+                .expiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString())
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(LocalDate.now().plusMonths(CAVEAT_LIFESPAN).toString(), caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
