@@ -6,8 +6,11 @@ import io.restassured.response.Response;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.time.LocalDate;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
@@ -100,6 +103,19 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN)+ "\""));
+
+    }
+
+    @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
+    }
+
+    @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheet() {
         String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
@@ -143,15 +159,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("postcode"));
         assertTrue(response.contains("county"));
         assertTrue(response.contains("country"));
-    }
-
-    private void validatePostSuccess(String jsonFileName, String path) {
-        RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .then().assertThat().statusCode(200);
     }
 
     private String generateDocument(String jsonFileName, String path, int placeholder) {
