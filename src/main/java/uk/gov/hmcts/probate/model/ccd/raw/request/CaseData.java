@@ -741,9 +741,17 @@ public class CaseData extends CaseDataParent {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
     }
 
+    public String getValueForEmailNotifications(String emailNotifications) {
+        return emailNotifications != null ? emailNotifications : getDefaultValueForEmailNotifications();
+    }
+
     public String getDefaultValueForEmailNotifications() {
         return (primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty())
                 && (solsSolicitorEmail == null || solsSolicitorEmail.isEmpty()) ? NO : YES;
+    }
+    
+    public String getValueForCaveatStopEmailNotification() {
+        return getBoCaveatStopEmailNotification() != null ? getBoCaveatStopEmailNotification() : getDefaultValueForCaveatStopEmailNotification();
     }
 
     public String getDefaultValueForCaveatStopEmailNotification() {
@@ -751,7 +759,23 @@ public class CaseData extends CaseDataParent {
     }
 
     public boolean isDocsReceivedEmailNotificationRequested() {
-        return YES.equals(getBoEmailDocsReceivedNotification());
+        return YES.equals(getValueForEmailNotifications(getBoEmailDocsReceivedNotification()));
+    }
+
+    public boolean isGrantIssuedEmailNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailGrantIssuedNotification()));
+    }
+
+    public boolean isGrantReissuedEmailNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailGrantReissuedNotification()));
+    }
+
+    public boolean isBoEmailRequestInfoNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailRequestInfoNotification()));
+    }
+
+    public boolean isCaveatStopEmailNotificationRequested() {
+        return YES.equals(getValueForCaveatStopEmailNotification());
     }
 
     public boolean isSendForBulkPrintingRequested() {
@@ -762,28 +786,12 @@ public class CaseData extends CaseDataParent {
         return YES.equals(getBoGrantReissueSendToBulkPrint());
     }
 
-    public boolean isGrantIssuedEmailNotificationRequested() {
-        return YES.equals(getBoEmailGrantIssuedNotification());
-    }
-
-    public boolean isGrantReissuedEmailNotificationRequested() {
-        return YES.equals(getBoEmailGrantReissuedNotification());
-    }
-
     public boolean isCaveatStopNotificationRequested() {
         return YES.equals(getBoCaveatStopNotification());
     }
 
-    public boolean isCaveatStopEmailNotificationRequested() {
-        return YES.equals(getBoCaveatStopEmailNotification());
-    }
-
     public boolean isCaveatStopSendToBulkPrintRequested() {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
-    }
-
-    public boolean isBoEmailRequestInfoNotificationRequested() {
-        return YES.equals(getBoEmailRequestInfoNotification());
     }
 
     public boolean isBoRequestInfoSendToBulkPrintRequested() {
