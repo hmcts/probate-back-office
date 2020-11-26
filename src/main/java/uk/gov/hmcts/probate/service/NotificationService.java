@@ -377,6 +377,7 @@ public class NotificationService {
             default:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
+        log.info("Return the SendEmailResponse");
         return response;
     }
 
