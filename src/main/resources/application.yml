@@ -157,6 +157,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+# http://dm-store:8080
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
