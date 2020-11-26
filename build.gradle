@@ -1,28 +1,29 @@
 buildscript {
-  ext {
-    springBootVersion = '2.1.3.RELEASE'
-  }
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
-    classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
-  }
+    ext {
+        springBootVersion = '2.1.3.RELEASE'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
+        classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
+    }
 }
 
 plugins {
-  id 'application'
-  id 'checkstyle'
-  id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-  id 'org.springframework.boot' version '2.1.3.RELEASE'
-  id 'org.owasp.dependencycheck' version '6.0.1'
-  id 'com.github.ben-manes.versions' version '0.15.0'
-  id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-  id 'info.solidsoft.pitest' version '1.3.0'
-  id 'jacoco'
+    id 'application'
+    id 'checkstyle'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'org.owasp.dependencycheck' version '6.0.1'
+    id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.gorylenko.gradle-git-properties' version '1.4.21'
+    id 'info.solidsoft.pitest' version '1.3.0'
+    id 'jacoco'
+    id 'au.com.dius.pact' version '4.1.0'
 }
 
 apply plugin: 'project-report'
@@ -47,117 +48,137 @@ ext['selenium.version']='3.8.1'
 // check.dependsOn dependencyCheckAnalyze
 // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
 tasks.withType(Checkstyle).each { checkstyleTask ->
-  checkstyleTask.doLast {
-    reports.all { report ->
-      def outputFile = report.destination
-      if (outputFile.exists() && outputFile.text.contains("<error ")) {
-        //throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
-      }
+    checkstyleTask.doLast {
+        reports.all { report ->
+            def outputFile = report.destination
+            if (outputFile.exists() && outputFile.text.contains("<error ")) {
+                //throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
+            }
+        }
     }
-  }
 }
 
 jacoco {
-  toolVersion = '0.8.2'
+    toolVersion = '0.8.2'
 }
 
 sonarqube {
-  properties {
-    property "sonar.projectName", "PROBATE :: BACK-OFFICE"
-    property "sonar.projectKey", "Sols-CCD-Service-API"
-    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-    property "sonar.host.url", "https://sonar.reform.hmcts.net/"
-    property "sonar.pitest.mode", "reuseReport"
-    property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java"
-  }
+    properties {
+        property "sonar.projectName", "PROBATE :: BACK-OFFICE"
+        property "sonar.projectKey", "Sols-CCD-Service-API"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.host.url", "https://sonar.reform.hmcts.net/"
+        property "sonar.pitest.mode", "reuseReport"
+        property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+        property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java"
+    }
+}
+
+project.ext {
+    pactVersion = getCheckedOutGitCommitHash()
 }
 
 test.finalizedBy jacocoTestReport
 
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-  suppressionFile = 'dependency-check-suppressions.xml'
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFile = 'dependency-check-suppressions.xml'
 }
 
 pitest {
-  targetClasses = ['uk.gov.hmcts.probate.*']
-  threads = 10
-  outputFormats = ['XML', 'HTML']
-  timestampedReports = false
-  mutationThreshold = 50
-  timeoutConstInMillis = 30000
+    targetClasses = ['uk.gov.hmcts.probate.*']
+    threads = 10
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+    mutationThreshold = 50
+    timeoutConstInMillis = 30000
 }
 
 sonarqube {
-  properties {
-    property "sonar.pitest.mode", "reuseReport"
-    property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-  }
+    properties {
+        property "sonar.pitest.mode", "reuseReport"
+        property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+    }
 }
 
 sourceSets {
-  testSmoke {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/smokeTest/java')
+    testSmoke {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
     }
-    resources.srcDir file('src/smokeTest/resources')
-  }
-  testFunctional {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
+    testFunctional {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/functionalTest/java')
+        }
+        resources.srcDir file('src/functionalTest/resources')
     }
-    resources.srcDir file('src/functionalTest/resources')
-  }
-  testCaseCreator {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/caseCreator/java')
+
+    testCaseCreator {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/caseCreator/java')
+        }
+        resources.srcDir file('src/caseCreator/resources')
     }
-    resources.srcDir file('src/caseCreator/resources')
-  }
+    testPact {
+        java {
+          compileClasspath += main.output
+          runtimeClasspath += main.output
+          srcDir file('src/pactTest/java')
+        }
+        resources.srcDir file('src/pactTest/resources')
+    }
 }
 
+
 task smoke(type: Test) {
-  description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.testSmoke.output.classesDirs
-  classpath = sourceSets.testSmoke.runtimeClasspath
+    description = "Runs Smoke Tests"
+    testClassesDirs = sourceSets.testSmoke.output.classesDirs
+    classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
 task functional(type: Test) {
-  description = "Runs functional Tests"
-  testClassesDirs = sourceSets.testFunctional.output.classesDirs
-  classpath = sourceSets.testFunctional.runtimeClasspath
-  finalizedBy aggregate
+    description = "Runs functional Tests"
+    testClassesDirs = sourceSets.testFunctional.output.classesDirs
+    classpath = sourceSets.testFunctional.runtimeClasspath
+    finalizedBy aggregate
 }
 
 functional.finalizedBy(aggregate)
 
 serenity {
-  reports = ["single-page-html"]
+    reports = ["single-page-html"]
 }
 
-
 task caseCreator(type: Test) {
-  description = "Runs functional Case creator Tests"
-  testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
-  classpath = sourceSets.testCaseCreator.runtimeClasspath
-  finalizedBy aggregate
+    description = "Runs functional Case creator Tests"
+    testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
+    classpath = sourceSets.testCaseCreator.runtimeClasspath
+    finalizedBy aggregate
+}
+
+task pactTask(type: Test) {
+  description = "Runs pact Tests"
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.testPact.output.classesDirs
+  classpath = sourceSets.testPact.runtimeClasspath
 }
 
 gitProperties {
-  gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
-  keys = ['git.commit.id','git.commit.time']
-  dateFormat = "yyyy-MM-dd'T'HH:mmZ"
-  dateFormatTimeZone = "GMT"
+    gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
+    keys = ['git.commit.id','git.commit.time']
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "GMT"
 }
 
 def versions = [
@@ -177,156 +198,195 @@ def versions = [
         probateCommonsVersion           : '1.1.0.2',
         ccdClient                       : '4.7.3',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '3.0.0'
+        serviceAuthVersion              : '3.0.0',
+        pact_version                    : '3.5.24'
 ]
 
 jacocoTestReport {
-  executionData(test)
-  reports {
-    xml.enabled = true
-    csv.enabled = false
-    xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-  }
+    executionData(test)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
 
 repositories {
-  mavenLocal()
-  mavenCentral()
-  jcenter()
-  maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
-  maven { url "https://repo.maven.apache.org/maven2" }
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 
 processResources {
-  from ('src/lib/AI-Agent.xml') {
-    into 'lib'
-  }
+    from ('src/lib/AI-Agent.xml') {
+        into 'lib'
+    }
 }
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
-  compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-  compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+    compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
+    compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
 
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
-  compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
-    force = true
-  }
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
+    compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
+        force = true
+    }
 
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+    compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
+    compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
+    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+    compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+    compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
+    compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
+    compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
-  compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
-  compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
-  compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-  compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
-  
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
+    compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
+    compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
+    compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
+    annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
 
-  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+    compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
-  compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
-  compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
-  compile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
-  compile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+    compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
 
-  compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
-  compile ('org.springframework.boot:spring-boot-starter-data-jpa')
-  compile ('org.postgresql:postgresql:42.2.5') {
-    exclude module: 'slf4j-simple'
-  }
-  compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
-  compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
-  annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
+    compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
+    compile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
+    compile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
-  testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
-  testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
-    exclude group: 'com.vaadin.external.google', module:'android-json'
-  }
-  testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
-  testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
-  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
-  testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-  testCompile "org.junit.jupiter:junit-jupiter-api:5.6.2"
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
-  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-   
-  testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
-  testSmokeCompile sourceSets.main.runtimeClasspath
-  testSmokeCompile sourceSets.test.runtimeClasspath
+    compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
+    compile ('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile ('org.postgresql:postgresql:42.2.5') {
+        exclude module: 'slf4j-simple'
+    }
+    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
+    compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
-  testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
-  testFunctionalCompile sourceSets.main.runtimeClasspath
-  testFunctionalCompile sourceSets.test.runtimeClasspath
-  testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testFunctionalCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testFunctionalCompile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
-    force = true
-  }
+    testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+    testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
+        exclude group: 'com.vaadin.external.google', module:'android-json'
+    }
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
+    testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.2"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
 
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testCaseCreatorCompile sourceSets.main.runtimeClasspath
-  testCaseCreatorCompile sourceSets.test.runtimeClasspath
-  testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-}
+    testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    testSmokeCompile sourceSets.main.runtimeClasspath
+    testSmokeCompile sourceSets.test.runtimeClasspath
+
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+    testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
+    testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+    testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+    testFunctionalCompile sourceSets.main.runtimeClasspath
+    testFunctionalCompile sourceSets.test.runtimeClasspath
+    testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+    testFunctionalCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
+    testFunctionalCompile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
+        force = true
+    }
+
+    testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+    testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+    testCaseCreatorCompile sourceSets.main.runtimeClasspath
+    testCaseCreatorCompile sourceSets.test.runtimeClasspath
+    testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+    testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
+
+    testPactCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    testPactCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    testPactCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    testPactCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    testPactCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    testPactCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+    testPactCompile sourceSets.main.runtimeClasspath
+    testPactCompile sourceSets.test.runtimeClasspath
+
+    testCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
+    testPactCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
+    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: versions.pact_version
+    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: versions.pact_version
+    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+  //  testContractCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
+   // testContractAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+ }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << '-parameters'  
+    options.compilerArgs << '-parameters'
 }
 
 bootJar {
-  archiveName = 'back-office.jar'
-  manifest {
+    archiveName = 'back-office.jar'
+    manifest {
 
-    attributes 'Implementation-Title': project.name,
-            'Implementation-Version': project.version
-  }
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
 }
 
 task printVersion {
-  doLast {
-    print project.version
-  }
+    doLast {
+        print project.version
+    }
 }
 
 run {
-  if (debug == 'true') {
-    jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
-  }
+    if (debug == 'true') {
+        jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
+    }
 }
+
+pact {
+    publish {
+        pactDirectory = 'target/pacts'
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?:'http://localhost:80'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+        version = project.pactVersion
+    }
+}
+
+def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+
+
