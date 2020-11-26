@@ -389,8 +389,27 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private void verifyDocumentAndEmailNotificationGenerated(String api, String payload, String documentText, String emailText) {
         ResponseBody responseBody = validatePostSuccess(payload, api);
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
-        assertExpectedContents(documentText, EMAIL_NOTIFICATION_URL, responseBody);
+        verifyDocumentGenerated(jsonPath, documentText);
+        verifyEmailGenerated(jsonPath, emailText);
     }
 
+    private void verifyDocumentGenerated(JsonPath jsonPath, String documentText) {
+        String expectedDocumentText = utils.getJsonFromFile(documentText);
+        expectedDocumentText = expectedDocumentText.replace("\n", "").replace("\r", "");
+
+        String documentUrl = jsonPath.get(GENERATED_DOCUMENT_URL);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedDocumentText));
+    }
+
+    private void verifyEmailGenerated(JsonPath jsonPath, String emailText) {
+        String expectedEmailText = utils.getJsonFromFile(emailText);
+        expectedEmailText = expectedEmailText.replace("\n", "").replace("\r", "");
+
+        String emailUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
+        String response = utils.downloadPdfAndParseToString(emailUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedEmailText));
+    }
 }
