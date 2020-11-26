@@ -249,8 +249,7 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailGrantIssuedNotification;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boSendToBulkPrint = YES;
 
     private final String boSendToBulkPrintRequested;
@@ -503,12 +502,10 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailGrantReissuedNotification;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boCaveatStopSendToBulkPrint = YES;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boGrantReissueSendToBulkPrint = YES;
 
     private final String boGrantReissueSendToBulkPrintRequested;
@@ -539,12 +536,12 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailRequestInfoNotification;
 
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boRequestInfoSendToBulkPrint = YES;
 
     private final String boRequestInfoSendToBulkPrintRequested;
 
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boAssembleLetterSendToBulkPrint = YES;
 
     private final String boAssembleLetterSendToBulkPrintRequested;
