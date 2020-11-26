@@ -32,3 +32,5 @@ node_modules/\.bin/
 node_modules/
 
 src/test/end-to-end/output/
+
+yarn.lock

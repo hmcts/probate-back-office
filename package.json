@@ -11,22 +11,28 @@
     "eslint": "NODE_PATH=. eslint .",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
-    "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
+    "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test-e2e-caveatPath4": "BO_E2E_TEST_PATH_TO_RUN=./paths/caveatPath4.js NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test-e2e-grantOfProbatePath": "BO_E2E_TEST_PATH_TO_RUN=./paths/grantOfProbatePath.js NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test-e2e-caseProgressStopEscalateIssue": "BO_E2E_TEST_PATH_TO_RUN=./paths/caseProgressStopEscalateIssuePath.js BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 BO_E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test-e2e-caseProgressStandard": "BO_E2E_TEST_PATH_TO_RUN=./paths/caseProgressStandardPath.js BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 BO_E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
   },
   "dependencies": {
     "require-directory": "^2.1.1"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "chai-string": "^1.5.0",
     "chai-http": "^4.0.0",
+    "chai-string": "^1.5.0",
     "codeceptjs": "^1.4.6",
+    "date-fns": "^1.30.1",
     "eslint": "4.1.1 ",
     "eslint-plugin-mocha": "^4.8.0",
     "istanbul": "^0.4.5",
     "mocha": "^2.5.3",
     "mocha-jenkins-reporter": "^0.3.8",
     "mochawesome": "^2.0.0",
+    "moment": "^2.29.1",
     "nock": "^9.3.0",
     "nodemon": "^1.11.0",
     "nsp": "^2.6.2",
@@ -45,7 +51,6 @@
     "unirest": "^0.5.1",
     "uuid": "^3.1.0",
     "watch": "^1.0.1",
-    "when": "^3.7.7",
-    "date-fns": "^1.30.1"
+    "when": "^3.7.7"
   }
 }

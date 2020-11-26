@@ -1,0 +1,68 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Mocha test end-end full functional",
+            "request": "launch",
+            "runtimeArgs": [
+                "test:fullfunctional",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caveatPath4",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caveatPath4",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end grantOfProbatePath",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbatePath",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStopEscalateIssue",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStopEscalateIssue",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStandard",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStandard",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        }
+    ]
+}
