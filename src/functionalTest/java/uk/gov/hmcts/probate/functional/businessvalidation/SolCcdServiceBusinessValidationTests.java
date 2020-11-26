@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
@@ -27,6 +29,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
+    public static final String NOTIFICATION_DOCUMENT_BINARY_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
 
     @Test
@@ -190,6 +193,82 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithoutEmail() {
+        String payload = getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"fname@fttest.com\",", "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() {
+        String payload = getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"fname@fttest.com\",", "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithEmail() {
+        String payload = getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithEmail() {
+        String payload = getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithoutEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"probBackosol@gmail.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithoutEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"probBackosol@gmail.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithEmail() {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -366,15 +445,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .when().post(path).andReturn();
 
         return jsonResponse.getBody().asString();
-    }
-
-    private void validatePostSuccess(String jsonFileName, String URL) {
-        RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(URL)
-                .then().assertThat().statusCode(200);
     }
 
     private void validatePostSuccessAndCheckValue(String jsonPayload, String URL, String caseDataAttribute, String caseDataValue) {

@@ -209,6 +209,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
           applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "82373bf9-b566-4bf4-95c8-bd2d51615070"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -220,6 +221,7 @@ notifications:
           grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
           caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
@@ -228,7 +230,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
       welsh:
         personal:
-          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
           applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
@@ -249,6 +251,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "82373bf9-b566-4bf4-95c8-bd2d51615070"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -259,6 +262,7 @@ notifications:
           grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
           caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
