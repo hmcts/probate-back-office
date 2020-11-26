@@ -1367,6 +1367,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1380,6 +1383,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1393,6 +1399,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
