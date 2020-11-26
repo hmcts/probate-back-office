@@ -3,15 +3,17 @@
 const testConfig = require('src/test/config.js');
 const createCaseConfig = require('./createCaseConfig');
 
-module.exports = function (jurisdiction, caseType, event) {
+module.exports = async function (jurisdiction, caseType, event, waitTime) {
 
     const I = this;
-    I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
+    waitTime = waitTime === null || waitTime === undefined ? 20 : waitTime;
+    await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.wait(20);
-    I.selectOption('#cc-jurisdiction', jurisdiction);
-    I.selectOption('#cc-case-type', caseType);
-    I.selectOption('#cc-event', event);
+    await I.wait(waitTime);
+    await I.waitForElement('#cc-jurisdiction');
+    await I.selectOption('#cc-jurisdiction', jurisdiction);
+    await I.selectOption('#cc-case-type', caseType);
+    await I.selectOption('#cc-event', event);
 
-    I.waitForNavigationToComplete(createCaseConfig.startButton);
+    await I.waitForNavigationToComplete(createCaseConfig.startButton);
 };

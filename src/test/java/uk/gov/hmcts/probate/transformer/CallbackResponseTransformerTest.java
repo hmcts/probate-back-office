@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -80,9 +81,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -366,6 +365,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private SolicitorExecutorService solicitorExecutorService;
+
+    @Mock
+    private TaskListUpdateService taskListUpdateService;
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -654,6 +656,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(taskListUpdateService.generateTaskList(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class)))
+                .thenAnswer(invocation -> invocation.getArgument(1));
+
     }
 
     @Test
@@ -3461,5 +3466,19 @@ public class CallbackResponseTransformerTest {
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
         assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
+    }
+
+    @Test
+    public void shouldInvokeGenerateTaskList() {
+        CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED_STR, 1L);
+        caseDetails.setState("CaseCreated");
+
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
+        verify(taskListUpdateService, times(1) ).generateTaskList(any(), any());
+
     }
 }
