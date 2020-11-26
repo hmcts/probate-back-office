@@ -152,7 +152,7 @@ public class CallbackResponseTransformer {
                     .build();
         }
         responseCaseDataBuilder
-                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotificationRequested(caseData.getValueForCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
@@ -600,7 +600,7 @@ public class CallbackResponseTransformer {
                 .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
 
                 .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
-                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotification(caseData.getValueForCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
                 .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
@@ -904,12 +904,6 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        builder.boCaveatStopEmailNotification(caseData.getValueForCaveatStopEmailNotification());
-        builder.boEmailGrantReissuedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailGrantReissuedNotification()));
-//        builder.boEmailDocsReceivedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailDocsReceivedNotification()));
-//        builder.boEmailGrantIssuedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailGrantIssuedNotification()));
-//        builder.boEmailRequestInfoNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailRequestInfoNotification()));
-
         if (isIntestacy(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
@@ -919,24 +913,28 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (isPAEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -1123,12 +1121,6 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        builder.boCaveatStopEmailNotification(caseData.getValueForCaveatStopEmailNotification());
-        builder.boEmailGrantReissuedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailGrantReissuedNotification()));
-//        builder.boEmailDocsReceivedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailDocsReceivedNotification()));
-//        builder.boEmailGrantIssuedNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailGrantIssuedNotification()));
-//        builder.boEmailRequestInfoNotification(caseData.getValueForEmailNotifications(caseData.getBoEmailRequestInfoNotification()));
-
         if (isIntestacy(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
@@ -1138,12 +1130,14 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
