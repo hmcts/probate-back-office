@@ -121,7 +121,6 @@ sourceSets {
         }
         resources.srcDir file('src/functionalTest/resources')
     }
-
     testCaseCreator {
         java {
             compileClasspath += main.output
@@ -168,11 +167,12 @@ task caseCreator(type: Test) {
 }
 
 task pactTask(type: Test) {
-  description = "Runs pact Tests"
-  useJUnitPlatform()
+  description="Runs the pact Tests"
+  //useJUnitPlatform()
   testClassesDirs = sourceSets.testPact.output.classesDirs
   classpath = sourceSets.testPact.runtimeClasspath
 }
+
 
 gitProperties {
     gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
@@ -227,6 +227,14 @@ processResources {
 }
 
 dependencies {
+
+    def withoutNetty = {
+        exclude group: 'io.netty', module: 'netty-handler'
+        exclude group: 'io.netty', module: 'netty-codec-http2'
+        exclude group: 'io.netty', module: 'netty-transport-native-kqueue'
+        exclude group: 'io.netty', module: 'netty-transport-native-epoll'
+    }
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
@@ -333,21 +341,34 @@ dependencies {
     testPactCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testPactCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
     testPactCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-    testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
-    testPactCompile sourceSets.main.runtimeClasspath
-    testPactCompile sourceSets.test.runtimeClasspath
 
     testCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
     testPactCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
+
     testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: versions.pact_version
     testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: versions.pact_version
-    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+
+    
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutNetty
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutNetty
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutNetty
+
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: "3.5.24"
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: "3.5.24"
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer', version: "3.5.24"
+//    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer', version: "3.5.24"
+
     testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
-  //  testContractCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-   // testContractAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+
+    testPactCompile sourceSets.main.runtimeClasspath
+    testPactCompile sourceSets.test.runtimeClasspath
+
+
+
+    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+
+    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+
  }
 
 tasks.withType(JavaCompile) {
@@ -369,11 +390,24 @@ task printVersion {
     }
 }
 
+//task runAndPublishConsumerPactTests(type: Test){
+//    logger.lifecycle("Runs pact Tests")
+//    testClassesDirs = sourceSets.testPact.output.classesDirs
+//    classpath = sourceSets.contractTest.runtimeClasspath
+//
+//}
+
+
 run {
     if (debug == 'true') {
         jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
     }
 }
+
+//runAndPublishConsumerPactTests.dependsOn contract
+//
+//runAndPublishConsumerPactTests.finalizedBy pactPublish
+
 
 pact {
     publish {
