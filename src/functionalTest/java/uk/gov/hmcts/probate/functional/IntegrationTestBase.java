@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Rule;
@@ -16,7 +15,6 @@ import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import static junit.framework.TestCase.assertTrue;
 
-@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
 public abstract class IntegrationTestBase {
@@ -45,6 +43,7 @@ public abstract class IntegrationTestBase {
     public static void setEvidenceManagementUrlAsBaseUri() {
         RestAssured.baseURI = evidenceManagementUrl;
     }
+
     @Autowired
     protected FunctionalTestUtils utils;
 
@@ -56,11 +55,11 @@ public abstract class IntegrationTestBase {
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
         return request.replaceAll(originalAttr, updatedAttr);
     }
-    
+
     protected String getJsonFromFile(String jsonFileName) {
         return utils.getJsonFromFile(jsonFileName);
     }
-    
+
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
@@ -92,7 +91,6 @@ public abstract class IntegrationTestBase {
         String documentUrl = jsonPath.get(responseDocumentUrl);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
-        log.info("response:" + response);
         assertTrue(response.contains(expectedText));
     }
 
