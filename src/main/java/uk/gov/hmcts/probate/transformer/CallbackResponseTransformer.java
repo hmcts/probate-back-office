@@ -663,7 +663,8 @@ public class CallbackResponseTransformer {
                 .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
-                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+                .qualifiedLegalProfessional(caseData.getQualifiedLegalProfessional());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
