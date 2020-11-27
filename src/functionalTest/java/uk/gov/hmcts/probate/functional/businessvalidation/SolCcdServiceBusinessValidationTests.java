@@ -309,18 +309,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyBadRequestSuccessForCaseStopped() {
-        String payload = utils.getJsonFromFile("solicitorExecutorsCaseStopped.json");
-        payload =  payload.replace("Solicitor","Solicitor123");
-
-         RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(payload)
-                .when().post(CASE_STOPPED_URL)
-                .thenReturn().then().statusCode(400).log().all(true);
-    }
-    @Test
     public void verifyRequestSuccessForResolveStop() {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
     }
