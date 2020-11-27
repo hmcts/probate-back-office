@@ -457,10 +457,14 @@ public class CallbackResponseTransformerTest {
                 .solsDeceasedAliasNamesList(ALIAS_NAMES)
                 .solsSolicitorAppReference(APP_REF)
                 .solsAdditionalInfo(ADDITIONAL_INFO)
+                .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
                 .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
+                .boEmailGrantReissuedNotification(YES)
+                .boEmailDocsReceivedNotification(BO_DOCS_RECEIVED)
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
+                .boCaveatStopEmailNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaveatStopNotificationRequested(CAVEAT_STOP_NOTIFICATION)
                 .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
@@ -513,6 +517,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK)
                 .statementOfTruthDocument(SOT)
                 .boStopDetailsDeclarationParagraph(YES)
+                .boEmailRequestInfoNotification(YES)
                 .boEmailRequestInfoNotificationRequested(YES)
                 .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
@@ -975,6 +980,7 @@ public class CallbackResponseTransformerTest {
         CaseData caseData = caseDataBuilder
                 .solsSolicitorEmail(null)
                 .primaryApplicantEmailAddress(null)
+                .boEmailDocsReceivedNotification(NO)
                 .boEmailDocsReceivedNotificationRequested(NO)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -1366,6 +1372,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1379,6 +1388,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1392,6 +1404,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test

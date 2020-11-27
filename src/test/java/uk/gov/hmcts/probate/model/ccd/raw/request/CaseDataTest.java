@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -84,7 +83,6 @@ public class    CaseDataTest {
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
-    @InjectMocks
     private CaseData underTest;
 
     @Before
@@ -499,6 +497,15 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedTrue() {
         final CaseData caseData = CaseData.builder()
+                .boEmailRequestInfoNotification(YES)
+                .build();
+
+        assertEquals(true, caseData.isBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailRequestInfoNotificationRequestedFromDefaultTrue() {
+        final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantEmailAddress("test@test.com")
                 .build();
@@ -509,11 +516,172 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedFalse() {
         final CaseData caseData = CaseData.builder()
+                .boEmailRequestInfoNotification(NO)
+                .build();
+
+        assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailRequestInfoNotificationRequestedFromDefaultFalse() {
+        final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantEmailAddress(null)
                 .build();
 
         assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailDocsReceivedNotificationTrue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailDocsReceivedNotification(YES)
+                .build();
+
+        assertEquals(true, caseData.isDocsReceivedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailDocsReceivedNotificationFromDefaultTrue() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress("test@test.com")
+                .build();
+
+        assertEquals(true, caseData.isDocsReceivedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailDocsReceivedNotificationFalse() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailDocsReceivedNotification(NO)
+                .build();
+
+        assertEquals(false, caseData.isDocsReceivedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailDocsReceivedNotificationFromDefaultFalse() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress(null)
+                .build();
+
+        assertEquals(false, caseData.isDocsReceivedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantIssuedNotificationTrue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantIssuedNotification(YES)
+                .build();
+
+        assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantIssuedNotificationFromDefaultTrue() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress("test@test.com")
+                .build();
+
+        assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantIssuedNotificationFalse() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantIssuedNotification(NO)
+                .build();
+
+        assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress(null)
+                .build();
+
+        assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantReissuedNotificationTrue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantReissuedNotification(YES)
+                .build();
+
+        assertEquals(true, caseData.isGrantReissuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantReissuedNotificationWithDefaultTrue() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress("test@test.com")
+                .build();
+
+        assertEquals(true, caseData.isGrantReissuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantReissuedNotificationFalse() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantIssuedNotification(NO)
+                .build();
+
+        assertEquals(false, caseData.isGrantReissuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailGrantReissuedNotificationWithDefaultFalse() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress(null)
+                .build();
+
+        assertEquals(false, caseData.isGrantReissuedEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoCaveatStopEmailNotificationTrue() {
+        final CaseData caseData = CaseData.builder()
+                .boCaveatStopEmailNotification(YES)
+                .build();
+
+        assertEquals(true, caseData.isCaveatStopEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoCaveatStopEmailNotificationWithDefaultTrue() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress("test@test.com")
+                .build();
+
+        assertEquals(true, caseData.isCaveatStopEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoCaveatStopEmailNotificationFalse() {
+        final CaseData caseData = CaseData.builder()
+                .boCaveatStopEmailNotification(NO)
+                .build();
+
+        assertEquals(false, caseData.isCaveatStopEmailNotificationRequested());
+    }
+
+    @Test
+    public void isBoCaveatStopEmailNotificationWithDefaultFalse() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress(null)
+                .build();
+
+        assertEquals(false, caseData.isCaveatStopEmailNotificationRequested());
     }
 
     @Test
