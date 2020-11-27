@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: true
+  probate-ccd-stack: false
 
 postgresql:
   enabled: true
@@ -127,7 +127,7 @@ xui-webapp:
       JURISDICTIONS: PROBATE
 
 probate-submit-service:
-  enabled: true
+  enabled: false
   java:
     applicationPort: 8181
     ingressHost: ""
@@ -156,7 +156,7 @@ probate-submit-service:
     image: hmctspublic.azurecr.io/probate/submit-service:latest
 
 probate-business-service:
-  enabled: true
+  enabled: false
   java:
     ingressHost: ""
     environment:
@@ -179,7 +179,7 @@ probate-business-service:
     image: hmctspublic.azurecr.io/probate/business-service:latest
 
 probate-orchestrator-service:
-  enabled: true
+  enabled: false
   java:
     applicationPort: 8888
     environment:
@@ -222,7 +222,7 @@ probate-orchestrator-service:
           - schedulerCaseWorkerPass
 
 probate-frontend:
-  enabled: true
+  enabled: false
   nodejs:
     image: hmctspublic.azurecr.io/probate/frontend:latest
     ingressHost: probate-frontend-${SERVICE_FQDN}
@@ -260,7 +260,7 @@ probate-frontend:
         - https://${SERVICE_FQDN}/oauth2/callback
 
 probate-caveats-fe:
-  enabled: true
+  enabled: false
   nodejs:
     image: hmctspublic.azurecr.io/probate/caveats-fe:latest
     ingressHost: probate-caveats-frontend-${SERVICE_FQDN}
