@@ -2713,6 +2713,60 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldAddBPInformationForWelshGrantReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_DIGITAL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_DIGITAL_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshAdmonWillReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+
+    @Test
+    public void shouldAddBPInformationForWelshIntestacyReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_INTESTACY_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
     public void shouldAddBPInformationForAdmonWillReissueReprint() {
         Document document = Document.builder()
             .documentType(ADMON_WILL_GRANT_REISSUE)
