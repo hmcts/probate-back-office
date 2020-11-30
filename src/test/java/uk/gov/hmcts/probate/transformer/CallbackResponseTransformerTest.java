@@ -2767,6 +2767,48 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldAddBPInformationForWelshGrantReissueNoReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_DIGITAL_GRANT_REISSUE)
+            .build();
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshAdmonWillReissueNoReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
+            .build();
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshIntestacyReissueNoReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_INTESTACY_GRANT_REISSUE)
+            .build();
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+    }
+
+    @Test
     public void shouldAddBPInformationForAdmonWillReissueReprint() {
         Document document = Document.builder()
             .documentType(ADMON_WILL_GRANT_REISSUE)
