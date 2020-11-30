@@ -20,7 +20,7 @@ postgresql:
     enabled: false
 
 idam-pr:
-  enabled: false
+  enabled: true
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
   redirect_uris:
     Probate:
@@ -100,7 +100,7 @@ ccd:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
 
 xui-webapp:
-  enabled: false
+  enabled: true
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
