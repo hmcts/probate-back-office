@@ -2767,45 +2767,48 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshGrantReissueNoReprint() {
+    public void shouldNotAddBPInformationForWelshGrantReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_DIGITAL_GRANT_REISSUE)
             .build();
+        List<Document> documents = Arrays.asList(document);
         doAnswer(invoke -> {
             return true;
-        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE);
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
-        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
     }
 
     @Test
-    public void shouldAddBPInformationForWelshAdmonWillReissueNoReprint() {
+    public void shouldNotAddBPInformationForWelshAdmonWillReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
             .build();
+        List<Document> documents = Arrays.asList(document);
         doAnswer(invoke -> {
             return true;
-        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE);
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
-        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
     }
 
     @Test
-    public void shouldAddBPInformationForWelshIntestacyReissueNoReprint() {
+    public void shouldNotAddBPInformationForWelshIntestacyReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_INTESTACY_GRANT_REISSUE)
             .build();
+        List<Document> documents = Arrays.asList(document);
         doAnswer(invoke -> {
             return true;
-        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE);
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
-        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is("0"));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
     }
 
     @Test
