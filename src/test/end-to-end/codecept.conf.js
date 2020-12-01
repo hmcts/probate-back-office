@@ -8,7 +8,7 @@ exports.config = {
             'url': testConfig.TestFrontendUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': 1500,
+            'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
             'chrome': {
                 'ignoreHTTPSErrors': true,

@@ -1,23 +1,24 @@
 'use strict';
 
-module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
+module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
 
     const I = this;
 
     if (tabConfigFile.TestTimeToWaitForText) {
-        I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText);
+        await I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText);
     }
 
     if (tabConfigFile.testTimeToWaitForTab) {
-        I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab);
+        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab);
     }
 
-    I.see(caseRef);
-    I.click(tabConfigFile.tabName);
+    await I.see(caseRef);
+    await I.click(tabConfigFile.tabName);
 
-    tabConfigFile.fields.forEach(function (fieldName) {
-        I.see(fieldName);
-    });
+    for (let i = 0; i < tabConfigFile.fields.length; i++) {
+        // eslint-disable-next-line
+        await I.see(tabConfigFile.fields[i]);
+    }
 
     // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
     if (tabConfigFile.tabName === 'Event History') {
@@ -26,14 +27,16 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, end
 
         eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 
-        I.see(nextStep);
-        I.see(endState);
-        I.see(eventSummaryPrefix + dataConfigFile.summary);
-        I.see(eventSummaryPrefix + dataConfigFile.comment);
+        await I.see(nextStep);
+        await I.see(endState);
+        await I.see(eventSummaryPrefix + dataConfigFile.summary);
+        await I.see(eventSummaryPrefix + dataConfigFile.comment);
 
     } else {
-        tabConfigFile.dataKeys.forEach(function (dataKey) {
-            I.see(dataConfigFile[dataKey]);
-        });
+
+        for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
+            // eslint-disable-next-line
+            await I.see(dataConfigFile(tabConfigFile.dataKeys[i]));
+        }
     }
 };

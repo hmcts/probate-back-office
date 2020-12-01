@@ -42,8 +42,8 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Create a will lodgement';
-    I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     I.enterWillLodgementPage1('create');
     I.enterWillLodgementPage2('create', unique_deceased_user);
     I.enterWillLodgementPage3('create');
@@ -53,8 +53,8 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     // SECOND case - the main test case
 
     nextStepName = 'Create a will lodgement';
-    I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     I.enterWillLodgementPage1('create');
     I.enterWillLodgementPage2('create', unique_deceased_user);
     I.enterWillLodgementPage3('create');

@@ -218,7 +218,7 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorAddress(solsAddress)
                 .ukEstate(UK_ESTATE)
-                .applicationGrounds(APPLICATION_GROUNDS)
+                // .applicationGrounds(APPLICATION_GROUNDS) - commented for dtsb-904 as likely to be reinstated
                 .willDispose(YES)
                 .englishWill(NO)
                 .appointExec(YES)

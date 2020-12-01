@@ -39,7 +39,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';
-    I.selectNewCase();
+    await I.selectNewCase();
     I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create', unique_deceased_user);
@@ -51,8 +51,8 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     // SECOND case - the main test case
 
     nextStepName = 'Raise a caveat';
-    I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create', unique_deceased_user);
     I.enterCaveatPage3('create');
