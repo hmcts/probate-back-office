@@ -4,13 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -682,6 +678,159 @@ public class    CaseDataTest {
                 .build();
 
         assertEquals(false, caseData.isCaveatStopEmailNotificationRequested());
+    }
+
+    @Test
+    public void probateDocumentsGeneratedDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(new ArrayList<>(), caseData.getProbateDocumentsGenerated());
+    }
+
+    @Test
+    public void probateDocumentsGeneratedIgnoresDefault() {
+        List<CollectionMember<Document>> probateDocuments = new ArrayList<>();
+        CollectionMember<Document> probateDocument =
+                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                .build());
+        probateDocuments.add(probateDocument);
+
+        final CaseData caseData = CaseData.builder()
+                .probateDocumentsGenerated(probateDocuments)
+                .build();
+
+        assertEquals(probateDocuments, caseData.getProbateDocumentsGenerated());
+    }
+
+    @Test
+    public void probateNotificationsGeneratedDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(new ArrayList<>(), caseData.getProbateNotificationsGenerated());
+    }
+
+    @Test
+    public void probateNotificationsGeneratedIgnoresDefault() {
+        List<CollectionMember<Document>> probateNotifications = new ArrayList<>();
+        CollectionMember<Document> probateNotification =
+                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                .build());
+        probateNotifications.add(probateNotification);
+
+        final CaseData caseData = CaseData.builder()
+                .probateNotificationsGenerated(probateNotifications)
+                .build();
+
+        assertEquals(probateNotifications, caseData.getProbateNotificationsGenerated());
+    }
+
+    @Test
+    public void probateSotDocumentsGeneratedDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(new ArrayList<>(), caseData.getProbateSotDocumentsGenerated());
+    }
+
+    @Test
+    public void probateSotDocumentsGeneratedIgnoresDefault() {
+        List<CollectionMember<Document>> probateSOTDocuments = new ArrayList<>();
+        CollectionMember<Document> probateSOTDocument =
+                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                        .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                        .build());
+        probateSOTDocuments.add(probateSOTDocument);
+
+        final CaseData caseData = CaseData.builder()
+                .probateSotDocumentsGenerated(probateSOTDocuments)
+                .build();
+
+        assertEquals(probateSOTDocuments, caseData.getProbateSotDocumentsGenerated());
+    }
+
+    @Test
+    public void caseMatchesDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(new ArrayList<>(), caseData.getCaseMatches());
+    }
+
+    @Test
+    public void caseMatchesIgnoresDefault() {
+        List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+        CollectionMember<CaseMatch> caseMatch = new CollectionMember<>(CaseMatch.builder().fullName("Name One").build());
+        caseMatches.add(caseMatch);
+
+        final CaseData caseData = CaseData.builder()
+                .caseMatches(caseMatches)
+                .build();
+
+        assertEquals(caseMatches, caseData.getCaseMatches());
+    }
+
+    @Test
+    public void boCaveatStopSendToBulkPrintDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoCaveatStopSendToBulkPrint());
+    }
+
+    @Test
+    public void boCaveatStopSendToBulkPrintIgnoresDefault() {
+        final CaseData caseData = CaseData.builder()
+                .boCaveatStopSendToBulkPrint(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoCaveatStopSendToBulkPrint());
+    }
+
+    @Test
+    public void boGrantReissueSendToBulkPrintDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoGrantReissueSendToBulkPrint());
+    }
+
+    @Test
+    public void boGrantReissueSendToBulkPrintIgnoresDefault() {
+        final CaseData caseData = CaseData.builder()
+                .boGrantReissueSendToBulkPrint(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoGrantReissueSendToBulkPrint());
+    }
+
+    @Test
+    public void boRequestInfoSendToBulkPrintDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoRequestInfoSendToBulkPrint());
+    }
+
+    @Test
+    public void boRequestInfoSendToBulkPrintIgnoresDefault() {
+        final CaseData caseData = CaseData.builder()
+                .boRequestInfoSendToBulkPrint(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoRequestInfoSendToBulkPrint());
+    }
+
+    @Test
+    public void boAssembleLetterSendToBulkPrintDefaultsCorrectly() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoAssembleLetterSendToBulkPrint());
+    }
+
+    @Test
+    public void boAssembleLetterSendToBulkPrintIgnoresDefault() {
+        final CaseData caseData = CaseData.builder()
+                .boAssembleLetterSendToBulkPrint(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoAssembleLetterSendToBulkPrint());
     }
 
     @Test
