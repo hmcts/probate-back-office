@@ -10,7 +10,7 @@
 
     <!-- Specify the level specific to co.myapp.notifier -->
     <logger name="au.com.dius.pact">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <appender-ref ref="PACTSTDOUT"/>
     </logger>
 

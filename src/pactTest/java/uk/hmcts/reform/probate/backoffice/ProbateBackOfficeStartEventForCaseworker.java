@@ -1,12 +1,10 @@
 package uk.hmcts.reform.probate.backoffice;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.Event;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CaseType;
 import uk.gov.hmcts.reform.probate.model.cases.JurisdictionId;
 
@@ -24,9 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,8 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
@@ -45,7 +47,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest({
         "core_case_data.api.url : localhost:8891"
 })
-public class ProbateBackOfficeStartEventForCaseworker {
+public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOfficePact{
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
@@ -65,15 +67,31 @@ public class ProbateBackOfficeStartEventForCaseworker {
 
     CaseDataContent caseDataContent;
 
+    private Map<String, Object> caseDetailsMap;
+
     @Value("${ccd.bulk.eventid.create}")
     private String createEventId;
 
     private static final String USER_ID = "123456";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
+
     Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-
+    @BeforeAll
+    public void setUp() throws Exception {
+        caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
+        caseDataContent = CaseDataContent.builder()
+                .eventToken("someEventToken")
+                .event(
+                        Event.builder()
+                                .id(createEventId)
+                                .summary(DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY)
+                                .description(DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION)
+                                .build()
+                ).data(caseDetailsMap.get("case_data"))
+                .build();
+    }
     @BeforeEach
     public void setUpEachTest() throws InterruptedException {
         Thread.sleep(2000);
@@ -84,40 +102,42 @@ public class ProbateBackOfficeStartEventForCaseworker {
         Executor.closeIdleConnections();
     }
 
-    @Pact(state = "Submit event for citizen", provider = "ccd", consumer = "probate_backoffice")
-    RequestResponsePact submitEventForCitizen(PactDslWithProvider builder) throws IOException, JSONException {
+    @Pact(state = "Submit event for caseworkder", provider = "ccd", consumer = "probate_backoffice")
+    RequestResponsePact submitEventForCaseworker(PactDslWithProvider builder) throws IOException, JSONException {
         // @formatter:off
         return builder
-                .given("A submit request for citizen is requested")
-                .uponReceiving("a request for a valid submit event")
-                .path("/citizens/" + USER_ID + "/jurisdictions/"
-                        + JurisdictionId.PROBATE.name() + "/case-types/"
-                        + CaseType.GRANT_OF_REPRESENTATION.getName()
-                        + "/cases/" + CASE_ID
-                        + "/events")
-                .method("POST")
-                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN,
-                        SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
-                .matchQuery("ignore-warning", Boolean.TRUE.toString())
-                //.body(createJsonObject(caseDataContent))
-                .body("")
+                .given("A SubmitEvent for Caseworker is  requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A SubmitEvent for a caseworker is received.")
+                .path("/caseworkers/" + USER_ID + "/jurisdictions/"
+                        + jurisdictionId + "/case-types/"
+                        + caseType
+                        + "/cases/"
+                        +  CASE_ID
+                        + "/event-triggers/"
+                        + createEventId
+                        + "/token")
+                .method("GET")
+                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
+                .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .willRespondWith()
                 .matchHeader(HttpHeaders.CONTENT_TYPE, "\\w+\\/[-+.\\w]+;charset=(utf|UTF)-8")
-                .status(201)
-                //.body(createJsonObject(caseDetails))
-                .body("")
+                .status(200)
+                .body(buildStartEventReponse("100", "testServiceToken" , "emailAddress@email.com", false,false,false))
                 .toPact();
     }
 
     @Test
-    @PactTestFor(pactMethod = "submitEventForCitizen")
-    public void verifySubmitEventForCitizen() throws IOException, JSONException {
+    @PactTestFor(pactMethod = "submitEventForCaseworker")
+    public void verifySubmitEventForCaseworker() throws IOException, JSONException {
 
-        CaseDetails caseDetails = coreCaseDataApi.submitEventForCitizen(SOME_AUTHORIZATION_TOKEN,
-                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID.toString(), JurisdictionId.PROBATE.name(),
-                CaseType.GRANT_OF_REPRESENTATION.getName(), CASE_ID.toString(), Boolean.TRUE, caseDataContent);
+        final StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
+                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,caseType,String.valueOf(CASE_ID),createEventId);
 
-        assertThat(caseDetails.getId(), equalTo(CASE_ID));
+        assertThat(startEventResponse.getEventId(), is("100"));
+        assertThat(startEventResponse.getToken(), is("testServiceToken"));
+
+      //  assertCaseDetails(startEventResponse.getCaseDetails());
+
 
     }
 }
