@@ -59,7 +59,7 @@ public class FunctionalTestUtils {
 
     @Value("${user.auth.provider.oauth2.url}")
     private String authProviderUrl;
-    
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -96,8 +96,8 @@ public class FunctionalTestUtils {
 
     public Headers getHeaders(String serviceToken) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()));
     }
 
     public Headers getHeadersWithUserId() {
@@ -106,17 +106,17 @@ public class FunctionalTestUtils {
 
     private Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
         Response document = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(getHeadersWithUserId())
-                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(getHeadersWithUserId())
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
@@ -185,9 +185,9 @@ public class FunctionalTestUtils {
     public String getUserId(String email, String password) {
         String caseworkerToken = serviceAuthTokenGenerator.generateClientToken(email, password);
         Headers headers = Headers.headers(
-            new Header("Authorization", "Bearer " +caseworkerToken));
+            new Header("Authorization", "Bearer " + caseworkerToken));
 
-        String userInfoUrl = authProviderUrl +  "/details";
+        String userInfoUrl = authProviderUrl + "/details";
         Response userResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(headers)
@@ -196,13 +196,13 @@ public class FunctionalTestUtils {
         JsonPath jsonPath = JsonPath.from(userResponse.getBody().asString());
         return jsonPath.get("id");
     }
-    
+
     public Headers getHeadersWithCaseworkerUser() {
         String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " +authorizationToken));
+            new Header("Authorization", "Bearer " + authorizationToken));
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
@@ -211,13 +211,13 @@ public class FunctionalTestUtils {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " +authorizationToken),
+            new Header("Authorization", "Bearer " + authorizationToken),
             new Header("user-id", id));
     }
 
     public String createCaseAsCaseworker(String caseJson, String eventId) {
         String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/"+eventId+"/token";
+        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventId + "/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -226,8 +226,8 @@ public class FunctionalTestUtils {
      //   System.out.println( " StartForCaseworker ::: " + startResponse.prettyPrint() ) ;
 
         String token = startResponse.getBody().jsonPath().get("token");
-        String caseCreateJson = caseJson.replaceAll(TOKEN_PARM,token);
-        String submitForCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
+        String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
+        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -241,7 +241,7 @@ public class FunctionalTestUtils {
 
     public String findCaseAsCaseworker(String caseId) {
         String user = getCaseworkerUserId();
-        String ccdFindCaseUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/"+caseId;
+        String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId;
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -257,10 +257,10 @@ public class FunctionalTestUtils {
         String markAsReadyForExaminationUpdateJson = replaceAttribute(caseJson, TOKEN_PARM, updateToken);
         return continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
     }
-    
+
     public String startUpdateCaseAsCaseworker(String caseId, String eventId) {
         String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/"+caseId+"/event-triggers/"+eventId+"/token";
+        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/event-triggers/" + eventId + "/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -273,7 +273,7 @@ public class FunctionalTestUtils {
 
     public String continueUpdateCaseAsCaseworker(String caseJson, String caseId) {
         String user = getCaseworkerUserId();
-        String submitForCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/"+caseId+"/events";
+        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/events";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -284,13 +284,13 @@ public class FunctionalTestUtils {
 
         return submitResponse.getBody().asString();
     }
-    
+
     public String replaceAttribute(String json, String key, String value) {
         return json.replaceAll(key, value);
     }
 
     public String addAttribute(String json, String attributeKey, String attributeValue) {
-        return json.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\""+attributeKey+"\": \"" + attributeValue + "\",");
+        return json.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
 
 
