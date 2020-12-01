@@ -43,6 +43,7 @@ public abstract class IntegrationTestBase {
     public static void setEvidenceManagementUrlAsBaseUri() {
         RestAssured.baseURI = evidenceManagementUrl;
     }
+
     @Autowired
     protected FunctionalTestUtils utils;
 
@@ -54,11 +55,11 @@ public abstract class IntegrationTestBase {
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
         return request.replaceAll(originalAttr, updatedAttr);
     }
-    
+
     protected String getJsonFromFile(String jsonFileName) {
         return utils.getJsonFromFile(jsonFileName);
     }
-    
+
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
