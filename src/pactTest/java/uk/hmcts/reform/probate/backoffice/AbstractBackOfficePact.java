@@ -1,5 +1,7 @@
 package uk.hmcts.reform.probate.backoffice;
 
+
+
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -10,20 +12,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
-import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.provider.junit.loader.PactFolder;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 public abstract class AbstractBackOfficePact {
 
@@ -65,19 +58,10 @@ public abstract class AbstractBackOfficePact {
   protected static final String DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY = "Divorce case submission event";
   protected static final String DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION = "Submitting Divorce Case";
 
-  @BeforeEach
-  public void setUp() throws Exception {
-
-  }
-
-  @AfterEach
-  void teardown() {
-    Executor.closeIdleConnections();
-  }
-
   private File getFile(String fileName) throws FileNotFoundException {
     return org.springframework.util.ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
   }
+
 
   protected CaseDetails getCaseDetails(String fileName) throws JSONException, IOException {
     File file = getFile(fileName);
