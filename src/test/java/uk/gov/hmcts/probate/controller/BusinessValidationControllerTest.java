@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -37,10 +38,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,7 +74,7 @@ public class BusinessValidationControllerTest {
     private static final String SOLICITOR_FORENAMES = "Peter";
     private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
-    private static final String PAYMENT_METHOD = "Cheque";
+    private static final String PAYMENT_METHOD = "fee account";
     private static final String WILL_HAS_CODICILS = "Yes";
     private static final String NUMBER_OF_CODICILS = "1";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
@@ -537,8 +540,13 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperFormSuccess() throws Exception {
+    public void shouldReturnSolicitorPaperFormSuccess() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+            .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+            .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(emailDocument);
 
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
@@ -546,9 +554,27 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperForm() throws Exception {
+    public void shouldReturnPaperFormWithoutEmail() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(null);
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnPaperFormWithEmail() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("paperFormWithPrimaryApplicantEmail.json");
+
+        Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -640,6 +666,8 @@ public class BusinessValidationControllerTest {
     public void shouldValidateWithPaperCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
+        Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
         mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
