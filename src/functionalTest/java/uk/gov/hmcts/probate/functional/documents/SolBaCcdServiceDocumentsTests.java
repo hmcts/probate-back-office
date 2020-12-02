@@ -18,8 +18,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
     private static final String SOLICITOR_INFO3 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, SolAddCo";
-    private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0121 681 3401";
-    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High HolbornLondonWC1V 6NP020 7421 8509 ";
+    private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0300 303 0648";
+    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High HolbornLondonWC1V 6NP0300 303 0648 ";
     private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box 12625HarlowCM20 9QE0300 303 0648";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
