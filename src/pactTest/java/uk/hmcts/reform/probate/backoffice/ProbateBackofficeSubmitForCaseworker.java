@@ -8,12 +8,10 @@ import org.apache.http.client.fluent.Executor;
 import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
@@ -28,9 +26,6 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
-    @Autowired
-    private CoreCaseDataApi coreCaseDataApi;
 
     CaseDataContent caseDataContent;
 
@@ -56,12 +51,12 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
         Executor.closeIdleConnections();
     }
 
-    @Pact(provider = "ccd", consumer = "probate_backoffice_caseworker")
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
     RequestResponsePact submitForCaseWorker(PactDslWithProvider builder) throws Exception {
         // @formatter:off
         return builder
-                .given("Submit for caseworker is triggered", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A Submit For Caseworker")
+                .given("Submit for caseworker is requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A Submit for Caseworker")
                 .path("/caseworkers/"
                         + USER_ID
                         + "/jurisdictions/"
@@ -85,15 +80,13 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
     @PactTestFor(pactMethod = "submitForCaseWorker")
     public void submitForCaseWorker() throws Exception {
 
-        caseDataContent = getCaseDataContent();
-
         CaseDetails caseDetailsReponse = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
                 caseType, true, caseDataContent);
 
         assertNotNull(caseDetailsReponse);
         assertNotNull(caseDetailsReponse.getCaseTypeId());
-        assertEquals(caseDetailsReponse.getJurisdiction(), "DIVORCE");
+        assertEquals(caseDetailsReponse.getJurisdiction(), "PROBATE");
 
         assertCaseDetails(caseDetailsReponse,false,false);
 

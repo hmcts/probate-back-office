@@ -4,19 +4,16 @@ import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.util.Map;
 
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
@@ -29,16 +26,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 import static uk.hmcts.reform.probate.backoffice.util.AssertionHelper.assertCaseDetails;
 
-public class ProbateStartForCaseworker extends AbstractBackOfficePact {
+public class ProbateBackOfficeStartForCaseworker extends AbstractBackOfficePact {
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
-    @Autowired
-    private CoreCaseDataApi coreCaseDataApi;
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @Value("${ccd.jurisdictionid}")
     String jurisdictionId;
@@ -75,12 +66,12 @@ public class ProbateStartForCaseworker extends AbstractBackOfficePact {
         Thread.sleep(2000);
     }
 
-    @Pact(provider = "ccd", consumer = "probate_backoffice_caseworker")
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
     RequestResponsePact startForCaseWorker(PactDslWithProvider builder) throws JSONException {
         // @formatter:off
         return builder
                 .given("A Start for Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A StartForCaseworker  is requested")
+                .uponReceiving("A Start for Caseworker")
                 .path("/caseworkers/" + USER_ID + "/jurisdictions/"
                         + jurisdictionId + "/case-types/"
                         + caseType
@@ -108,9 +99,7 @@ public class ProbateStartForCaseworker extends AbstractBackOfficePact {
 
         assertThat(startEventResponse.getEventId(), equalTo(createEventId));
         assertThat(startEventResponse.getToken(), is("token"));
-
         assertCaseDetails(startEventResponse.getCaseDetails(), false, false);
-
 
     }
 }

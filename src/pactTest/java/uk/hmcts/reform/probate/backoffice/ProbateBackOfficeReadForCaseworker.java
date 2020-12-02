@@ -1,6 +1,5 @@
 package uk.hmcts.reform.probate.backoffice;
 
-
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -40,12 +39,12 @@ public class ProbateBackOfficeReadForCaseworker extends AbstractBackOfficePact {
                 .build();
     }
 
-    @Pact(provider = "ccdDataStoreAPI_CaseController", consumer = "probate_backOfficeService")
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
     RequestResponsePact readForCaseworker(PactDslWithProvider builder) throws JSONException{
         // @formatter:off
         return builder
-                .given("Read For Caseworker", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A Read For CaseWorker is received.")
+                .given("A Read For Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A Read For a CaseWorker")
                 .path("/caseworkers/"
                         + USER_ID
                         + "/jurisdictions/"

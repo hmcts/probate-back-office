@@ -9,13 +9,10 @@ import org.apache.http.client.fluent.Executor;
 import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import uk.hmcts.reform.probate.backoffice.util.PactDslFixtureHelper;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
@@ -30,9 +27,6 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-
-    @Autowired
-    private CoreCaseDataApi coreCaseDataApi;
 
     @Value("${ccd.jurisdictionid}")
     String jurisdictionId;
@@ -50,7 +44,6 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
     private static final String USER_ID = "123456";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
-
     @BeforeEach
     public void setUpEachTest() throws InterruptedException {
         Thread.sleep(2000);
@@ -61,13 +54,12 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
         Executor.closeIdleConnections();
     }
 
-
-    @Pact(provider = "ccd", consumer = "probate_backOffice_caseworker")
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
     RequestResponsePact submitEventForCaseWorker(PactDslWithProvider builder) throws Exception {
         // @formatter:off
         return builder
-                .given("A SubmitEvent for Caseworker is triggered", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A SubmitEvent For Caseworker is received.")
+                .given("A SubmitEvent for Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A Submit Event for a Caseworker")
                 .path("/caseworkers/"   + USER_ID
                         + "/jurisdictions/" + jurisdictionId
                         + "/case-types/"    + caseType
@@ -89,8 +81,6 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
     @Test
     @PactTestFor(pactMethod = "submitEventForCaseWorker")
     public void verifySubmitEventForCaseworker() throws Exception {
-
-        caseDataContent = PactDslFixtureHelper.getCaseDataContent();
 
         final CaseDetails caseDetails = coreCaseDataApi.submitEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId, caseType, CASE_ID,true,caseDataContent);

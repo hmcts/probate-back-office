@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
@@ -33,9 +32,6 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     private static final Long CASE_ID = 2000L;
-
-    @Autowired
-    private CoreCaseDataApi coreCaseDataApi;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -81,12 +77,12 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
         Executor.closeIdleConnections();
     }
 
-    @Pact(state = "Submit event for caseworkder", provider = "ccd", consumer = "probate_backOffice_caseworker")
-    RequestResponsePact submitEventForCaseworker(PactDslWithProvider builder) throws IOException, JSONException {
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
+    RequestResponsePact startEventForCaseworkder(PactDslWithProvider builder) throws IOException, JSONException {
         // @formatter:off
         return builder
-                .given("A SubmitEvent for Caseworker is  requested", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A SubmitEvent for a caseworker is received.")
+                .given("A StartEvent  for Caseworker is  requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A StartEvent for a Caseworker")
                 .path("/caseworkers/" + USER_ID + "/jurisdictions/"
                         + jurisdictionId + "/case-types/"
                         + caseType
@@ -106,8 +102,8 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
     }
 
     @Test
-    @PactTestFor(pactMethod = "submitEventForCaseworker")
-    public void verifySubmitEventForCaseworker() throws IOException, JSONException {
+    @PactTestFor(pactMethod = "startEventForCaseworkder")
+    public void verifyStartEventForCaseworer() throws IOException, JSONException {
 
         final StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,caseType,String.valueOf(CASE_ID),createEventId);
