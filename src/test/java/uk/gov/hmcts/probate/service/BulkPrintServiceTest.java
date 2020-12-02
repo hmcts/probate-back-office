@@ -452,59 +452,48 @@ public class BulkPrintServiceTest {
     }
 
     @Test
+    public void testSuccessfulSendToBulkPrintGrant() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT);
+    }
+
+    @Test
+    public void testSuccessfulSendToBulkPrintIntestacyGrant() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT);
+    }
+
+    @Test
+    public void testSuccessfulSendToBulkPrintAdmonWillGrant() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT);
+    }
+    
+    @Test
     public void testSuccessfulSendToBulkPrintGrantReissue() {
-        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-                .addressLine2("Address 2")
-                .postCode("EC2")
-                .country("UK")
-                .build();
-        CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("email@email.com")
-                .primaryApplicantForenames("firstname")
-                .primaryApplicantSurname("surname")
-                .primaryApplicantAddress(address)
-                .build();
-        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT_REISSUE);
+    }
 
-        DocumentLink documentLink = DocumentLink.builder()
-                .documentUrl("http://localhost")
-                .build();
-        final Document document = Document.builder()
-                .documentFileName("test.pdf")
-                .documentGeneratedBy("test")
-                .documentType(DocumentType.DIGITAL_GRANT_REISSUE)
-                .documentDateAdded(LocalDate.now())
-                .documentLink(documentLink)
-                .build();
-        final Document coverSheet = Document.builder()
-                .documentFileName("test.pdf")
-                .documentGeneratedBy("test")
-                .documentDateAdded(LocalDate.now())
-                .documentLink(documentLink)
-                .build();
+    @Test
+    public void testSuccessfulSendToBulkPrintIntestacyGrantReissue() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT_REISSUE);
+    }
 
-        responseCaseData = ResponseCaseData.builder()
-                .registryLocation("leeds")
-                .deceasedForenames("name")
-                .deceasedSurname("name")
-                .build();
+    @Test
+    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissue() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT_REISSUE);
+    }
 
-        final CallbackResponse callbackResponse = CallbackResponse.builder()
-                .errors(new ArrayList<>())
-                .data(responseCaseData)
-                .build();
+    @Test
+    public void testSuccessfulSendToBulkPrintGrantReissueWelsh() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_DIGITAL_GRANT_REISSUE);
+    }
 
-        UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
-        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+    @Test
+    public void testSuccessfulSendToBulkPrintIntestacyGrantReissueWelsh() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_INTESTACY_GRANT_REISSUE);
+    }
 
-        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, document, coverSheet, true);
-
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-
-        assertNotNull(letterId);
-        assertThat(letterId, is(uuid.toString()));
+    @Test
+    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE);
     }
 
     @Test
@@ -860,4 +849,66 @@ public class BulkPrintServiceTest {
         assertThatThrownBy(() -> bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet))
             .isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter for reprint response is null for: 0");
     }
+    
+    private void testSuccessfulSendToBulkPrintForDocumentType(DocumentType documentType) {
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantEmailAddress("email@email.com")
+            .primaryApplicantForenames("firstname")
+            .primaryApplicantSurname("surname")
+            .primaryApplicantAddress(address)
+            .extraCopiesOfGrant(1L)
+            .build();
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+        final Document document = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(documentType)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        final Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+
+        responseCaseData = ResponseCaseData.builder()
+            .registryLocation("leeds")
+            .deceasedForenames("name")
+            .deceasedSurname("name")
+            .build();
+
+        final CallbackResponse callbackResponse = CallbackResponse.builder()
+            .errors(new ArrayList<>())
+            .data(responseCaseData)
+            .build();
+
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+        when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), documentType)).thenReturn(true);
+
+        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), letterV3ArgumentCaptor.capture());
+
+        assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
+        assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
+
+        assertNotNull(letterId);
+        assertThat(letterId, is(uuid.toString()));
+    }
+
+
 }
