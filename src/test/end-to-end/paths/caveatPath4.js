@@ -104,6 +104,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
 
     nextStepName = 'Withdraw caveat';
     I.chooseNextStep(nextStepName);
+    I.withdrawCaveatPage1();
     I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat closed';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

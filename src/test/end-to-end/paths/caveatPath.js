@@ -145,7 +145,6 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     I.enterCaveatPage1('update');
     I.enterCaveatPage2('update', unique_deceased_user);
     I.enterCaveatPage3('update');
-    I.enterCaveatPage4('update');
     I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when amending the caveat details.
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -156,6 +155,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
 
     nextStepName = 'Withdraw caveat';
     I.chooseNextStep(nextStepName);
+    I.withdrawCaveatPage1();
     I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat closed';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
