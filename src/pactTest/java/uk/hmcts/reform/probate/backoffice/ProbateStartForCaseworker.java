@@ -5,34 +5,34 @@ import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
-import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
-import org.junit.After;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+
+import java.io.IOException;
+import java.util.Map;
 
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
+import org.springframework.http.MediaType;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
+import static uk.hmcts.reform.probate.backoffice.util.AssertionHelper.assertCaseDetails;
 
-public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOfficePact{
+public class ProbateStartForCaseworker extends AbstractBackOfficePact {
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-    private static final Long CASE_ID = 2000L;
 
     @Autowired
     private CoreCaseDataApi coreCaseDataApi;
@@ -46,18 +46,16 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
     @Value("${ccd.casetype}")
     String caseType;
 
-    CaseDataContent caseDataContent;
-    private Map<String, Object> caseDetailsMap;
-
     @Value("${ccd.eventid.create}")
-    private String createEventId;
+    String createEventId;
+
+    private Map<String, Object> caseDetailsMap;
+    private CaseDataContent caseDataContent;
 
     private static final String USER_ID = "123456";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
-    Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
-    @BeforeAll
+    @Before
     public void setUp() throws Exception {
         caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
         caseDataContent = CaseDataContent.builder()
@@ -71,51 +69,47 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
                 ).data(caseDetailsMap.get("case_data"))
                 .build();
     }
+
     @BeforeEach
     public void setUpEachTest() throws InterruptedException {
         Thread.sleep(2000);
     }
 
-    @After
-    public void teardown() {
-        Executor.closeIdleConnections();
-    }
-
-    @Pact(state = "Submit event for caseworkder", provider = "ccd", consumer = "probate_backOffice_caseworker")
-    RequestResponsePact submitEventForCaseworker(PactDslWithProvider builder) throws IOException, JSONException {
+    @Pact(provider = "ccd", consumer = "probate_backoffice_caseworker")
+    RequestResponsePact startForCaseWorker(PactDslWithProvider builder) throws JSONException {
         // @formatter:off
         return builder
-                .given("A SubmitEvent for Caseworker is  requested", getCaseDataContentAsMap(caseDataContent))
-                .uponReceiving("A SubmitEvent for a caseworker is received.")
+                .given("A Start for Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A StartForCaseworker  is requested")
                 .path("/caseworkers/" + USER_ID + "/jurisdictions/"
                         + jurisdictionId + "/case-types/"
                         + caseType
-                        + "/cases/"
-                        +  CASE_ID
                         + "/event-triggers/"
                         + createEventId
                         + "/token")
                 .method("GET")
-                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
+                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION,
+                        SOME_SERVICE_AUTHORIZATION_TOKEN)
                 .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .willRespondWith()
                 .matchHeader(HttpHeaders.CONTENT_TYPE, "\\w+\\/[-+.\\w]+;charset=(utf|UTF)-8")
                 .status(200)
-                .body(buildStartEventReponse("100", "testServiceToken" , "emailAddress@email.com", false,false,false))
+                .body(buildStartEventReponse(createEventId , "token","someemailaddress.com", false,false,false))
                 .toPact();
     }
 
     @Test
-    @PactTestFor(pactMethod = "submitEventForCaseworker")
-    public void verifySubmitEventForCaseworker() throws IOException, JSONException {
+    @PactTestFor(pactMethod = "startForCaseWorker")
+    public void verifyStartForCaseworker() throws IOException, JSONException {
 
-        final StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
-                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,caseType,String.valueOf(CASE_ID),createEventId);
+        StartEventResponse startEventResponse = coreCaseDataApi.startForCaseworker(SOME_AUTHORIZATION_TOKEN,
+                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
+                caseType,createEventId);
 
-        assertThat(startEventResponse.getEventId(), is("100"));
-        assertThat(startEventResponse.getToken(), is("testServiceToken"));
+        assertThat(startEventResponse.getEventId(), equalTo(createEventId));
+        assertThat(startEventResponse.getToken(), is("token"));
 
-      //  assertCaseDetails(startEventResponse.getCaseDetails());
+        assertCaseDetails(startEventResponse.getCaseDetails(), false, false);
 
 
     }

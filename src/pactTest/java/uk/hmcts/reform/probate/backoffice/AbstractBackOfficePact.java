@@ -1,10 +1,15 @@
 package uk.hmcts.reform.probate.backoffice;
 
-
-
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,12 +17,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import au.com.dius.pact.provider.junit.loader.PactFolder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
+@ExtendWith(PactConsumerTestExt.class)
+@ExtendWith(SpringExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "ccd", port = "8891")
+@PactFolder("pacts")
+@SpringBootTest({
+        "core_case_data.api.url : localhost:8891"
+})
 public abstract class AbstractBackOfficePact {
 
   public static final String CASEWORKER_USERNAME = "caseworkerUsername";
