@@ -86,7 +86,7 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
@@ -95,7 +95,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -108,7 +108,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -122,7 +122,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -138,7 +138,7 @@ public class ExceptionRecordControllerTest {
     public void testMissingFormType() throws Exception {
         JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(modifiedExceptionRecordPayload.toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
@@ -149,7 +149,7 @@ public class ExceptionRecordControllerTest {
     public void testExceptionRecordErrorHandler() throws Exception {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
@@ -160,7 +160,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testErrorReturnedForIncorrectClassification() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
@@ -170,7 +170,7 @@ public class ExceptionRecordControllerTest {
 
     @Ignore
     public void testErrorReturnedForUnimplementedFormType() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace("PA8A", "PPPP"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
@@ -180,7 +180,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testInvalidExceptionRecordJsonResponse() throws Exception {
-        mockMvc.perform(post("/transform-scanned-data")
+        mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordInvalidJsonPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
