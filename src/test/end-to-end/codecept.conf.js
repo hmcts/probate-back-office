@@ -1,5 +1,8 @@
 const testConfig = require('src/test/config.js');
 
+console.log('testConfig.TestPathToRun...', testConfig.TestPathToRun);
+console.log('testConfig.TestFrontendUrl..', testConfig.TestFrontendUrl);
+
 exports.config = {
     'tests': testConfig.TestPathToRun,
     'output': testConfig.TestOutputDir,

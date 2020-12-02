@@ -11,7 +11,9 @@
     "eslint": "NODE_PATH=. eslint .",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
-    "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
+    "test-xui-e2e": "NODE_PATH=. TEST_E2E_URL=${TEST_XUI_E2E_URL} E2E_TEST_PATH='./paths/solicitor/**/*.js' node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test-ccdui-e2e": "NODE_PATH=. TEST_E2E_URL=${TEST_CCD_E2E_URL} E2E_TEST_PATH='./paths/caseworker/**/*.js' node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test:fullfunctional": "yarn test-xui-e2e; yarn test-ccdui-e2e"
   },
   "dependencies": {
     "require-directory": "^2.1.1"
