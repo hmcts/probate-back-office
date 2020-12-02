@@ -62,6 +62,11 @@ public class DocumentTemplateServiceTest {
         DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW,  DocumentIssueType.GRANT,DocumentCaseType.GOP);
         assertEquals(DocumentType.WELSH_DIGITAL_GRANT_DRAFT, responseDraftWelsh);
 
+        DocumentType responseReissueWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.GOP);
+        assertEquals(DocumentType.WELSH_DIGITAL_GRANT_REISSUE, responseReissueWelsh);
+
+        DocumentType responseReissueWelshDraft = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.GOP);
+        assertEquals(DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
 
     }
 
@@ -85,6 +90,12 @@ public class DocumentTemplateServiceTest {
 
         DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.WELSH_INTESTACY_GRANT_DRAFT, responseDraftWelsh);
+    
+        DocumentType responseReissueWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.INTESTACY);
+        assertEquals(DocumentType.WELSH_INTESTACY_GRANT_REISSUE, responseReissueWelsh);
+
+        DocumentType responseReissueWelshDraft = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.INTESTACY);
+        assertEquals(DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
     }
 
     @Test
@@ -106,5 +117,12 @@ public class DocumentTemplateServiceTest {
 
         DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT, responseDraftWelsh);
+
+        DocumentType responseReissueWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL);
+        assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE, responseReissueWelsh);
+
+        DocumentType responseReissueWelshDraft = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL);
+        assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
+
     }
 }
