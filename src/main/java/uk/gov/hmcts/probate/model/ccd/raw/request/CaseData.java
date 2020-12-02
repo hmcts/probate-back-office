@@ -807,7 +807,7 @@ public class CaseData extends CaseDataParent {
         return YES.equals(getLanguagePreferenceWelsh());
     }
 
-    private String convertDate(LocalDate dateToConvert) {
+    public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
         }
