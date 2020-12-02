@@ -23,7 +23,7 @@ plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
     id 'info.solidsoft.pitest' version '1.3.0'
     id 'jacoco'
-    id 'au.com.dius.pact' version '3.5.24'
+  id 'au.com.dius.pact' version '4.1.10'
 }
 
 apply plugin: 'project-report'
@@ -72,10 +72,6 @@ sonarqube {
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
         property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java"
     }
-}
-
-project.ext {
-    pactVersion = getCheckedOutGitCommitHash()
 }
 
 test.finalizedBy jacocoTestReport
@@ -193,17 +189,14 @@ def versions = [
         commonsIO                       : '2.6',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
-        lombok                          : '1.18.12',
+        lombok                          : '1.18.16',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : 'TA-98-PactUtility',
         ccdClient                       : '4.7.3',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '3.5.24',
-        feignHttpClient                 : '10.2.3',
-        springCloudWiremock             : '1.2.4.RELEASE'
-
+        pact_version                    : '4.1.0'
 ]
 
 jacocoTestReport {
@@ -243,11 +236,6 @@ dependencies {
   compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
         force = true
     }
-
-    compile group: 'io.github.openfeign', name: 'feign-httpclient', version: versions.feignHttpClient
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
-
-    compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
 
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 
@@ -290,26 +278,13 @@ dependencies {
     annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
     testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
-    
     testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
         exclude group: 'com.vaadin.external.google', module:'android-json'
     }
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testCompile group: 'org.springframework.security', name: 'spring-security-test'
-    testCompile group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: versions.springCloudWiremock
-    testCompile("com.fasterxml.jackson.core:jackson-databind:2.9.8") {
-        force = true
-    }
-    testCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
-    testRuntime group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
-    testRuntime group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-    testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-
-
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
     testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
     testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.3.2"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.2"
@@ -354,22 +329,18 @@ dependencies {
     testPactCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testPactCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
     testPactCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    //testPactCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+    //testPactCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+    //testPactTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+
+
     testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
     testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    testPactRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
     testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
 
     testPactCompile sourceSets.main.runtimeClasspath
     testPactCompile sourceSets.test.runtimeClasspath
-
-    testCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
-    testPactCompile group: 'au.com.dius', name: 'pact-jvm-provider-spring_2.12', version: versions.pact_version
-    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: versions.pact_version
-    testPactCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: versions.pact_version
-    testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-    testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-    testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
-   
-
  }
 
 tasks.withType(JavaCompile) {
@@ -391,24 +362,30 @@ task printVersion {
     }
 }
 
-//task runAndPublishConsumerPactTests(type: Test){
-//    logger.lifecycle("Runs pact Tests")
-//    testClassesDirs = sourceSets.testPact.output.classesDirs
-//    classpath = sourceSets.contractTest.runtimeClasspath
-//
-//}
-
-
 run {
     if (debug == 'true') {
         jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
     }
 }
 
-//runAndPublishConsumerPactTests.dependsOn contract
+project.ext {
+  pactVersion = getCheckedOutGitCommitHash()
+}
+
+//task runAndPublishConsumerPactTests(type: Test){
+//  logger.lifecycle("Runs pact Tests")
+//  testClassesDirs = sourceSets.contractTest.output.classesDirs
+//  classpath = sourceSets.contractTest.runtimeClasspath
 //
+//}
+
+//runAndPublishConsumerPactTests.dependsOn contract
 //runAndPublishConsumerPactTests.finalizedBy pactPublish
 
+
+def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
 
 pact {
     publish {
@@ -417,10 +394,6 @@ pact {
         tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
         version = project.pactVersion
     }
-}
-
-def getCheckedOutGitCommitHash() {
-    'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
 
 
