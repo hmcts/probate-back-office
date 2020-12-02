@@ -1,7 +1,7 @@
 const testConfig = require('src/test/config.js');
 
-console.log('testConfig.TestPathToRun...', testConfig.TestPathToRun);
-console.log('testConfig.TestFrontendUrl..', testConfig.TestFrontendUrl);
+console.log('testConfig.TestPathToRun...', testConfig.TestPathToRun); // eslint-disable-line no-console
+console.log('testConfig.TestFrontendUrl..', testConfig.TestFrontendUrl); // eslint-disable-line no-console
 
 exports.config = {
     'tests': testConfig.TestPathToRun,
