@@ -4,16 +4,16 @@ const testConfig = require('src/test/config.js');
 const markForIssueConfig = require('./markForIssueConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = async function (caseRef) {
 
     const I = this;
-    I.waitForText(markForIssueConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(markForIssueConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
-    I.click(`#boExaminationChecklistQ1-${markForIssueConfig.list1_text}`);
-    I.click(`#boExaminationChecklistQ2-${markForIssueConfig.list2_text}`);
-    I.click(`#boExaminationChecklistRequestQA-${markForIssueConfig.list3_text}`);
+    await I.see(caseRef);
+    await I.click(`#boExaminationChecklistQ1-${markForIssueConfig.list1_text}`);
+    await I.click(`#boExaminationChecklistQ2-${markForIssueConfig.list2_text}`);
+    await I.click(`#boExaminationChecklistRequestQA-${markForIssueConfig.list3_text}`);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 
 };

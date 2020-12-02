@@ -2,12 +2,10 @@
 
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (nextStep) {
+module.exports = async function (nextStep) {
 
     const I = this;
 
-    I.selectOption('#next-step', nextStep);
-    I.wait(1);
-    I.waitForNavigationToComplete(commonConfig.goButton);
-
+    await I.selectOption('#next-step', nextStep);
+    await I.waitForNavigationToComplete(commonConfig.goButton);
 };

@@ -5,10 +5,10 @@ exports.config = {
     'output': testConfig.TestOutputDir,
     'helpers': {
         'Puppeteer': {
-            'url': testConfig.TestFrontendUrl,
+            'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': 1500,
+            'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
             'chrome': {
                 'ignoreHTTPSErrors': true,
@@ -27,6 +27,9 @@ exports.config = {
         },
         'PuppeteerHelper': {
             'require': './helpers/PuppeteerHelper.js'
+        },
+        'JSWait': {
+            require: './helpers/JSWait.js'
         },
     },
     'include': {

@@ -10,6 +10,12 @@
     "lint": "NODE_PATH=. eslint .",
     "eslint": "NODE_PATH=. eslint .",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
+    "test-e2e-caveat": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-caveat2": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath2.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-caveat3": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath3.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-caveat4": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath4.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-grantOfProbate": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-willLodgement": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/willLodgmentPath.js -c ./src/test/end-to-end/paths/willLodgementPath.js --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
     "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
   },
