@@ -1,0 +1,202 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "WillLodgement",
+    "state": "createWillLodgment",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "Leeds",
+      "lodgementType": "safeCustody",
+      "lodgedDate": "2017-12-31",
+      "willDate": "2017-12-31",
+      "codicilDate": "2017-12-31",
+      "numberOfCodicils": "2",
+      "jointWill": "No",
+      "deceasedForenames": "df name 2",
+      "deceasedSurname": "dl name 2",
+      "deceasedGender": "Male",
+      "deceasedDateOfDeath": "2017-12-31",
+      "deceasedDateOfBirth": "2016-12-31",
+      "deceasedTypeOfDeath": "Dead",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "address line one",
+        "AddressLine2": "address line two",
+        "AddressLine3": "address line three",
+        "County": "county",
+        "PostTown": "town",
+        "PostCode": "postcode",
+        "Country": "country"
+      },
+      "deceasedEmailAddress": "email@email.com",
+      "executorTitle": "Professor",
+      "executorForenames": "Ex1 First Name",
+      "executorSurname": "Ex2 last name",
+      "executorAddress": {
+        "AddressLine1": "address line one",
+        "AddressLine2": "address line two",
+        "AddressLine3": "address line three",
+        "County": "county",
+        "PostTown": "town",
+        "PostCode": "postcode",
+        "Country": "country"
+      },
+      "executorEmailAddress": "ex1@email.com",
+      "additionalExecutorList": [
+        {
+          "value": {
+            "executorTitle": "Professor",
+            "executorForenames": "ex2 first name",
+            "executorSurname": "ex2 last name",
+            "executorAddress": {
+              "AddressLine1": "address line one",
+              "AddressLine2": "address line two",
+              "AddressLine3": "address line three",
+              "County": "county",
+              "PostTown": "town",
+              "PostCode": "postcode",
+              "Country": "country"
+            },
+            "executorEmailAddress": "ex2@email.com"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+      ],
+      "withdrawReason": "Test",
+      "documentsGenerated": []
+    },
+    "data_classification": {
+      "applicationType": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "lodgementType": "PUBLIC",
+      "lodgedDate": "PUBLIC",
+      "willDate": "PUBLIC",
+      "codicilDate": "PUBLIC",
+      "numberOfCodicils": "PUBLIC",
+      "jointWill": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedGender": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedTypeOfDeath": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "deceasedEmailAddress": "PUBLIC",
+      "executorTitle": "PUBLIC",
+      "executorForenames": "PUBLIC",
+      "executorSurname": "PUBLIC",
+      "executorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "executorEmailAddress": "PUBLIC",
+      "additionalExecutorList": {
+        "value": {
+          "executorTitle": "PUBLIC",
+          "executorForenames": "PUBLIC",
+          "executorSurname": "PUBLIC",
+          "executorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "County": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+          "executorEmailAddress": "PUBLIC"
+        }
+      },
+      "withdrawReason": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "applicationType": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "lodgementType": "PUBLIC",
+      "lodgedDate": "PUBLIC",
+      "willDate": "PUBLIC",
+      "codicilDate": "PUBLIC",
+      "numberOfCodicils": "PUBLIC",
+      "jointWill": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedGender": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedTypeOfDeath": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "deceasedEmailAddress": "PUBLIC",
+      "executorTitle": "PUBLIC",
+      "executorForenames": "PUBLIC",
+      "executorSurname": "PUBLIC",
+      "executorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "executorEmailAddress": "PUBLIC",
+      "additionalExecutorList": {
+        "value": {
+          "executorTitle": "PUBLIC",
+          "executorForenames": "PUBLIC",
+          "executorSurname": "PUBLIC",
+          "executorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "County": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+          "executorEmailAddress": "PUBLIC"
+        }
+      },
+      "withdrawReason": "PUBLIC"
+    }
+  }
+}
