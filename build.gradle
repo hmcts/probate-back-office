@@ -172,7 +172,7 @@ def versions = [
         commonsIO                       : '2.6',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
-        lombok                          : '1.18.12',
+        lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
         probateCommonsVersion           : '1.1.0.2',
@@ -240,6 +240,7 @@ dependencies {
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
+  compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
   
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.9.2'
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.9.2'
