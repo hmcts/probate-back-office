@@ -23,6 +23,7 @@ const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/gr
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/paymentDetailsTabConfig');
+const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsUpdateTabConfig');
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsUpdateTabConfig');
@@ -82,6 +83,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';

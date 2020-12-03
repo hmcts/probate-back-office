@@ -17,7 +17,19 @@ module.exports = async function (crud) {
         await I.fillField('#primaryApplicantSecondPhoneNumber', createGrantOfProbateConfig.page2_secondPhoneNumber);
         await I.fillField('#primaryApplicantEmailAddress', createGrantOfProbateConfig.page2_email);
 
-        await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+        await I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
+
+        await I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
+        const aliasLocator = {css: '#primaryApplicantAlias'};
+        await I.waitForVisible(aliasLocator);
+        await I.fillField(aliasLocator, createGrantOfProbateConfig.page2_alias);
+
+        await I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
+
+        const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};
+        await I.waitForVisible(pcLocator);
+        await I.click(pcLocator);
+        await I.waitForVisible({css: '#primaryApplicantAddress_AddressLine1'});
         await I.fillField('#primaryApplicantAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
         await I.fillField('#primaryApplicantAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
         await I.fillField('#primaryApplicantAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
@@ -25,14 +37,7 @@ module.exports = async function (crud) {
         await I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
         await I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
         await I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
-
-        await I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
-
-        await I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
-        await I.fillField('#primaryApplicantAlias', createGrantOfProbateConfig.page2_alias);
-
-        await I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
-
+        
     }
 
     if (crud === 'update') {

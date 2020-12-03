@@ -4,16 +4,16 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     const I = this;
 
-    if (tabConfigFile.TestTimeToWaitForText) {
-        await I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText);
-    }
-
-    if (tabConfigFile.testTimeToWaitForTab) {
-        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab);
+    if (tabConfigFile.tabName) {
+        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
     await I.see(caseRef);
     await I.click(tabConfigFile.tabName);
+
+    if (tabConfigFile.waitForText) {
+        await I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText || 60);
+    }
 
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         // eslint-disable-next-line
@@ -36,7 +36,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
             // eslint-disable-next-line
-            await I.see(dataConfigFile(tabConfigFile.dataKeys[i]));
+            await I.see(dataConfigFile[tabConfigFile.dataKeys[i]]);
         }
     }
 };
