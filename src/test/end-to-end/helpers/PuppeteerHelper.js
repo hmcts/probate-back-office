@@ -20,7 +20,7 @@ class PuppeteerHelper extends Helper {
         if (locator) {
             promises.push(page.click(locator));
         }
-        return Promise.all(promises);
+        await Promise.all(promises);
     }
 }
 
