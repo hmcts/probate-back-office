@@ -2,7 +2,6 @@
   {"LiveFrom": "01/01/2017", "ID": "wlApplicationTypes", "ListElementCode": "Personal", "ListElement": "Personal"},
   {"LiveFrom": "01/01/2017", "ID": "wlApplicationTypes", "ListElementCode": "Solicitor", "ListElement": "Solicitor"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Oxford", "ListElement": "Oxford"},
-  {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Birmingham", "ListElement": "Birmingham"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Manchester", "ListElement": "Manchester"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Leeds", "ListElement": "Leeds"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Liverpool", "ListElement": "Liverpool"},
