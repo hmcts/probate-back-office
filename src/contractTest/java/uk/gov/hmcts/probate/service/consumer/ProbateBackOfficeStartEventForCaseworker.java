@@ -27,6 +27,7 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import java.util.Map;
 
 import static java.lang.String.valueOf;
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
 @RunWith(SpringRunner.class)
@@ -118,6 +119,9 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
                 valueOf(CASE_ID), "create");
 
         Assert.assertNotNull(startEventResponse);
+        assertCaseDetails(startEventResponse.getCaseDetails(), false, false);
+
+
 
     }
 

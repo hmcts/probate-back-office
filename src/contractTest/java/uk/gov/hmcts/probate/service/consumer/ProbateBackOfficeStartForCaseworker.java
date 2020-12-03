@@ -5,9 +5,7 @@ import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
-import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,9 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
-
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
-
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;

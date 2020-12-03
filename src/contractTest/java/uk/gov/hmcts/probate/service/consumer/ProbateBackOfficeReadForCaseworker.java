@@ -27,7 +27,6 @@ import static junit.framework.TestCase.assertNotNull;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildCaseDetailsDsl;
 
-//@PactTestFor(providerName = "ccdDataStoreAPI_Cases", port = "4453")
 @RunWith(SpringRunner.class)
 @SpringBootTest({
     "core_case_data.api.url : localhost:4453"
@@ -73,7 +72,7 @@ public class ProbateBackOfficeReadForCaseworker extends AbstractBackOfficePact {
                 Event.builder()
                     .id(createEventId)
                     .summary("PROBATE")
-                    .description("PROBATE DESC")
+                    .description("probate")
                     .build()
             ).data(caseDetailsMap.get("case_data"))
             .build();

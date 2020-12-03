@@ -19,10 +19,10 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
-
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.probate.service.consumer.util.PactDslFixtureHelper.getCaseDataContent;
 import static uk.gov.hmcts.reform.probate.pact.dsl.ObjectMapperTestUtil.convertObjectToJsonString;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildCaseDetailsDsl;
@@ -67,7 +67,7 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
         Thread.sleep(2000);
         caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
         caseDataContent = CaseDataContent.builder()
-            .eventToken("someEventToken")
+            .eventToken("Bearer UserAuthToken")
             .event(
                 Event.builder()
                     .id(createEventId)
@@ -79,42 +79,38 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
     }
 
     @Pact(consumer = "probate_backOfficeService")
-    public RequestResponsePact submitForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
+    public RequestResponsePact submitEventForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
         return builder
-            .given("A Submit for Caseworker is received")
-            .uponReceiving("A Submit For Caseworker is received.")
-            .path("/caseworkers/" + USER_ID
-                + "/jurisdictions/" + jurisdictionId
-                + "/case-types/" + caseType
-                + "/cases/" + CASE_ID
-                + "/events"
-            )
-            .query("ignore-warning=true")
-            .method("POST")
-            .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
-            .body(convertObjectToJsonString(getCaseDataContent()))
-            .willRespondWith()
-            .status(200)
-            .body(buildCaseDetailsDsl(100L, "someemailaddress.com", false, false, false))
-            .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .toPact();
+                .given("A Submit Event for a Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
+                .uponReceiving("A Submit Event for a Caseworker")
+                .path("/caseworkers/" + USER_ID
+                        + "/jurisdictions/" + jurisdictionId
+                        + "/case-types/" + caseType
+                        + "/cases/" + CASE_ID
+                        + "/events"
+                )
+                .query("ignore-warning=true")
+                .method("POST")
+                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
+                .body(convertObjectToJsonString(getCaseDataContent()))
+                .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .willRespondWith()
+                .status(201)
+                .body(buildCaseDetailsDsl(CASE_ID, "email@mailnator.com", false, false,false))
+                .toPact();
     }
 
     @Test
-    @PactVerification(fragment = "submitForCaseWorkerFragment")
-    public void submitForCaseWorker() throws Exception {
+    @PactVerification(fragment = "submitEventForCaseWorkerFragment")
+    public void submitEventForCaseWorker() throws Exception {
 
-        CaseDetails caseDetailsReponse = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
-            SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
-            caseType, true, caseDataContent);
+        caseDataContent = getCaseDataContent();
 
-        assertNotNull(caseDetailsReponse);
-        //assertNotNull(caseDetailsReponse.getCaseTypeId());
-        //assertEquals(caseDetailsReponse.getJurisdiction(), "PROBATE");
+        final CaseDetails caseDetails = coreCaseDataApi.submitEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
+                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId, caseType, CASE_ID.toString(), true, caseDataContent);
 
-        //assertCaseDetails(caseDetailsReponse,false,false);
+        assertNotNull(caseDetails);
+        assertCaseDetails(caseDetails,false,false);
 
     }
-
-
 }

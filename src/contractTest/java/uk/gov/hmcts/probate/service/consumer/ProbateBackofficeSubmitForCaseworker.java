@@ -5,12 +5,9 @@ import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
-import org.apache.http.client.fluent.Executor;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,20 +70,19 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
         Thread.sleep(2000);
         caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
         caseDataContent = CaseDataContent.builder()
-                .eventToken("someEventToken")
+                .eventToken("Bearer UserAuthToken")
                 .event(
                         Event.builder()
                                 .id(createEventId)
-                                .summary("PROBATE")
-                                .description("PROBATE DESC")
+                                .summary("probateSummary")
+                                .description("probate")
                                 .build()
                 ).data(caseDetailsMap.get("case_data"))
                 .build();
     }
 
-    @Pact(consumer = "probate_backOfficeService")
+   @Pact(consumer = "probate_backOfficeService")
    public  RequestResponsePact submitForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
-        //setUp();
         // @formatter:off
         return builder
                 .given("Submit for caseworker is requested", getCaseDataContentAsMap(caseDataContent))
@@ -102,7 +98,7 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
                 .method("POST")
                 .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
                 .body(convertObjectToJsonString(getCaseDataContent()))
-                .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .willRespondWith()
                 .status(200)
                 .body(buildCaseDetailsDsl(100L, "someemailaddress.com", false, false,false))
@@ -113,6 +109,8 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
     @Test
     @PactVerification(fragment = "submitForCaseWorkerFragment")
     public void submitForCaseWorker() throws Exception {
+
+        caseDataContent = getCaseDataContent();
 
         CaseDetails caseDetailsReponse = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
