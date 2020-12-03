@@ -14,13 +14,13 @@ class PuppeteerHelper extends Helper {
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
         const promises = [
-            page.waitForNavigation({ waitUntil: ['domcontentloaded', 'networkidle0'] }) // The promise resolves after navigation has finished
+            page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle0']}) // The promise resolves after navigation has finished
         ];
 
         if (locator) {
             promises.push(page.click(locator));
         }
-        return await Promise.all(promises);
+        return Promise.all(promises);
     }
 }
 
