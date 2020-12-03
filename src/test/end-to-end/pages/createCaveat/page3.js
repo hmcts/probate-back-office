@@ -15,6 +15,7 @@ module.exports = function (crud) {
         I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname);
 
         I.fillField('#caveatorEmailAddress', createCaveatConfig.page3_caveator_email);
+        I.fillField('#solsSolicitorAppReference', createCaveatConfig.page3_solAppReference);
 
         I.click(createCaveatConfig.UKpostcodeLink);
         I.fillField('#caveatorAddress_AddressLine1', createCaveatConfig.address_line1);
@@ -24,6 +25,7 @@ module.exports = function (crud) {
         I.fillField('#caveatorAddress_County', createCaveatConfig.address_county);
         I.fillField('#caveatorAddress_PostCode', createCaveatConfig.address_postcode);
         I.fillField('#caveatorAddress_Country', createCaveatConfig.address_country);
+        I.click(`#languagePreferenceWelsh-${createCaveatConfig.page3_langPrefNo}`);
     }
 
     if (crud === 'update') {

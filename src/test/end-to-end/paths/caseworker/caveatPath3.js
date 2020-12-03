@@ -26,15 +26,15 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
+Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
 
-    // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Withdraw caveat
+    // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
     // IdAM
-    I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable();
 
     // FIRST case is only needed for case-matching with SECOND one
 
@@ -102,7 +102,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     // Note that End State does not change when adding a comment.
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Withdraw caveat';
+    nextStepName = 'Caveat expired';
     I.chooseNextStep(nextStepName);
     I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat closed';

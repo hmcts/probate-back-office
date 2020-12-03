@@ -16,6 +16,7 @@ module.exports = function (crud) {
         I.fillField('#applicationSubmittedDate-day', createGrantOfProbateConfig.page1_applicationSubmittedDate_day);
         I.fillField('#applicationSubmittedDate-month', createGrantOfProbateConfig.page1_applicationSubmittedDate_month);
         I.fillField('#applicationSubmittedDate-year', createGrantOfProbateConfig.page1_applicationSubmittedDate_year);
+        I.click(`#paperForm-${createGrantOfProbateConfig.page1_optionNo}`);
 
         I.selectOption('#caseType', createGrantOfProbateConfig.page1_list3_case_type);
 
@@ -27,6 +28,7 @@ module.exports = function (crud) {
         I.fillField('#totalFeePaperForm', createGrantOfProbateConfig.page1_totalFee);
 
         I.selectOption('#paperPaymentMethod', createGrantOfProbateConfig.page1_list4_payment_method);
+        I.click(`#languagePreferenceWelsh-${createGrantOfProbateConfig.page1_optionNo}`);
 
     }
 
