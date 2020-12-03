@@ -34,7 +34,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     const unique_deceased_user = Date.now();
 
     // IdAM
-    I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable();
 
     // FIRST case is only needed for case-matching with SECOND one
 
