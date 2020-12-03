@@ -20,6 +20,7 @@ module.exports = function () {
         enterCaveatPage4: steps.createCaveat.page4,
         emailCaveator: steps.emailNotifications.caveat.emailCaveator,
         reopenCaveat: steps.reopenningCases.caveat.reopenCaveat,
+        withdrawCaveatPage1: steps.withdrawCaveat.page1,
         enterGrantOfProbatePage1: steps.createGrantOfProbate.page1,
         enterGrantOfProbatePage2: steps.createGrantOfProbate.page2,
         enterGrantOfProbatePage3: steps.createGrantOfProbate.page3,
