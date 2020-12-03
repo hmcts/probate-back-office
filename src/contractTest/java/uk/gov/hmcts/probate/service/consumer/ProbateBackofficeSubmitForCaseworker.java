@@ -35,11 +35,13 @@ import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsL
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest({
+    "core_case_data.api.url: localhost:4458"
+})
 public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact {
 
     @Rule
-    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4452, this);
+    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4458, this);
 
     public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
@@ -82,14 +84,8 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
                 .build();
     }
 
-
-    @After
-    public void  teardown() {
-        Executor.closeIdleConnections();
-    }
-
     @Pact(consumer = "probate_backOfficeService")
-    RequestResponsePact submitForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
+   public  RequestResponsePact submitForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
         //setUp();
         // @formatter:off
         return builder

@@ -31,11 +31,13 @@ import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertC
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest({
+    "core_case_data.api.url: localhost:4456"
+})
 public class ProbateBackOfficeStartForCaseworker extends AbstractBackOfficePact {
 
     @Rule
-    public  PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4452, this);
+    public  PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4456, this);
 
     private static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     private static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
@@ -63,9 +65,9 @@ public class ProbateBackOfficeStartForCaseworker extends AbstractBackOfficePact 
 
     @Value("${idam.caseworker.password}")
     protected String caseworkerPwd;
+
     @Before
     public void setUp() throws Exception {
-        Thread.sleep(2000);
         caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
         caseDataContent = CaseDataContent.builder()
                 .eventToken("someEventToken")
@@ -79,13 +81,8 @@ public class ProbateBackOfficeStartForCaseworker extends AbstractBackOfficePact 
                 .build();
     }
 
-    @After
-    public void teardown() {
-        Executor.closeIdleConnections();
-    }
-
     @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
-    RequestResponsePact startForCaseWorkerFragment(PactDslWithProvider builder) throws JSONException {
+    public RequestResponsePact startForCaseWorkerFragment(PactDslWithProvider builder) throws JSONException {
         // @formatter:off
         return builder
                 .given("A Start for a Caseworker is requested", getCaseDataContentAsMap(caseDataContent))
