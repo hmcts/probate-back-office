@@ -17,6 +17,13 @@ module.exports = function (crud) {
         I.fillField('#primaryApplicantSecondPhoneNumber', createGrantOfProbateConfig.page2_secondPhoneNumber);
         I.fillField('#primaryApplicantEmailAddress', createGrantOfProbateConfig.page2_email);
 
+        I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
+
+        I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
+        I.fillField('#primaryApplicantAlias', createGrantOfProbateConfig.page2_alias);
+
+        I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
+
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
         I.fillField('#primaryApplicantAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
         I.fillField('#primaryApplicantAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
@@ -25,13 +32,6 @@ module.exports = function (crud) {
         I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
         I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
         I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
-
-        I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
-
-        I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
-        I.fillField('#primaryApplicantAlias', createGrantOfProbateConfig.page2_alias);
-
-        I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
 
     }
 

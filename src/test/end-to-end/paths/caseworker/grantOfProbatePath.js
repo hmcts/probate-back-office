@@ -37,7 +37,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     const unique_deceased_user = Date.now();
 
     // IdAM
-    I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable();
 
     // FIRST case is only needed for case-matching with SECOND one
 
