@@ -1,84 +1,98 @@
-package uk.hmcts.reform.probate.backoffice;
+package uk.gov.hmcts.probate.service.consumer;
 
 import au.com.dius.pact.consumer.Pact;
+import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
+import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static java.lang.String.valueOf;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
+import java.io.IOException;
+import java.util.Map;
+
+//@PactTestFor(providerName = "ccdDataStoreAPI_Cases", port = "4452")
+@RunWith(SpringRunner.class)
+@SpringBootTest({
+        "ccd.data.store.api.host: localhost:4452"
+})
 public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOfficePact{
 
-    public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
-    public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-    private static final Long CASE_ID = 2000L;
+    @Rule
+    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4452, this);
+
+    protected static final String USER_ID = "123456";
+    protected static final Long CASE_ID = 108L;
+    protected static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    protected static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
+    protected static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
+
+    private Map<String, Object> caseDetailsMap;
+    private CaseDataContent caseDataContent;
 
     @Autowired
-    ObjectMapper objectMapper;
+    protected CoreCaseDataApi coreCaseDataApi;
 
     @Value("${ccd.jurisdictionid}")
-    String jurisdictionId;
+    protected String jurisdictionId;
 
     @Value("${ccd.casetype}")
-    String caseType;
-
-    CaseDataContent caseDataContent;
-    private Map<String, Object> caseDetailsMap;
+    protected String caseType;
 
     @Value("${ccd.eventid.create}")
-    private String createEventId;
+    protected String createEventId;
 
-    private static final String USER_ID = "123456";
-    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    @Value("${idam.caseworker.username}")
+    protected String caseworkerUsername;
 
-    Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    @Value("${idam.caseworker.password}")
+    protected String caseworkerPwd;
 
     @BeforeAll
     public void setUp() throws Exception {
+        Thread.sleep(2000);
         caseDetailsMap = getCaseDetailsAsMap("backoffice-case.json");
         caseDataContent = CaseDataContent.builder()
                 .eventToken("someEventToken")
                 .event(
                         Event.builder()
                                 .id(createEventId)
-                                .summary(DIVORCE_CASE_SUBMISSION_EVENT_SUMMARY)
-                                .description(DIVORCE_CASE_SUBMISSION_EVENT_DESCRIPTION)
+                                .summary("PROBATE")
+                                .description("PROBATE DESC")
                                 .build()
                 ).data(caseDetailsMap.get("case_data"))
                 .build();
     }
-    @BeforeEach
-    public void setUpEachTest() throws InterruptedException {
-        Thread.sleep(2000);
-    }
-
     @After
     public void teardown() {
         Executor.closeIdleConnections();
     }
 
-    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
-    RequestResponsePact startEventForCaseworkder(PactDslWithProvider builder) throws IOException, JSONException {
+    @Pact(consumer = "probate_backOffice")
+    RequestResponsePact startEventForCaseworkerFragment(PactDslWithProvider builder) throws IOException, JSONException {
         // @formatter:off
         return builder
                 .given("A StartEvent  for Caseworker is  requested", getCaseDataContentAsMap(caseDataContent))
@@ -92,7 +106,8 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
                         + createEventId
                         + "/token")
                 .method("GET")
-                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
+                .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION,
+                        SOME_SERVICE_AUTHORIZATION_TOKEN)
                 .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .willRespondWith()
                 .matchHeader(HttpHeaders.CONTENT_TYPE, "\\w+\\/[-+.\\w]+;charset=(utf|UTF)-8")
@@ -102,17 +117,19 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
     }
 
     @Test
-    @PactTestFor(pactMethod = "startEventForCaseworkder")
-    public void verifyStartEventForCaseworer() throws IOException, JSONException {
+    @PactVerification(fragment = "startEventForCaseworkerFragment")
+    public void verifyStartEventForCaseworkerPact() throws Exception {
 
-        final StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
-                SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,caseType,String.valueOf(CASE_ID),createEventId);
 
-        assertThat(startEventResponse.getEventId(), is("100"));
-        assertThat(startEventResponse.getToken(), is("testServiceToken"));
+        final StartEventResponse startEventResponse = coreCaseDataApi
+                .startEventForCaseWorker(SOME_AUTHORIZATION_TOKEN,
+                SOME_SERVICE_AUTHORIZATION_TOKEN,
+                "123456",
+                "PROBATE",
+                "PROBATE",
+                valueOf(CASE_ID),"create");
 
-      //  assertCaseDetails(startEventResponse.getCaseDetails());
-
+            Assert.assertNotNull(startEventResponse);
 
     }
 }

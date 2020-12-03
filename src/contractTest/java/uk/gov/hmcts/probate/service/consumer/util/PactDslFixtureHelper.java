@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.consumer.util;
 
 
-import static uk.gov.hmcts.reform.probate.pact.dsl.ObjectMapperTestUtil.convertObjectToJsonString;
+import static uk.gov.hmcts.probate.service.consumer.util.ObjectMapperTestUtil.convertObjectToJsonString;
 
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
@@ -24,7 +24,7 @@ public  class PactDslFixtureHelper {
   public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
 
 
-  private static final String VALID_PAYLOAD_PATH = "json/probate-casedata-map.json";
+  private static final String VALID_PAYLOAD_PATH = "json/backoffice-case.json";
 
   public static CaseDataContent getCaseDataContent() throws Exception {
 

@@ -23,6 +23,7 @@ plugins {
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.3.0'
   id 'jacoco'
+  id 'au.com.dius.pact' version '4.1.10'
 }
 
 apply plugin: 'project-report'
@@ -132,14 +133,6 @@ sourceSets {
         }
         resources.srcDir file('src/contractTest/resources')
     }
-    testPact {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/pactTest/java')
-        }
-        resources.srcDir file('src/pactTest/resources')
-    }  
 }
 
 task smoke(type: Test) {
@@ -167,13 +160,6 @@ task caseCreator(type: Test) {
   testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
   classpath = sourceSets.testCaseCreator.runtimeClasspath
   finalizedBy aggregate
-}
-
-task pactTask(type: Test) {
-    description="Runs the pact Tests"
-    //useJUnitPlatform()
-    testClassesDirs = sourceSets.testPact.output.classesDirs
-    classpath = sourceSets.testPact.runtimeClasspath
 }
 
 
@@ -276,7 +262,7 @@ dependencies {
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
-  
+
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
@@ -350,26 +336,6 @@ dependencies {
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
-
-  testPactCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testPactCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testPactCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testPactCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testPactCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testPactCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    //testPactCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-    //testPactCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-    //testPactTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-
-
-  testPactCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-  testPactRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-  testPactRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  testPactImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
-
-  testPactCompile sourceSets.main.runtimeClasspath
-  testPactCompile sourceSets.test.runtimeClasspath  
-
 }
 
 tasks.withType(JavaCompile) {
