@@ -13,10 +13,10 @@ public class ResponseCaseDataParent {
     protected String declarationCheckbox;
     protected String ihtGrossValueField;
     protected String ihtNetValueField;
+    protected String deceasedForeignDeathCertTranslation;
+    protected String deceasedForeignDeathCertInEnglish;
     protected String deceasedDiedEngOrWales;
     protected String deceasedDeathCertificate;
-    protected String deceasedForeignDeathCertInEnglish;
-    protected String deceasedForeignDeathCertTranslation;
     protected Long numberOfExecutors;
     protected Long numberOfApplicants;
     protected String legalDeclarationJson;
