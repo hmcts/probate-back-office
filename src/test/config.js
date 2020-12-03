@@ -1,5 +1,5 @@
 module.exports = {
-    TestFrontendUrl: process.env.TEST_E2E_URL || 'localhost:3000',
+    TestFrontendUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 3,
