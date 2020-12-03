@@ -25,6 +25,7 @@ module.exports = function (crud) {
         I.waitForNavigationToComplete(commonConfig.continueButton);
 
         I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`);
+        I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
 
     }
 

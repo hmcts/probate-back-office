@@ -11,6 +11,7 @@ module.exports = function (caseRef, caseMatchesConfig, nextStepName) {
 
     I.see(caseRef);
     I.seeElement('#caseMatches_0_0');
+    I.click(caseMatchesConfig.addNewButton);
 
     /*
     I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);

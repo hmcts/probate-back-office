@@ -37,7 +37,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     const unique_deceased_user = Date.now();
 
     // IdAM
-    I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable();
 
     // FIRST case is only needed for case-matching with SECOND one
 
