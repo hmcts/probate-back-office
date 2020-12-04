@@ -9,7 +9,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     }
 
     await I.waitForText(caseRef);
-    await I.waitForElement(tabConfigFile.tabName);
+    await I.waitForText(tabConfigFile.tabName);
     await I.click(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
