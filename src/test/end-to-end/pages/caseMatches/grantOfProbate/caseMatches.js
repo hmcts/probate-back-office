@@ -13,30 +13,25 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
 
     await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
 
-    /*
-    I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
-    I.seeInField('#caseMatches_0_dob', caseMatchesConfig.dob);
-    I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
-    */
-
     await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
 
-    const btnLocator = {css: 'button.button-secondary'};
+    const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
-    const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
+    let numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
-    // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */
-    for (let i = 1; i < numOfElements - 1; i++) {
-        await I.waitForVisible(btnLocator);
-        await I.click(btnLocator);
+    const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
+    for (let i = 0; i < numOfElements - 1; i++) {
+        await I.waitForElement(btnLocatorLastChild);
+        await I.click(btnLocatorLastChild);
         await I.waitForElement(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
     }
 
-    await I.click('#caseMatches_0_valid-Yes');
-    await I.click('#caseMatches_0_doImport-No');
+    await I.waitForEnabled({css: 'input[id$="valid-Yes"'});
+    await I.click({css: 'input[id$="valid-Yes"'});
+    await I.click({css: 'input[id$="doImport-No"'});
 
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
