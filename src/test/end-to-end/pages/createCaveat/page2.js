@@ -26,14 +26,16 @@ module.exports = async function (crud, unique_deceased_user) {
 
         let idx = 0;
         /* eslint-disable no-await-in-loop */
-        for (let i=0; i < Object.keys(createCaveatConfig).length; i++) {
-            const value = Object.keys(createCaveatConfig)[i];
-            if (value.includes('page2_alias_')) {
+        const keys = Object.keys(createCaveatConfig);
+        for (let i=0; i < keys.length; i++) {
+            const propName = createCaveatConfigObject[keys[i]];
+            if (propName.includes('page2_alias_')) {
                 await I.click(createCaveatConfig.page2_addAliasButton);
+                await I.wait(1); // implicit wait needed here
                 const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
                 // deceasedFullAliasNameList_0_FullAliasName
                 await I.waitForElement(locator, testConfig.TestTimeToWaitForText);
-                await I.fillField(locator, createCaveatConfig[value]);
+                await I.fillField(locator, createCaveatConfig[propName]);
                 idx += 1;
             }
         }

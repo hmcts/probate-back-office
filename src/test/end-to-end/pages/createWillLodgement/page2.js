@@ -30,13 +30,15 @@ module.exports = async function (crud, unique_deceased_user) {
 
         /* eslint-disable no-await-in-loop */
         let idx = 0;
-        for (let i=0; i < Object.keys(createWillLodgementConfig).length; i++) {
-            const value = Object.keys(createWillLodgementConfig)[i];
-            if (value.includes('page2_alias_')) {
+        const keys = Object.keys(createWillLodgementConfig);
+        for (let i=0; i < keys.length; i++) {
+            const propName = keys[i];
+            if (propName.includes('page2_alias_')) {
                 await I.click(createWillLodgementConfig.page2_addAliasButton);
+                await I.wait(1); // implicit wait needed here
                 const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
                 await I.waitForVisible(locator);
-                await I.fillField(locator, createWillLodgementConfig[value]);
+                await I.fillField(locator, createWillLodgementConfig[propName]);
                 idx += 1;
             }
         }
