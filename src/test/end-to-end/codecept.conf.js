@@ -18,7 +18,9 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    '--headless', '--disable-gpu', '--no-sandbox',
+                    // '--headless', 
+                    '--disable-gpu', 
+                    '--no-sandbox',
                     '--allow-running-insecure-content',
                     '--ignore-certificate-errors',
                     '--proxy-server=proxyout.reform.hmcts.net:8080',
