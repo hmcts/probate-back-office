@@ -15,6 +15,7 @@ module.exports = async function (crud) {
         await I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname);
 
         await I.fillField('#caveatorEmailAddress', createCaveatConfig.page3_caveator_email);
+        await I.fillField('#solsSolicitorAppReference', createCaveatConfig.page3_solAppReference);
 
         await I.click(createCaveatConfig.UKpostcodeLink);
         await I.fillField('#caveatorAddress_AddressLine1', createCaveatConfig.address_line1);
@@ -23,7 +24,8 @@ module.exports = async function (crud) {
         await I.fillField('#caveatorAddress_PostTown', createCaveatConfig.address_town);
         await I.fillField('#caveatorAddress_County', createCaveatConfig.address_county);
         await I.fillField('#caveatorAddress_PostCode', createCaveatConfig.address_postcode);
-        await I.fillField('#caveatorAddress_Country', createCaveatConfig.address_country);
+        await I.fillField('#caveatorAddress_Country', createCaveatConfig.address_country);        
+        await I.click(`#languagePreferenceWelsh-${createCaveatConfig.page3_langPrefNo}`);
     }
 
     if (crud === 'update') {

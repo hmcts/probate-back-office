@@ -37,7 +37,6 @@ module.exports = async function (crud) {
         await I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
         await I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
         await I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
-        
     }
 
     if (crud === 'update') {

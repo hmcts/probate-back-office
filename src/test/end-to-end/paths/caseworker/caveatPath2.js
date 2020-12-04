@@ -146,6 +146,7 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
     await I.enterCaveatPage3('update');
     await I.enterCaveatPage4('update');
     await I.enterEventSummary(caseRef, nextStepName);
+
     // Note that End State does not change when amending the caveat details.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
@@ -155,7 +156,9 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
 
     nextStepName = 'Withdraw caveat';
     await I.chooseNextStep(nextStepName);
+    await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
+
     endState = 'Caveat closed';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 

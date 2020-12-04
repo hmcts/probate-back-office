@@ -3,11 +3,12 @@
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
-const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
+const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
+const reopenCaveatConfig = require('src/test/end-to-end/pages/reopenningCases/caveat/reopenCaveatConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
 
@@ -17,11 +18,7 @@ const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cave
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabConfig');
 const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig');
 const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig');
-
-const caseDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabUpdateConfig');
-const deceasedDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig');
-const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig');
-const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
+const caveatDetailsTabReopenConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabReopenConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
@@ -29,9 +26,9 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Caveat E2E - Order summons', async function (I) {
+Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
 
-    // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
+    // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Withdraw caveat
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
@@ -73,20 +70,9 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
-
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
-
-    nextStepName = 'Email caveator'; // When in state 'Caveat raised'
-    await I.chooseNextStep(nextStepName);
-    await I.emailCaveator(caseRef);
-    await I.enterEventSummary(caseRef, nextStepName);
-    // Note that End State does not change when emailing the caveator.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
@@ -116,49 +102,30 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     // Note that End State does not change when adding a comment.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Await caveat resolution';
-    await I.chooseNextStep(nextStepName);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Awaiting caveat resolution';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Warning requested';
-    await I.chooseNextStep(nextStepName);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Warning validation';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Issue caveat warning';
-    await I.chooseNextStep(nextStepName);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Awaiting warning response';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Order summons';
-    await I.chooseNextStep(nextStepName);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Summons ordered';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Amend caveat details';
-    await I.chooseNextStep(nextStepName);
-    await I.enterCaveatPage1('update');
-    await I.enterCaveatPage2('update', unique_deceased_user);
-    await I.enterCaveatPage3('update');
-    await I.enterCaveatPage4('update');
-    await I.enterEventSummary(caseRef, nextStepName);
-    // Note that End State does not change when amending the caveat details.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
-
     nextStepName = 'Withdraw caveat';
     await I.chooseNextStep(nextStepName);
+    await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat closed';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Email caveator'; // When in state 'Caveat closed'
+    await I.chooseNextStep(nextStepName);
+    await I.emailCaveator(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    // Note that End State does not change when emailing the caveator.
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // When emailing the caveator, the Date added for the email document is set to today
+    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+
+    nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
+    await I.chooseNextStep(nextStepName);
+    await I.reopenCaveat(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat raised';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
     await I.click('#sign-out');
 
