@@ -1,5 +1,7 @@
 'use strict';
 
+const testConfig = require('src/test/config.js');
+
 module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
 
     const I = this;
@@ -8,12 +10,12 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
-    await I.waitForText(caseRef);
-    await I.waitForText(tabConfigFile.tabName);
+    await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
     await I.click(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
-        await I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText || 60);
+        await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
     }
 
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
@@ -29,16 +31,16 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 
-        await I.waitForText(nextStep);
-        await I.waitForText(endState);
-        await I.waitForText(eventSummaryPrefix + dataConfigFile.summary);
-        await I.waitForText(eventSummaryPrefix + dataConfigFile.comment);
+        await I.waitForText(nextStep, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(endState, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.TestTimeToWaitForText || 60);
 
     } else {
 
         for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
             // eslint-disable-next-line
-            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]]);
+            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
         }
     }
 };
