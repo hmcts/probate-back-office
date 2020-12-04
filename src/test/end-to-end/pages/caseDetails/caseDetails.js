@@ -17,7 +17,8 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         // eslint-disable-next-line
-        await I.see(tabConfigFile.fields[i]);
+        await I.waitForText(tabConfigFile.fields[i]);
+        // await I.see(tabConfigFile.fields[i]);
     }
 
     // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
@@ -36,7 +37,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
             // eslint-disable-next-line
-            await I.see(dataConfigFile[tabConfigFile.dataKeys[i]]);
+            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]]);
         }
     }
 };

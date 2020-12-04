@@ -10,16 +10,31 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
     await I.waitForText(caseMatchesConfig.waitForText, testConfig.TestTimeToWaitForText);
 
     await I.see(caseRef);
+
+    const btnLocator = {css: 'button.button-secondary'};
+    const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
+
+    let numOfElements = await I.grabNumberOfVisibleElements(btnLocator); // await I.getNumElements(btnLocator);
+    
+    // -1 to ignore previous button at bottom of page
+    for (let i = 0; i < numOfElements - 1; i++ ) {    
+       await I.waitForVisible(btnLocator);
+       await I.click(btnLocator);
+       await I.waitForElement(actionBtnLocator);
+       await I.click(actionBtnLocator);
+       await I.waitForInvisible(actionBtnLocator);
+    }
+        
+    /*
     await I.seeElement('#caseMatches_0_0');
 
-    /*
     I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
     I.seeInField('#caseMatches_0_dob', caseMatchesConfig.dob);
     I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
-    */
 
     await I.click('#caseMatches_0_valid-Yes');
     await I.click('#caseMatches_0_doImport-No');
+    */
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

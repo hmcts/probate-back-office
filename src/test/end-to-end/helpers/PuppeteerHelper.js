@@ -14,7 +14,7 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
 
         const promises = [
-            page.waitForNavigation({ waitUntil: ['domcontentloaded', 'networkidle0'] })
+            page.waitForNavigation({ timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0'] })
         ];
 
         if (locator) {

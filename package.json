@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "NODE_PATH=. eslint .",
     "eslint": "NODE_PATH=. eslint .",
-    "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
+    "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/grantOfProbatePath.js  -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat2": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath2.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat3": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caveatPath3.js -c ./src/test/end-to-end/ --steps",
