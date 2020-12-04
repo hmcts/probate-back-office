@@ -29,11 +29,15 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2_hasAliasYes}`);
 
         /* eslint-disable no-await-in-loop */
+        let idx = 0;
         for (let i=0; i < Object.keys(createWillLodgementConfig).length; i++) {
             const value = Object.keys(createWillLodgementConfig)[i];
             if (value.includes('page2_alias_')) {
                 await I.click(createWillLodgementConfig.page2_addAliasButton);
-                await I.fillField(`#deceasedFullAliasNameList_${i}_FullAliasName`, createWillLodgementConfig[value]);
+                const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
+                await I.waitForVisible(locator);
+                await I.fillField(locator, createWillLodgementConfig[value]);
+                idx += 1;
             }
         }
 
