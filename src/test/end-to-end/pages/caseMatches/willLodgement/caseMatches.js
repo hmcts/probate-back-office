@@ -14,7 +14,7 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
-    let numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
+    const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     /* eslint-disable no-await-in-loop */
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};

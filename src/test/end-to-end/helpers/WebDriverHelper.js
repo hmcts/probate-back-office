@@ -15,9 +15,10 @@ class WebDriverHelper extends Helper {
      * waits for naigation to complete, optionally provide a button to click
      * to start the navigation
      * @param {object} locator - a locator to a button to click, or null 
+     * @param {number} webDriverWait - optional - a wait time - defaults to 3 if not provided
      * @returns {object} - Promise
      */
-    async waitForNavigationToComplete(locator, webDriverWait) {
+    async waitForNavigationToComplete(locator, webDriverWait=3) {
         const helper = this.helpers.WebDriverIO;
 
         if (locator) {
@@ -28,7 +29,7 @@ class WebDriverHelper extends Helper {
 
         // so for ie11 / selenium webdriver this isn't that reliable,
         // is best combined with JSWaits amOnLoadedPage in next page
-        await helper.wait(webDriverWait || 3);
+        await helper.wait(webDriverWait);
     }
 
     async downloadPdfIfNotIE11(pdfLink) {
