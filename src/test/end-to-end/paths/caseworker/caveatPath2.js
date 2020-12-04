@@ -144,7 +144,6 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
     await I.enterCaveatPage1('update');
     await I.enterCaveatPage2('update', unique_deceased_user);
     await I.enterCaveatPage3('update');
-    await I.enterCaveatPage4('update');
     await I.enterEventSummary(caseRef, nextStepName);
 
     // Note that End State does not change when amending the caveat details.
