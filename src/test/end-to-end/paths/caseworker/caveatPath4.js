@@ -46,7 +46,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     await I.enterCaveatPage3('create');
     await I.enterCaveatPage4('create');
     await I.checkMyAnswers(nextStepName);
-    let endState = 'Caveat raised';
+    let endState;
 
     // SECOND case - the main test case
 

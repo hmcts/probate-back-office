@@ -17,17 +17,18 @@ class WebDriverHelper extends Helper {
      * @param {object} locator - a locator to a button to click, or null 
      * @returns {object} - Promise
      */
-    async waitForNavigationToComplete(locator) {
+    async waitForNavigationToComplete(locator, webDriverWait) {
         const helper = this.helpers.WebDriverIO;
 
         if (locator) {
             // must be a button to click
+            await helper.waitForClickable(locator, testConfig.TestTimeToWaitForText);
             await helper.click(locator);
         }
 
         // so for ie11 / selenium webdriver this isn't that reliable,
         // is best combined with JSWaits amOnLoadedPage in next page
-        await helper.wait(3);
+        await helper.wait(webDriverWait || 3);
     }
 
     async downloadPdfIfNotIE11(pdfLink) {
@@ -44,9 +45,9 @@ class WebDriverHelper extends Helper {
         const helper = this.helpers.WebDriverIO;
 
         if (browserName !== 'MicrosoftEdge') {
-            await helper.waitForElement('.dz-hidden-input', testConfig.TestWaitForElementToAppear * testConfig.TestOneMilliSecond);
+            await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
             await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
-            await helper.waitForEnabled('#button', testConfig.TestWaitForElementToAppear);
+            await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
         }
     }
 }

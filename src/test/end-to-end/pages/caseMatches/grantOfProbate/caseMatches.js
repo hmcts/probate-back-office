@@ -9,9 +9,9 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
     caseMatchesConfig.waitForText = nextStepName;
     await I.waitForText(caseMatchesConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    await I.see(caseRef);
+    await I.waitForText(caseRef, testConfig.TestTimeToWaitForText);
 
-    await I.seeElement('#caseMatches_0_0');
+    await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
 
     /*
     I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
@@ -19,7 +19,7 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
     I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
     */
 
-    await I.waitForVisible({css: '#caseMatches_0_valid-Yes'});
+    await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
 
     const btnLocator = {css: 'button.button-secondary'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};

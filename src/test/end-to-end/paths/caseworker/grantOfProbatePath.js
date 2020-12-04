@@ -159,7 +159,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.checkMyAnswers(nextStepName);
     */
     nextStepName = 'Find matches (Examining)';
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepName, 15);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';

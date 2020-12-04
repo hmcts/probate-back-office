@@ -37,9 +37,9 @@ class PuppeteerHelper extends Helper {
 
     async uploadDocumentIfNotMicrosoftEdge() {
         const helper = this.helpers[helperName];
-        await helper.waitForElement('.dz-hidden-input', testConfig.TestWaitForElementToAppear * testConfig.TestOneMilliSecond);
+        await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
         await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
-        await helper.waitForEnabled('#button', testConfig.TestWaitForElementToAppear);
+        await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
     }
 
     replaceAll(string, search, replace) {
