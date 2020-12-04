@@ -9,6 +9,8 @@
   "scripts": {
     "lint": "NODE_PATH=. eslint .",
     "eslint": "NODE_PATH=. eslint .",
+    "eslint-src": "NODE_PATH=. eslint ./src",
+    "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat2": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath2.js -c ./src/test/end-to-end/ --steps",

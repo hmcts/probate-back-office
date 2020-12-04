@@ -193,7 +193,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.chooseNextStep(nextStepName);
     await I.issueGrant(caseRef);
     endState = 'Grant issued';
-    
+
     //
     // This is as far as we can currently get locally due to bulk printing issue
     await I.enterEventSummary(caseRef, nextStepName);

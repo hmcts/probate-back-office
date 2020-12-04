@@ -25,14 +25,16 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click(`#deceasedAnyOtherNames-${createCaveatConfig.page2_hasAliasYes}`);
 
         let idx = 0;
+        /* eslint-disable no-await-in-loop */
         for (let i=0; i < Object.keys(createCaveatConfig).length; i++) {
-            let value = Object.keys(createCaveatConfig)[i];
+            const value = Object.keys(createCaveatConfig)[i];
             if (value.includes('page2_alias_')) {
                 await I.click(createCaveatConfig.page2_addAliasButton);
-                let locator = {css: `#deceasedFullAliasNameList_${idx++}_FullAliasName`};
+                const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
                 // deceasedFullAliasNameList_0_FullAliasName
                 await I.waitForElement(locator, testConfig.TestTimeToWaitForText);
                 await I.fillField(locator, createCaveatConfig[value]);
+                idx += 1;
             }
         }
 

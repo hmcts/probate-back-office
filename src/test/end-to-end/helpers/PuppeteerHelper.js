@@ -2,19 +2,20 @@
 
 const Helper = codecept_helper;
 const helperName = 'Puppeteer';
+const testConfig = require('src/test/config.js');
 
 class PuppeteerHelper extends Helper {
 
     async clickBrowserBackButton() {
         const page = this.helpers[helperName].page;
-        return await page.goBack();
+        await page.goBack();
     }
 
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
 
         const promises = [
-            page.waitForNavigation({ timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0'] })  // The promise resolves after navigation has finished
+            page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']}) // The promise resolves after navigation has finished
         ];
 
         if (locator) {
@@ -39,7 +40,7 @@ class PuppeteerHelper extends Helper {
         await helper.waitForElement('.dz-hidden-input', testConfig.TestWaitForElementToAppear * testConfig.TestOneMilliSecond);
         await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
         await helper.waitForEnabled('#button', testConfig.TestWaitForElementToAppear);
-    }    
+    }
 
     replaceAll(string, search, replace) {
         if (!string) {
@@ -56,32 +57,18 @@ class PuppeteerHelper extends Helper {
             return true;
         }
         return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
-            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18') ? true : false;
+            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18');
     }
 
     async performAsyncActionForElements(locator, actionFunc) {
-        const elements = await this.helpers['Puppeteer']._locate(locator);
+        const elements = await this.helpers.Puppeteer._locate(locator);
         if (!elements || elements.length === 0) {
             return;
         }
         for (let i = 0; i < elements.length; i++) {
-            await actionFunc(el[i]);
+            // eslint-disable-next-line no-await-in-loop
+            await actionFunc(elements[i]);
         }
-    }
-
-    isArray(obj){
-        return !!obj && obj.constructor === Array;
-    }
-
-    async getNumElements(locator) {
-        const elements = await this.helpers['Puppeteer']._locate(locator);
-        if (!elements) {
-            return 0;
-        }
-        if (!isArray(elements)) {
-            return 1;
-        }
-        return elements.length;
     }
 }
 module.exports = PuppeteerHelper;

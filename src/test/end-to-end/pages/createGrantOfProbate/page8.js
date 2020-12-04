@@ -22,11 +22,11 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-        
+
         const locator = {css: `#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`};
         await I.waitForElement(locator);
         await I.click(locator);
-        await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);        
+        await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

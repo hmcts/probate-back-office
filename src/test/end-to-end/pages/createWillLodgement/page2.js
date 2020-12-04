@@ -28,8 +28,9 @@ module.exports = async function (crud, unique_deceased_user) {
 
         await I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2_hasAliasYes}`);
 
+        /* eslint-disable no-await-in-loop */
         for (let i=0; i < Object.keys(createWillLodgementConfig).length; i++) {
-            let value = Object.keys(createWillLodgementConfig)[i];
+            const value = Object.keys(createWillLodgementConfig)[i];
             if (value.includes('page2_alias_')) {
                 await I.click(createWillLodgementConfig.page2_addAliasButton);
                 await I.fillField(`#deceasedFullAliasNameList_${i}_FullAliasName`, createWillLodgementConfig[value]);

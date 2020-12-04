@@ -24,7 +24,7 @@ module.exports = async function (crud) {
         await I.fillField('#caveatorAddress_PostTown', createCaveatConfig.address_town);
         await I.fillField('#caveatorAddress_County', createCaveatConfig.address_county);
         await I.fillField('#caveatorAddress_PostCode', createCaveatConfig.address_postcode);
-        await I.fillField('#caveatorAddress_Country', createCaveatConfig.address_country);        
+        await I.fillField('#caveatorAddress_Country', createCaveatConfig.address_country);
         await I.click(`#languagePreferenceWelsh-${createCaveatConfig.page3_langPrefNo}`);
     }
 

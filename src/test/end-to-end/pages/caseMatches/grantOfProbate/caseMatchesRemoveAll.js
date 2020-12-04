@@ -14,16 +14,17 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName) {
     const btnLocator = {css: 'button.button-secondary'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
 
-    let numOfElements = await I.grabNumberOfVisibleElements(btnLocator); // await I.getNumElements(btnLocator);
-    
+    const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
+
     // -1 to ignore previous button at bottom of page
-    for (let i = 0; i < numOfElements - 1; i++ ) {    
-       await I.waitForVisible(btnLocator);
-       await I.click(btnLocator);
-       await I.waitForElement(actionBtnLocator);
-       await I.click(actionBtnLocator);
-       await I.waitForInvisible(actionBtnLocator);
+    /* eslint-disable no-await-in-loop */
+    for (let i = 0; i < numOfElements - 1; i++) {
+        await I.waitForVisible(btnLocator);
+        await I.click(btnLocator);
+        await I.waitForElement(actionBtnLocator);
+        await I.click(actionBtnLocator);
+        await I.waitForInvisible(actionBtnLocator);
     }
-        
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

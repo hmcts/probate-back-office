@@ -15,10 +15,11 @@ class WebDriverHelper extends Helper {
      * waits for naigation to complete, optionally provide a button to click
      * to start the navigation
      * @param {object} locator - a locator to a button to click, or null 
+     * @returns {object} - Promise
      */
     async waitForNavigationToComplete(locator) {
         const helper = this.helpers.WebDriverIO;
-        
+
         if (locator) {
             // must be a button to click
             await helper.click(locator);
