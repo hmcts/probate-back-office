@@ -3,7 +3,7 @@ module.exports = {
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
-    TestPathToRun: process.env.BO_E2E_TEST_PATH_TO_RUN || './paths/**/*.js',
+    TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestFrontendUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
