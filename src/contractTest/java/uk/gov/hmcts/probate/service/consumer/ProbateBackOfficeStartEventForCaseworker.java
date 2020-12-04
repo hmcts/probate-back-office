@@ -8,7 +8,6 @@ import au.com.dius.pact.model.RequestResponsePact;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +26,7 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import java.util.Map;
 
 import static java.lang.String.valueOf;
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
@@ -118,10 +118,8 @@ public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOffice
                 "PROBATE",
                 valueOf(CASE_ID), "create");
 
-        Assert.assertNotNull(startEventResponse);
-        assertCaseDetails(startEventResponse.getCaseDetails(), false, false);
-
-
+        assertCaseDetails(startEventResponse.getCaseDetails());
+        assertBackOfficeCaseData(startEventResponse.getCaseDetails());
 
     }
 
