@@ -8,7 +8,8 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
-    await I.see(caseRef);
+    await I.waitForText(caseRef);
+    await I.waitForElement(tabConfigFile.tabName);
     await I.click(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
@@ -28,10 +29,10 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 
-        await I.see(nextStep);
-        await I.see(endState);
-        await I.see(eventSummaryPrefix + dataConfigFile.summary);
-        await I.see(eventSummaryPrefix + dataConfigFile.comment);
+        await I.waitForText(nextStep);
+        await I.waitForText(endState);
+        await I.waitForText(eventSummaryPrefix + dataConfigFile.summary);
+        await I.waitForText(eventSummaryPrefix + dataConfigFile.comment);
 
     } else {
 
