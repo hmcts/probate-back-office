@@ -19,19 +19,19 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
-    if (numOfElements === 0) {
+    if (numOfElements === 0 && retainFirstItem) {
         await I.click(caseMatchesConfig.addNewButton);
-    } else {
-        // -1 to ignore previous button at bottom of page
-        /* eslint-disable no-await-in-loop */
-        const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
-        for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
-            await I.waitForElement(btnLocatorLastChild);
-            await I.click(btnLocatorLastChild);
-            await I.waitForElement(actionBtnLocator);
-            await I.click(actionBtnLocator);
-            await I.waitForInvisible(actionBtnLocator);
-        }
+    }
+
+    // -1 to ignore previous button at bottom of page
+    /* eslint-disable no-await-in-loop */
+    const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
+    for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
+        await I.waitForElement(btnLocatorLastChild);
+        await I.click(btnLocatorLastChild);
+        await I.waitForElement(actionBtnLocator);
+        await I.click(actionBtnLocator);
+        await I.waitForInvisible(actionBtnLocator);
     }
 
     await I.waitForEnabled({css: 'input[id$="valid-Yes"'});

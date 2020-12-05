@@ -76,7 +76,7 @@ Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName);
+    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, false);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
