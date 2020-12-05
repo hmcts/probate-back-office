@@ -32,6 +32,8 @@ module.exports = async function (crud) {
         await I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
+
+        await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorNameOnWill');
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page3_executor1_name);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page3_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page3_name_difference);
