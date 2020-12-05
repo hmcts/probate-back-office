@@ -1,6 +1,6 @@
 {
   "waitForText" : "Manage probate application",
-  "tabName": "Event History",
+  "tabName": "History",
   "fields": [
     "Date",
     "Author",

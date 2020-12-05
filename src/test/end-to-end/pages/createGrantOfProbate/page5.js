@@ -28,7 +28,6 @@ module.exports = async function (crud) {
 
         await I.fillField('#courtOfDecree', createGrantOfProbateConfig.page5_courtOfDecree);
         await I.click(`#willGiftUnderEighteen-${createGrantOfProbateConfig.page5_willGiftUnderEighteenYes}`);
-
     }
 
     if (crud === 'update') {
@@ -37,7 +36,6 @@ module.exports = async function (crud) {
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         await I.fillField('#willNumberOfCodicils', createGrantOfProbateConfig.page5_willNumberOfCodicils_update);
-
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

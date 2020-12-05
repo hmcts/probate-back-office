@@ -63,7 +63,6 @@
     "page4_waitForText": "About the person who has died",
     "page4_amend_waitForText": "Amend case details",
     "page4_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage4",
-
     "page4_bo_deceasedTitle": "Mr",
     "page4_deceasedForenames": "deceased_fn",
     "page4_deceasedSurname": "deceased_sn",
@@ -94,7 +93,7 @@
 
     "page5_waitForText": "The will and any codicils",
     "page5_amend_waitForText": "Amend case details",
-    "page5_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage5",
+    "page5_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage5",
     "page5_willExistsYes": "Yes",
     "page5_willDatedBeforeAprilYes": "Yes",
     "page5_willAccessOriginalYes": "Yes",
@@ -117,7 +116,7 @@
 
     "page6_waitForText": "Relatives of the person who has died",
     "page6_amend_waitForText": "Amend case details",
-    "page6_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage6",
+    "page6_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage6",
     "page6_spouseOrPartnerNo": "No",
     "page6_childrenSurvivedYes": "Yes",
     "page6_childrenOverEighteenSurvived": "1",
@@ -133,7 +132,7 @@
 
     "page7_waitForText": "Applying as an attorney",
     "page7_amend_waitForText": "Amend case details",
-    "page7_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage7",
+    "page7_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage7",
     "page7_applyingAsAttorneyYes": "Yes",
     "page7_representativeOfName": "Represented Name",
     "page7_representativeOfName_update": "Represented Name Update",
@@ -145,7 +144,7 @@
 
     "page8_waitForText": "Foreign domicile",
     "page8_amend_waitForText": "Amend case details",
-    "page8_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage8",
+    "page8_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage8",
     "page8_deceasedDomicileInEngWalesYes": "Yes",
     "page8_deceasedDomicileInEngWalesNo": "No",
     "page8_domicilityCountry": "Country",
@@ -156,7 +155,7 @@
 
     "page9_waitForText": "Inheritance tax",
     "page9_amend_waitForText": "Amend case details",
-    "page9_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage8",
+    "page9_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage9",
     "page9_ihtFormCompletedOnlineYes": "Yes",
     "page9_ihtReferenceNumber": "AAAAA1000",
     "page9_ihtReferenceNumber_update": "AAAAA1001",

@@ -13,9 +13,9 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForElement({css: '#boDeceasedTitle'});
         await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page4_bo_deceasedTitle);
 
-        await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page4_deceasedForenames);
-        await I.fillField({css: '#deceasedSurname'}, createGrantOfProbateConfig.page4_deceasedSurname);
-        await I.click({css: '#deceasedSurname'});
+        await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user);
+        await I.fillField({css: '#deceasedSurname'}, createGrantOfProbateConfig.page4_deceasedSurname + '_' + unique_deceased_user);
+        await I.fillField('#boDeceasedHonours', createGrantOfProbateConfig.page4_bo_deceasedHonours);
 
         const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};
         await I.waitForVisible(pcLocator);
