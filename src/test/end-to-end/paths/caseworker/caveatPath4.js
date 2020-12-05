@@ -76,7 +76,7 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, false);
+    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, false, true);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
