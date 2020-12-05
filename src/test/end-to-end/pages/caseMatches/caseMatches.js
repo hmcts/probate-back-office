@@ -34,9 +34,9 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
         await I.click(caseMatchesConfig.addNewButton);
     }
 
-    await I.waitForEnabled({css: 'input[id$="valid-Yes"'});
-    await I.click({css: 'input[id$="valid-Yes"'});
-    await I.click({css: 'input[id$="doImport-No"'});
+    await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
+    await I.click({css: 'input[id$="valid-Yes"]'});
+    await I.click({css: 'input[id$="doImport-No"]'});
 
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
