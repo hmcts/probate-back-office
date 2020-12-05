@@ -51,9 +51,9 @@ module.exports = async function (crud, unique_deceased_user) {
     }
 
     if (crud === 'update') {
-
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
-        await I.selectOption('#selectionList', createGrantOfProbateConfig.page3_list1_update_option);
+
+        await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         await I.waitForVisible('#deceasedForenames');
