@@ -51,6 +51,7 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page3_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
         await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page3_executor0_alias_update);
     }
 
