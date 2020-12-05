@@ -46,12 +46,14 @@ module.exports = async function (crud) {
 
         await I.click(createWillLodgementConfig.page3_addExecutorButton);
 
+        await I.waitForVisible(`#additionalExecutorList_${index}_executorForenames`);
         await I.fillField(`#additionalExecutorList_${index}_executorTitle`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
         await I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
         await I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
 
         await I.click(createWillLodgementConfig.UKpostcodeLink);
 
+        await I.waitForVisible(`#additionalExecutorList_${index}_executorAddress_AddressLine1`);
         await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine1`, createWillLodgementConfig.address_line1);
         await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine2`, createWillLodgementConfig.address_line2);
         await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine3`, createWillLodgementConfig.address_line3);
