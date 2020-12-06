@@ -35,7 +35,7 @@ module.exports = async function (crud, unique_deceased_user) {
             const propName = keys[i];
             if (propName.includes('page2_alias_')) {
                 await I.click(createWillLodgementConfig.page2_addAliasButton);
-                await I.wait(1); // implicit wait needed here
+                await I.wait(0.1); // implicit wait needed here
                 const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
                 await I.waitForVisible(locator);
                 await I.fillField(locator, createWillLodgementConfig[propName]);

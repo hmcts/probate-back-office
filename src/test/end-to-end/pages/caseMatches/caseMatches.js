@@ -30,7 +30,7 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
         await I.waitForInvisible(actionBtnLocator);
     }
 
-    if (addNewItem) {
+    if (numOfElements == 0 && retainFirstItem && addNewItem) {
         await I.click(caseMatchesConfig.addNewButton);
     }
 

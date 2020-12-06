@@ -32,7 +32,7 @@ module.exports = async function (crud) {
         await I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
-        await I.wait(1); // needed in order to be able to switch off auto delay
+        await I.wait(0.1); // needed in order to be able to switch off auto delay
 
         await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorNameOnWill');
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page3_executor1_name);

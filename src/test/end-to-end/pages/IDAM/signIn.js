@@ -16,5 +16,5 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
     await I.fillField('username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
 
-    await I.waitForNavigationToComplete('input[type="submit"]', 5);
+    await I.waitForNavigationToComplete('input[type="submit"]');
 };
