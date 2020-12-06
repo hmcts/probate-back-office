@@ -46,8 +46,8 @@ module.exports = async function (crud) {
 
         await I.click(createWillLodgementConfig.page3_addExecutorButton);
 
-        await I.waitForVisible({css: `#additionalExecutorList_${index}_executorForenames`});
-        await I.wait(0.1); // webdriver having problems here
+        await I.waitForEnabled({css: `#additionalExecutorList_${index}_executorForenames`});
+        await I.wait(0.5); // webdriver having problems here
 
         await I.fillField(`#additionalExecutorList_${index}_executorTitle`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
         await I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
