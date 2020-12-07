@@ -6,8 +6,7 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     const I = this;
     if (!isAlreadyAtSignOnPage) {
-        await I.amOnPage('/');
-        await I.waitForNavigationToComplete();    
+        await I.amOnLoadedPage('/');
     }
 
     const textToWaitFor = useProfessionalUser ? 'Sign in or create an account' : 'Sign in';

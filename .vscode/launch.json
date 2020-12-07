@@ -17,10 +17,10 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end caveatPath4",
+            "name": "Mocha test end-end",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-caveatPath4",
+                "test-e2e",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -33,6 +33,17 @@
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-grantOfProbatePath",
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStandard",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStandard",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -51,12 +62,72 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },
+        },        
         {
-            "name": "Mocha test end-end caseProgressStandard",
+            "name": "Mocha test end-end caveat",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-caseProgressStandard",
+                "test-e2e-caveat",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caveat path 2",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caveat2",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caveat path 3",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caveat3",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caveat path 4",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caveat4",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbate",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end will lodgement",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-willLodgement",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

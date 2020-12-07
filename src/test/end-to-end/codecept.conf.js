@@ -8,7 +8,6 @@ exports.config = {
             'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': testConfig.TestActionWaitTime,
             'show': testConfig.TestShowBrowserWindow,
             'chrome': {
                 'ignoreHTTPSErrors': true,
@@ -18,7 +17,9 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    '--headless', '--disable-gpu', '--no-sandbox',
+                    // '--headless', 
+                    '--disable-gpu',
+                    '--no-sandbox',
                     '--allow-running-insecure-content',
                     '--ignore-certificate-errors',
                     '--proxy-server=proxyout.reform.hmcts.net:8080',
@@ -29,6 +30,9 @@ exports.config = {
         },
         'PuppeteerHelper': {
             'require': './helpers/PuppeteerHelper.js'
+        },
+        'JSWait': {
+            require: './helpers/JSWait.js'
         },
     },
     'include': {
