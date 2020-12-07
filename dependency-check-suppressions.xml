@@ -616,9 +616,10 @@ file name: spring-jcl-5.1.5.RELEASE.jar
     </suppress>
     <suppress>
         <notes><![CDATA[
-        file name: httpclient-4.5.7.jar
-        ]]></notes>
-        <gav regex="true">^org\.apache\.httpcomponents/httpclient@.*$</gav>
+   file name: httpclient-4.5.7.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
         <cve>CVE-2020-13956</cve>
-    </suppress>    
+    </suppress>
 </suppressions>
+
