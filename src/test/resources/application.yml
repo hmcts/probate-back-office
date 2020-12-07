@@ -381,7 +381,7 @@ welsh:
     12: "Rhagfyr"
 
 ld:
-  sdk_key: ${LD_SDK_KEY:off}
+  sdk_key: ${LAUNCHDARKLY_KEY:off}
   user:
     key: ${LD_USER_KEY:off}
     firstName: Probate
