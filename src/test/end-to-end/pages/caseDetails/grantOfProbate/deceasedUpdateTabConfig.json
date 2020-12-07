@@ -2,7 +2,7 @@
     "tabName": "Deceased",
     "fields": [
       "Was the deceased domiciled in England or Wales at the time of their death?",
-      "What was the country where the person who died either lived permanently at the date of death or intended to return to live permanently?",
+      "What was the country where the deceased was domiciled at the date of death?",
       "What type of date of death is?",
       "What was their date of death?",
       "What was their date of birth?",

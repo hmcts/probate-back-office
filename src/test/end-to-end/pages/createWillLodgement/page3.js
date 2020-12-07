@@ -4,7 +4,7 @@ const testConfig = require('src/test/config');
 const createWillLodgementConfig = require('./createWillLodgementConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (crud) {
+module.exports = async function (crud) {
 
     const I = this;
 
@@ -21,22 +21,22 @@ module.exports = function (crud) {
     });
 
     if (crud === 'create') {
-        I.waitForText(createWillLodgementConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createWillLodgementConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
-        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
-        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
-        I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
+        await I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
+        await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
+        await I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
+        await I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
 
-        I.click(createWillLodgementConfig.UKpostcodeLink);
+        await I.click(createWillLodgementConfig.UKpostcodeLink);
 
-        I.fillField('#executorAddress_AddressLine1', createWillLodgementConfig.address_line1);
-        I.fillField('#executorAddress_AddressLine2', createWillLodgementConfig.address_line2);
-        I.fillField('#executorAddress_AddressLine3', createWillLodgementConfig.address_line3);
-        I.fillField('#executorAddress_PostTown', createWillLodgementConfig.address_town);
-        I.fillField('#executorAddress_County', createWillLodgementConfig.address_county);
-        I.fillField('#executorAddress_PostCode', createWillLodgementConfig.address_postcode);
-        I.fillField('#executorAddress_Country', createWillLodgementConfig.address_country);
+        await I.fillField('#executorAddress_AddressLine1', createWillLodgementConfig.address_line1);
+        await I.fillField('#executorAddress_AddressLine2', createWillLodgementConfig.address_line2);
+        await I.fillField('#executorAddress_AddressLine3', createWillLodgementConfig.address_line3);
+        await I.fillField('#executorAddress_PostTown', createWillLodgementConfig.address_town);
+        await I.fillField('#executorAddress_County', createWillLodgementConfig.address_county);
+        await I.fillField('#executorAddress_PostCode', createWillLodgementConfig.address_postcode);
+        await I.fillField('#executorAddress_Country', createWillLodgementConfig.address_country);
 
         Object.keys(createWillLodgementConfig).forEach(function (value) {
             if (value.includes('page3_additional_executor')) {
@@ -44,33 +44,37 @@ module.exports = function (crud) {
             }
         });
 
-        I.click(createWillLodgementConfig.page3_addExecutorButton);
+        await I.click(createWillLodgementConfig.page3_addExecutorButton);
 
-        I.fillField(`#additionalExecutorList_${index}_executorTitle`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
-        I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
-        I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
+        await I.waitForEnabled({css: `#additionalExecutorList_${index}_executorForenames`});
+        await I.wait(0.5); // webdriver having problems here
 
-        I.click(createWillLodgementConfig.UKpostcodeLink);
+        await I.fillField(`#additionalExecutorList_${index}_executorTitle`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
+        await I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
+        await I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
 
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine1`, createWillLodgementConfig.address_line1);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine2`, createWillLodgementConfig.address_line2);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine3`, createWillLodgementConfig.address_line3);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_PostTown`, createWillLodgementConfig.address_town);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_County`, createWillLodgementConfig.address_county);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_PostCode`, createWillLodgementConfig.address_postcode);
-        I.fillField(`#additionalExecutorList_${index}_executorAddress_Country`, createWillLodgementConfig.address_country);
+        await I.click(createWillLodgementConfig.UKpostcodeLink);
 
-        I.fillField(`#additionalExecutorList_${index}_executorEmailAddress`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
+        await I.waitForVisible(`#additionalExecutorList_${index}_executorAddress_AddressLine1`);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine1`, createWillLodgementConfig.address_line1);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine2`, createWillLodgementConfig.address_line2);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_AddressLine3`, createWillLodgementConfig.address_line3);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_PostTown`, createWillLodgementConfig.address_town);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_County`, createWillLodgementConfig.address_county);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_PostCode`, createWillLodgementConfig.address_postcode);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress_Country`, createWillLodgementConfig.address_country);
+
+        await I.fillField(`#additionalExecutorList_${index}_executorEmailAddress`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
     }
 
     if (crud === 'update') {
-        I.waitForText(createWillLodgementConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createWillLodgementConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
-        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
-        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
-        I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
+        await I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
+        await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
+        await I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
+        await I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

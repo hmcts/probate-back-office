@@ -20,6 +20,7 @@ module.exports = function () {
         enterCaveatPage4: steps.createCaveat.page4,
         emailCaveator: steps.emailNotifications.caveat.emailCaveator,
         reopenCaveat: steps.reopenningCases.caveat.reopenCaveat,
+        withdrawCaveatPage1: steps.withdrawCaveat.page1,
         enterGrantOfProbatePage1: steps.createGrantOfProbate.page1,
         enterGrantOfProbatePage2: steps.createGrantOfProbate.page2,
         enterGrantOfProbatePage3: steps.createGrantOfProbate.page3,
@@ -39,9 +40,9 @@ module.exports = function () {
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,
         issueGrant: steps.issueGrant.issueGrant,
-        selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
-        selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
-        selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
+        selectCaseMatchesForWillLodgement: steps.caseMatches.caseMatches,
+        selectCaseMatchesForGrantOfProbate: steps.caseMatches.caseMatches,
+        selectCaseMatchesForCaveat: steps.caseMatches.caseMatches,
         selectWithdrawalReason: steps.withdrawal.withdrawal
     });
 };

@@ -1,0 +1,155 @@
+{
+  "case_details":{
+    "case_data":{
+      "solsSolicitorFirmName":"FirmName",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
+      "solsSolicitorAppReference":"firmReference",
+      "solsSolicitorEmail":"rebecca.baker@hmcts.net",
+      "solsSolicitorPhoneNumber":null,
+      "deceasedForenames":"firstName",
+      "deceasedSurname":"lastName",
+      "deceasedDateOfDeath":"2018-01-01",
+      "deceasedDateOfBirth":"1990-01-01",
+      "willExists":"Yes",
+      "solsWillType": "WillLeft",
+      "solsApplicantRelationshipToDeceased": null,
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": null,
+      "solsApplicantSiblings": null,
+      "willAccessOriginal":"Yes",
+      "willHasCodicils":"No",
+      "willNumberOfCodicils":null,
+      "boSendToBulkPrint": "No",
+      "bulkScanCaseReference": null,
+      "deceasedDomicileInEngWales":"Yes",
+      "deceasedAddress":{
+        "AddressLine1":"1",
+        "AddressLine2":"1",
+        "AddressLine3":"1",
+        "County":"1",
+        "PostTown":"1",
+        "PostCode":"1",
+        "Country":"1"
+      },
+      "deceasedAnyOtherNames":"No",
+      "paperForm": "No",
+      "solsDeceasedAliasNamesList":null,
+      "ihtFormId":"IHT205",
+      "ihtNetValue":200000.0,
+      "ihtGrossValue":300000.0,
+      "primaryApplicantForenames":"exfn",
+      "primaryApplicantSurname":"exln",
+      "primaryApplicantEmailAddress":null,
+      "primaryApplicantHasAlias":"No",
+      "solsExecutorAliasNames":null,
+      "primaryApplicantIsApplying":"Yes",
+      "solsPrimaryExecutorNotApplyingReason":null,
+      "primaryApplicantAddress":{
+        "AddressLine1":"2",
+        "AddressLine2":"2",
+        "AddressLine3":"2",
+        "County":"2",
+        "PostTown":"2",
+        "PostCode":"2",
+        "Country":"2"
+      },
+      "otherExecutorExists":"Yes",
+      "solsAdditionalExecutorList":[
+        {
+          "value": {
+            "additionalExecForenames": "exfn2",
+            "additionalExecLastname": "exln2",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": null,
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7",
+
+          "value": {
+            "additionalExecForenames": "exfn1",
+            "additionalExecLastname": "exfn1",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": null,
+            "additionalApplying": "Yes",
+            "additionalExecAddress":{
+              "AddressLine1":"3",
+              "AddressLine2":"3",
+              "AddressLine3":"3",
+              "County":"3",
+              "PostTown":"3",
+              "PostCode":"3",
+              "Country":"3"
+            },
+            "additionalExecReasonNotApplying": null
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+
+      ],
+      "solsAdditionalInfo":null,
+      "boEmailDocsReceivedNotification":"No",
+      "boEmailGrantIssuedNotification":"No",
+      "boEmailGrantIssuedNotificationRequested":"No",
+      "solsLegalStatementDocument":{
+        "document_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9",
+        "document_binary_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9/binary",
+        "document_filename":"legal_statement.pdf"
+      },
+      "solsSOTNeedToUpdate":"No",
+      "solsSOTName":"solName",
+      "solsSOTJobTitle":"solJob",
+      "extraCopiesOfGrant":null,
+      "outsideUKGrantCopies":null,
+      "solsPaymentMethods":"fee account",
+      "solsFeeAccountNumber":"feeaccount",
+      "casePrinted":"Yes",
+      "boCaseStopReasonList":[
+        {
+          "value":{
+            "caseStopReason":"ExecNotAccountedFor"
+          },
+          "id":"99e50c81-56b5-4f25-8d2a-1451d481d6c9"
+        }
+      ],
+      "applicationFee":0,
+      "feeForUkCopies":0,
+      "feeForNonUkCopies":0,
+      "totalFee":0,
+      "executorsApplying":[],
+      "executorsNotApplying":[],
+      "applicationType":"Solicitor",
+      "registryLocation":"Birmingham",
+      "docsReceivedEmailNotificationRequested":false,
+      "grantIssuedEmailNotificationRequested":"No",
+      "primaryApplicantApplying":true,
+      "primaryApplicantFullName":"exfn exln",
+      "deceasedFullName":"firstName lastName",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "yes",
+      "caseType" : "gop",
+      "scannedDocuments": []
+    },
+    "last_modified":[
+      "2018",
+      "7",
+      "2",
+      "12",
+      "30",
+      "57",
+      "378000000"
+    ],
+    "id":1530528040354687,
+    "state":"BOCaseStopped"
+  }
+}
