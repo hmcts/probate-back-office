@@ -106,8 +106,8 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
-        log.info("template params, state={}, applicationType()={}, regLocation={}, language={},  for case: {}", 
-            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseDetails.getId());
+        log.info("template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: {}, origin: {}", 
+            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
@@ -121,7 +121,7 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils.isEmpty(caseData.getSolsSOTName())) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
         log.info("Personlisation complete now get the email repsonse");
@@ -377,7 +377,7 @@ public class NotificationService {
             default:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
-        log.info("Return the SendEmailResponse: {} " , response );
+        log.info("Return the SendEmailResponse");
         return response;
     }
 

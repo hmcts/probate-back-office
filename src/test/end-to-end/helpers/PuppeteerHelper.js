@@ -13,12 +13,6 @@ class PuppeteerHelper extends Helper {
 
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
-        /*
-        if (locator) {
-            await page.click(locator);
-        }
-        return await page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle0']});
-        */
 
         const promises = [
             page.waitForNavigation({ waitUntil: ['domcontentloaded', 'networkidle0'] })
@@ -32,8 +26,6 @@ class PuppeteerHelper extends Helper {
     }
 
     async navigateToPage(url) {
-        // const page = this.helpers[helperName].page;
-        // await page.goto(url);
         await this.amOnPage(url);
         return await this.waitForNavigationToComplete();
     }
@@ -81,4 +73,5 @@ class PuppeteerHelper extends Helper {
         return elements.length;
     }
 }
+
 module.exports = PuppeteerHelper;

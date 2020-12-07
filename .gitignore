@@ -9,6 +9,7 @@
 /src/test/end-to-end/output/**
 /src/test/end-to-end/functional-output/**
 output/
+functional-output/
 
 ### STS ###
 .apt_generated
@@ -32,4 +33,4 @@ node_modules/\.bin/
 
 node_modules/
 
-src/test/end-to-end/output/
+src/test/end-to-end/functional-output/

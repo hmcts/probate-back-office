@@ -105,7 +105,11 @@
 
                 {% endfor %}
             </p>
+            {% if case_details.case_data.registryLocation == "Cardiff" %}
+            <p>are appointed executors has been lodged at Probate Registry of Wales for deposit in the Principal Registry of the Family Division, {{case_details.londonRegistryAddress}} for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
+            {% else %}
             <p>are appointed executors has been lodged at {{case_details.case_data.registryLocation}} District Probate Registry for deposit in the Principal Registry of the Family Division, {{case_details.londonRegistryAddress}} for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
+            {% endif %}
             <p>Except by leave of the District Judge of the Principal Registry the will may not be given out during the lifetime of the testator </p>
         </td>
     </tr>
