@@ -25,7 +25,9 @@ const setupConfig = {
             'key': process.env.SAUCE_ACCESS_KEY,
             desiredCapabilities: getDesiredCapabilities()
         },
-
+        WebDriverHelper: {
+            require: './helpers/WebDriverHelper.js'
+        },
         'JSWait': {
             'require': './helpers/JSWait.js'
         },
