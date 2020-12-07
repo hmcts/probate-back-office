@@ -1,3 +1,4 @@
+[
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseProgressTab", "TabLabel": "Case Progress", "TabDisplayOrder": 1, "CaseFieldID": "taskListLabel", "TabFieldDisplayOrder": 1, "TabShowCondition": "taskList !=\"\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseProgressTab", "TabLabel": "Case Progress", "TabDisplayOrder": 1, "CaseFieldID": "taskList", "TabFieldDisplayOrder": 2, "FieldShowCondition": "taskList = \"DO_NOT_SHOW\"", "Comment": "taskListLabel is defined as '${taskList}' thus taskList must be present on tab"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 2, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},

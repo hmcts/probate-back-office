@@ -311,13 +311,13 @@ To see if it's running ok, change config value TestShowBrowserWindow in config.j
 show, allowing you to see what's going on.  
  
 The default test configuration runs all end to end tests, however, often we just want to run the ones that are failing.
-As a step towards running an individual test, a new env var has been added for local use: process.env.BO_E2E_TEST_PATH_TO_RUN
+As a step towards running an individual test, a new env var has been added for local use: process.env.E2E_TEST_PATH
 (see config.js).
 
 This defaults to './paths/**/*.js', which the Jenkins nightly build will use. 
 However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area.
 A vs code launch configuration has been added to run caveatPath4.js, which is an area which is currently (06/11/2020) failing,
-so in vs code run Mocha test end-end caveatPath4, which in turn runs package.json script test-e2e-caveatPath4, which sets BO_E2E_TEST_PATH_TO_RUN 
+so in vs code run Mocha test end-end caveatPath4, which in turn runs package.json script test-e2e-caveatPath4, which sets E2E_TEST_PATH 
 before running e2e tests. You can add similar package.json entries and launch configurations. Also mocha --grep utility may possibly be used to narrow 
 test run scope down further.
 
