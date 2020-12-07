@@ -42,35 +42,35 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'PA1P/PA1A/Solicitors';
-    I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    I.enterGrantOfProbatePage1('create');
-    I.enterGrantOfProbatePage2('create');
-    I.enterGrantOfProbatePage3('create');
-    I.enterGrantOfProbatePage4('create', unique_deceased_user);
-    I.enterGrantOfProbatePage5('create');
-    I.enterGrantOfProbatePage6('create');
-    I.enterGrantOfProbatePage7('create');
-    I.enterGrantOfProbatePage8('create');
-    I.enterGrantOfProbatePage9();
-    I.checkMyAnswers(nextStepName);
-    let endState = 'Case created';
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.enterGrantOfProbatePage1('create');
+    await I.enterGrantOfProbatePage2('create');
+    await I.enterGrantOfProbatePage3('create');
+    await I.enterGrantOfProbatePage4('create', unique_deceased_user);
+    await I.enterGrantOfProbatePage5('create');
+    await I.enterGrantOfProbatePage6('create');
+    await I.enterGrantOfProbatePage7('create');
+    await I.enterGrantOfProbatePage8('create');
+    await I.enterGrantOfProbatePage9();
+    await I.checkMyAnswers(nextStepName);
+    let endState;
 
     // SECOND case - the main test case
 
     nextStepName = 'PA1P/PA1A/Solicitors';
-    I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    I.enterGrantOfProbatePage1('create');
-    I.enterGrantOfProbatePage2('create');
-    I.enterGrantOfProbatePage3('create');
-    I.enterGrantOfProbatePage4('create', unique_deceased_user);
-    I.enterGrantOfProbatePage5('create');
-    I.enterGrantOfProbatePage6('create');
-    I.enterGrantOfProbatePage7('create');
-    I.enterGrantOfProbatePage8('create');
-    I.enterGrantOfProbatePage9();
-    I.checkMyAnswers(nextStepName);
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.enterGrantOfProbatePage1('create');
+    await I.enterGrantOfProbatePage2('create');
+    await I.enterGrantOfProbatePage3('create');
+    await I.enterGrantOfProbatePage4('create', unique_deceased_user);
+    await I.enterGrantOfProbatePage5('create');
+    await I.enterGrantOfProbatePage6('create');
+    await I.enterGrantOfProbatePage7('create');
+    await I.enterGrantOfProbatePage8('create');
+    await I.enterGrantOfProbatePage9();
+    await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
     const url = await I.grabCurrentUrl();
@@ -78,123 +78,131 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
         .match(/.{4}/g)
         .join('-');
 
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
-    I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
-    I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';
-    I.chooseNextStep(nextStepName);
-    I.handleEvidence(caseRef);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.handleEvidence(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case created';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend case details';
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage1('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage2('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage3('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage4('update', unique_deceased_user);
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage5('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage6('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage7('update');
-    I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage8('update');
-    I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage1('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage2('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage3('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage4('update', unique_deceased_user);
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage5('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage6('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage7('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage8('update');
+    await I.checkMyAnswers(nextStepName);
 
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
-    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Print the case';
-    I.chooseNextStep(nextStepName);
-    I.printCase(caseRef);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.printCase(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting documentation';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Add Comment';
-    I.chooseNextStep(nextStepName);
-    I.enterComment(caseRef, nextStepName);
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.chooseNextStep(nextStepName);
+    await I.enterComment(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload Documents';
-    I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef, documentUploadConfig);
-    I.enterEventSummary(caseRef, nextStepName);
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+    await I.chooseNextStep(nextStepName);
+    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
-    I.chooseNextStep(nextStepName);
-    I.markForExamination(caseRef);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName, 10);
+    await I.markForExamination(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready for examination';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
     markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
-    I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
+    await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage4('update2orig');
-    I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage4('update2orig');
+    await I.checkMyAnswers(nextStepName);
 
     nextStepName = 'Find matches (Examining)';
-    I.chooseNextStep(nextStepName);
-    I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // case matching amended to remove all case matches to make test re-runnable
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Examine case';
-    I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Examining';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Mark as ready to issue';
-    I.chooseNextStep(nextStepName);
-    I.markForIssue(caseRef);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.markForIssue(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';
-    I.chooseNextStep(nextStepName);
-    I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
-    I.enterEventSummary(caseRef, nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // case matching amended to remove all case matches to make test re-runnable
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Issue grant';
-    I.chooseNextStep(nextStepName);
-    I.issueGrant(caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.issueGrant(caseRef);
     endState = 'Grant issued';
-    I.enterEventSummary(caseRef, nextStepName);
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    //
+    // This is as far as we can currently get locally due to bulk printing issue
+    await I.enterEventSummary(caseRef, nextStepName);
+    // 
+    //
+
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
-    I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
-    I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
+    await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
+    await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
 }).retry(testConfig.TestRetryScenarios);
