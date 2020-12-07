@@ -23,7 +23,7 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.probate.service.consumer.util.PactDslFixtureHelper.getCaseDataContent;
 import static uk.gov.hmcts.reform.probate.pact.dsl.ObjectMapperTestUtil.convertObjectToJsonString;
@@ -112,16 +112,15 @@ public class ProbateBackofficeSubmitForCaseworker extends AbstractBackOfficePact
 
         caseDataContent = getCaseDataContent();
 
-        CaseDetails caseDetailsReponse = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
+        CaseDetails caseDetails = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
                 caseType, true, caseDataContent);
 
-        assertNotNull(caseDetailsReponse);
-        assertNotNull(caseDetailsReponse.getCaseTypeId());
-        assertEquals(caseDetailsReponse.getJurisdiction(), "PROBATE");
+        assertNotNull(caseDetails);
+        assertNotNull(caseDetails.getCaseTypeId());
+        assertEquals(caseDetails.getJurisdiction(), "PROBATE");
 
-        assertCaseDetails(caseDetailsReponse,false,false);
-
+        assertCaseDetails(caseDetails);
+        assertBackOfficeCaseData(caseDetails);
     }
-
 }

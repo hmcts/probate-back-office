@@ -23,6 +23,7 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
@@ -108,10 +109,10 @@ public class ProbateBackOfficeStartForCaseworker extends AbstractBackOfficePact 
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId,
                 caseType, createEventId);
 
-        assertCaseDetails(startEventResponse.getCaseDetails(), false, false);
+        assertCaseDetails(startEventResponse.getCaseDetails());
+        assertBackOfficeCaseData(startEventResponse.getCaseDetails());
 
     }
-
 
 
 }

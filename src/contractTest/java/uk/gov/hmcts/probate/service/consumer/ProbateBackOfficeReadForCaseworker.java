@@ -20,11 +20,11 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
-
 import java.util.Map;
 
 import static junit.framework.TestCase.assertNotNull;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildCaseDetailsDsl;
 
 @RunWith(SpringRunner.class)
@@ -113,7 +113,9 @@ public class ProbateBackOfficeReadForCaseworker extends AbstractBackOfficePact {
 
         assertNotNull(caseDetailsReponse);
 
-        assertCaseDetails(caseDetailsReponse, false, false);
+        assertCaseDetails(caseDetailsReponse);
+
+        assertBackOfficeCaseData(caseDetailsReponse);
 
     }
 

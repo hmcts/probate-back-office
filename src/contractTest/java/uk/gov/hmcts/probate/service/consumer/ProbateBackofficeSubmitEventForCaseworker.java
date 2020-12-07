@@ -22,7 +22,7 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
+import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.probate.service.consumer.util.PactDslFixtureHelper.getCaseDataContent;
 import static uk.gov.hmcts.reform.probate.pact.dsl.ObjectMapperTestUtil.convertObjectToJsonString;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildCaseDetailsDsl;
@@ -110,7 +110,7 @@ public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOffic
                 SOME_SERVICE_AUTHORIZATION_TOKEN, USER_ID, jurisdictionId, caseType, CASE_ID.toString(), true, caseDataContent);
 
         assertNotNull(caseDetails);
-        assertCaseDetails(caseDetails,false,false);
+        assertBackOfficeCaseData(caseDetails);
 
     }
 }
