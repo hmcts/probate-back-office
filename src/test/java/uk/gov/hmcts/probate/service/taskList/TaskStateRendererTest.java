@@ -38,9 +38,9 @@ public class TaskStateRendererTest {
                 "<div>Authenticate documents</div>\n" +
                 "<div>Examine application</div>\n" +
                 "<div>Issue grant of representation<</div>\n" +
-                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
                 "</p>\n" +
-                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n" +
+                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n" +
                 "</p>\n" +
                 "<p></p>\n" +
                 "<p></p>\n" +

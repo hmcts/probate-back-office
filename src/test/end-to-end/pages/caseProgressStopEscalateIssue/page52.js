@@ -22,8 +22,6 @@ module.exports = async function () {
 
     const caseRef = await I.grabTextFrom('h1.heading-h1');
 
-    // sign out
-    await I.click({css: '#sign-out'});
-    await I.waitForNavigationToComplete();
+    await I.waitForNavigationToComplete('#sign-out');
     return caseRef.replace('#','');
 }

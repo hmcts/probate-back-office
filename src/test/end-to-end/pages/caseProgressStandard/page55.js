@@ -20,7 +20,5 @@ module.exports = async function () {
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 0);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]', 1);
 
-    // sign out
-    await I.click({css: '#sign-out'});
-    await I.waitForNavigationToComplete();
+    await I.waitForNavigationToComplete('#sign-out');
 }

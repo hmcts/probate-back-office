@@ -1,7 +1,7 @@
 'use strict';
 
-const dateFns = require('date-fns');
-
+// This test is in the caseworker folder, as although it alternates between caseworker
+// and solicitor (prof user), the test is to be run on the CCD ui, which the caseworker forlder is actually for
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');

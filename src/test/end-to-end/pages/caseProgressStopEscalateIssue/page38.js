@@ -13,7 +13,5 @@ module.exports = async function () {
 
     await I.waitForText(`The case was escalated on ${moment().format("DD MMM yyyy")}.`);
 
-    // sign out
-    await I.click({css: '#sign-out'});
-    await I.waitForNavigationToComplete();
+    await I.waitForNavigationToComplete('#sign-out');
 };

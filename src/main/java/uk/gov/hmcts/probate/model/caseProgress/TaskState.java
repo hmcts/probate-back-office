@@ -26,7 +26,7 @@ public enum TaskState {
     }
 
     private static class TaskStateImageUrls {
-        private static final String  URL_TEMPLATE = "https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/%s";
+        private static final String  URL_TEMPLATE = "https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/%s";
         public static final String  COMPLETED_URL = format(URL_TEMPLATE, "completed.png");
         // display for current multi-state tasklist state
         public static final String  IN_PROGRESS_URL = format(URL_TEMPLATE, "in-progress.png");

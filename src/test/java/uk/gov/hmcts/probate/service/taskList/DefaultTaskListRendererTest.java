@@ -65,15 +65,15 @@ public class DefaultTaskListRendererTest {
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
@@ -82,7 +82,7 @@ public class DefaultTaskListRendererTest {
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<reviewAndSubmitDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
@@ -96,7 +96,7 @@ public class DefaultTaskListRendererTest {
             "  <div class=\"govuk-details__text\">\n" +
             "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li><li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal statement and declaration</li></ul>\n" +
             "  </div>\n" +
-            "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
@@ -105,12 +105,12 @@ public class DefaultTaskListRendererTest {
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-778-basic-case-progress-tab/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n" +
             "</div></div>\n" +
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +

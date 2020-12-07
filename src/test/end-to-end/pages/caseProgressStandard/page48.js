@@ -8,8 +8,6 @@ module.exports = async function () {
     await I.waitForElement({css: '#field-trigger-summary'});
     await I.waitForNavigationToComplete(commonConfig.goButton);
     
-    // sign out
     await I.waitForElement({css: '#sign-out'});
-    await I.click({css: '#sign-out'});
-    await I.waitForNavigationToComplete(); 
+    await I.waitForNavigationToComplete('#sign-out'); 
 };
