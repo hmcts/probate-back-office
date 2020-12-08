@@ -5,7 +5,7 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (caseRef) {
     const I = this;
     // make sure solicitor can see this state
-    const optText = 'Find matches(Issue grant)'; 
+    const optText = 'Case Matching (Issue grant)'; 
     await I.waitForElement({xpath: `//select/option[text()="${optText}"]`});
 
     await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef,'-','')}`);

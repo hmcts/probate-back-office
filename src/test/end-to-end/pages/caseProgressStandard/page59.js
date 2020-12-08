@@ -9,6 +9,5 @@ module.exports = async function () {
     await I.waitForNavigationToComplete(commonConfig.goButton);   
 
     await I.waitForElement({css: '#sign-out'});
-    await I.click({css: '#sign-out'});
-    await I.waitForNavigationToComplete();
+    await I.waitForNavigationToComplete('#sign-out');
 };
