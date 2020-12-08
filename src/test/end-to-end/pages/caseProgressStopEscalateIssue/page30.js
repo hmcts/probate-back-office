@@ -5,9 +5,8 @@ module.exports = async function () {
     const I = this;
     try {
         // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails    
-        await I.waitForElement({css: '#sign-out'});
-        await I.click({css: '#sign-out'});
-        await I.waitForNavigationToComplete();
+        await I.waitForEnabled({css: '#sign-out'});
+        await I.waitForNavigationToComplete('#sign-out');
 
     } catch (e) {
         return Promise.reject(e);
