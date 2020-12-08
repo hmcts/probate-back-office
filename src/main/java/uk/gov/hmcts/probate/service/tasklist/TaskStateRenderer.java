@@ -123,8 +123,6 @@ public class TaskStateRenderer {
                 return addApplicationDetailsUrlTemplate;
             case TL_STATE_REVIEW_AND_SUBMIT:
                 return reviewOrSubmitUrlTemplate;
-            case TL_STATE_SEND_DOCUMENTS:
-                return viewDocumentsToBeSentInUrlTemplate;
             default:
                 return null;
 
