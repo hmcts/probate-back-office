@@ -441,4 +441,9 @@ welsh:
     11: "Tachwedd"
     12: "Rhagfyr"
 
-
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:off}
+  user:
+    key: ${LD_USER_KEY:off}
+    firstName: Probate
+    lastName: Backend
