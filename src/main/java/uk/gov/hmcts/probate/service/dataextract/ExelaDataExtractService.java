@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +31,15 @@ public class ExelaDataExtractService {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Found {} cases with dated document for Excela", cases.size());
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
+
+        CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("23452345234523456",
+                "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", LocalDateTime.now()));
+        List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
+        scannedDocuments.add(scannedDocument);
+        for (ReturnedCaseDetails caseItem : cases) {
+            caseItem.getData().setScannedDocuments(scannedDocuments);
+        }
 
         log.info("Sending email to Excela for {} filtered cases", filteredCases.size());
         if (!filteredCases.isEmpty()) {
