@@ -303,10 +303,6 @@ codecept config file src/test/end-to-end/codecept.conf.js.
 The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
 yarn script test:fullfunctional (not to be confused with functional tests).
 
-The tests are currently (6/11/2020) take a long time to run - 30 mins or more, so if it looks like it's hung it may actually be running just fine,
-although a lot of this is that some tests are failing, and there are timeouts due to new fields being added in the dev code that are not
-catered for in the tests such as 'Is the language preference Welsh?'. 
-
 To see if it's running ok, change config value TestShowBrowserWindow in config.js from false to true and the browser will 
 show, allowing you to see what's going on.  
  
@@ -316,19 +312,8 @@ As a step towards running an individual test, a new env var has been added for l
 
 This defaults to './paths/**/*.js', which the Jenkins nightly build will use. 
 However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area.
-A vs code launch configuration has been added to run caveatPath4.js, which is an area which is currently (06/11/2020) failing,
-so in vs code run Mocha test end-end caveatPath4, which in turn runs package.json script test-e2e-caveatPath4, which sets E2E_TEST_PATH 
-before running e2e tests. You can add similar package.json entries and launch configurations. Also mocha --grep utility may possibly be used to narrow 
-test run scope down further.
 
-There is a bit of a technical hitch with debugging the code as the existing calls don't use await to wait for the puppeteer code to complete, 
-which makes debugging impossible, and this should be resolved with time. 
-
-If you set  TestShowBrowserWindow to true you can see where it is going wrong, but really awaits should be attended.
-
-Note also there is a saucelabs.conf.js file, this points to a front end url by default if environment variable not supplied. 
-I've not discovered yet if this is used, or just a copy/paste remnant from the probate-frontend project. 
-  
+ 
 ## Complete setup for local FE + e2e development
 ### probate-frontend
 set following in default.yml
