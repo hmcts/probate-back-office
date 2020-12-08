@@ -72,3 +72,4 @@ java:
         - pdfServiceHealthUrl
         - idam-secret-probate
         - idamRedirectUrl
+        - launchdarkly-key

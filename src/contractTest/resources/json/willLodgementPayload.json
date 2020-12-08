@@ -1,0 +1,96 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "WillLodgement",
+    "state": "createWillLodgment",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "Leeds",
+      "lodgementType": "safeCustody",
+      "lodgedDate": "2017-12-31",
+      "willDate": "2017-12-31",
+      "codicilDate": "2017-12-31",
+      "numberOfCodicils": "2",
+      "jointWill": "No",
+      "deceasedForenames": "df name 2",
+      "deceasedSurname": "dl name 2",
+      "deceasedGender": "Male",
+      "deceasedDateOfDeath": "2017-12-31",
+      "deceasedDateOfBirth": "2016-12-31",
+      "deceasedTypeOfDeath": "Dead",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "address line one",
+        "AddressLine2": "address line two",
+        "AddressLine3": "address line three",
+        "County": "county",
+        "PostTown": "town",
+        "PostCode": "postcode",
+        "Country": "country"
+      },
+      "deceasedEmailAddress": "email@email.com",
+      "executorTitle": "Professor",
+      "executorForenames": "Ex1 First Name",
+      "executorSurname": "Ex2 last name",
+      "executorAddress": {
+        "AddressLine1": "address line one",
+        "AddressLine2": "address line two",
+        "AddressLine3": "address line three",
+        "County": "county",
+        "PostTown": "town",
+        "PostCode": "postcode",
+        "Country": "country"
+      },
+      "executorEmailAddress": "ex1@email.com",
+      "additionalExecutorList": [
+        {
+          "value": {
+            "executorTitle": "Professor",
+            "executorForenames": "ex2 first name",
+            "executorSurname": "ex2 last name",
+            "executorAddress": {
+              "AddressLine1": "address line one",
+              "AddressLine2": "address line two",
+              "AddressLine3": "address line three",
+              "County": "county",
+              "PostTown": "town",
+              "PostCode": "postcode",
+              "Country": "country"
+            },
+            "executorEmailAddress": "ex2@email.com"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+      ],
+      "withdrawReason": "Test",
+      "documentsGenerated": [
+        {
+          "id": "6f6d159b-b5ce-49de-9974-4fda82ddd926",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a",
+              "document_filename": "willLodgementDepositReceipt.pdf",
+              "document_binary_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a/binary"
+            },
+            "DocumentType": "willLodgementDepositReceipt",
+            "DocumentFileName": null,
+            "DocumentDateAdded": "2019-01-22",
+            "DocumentGeneratedBy": "32"
+          }
+        }
+      ]
+    }
+  }
+}
