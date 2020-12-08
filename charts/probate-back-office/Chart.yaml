@@ -2,7 +2,7 @@ apiVersion: v1
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.2
+version: 1.0.3
 
 maintainers:
   - name: HMCTS Probate Team

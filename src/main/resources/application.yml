@@ -121,6 +121,10 @@ fee.api:
   channel: default
   applicantType: all
   keyword: NewFee
+  newCopiesFeeKeyword: GrantWill
+  newIssuesFee5kKeyword: SAL5K
+  newIssuesFeeKeyword: SA
+  ihtMinAmt: 5000.00
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -430,7 +434,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -466,3 +470,10 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
+  user:
+    key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
+    firstName: Probate
+    lastName: Backend
