@@ -14,8 +14,8 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
-        // IDAM
     try {
+        // IDAM
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
@@ -59,7 +59,6 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.caseProgressStopEscalateIssuePage31(caseRef);   
         await I.caseProgressStopEscalateIssuePage32();   
 
-
         // log back in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         // set as escalated
@@ -67,21 +66,25 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.caseProgressStopEscalateIssuePage34();   
         await I.caseProgressStopEscalateIssuePage35();   
         await I.caseProgressStopEscalateIssuePage36();   
+
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true); 
         await I.caseProgressStopEscalateIssuePage37(caseRef);   
-        await I.caseProgressStopEscalateIssuePage38();   
+        await I.caseProgressStopEscalateIssuePage38();
+
         // log back in as case worker and set to Find Matches (Issue grant)
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressStopEscalateIssuePage39(caseRef);   
         await I.caseProgressStopEscalateIssuePage40();   
         await I.caseProgressStopEscalateIssuePage41();   
         await I.caseProgressStopEscalateIssuePage42();   
-        await I.caseProgressStopEscalateIssuePage43();   
+        await I.caseProgressStopEscalateIssuePage43();
+
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true); 
         await I.caseProgressStopEscalateIssuePage44(caseRef);   
         await I.caseProgressStopEscalateIssuePage45();   
+        
         // log back in as case worker and set to Issue grant
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressStopEscalateIssuePage46(caseRef);   
