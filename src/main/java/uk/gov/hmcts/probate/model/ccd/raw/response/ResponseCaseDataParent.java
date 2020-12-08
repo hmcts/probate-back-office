@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 
+import java.time.LocalDate;
+
 public class ResponseCaseDataParent {
 
     protected DynamicList reprintDocument;
@@ -22,13 +24,14 @@ public class ResponseCaseDataParent {
     protected String registrySequenceNumber;
     protected String taskList;
     protected String escalatedDate;
+    protected String authenticatedDate;
 
     ResponseCaseDataParent() {
     }
 
     ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
-                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String taskList, String escalatedDate) {
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String taskList, String escalatedDate, String authenticatedDate) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
@@ -44,6 +47,7 @@ public class ResponseCaseDataParent {
         this.registrySequenceNumber = registrySequenceNumber;
         this.taskList = taskList;
         this.escalatedDate = escalatedDate;
+        this.authenticatedDate = authenticatedDate;
     }
 
     public DynamicList getReprintDocument() {
@@ -100,6 +104,8 @@ public class ResponseCaseDataParent {
 
     public String getEscalatedDate() { return escalatedDate; }
 
+    public String getAuthenticatedDate() { return authenticatedDate; }
+
     public static ResponseCaseDataParentBuilder builder() {
         return new ResponseCaseDataParentBuilder();
     }
@@ -120,6 +126,7 @@ public class ResponseCaseDataParent {
         protected String registrySequenceNumber;
         protected String taskList;
         protected String escalatedDate;
+        protected String authenticatedDate;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -195,11 +202,16 @@ public class ResponseCaseDataParent {
             return this;
         }
 
+        public ResponseCaseDataParentBuilder authenticatedDate(String authenticatedDate) {
+            this.authenticatedDate = authenticatedDate;
+            return this;
+        }
+
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
                 solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
-                registryAddress, registryEmailAddress, registrySequenceNumber, taskList, escalatedDate);
+                registryAddress, registryEmailAddress, registrySequenceNumber, taskList, escalatedDate, authenticatedDate);
         }
     }
 }

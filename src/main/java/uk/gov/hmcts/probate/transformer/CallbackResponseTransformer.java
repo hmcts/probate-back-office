@@ -214,6 +214,8 @@ public class CallbackResponseTransformer {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        caseData.setAuthenticatedDate(LocalDate.now());
+
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         if (documents.isEmpty()) {
@@ -684,6 +686,8 @@ public class CallbackResponseTransformer {
                 .registrySequenceNumber(caseData.getRegistrySequenceNumber())
                 .taskList(caseData.getTaskList())
                 .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
                     .map(dateTimeFormatter::format).orElse(null));
 
         if (transform) {

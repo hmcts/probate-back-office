@@ -16,6 +16,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
         }
         String submitDate = details.getData().getApplicationSubmittedDate();
         LocalDate submitLocalDate = submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
+        LocalDate authDate = details.getData().getAuthenticatedDate();
 
         return
             TaskStateRenderer.renderByReplace(tlState,
@@ -24,6 +25,6 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
                                 SecondaryTextRenderer.renderByReplace(
                                         HeadingRenderer.renderByReplace(
                                                 UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.taskListTemplate))))),
-                                                    details.getId(), null, submitLocalDate);
+                                                    details.getId(), authDate, submitLocalDate);
     }
 }

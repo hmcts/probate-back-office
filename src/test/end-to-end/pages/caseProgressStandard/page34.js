@@ -1,5 +1,6 @@
 'use strict';
 const assert = require('assert');
+const moment = require('moment');
 
 // back to case details 
 module.exports = async function () {
@@ -19,5 +20,7 @@ module.exports = async function () {
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', 6);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 0);
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]', 1);
+
+    await I.see(`Authenticated on ${moment().format("DD MMM yyyy")}`);
     await I.waitForNavigationToComplete('#sign-out');
 }
