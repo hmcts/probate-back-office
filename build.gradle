@@ -331,6 +331,7 @@ dependencies {
   contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version : '2.9.8'
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit_2.12', version: '3.5.25'
+  contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
