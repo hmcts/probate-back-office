@@ -4,15 +4,14 @@ const testConfig = require('src/test/config.js');
 const printCaseConfig = require('./printCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = async function (caseRef) {
 
     const I = this;
-    I.waitForText(printCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(printCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.selectOption('#casePrinted', printCaseConfig.list1_text);
+    await I.selectOption('#casePrinted', printCaseConfig.list1_text);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
-
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

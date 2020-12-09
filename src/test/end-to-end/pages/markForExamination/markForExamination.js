@@ -4,15 +4,14 @@ const testConfig = require('src/test/config.js');
 const markForExaminationConfig = require('./markForExaminationConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = async function (caseRef) {
 
     const I = this;
-    I.waitForText(markForExaminationConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(markForExaminationConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.click(`#boEmailDocsReceivedNotification-${markForExaminationConfig.list1_text}`);
+    await I.click(`#boEmailDocsReceivedNotification-${markForExaminationConfig.list1_text}`);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
-
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
