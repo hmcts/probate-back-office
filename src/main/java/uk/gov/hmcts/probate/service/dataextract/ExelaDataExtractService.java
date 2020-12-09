@@ -37,7 +37,9 @@ public class ExelaDataExtractService {
         scannedDocuments.add(scannedDocument);
         for (ReturnedCaseDetails caseItem : cases) {
             caseItem.getData().setScannedDocuments(scannedDocuments);
+            log.info("SCANNED: " + caseItem.getData().getScannedDocuments());
         }
+        log.info("SCANNED DOCUMENTs exist: " + cases.get(0).getData().getScannedDocuments().size());
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
 
         log.info("Sending email to Excela for {} filtered cases", filteredCases.size());
