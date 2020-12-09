@@ -104,4 +104,25 @@
         <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
         <cve>CVE-2020-13956</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.4.21.Final.jar
+   ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cve>CVE-2020-25638</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.38.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2020-17527</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-websocket-9.0.38.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
+        <cve>CVE-2020-17527</cve>
+    </suppress>
 </suppressions>
