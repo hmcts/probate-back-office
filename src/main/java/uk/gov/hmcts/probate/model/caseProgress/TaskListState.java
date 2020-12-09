@@ -17,7 +17,7 @@ public enum TaskListState {
     TL_STATE_ISSUE_GRANT(true),
     TL_STATE_COMPLETE(true);
 
-    public boolean isMultiState;
+    public final boolean isMultiState;
 
     private TaskListState(boolean multiState) {
         isMultiState = multiState;

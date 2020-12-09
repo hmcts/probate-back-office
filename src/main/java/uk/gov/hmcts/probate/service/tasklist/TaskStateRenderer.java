@@ -93,7 +93,7 @@ public class TaskStateRenderer {
     private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId) {
         String linkUrlTemplate = getLinkUrlTemplate(taskListState);
         return linkUrlTemplate != null && (currState == TaskState.NOT_STARTED || currState == TaskState.IN_PROGRESS) ?
-                LinkRenderer.render(linkText, getLinkUrlTemplate(taskListState).replaceFirst("<CASE_ID>", caseId))
+                LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId))
                 : linkText;
     }
 

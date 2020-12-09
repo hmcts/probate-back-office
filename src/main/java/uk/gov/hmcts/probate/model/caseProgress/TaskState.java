@@ -8,8 +8,8 @@ public enum TaskState {
     NOT_STARTED(TaskStateDescriptions.NOT_STARTED_DESC, TaskStateImageUrls.NOT_STARTED_URL),
     NOT_AVAILABLE(TaskStateDescriptions.NOT_AVAILABLE_DESC, "");
 
-    public String displayText;
-    public String imageUrl;
+    public final String displayText;
+    public final String imageUrl;
 
     TaskState(String displayText, String imageUrl) {
         this.displayText = displayText;
