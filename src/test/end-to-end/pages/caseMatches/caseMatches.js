@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (caseRef, nextStepName, retainFirstItem=true, addNewItem=false, skipMatchingInfo=false) {
+module.exports = async function (caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
 
     const I = this;
     await I.waitForText(nextStepName, testConfig.TestTimeToWaitForText);
@@ -29,14 +29,14 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.waitForInvisible(actionBtnLocator);
     }
 
-    if (numOfElements === 0 && retainFirstItem && addNewItem) {
-        await I.click(caseMatchesConfig.addNewButton);
+    if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
+        await I.click(addNewButtonLocator);
     }
 
-    if (retainFirstItem || addNewItem) {
+    if (retainFirstItem || addNewButtonLocator) {
         await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
         await I.click({css: 'input[id$="valid-Yes"]'});
-        await I.click({css: 'input[id$="doImport-No"]'});    
+        await I.click({css: 'input[id$="doImport-No"]'});
     }
 
     await I.waitForEnabled(commonConfig.continueButton);
@@ -45,6 +45,6 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     if (skipMatchingInfo) {
         await I.waitForElement({css: '#field-trigger-summary'});
         await I.waitForEnabled(commonConfig.continueButton);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);            
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
 };

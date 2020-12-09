@@ -23,13 +23,13 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-        
+        /* eslint-disable no-console */
         console.info('Initial application entry');
         await I.caseProgressSolicitorDetails(caseProgressConfig);
         await I.caseProgressSolicitorDetailsCheckAnswers(caseProgressConfig, solicitorDetailsHtmlCheck.htmlCheck);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 1, 
-            numInProgress: 0, 
+            numCompleted: 1,
+            numInProgress: 0,
             numNotStarted: 1,
             linkText: 'Add deceased details',
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
@@ -38,16 +38,16 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         console.info('Deceased details');
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
-        await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}])
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}])
+        await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
         await I.caseProgressStopEscalateIssueDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 2, 
-            numInProgress: 0, 
+            numCompleted: 2,
+            numInProgress: 0,
             numNotStarted: 1,
             linkText: 'Add application details',
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
-            clickLink: true});  
+            clickLink: true});
 
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
@@ -55,123 +55,118 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         await I.caseProgressCheckYourAnswers(solCheckAnswersHtmlCheck.htmlCheck);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 3, 
-            numInProgress: 0, 
+            numCompleted: 3,
+            numInProgress: 0,
             numNotStarted: 1,
             linkText: 'Review and sign legal statement and submit application',
             linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
-            clickLink: true});        
-                
-        console.info('Confirm application')
-        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}])
+            clickLink: true});
+
+        console.info('Confirm application');
+        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
         await I.caseProgressConfirmApplication();
 
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{ locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
-        await I.caseProgressCompleteApplication();                
-              
-        console.info('Payment')
+        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
+        await I.caseProgressCompleteApplication();
+
+        console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);
         await I.caseProgressCompleteApplication();
 
-        console.info('Submit confirmation')
+        console.info('Submit confirmation');
         await I.caseProgressSubmittedConfirmation();
 
         const caseRef = await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 4, 
-            numInProgress: 1, 
+            numCompleted: 4,
+            numInProgress: 1,
             numNotStarted: 0,
-            signOut: true});   
+            signOut: true});
 
         console.info('Print case');
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Print the case');
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{ locator: {css: '#casePrinted'}, option: '1: Yes'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
         await I.caseProgressClickGoAndSignOut();
 
         console.info('Check progress tab for Print case');
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.authenticateWithIdamIfAvailable(true, true);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 4, 
-            numInProgress: 1, 
+            numCompleted: 4,
+            numInProgress: 1,
             numNotStarted: 0,
-            signOut: true});    
+            signOut: true});
 
         console.info('Stop case');
-            // log in as case worker
+        // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Stop case');
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{ locator: {css: '#casePrinted'}, option: '1: Yes'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
         await I.caseProgressClickGoAndSignOut();
-
 
         console.info('Check progress tab for Case stopped');
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.authenticateWithIdamIfAvailable(true, true);
         await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case stopped');
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         console.info('Escalate case to registrar');
-            // log in as case worker
+        // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Escalate to registrar');
         await I.caseProgressClickGoAndSignOut();
 
-
         console.info('Check progress tab for Case escalated');
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true); 
+        await I.authenticateWithIdamIfAvailable(true, true);
         await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Registrar escalation');
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
-
 
         console.info('Find matches (Issue grant)');
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Find matches (Issue grant)');
-        await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, false, true);
+        await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
         await I.waitForVisible({css: '#sign-out'});
         await I.waitForNavigationToComplete('#sign-out');
 
-        console.info('Check progress tab for Case Matching (Issue grant)')
+        console.info('Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true); 
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case Matching (Issue grant)');        
+        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case Matching (Issue grant)');
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 7, 
-            numInProgress: 1, 
+            numCompleted: 7,
+            numInProgress: 1,
             numNotStarted: 0,
-            signOut: true});     
-        
+            signOut: true});
+
         console.info('Issue grant');
-            // log in as case worker
+        // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint-No'}]);
-        await I.caseProgressClickGoAndSignOut(); 
+        await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Issue grant')
+        console.info('Check progress tab for Issue grant');
         // log back in as solicitor & check all sections completed
-        await I.authenticateWithIdamIfAvailable(true, true); 
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Grant issued');        
+        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Grant issued');
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 8, 
-            numInProgress: 0, 
+            numCompleted: 8,
+            numInProgress: 0,
             numNotStarted: 0,
-            signOut: true});    
-        
-        console.info('02 BO Case Progress E2E - stop/escalate/issue: complete');
+            signOut: true});
 
+        console.info('02 BO Case Progress E2E - stop/escalate/issue: complete');
     } catch (e) {
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);
         return Promise.reject(e);
-    }    
-
-}).retry(0); //testConfig.TestRetryScenarios);
+    }
+}).retry(testConfig.TestRetryScenarios);

@@ -8,5 +8,5 @@ module.exports = async function () {
     await I.waitForElement('h1.heading-h1');
     const headingHtml = await I.grabAttributeFrom('h1.heading-h1', 'innerHTML');
     assert (headingHtml.includes ('Complete application'));
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

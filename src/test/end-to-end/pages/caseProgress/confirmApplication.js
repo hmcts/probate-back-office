@@ -9,5 +9,5 @@ module.exports = async function () {
     await I.waitForElement('h1.heading-h1');
     const headingHtml = await I.grabAttributeFrom('h1.heading-h1 > span', 'innerHTML');
     assert (headingHtml === 'Confirm your client has agreed with the legal statement and declaration&nbsp;-&nbsp;');
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

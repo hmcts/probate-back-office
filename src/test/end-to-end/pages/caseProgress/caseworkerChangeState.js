@@ -8,5 +8,5 @@ module.exports = async function (stateOptionText) {
     await I.waitForElement({css: '#next-step'});
     await I.waitForElement({xpath: `//select/option[text()="${stateOptionText}"]`});
     await I.selectOption({css: '#next-step'}, stateOptionText);
-    await I.click({css: commonConfig.goButton});    
+    await I.click({css: commonConfig.goButton});
 };

@@ -19,5 +19,5 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField('#solsSolicitorAppReference', caseProgressConfig.ref);
     await I.fillField('#solsSolicitorEmail', caseProgressConfig.solEmail);
     await I.fillField('#solsSolicitorPhoneNumber', caseProgressConfig.solPhone);
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -5,7 +5,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (caseProgressConfig) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('#applicationGrounds'); 
+    await I.waitForElement('#applicationGrounds');
     await I.fillField('#applicationGrounds', caseProgressConfig.groundsForApplication);
     await I.click('#deceasedDomicileInEngWales-Yes');
     await I.click('a.manual-link');
@@ -18,5 +18,5 @@ module.exports = async function (caseProgressConfig) {
     await I.selectOption('select', caseProgressConfig.IHTSelectValue);
     await I.fillField('#ihtGrossValue', caseProgressConfig.IHTGross);
     await I.fillField('#ihtNetValue', caseProgressConfig.IHTNet);
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

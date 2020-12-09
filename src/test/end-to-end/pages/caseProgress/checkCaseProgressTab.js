@@ -4,7 +4,7 @@ const assert = require('assert');
 module.exports = async function (opts) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('a[aria-controls="caseProgressTab"][aria-selected=true]'); 
+    await I.waitForElement('a[aria-controls="caseProgressTab"][aria-selected=true]');
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFrom('markdown  p.govuk-body-s');
@@ -33,11 +33,11 @@ module.exports = async function (opts) {
         assert (lnkTxt=== opts.linkText); //assert deceased details has a link
 
         const lnk = await I.grabAttributeFrom('p.govuk-body-s a', 'href');
-        assert (lnk.endsWith(opts.linkUrl));    
+        assert (lnk.endsWith(opts.linkUrl));
     } else {
-        await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);        
+        await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);
         const docsText = await I.grabTextFrom('span.govuk-details__summary-text');
-        assert (docsText === 'View the documents needed by HM Courts and Tribunal Service'); 
+        assert (docsText === 'View the documents needed by HM Courts and Tribunal Service');
     }
 
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', opts.numCompleted);
@@ -49,15 +49,15 @@ module.exports = async function (opts) {
         if (typeof imgSrcCompleted !== 'string') {
             imgSrcCompleted = imgSrcCompleted[0];
         }
-        assert (imgSrcCompleted.endsWith('completed.png'));    
+        assert (imgSrcCompleted.endsWith('completed.png'));
     }
 
     if (opts.numNotStarted > 0) {
         let imgSrcNotStarted = await I.grabAttributeFrom('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="NOT STARTED"]', 'src');
         if (typeof imgSrcNotStarted !== 'string') {
-            imgSrcNotStarted = imgSrcCompleted[0];
+            imgSrcNotStarted = imgSrcNotStarted[0];
         }
-        assert (imgSrcNotStarted.endsWith('not-started.png'));    
+        assert (imgSrcNotStarted.endsWith('not-started.png'));
     }
 
     if (opts.numInProgress > 0) {
@@ -65,18 +65,17 @@ module.exports = async function (opts) {
         if (typeof imgSrcInProgress !== 'string') {
             imgSrcInProgress = imgSrcInProgress[0];
         }
-        assert (imgSrcInProgress.endsWith('in-progress.png'));    
+        assert (imgSrcInProgress.endsWith('in-progress.png'));
     }
 
     const caseRef = await I.grabTextFrom('h1.heading-h1');
 
     if (opts.clickLink) {
-        await I.waitForNavigationToComplete('p.govuk-body-s a');    
+        await I.waitForNavigationToComplete('p.govuk-body-s a');
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('#sign-out');        
+        await I.waitForNavigationToComplete('#sign-out');
     }
 
-    return caseRef.replace('#','');
-}
-
+    return caseRef.replace('#', '');
+};

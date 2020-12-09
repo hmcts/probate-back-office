@@ -14,5 +14,5 @@ module.exports = async function () {
     assert (formHtml.includes('Swindon'));
     assert (formHtml.includes('SN15JU'));
     assert (formHtml.includes('UK'));
-    await I.waitForNavigationToComplete(commonConfig.continueButton);          
-}
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
+};

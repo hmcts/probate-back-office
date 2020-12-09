@@ -43,22 +43,6 @@ class PuppeteerHelper extends Helper {
             this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18');
     }
 
-    isArray(obj) {
-        // eslint-disable-next-line no-implicit-coercion
-        return !!obj && obj.constructor === Array;
-    }
-
-    async getNumElements(locator) {
-        const elements = await this.helpers.Puppeteer._locate(locator);
-        if (!elements) {
-            return 0;
-        }
-        if (!isArray(elements)) {
-            return 1;
-        }
-        return elements.length;
-    }
-
     async navigateToPage(url) {
         await this.amOnPage(url);
         await this.waitForNavigationToComplete();

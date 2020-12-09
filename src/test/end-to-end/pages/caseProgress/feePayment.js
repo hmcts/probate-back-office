@@ -7,6 +7,6 @@ module.exports = async function (caseProgressConfig) {
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement('#solsPaymentMethods');
     await I.selectOption('select', caseProgressConfig.FeeAccount);
-    await I.fillField('#solsFeeAccountNumber', caseProgressConfig.FeeAccountNumber)
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.fillField('#solsFeeAccountNumber', caseProgressConfig.FeeAccountNumber);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

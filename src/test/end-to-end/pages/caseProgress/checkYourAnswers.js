@@ -6,9 +6,9 @@ module.exports = async function (htmlToCheck) {
     const I = this;
     await I.waitForElement('form.check-your-answers');
     const formHtml = await I.grabAttributeFrom('form.check-your-answers', 'outerHTML');
-    assert(formHtml); 
+    assert(formHtml);
     if (htmlToCheck) {
         assert (I.htmlEquals(formHtml, htmlToCheck));
     }
-    await I.waitForNavigationToComplete(commonConfig.continueButton);          
-}
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
+};

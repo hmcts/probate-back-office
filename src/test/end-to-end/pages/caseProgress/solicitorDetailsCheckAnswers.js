@@ -14,8 +14,8 @@ module.exports = async function (caseProgressConfig, htmlToCheck) {
     await I.see(caseProgressConfig.solSurname);
     await I.see(caseProgressConfig.solAddr1);
     if (htmlToCheck) {
-        const formHtml = await I.grabAttributeFrom('form', 'outerHTML');        
+        const formHtml = await I.grabAttributeFrom('form', 'outerHTML');
         assert(I.htmlEquals(formHtml, htmlToCheck));
     }
-    await I.waitForNavigationToComplete(commonConfig.continueButton);      
-}
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
+};

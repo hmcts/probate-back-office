@@ -24,7 +24,6 @@ const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDe
 const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
@@ -90,7 +89,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, true);
+    await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
