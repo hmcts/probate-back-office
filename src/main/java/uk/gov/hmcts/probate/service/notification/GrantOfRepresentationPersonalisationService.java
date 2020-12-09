@@ -97,6 +97,7 @@ public class GrantOfRepresentationPersonalisationService {
             data.append(", ");
             data.append(currentCase.getData().getDeceasedForenames());
             data.append(" ");
+            data.append(", ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
             data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
@@ -104,6 +105,8 @@ public class GrantOfRepresentationPersonalisationService {
             data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
             data.append(", ");
             data.append(currentCase.getId().toString());
+            data.append(", ");
+            data.append(currentCase.getData().getRegistryLocation());
             data.append("\n");
         }
         return data;
