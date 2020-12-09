@@ -39,7 +39,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("Yes")
@@ -48,11 +48,11 @@ public class ExecutorsApplyingNotificationServiceTest {
         caseDataSolicitor = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .solsSOTName("Timmy Tom")
-                .solsSolicitorEmail("timmy@sol.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
                 .solsSolicitorAddress(ADDRESS)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("Yes")
@@ -68,14 +68,14 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("Yes")
                 .build();
 
         CollectionMember<ExecutorsApplyingNotification> paApplying =
-                buildExecNotification("Bob Smith", "PA@test.com", "1");
+                buildExecNotification("Bob Smith", "primary@probate-test.com", "1");
 
         CollectionMember<ExecutorsApplyingNotification> execApplying =
                 buildExecNotification("Tommy Tank", "tommy@test.com", "2");
@@ -92,7 +92,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
@@ -113,14 +113,14 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .primaryApplicantIsApplying(null)
                 .additionalExecutorsApplying(null)
                 .build();
 
         CollectionMember<ExecutorsApplyingNotification> execApplying =
-                buildExecNotification("Bob Smith", "PA@test.com", "1");
+                buildExecNotification("Bob Smith", "primary@probate-test.com", "1");
         expectedResponse.add(execApplying);
 
         assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
@@ -133,7 +133,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .primaryApplicantIsApplying("No")
                 .additionalExecutorsApplying(null)
@@ -149,14 +149,14 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .primaryApplicantIsApplying("Yes")
                 .additionalExecutorsApplying(null)
                 .build();
 
         CollectionMember<ExecutorsApplyingNotification> execApplying =
-                buildExecNotification("Bob Smith", "PA@test.com", "1");
+                buildExecNotification("Bob Smith", "primary@probate-test.com", "1");
         expectedResponse.add(execApplying);
 
         assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
@@ -174,7 +174,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
@@ -207,7 +207,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
@@ -227,7 +227,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .primaryApplicantIsApplying("No")
                 .build();
@@ -240,7 +240,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .primaryApplicantIsApplying("No")
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
@@ -271,7 +271,7 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .primaryApplicantForenames("Bob")
                 .primaryApplicantSurname("Smith")
-                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantAddress(ADDRESS)
                 .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
@@ -283,10 +283,10 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     @Test
     public void testSolicitorIsAddedToExecutorsApplyingNotificationList() {
-        additionalExecutorApplyingList.add(buildExecApplying("Timmy Tom", "timmy@sol.com"));
+        additionalExecutorApplyingList.add(buildExecApplying("Timmy Tom", "executor1@probate-test.com"));
 
         CollectionMember<ExecutorsApplyingNotification> solApplying =
-                buildExecNotification("Timmy Tom", "timmy@sol.com", "1");
+                buildExecNotification("Timmy Tom", "solicitor@probate-test.com", "1");
 
         expectedResponse.add(solApplying);
 

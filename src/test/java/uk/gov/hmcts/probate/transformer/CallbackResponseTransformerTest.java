@@ -180,7 +180,7 @@ public class CallbackResponseTransformerTest {
     private static final String DOC_NAME = "docName";
     private static final String APPLICANT_FORENAME = "applicant forename";
     private static final String APPLICANT_SURNAME = "applicant surname";
-    private static final String APPLICANT_EMAIL_ADDRESS = "pa@email.com";
+    private static final String APPLICANT_EMAIL_ADDRESS = "primary@probate-test.com";
     private static final String PRIMARY_EXEC_APPLYING = YES;
     private static final String APPLICANT_HAS_ALIAS = YES;
     private static final String OTHER_EXECS_EXIST = NO;
@@ -1456,7 +1456,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformCaseForPAEmailIsNotEmpty() {
-        caseDataBuilder.primaryApplicantEmailAddress("test@test.com");
+        caseDataBuilder.primaryApplicantEmailAddress("primary@probate-test.com");
         caseDataBuilder.applicationType(PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

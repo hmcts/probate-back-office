@@ -135,7 +135,7 @@ public class InformationRequestServiceTest {
                 .executorsApplyingNotifications(executorsApplying)
                 .boRequestInfoSendToBulkPrintRequested("No")
                 .paperForm("No")
-                .primaryApplicantEmailAddress("email@email.com").build();
+                .primaryApplicantEmailAddress("primary@probate-test.com").build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(informationRequestCorrespondenceService.emailInformationRequest(caseDetails)).thenReturn(Arrays.asList(SENT_EMAIL_DOCUMENT));

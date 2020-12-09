@@ -54,7 +54,7 @@
   "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
   "page2_alias_1": "deceased_alias1",
   "page2_alias_2": "deceased_alias2",
-  "page2_email": "test@test.com",
+  "page2_email": "primary@probate-test.com",
 
   "page3_waitForText": "Executor's details",
   "page3_amend_waitForText": "Executor's details",
