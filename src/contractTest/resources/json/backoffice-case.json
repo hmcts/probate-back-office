@@ -44,8 +44,8 @@
       {
         "value": {
           "DocumentLink": {
-            "document_url": "http://dm-store:8080/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495",
-            "document_binary_url": "http://dm-store:8080/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495/binary",
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495/binary",
             "document_filename": "sentEmail.pdf"
           },
           "DocumentType": "sentEmail",
@@ -58,8 +58,8 @@
       {
         "value": {
           "DocumentLink": {
-            "document_url": "http://dm-store:8080/documents/ef78635e-d456-448f-bf8b-053e145b3c67",
-            "document_binary_url": "http://dm-store:8080/documents/ef78635e-d456-448f-bf8b-053e145b3c67/binary",
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/ef78635e-d456-448f-bf8b-053e145b3c67",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/ef78635e-d456-448f-bf8b-053e145b3c67/binary",
             "document_filename": "sentEmail.pdf"
           },
           "DocumentType": "sentEmail",
