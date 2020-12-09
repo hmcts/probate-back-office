@@ -621,5 +621,13 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
         <cve>CVE-2020-13956</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-websocket-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
+        <cpe>cpe:/a:apache:tomcat</cpe>
+    </suppress>
 </suppressions>
 
