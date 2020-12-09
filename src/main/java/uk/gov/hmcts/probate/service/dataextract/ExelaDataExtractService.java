@@ -30,8 +30,6 @@ public class ExelaDataExtractService {
         log.info("Excela data extract initiated for date: {}", date);
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Found {} cases with dated document for Excela", cases.size());
-        List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
-
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("23452345234523456",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
@@ -40,6 +38,7 @@ public class ExelaDataExtractService {
         for (ReturnedCaseDetails caseItem : cases) {
             caseItem.getData().setScannedDocuments(scannedDocuments);
         }
+        List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
 
         log.info("Sending email to Excela for {} filtered cases", filteredCases.size());
         if (!filteredCases.isEmpty()) {
