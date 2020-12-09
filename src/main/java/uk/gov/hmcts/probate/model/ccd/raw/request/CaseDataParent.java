@@ -10,5 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 public class CaseDataParent {
 
     protected String registrySequenceNumber;
+    protected String dispenseWithNotice;
+    protected String titleAndClearingType;
 
 }

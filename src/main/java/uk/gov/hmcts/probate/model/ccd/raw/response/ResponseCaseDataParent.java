@@ -20,13 +20,15 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+    protected String dispenseWithNotice;
+    protected String titleAndClearingType;
 
     ResponseCaseDataParent() {
     }
 
     ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
-                           String registryAddress, String registryEmailAddress, String registrySequenceNumber) {
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String dispenseWithNotice, String titleAndClearingType) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
@@ -40,6 +42,8 @@ public class ResponseCaseDataParent {
         this.registryAddress = registryAddress;
         this.registryEmailAddress = registryEmailAddress;
         this.registrySequenceNumber = registrySequenceNumber;
+        this.dispenseWithNotice = dispenseWithNotice;
+        this.titleAndClearingType = titleAndClearingType;
     }
 
     public DynamicList getReprintDocument() {
@@ -92,6 +96,14 @@ public class ResponseCaseDataParent {
         return registrySequenceNumber;
     }
 
+    public String getDispenseWithNotice() {
+        return dispenseWithNotice;
+    }
+
+    public String getTitleAndClearingType() {
+        return titleAndClearingType;
+    }
+
     public static ResponseCaseDataParentBuilder builder() {
         return new ResponseCaseDataParentBuilder();
     }
@@ -110,6 +122,8 @@ public class ResponseCaseDataParent {
         protected String registryAddress;
         protected String registryEmailAddress;
         protected String registrySequenceNumber;
+        protected String dispenseWithNotice;
+        protected String titleAndClearingType;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -175,11 +189,22 @@ public class ResponseCaseDataParent {
             return this;
         }
 
+        public ResponseCaseDataParentBuilder dispenseWithNotice(String dispenseWithNotice) {
+            this.dispenseWithNotice = dispenseWithNotice;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder titleAndClearingType(String titleAndClearingType) {
+            this.titleAndClearingType = titleAndClearingType;
+            return this;
+        }
+
+
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
                 solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
-                registryAddress, registryEmailAddress, registrySequenceNumber);
+                registryAddress, registryEmailAddress, registrySequenceNumber, dispenseWithNotice, titleAndClearingType);
         }
     }
 }

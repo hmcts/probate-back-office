@@ -673,7 +673,9 @@ public class CallbackResponseTransformer {
                 .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
-                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+                .dispenseWithNotice(caseData.getDispenseWithNotice())
+                .titleAndClearingType(caseData.getTitleAndClearingType());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
