@@ -40,9 +40,9 @@ module.exports = function () {
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,
         issueGrant: steps.issueGrant.issueGrant,
-        selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
-        selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
-        selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
+        selectCaseMatchesForWillLodgement: steps.caseMatches.caseMatches,
+        selectCaseMatchesForGrantOfProbate: steps.caseMatches.caseMatches,
+        selectCaseMatchesForCaveat: steps.caseMatches.caseMatches,
         selectWithdrawalReason: steps.withdrawal.withdrawal
     });
 };

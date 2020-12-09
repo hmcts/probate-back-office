@@ -4,14 +4,14 @@ const testConfig = require('src/test/config');
 const emailCaveatorConfig = require('./emailCaveatorConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = async function (caseRef) {
 
     const I = this;
-    I.waitForText(emailCaveatorConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(emailCaveatorConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
+    await I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
