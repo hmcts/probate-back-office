@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.consumer;
+package uk.gov.hmcts.probate.service.consumer.ccd;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractBackOfficePact {
+public abstract class AbstractCcdConsumerTest {
 
     @Autowired
     private ObjectMapper objectMapper;

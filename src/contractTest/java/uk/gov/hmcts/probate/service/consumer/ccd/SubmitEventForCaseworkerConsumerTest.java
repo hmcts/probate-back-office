@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.consumer;
+package uk.gov.hmcts.probate.service.consumer.ccd;
 
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
@@ -27,7 +27,7 @@ import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsL
 @SpringBootTest({
     "core_case_data.api.url: localhost:4457"
 })
-public class ProbateBackofficeSubmitEventForCaseworker extends AbstractBackOfficePact {
+public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
 
     private static final String BASECASE_PAYLOAD_PATH = "json/base-case.json";
 

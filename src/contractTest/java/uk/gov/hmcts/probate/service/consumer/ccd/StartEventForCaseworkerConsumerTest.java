@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.consumer;
+package uk.gov.hmcts.probate.service.consumer.ccd;
 
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
@@ -25,7 +25,7 @@ import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsL
 @SpringBootTest({
     "core_case_data.api.url: localhost:4454"
 })
-public class ProbateBackOfficeStartEventForCaseworker extends AbstractBackOfficePact {
+public class StartEventForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
 
     @Rule
     public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4454, this);
