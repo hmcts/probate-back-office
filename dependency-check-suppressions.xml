@@ -54,14 +54,7 @@
         <cve>CVE-2020-13935</cve>
         <cve>CVE-2020-8022</cve>
         <cve>CVE-2020-13943</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-        file name: tomcat-embed-core-9.0.16.jar
-        ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed/tomcat\-embed\-core:.*$</gav>
-        <cpe>cpe:/a:apache:tomcat</cpe>
-        <cve>CVE-2020-17527</cve>
+        <cve>CVE-2020-17527</cve>        
     </suppress>
     <suppress>
         <notes><![CDATA[

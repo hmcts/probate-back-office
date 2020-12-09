@@ -25,11 +25,6 @@ class PuppeteerHelper extends Helper {
         await Promise.all(promises);
     }
 
-    async navigateToPage(url) {
-        await this.amOnPage(url);
-        return await this.waitForNavigationToComplete();
-    }
-
     replaceAll(string, search, replace) {
         if (!string) {
             return null;
@@ -45,25 +40,16 @@ class PuppeteerHelper extends Helper {
             return true;
         }
         return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
-            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18') ? true : false;
+            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18');
     }
 
-    async performAsyncActionForElements(locator, actionFunc) {
-        const elements = await this.helpers['Puppeteer']._locate(locator);
-        if (!elements || elements.length === 0) {
-            return;
-        }
-        for (let i = 0; i < elements.length; i++) {
-            await actionFunc(el[i]);
-        }
-    }
-
-    isArray(obj){
+    isArray(obj) {
+        // eslint-disable-next-line no-implicit-coercion
         return !!obj && obj.constructor === Array;
     }
 
     async getNumElements(locator) {
-        const elements = await this.helpers['Puppeteer']._locate(locator);
+        const elements = await this.helpers.Puppeteer._locate(locator);
         if (!elements) {
             return 0;
         }
@@ -88,24 +74,6 @@ class PuppeteerHelper extends Helper {
         await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
         await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
         await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
-    }
-
-    replaceAll(string, search, replace) {
-        if (!string) {
-            return null;
-        }
-        return string.split(search).join(replace);
-    }
-
-    htmlEquals(html1, html2) {
-        if ((html1 && !html2) || (html2 && !html1)) {
-            return false;
-        }
-        if (!html1 && !html2) {
-            return true;
-        }
-        return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
-            this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18');
     }
 
     async performAsyncActionForElements(locator, actionFunc) {
