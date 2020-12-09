@@ -1,0 +1,449 @@
+server:
+  port: ${probate.sol.ccd.port}
+
+resttemplate:
+  httpclient:
+    timeout: 10000
+
+ftp.client:
+  url: https://green.blob.core.windows.net
+  environment: ${FTP_ENV:test}
+  signature: ${FTP_SIGNATURE:fakeValue}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,data-extract
+      base-path: /
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
+auth.provider.service.client:
+  key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+  baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
+  microservice: probate_backend
+  tokenTimeToLiveInSeconds: 900
+
+auth.provider.client:
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  secret: ${IDAM_SECRET:ccd_gateway_secret}
+  id: ${IDAM_CLIENT_NAME:ccd_gateway}
+  redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
+  email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
+
+pdf.service:
+  url: http://localhost:4411
+  pdfApi: /api/v2/pdf-generator/html
+  templatesDirectory: templates/pdf/
+  defaultDisplayFilename: generated.pdf
+  grantSignatureSecretKey: signaturetestkey
+  grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
+  hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
+
+docmosis:
+  service:
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+  templates:
+    caveatRaised:
+      templateName: FL-PRB-GNO-ENG-00011.doc
+    grantRaised:
+      templateName: FL-PRB-GNO-ENG-00235.doc
+    caveatCoversheet:
+      templateName: FL-PRB-GNO-ENG-00018.docx
+    caveatStopped:
+      templateName: FL-PRB-GNO-ENG-00025.docx
+    caveatExtended:
+      templateName: FL-PRB-GNO-ENG-00229.docx
+    caveatWithdrawn:
+      templateName: FL-PRB-GNO-ENG-00236.docx
+    grantCoversheet:
+      templateName: FL-PRB-GNO-ENG-00024.docx
+    digitalGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    digitalGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    sotInformationRequest:
+      templateName: FL-PRB-GNO-ENG-00085.doc
+    sentEmail:
+      templateName: FL-PRB-EML-ENG-00086.doc
+    statementOfTruth:
+      templateName: FL-PRB-SOT-ENG-00090.doc
+    welshStatementOfTruth:
+      templateName: FL-PRB-SOT-WEL-00234.doc
+    assembledLetter:
+      templateName: FL-PRB-GNO-ENG-00133.docx
+    welshDigitalGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+
+fee.api:
+  url: http://localhost:4411
+  api: /fees-register/fees/lookup
+  service: probate
+  jurisdiction1: family
+  jurisdiction2: probate registry
+  channel: default
+  applicantType: all
+  keyword: NewFee
+
+markdown.templatesDirectory: templates/markdown/
+
+#dev deployment of ccd-print-service used for local
+#host: https://return-case-doc.dev.ccd.reform.hmcts.net:3453
+printservice:
+  templatesDirectory: templates/printService/
+  host: http://localhost:3453
+  internal:
+    host: http://localhost:3453
+  path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+  legacyPath: /print/probateManTypes/%s/cases/%s
+
+ccd.gateway:
+  host: http://localhost:3453
+
+ccd.data.store.api:
+  host: http://localhost:4452
+  caseMatchingPath: /searchCases
+
+spring:
+  jackson:
+    serialization:
+      wrap_root_value: false
+      write-dates-as-timestamps: false
+    deserialization:
+      unwrap_root_value: false
+  application:
+    name: probate-sol-ccd
+  jpa:
+    database: POSTGRESQL
+    show-sql: ${probate.persistence.show_sql}
+    hibernate.ddl-auto: none
+
+  datasource:
+    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
+    username:  ${probate.postgresql.user}
+    password:  ${probate.postgresql.password}
+
+  database.driverClassName: org.postgresql.Driver
+
+
+spring.document.retriever.service.api.baseurl: localhost:5006
+
+spring.jackson.serialization.write_dates_as_timestamps: false
+
+####Evidence management Service URL's
+#hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+evidence.management.host: http://localhost:5006
+evidence.management.upload.file.url: /documents
+
+http.connect.timeout: 60000
+http.connect.request.timeout: 60000
+
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    uk.gov.hmcts.probate: INFO
+    au.com.dius.pact: DEBUG
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+azure:
+  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+  application-insights:
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
+
+notifications:
+  grantDelayedNotificationPeriodDays: 49
+  grantDelayedNotificationReleaseDate: "2020-05-08"
+  grantAwaitingDocumentationNotificationPeriodDays: 21
+  govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
+  templates:
+    email:
+      english:
+        personal:
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
+          caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
+          grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
+          requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
+          redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
+          grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
+          caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+        solicitor:
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
+          requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
+          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+      welsh:
+        personal:
+          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
+          caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
+          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
+          grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
+          grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
+          generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "025c2410-f1d4-4688-b03f-c94a6776341c"
+          caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
+          requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
+          redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
+          grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
+          caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+        solicitor:
+          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
+          requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
+          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+
+documents:
+  templates:
+    docmosis:
+      english:
+        final:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE
+            admonWill: ADMON_WILL_GRANT_REISSUE
+            gop: DIGITAL_GRANT_REISSUE
+          grant:
+            intestacy: INTESTACY_GRANT
+            admonWill: ADMON_WILL_GRANT
+            gop: DIGITAL_GRANT
+        preview:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: DIGITAL_GRANT_REISSUE_DRAFT
+          grant:
+            intestacy: INTESTACY_GRANT_DRAFT
+            admonWill: ADMON_WILL_GRANT_DRAFT
+            gop: DIGITAL_GRANT_DRAFT
+      welsh:
+        final:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT
+            admonWill: WELSH_ADMON_WILL_GRANT
+            gop: WELSH_DIGITAL_GRANT
+        preview:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
+            gop: WELSH_DIGITAL_GRANT_DRAFT
+
+registry:
+  registries:
+    oxford:
+      name: Oxford Probate Registry
+      phone: 0186 579 3055
+      emailReplyToId: "3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"
+      addressline1: Combined Court Building
+      addressline2: St Aldates
+      town: Oxford
+      postcode: OX1 1LY
+    birmingham:
+      name: Birmingham Probate Registry
+      phone: 0121 681 3401
+      emailReplyToId: "e3511bc5-98d8-457c-b49b-5b0c0ba4892a"
+      addressline1: The Priory Courts
+      addressline2: 33 Bull Street
+      town: Birmingham
+      postcode: B4 6DU
+    manchester:
+      name: Manchester Probate Registry
+      phone: 0161 240 5701 / 0161 240 5702
+      emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"
+      addressline1: Manchester Civil Justice Centre
+      addressline2: Ground Floor
+      addressline3: 1 Bridge Street West
+      addressline4: PO Box 4240
+      town: Manchester
+      postcode: M60 1WJ
+    leeds:
+      name: Leeds Probate Registry
+      phone: 0113 389 6133
+      emailReplyToId: "1c5cc757-b7a7-4eaf-a69c-ce5bb34b63cf"
+      addressline1: York House
+      addressline2: York Place
+      town: Leeds
+      postcode: LS1 2BA
+    liverpool:
+      name: Liverpool Probate Registry
+      phone: 0151 236 8264
+      emailReplyToId: "102affef-13f1-4c9b-856d-ed183e71bd6f"
+      addressline1: The Queen Elizabeth II Law Courts
+      addressline2: Derby Square
+      town: Liverpool
+      postcode: L2 1XA
+    brighton:
+      name: Brighton Probate Registry
+      phone: 01273 573510
+      emailReplyToId: "2aebc9bd-6192-43af-a774-f2f17e69f14e"
+      addressline1: William Street
+      town: Brighton
+      postcode: BN2 0RF
+    london:
+      name: London Probate Department
+      phone: 020 7421 8509
+      emailReplyToId: "4b8b7c3f-6d7f-45c0-9a10-544a52c04e23"
+      addressline1: Principal Registry of the Family Division
+      addressline2: First Avenue House
+      addressline3: 42-49 High Holborn
+      town: London
+      postcode: WC1V 6NP
+    cardiff:
+      name: Probate Registry of Wales
+      phone: 02920 474373
+      emailReplyToId: "6d98cad6-adb4-4446-b37e-5c3f0441a0c8"
+      addressline1: 3rd Floor, Cardiff Magistrates’ Court
+      addressline2: Fitzalan Place
+      addressline3: Cardiff
+      town: South Wales
+      postcode: CF24 0RZ
+    newcastle:
+      name: Newcastle-Upon-Tyne Probate Registry
+      phone: 0191 211 2170
+      emailReplyToId: "21106760-70e7-4b61-adb8-7df6f653f8db"
+      addressline1: Newcastle DPR
+      addressline2: No 1 Waterloo Square
+      town: Newcastle-Upon-Tyne
+      postcode: NE1 4DR
+    winchester:
+      name: Winchester Probate Registry
+      phone: 01962 814100
+      emailReplyToId: "de5b8f8d-fb9c-4fd7-aa3a-3732a86a2e5d"
+      addressline1: 1st Floor
+      addressline2: Southside Offices
+      addressline3: The Law Courts
+      addressline4: Winchester
+      town: Hampshire
+      postcode: S023 9EL
+    ctsc:
+      name: CTSC
+      phone: 0300 303 0648
+      emailReplyToId: "deb43d21-bb3a-481a-afca-5fdf83a76113"
+      addressline1: Principal Registry of the Family Division
+      addressline2: HMCTS Probate
+      addressline3: PO Box 12625
+      town: Harlow
+      postcode: CM20 9QE
+    bristol:
+      name: Bristol District Probate Registry
+      phone: 02920 474373
+      emailReplyToId: "6d98cad6-adb4-4446-b37e-5c3f0441a0c8"
+      addressline1: 3rd Floor, Cardiff Magistrates’ Court
+      addressline2: Fitzalan Place
+      addressline3: Cardiff
+      town: South Wales
+      postcode: CF24 0RZ
+      
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
+
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8486}
+
+auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
+
+core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+
+excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
+
+welsh:
+  months:
+    1: "Ionawr"
+    2: "Chwefror"
+    3: "Mawrth"
+    4: "Ebrill"
+    5: "Mai"
+    6: "Mehefin"
+    7: "Gorffennaf"
+    8: "Awst"
+    9: "Medi"
+    10: "Hydref"
+    11: "Tachwedd"
+    12: "Rhagfyr"
+
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
+  user:
+    key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
+    firstName: Probate
+    lastName: Backend

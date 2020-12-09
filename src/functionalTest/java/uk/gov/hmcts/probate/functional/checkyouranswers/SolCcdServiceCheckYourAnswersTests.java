@@ -4,7 +4,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
@@ -18,6 +17,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -26,82 +26,82 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
+    private static final String DOC_NAME ="success.beforeLegalStatement.checkYourAnswersPayload.json";
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName");
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLastNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastName");
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAddressInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test " +
-                "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom");
+                "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName");
+        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987");
+        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDodInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01/2018");
+        validatePostRequestSuccessForLegalStatement("01/01/2018", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName");
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("We confirm that the information we have provided is correct to the best of our knowledge.");
+        validatePostRequestSuccessForLegalStatement("We confirm that the information we have provided is correct to the best of our knowledge.", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("The executors believe that all the information stated in the legal statement is true. They have authorised \n" +
-                "SolicitorFirmName to sign a statement of truth on their behalf.");
+        validatePostRequestSuccessForLegalStatement("The executors believe that all the information stated in the legal statement is true.", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, as our appointed firm, to submit this application on our behalf.");
+        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, as our appointed firm, to submit this application on our behalf.", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyIhtGrossInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("1000.01");
+        validatePostRequestSuccessForLegalStatement("1000.01", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyIhtNetInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("900.09");
+        validatePostRequestSuccessForLegalStatement("900.09", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifySolicitorFirmNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("SolicitorFirmName");
+        validatePostRequestSuccessForLegalStatement("SolicitorFirmName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAdditionalExecutor1NameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1FirstName AdditionalExecutor1LastName");
+        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1FirstName AdditionalExecutor1LastName", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAdditionalExecutor1AliasNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname");
+        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname", DOC_NAME,VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -144,6 +144,48 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
+    public void validatePostRequestSolicitorValidateIntestacySuccess() {
+        validatePostRequestSuccessForLegalStatement("I authorise Firm Name, as my appointed firm to submit this application on my behalf.","solicitorPDFPayloadIntestacy.json",VALIDATE_INTESTACY_URL);
+    }
+
+    @Test
+    public void validatePostRequestSolicitorValidateAdmonSuccess() {
+        validatePostRequestSuccessForLegalStatement("The administrator believes that all the information stated in the legal statement is true.",
+                "solicitorPDFPayloadAdmonWill.json",VALIDATE_ADMON_URL);
+    }
+
+    @Test
+    public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() {
+        Response response = given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json").replace("primaryApplicantForenames", ""))
+                .when()
+                .post(VALIDATE_INTESTACY_URL)
+                .andReturn();
+        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+
+        assertEquals(400, response.getStatusCode());
+        assertEquals(jsonPath.get("fieldErrors[0].message"),"Primary applicant forenames cannot be empty");
+        assertEquals(jsonPath.get("message"),"Invalid payload");
+    }
+
+    @Test
+    public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() {
+        Response response = given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWill.json").replace("Main", ""))
+                .when().post(VALIDATE_ADMON_URL)
+                .andReturn();
+
+        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        assertEquals(400, response.getStatusCode());
+        assertEquals(jsonPath.get("fieldErrors[0].message"),"Primary applicant forenames cannot be empty");
+        assertEquals(jsonPath.get("message"),"Invalid payload");
+    }
+
+    @Test
     public void verifyStateChangeFromCYABeforeLegalStatement() {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
@@ -175,18 +217,16 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             pdfDocument.close();
         }
     }
-
-    private void validatePostRequestSuccessForLegalStatement(String validationString) {
+    private void validatePostRequestSuccessForLegalStatement(String validationString,String fileName,String url) {
         Response response = given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
-                        when().post(VALIDATE_PROBATE_URL);
+                .body(utils.getJsonFromFile(fileName)).
+                        when().post(url);
         assertEquals(200, response.getStatusCode());
 
         downloadPdfAndVerifyString(extractDocumentId(response), validationString);
     }
-
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg, String postURL) {
         given().relaxedHTTPSValidation()

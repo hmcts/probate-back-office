@@ -3,15 +3,15 @@
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef, withdrawalConfig) {
+module.exports = async function (caseRef, withdrawalConfig) {
 
     const I = this;
 
-    I.waitForText(withdrawalConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(withdrawalConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.selectOption('#withdrawalReason', withdrawalConfig.list1_text);
+    await I.selectOption('#withdrawalReason', withdrawalConfig.list1_text);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

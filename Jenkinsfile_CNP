@@ -1,4 +1,5 @@
 #!groovy
+import uk.gov.hmcts.contino.AppPipelineDsl
 
 @Library("Infrastructure")
 
@@ -36,7 +37,10 @@ def secrets = [
                 secret('probate-bo-grantSignatureFile', 'PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE'),
                 secret('pdfServiceBaseUrl', 'PDF_SERVICE_BASEURL'),
                 secret('pdfServiceAccessKey', 'PDF_SERVICE_ACCESS_KEY'),
-                secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL')
+                secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL'),
+                secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
+                secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
+                secret('launchdarkly-key', 'LAUNCHDARKLY_KEY')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -58,8 +62,12 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
+// Vars for Kubernetes
+env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
+  env.IDAM_CLIENT_NAME='probate'
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
@@ -114,6 +122,10 @@ withPipeline("java", product, component) {
 
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
+
+  onMaster() {
+    enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 }
 

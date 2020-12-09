@@ -240,6 +240,7 @@
    ]]></notes>
         <cve>CVE-2019-7614</cve>
         <cve>CVE-2020-7019</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -287,6 +288,7 @@
    ]]></notes>
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cve>CVE-2019-7611</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -336,6 +338,7 @@
         <cve>CVE-2020-14062</cve>
         <cve>CVE-2020-14195</cve>
         <cve>CVE-2020-24616</cve>
+        <cve>CVE-2020-24750</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -487,6 +490,27 @@ file name: spring-jcl-5.1.5.RELEASE.jar
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10672</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10673</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10968</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: log4j-to-slf4j-2.11.2.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.logging\.log4j:log4j-to-slf4j:.*$</gav>
@@ -533,6 +557,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
         <cve>CVE-2019-14900</cve>
+        <cve>CVE-2020-25638</cve>
     </suppress>
    <suppress>
         <notes><![CDATA[
@@ -554,6 +579,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cpe>cpe:/a:elastic:elasticsearch</cpe>
         <cve>CVE-2020-7019</cve>
+        <cve>CVE-2020-7020</cve>
     </suppress>
    <suppress>
         <notes><![CDATA[
@@ -584,4 +610,16 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2020-5398</cve>
         <cve>CVE-2020-5421</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: junit-4.12.jar]]></notes>
+        <cve>CVE-2020-15250</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: httpclient-4.5.7.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
+        <cve>CVE-2020-13956</cve>
+    </suppress>
 </suppressions>
+
