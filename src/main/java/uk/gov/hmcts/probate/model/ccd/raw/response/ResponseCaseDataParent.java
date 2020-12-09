@@ -20,13 +20,14 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+    protected DynamicList solsPBANumber;
 
     ResponseCaseDataParent() {
     }
 
     ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
-                           String registryAddress, String registryEmailAddress, String registrySequenceNumber) {
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, DynamicList solsPBANumber) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
@@ -40,6 +41,7 @@ public class ResponseCaseDataParent {
         this.registryAddress = registryAddress;
         this.registryEmailAddress = registryEmailAddress;
         this.registrySequenceNumber = registrySequenceNumber;
+        this.solsPBANumber = solsPBANumber;
     }
 
     public DynamicList getReprintDocument() {
@@ -91,6 +93,9 @@ public class ResponseCaseDataParent {
     public String getRegistrySequenceNumber() {
         return registrySequenceNumber;
     }
+    public DynamicList getSolsPBANumber() {
+        return solsPBANumber;
+    }
 
     public static ResponseCaseDataParentBuilder builder() {
         return new ResponseCaseDataParentBuilder();
@@ -110,6 +115,7 @@ public class ResponseCaseDataParent {
         protected String registryAddress;
         protected String registryEmailAddress;
         protected String registrySequenceNumber;
+        protected DynamicList solsPBANumber;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -174,12 +180,17 @@ public class ResponseCaseDataParent {
             this.registrySequenceNumber = registrySequenceNumber;
             return this;
         }
+        
+        public ResponseCaseDataParentBuilder solsPBANumber(DynamicList solsPBANumber) {
+            this.solsPBANumber = solsPBANumber;
+            return this;
+        }
 
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
                 solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
-                registryAddress, registryEmailAddress, registrySequenceNumber);
+                registryAddress, registryEmailAddress, registrySequenceNumber, solsPBANumber);
         }
     }
 }

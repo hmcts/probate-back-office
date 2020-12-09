@@ -3,12 +3,16 @@ package uk.gov.hmcts.probate.service;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
+
+import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
@@ -38,5 +42,14 @@ public interface IdamApi {
             @RequestParam("redirect_uri") final String redirectUri,
             @RequestParam("client_id") final String clientId,
             @RequestParam("client_secret") final String clientSecret
+    );
+
+    @GetMapping(
+        value = "/details",
+        headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    ResponseEntity<Map> getUserDetails(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation
     );
 }

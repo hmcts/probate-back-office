@@ -169,6 +169,7 @@ public class CallbackResponseTransformerTest {
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
     private static final String FEE_ACCT_NUMBER = "1234";
+    private static final DynamicList PBA_NUMBERS = DynamicList.builder().listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
     private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final BigDecimal feeForNonUkCopies = new BigDecimal(11);
@@ -415,9 +416,11 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private ReprintTransformer reprintTransformer;
-    
+
     @Mock
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
+    @Mock
+    private SolicitorPBADefaulter solicitorPBADefaulter;
 
     @Before
     public void setup() {
@@ -2625,7 +2628,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldCallSolLSAmendTransformer() {
-        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
+        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock, "Auth");
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 

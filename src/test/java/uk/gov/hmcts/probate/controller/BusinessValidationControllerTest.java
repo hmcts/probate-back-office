@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.pbavalidation.PBAValidationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -182,6 +183,8 @@ public class BusinessValidationControllerTest {
     @MockBean
     private NotificationService notificationService;
 
+    @MockBean
+    private PBAValidationService pbaValidationService;
 
     @Before
     public void setup() {
@@ -688,6 +691,7 @@ public class BusinessValidationControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
         mockMvc.perform(post("/case/default-sols-next-steps")
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -703,6 +707,7 @@ public class BusinessValidationControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
 
         mockMvc.perform(post("/case/default-sols-next-steps")
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -718,6 +723,7 @@ public class BusinessValidationControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
 
         mockMvc.perform(post("/case/default-sols-next-steps")
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

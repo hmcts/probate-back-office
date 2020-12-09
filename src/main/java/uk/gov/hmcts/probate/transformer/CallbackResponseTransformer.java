@@ -87,6 +87,7 @@ public class CallbackResponseTransformer {
     private final SolicitorExecutorService solicitorExecutorService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -460,10 +461,11 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest) {
+    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest, String authToken) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         solicitorLegalStatementNextStepsDefaulter.transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+        solicitorPBADefaulter.defaultFeeAccounts(responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

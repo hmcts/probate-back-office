@@ -50,6 +50,12 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
 
+pba:
+  validation:
+    url: ${PRD_API_URL:http://localhost:8090}
+    health.url: ${pba.validation.url}/health
+    api: /refdata/external/v1/organisations/pbas
+
 fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup
