@@ -3,11 +3,10 @@
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retainFirstItem=true, addNewItem=false) {
+module.exports = async function (caseRef, nextStepName, retainFirstItem=true, addNewItem=false, skipMatchingInfo=false) {
 
     const I = this;
-    caseMatchesConfig.waitForText = nextStepName;
-    await I.waitForText(caseMatchesConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(nextStepName, testConfig.TestTimeToWaitForText);
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText);
 
@@ -34,10 +33,18 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
         await I.click(caseMatchesConfig.addNewButton);
     }
 
-    await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
-    await I.click({css: 'input[id$="valid-Yes"]'});
-    await I.click({css: 'input[id$="doImport-No"]'});
+    if (retainFirstItem || addNewItem) {
+        await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
+        await I.click({css: 'input[id$="valid-Yes"]'});
+        await I.click({css: 'input[id$="doImport-No"]'});    
+    }
 
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+    if (skipMatchingInfo) {
+        await I.waitForElement({css: '#field-trigger-summary'});
+        await I.waitForEnabled(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);            
+    }
 };
