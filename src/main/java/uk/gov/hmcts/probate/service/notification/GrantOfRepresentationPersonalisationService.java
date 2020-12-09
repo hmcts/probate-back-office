@@ -96,7 +96,6 @@ public class GrantOfRepresentationPersonalisationService {
             data.append(getWillReferenceNumber(currentCase.getData()));
             data.append(", ");
             data.append(currentCase.getData().getDeceasedForenames());
-            data.append(" ");
             data.append(", ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
