@@ -10,7 +10,6 @@ exports.config = {
             'getPageTimeout': 60000,
             // 'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
-            'waitForAction': 1500,
             'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
                 'ignoreHTTPSErrors': true,

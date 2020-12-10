@@ -70,8 +70,8 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeUpdatesOnCase(caseRef, sotTabConfig, 'AdmonWill', completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'AdmonWillApplicant', admonWillDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);
     
     nextStepName = 'Complete application';
     endState = 'Case created';

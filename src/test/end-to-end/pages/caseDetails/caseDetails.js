@@ -12,10 +12,11 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
     await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
-    await I.click(tabConfigFile.tabName);
+    
+    await I.clickTab(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
-        await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
+       await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
     }
 
     for (let i = 0; i < tabConfigFile.fields.length; i++) {

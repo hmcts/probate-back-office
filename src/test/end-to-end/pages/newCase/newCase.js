@@ -8,9 +8,9 @@ module.exports = function (xui = false) {
     const I = this;
 
     I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-    if (xui) {
-        I.waitForNavigationToComplete(newCaseConfig.xuiCreateCaseLocator);
-    } else {
-        I.waitForNavigationToComplete(newCaseConfig.ccduilCreateCaselocator);
-    }
+
+    // eslint-disable-next-line
+    I.waitForNavigationToComplete(testConfig.TestForXUI ?
+         newCaseConfig.xuiCreateCaseLocator :
+         newCaseConfig.ccduilCreateCaselocator);
 };

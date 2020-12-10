@@ -11,8 +11,8 @@ module.exports = async function () {
     await I.click(`#solsApplicantSiblings-${intestacyDetailsConfig.optionNo}`);
 
 
-    await I.fillField('#primaryApplicantForenames', intestacyDetailsConfig.page2_firstname);
-    await I.fillField('#primaryApplicantSurname', intestacyDetailsConfig.page2_lastname);
+    await I.fillField('#primaryApplicantForenames', intestacyDetailsConfig.applicant_firstname);
+    await I.fillField('#primaryApplicantSurname', intestacyDetailsConfig.applicant_lastname);
     await I.click(intestacyDetailsConfig.UKpostcodeLink);
 
     await I.fillField('#primaryApplicantAddress_AddressLine1', intestacyDetailsConfig.address_line1);
@@ -23,11 +23,11 @@ module.exports = async function () {
     await I.fillField('#primaryApplicantAddress_PostCode', intestacyDetailsConfig.address_postcode);
     await I.fillField('#primaryApplicantAddress_Country', intestacyDetailsConfig.address_country);
 
-    await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.page2_phone);
-    await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.page2_email);
+    await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.applicant_phone);
+    await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.applicant_email);
 
-    await I.selectOption('#deceasedMaritalStatus', 'Never married');
-    pause();
-    await I.click(intestacyDetailsConfig.UKpostcodeLink);
+    await I.selectOption('#deceasedMaritalStatus', intestacyDetailsConfig.page1_maritalstatus);
+    await I.click(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page1_child}`);
+    
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -1,10 +1,9 @@
 {
   "page2_legateeAndDevisee": "the residuary legatee and devisee",
-  "page2_email": "solicitor1@hmcts-test.com",
-  "page2_phone": "01298989891",
-  "page2_firstname": "Jason1",
-  "page2_lastname": "Rob1",
-
+  "applicant_email": "solicitor1@hmcts-test.com",
+  "applicant_phone": "01298989891",
+  "applicant_firstname": "Jason1",
+  "applicant_lastname": "Rob1",
 
   "page3_applicationNotes": "Application notes in grant of probate details",
 

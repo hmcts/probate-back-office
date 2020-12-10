@@ -71,6 +71,7 @@ module.exports = function () {
         admonWillDetailsPage2: steps.solicitorApplyProbate.admonWillDetails.page2,
         admonWillDetailsPage3: steps.solicitorApplyProbate.admonWillDetails.page3,
         admonWillDetailsPage4: steps.solicitorApplyProbate.admonWillDetails.page4,
-        intestacyDetailsPage1: steps.solicitorApplyProbate.intestacyDetails.page1
+        intestacyDetailsPage1: steps.solicitorApplyProbate.intestacyDetails.page1,
+        intestacyDetailsPage2: steps.solicitorApplyProbate.intestacyDetails.page2
     });
 };

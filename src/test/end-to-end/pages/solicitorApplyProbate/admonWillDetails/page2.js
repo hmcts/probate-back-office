@@ -15,8 +15,8 @@ module.exports = async function (updateAddressManually) {
     await I.selectOption('#solsResiduaryType', admonWillDetailsConfig.page2_legateeAndDevisee);
     await I.click(`#solsLifeInterest-${admonWillDetailsConfig.optionNo}`);
 
-    await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.page2_firstname);
-    await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.page2_lastname);    
+    await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
+    await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);    
 
     if (updateAddressManually) {
         await I.click(admonWillDetailsConfig.UKpostcodeLink);
@@ -29,8 +29,8 @@ module.exports = async function (updateAddressManually) {
     await I.fillField('#primaryApplicantAddress_PostCode', admonWillDetailsConfig.address_postcode);
     await I.fillField('#primaryApplicantAddress_Country', admonWillDetailsConfig.address_country);
 
-    await I.fillField('#primaryApplicantPhoneNumber', admonWillDetailsConfig.page2_phone);
-    await I.fillField('#primaryApplicantEmailAddress', admonWillDetailsConfig.page2_email);
+    await I.fillField('#primaryApplicantPhoneNumber', admonWillDetailsConfig.applicant_phone);
+    await I.fillField('#primaryApplicantEmailAddress', admonWillDetailsConfig.applicant_email);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

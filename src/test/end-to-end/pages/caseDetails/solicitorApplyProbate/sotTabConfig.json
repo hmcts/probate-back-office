@@ -6,12 +6,20 @@
     "dataKeys": [
       "page1_legalStmtLink"
     ],
-    "AdmonWill": {
+    "WillLeftAnnexed": {
       "fields": [
         "Legal statement"
       ],
       "dataKeys": [
         "page1_AdmonWilllegalStmtLink"
+      ]
+    },
+    "NoWill": {
+      "fields": [
+        "Legal statement"
+      ],
+      "dataKeys": [
+        "page1_NoWilllegalStmtLink"
       ]
     }
   }

@@ -71,7 +71,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'solicitorMainApplicantAndExecutor', applyProbateConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
     
     nextStepName = 'Complete application';
     endState = 'Case created';

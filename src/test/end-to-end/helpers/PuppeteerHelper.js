@@ -13,17 +13,27 @@ class PuppeteerHelper extends Helper {
 
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
-        await page.click(locator);
+        const promises = [];
+
+        if (!testConfig.TestForXUI) {
+            promises.push(page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']})) // The promise resolves after navigation has finished
+        }
+
+        if (locator) {
+            promises.push(page.click(locator));
+        }
+        await Promise.all(promises);
     }
 
-    async clickElement(locator) {
-        const helper = this.helpers[helperName].page;
-        console.log('page is ..', locator);
-        helper.focus(locator);
-        pause();
-        const element = await helper._locateFields(locator);
-        element.click();
-        console.log('element foudn is ', element);
+    async clickTab(tabTitle) {
+        const page = this.helpers[helperName].page;
+        if (testConfig.TestForXUI) {
+            const tabXPath = `//div[text()='${tabTitle}']`;
+            let clickableTab = await page.$x(tabXPath);
+            await clickableTab[0].click();
+        } else {
+            page.click(tabTitle);
+        }
     }
 
     async navigateToPage(url) {

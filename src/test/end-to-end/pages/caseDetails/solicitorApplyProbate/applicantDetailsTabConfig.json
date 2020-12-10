@@ -62,7 +62,7 @@
       "page2_executorAddress_country"
     ]
   },
-  "solicitorMainApplicantAndExecutor" : {
+  "SolicitorMainApplicantAndExecutor" : {
     "fields": [
       "Is the solicitor the main applicant?",
       "Is the solicitor applying?",
@@ -92,7 +92,7 @@
       "page2_phone_num"
     ]
   },
-  "AdmonWillApplicant": {
+  "Applicant": {
     "fields": [
       "First name(s)",
       "Last name(s)",
@@ -107,17 +107,17 @@
       "Country"
     ],
     "dataKeys": [
-      "page2_firstname",
-      "page2_lastname",
-      "page2_email",
+      "applicant_firstname",
+      "applicant_lastname",
+      "applicant_email",
+      "applicant_phone",
       "address_line1",
       "address_line2",
       "address_line3",
       "address_town",
       "address_county",
       "address_country",
-      "address_postcode",
-      "page2_phone"
+      "address_postcode"
     ]
   }
 }

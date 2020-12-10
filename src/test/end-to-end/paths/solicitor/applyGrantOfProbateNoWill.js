@@ -64,15 +64,14 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.intestacyDetailsPage1();
-    pause();
-    await I.admonWillDetailsPage2(updateAddressManually);
-    await I.admonWillDetailsPage3();
+    await I.intestacyDetailsPage2();
     await I.cyaPage();
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeUpdatesOnCase(caseRef, sotTabConfig, 'AdmonWill', completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'AdmonWillApplicant', intestacyDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, 'MaritalStatus', intestacyDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', intestacyDetailsConfig);
     
     nextStepName = 'Complete application';
     endState = 'Case created';

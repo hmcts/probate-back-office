@@ -12,7 +12,6 @@
     "page2_solsIHTFormValue",
     "page2_ihtGrossValueDisplay",
     "page2_ihtNetValueDisplay",
-    "optionYes",
     "optionNo",
     "page2_applicationGrounds"
   ],
@@ -24,7 +23,8 @@
       "What kind of application are you making?"
     ],
     "dataKeys": [
-      "page3_willLeftDisplay"
+      "page3_willLeftDisplay",
+      "optionYes"
     ]
   },
   "WillLeftAnnexed": {
@@ -32,7 +32,8 @@
       "What kind of application are you making?"
     ],
     "dataKeys": [
-      "page3_willLeftAnnexedDisplay"
+      "page3_willLeftAnnexedDisplay",
+      "optionYes"
     ]
   },
   "NoWill": {
@@ -41,6 +42,14 @@
     ],
     "dataKeys": [
       "page3_noWillDisplay"
+    ]
+  },
+  "MaritalStatus": {
+    "fields": [
+      "What was the marital status of the deceased?"
+    ],
+    "dataKeys": [
+      "page1_maritalstatus"
     ]
   }
 }

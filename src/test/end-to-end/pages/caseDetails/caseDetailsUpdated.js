@@ -7,7 +7,7 @@ module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesC
     const I = this;
 
     await I.see(caseRef);
-    await I.click(tabConfigFile.tabName);
+    await I.clickTab(tabConfigFile.tabName);
 
     if (tabUpdates) {
         const updatedConfig = tabConfigFile[tabUpdates];
