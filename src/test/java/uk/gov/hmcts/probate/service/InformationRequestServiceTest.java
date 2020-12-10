@@ -79,8 +79,8 @@ public class InformationRequestServiceTest {
         executorsApplying = new ArrayList<>();
         bulkPrintIds = new ArrayList<>();
 
-        execApplying = buildExec("1", "Bob Smith", "Bob@test.com", "Yes");
-        execApplying2 = buildExec("2", "John Smith", "John@test.com", "Yes");
+        execApplying = buildExec("1", "Bob Smith", "executor1@probate-test.com", "Yes");
+        execApplying2 = buildExec("2", "John Smith", "executor2@probate-test.com", "Yes");
 
         executorsApplying.add(execApplying);
         executorsApplying.add(execApplying2);

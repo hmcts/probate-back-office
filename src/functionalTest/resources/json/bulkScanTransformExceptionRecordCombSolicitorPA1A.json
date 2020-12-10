@@ -41,7 +41,7 @@
     { "name": "primaryApplicantAddressPostCode", "value": "MX991XX" },
     { "name": "primaryApplicantPhoneNumber", "value": "07779384782" },
     { "name": "primaryApplicantSecondPhoneNumber", "value": "701231231231" },
-    { "name": "primaryApplicantEmailAddress", "value": "test@test.email" },
+    { "name": "primaryApplicantEmailAddress", "value": "primary@probate-test.com" },
     { "name": "executorsApplying_0_applyingExecutorForenames", "value": "Ruby-Rocket" },
     { "name": "executorsApplying_0_applyingExecutorMiddleNames", "value": "Bob" },
     { "name": "executorsApplying_0_applyingExecutorSurname", "value": "Beeetle" },

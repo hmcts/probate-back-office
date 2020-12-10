@@ -52,7 +52,7 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     private static final String SS_APPLICANT_FORENAMES = "Forenames";
     private static final String SS_APPLICANT_SURNAME = "Surname";
-    private static final String SS_APPLICANT_EMAIL_ADDRESS = "applicant@email.com";
+    private static final String SS_APPLICANT_EMAIL_ADDRESS = "primary@probate-test.com";
     private static final ProbateAddress SS_APPLICANT_ADDRESS = Mockito.mock(ProbateAddress.class);
 
     private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN);

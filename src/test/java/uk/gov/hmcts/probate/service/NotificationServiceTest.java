@@ -184,7 +184,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_APPLICANT_FORENAMES = "applicantFN";
     private static final String PERSONALISATION_APPLICANT_SURNAME = "applicantSN";
-    private static final String PERSONALISATION_APPLICANT_EMAIL = "applicant@email.com";
+    private static final String PERSONALISATION_APPLICANT_EMAIL = "primary@probate-test.com";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_DECEASED_FORNAMES = "deceasedFN";
     private static final String PERSONALISATION_DECEASED_SURNAME = "deceasedSN";
