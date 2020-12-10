@@ -51,7 +51,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
                 .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
-                .replaceFirst("<submitDate/>", renderSubmitDate(submitDate))
+                .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr))

@@ -105,8 +105,11 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Stop case');
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
-        await I.caseProgressClickGoAndSignOut();
+        await I.caseProgressStopEscalateIssueAddCaseStoppedReason();
+        await I.caseProgressContinueWithoutChangingAnything();
+        await I.waitForVisible({css: '#sign-out'});
+        await I.waitForNavigationToComplete('#sign-out');
+
 
         console.info('Check progress tab for Case stopped');
         // log back in as solicitor
@@ -144,6 +147,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Issue grant');
@@ -162,6 +166,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             numCompleted: 8,
             numInProgress: 0,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('02 BO Case Progress E2E - stop/escalate/issue: complete');

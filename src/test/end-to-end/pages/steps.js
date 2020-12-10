@@ -48,11 +48,13 @@ module.exports = function () {
         caseProgressClickGoAndSignOut: steps.caseProgress.clickGoAndSignOut,
         caseProgressNavigateToCaseSolicitor: steps.caseProgress.navigateToCaseSolicitor,
         caseProgressFeePayment: steps.caseProgress.feePayment,
+        caseProgressContinueWithoutChangingAnything: steps.caseProgress.continueWithoutChangingAnything,
 
         caseProgressStandardDeceasedDetailsCheck: steps.caseProgressStandard.deceasedDetailsCheck,
 
         caseProgressStopEscalateIssueDeceasedDetailsCheck: steps.caseProgressStopEscalateIssue.deceasedDetailsCheck,
         caseProgressStopEscalateIssueStoppedTabCheck: steps.caseProgressStopEscalateIssue.stoppedTabCheck,
+        caseProgressStopEscalateIssueAddCaseStoppedReason: steps.caseProgressStopEscalateIssue.addCaseStoppedReason,
         caseProgressStopEscalateIssueEscalatedTabCheck: steps.caseProgressStopEscalateIssue.escalatedTabCheck,
 
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,

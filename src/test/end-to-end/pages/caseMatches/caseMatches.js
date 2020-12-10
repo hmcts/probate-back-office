@@ -10,13 +10,14 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText);
 
-    await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
-
-    await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
-
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
+
+    if (numOfElements > 0) {
+        await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
+        await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);    
+    }
 
     // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */

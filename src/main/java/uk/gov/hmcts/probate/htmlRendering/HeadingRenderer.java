@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.htmlRendering;
 
+import java.util.regex.Pattern;
+
 import static java.lang.String.format;
 
 public class HeadingRenderer {
@@ -11,7 +13,7 @@ public class HeadingRenderer {
     }
     public static String renderByReplace(String html) {
         return html == null ? null :
-                html.replaceAll("<h>", openTag)
-                .replaceAll("</h>", closeTag);
+                html.replaceAll(Pattern.quote("<h>"), openTag)
+                .replaceAll(Pattern.quote("</h>"), closeTag);
     }
 }

@@ -115,6 +115,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Find matches (Examining)');
@@ -134,6 +135,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Examine case');
@@ -151,6 +153,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Mark as ready to issue');
@@ -172,6 +175,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Find matches (Issue grant)');
@@ -192,6 +196,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('Issue grant');
@@ -210,6 +215,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numCompleted: 8,
             numInProgress: 0,
             numNotStarted: 0,
+            checkSubmittedDate: true,
             signOut: true});
 
         console.info('01 BO Case Progress E2E - standard: complete');
