@@ -78,7 +78,7 @@
     { "name": "solsSolicitorAddressTown", "value": "London Town" },
     { "name": "solsSolicitorAddressCounty", "value": "Greater London" },
     { "name": "solsSolicitorAddressPostCode", "value": "NW1 1LE" },
-    { "name": "solsSolicitorEmail", "value": "tony@test-solicitors.com" },
+    { "name": "solsSolicitorEmail", "value": "solicitor@probate-test.com" },
     { "name": "solsSolicitorPhoneNumber", "value": "02073843749" },
     { "name": "deceasedForenames", "value": "Francis" },
     { "name": "deceasedSurname", "value": "Beeetle" },

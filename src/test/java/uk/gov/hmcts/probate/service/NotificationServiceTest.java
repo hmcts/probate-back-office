@@ -1528,14 +1528,14 @@ public class NotificationServiceTest {
                 .postCode("postcode")
                 .postTown("posttown")
                 .build())
-            .email("sols@test.com")
+            .email("solicitor@probate-test.com")
             .notification("Yes").build();
         notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation,
             executorsApplyingNotification);
 
         verify(notificationClient).sendEmail(
             eq("sols-request-information"),
-            eq("sols@test.com"),
+            eq("solicitor@probate-test.com"),
             eq(personalisation),
             eq(null));
 
