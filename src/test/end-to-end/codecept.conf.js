@@ -10,6 +10,8 @@ exports.config = {
             'getPageTimeout': 60000,
             // 'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
+            'waitForAction': 1500,
+            'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -28,6 +30,7 @@ exports.config = {
                     '--window-size=1440,1400'
                 ]
             },
+
         },
         'PuppeteerHelper': {
             'require': './helpers/PuppeteerHelper.js'

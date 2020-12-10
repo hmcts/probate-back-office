@@ -3,10 +3,14 @@
 const testConfig = require('src/test/config');
 const newCaseConfig = require('./newCaseConfig');
 
-module.exports = async function () {
+module.exports = function (xui = false) {
 
     const I = this;
 
-    await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-    await I.waitForNavigationToComplete(newCaseConfig.locator);
+    I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
+    if (xui) {
+        I.waitForNavigationToComplete(newCaseConfig.xuiCreateCaseLocator);
+    } else {
+        I.waitForNavigationToComplete(newCaseConfig.ccduilCreateCaselocator);
+    }
 };

@@ -1,0 +1,36 @@
+{
+  "page1_forenames": "E2E_deceased_forenames",
+  "page1_surname": "E2E_deceased_surname",
+  "page1_dateOfDeath_day": "01",
+  "page1_dateOfDeath_month": "01",
+  "page1_dateOfDeath_year": "2020",
+  "page1_dateOfDeath_long": "1 Jan 2020",
+  "page1_dateOfBirth_day": "01",
+  "page1_dateOfBirth_month": "01",
+  "page1_dateOfBirth_year": "1930",
+  "page1_dateOfBirth_long": "1 Jan 1930",
+
+  "page2_ihtNetValue": "100000",
+  "page2_ihtGrossValue": "100001",
+  "page2_solsIHTFormValue": "IHT 400",
+  "page2_ihtGrossValueDisplay": "£100,001.00",
+  "page2_ihtNetValueDisplay": "£100,000.00",
+  "page2_applicationGrounds": "Application grounds info",
+
+  "page3_willLeftDisplay": "Grant of probate",
+  "page3_willLeftAnnexedDisplay": "Letters of administration with will annexed (Admon will)",
+  "page3_noWillDisplay": "Letters of administration (Intestate)",
+  
+  "optionYes": "Yes",
+  "optionNo": "No",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}

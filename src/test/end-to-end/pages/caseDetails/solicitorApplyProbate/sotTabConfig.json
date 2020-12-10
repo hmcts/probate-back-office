@@ -1,0 +1,18 @@
+{
+    "tabName": "SOT",
+    "fields": [
+      "Legal statement"
+    ],
+    "dataKeys": [
+      "page1_legalStmtLink"
+    ],
+    "AdmonWill": {
+      "fields": [
+        "Legal statement"
+      ],
+      "dataKeys": [
+        "page1_AdmonWilllegalStmtLink"
+      ]
+    }
+  }
+  

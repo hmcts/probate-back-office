@@ -1,0 +1,26 @@
+{
+  "page1_legalStmtLink": "legalStatementProbate.pdf",
+  "page1_AdmonWilllegalStmtLink": "legalStatementAdmon.pdf",
+  "page1_NoWilllegalStmtLink":"legalStatementIntestacy.pdf",
+
+  "page3_sol_forename": "E2E solicitor first name",
+  "page3_sol_surname": "E2E solicitor surname",
+  "page3_sol_jobtitle": "E2E Solicitor Job title",
+
+  "page4_extraCopiesUK": "1",
+  "page4_outsideUKGrantCopies":"2",
+
+  "page5_paymentType": "Fee account",
+  "page5_payAccountNum": "1234",
+
+  "page6_waitForText":"Save or Submit application",
+
+  "page7_waitForText":"This probate application has now been submitted",
+  "page7_applicationFee": "Application fee £155.00",
+  "page7_additionalCopiesFee": "Fee for additional UK copies £1.50",
+  "page7_feeForCertifiedCopies": "Fee for certified copies £3.00",
+  "page7_totalFeeAmount": "Fee amount £159.50",
+
+  "optionYes": "Yes",
+  "optionNo": "No"
+}
