@@ -61,7 +61,6 @@ public class PdfGeneratorServiceConsumerTest {
     @Rule
     public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpePdfService_PDFGenerationEndpointV2", "localhost", 4411, this);
 
-    // TBD consumer 'Name'
     @Pact(provider = "rpePdfService_PDFGenerationEndpointV2", consumer = "probate_backOffice")
     public RequestResponsePact generatePdfFromTemplate(PactDslWithProvider builder) throws JSONException, IOException {
         // @formatter:off
@@ -91,7 +90,6 @@ public class PdfGeneratorServiceConsumerTest {
 
     }
 
-
     private GeneratePdfRequest buildGenerateDocumentRequest(String templateName, String callBackRequestJson)
         throws IOException {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + HTML;
@@ -107,7 +105,6 @@ public class PdfGeneratorServiceConsumerTest {
         return new String(Files.readAllBytes(file.toPath()));
     }
 
-
     protected String createJsonObject(Object obj) throws JSONException, IOException {
         return objectMapper.writeValueAsString(obj);
     }
@@ -116,7 +113,6 @@ public class PdfGeneratorServiceConsumerTest {
         return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
         });
     }
-
 
     private File getFile(String fileName) throws FileNotFoundException {
         return ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
