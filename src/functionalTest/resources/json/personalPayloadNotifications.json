@@ -45,7 +45,7 @@
           "id": "1",
           "value": {
             "name": "Bob Smith",
-            "email": "executor1@probate-test.com",
+            "email": "primary@probate-test.com",
             "notification": "Yes",
             "responseReceived": "No",
             "address": {
