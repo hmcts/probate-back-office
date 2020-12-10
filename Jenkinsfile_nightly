@@ -17,7 +17,7 @@ String component = "back-office"
 def secrets = [
   'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
-    secret('cwUserPass', 'CW_USER_PASSWORD')
+    secret('cwUserPass', 'CW_USER_PASSWORD'),
     secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
     secret('solicitorUserPass', 'SOL_USER_PASSWORD')
   ]
