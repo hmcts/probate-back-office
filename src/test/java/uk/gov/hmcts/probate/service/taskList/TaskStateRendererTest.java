@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 public class TaskStateRendererTest {
     @Test
-    public void shouldReturnCorrectRenderForState_CaseCreated() {
-        TaskStateRenderer taskStateRenderer = new TaskStateRenderer();
-        String testHtml = "<div><addSolicitorLink/></div>\n" +
+    public void shouldRenderCorrectHtmlForState_CaseCreated() {
+        final TaskStateRenderer taskStateRenderer = new TaskStateRenderer();
+        final String testHtml = "<div><addSolicitorLink/></div>\n" +
                 "<div><addDeceasedLink/></div>\n" +
                 "<div><addAppLink/></div>\n" +
                 "<div><rvwLink/></div>\n" +
@@ -23,7 +23,7 @@ public class TaskStateRendererTest {
                 "<p><status-addDeceasedDetails/></p>\n" +
                 "<p><status-addApplicationDetails/></p>\n" +
                 "<p><status-reviewAndSubmit/></p>\n" +
-                "<p><submitDate/></p>\n" +
+                "<p><reviewAndSubmitDate/></p>\n" +
                 "<p><status-sendDocuments/></p>\n" +
                 "<p><authenticatedDate/></p>\n" +
                 "<p><status-authDocuments/></p>\n" +

@@ -22,36 +22,36 @@ public class TaskListRendererFactoryTest {
     private TaskListRendererFactory taskListRendererFactory = new TaskListRendererFactory();
 
     @Test
-    public void shouldReturnCorrectRenderForState_CaseCreated() {
+    public void shouldReturnCorrectRendererForState_CaseCreated() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_CREATED.getId());
         assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
-    public void shouldReturnCorrectRenderForState_BOExamining() {
+    public void shouldReturnCorrectRendererForState_BOExamining() {
         renderer = taskListRendererFactory.getTaskListRenderer(EXAMINING.getId());
         assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
-    public void shouldReturnCorrectRenderForState_BOCaseStopped() {
+    public void shouldReturnCorrectRendererForState_BOCaseStopped() {
         renderer = taskListRendererFactory.getTaskListRenderer(BO_CASE_STOPPED.getId());
         assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
     @Test
-    public void shouldReturnCorrectRenderForState_BOCaseStoppedReissue() {
+    public void shouldReturnCorrectRendererForState_BOCaseStoppedReissue() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_REISSUE.getId());
         assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
-    public void shouldReturnCorrectRenderForState_BOCaseStoppedAwaitRedec() {
+    public void shouldReturnCorrectRendererForState_BOCaseStoppedAwaitRedec() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_AWAIT_REDEC.getId());
         assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
 
     @Test
-    public void shouldReturnCorrectRenderForState_BORegistrarEscalation() {
+    public void shouldReturnCorrectRendererForState_BORegistrarEscalation() {
         renderer = taskListRendererFactory.getTaskListRenderer(REGISTRAR_ESCALATION.getId());
         assertEquals(EscalatedTaskListRenderer.class, renderer.getClass());
     }

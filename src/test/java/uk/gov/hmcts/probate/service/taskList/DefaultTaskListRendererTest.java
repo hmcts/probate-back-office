@@ -84,7 +84,7 @@ public class DefaultTaskListRendererTest {
             "\n" +
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
             "</div></div>\n" +
-            "<reviewAndSubmitDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
             "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
             "\n" +
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n" +
