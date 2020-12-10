@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.service.fee.FeeService;
@@ -57,6 +59,7 @@ public class FeesRegisterConsumerTest {
             .matchQuery("event", "issue", "issue")
             .matchQuery("amount_or_volume", "250000.00", "250000.00")
             .willRespondWith()
+            .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(new PactDslJsonBody()
                 .decimalType("fee_amount", 200.00))
             .status(HttpStatus.SC_OK)
@@ -64,7 +67,7 @@ public class FeesRegisterConsumerTest {
     }
 
     @Pact(provider = "feeRegister_lookUp", consumer = "probate_backOffice")
-    public RequestResponsePact createCopiesFeeFragment(PactDslWithProvider builder) throws IOException {
+    public RequestResponsePact createCopiesFeeFragment(PactDslWithProvider builder) {
         return builder
             .given("Copies fee exist for Probate")
             .uponReceiving("a request for Probate copies fees")
