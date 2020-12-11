@@ -101,7 +101,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replace(" \"solsSolicitorAppReference\": \"PUBLIC\"","");
         Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
         response.prettyPrint();
-        response.then().assertThat().statusCode(400);
+        response.then().assertThat().statusCode(422);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",",
                 "\"caveatorEmailAddress\": \"test@test.com\", \"expiryDate \": \"2090-12-12\"");
         Response response = postJson(jsonAsString, CAVEAT_VALIDATE);
-        response.then().assertThat().statusCode(400);
+        response.then().assertThat().statusCode(422);
     }
 
     @Test
@@ -198,7 +198,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         Response response = postJson(jsonAsString, CAVEAT_WITHDRAW);
         JsonPath jsonPath = JsonPath.from(response.asString());
         response.prettyPrint();
-        response.then().assertThat().statusCode(400);
+        response.then().assertThat().statusCode(422);
 
     }
 
