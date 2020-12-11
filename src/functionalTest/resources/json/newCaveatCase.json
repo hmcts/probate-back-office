@@ -1,0 +1,42 @@
+{
+  "event": {
+    "id": "applyForCaveat",
+    "description": "",
+    "summary": "Probate application"
+  },
+  "ignore_warning": true,
+  "event_token": "TOKEN_PARM",
+  "data": {
+    "applicationType": "Personal",
+    "registryLocation": "Leeds",
+    "deceasedForenames": "CaveatForename",
+    "deceasedSurname": "dl name 2",
+    "deceasedDateOfDeath": "2017-12-31",
+    "deceasedDateOfBirth": "2016-12-31",
+    "deceasedAddress": {
+      "AddressLine1": "2",
+      "AddressLine2": "",
+      "AddressLine3": "",
+      "County": "",
+      "PostTown": "",
+      "PostCode": "2",
+      "Country": ""
+    },
+    "deceasedAnyOtherNames": "Yes",
+    "caveatorForenames": "CaveatForename",
+    "caveatorSurname": "cf name 2",
+    "caveatorEmailAddress": "personal@hmcts-test.com",
+    "caveatorAddress": {
+      "AddressLine1": "2",
+      "AddressLine2": "",
+      "AddressLine3": "",
+      "County": "",
+      "PostTown": "",
+      "PostCode": "2",
+      "Country": ""
+    },
+    "expiryDate": "2019-05-15",
+    "messageContent": "content message"
+  }
+
+}
