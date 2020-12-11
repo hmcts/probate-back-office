@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.pba;
+package uk.gov.hmcts.probate.model.payments.pba;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

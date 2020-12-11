@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.pba;
+package uk.gov.hmcts.probate.model.payments.pba;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,12 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PBAOrganisationResponse {
-
-    @JsonProperty
-    private OrganisationEntityResponse organisationEntityResponse;
+public class PBAValidationResponse {
+    @JsonProperty(value = "pbaNumberValid")
+    private boolean pbaNumberValid;
 }

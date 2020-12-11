@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -421,6 +422,8 @@ public class CallbackResponseTransformerTest {
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
     @Mock
     private SolicitorPBADefaulter solicitorPBADefaulter;
+    @Mock
+    private PaymentResponse paymentResponseMock;
 
     @Before
     public void setup() {
@@ -750,7 +753,8 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+            paymentResponseMock);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -766,7 +770,8 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+            paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -777,7 +782,8 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+            paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -793,7 +799,8 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+            paymentResponseMock);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);

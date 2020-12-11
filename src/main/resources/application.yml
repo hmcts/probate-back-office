@@ -48,8 +48,6 @@ pdf.service:
 payment:
   url: ${PAYMENT_API_URL:http://payment-api-aat.service.core-compute-aat.internal}
   api: /credit-account-payments
-  health:
-    url: ${payment.url}/health
 
 pba:
   validation:

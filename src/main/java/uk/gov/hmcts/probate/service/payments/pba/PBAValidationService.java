@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.pbavalidation;
+package uk.gov.hmcts.probate.service.payments.pba;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.model.pba.PBAOrganisationResponse;
+import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -21,9 +22,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
@@ -44,11 +50,14 @@ public class NextStepsController {
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
+    private final PaymentsService paymentsService;
+    private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
 
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<CallbackResponse> validate(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
+            @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
@@ -72,7 +81,14 @@ public class NextStepsController {
                     ccdData.getFee().getExtraCopiesOfGrant(),
                     ccdData.getFee().getOutsideUKGrantCopies());
 
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse);
+            FeesResponse feesResponse = feeService.getAllFeesData(
+                    ccdData.getIht().getNetValueInPounds(),
+                        ccdData.getFee().getExtraCopiesOfGrant(),
+                        ccdData.getFee().getOutsideUKGrantCopies());
+            CreditAccountPayment creditAccountPayment =
+                creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
+            PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse, paymentResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);
