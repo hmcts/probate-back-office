@@ -63,7 +63,7 @@ public abstract class IntegrationTestBase {
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
+            .headers(utils.getHeadersWithCaseworkerUser())
             .body(payload)
             .when().post(path)
             .andReturn();

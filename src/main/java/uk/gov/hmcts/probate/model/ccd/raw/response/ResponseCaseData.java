@@ -2207,6 +2207,7 @@ public class ResponseCaseData extends ResponseCaseDataParent{
             responseCaseData.registryAddress = responseCaseDataParent.registryAddress;
             responseCaseData.registryEmailAddress = responseCaseDataParent.registryEmailAddress;
             responseCaseData.registrySequenceNumber = responseCaseDataParent.registrySequenceNumber;
+            responseCaseData.solsPBANumber = responseCaseDataParent.solsPBANumber;
             return  responseCaseData;
         }
     }

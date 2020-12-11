@@ -11,6 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.HashMap;
+import java.util.List;
+
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -369,14 +372,23 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestProbateSuccessForDefaultNext(){
+    public void verifyRequestProbateSuccessForDefaultNext() {
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbate.json", DEFAULT_SOLS_NEXT_STEP);
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
+        HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");
 
         assertEquals(willExist,"Yes");
         assertNull(errors);
+        assertNotNull(solsPBANumbers);
+        List<HashMap> listItems = ((List<HashMap>)solsPBANumbers.get("list_items"));
+        assertEquals(4, ((List)solsPBANumbers.get("list_items")).size());
+        assertEquals("PBA0087535", listItems.get(0).get("code"));
+        assertEquals("PBA0087240", listItems.get(1).get("code"));
+        assertEquals("PBA0088063", listItems.get(2).get("code"));
+        assertEquals("PBA0087442", listItems.get(3).get("code"));
+        
     }
 
     @Test

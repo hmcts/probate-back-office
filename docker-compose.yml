@@ -530,6 +530,13 @@ services:
     ports:
       - 8081:8081
 
+  wiremock:
+    image: rodolpheche/wiremock
+    ports:
+      - 8991:8080
+    volumes:
+      - esdata1:/usr/share/wiremock/data
+
 volumes:
   ccd-docker-azure-blob-data:
   esdata1:

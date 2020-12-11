@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 @Service
@@ -36,7 +37,7 @@ public class PaymentsService {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
-        ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, GET,
+        ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
             request, PaymentResponse.class);
         PaymentResponse paymentResponse = Objects.requireNonNull(responseEntity.getBody());
         log.info("paymentResponse : {}", paymentResponse);
