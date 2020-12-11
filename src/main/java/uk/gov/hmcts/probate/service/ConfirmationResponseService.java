@@ -268,10 +268,10 @@ public class ConfirmationResponseService {
 
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = format("*   %s\n", PageTextConstants.documentIht421);
+            iht400 = format("*   %s\n", PageTextConstants.DOCUMENT_IHT_421);
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.documentLegalStatementPhotocopy);
+        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);

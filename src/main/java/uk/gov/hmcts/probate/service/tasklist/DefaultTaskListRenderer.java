@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
 
     public String renderHtml(CaseDetails details) {
-        TaskListState tlState = TaskListState.MapCaseState(details.getState());
+        TaskListState tlState = TaskListState.mapCaseState(details.getState());
         if (tlState == TaskListState.TL_STATE_NOT_APPLICABLE) {
             return "";
         }

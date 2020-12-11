@@ -66,5 +66,5 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
         return String.join("\n\n", lines);
     }
 
-    abstract protected String renderBody(CaseDetails caseDetails);
+    protected abstract String renderBody(CaseDetails caseDetails);
 }

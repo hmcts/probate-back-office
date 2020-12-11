@@ -31,6 +31,6 @@ public enum TaskState {
         // display for current multi-state tasklist state
         public static final String  IN_PROGRESS_URL = format(URL_TEMPLATE, "in-progress.png");
         // display for current single-state tasklist state
-        public static final String  NOT_STARTED_URL = format(URL_TEMPLATE, "not-started.png");;
+        public static final String  NOT_STARTED_URL = format(URL_TEMPLATE, "not-started.png");
     }
 }

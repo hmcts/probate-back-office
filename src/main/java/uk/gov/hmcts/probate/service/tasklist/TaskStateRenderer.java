@@ -30,14 +30,14 @@ public class TaskStateRenderer {
 
     // isProbate - true if application for probate, false if for caveat
     public static String renderByReplace(TaskListState currState, String html, Long caseId, LocalDate authDate, LocalDate submitDate) {
-        final TaskState addSolState = GetTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS);
-        final TaskState addDeceasedState = GetTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS);
-        final TaskState addAppState = GetTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS);
-        final TaskState rvwState = GetTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT);
-        final TaskState sendDocsState = GetTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS);
-        final TaskState authDocsState = GetTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS);
-        final TaskState examineState = GetTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION);
-        final TaskState issueState = GetTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT);
+        final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS);
+        final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS);
+        final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS);
+        final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT);
+        final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS);
+        final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS);
+        final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION);
+        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT);
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
@@ -64,7 +64,7 @@ public class TaskStateRenderer {
 
     }
 
-    private static TaskState GetTaskState  (TaskListState currState, TaskListState renderState) {
+    private static TaskState getTaskState(TaskListState currState, TaskListState renderState) {
         if (currState == renderState) {
             return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
         }
@@ -87,7 +87,7 @@ public class TaskStateRenderer {
     private static String renderSendDocsDetails(TaskState sendDocsState, String caseId) {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
-                        SendDocumentsDetailsHtmlTemplate.docDetails.replaceFirst("<refNum/>", caseId));
+                        SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId));
     }
 
     private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId) {
@@ -118,14 +118,18 @@ public class TaskStateRenderer {
             case TL_STATE_ADD_SOLICITOR_DETAILS:
                 return null;
             case TL_STATE_ADD_DECEASED_DETAILS:
-                return deceasedDetailsUrlTemplate;
+                return DECEASED_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_APPLICATION_DETAILS:
-                return addApplicationDetailsUrlTemplate;
+                return ADD_APPLICATION_DETAILS_URL_TEMPLATE;
             case TL_STATE_REVIEW_AND_SUBMIT:
-                return reviewOrSubmitUrlTemplate;
+                return REVIEW_OR_SUBMIT_URL_TEMPLATE;
             default:
                 return null;
 
         }
+    }
+
+    private TaskStateRenderer() {
+        throw new IllegalStateException("Utility class");
     }
 }

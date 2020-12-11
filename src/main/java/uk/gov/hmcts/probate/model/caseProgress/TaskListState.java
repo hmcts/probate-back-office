@@ -23,7 +23,7 @@ public enum TaskListState {
         isMultiState = multiState;
     }
     // returns the current in progress state
-    public static TaskListState MapCaseState(String caseState) {
+    public static TaskListState mapCaseState(String caseState) {
         if (caseState == null) {
             return TL_STATE_ADD_SOLICITOR_DETAILS;
         }

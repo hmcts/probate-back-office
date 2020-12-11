@@ -2,8 +2,6 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 
-import java.time.LocalDate;
-
 public class ResponseCaseDataParent {
 
     protected DynamicList reprintDocument;
