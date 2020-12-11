@@ -17,19 +17,25 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     if (numOfElements > 0) {
         await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
         await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);    
+    } else {
+        // just a small delay - occasionally we get issues at await I.waitForEnabled(commonConfig.continueButton) below.
+        // Only necessary where we have no auto delay (local dev).
+        await I.wait(0.25);        
     }
 
     // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
-        await I.waitForElement(btnLocatorLastChild);
+        await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
+        // just a small delay - occasionally we get issues here but only relevant for local dev
+        await I.wait(0.25);
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
         // just a small delay - occasionally we get issues here but only relevant for local dev
-        await I.wait(0.2);
+        await I.wait(0.25);
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
