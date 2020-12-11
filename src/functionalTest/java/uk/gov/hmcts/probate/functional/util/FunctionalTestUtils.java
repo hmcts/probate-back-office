@@ -295,6 +295,4 @@ public class FunctionalTestUtils {
     public String addAttribute(String json, String attributeKey, String attributeValue) {
         return json.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
-
-
 }

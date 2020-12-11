@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.model.caseProgress;
 
+import uk.gov.hmcts.probate.model.UrlConstants;
+
 import static java.lang.String.format;
 
 public enum TaskState {
@@ -25,12 +27,14 @@ public enum TaskState {
         public static final String  NOT_AVAILABLE_DESC = "";
     }
 
-    private static class TaskStateImageUrls {
-        private static final String  URL_TEMPLATE = "https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/%s";
-        public static final String  COMPLETED_URL = format(URL_TEMPLATE, "completed.png");
+    public static final String CODE_BRANCH = "DTSPB-715-case-progress-tab";
+    public static final String IMG_URL_TEMPLATE = "https://raw.githubusercontent.com/hmcts/probate-back-office/" + CODE_BRANCH + "/src/main/resources/statusImages/%s";
+
+    public static class TaskStateImageUrls {
+        public static final String  COMPLETED_URL = format(IMG_URL_TEMPLATE, "completed.png");
         // display for current multi-state tasklist state
-        public static final String  IN_PROGRESS_URL = format(URL_TEMPLATE, "in-progress.png");
+        public static final String  IN_PROGRESS_URL = format(IMG_URL_TEMPLATE, "in-progress.png");
         // display for current single-state tasklist state
-        public static final String  NOT_STARTED_URL = format(URL_TEMPLATE, "not-started.png");
+        public static final String  NOT_STARTED_URL = format(IMG_URL_TEMPLATE, "not-started.png");
     }
 }

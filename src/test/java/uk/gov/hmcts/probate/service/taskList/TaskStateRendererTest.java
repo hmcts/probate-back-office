@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.taskList;
 
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
+import uk.gov.hmcts.probate.model.caseProgress.TaskState;
 import uk.gov.hmcts.probate.service.tasklist.TaskStateRenderer;
 
 import java.time.LocalDate;
@@ -37,9 +38,11 @@ public class TaskStateRendererTest {
                 "<div>Authenticate documents</div>\n" +
                 "<div>Examine application</div>\n" +
                 "<div>Issue grant of representation<</div>\n" +
-                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
+                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/" +
+                TaskState.CODE_BRANCH + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n" +
                 "</p>\n" +
-                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n" +
+                "<p><p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/" +
+                TaskState.CODE_BRANCH + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n" +
                 "</p>\n" +
                 "<p></p>\n" +
                 "<p></p>\n" +
