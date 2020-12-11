@@ -72,7 +72,7 @@ module.exports = async function (opts) {
     const caseRef = await I.grabTextFrom('h1.heading-h1');
 
     if (opts.checkSubmittedDate) {
-        await I.see(`Submitted on ${moment().format('DD MMM yyyy')}`)
+        await I.see(`Submitted on ${moment().format('DD MMM yyyy')}`);
     }
     if (opts.clickLink) {
         await I.waitForNavigationToComplete('p.govuk-body-s a');

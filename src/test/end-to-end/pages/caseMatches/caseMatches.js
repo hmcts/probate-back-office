@@ -16,11 +16,11 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     if (numOfElements > 0) {
         await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
-        await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);    
+        await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
     } else {
         // just a small delay - occasionally we get issues at await I.waitForEnabled(commonConfig.continueButton) below.
         // Only necessary where we have no auto delay (local dev).
-        await I.wait(0.25);        
+        await I.wait(0.25);
     }
 
     // -1 to ignore previous button at bottom of page

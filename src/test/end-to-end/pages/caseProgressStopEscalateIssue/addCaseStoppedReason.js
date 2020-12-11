@@ -9,6 +9,6 @@ module.exports = async function () {
     await I.click({css: 'div.panel button'});
     await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopReason'});
     await I.selectOption({css: '#boCaseStopReasonList_0_caseStopReason'}, '1: ExecNotAccountedFor');
-    
-    await I.waitForNavigationToComplete(commonConfig.continueButton);   
+
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

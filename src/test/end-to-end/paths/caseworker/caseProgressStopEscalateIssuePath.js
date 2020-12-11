@@ -110,7 +110,6 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.waitForVisible({css: '#sign-out'});
         await I.waitForNavigationToComplete('#sign-out');
 
-
         console.info('Check progress tab for Case stopped');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
