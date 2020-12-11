@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 public class TaskStateRendererTest {
     @Test
     public void shouldRenderCorrectHtmlForState_CaseCreated() {
-        final TaskStateRenderer taskStateRenderer = new TaskStateRenderer();
         final String testHtml = "<div><addSolicitorLink/></div>\n" +
                 "<div><addDeceasedLink/></div>\n" +
                 "<div><addAppLink/></div>\n" +
@@ -53,8 +52,7 @@ public class TaskStateRendererTest {
                 "<p></p>\n" +
                 "<p></p>\n";
 
-
-        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
+        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                 testHtml, (long) 9999, LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1));
 
