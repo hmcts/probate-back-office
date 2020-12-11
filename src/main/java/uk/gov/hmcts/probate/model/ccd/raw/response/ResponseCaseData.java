@@ -837,8 +837,8 @@ public class ResponseCaseData extends ResponseCaseDataParent{
         private String grantAwaitingDocumentatioNotificationSent;
         private String pcqId;
 
-        // provide a default constructor
         public ResponseCaseDataBuilder() {
+            // provide a default constructor
         }
 
         public ResponseCaseDataBuilder state(String state) {

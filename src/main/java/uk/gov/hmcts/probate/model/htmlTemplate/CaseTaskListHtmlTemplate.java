@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.model.htmlTemplate;
 
 public class CaseTaskListHtmlTemplate {
     private static final String SEPARATOR = "<gridRowSeparator/>\n";
-    public static final String taskListTemplate =
+    public static final String TASK_LIST_TEMPLATE =
             "<gridRow><gridCol-two-thirds>\n" +
                     "<h>1. Enter application details</h>\n" +
                     "<gridRow><gridCol-two-thirds><p><secText>These steps are to be completed by the legal professional.</secText></p></gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n" +

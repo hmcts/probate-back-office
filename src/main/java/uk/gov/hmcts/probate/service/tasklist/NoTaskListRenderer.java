@@ -53,13 +53,13 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
 
         lines.add(HeadingRenderer.render("Get help with your application"));
         lines.add(SubheadingRenderer.render("Telephone"));
-        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.contactTemplate)
+        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.CONTACT_TEMPLATE)
                 .replaceFirst("<englishPhoneNumber>", "0300 303 0648")
                 .replaceFirst("<welshPhoneNumber>", "0300 303 0654")
         );
         lines.add(LinkRenderer.renderOutside("Find out about call charges", "https://www.gov.uk/call-charges"));
         lines.add(SubheadingRenderer.render("Email"));
-        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.emailTemplate)
+        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.EMAIL_TEMPLATE)
                 .replaceFirst("<email>", LinkRenderer.render("contactprobate@justice.gov.uk", "mailto:contactprobate@justice.gov.uk"))
         );
 

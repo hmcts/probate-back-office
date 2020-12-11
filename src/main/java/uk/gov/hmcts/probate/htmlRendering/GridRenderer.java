@@ -7,7 +7,7 @@ public class GridRenderer {
         throw new IllegalStateException("Utility class");
     }
 
-    private final static String DIV_CLOSE = "</div>";
+    private static final String DIV_CLOSE = "</div>";
     // pre-condition - htmlTemplate contains <gridRow></gridRow>, <gridCol-two-thirds></gridCol-two-thirds>,
     // <gridCol-one-third></gridCol-one-third> & <gridRowSeparator/> tags
     // and potentially <gridRow></gridRow> & <gridRowSeparator/> tags

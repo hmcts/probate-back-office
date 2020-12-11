@@ -56,8 +56,8 @@ public class TaskListUpdateServiceTest {
 
     private ResponseCaseDataBuilder builder = new ResponseCaseDataBuilder();
 
-    private final static LocalDate ESCALATED_DATE = LocalDate.of(2020, 1, 1);
-    private final static LocalDate STOPPED_DATE = LocalDate.of(2020, 10, 10);
+    private static final LocalDate ESCALATED_DATE = LocalDate.of(2020, 1, 1);
+    private static final LocalDate STOPPED_DATE = LocalDate.of(2020, 10, 10);
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long ID = 1L;
 

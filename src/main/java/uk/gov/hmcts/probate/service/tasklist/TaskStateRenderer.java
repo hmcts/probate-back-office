@@ -78,7 +78,7 @@ public class TaskStateRenderer {
         if (taskState == TaskState.NOT_AVAILABLE) {
             return "";
         }
-        return StatusTagHtmlTemplate.statusTag
+        return StatusTagHtmlTemplate.STATUS_TAG
                 .replaceFirst("<imgSrc/>", taskState.imageUrl)
                 .replaceFirst("<imgAlt/>", taskState.displayText)
                 .replaceFirst("<imgTitle/>", taskState.displayText);
@@ -101,7 +101,7 @@ public class TaskStateRenderer {
         if (authDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
-        String authDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Authenticated on %s", authDate.format(dateFormat)));
+        String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE.replaceFirst("<stateChangeDateText/>", format("Authenticated on %s", authDate.format(dateFormat)));
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
@@ -109,7 +109,7 @@ public class TaskStateRenderer {
         if (submitDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
-        String submitDateTemplate = StateChangeDateHtmlTemplate.stateChangeDateTemplate.replaceFirst("<stateChangeDateText/>", format("Submitted on %s", submitDate.format(dateFormat)));
+        String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE.replaceFirst("<stateChangeDateText/>", format("Submitted on %s", submitDate.format(dateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 

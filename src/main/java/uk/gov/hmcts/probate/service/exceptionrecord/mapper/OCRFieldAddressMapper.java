@@ -29,7 +29,7 @@ public class OCRFieldAddressMapper {
     private String country;
     private String postCode;
 
-    private final static String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
+    private static final String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
 
     @SuppressWarnings("squid:S1168")
     @ToPrimaryApplicantAddress

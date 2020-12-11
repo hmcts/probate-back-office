@@ -13,7 +13,7 @@ public class EscalatedTaskListRenderer extends NoTaskListRenderer {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
         LocalDate escalatedDate = details.getData().getEscalatedDate();
 
-        return ParagraphRenderer.renderByReplace(CaseEscalatedToRegistrarHtmlTemplate.baseTemplate
+        return ParagraphRenderer.renderByReplace(CaseEscalatedToRegistrarHtmlTemplate.BASE_TEMPLATE
                 .replaceFirst("<escalationDate>", escalatedDate == null ? "Unknown" : escalatedDate.format(dateFormat))
                 .replaceFirst("<numWeeks>", "6"));
     }

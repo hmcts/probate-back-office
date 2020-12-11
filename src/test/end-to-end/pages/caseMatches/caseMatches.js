@@ -25,9 +25,11 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
         await I.waitForElement(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
-        await I.waitForElement(actionBtnLocator);
+        await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
+        // just a small delay - occasionally we get issues here but only relevant for local dev
+        await I.wait(0.2);
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
