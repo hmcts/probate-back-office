@@ -3,12 +3,17 @@ package uk.gov.hmcts.probate.functional.caveats;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
@@ -18,12 +23,184 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_DEFAULT_VALUES = "/caveat/defaultValues";
     private static final String CAVEAT_GENERAL_MESSAGE= "/caveat/general-message";
 
+    private static final String CAVEAT_CONFIRMATION ="/caveat/confirmation";
+    private static final String CAVEAT_EXTEND = "/caveat/extend";
+    private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
+    private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
+    private static final String CAVEAT_VALIDATE = "/caveat/validate";
+    private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
+    private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
+
     private static final String DEFAULT_PAYLOAD= "caveatPayloadNotifications.json";
     private static final String DEFAULT_PAYLOAD_NO_EMAIL= "caveatPayloadNotificationsNoEmail.json";
     private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
+    private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
 
     private static final String YES = "Yes";
     private static final String NO = "No";
+
+    @Test
+    public void verifyCaveatConfirmationShouldReturnOKResponseCode() {
+        ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_CONFIRMATION);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        String confirmationText = jsonPath.get("confirmation_body");
+
+        assertThat(confirmationText, containsString("This caveat application has now been submitted"));
+    }
+
+    @Test
+    public void verifyCaveatConfirmationShouldReturnBadResponseCode() {
+        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",","\"caveatorEmailAddress\": \"\",");
+        Response response = postJson(jsonAsString, CAVEAT_CONFIRMATION);
+        response.then().assertThat().statusCode(400);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        assertThat(jsonPath.get("message"),is(equalTo("Invalid payload")));
+        assertThat(jsonPath.get("fieldErrors[0].field"),is(equalTo("caseDetails.data.caveatorEmailAddress")));
+        assertThat(jsonPath.get("fieldErrors[0].code"),is(equalTo("NotBlank")));
+    }
+
+    @Test
+    public void verifyCaveatExtendShouldReturnOKResponseCode(){
+        ResponseBody response = validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_EXTEND);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"),is(notNullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("sentEmail"));
+
+    }
+
+    @Test
+    public void verifyCaveatExtendShouldReturnValidationError(){
+        String jsonAsString =  getJsonFromFile(DEFAULT_PAYLOAD);
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"personal@hmcts-test.com\",","\"caveatorEmailAddress\": \"\",");
+        Response response = postJson(jsonAsString, CAVEAT_EXTEND);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("errors[0]"),is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorCreateReturnOkResponseCode() {
+        ResponseBody response = validatePostSuccess("/caveat/caveatSolicitorCreate.json", CAVEAT_SOLICITOR_CREATE);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"),is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorCreateReturnBadResponseCode() {
+        String jsonAsString = getJsonFromFile("/caveat/caveatSolicitorCreate.json");
+        jsonAsString = jsonAsString.replace(" \"solsSolicitorAppReference\": \"PUBLIC\"","");
+        Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
+        response.prettyPrint();
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyCaveatSolicitorUpdateReturnOKResponseCode(){
+        ResponseBody responseBody = validatePostSuccess("/caveat/caveatSolicitorUpdate.json", CAVEAT_SOLICITOR_UPDATE);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+
+        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.paperForm"),is(equalTo("No")));
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorUpdateReturnBadResponseCode() {
+        String jsonAsString = getJsonFromFile("/caveat/caveatSolicitorCreate.json");
+        jsonAsString = jsonAsString.replace(" \"deceasedForenames\": \"PUBLIC\"","\"deceasedForenames\": \"\"");
+        Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_UPDATE);
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyCaveatValidateShouldReturnOKResponseCode() {
+        ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_VALIDATE);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        DateTimeFormatter iso_8601_formatter = ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+        LocalDate extended = today.plusMonths(6);
+        today.format(iso_8601_formatter);
+
+
+        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso_8601_formatter))));
+        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso_8601_formatter))));
+    }
+
+    @Test
+    public void verifyCaveatValidateShouldReturnBadResponseCode() {
+        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",",
+                "\"caveatorEmailAddress\": \"test@test.com\", \"expiryDate \": \"2090-12-12\"");
+        Response response = postJson(jsonAsString, CAVEAT_VALIDATE);
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyCaveatValidateExtendShouldReturnOKResponseCode(){
+        DateTimeFormatter iso_8601_formatter = ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.now();
+        LocalDate extended = localDate.plusMonths(6);
+        String today = localDate.format(iso_8601_formatter);
+        String extendedDate = extended.format(iso_8601_formatter);
+        String jsonAsString =  getJsonFromFile("/caveat/caveatValidateExtend.json");
+        jsonAsString = jsonAsString.replace("endDate",today);
+
+        Response response = postJson(jsonAsString, CAVEAT_VALIDATE_EXTEND);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extendedDate)));
+
+    }
+    @Test
+    public void verifyCaveatValidateExtendShouldReturnValidationError(){
+
+        String jsonAsString =  getJsonFromFile("/caveat/caveatValidateExtend.json");
+        jsonAsString = jsonAsString.replace("endDate","1900-01-01");
+
+        Response response = postJson(jsonAsString, CAVEAT_VALIDATE_EXTEND);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        response.prettyPrint();
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("data"), is(nullValue()));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo("Cannot extend an already expired caveat.")));
+    }
+
+    @Test
+    public void verifyCaveatWithdrawShouldReturnOKResponseCode() {
+        ResponseBody responseBody = validatePostSuccess("/caveat/caveatCaseWithdraw.json", CAVEAT_WITHDRAW);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"),is(notNullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("sentEmail"));
+    }
+
+    @Test
+    public void verifyCaveatWithdrawShouldReturnBadResponseCode(){
+
+        String jsonAsString =  getJsonFromFile("/caveat/caveatCaseWithdraw.json");
+        jsonAsString = jsonAsString.replace("\"personal@hmcts-test.com\"","");
+
+        Response response = postJson(jsonAsString, CAVEAT_WITHDRAW);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        response.prettyPrint();
+        response.then().assertThat().statusCode(400);
+
+    }
 
     @Test
     public void verifyCaveatRaisedShouldReturnOkResponseCode() {
@@ -188,5 +365,12 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         return jsonResponse.getBody().asString();
     }
-
+    private Response postJson(String jsonAsString, String caveatConfirmation) {
+        return RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(caveatConfirmation)
+                .andReturn();
+    }
 }
