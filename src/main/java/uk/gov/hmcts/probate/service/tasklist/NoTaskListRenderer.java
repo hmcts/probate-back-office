@@ -37,7 +37,7 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
         String caseState = caseDetails.getState();
         String progressStateName = "Unknown";
         if (caseState != null) {
-            CaseProgressState progressState = CaseProgressState.MapCaseState(caseState);
+            CaseProgressState progressState = CaseProgressState.mapCaseState(caseState);
             progressStateName = progressState.getDisplayText();
         }
 

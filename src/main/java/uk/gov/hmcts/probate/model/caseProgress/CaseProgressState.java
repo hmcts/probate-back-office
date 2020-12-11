@@ -14,7 +14,7 @@ public enum CaseProgressState {
         this.displayText = displayText;
     }
 
-    public static CaseProgressState MapCaseState(String caseState) {
+    public static CaseProgressState mapCaseState(String caseState) {
         switch (caseState) {
             case StateConstants.STATE_BO_CASE_STOPPED:
                 return CASE_STOPPED;

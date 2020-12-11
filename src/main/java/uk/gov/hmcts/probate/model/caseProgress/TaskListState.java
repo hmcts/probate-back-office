@@ -19,9 +19,10 @@ public enum TaskListState {
 
     public final boolean isMultiState;
 
-    private TaskListState(boolean multiState) {
+    TaskListState(boolean multiState) {
         isMultiState = multiState;
     }
+
     // returns the current in progress state
     public static TaskListState mapCaseState(String caseState) {
         if (caseState == null) {
@@ -43,11 +44,11 @@ public enum TaskListState {
             case StateConstants.STATE_SOL_ADMON_CREATED:
                 return TL_STATE_ADD_APPLICATION_DETAILS;
 
-            case StateConstants.STATE_SOL_APP_UPDATED:
-                return TL_STATE_REVIEW_AND_SUBMIT;
-
             case StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT:
                 return TL_STATE_SEND_DOCUMENTS;
+
+            case StateConstants.STATE_SOL_APP_UPDATED:
+                return TL_STATE_REVIEW_AND_SUBMIT;
 
             case StateConstants.STATE_CASE_CREATED:
                 return TL_STATE_SEND_DOCUMENTS;

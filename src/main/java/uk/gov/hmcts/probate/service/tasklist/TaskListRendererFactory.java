@@ -8,7 +8,7 @@ public class TaskListRendererFactory {
         if (applicationState == null) {
             return new DefaultTaskListRenderer();
         }
-        CaseProgressState progressState = CaseProgressState.MapCaseState(applicationState);
+        CaseProgressState progressState = CaseProgressState.mapCaseState(applicationState);
 
         switch (progressState) {
             case CASE_STOPPED:
