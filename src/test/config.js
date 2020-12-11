@@ -14,5 +14,5 @@ module.exports = {
     TestEnvPassword: process.env.TEST_USER_PASSWORD || 'Pa55word11',
     TestEnvProfUser: process.env.PROF_USER_EMAIL || 'ProbateSolicitor1@gmail.com',
     TestEnvProfPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
-    TestForXUI: process.env.TESTS_FOR_XUI_SERVICE || false
+    TestForXUI: process.env.TESTS_FOR_XUI_SERVICE === 'true'
 };
