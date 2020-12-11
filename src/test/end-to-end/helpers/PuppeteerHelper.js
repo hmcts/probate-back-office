@@ -26,13 +26,13 @@ class PuppeteerHelper extends Helper {
     }
 
     async clickTab(tabTitle) {
-        const page = this.helpers[helperName].page;
+        const helper = this.helpers[helperName];
         if (testConfig.TestForXUI) {
             const tabXPath = `//div[text()='${tabTitle}']`;
-            const clickableTab = await page.$x(tabXPath);
+            const clickableTab = await helper.page.$x(tabXPath);
             await clickableTab[0].click();
         } else {
-            page.click(tabTitle);
+            helper.click(tabTitle);
         }
     }
 
