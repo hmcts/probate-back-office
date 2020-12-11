@@ -8,7 +8,7 @@ import static uk.gov.hmcts.probate.model.caseProgress.TaskListState.TL_STATE_ADD
 public class TaskListConstantsTest {
     @Test
     public void testConstantsMapCorrectly() {
-        assertEquals(TaskListState.mapCaseState(null), TL_STATE_ADD_SOLICITOR_DETAILS);
+        assertEquals(TL_STATE_ADD_SOLICITOR_DETAILS, TaskListState.mapCaseState(null));
         assertEquals(TaskListState.TL_STATE_ADD_DECEASED_DETAILS, TaskListState.mapCaseState(StateConstants.STATE_SOL_APP_CREATED));
         assertEquals(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, TaskListState.mapCaseState(StateConstants.STATE_SOL_PROBATE_CREATED));
         assertEquals(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, TaskListState.mapCaseState(StateConstants.STATE_SOL_INTESTACY_CREATED));
