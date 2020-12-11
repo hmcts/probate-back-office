@@ -8,7 +8,7 @@ module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApp
     await I.waitForElement('#solsSolicitorFirmName');
     await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
 
-    if (isSolicitorExecutor) {   
+    if (isSolicitorExecutor) {
         await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionYes}`);
         await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
         await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);

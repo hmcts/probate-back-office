@@ -25,18 +25,21 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase(true);
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2();
     await I.cyaPage();
-    
+
     await I.seeEndState(endState);
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
+
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);

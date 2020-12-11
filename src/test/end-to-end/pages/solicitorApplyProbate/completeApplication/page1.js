@@ -4,7 +4,7 @@ const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (willType = 'WillLeft') {
-    let I = this;
+    const I = this;
     await I.waitForElement('#solsSOTNeedToUpdate');
     if (willType === 'WillLeftAnnexed') {
         await I.see(completeApplicationConfig.page1_AdmonWilllegalStmtLink);
@@ -13,7 +13,7 @@ module.exports = async function (willType = 'WillLeft') {
     } else {
         await I.see(completeApplicationConfig.page1_legalStmtLink);
     }
-    
+
     await I.click(`#solsSOTNeedToUpdate-${completeApplicationConfig.optionNo}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

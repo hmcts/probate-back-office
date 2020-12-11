@@ -10,7 +10,6 @@ module.exports = async function () {
     await I.click(`#immovableEstate-${intestacyDetailsConfig.optionYes}`);
     await I.click(`#solsApplicantSiblings-${intestacyDetailsConfig.optionNo}`);
 
-
     await I.fillField('#primaryApplicantForenames', intestacyDetailsConfig.applicant_firstname);
     await I.fillField('#primaryApplicantSurname', intestacyDetailsConfig.applicant_lastname);
     await I.click(intestacyDetailsConfig.UKpostcodeLink);
@@ -28,6 +27,6 @@ module.exports = async function () {
 
     await I.selectOption('#deceasedMaritalStatus', intestacyDetailsConfig.page1_maritalstatus);
     await I.click(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page1_child}`);
-    
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

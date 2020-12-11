@@ -12,11 +12,11 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
     await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
-    
+
     await I.clickTab(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
-       await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
     }
 
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
@@ -37,7 +37,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         await I.waitForText(nextStep, testConfig.TestTimeToWaitForText || 60);
         await I.waitForText(endState, testConfig.TestTimeToWaitForText || 60);
-        
+
         if (dataConfigKeys) {
             await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.TestTimeToWaitForText || 60);
             await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.TestTimeToWaitForText || 60);

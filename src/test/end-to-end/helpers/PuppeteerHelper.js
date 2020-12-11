@@ -16,7 +16,7 @@ class PuppeteerHelper extends Helper {
         const promises = [];
 
         if (!testConfig.TestForXUI) {
-            promises.push(page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']})) // The promise resolves after navigation has finished
+            promises.push(page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
         }
 
         if (locator) {
@@ -29,7 +29,7 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
         if (testConfig.TestForXUI) {
             const tabXPath = `//div[text()='${tabTitle}']`;
-            let clickableTab = await page.$x(tabXPath);
+            const clickableTab = await page.$x(tabXPath);
             await clickableTab[0].click();
         } else {
             page.click(tabTitle);

@@ -19,7 +19,6 @@ Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures
 
 Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async function (I) {
 
-    const updateAddressManually = true;
     const willType = 'NoWill';
 
     // IdAM
@@ -27,24 +26,25 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase(true);
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2();
     await I.cyaPage();
-    
+
     await I.seeEndState(endState);
-    
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
 
-        console.log('url is...', url);
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
-    
+
     endState = 'Intestacy grant created';
 
     await I.chooseNextStep(nextStepName);
@@ -59,7 +59,6 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
-    
     nextStepName = 'Intestacy details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
@@ -72,7 +71,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, 'MaritalStatus', intestacyDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', intestacyDetailsConfig);
-    
+
     nextStepName = 'Complete application';
     endState = 'Case created';
     await I.chooseNextStep(nextStepName);

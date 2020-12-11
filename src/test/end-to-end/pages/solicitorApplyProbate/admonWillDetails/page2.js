@@ -1,6 +1,5 @@
 'use strict';
 
-
 const admonWillDetailsConfig = require('./admonWillDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
@@ -16,11 +15,12 @@ module.exports = async function (updateAddressManually) {
     await I.click(`#solsLifeInterest-${admonWillDetailsConfig.optionNo}`);
 
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
-    await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);    
+    await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
 
     if (updateAddressManually) {
         await I.click(admonWillDetailsConfig.UKpostcodeLink);
     }
+
     await I.fillField('#primaryApplicantAddress_AddressLine1', admonWillDetailsConfig.address_line1);
     await I.fillField('#primaryApplicantAddress_AddressLine2', admonWillDetailsConfig.address_line2);
     await I.fillField('#primaryApplicantAddress_AddressLine3', admonWillDetailsConfig.address_line3);

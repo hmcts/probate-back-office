@@ -5,7 +5,6 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
-const grantOfProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
 const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
@@ -27,24 +26,25 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase(true);
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorExecutor, isSolicitorMainApplicant);
     await I.cyaPage();
-    
+
     await I.seeEndState(endState);
-    
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
 
-        console.log('url is...', url);
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
-    
+
     endState = 'Grant of probate created';
 
     await I.chooseNextStep(nextStepName);
@@ -59,7 +59,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
-    
+
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
@@ -72,7 +72,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
-    
+
     nextStepName = 'Complete application';
     endState = 'Case created';
     await I.chooseNextStep(nextStepName);

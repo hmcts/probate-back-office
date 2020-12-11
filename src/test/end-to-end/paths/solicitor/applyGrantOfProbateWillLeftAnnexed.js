@@ -27,24 +27,25 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase(true);
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2();
     await I.cyaPage();
-    
+
     await I.seeEndState(endState);
-    
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
 
-        console.log('url is...', url);
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
-    
+
     endState = 'Admon will grant created';
 
     await I.chooseNextStep(nextStepName);
@@ -59,7 +60,6 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
-    
     nextStepName = 'Admon will details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
@@ -72,7 +72,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);
-    
+
     nextStepName = 'Complete application';
     endState = 'Case created';
     await I.chooseNextStep(nextStepName);

@@ -5,8 +5,6 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
-const grantOfProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
-const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
@@ -25,24 +23,25 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase(true);
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorExecutor, isSolicitorMainApplicant);
     await I.cyaPage();
-    
+
     await I.seeEndState(endState);
-    
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
 
-        console.log('url is...', url);
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
-    
+
     endState = 'Admon will grant created';
 
     await I.chooseNextStep(nextStepName);
@@ -57,7 +56,6 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
-    
     nextStepName = 'Admon will details';
     endState = 'Stopped';
     await I.chooseNextStep(nextStepName);
