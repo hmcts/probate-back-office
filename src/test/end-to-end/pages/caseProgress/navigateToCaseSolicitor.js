@@ -9,5 +9,4 @@ module.exports = async function (caseRef, optTextToCheck) {
         await I.waitForElement({xpath: `//select/option[text()="${optTextToCheck}"]`});
     }
     await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef, '-', '')}`);
-    await I.waitForNavigationToComplete();
 };

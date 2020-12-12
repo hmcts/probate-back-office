@@ -17,23 +17,24 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end",
+            "name": "Mocha test CW end-end full functional",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e",
+                "test:fullfunctional-cw",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },
+        },        
         {
-            "name": "Mocha test end-end grantOfProbatePath",
+            "name": "Mocha test end-end",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-grantOfProbatePath",
+                "test-e2e",
             ],
+            "runtimeExecutable": "yarn",
             "skipFiles": [
                 "<node_internals>/**"
             ],

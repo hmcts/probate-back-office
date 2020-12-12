@@ -12,15 +12,14 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
+    // just a small delay - occasionally we get issues at I.grabNumberOfVisibleElements(btnLocator) or await I.waitForEnabled(commonConfig.continueButton) below.
+    // Only necessary where we have no auto delay (local dev).
+    await I.wait(0.25);
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     if (numOfElements > 0) {
         await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
         await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
-    } else {
-        // just a small delay - occasionally we get issues at await I.waitForEnabled(commonConfig.continueButton) below.
-        // Only necessary where we have no auto delay (local dev).
-        await I.wait(0.25);
     }
 
     // -1 to ignore previous button at bottom of page
