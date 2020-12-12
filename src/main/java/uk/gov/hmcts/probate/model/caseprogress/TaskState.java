@@ -34,5 +34,9 @@ public enum TaskState {
         public static final String  IN_PROGRESS_URL = format(IMG_URL_TEMPLATE, "in-progress.png");
         // display for current single-state tasklist state
         public static final String  NOT_STARTED_URL = format(IMG_URL_TEMPLATE, "not-started.png");
+
+        private TaskStateImageUrls() {
+            throw new IllegalStateException("Utility class");
+        }
     }
 }
