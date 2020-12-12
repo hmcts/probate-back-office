@@ -1,0 +1,55 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "Which Inheritance Tax form was filled in?",
+    "Enter the gross value of the estate",
+    "Enter the net value of the estate",
+    "Did the deceased leave a will?",
+    "Did the deceased have assets in any other names?",
+    "Please state the grounds for making this application and any information in support:"
+  ],
+  "dataKeys": [
+    "page2_solsIHTFormValue",
+    "page2_ihtGrossValueDisplay",
+    "page2_ihtNetValueDisplay",
+    "optionNo",
+    "page2_applicationGrounds"
+  ],
+  "WillLeft": {
+    "fields": [
+      "Does the will dispose of the estate in England and Wales (or if will is in English, does it appoint an executor), or is the deceased a British National?",
+      "Is the will in English?",
+      "Does the will appoint an executor?",
+      "What kind of application are you making?"
+    ],
+    "dataKeys": [
+      "page3_willLeftDisplay",
+      "optionYes"
+    ]
+  },
+  "WillLeftAnnexed": {
+    "fields": [
+      "What kind of application are you making?"
+    ],
+    "dataKeys": [
+      "page3_willLeftAnnexedDisplay",
+      "optionYes"
+    ]
+  },
+  "NoWill": {
+    "fields": [
+      "What kind of application are you making?"
+    ],
+    "dataKeys": [
+      "page3_noWillDisplay"
+    ]
+  },
+  "MaritalStatus": {
+    "fields": [
+      "What was the marital status of the deceased?"
+    ],
+    "dataKeys": [
+      "page1_maritalstatus"
+    ]
+  }
+}
