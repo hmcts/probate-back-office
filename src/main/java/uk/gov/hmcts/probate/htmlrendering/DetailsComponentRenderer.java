@@ -1,6 +1,6 @@
-package uk.gov.hmcts.probate.htmlRendering;
+package uk.gov.hmcts.probate.htmlrendering;
 
-import uk.gov.hmcts.probate.model.htmlTemplate.DetailsComponentHtmlTemplate;
+import uk.gov.hmcts.probate.model.htmltemplate.DetailsComponentHtmlTemplate;
 
 import static java.lang.String.format;
 

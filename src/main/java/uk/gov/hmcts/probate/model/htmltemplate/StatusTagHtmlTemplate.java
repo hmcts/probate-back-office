@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.htmlTemplate;
+package uk.gov.hmcts.probate.model.htmltemplate;
 
 public class StatusTagHtmlTemplate {
     public static final String STATUS_TAG = "<p><img align=\"right\" width=\"92px\" height=\"25px\" src=\"<imgSrc/>\" alt=\"<imgAlt/>\" title=\"<imgTitle/>\" /></p>\n";

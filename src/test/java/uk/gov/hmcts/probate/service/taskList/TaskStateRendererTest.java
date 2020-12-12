@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.taskList;
 
 import org.junit.Test;
-import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
-import uk.gov.hmcts.probate.model.caseProgress.TaskState;
+import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
+import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.service.tasklist.TaskStateRenderer;
 
 import java.time.LocalDate;

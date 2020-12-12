@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.caseProgress;
+package uk.gov.hmcts.probate.model.caseprogress;
 
 import uk.gov.hmcts.probate.model.StateConstants;
 

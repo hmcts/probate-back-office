@@ -1,6 +1,4 @@
-package uk.gov.hmcts.probate.model.caseProgress;
-
-import uk.gov.hmcts.probate.model.UrlConstants;
+package uk.gov.hmcts.probate.model.caseprogress;
 
 import static java.lang.String.format;
 

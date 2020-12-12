@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import uk.gov.hmcts.probate.htmlRendering.DetailsComponentRenderer;
-import uk.gov.hmcts.probate.htmlRendering.GridRenderer;
-import uk.gov.hmcts.probate.htmlRendering.LinkRenderer;
-import uk.gov.hmcts.probate.model.caseProgress.TaskListState;
-import uk.gov.hmcts.probate.model.caseProgress.TaskState;
-import uk.gov.hmcts.probate.model.htmlTemplate.SendDocumentsDetailsHtmlTemplate;
-import uk.gov.hmcts.probate.model.htmlTemplate.StateChangeDateHtmlTemplate;
-import uk.gov.hmcts.probate.model.htmlTemplate.StatusTagHtmlTemplate;
+import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
+import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
+import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
+import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
+import uk.gov.hmcts.probate.model.caseprogress.TaskState;
+import uk.gov.hmcts.probate.model.htmltemplate.SendDocumentsDetailsHtmlTemplate;
+import uk.gov.hmcts.probate.model.htmltemplate.StateChangeDateHtmlTemplate;
+import uk.gov.hmcts.probate.model.htmltemplate.StatusTagHtmlTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

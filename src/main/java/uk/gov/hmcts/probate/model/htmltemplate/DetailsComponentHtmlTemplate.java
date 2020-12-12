@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.htmlTemplate;
+package uk.gov.hmcts.probate.model.htmltemplate;
 
 public class DetailsComponentHtmlTemplate {
     public static final String DETAILS_TEMPLATE = "<details class=\"govuk-details\" data-module=\"govuk-details\">\n" +

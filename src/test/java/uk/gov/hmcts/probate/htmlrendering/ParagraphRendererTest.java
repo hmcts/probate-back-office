@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.htmlRendering;
+package uk.gov.hmcts.probate.htmlrendering;
 
 import org.junit.Test;
 

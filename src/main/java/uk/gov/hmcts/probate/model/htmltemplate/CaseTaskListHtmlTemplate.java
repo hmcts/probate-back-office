@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.htmlTemplate;
+package uk.gov.hmcts.probate.model.htmltemplate;
 
 public class CaseTaskListHtmlTemplate {
     private static final String SEPARATOR = "<gridRowSeparator/>\n";

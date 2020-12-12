@@ -1,9 +1,9 @@
-package uk.gov.hmcts.probate.model.caseProgress;
+package uk.gov.hmcts.probate.model.caseprogress;
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.StateConstants;
 
 import static org.junit.Assert.assertEquals;
-import static uk.gov.hmcts.probate.model.caseProgress.TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS;
+import static uk.gov.hmcts.probate.model.caseprogress.TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS;
 
 public class TaskListConstantsTest {
     @Test

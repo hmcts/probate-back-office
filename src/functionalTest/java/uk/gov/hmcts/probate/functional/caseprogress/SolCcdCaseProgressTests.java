@@ -5,11 +5,10 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.model.caseProgress.TaskState;
+import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.htmlTemplate;
+package uk.gov.hmcts.probate.model.htmltemplate;
 
 public class CaseEscalatedToRegistrarHtmlTemplate {
     public static final String BASE_TEMPLATE = "<p>The case was escalated on <escalationDate>.</p>\n" +

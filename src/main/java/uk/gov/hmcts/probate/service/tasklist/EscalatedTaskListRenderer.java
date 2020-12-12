@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import uk.gov.hmcts.probate.htmlRendering.ParagraphRenderer;
+import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.htmlTemplate.CaseEscalatedToRegistrarHtmlTemplate;
+import uk.gov.hmcts.probate.model.htmltemplate.CaseEscalatedToRegistrarHtmlTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
