@@ -8,5 +8,7 @@ module.exports = async function () {
     const I = this;
 
     await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-    await I.waitForNavigationToComplete(newCaseConfig.locator);
+
+    // eslint-disable-next-line
+    await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator);
 };

@@ -12,7 +12,8 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
     await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
-    await I.click(tabConfigFile.tabName);
+
+    await I.clickTab(tabConfigFile.tabName);
 
     if (tabConfigFile.waitForText) {
         await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
@@ -24,8 +25,11 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         // await I.see(tabConfigFile.fields[i]);
     }
 
+    const dataConfigKeys = tabConfigFile.dataKeys;
     // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
     if (tabConfigFile.tabName === 'Event History') {
+        I.see(nextStep);
+        I.see(endState);
 
         let eventSummaryPrefix = nextStep;
 
@@ -33,8 +37,11 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         await I.waitForText(nextStep, testConfig.TestTimeToWaitForText || 60);
         await I.waitForText(endState, testConfig.TestTimeToWaitForText || 60);
-        await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.TestTimeToWaitForText || 60);
-        await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.TestTimeToWaitForText || 60);
+
+        if (dataConfigKeys) {
+            await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.TestTimeToWaitForText || 60);
+        }
 
     } else {
 
