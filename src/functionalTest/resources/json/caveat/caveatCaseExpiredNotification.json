@@ -64,51 +64,51 @@
       ]
     },
     "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "caveatorEmailAddress": "PUBLIC",
-      "expiryDate": "PUBLIC",
-      "messageContent": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "Alex@email.com",
+      "solsSolicitorPhoneNumber": "101010101010",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "applicationGrounds": "PUBLIC",
+      "caveatorEmailAddress": "PUBLIC",
+      "expiryDate": "2020-01-01",
+      "messageContent": "messageContent",
+      "deceasedAnyOtherNames": "deceasedAnyOtherNames",
+      "caveatorForenames": "caveatorForenames",
+      "deceasedForenames": "deceasedForenames",
+      "caveatorSurname": "caveatorSurname",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicationGrounds": "DIED",
       "ukEstate": {
         "classification": "PUBLIC",
         "value": [
           {
             "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
             "value": {
-              "item": "PUBLIC",
-              "value": "PUBLIC"
+              "item": "amount",
+              "value": "333.00"
             }
           }
         ]

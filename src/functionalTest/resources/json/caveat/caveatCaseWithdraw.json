@@ -62,40 +62,40 @@
       ]
     },
     "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "deceasedSurname": "applicationGrounds",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
       "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "caveatorEmailAddress": "PUBLIC",
-      "expiryDate": "PUBLIC",
-      "messageContent": "PUBLIC",
+      "caveatorEmailAddress": "caveatorEmailAddress@email.com",
+      "expiryDate": "01-01-2010",
+      "messageContent": "messageContent",
       "deceasedAnyOtherNames": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
+      "caveatorForenames": "caveatorForenames",
+      "deceasedForenames": "deceasedForenames",
+      "caveatorSurname": "caveatorSurname",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
       "applicationGrounds": "PUBLIC",
@@ -118,51 +118,51 @@
     "delete_draft_response_status_code": null,
     "delete_draft_response_status": null,
     "security_classifications": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
       "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "caveatorEmailAddress": "PUBLIC",
-      "expiryDate": "PUBLIC",
-      "messageContent": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
+      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "expiryDate": "2020-01-20",
+      "messageContent": "messageContent",
+      "deceasedAnyOtherNames": "",
+      "caveatorForenames": "caveatorForenames",
+      "deceasedForenames": "deceasedForenames",
+      "caveatorSurname": "caveatorSurname",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "applicationGrounds": "PUBLIC",
+      "applicationGrounds": "applicationGrounds",
       "ukEstate": {
         "classification": "PUBLIC",
         "value": [
           {
             "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
             "value": {
-              "item": "PUBLIC",
-              "value": "PUBLIC"
+              "item": "item",
+              "value": "666.00"
             }
           }
         ]

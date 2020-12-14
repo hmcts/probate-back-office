@@ -52,46 +52,46 @@
       "solsFeeAccountNumber": "12345"
     },
     "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "Alex@email.com",
+      "solsSolicitorPhoneNumber": "101010101010",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsSolicitorAppReference": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "deceasedFullAliasNameList": "PUBLIC",
+      "solsSolicitorAppReference": "solsSolicitorAppReference",
+      "caveatorForenames": "caveatorForenames",
+      "caveatorSurname": "caveatorSurname",
+      "deceasedForenames": "deceasedForenames",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAnyOtherNames": "",
+      "deceasedFullAliasNameList": "",
       "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsPaymentMethods": "PUBLIC",
-      "solsFeeAccountNumber": "PUBLIC"
+      "solsPaymentMethods": "",
+      "solsFeeAccountNumber": ""
     },
     "after_submit_callback_response": null,
     "callback_response_status_code": null,
@@ -99,46 +99,46 @@
     "delete_draft_response_status_code": null,
     "delete_draft_response_status": null,
     "security_classifications": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "test@test.com",
+      "solsSolicitorPhoneNumber": "011-9991919191",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "Ad 1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsSolicitorAppReference": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "deceasedFullAliasNameList": "PUBLIC",
+      "solsSolicitorAppReference": "Ref123",
+      "caveatorForenames": "caveatorForenames",
+      "caveatorSurname": "caveatorSurname",
+      "deceasedForenames": "deceasedForenames",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAnyOtherNames": "",
+      "deceasedFullAliasNameList": "",
       "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsPaymentMethods": "PUBLIC",
-      "solsFeeAccountNumber": "PUBLIC"
+      "solsPaymentMethods": "",
+      "solsFeeAccountNumber": ""
     }
   }
 }

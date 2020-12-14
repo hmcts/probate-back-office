@@ -33,24 +33,24 @@
       "solsSolicitorAppReference": "REF"
     },
     "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "leeds",
+      "solsSolicitorFirmName": "Alex  & Co",
+      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "solsSolicitorPhoneNumber": "0044-2222222",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsSolicitorAppReference": "PUBLIC"
+      "solsSolicitorAppReference": "Ref"
     },
     "after_submit_callback_response": null,
     "callback_response_status_code": null,
@@ -58,24 +58,24 @@
     "delete_draft_response_status_code": null,
     "delete_draft_response_status": null,
     "security_classifications": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "solsSolicitorPhoneNumber": "1234",
       "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
         }
       },
-      "solsSolicitorAppReference": "PUBLIC"
+      "solsSolicitorAppReference": "AppRef"
     }
   }
 }
