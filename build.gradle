@@ -125,14 +125,14 @@ sourceSets {
     }
     resources.srcDir file('src/caseCreator/resources')
   }
-    contractTest {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/contractTest/java')
-        }
-        resources.srcDir file('src/contractTest/resources')
+  contractTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/contractTest/java')
     }
+    resources.srcDir file('src/contractTest/resources')
+  }
 }
 
 task smoke(type: Test) {
@@ -193,11 +193,12 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '1.1.2.2_TA-98',
+        probateCommonsVersion           : '1.1.0.2',
         ccdClient                       : '4.7.3',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.0'
+        pact_version                    : '4.1.0',
+        probatePactCommonsVersion       : '1.0.0',
 ]
 
 jacocoTestReport {
@@ -262,7 +263,7 @@ dependencies {
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
-
+  
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
   
@@ -335,6 +336,8 @@ dependencies {
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  contractTestCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
