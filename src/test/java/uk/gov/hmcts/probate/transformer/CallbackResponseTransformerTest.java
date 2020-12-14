@@ -39,7 +39,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
@@ -173,9 +175,9 @@ public class CallbackResponseTransformerTest {
     private static final DynamicList PBA_NUMBERS = DynamicList.builder().listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
     private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final BigDecimal feeForNonUkCopies = new BigDecimal(11);
-    private static final BigDecimal feeForUkCopies = new BigDecimal(22);
-    private static final BigDecimal applicationFee = new BigDecimal(33);
+    private static final FeeResponse feeForNonUkCopies = FeeResponse.builder().feeAmount(new BigDecimal(11)).build();
+    private static final FeeResponse feeForUkCopies = FeeResponse.builder().feeAmount(new BigDecimal(22)).build();
+    private static final FeeResponse applicationFee = FeeResponse.builder().feeAmount(new BigDecimal(33)).build();
     private static final BigDecimal totalFee = new BigDecimal(66);
     private static final String DOC_BINARY_URL = "docBinaryUrl";
     private static final String DOC_URL = "docUrl";
@@ -404,7 +406,7 @@ public class CallbackResponseTransformerTest {
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
 
     @Mock
-    private FeeServiceResponse feeServiceResponseMock;
+    private FeesResponse feesResponse;
 
     @Mock
     private DocumentLink documentLinkMock;
@@ -668,6 +670,13 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeForNonUkCopies);
+        when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeForUkCopies);
+        when(feesResponse.getApplicationFeeResponse()).thenReturn(applicationFee);
+        when(feesResponse.getTotalAmount()).thenReturn(totalFee);
+
+
     }
 
     @Test
@@ -748,12 +757,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
             paymentResponseMock);
 
         assertCommon(callbackResponse);
@@ -770,7 +774,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
             paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
@@ -782,7 +786,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
             paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
@@ -794,12 +798,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock,
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
             paymentResponseMock);
 
         assertCommon(callbackResponse);

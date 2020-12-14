@@ -76,10 +76,6 @@ public class NextStepsController {
             }
 
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
-            FeeServiceResponse feeServiceResponse = feeService.getTotalFee(
-                    ccdData.getIht().getNetValueInPounds(),
-                    ccdData.getFee().getExtraCopiesOfGrant(),
-                    ccdData.getFee().getOutsideUKGrantCopies());
 
             FeesResponse feesResponse = feeService.getAllFeesData(
                     ccdData.getIht().getNetValueInPounds(),
@@ -88,7 +84,7 @@ public class NextStepsController {
             CreditAccountPayment creditAccountPayment =
                 creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
             PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse, paymentResponse);
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse, paymentResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);

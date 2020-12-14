@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
@@ -367,12 +368,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse,
+    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                                           PaymentResponse paymentResponse) {
-        String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
-        String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
-        String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
-        String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
+        String feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
+        String feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+        String applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
+        String totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)

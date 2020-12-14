@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 
 import java.io.IOException;
@@ -110,24 +111,24 @@ public class FeesRegisterConsumerTest {
     @PactVerification(fragment = "createApplicationFeeFragment")
     public void verifyApplicationFeeServicePact() throws IOException, JSONException {
 
-        BigDecimal result = feeService.getApplicationFee(new BigDecimal("250000.00"));
-        Assert.assertTrue(new BigDecimal("200").equals(result));
+        FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
+        Assert.assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
 
     }
 
     @Test
     @PactVerification(fragment = "createCopiesFeeFragment")
     public void verifyCopiesFeeServicePact() throws IOException, JSONException {
-        BigDecimal result = feeService.getCopiesFee(3L);
-        Assert.assertTrue(new BigDecimal("3.5").equals(result));
+        FeeResponse result = feeService.getCopiesFeeResponse(3L);
+        Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
 
     }
 
     @Test
     @PactVerification(fragment = "createCopiesNoFeeFragment")
     public void verifyCopiesNoFeeServicePact() throws IOException, JSONException {
-        BigDecimal result = feeService.getCopiesFee(0L);
-        Assert.assertTrue(new BigDecimal("0").equals(result));
+        FeeResponse result = feeService.getCopiesFeeResponse(0L);
+        Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
     }
 
 }

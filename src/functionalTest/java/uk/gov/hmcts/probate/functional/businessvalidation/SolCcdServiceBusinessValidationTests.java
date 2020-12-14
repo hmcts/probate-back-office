@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -372,14 +373,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestProbateSuccessForDefaultNext() {
+    public void verifyRequestProbateSuccessForDefaultNext(){
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbate.json", DEFAULT_SOLS_NEXT_STEP);
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
-        HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");
 
         assertEquals(willExist,"Yes");
+        assertNull(errors);
+    }
+
+    @Ignore
+    @Test()
+    public void verifyRequestProbateSuccessForDefaultingPBAsOnNextSteps() {
+        ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbate.json", DEFAULT_SOLS_NEXT_STEP);
+        JsonPath jsonPath = JsonPath.from(body.asString());
+        String errors = jsonPath.get("data.errors");
+        HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");
+
         assertNull(errors);
         assertNotNull(solsPBANumbers);
         List<HashMap> listItems = ((List<HashMap>)solsPBANumbers.get("list_items"));

@@ -31,29 +31,6 @@ public class FeeService {
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
 
-    public BigDecimal getApplicationFee(BigDecimal amountInPound) {
-        FeeResponse applicationFeeResponse = getApplicationFeeResponse(amountInPound);
-        return applicationFeeResponse.getFeeAmount();
-      }
-
-    public BigDecimal getCopiesFee(Long copies) {
-        FeeResponse copiesFeeResponse = getCopiesFeeResponse(copies);
-        return copiesFeeResponse.getFeeAmount();
-    }
-
-    public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
-        BigDecimal applicationFee = getApplicationFee(amountInPounds);
-        BigDecimal ukCopiesFee = getCopiesFee(ukCopies);
-        BigDecimal nonUkCopiesFee = getCopiesFee(nonUkCopies);
-
-        return FeeServiceResponse.builder()
-            .applicationFee(applicationFee)
-            .feeForUkCopies(ukCopiesFee)
-            .feeForNonUkCopies(nonUkCopiesFee)
-            .total(applicationFee.add(ukCopiesFee).add(nonUkCopiesFee))
-            .build();
-    }
-
     public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
         FeeResponse applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
         FeeResponse ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);

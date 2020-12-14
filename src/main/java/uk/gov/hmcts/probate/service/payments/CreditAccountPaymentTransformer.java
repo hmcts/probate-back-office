@@ -19,7 +19,7 @@ public class CreditAccountPaymentTransformer {
             .accountNumber(caseDetails.getData().getSolsPBANumber().getValue().getCode())
             .fees(paymentFees)
             //.caseReference()
-            .amount(getTotalAmount(paymentFees))
+            //.amount(getTotalAmount(paymentFees))
             .ccdCaseNumber(caseDetails.getId().toString())
             .currency("GBP")
             .description("desc")
@@ -30,14 +30,6 @@ public class CreditAccountPaymentTransformer {
             .build();
         
         return creditAccountPayment;
-    }
-
-    private BigDecimal getTotalAmount(List<PaymentFee> paymentFees) {
-        BigDecimal total = BigDecimal.ZERO;
-        for (PaymentFee paymentFee: paymentFees){
-            total = total.add(paymentFee.getFee_amount());
-        }
-        return total;
     }
 
     private List<PaymentFee> buildFees(FeesResponse feesResponse) {

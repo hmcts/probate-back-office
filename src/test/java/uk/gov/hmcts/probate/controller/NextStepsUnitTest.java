@@ -75,8 +75,6 @@ public class NextStepsUnitTest {
     @Mock
     private FeesResponse feesResponseMock;
     @Mock
-    private FeeServiceResponse feeServiceResponseMock;
-    @Mock
     private CallbackResponse callbackResponseMock;
     @Mock
     private StateChangeService stateChangeServiceMock;
@@ -105,7 +103,7 @@ public class NextStepsUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
         
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock)).thenReturn(paymentResponseMock);
@@ -117,10 +115,10 @@ public class NextStepsUnitTest {
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
-        when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feeServiceResponseMock);
+        //when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);

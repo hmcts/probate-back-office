@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 
 import java.math.BigDecimal;
 
@@ -55,36 +56,36 @@ public class FeeServiceTest {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
-        BigDecimal issueFee = feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
 
-        assertEquals(BigDecimal.ONE, issueFee);
+        assertEquals(BigDecimal.ONE, issueFee.getFeeAmount());
     }
 
     @Test
     public void issueFeeShouldReturnZeroValue() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
 
-        BigDecimal issueFee = feeService.getApplicationFee(BigDecimal.valueOf(1000));
+        FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(1000));
 
-        assertEquals(BigDecimal.ZERO, issueFee);
+        assertEquals(BigDecimal.ZERO, issueFee.getFeeAmount());
     }
 
     @Test
     public void copiesFeeShouldReturnZeroValue() {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
-        BigDecimal copiesFee = feeService.getCopiesFee(5L);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(5L);
 
-        assertEquals(BigDecimal.ZERO, copiesFee);
+        assertEquals(BigDecimal.ZERO, copiesFee.getFeeAmount());
     }
 
     @Test
     public void copiesFeeEqualsZero() {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
-        BigDecimal copiesFee = feeService.getCopiesFee(null);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(null);
 
-        assertEquals(BigDecimal.ZERO, copiesFee);
+        assertEquals(BigDecimal.ZERO, copiesFee.getFeeAmount());
     }
 
     @Test
@@ -97,9 +98,9 @@ public class FeeServiceTest {
                 eq(FeeResponse.class))).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
-        BigDecimal copiesFee = feeService.getCopiesFee(1L);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(1L);
 
-        assertEquals(BigDecimal.ONE, copiesFee);
+        assertEquals(BigDecimal.ONE, copiesFee.getFeeAmount());
     }
 
     @Test
@@ -107,16 +108,16 @@ public class FeeServiceTest {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
 
-        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+        FeesResponse feesResponse = feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feesResponse.getApplicationFeeResponse().getFeeAmount());
+        assertEquals(BigDecimal.ONE, feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+        assertEquals(BigDecimal.ONE, feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
     }
 
     @Test(expected = ClientDataException.class)
     public void testExceptionIfRestTemplateReturnsNull() {
         when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(null);
-        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
     }
 
     @Test(expected = ClientDataException.class)
@@ -125,7 +126,7 @@ public class FeeServiceTest {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
         when(responseEntity.getBody()).thenReturn(null);
-        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
     }
 
     @Test(expected = ClientDataException.class)
@@ -139,6 +140,6 @@ public class FeeServiceTest {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getBody()).thenReturn(null);
-        feeService.getCopiesFee(1L);
+        feeService.getCopiesFeeResponse(1L);
     }
 }
