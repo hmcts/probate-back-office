@@ -222,9 +222,6 @@ public class FunctionalTestUtils {
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
-
-     //   System.out.println( " StartForCaseworker ::: " + startResponse.prettyPrint() ) ;
-
         String token = startResponse.getBody().jsonPath().get("token");
         String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
@@ -233,10 +230,7 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseCreateJson)
             .when().post(submitForCaseworkerUrl).andReturn();
-       // System.out.println( " SubmitForCaseworker ::: " + submitResponse.prettyPrint() ) ;
-
         return submitResponse.getBody().asString();
-
     }
 
     public String findCaseAsCaseworker(String caseId) {
@@ -246,9 +240,6 @@ public class FunctionalTestUtils {
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdFindCaseUrl).andReturn();
-
-        System.out.println( " ReadForCaseWorker ::: " + startResponse.prettyPrint() ) ;
-
         return startResponse.getBody().asString();
     }
 
@@ -265,9 +256,6 @@ public class FunctionalTestUtils {
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
-
-      //  System.out.println( "~~~~~~~~~~~~~~~~~::::: StartEventForCaseWorker :::: " + startResponse.prettyPrint() ) ;
-
         return startResponse.getBody().jsonPath().get("token");
     }
 
@@ -279,9 +267,6 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseJson)
             .when().post(submitForCaseworkerUrl).andReturn();
-
-      //  System.out.println( "~~~~~~~~~~~~~~~~~ SubmitEventForCaseWorker ::::::" + submitResponse.prettyPrint() ) ;
-
         return submitResponse.getBody().asString();
     }
 
