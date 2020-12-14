@@ -1,0 +1,39 @@
+{
+  "page1_waitForText": "Is the solicitor the main applicant?",
+
+  "page2_waitForText": "About the executors",
+  "page2_primaryApplicantFirstName": "E2E Primary Applicant Firstname",
+  "page2_primaryApplicantSurname": "E2E Primary Applicant Surname",
+  "page2_primaryApplicantWillName": "E2E Will full name",
+
+  "page2_waitForAdditionalExecutor": "Additional executor",
+  "page2_executorFirstName": "E2E Executor Firstname",
+  "page2_executorSurname": "E2E Executor Surname",
+  "page2_executorAliasName": "E2E Executor Alias name",
+  "page2_executorPostcode": "SL1 1GF",
+  "page2_executorAddress": "Flat 1, Skyline 292-298, High Street, Slough",
+
+  "page2_executorAddress_line1": "Flat 1",
+  "page2_executorAddress_line2": "Skyline 292-298",
+  "page2_executorAddress_line3": "High Street",
+  "page2_executorAddress_town": "Slough",
+  "page2_executorAddress_country": "United Kingdom",
+
+  "page3_waitForText":"Notes for this application",
+  "page3_applicationNotes": "Application notes in grant of probate details",
+
+  "page4_waitForText": "",
+
+  "optionYes": "Yes",
+  "optionNo": "No",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}
