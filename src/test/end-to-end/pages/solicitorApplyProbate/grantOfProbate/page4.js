@@ -1,15 +1,12 @@
 'use strict';
 
 const grantOfProbateConfig = require('./grantOfProbate');
-const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#dispenseWithNotice');
-
-    await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
-    await I.selectOption('#titleAndClearingType', grantOfProbateConfig.page2_titleAndClearingType);
+    await I.waitForElement('#solsAdditionalInfo');
+    await I.fillField('#solsAdditionalInfo', grantOfProbateConfig.page3_applicationNotes);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

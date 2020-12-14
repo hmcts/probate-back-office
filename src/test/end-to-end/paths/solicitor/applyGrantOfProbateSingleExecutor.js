@@ -64,8 +64,9 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2(isSolicitorMainApplicant);
-    await I.grantOfProbatePage3();
+    await I.grantOfProbatePage2();
+    await I.grantOfProbatePage3(isSolicitorMainApplicant);
+    await I.grantOfProbatePage4();
     await I.cyaPage();
 
     await I.seeEndState(endState);
