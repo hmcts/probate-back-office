@@ -20,6 +20,7 @@ public class ResponseCaseDataParentTest {
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
+            .dispenseWithNotice("Yes").titleAndClearingType("TCTTrustCorpResWithApp")
             .build();
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
@@ -35,6 +36,9 @@ public class ResponseCaseDataParentTest {
         assertEquals("registryAddress", responseCaseDataParent.getRegistryAddress());
         assertEquals("registryEmailAddress", responseCaseDataParent.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", responseCaseDataParent.getRegistrySequenceNumber());
+        assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
+        assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
+
     }
 
 

@@ -500,6 +500,19 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("1", registrySequenceNumber);
     }
 
+    @Test
+    public void shouldTransformCaseWithTrustCorpAttributes(){
+        String response = transformCase("success.TrustCorpAttribtesSaved.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
+        String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
+
+        assertEquals("Yes", dispenseWithNotice);
+        assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
+
+
+    }
 
     private String transformCase(String jsonFileName, String path) {
 
