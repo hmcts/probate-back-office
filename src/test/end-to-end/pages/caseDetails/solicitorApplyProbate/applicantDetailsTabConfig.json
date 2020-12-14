@@ -1,0 +1,123 @@
+{
+  "tabName": "Applicant details",
+  "fields": [
+    "Name of your firm",
+    "Your reference for this application",
+    "Building and Street",
+    "Address Line 2",
+    "Address Line 3",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country",
+    "Solicitor email address",
+    "Is the solicitor named in the will as an executor?",
+    "Solicitor phone number"
+  ],
+  "dataKeys": [
+    "page2_firm_name",
+    "page2_app_ref",
+    "page2_sol_email",
+    "page2_phone_num",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode"
+  ],
+  "ApplicantAndAdditionalExecutorInfo": {
+    "fields": [
+      "First name(s)",
+      "Last name(s)",
+      "Name of your firm",
+      "Enter their full name as it appears on the will",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country",
+      "Are there any more executors?",
+      "Additional executor",
+      "Additional executor 1",
+      "Is this name different to how they are named on the will?",
+      "Enter their full name as it appears on the will",
+      "Are they applying?"
+    ],
+    "dataKeys": [
+      "page2_primaryApplicantFirstName",
+      "page2_primaryApplicantSurname",
+      "page2_primaryApplicantWillName",
+      "page2_executorFirstName",
+      "page2_executorSurname",
+      "page2_executorAliasName",
+      "page2_executorPostcode",
+      "page2_executorAddress_line1",
+      "page2_executorAddress_line2",
+      "page2_executorAddress_line3",
+      "page2_executorAddress_town",
+      "page2_executorAddress_country"
+    ]
+  },
+  "SolicitorMainApplicantAndExecutor" : {
+    "fields": [
+      "Is the solicitor the main applicant?",
+      "Is the solicitor applying?",
+      "First name(s)",
+      "Last name(s)",
+      "Applicant phone number",
+      "Applicant email address",
+      "Are there any more executors?",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country"
+    ],
+    "dataKeys": [
+      "page2_sol_forename",
+      "page2_sol_surname",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode",
+      "page2_phone_num"
+    ]
+  },
+  "Applicant": {
+    "fields": [
+      "First name(s)",
+      "Last name(s)",
+      "Applicant phone number",
+      "Applicant email address",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country"
+    ],
+    "dataKeys": [
+      "applicant_firstname",
+      "applicant_lastname",
+      "applicant_email",
+      "applicant_phone",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode"
+    ]
+  }
+}
