@@ -43,17 +43,17 @@ module.exports = async function (crud) {
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
         if (!testConfig.TestAutoDelayEnabled) {
-                // only valid for local dev where we need it to run as fast as poss to minimise
-                // lost dev time
-                await I.wait(0.25); 
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25); 
         }   
 
         await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorName');
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page3_executor1_name);
         if (!testConfig.TestAutoDelayEnabled) {
-                // only valid for local dev where we need it to run as fast as poss to minimise
-                // lost dev time
-                await I.wait(0.25); 
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25); 
         }          
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page3_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page3_name_difference);
@@ -64,9 +64,9 @@ module.exports = async function (crud) {
         await I.click(`#adopted-${createGrantOfProbateConfig.page3_adoptedYes}`);
         await I.click({type: 'button'}, '#adoptiveRelatives>div');
         if (!testConfig.TestAutoDelayEnabled) {
-                // only valid for local dev where we need it to run as fast as poss to minimise
-                // lost dev time
-                await I.wait(0.25); 
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25); 
         } 
         await I.waitForVisible('#adoptiveRelatives_0_name');
         await I.fillField('#adoptiveRelatives_0_name', createGrantOfProbateConfig.page3_adoptive_relative_name);
