@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.taskList;
 
 import org.junit.Test;
+import uk.gov.hmcts.probate.model.UrlConstants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.service.tasklist.TaskStateRenderer;
@@ -31,7 +32,9 @@ public class TaskStateRendererTest {
                 "<p><status-issueGrant/></p>\n";
 
         String expectedHtml = "<div>Add solicitor details</div>\n" +
-                "<div><a href=\"v2/case/9999/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1\" class=\"govuk-link\">Add deceased details</a></div>\n" +
+                "<div><a href=\"" +
+                UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999") +
+                "\" class=\"govuk-link\">Add deceased details</a></div>\n" +
                 "<div>Add application details</div>\n" +
                 "<div>Review and sign legal statement and submit application</div>\n" +
                 "<div>/div>\n" +

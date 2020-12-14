@@ -74,8 +74,8 @@ module.exports = async function (opts) {
     if (opts.checkSubmittedDate) {
         await I.see(`Submitted on ${moment().format('DD MMM yyyy')}`);
     }
-    if (opts.clickLink) {
-        await I.waitForNavigationToComplete('p.govuk-body-s a');
+    if (opts.goToNextStep) {
+        await I.waitForNavigationToComplete('button[type="submit"]');
     }
     if (opts.signOut) {
         await I.waitForNavigationToComplete('#sign-out');

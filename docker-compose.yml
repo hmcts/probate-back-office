@@ -530,6 +530,50 @@ services:
     ports:
       - 8081:8081
 
+  send-letter-service:
+    image: hmctspublic.azurecr.io/rpe/send-letter-service
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+      - SERVER_PORT=8485
+      - FTP_FINGERPRINT=fingerprint
+      - FTP_HOSTNAME=hostname
+      - FTP_PORT=22
+      - FTP_PRIVATE_KEY=private
+      - FTP_PUBLIC_KEY=public
+      - FTP_REPORTS_FOLDER=/reports/
+      - FTP_TARGET_FOLDER=/target/
+      - FTP_USER=user
+      - LETTER_TRACKING_DB_PASSWORD=${DB_PASSWORD}
+      - LETTER_TRACKING_DB_USER_NAME=${DB_USERNAME}
+      - S2S_URL=http://service-auth-provider-api:8080
+      - FLYWAY_URL=jdbc:postgresql://shared-database:5432/send_letter?sslmode=require
+      - FLYWAY_NOOP_STRATEGY=false
+      - SCHEDULING_ENABLED
+      - ENCRYPTION_ENABLED
+      - ENCRYPTION_PUBLIC_KEY=DUMMY
+      # these environment variables are used by java-logging library
+      - ROOT_APPENDER
+      - JSON_CONSOLE_PRETTY_PRINT
+      - ROOT_LOGGING_LEVEL
+      - REFORM_SERVICE_NAME
+      - REFORM_TEAM
+      - REFORM_ENVIRONMENT
+      - LETTER_TRACKING_DB_HOST=shared-database
+      - LETTER_TRACKING_DB_NAME=letter_tracking
+      - LETTER_TRACKING_DB_PORT=5432
+      - SMTP_HOST=false
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+    ports:
+      - 8485:8485
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+    links:
+      - shared-database
+      - service-auth-provider-api
+      -
 volumes:
   ccd-docker-azure-blob-data:
   esdata1:

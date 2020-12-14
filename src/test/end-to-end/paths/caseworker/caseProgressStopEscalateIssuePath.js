@@ -33,7 +33,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             numNotStarted: 1,
             linkText: 'Add deceased details',
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
-            clickLink: true});
+            goToNextStep: true});
 
         console.info('Deceased details');
         await I.caseProgressDeceasedDetails(caseProgressConfig);
@@ -47,7 +47,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             numNotStarted: 1,
             linkText: 'Add application details',
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
-            clickLink: true});
+            goToNextStep: true});
 
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
@@ -60,7 +60,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             numNotStarted: 1,
             linkText: 'Review and sign legal statement and submit application',
             linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
-            clickLink: true});
+            goToNextStep: true});
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
