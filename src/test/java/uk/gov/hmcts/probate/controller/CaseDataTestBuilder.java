@@ -116,7 +116,7 @@ public class CaseDataTestBuilder {
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
                 .ukEstate(UK_ESTATE)
-                .applicationGrounds(APPLICATION_GROUNDS)
+                // .applicationGrounds(APPLICATION_GROUNDS)  - commented for dtsb-904 as likely to be reinstated
                 .ihtNetValue(NET)
                 .ihtGrossValue(GROSS)
                 .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
