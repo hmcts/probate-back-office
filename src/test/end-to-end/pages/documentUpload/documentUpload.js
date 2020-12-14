@@ -11,11 +11,17 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.see(caseRef);
 
     await I.click({type: 'button'}, `${documentUploadConfig.id}>div`);
+    if (!testConfig.TestAutoDelayEnabled) {
+        // only valid for local dev where we need it to run as fast as poss to minimise
+        // lost dev time
+        await I.wait(0.25); 
+    }
 
     await I.fillField(`${documentUploadConfig.id}_0_Comment`, documentUploadConfig.comment);
     await I.selectOption(`${documentUploadConfig.id}_0_DocumentType`, documentUploadConfig.documentType);
     await I.attachFile(`${documentUploadConfig.id}_0_DocumentLink`, documentUploadConfig.fileToUploadUrl);
     await I.fillField(`${documentUploadConfig.id}_0_Comment`, documentUploadConfig.comment);
+
     await I.waitForValue({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
 
     await I.click({type: 'button'}, `${documentUploadConfig.id}>div`);

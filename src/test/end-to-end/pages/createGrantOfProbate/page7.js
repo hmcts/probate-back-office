@@ -12,9 +12,18 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
         await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page7_applyingAsAttorneyYes}`);
         await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName);
+        await I.waitForVisible({css: '#attorneyOnBehalfOfNameAndAddress_0_name'});
+        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_name'});
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25); 
+        }
+        await I.fillField({css: '#attorneyOnBehalfOfNameAndAddress_0_name'}, createGrantOfProbateConfig.page7_representativeOfName);
+        await I.waitForValue({css: '#attorneyOnBehalfOfNameAndAddress_0_name'}, createGrantOfProbateConfig.page7_representativeOfName)
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1'});
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
