@@ -1,0 +1,32 @@
+{
+    "tabName": "Deceased",
+    "fields": [
+      "Was the deceased domiciled in England or Wales at the time of their death?",
+      "What was their date of death?",
+      "What was their date of birth?",
+      "First name(s)",
+      "Last name(s)",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country"
+    ],
+    "dataKeys": [
+      "optionYes",
+      "page1_dateOfDeath_long",
+      "page1_dateOfBirth_long",
+      "page1_forenames",
+      "page1_surname",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode"
+    ]
+  }
+  
