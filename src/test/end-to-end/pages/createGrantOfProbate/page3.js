@@ -32,6 +32,9 @@ module.exports = async function (crud) {
         await I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
+        await I.wait(0.1); // needed in order to be able to switch off auto delay
+
+        await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorNameOnWill');
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page3_executor1_name);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page3_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page3_name_difference);
@@ -51,9 +54,9 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page3_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
         await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page3_executor0_alias_update);
-
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

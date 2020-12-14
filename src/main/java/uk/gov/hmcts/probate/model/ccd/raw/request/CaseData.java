@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -61,9 +64,11 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder
+@SuperBuilder
+@Jacksonized
+@EqualsAndHashCode(callSuper=true)
 @Data
-public class CaseData {
+public class CaseData extends CaseDataParent {
 
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
@@ -238,18 +243,13 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailDocsReceivedNotification;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailGrantIssuedNotification;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boSendToBulkPrint = YES;
 
     private final String boSendToBulkPrintRequested;
@@ -259,10 +259,13 @@ public class CaseData {
 
     private final DocumentLink statementOfTruthDocument;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
+    @Builder.Default
     private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
@@ -490,24 +493,19 @@ public class CaseData {
     private final String boCaseStopCaveatId;
 
     private final String boCaveatStopEmailNotificationRequested;
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boCaveatStopEmailNotification = getDefaultValueForCaveatStopEmailNotification();
+
+    private final String boCaveatStopEmailNotification;
 
     private final String boCaveatStopSendToBulkPrintRequested;
 
     private final String boEmailGrantReIssuedNotificationRequested;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantReissuedNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailGrantReissuedNotification;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boCaveatStopSendToBulkPrint = YES;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boGrantReissueSendToBulkPrint = YES;
 
     private final String boGrantReissueSendToBulkPrintRequested;
@@ -527,6 +525,7 @@ public class CaseData {
 
     private final String boEmailRequestInfoNotificationRequested;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
 
     private final Categories categories;
@@ -535,16 +534,14 @@ public class CaseData {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
+    private final String boEmailRequestInfoNotification;
 
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boRequestInfoSendToBulkPrint = YES;
 
     private final String boRequestInfoSendToBulkPrintRequested;
 
-    @Getter(lazy = true)
+    @Builder.Default
     private final String boAssembleLetterSendToBulkPrint = YES;
 
     private final String boAssembleLetterSendToBulkPrintRequested;
@@ -571,7 +568,6 @@ public class CaseData {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
-    private String registrySequenceNumber;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -742,9 +738,17 @@ public class CaseData {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
     }
 
+    public String getValueForEmailNotifications(String emailNotifications) {
+        return emailNotifications != null ? emailNotifications : getDefaultValueForEmailNotifications();
+    }
+
     public String getDefaultValueForEmailNotifications() {
         return (primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty())
                 && (solsSolicitorEmail == null || solsSolicitorEmail.isEmpty()) ? NO : YES;
+    }
+    
+    public String getValueForCaveatStopEmailNotification() {
+        return getBoCaveatStopEmailNotification() != null ? getBoCaveatStopEmailNotification() : getDefaultValueForCaveatStopEmailNotification();
     }
 
     public String getDefaultValueForCaveatStopEmailNotification() {
@@ -752,7 +756,23 @@ public class CaseData {
     }
 
     public boolean isDocsReceivedEmailNotificationRequested() {
-        return YES.equals(getBoEmailDocsReceivedNotification());
+        return YES.equals(getValueForEmailNotifications(getBoEmailDocsReceivedNotification()));
+    }
+
+    public boolean isGrantIssuedEmailNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailGrantIssuedNotification()));
+    }
+
+    public boolean isGrantReissuedEmailNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailGrantReissuedNotification()));
+    }
+
+    public boolean isBoEmailRequestInfoNotificationRequested() {
+        return YES.equals(getValueForEmailNotifications(getBoEmailRequestInfoNotification()));
+    }
+
+    public boolean isCaveatStopEmailNotificationRequested() {
+        return YES.equals(getValueForCaveatStopEmailNotification());
     }
 
     public boolean isSendForBulkPrintingRequested() {
@@ -763,28 +783,12 @@ public class CaseData {
         return YES.equals(getBoGrantReissueSendToBulkPrint());
     }
 
-    public boolean isGrantIssuedEmailNotificationRequested() {
-        return YES.equals(getBoEmailGrantIssuedNotification());
-    }
-
-    public boolean isGrantReissuedEmailNotificationRequested() {
-        return YES.equals(getBoEmailGrantReissuedNotification());
-    }
-
     public boolean isCaveatStopNotificationRequested() {
         return YES.equals(getBoCaveatStopNotification());
     }
 
-    public boolean isCaveatStopEmailNotificationRequested() {
-        return YES.equals(getBoCaveatStopEmailNotification());
-    }
-
     public boolean isCaveatStopSendToBulkPrintRequested() {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
-    }
-
-    public boolean isBoEmailRequestInfoNotificationRequested() {
-        return YES.equals(getBoEmailRequestInfoNotification());
     }
 
     public boolean isBoRequestInfoSendToBulkPrintRequested() {
@@ -803,7 +807,7 @@ public class CaseData {
         return YES.equals(getLanguagePreferenceWelsh());
     }
 
-    private String convertDate(LocalDate dateToConvert) {
+    public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
         }

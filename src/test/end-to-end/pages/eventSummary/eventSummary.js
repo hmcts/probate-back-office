@@ -16,6 +16,8 @@ module.exports = async function (caseRef, nextStepName) {
 
     eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 
+    await I.waitForElement('#field-trigger-summary');
+
     await I.fillField('#field-trigger-summary', eventSummaryPrefix + eventSummaryConfig.summary);
     await I.fillField('#field-trigger-description', eventSummaryPrefix + eventSummaryConfig.comment);
 
