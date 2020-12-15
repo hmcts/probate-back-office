@@ -2062,6 +2062,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorPhoneNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitorIsMainApplicant", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel1NoWill", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}, 
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel1WillLeft", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}, 
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}, 
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel3", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsOutsideUKGrantCopiesLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
