@@ -58,6 +58,12 @@ public class DocumentGeneratorServiceTest {
     private static final String WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME = "welshIntestacyGrantDraft.pdf";
     private static final String WELSH_INTESTACY_GRANT_FINAL_FILE_NAME = "welshIntestacyGrantFinal.pdf";
     private static final String DIGITAL_GRANT_FILE_NAME = "digitalGrantDraft.pdf";
+    private static final String WELSH_DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME = "welshDigitalGrantDraftReissue.pdf";
+    private static final String WELSH_INTESTACY_DRAFT_REISSUE_FILE_NAME = "welshIntestacyGrantDraftReissue.pdf";
+    private static final String WELSH_ADMON_WILL_DRAFT_REISSUE_FILE_NAME = "welshAdmonWillGrantDraftReissue.pdf";
+    private static final String WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME = "welshDigitalGrantFinalReissue.pdf";
+    private static final String WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME = "welshIntestacyGrantFinalReissue.pdf";
+    private static final String WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME = "welshAdmonWillGrantFinalReissue.pdf";
 
 
     private CallbackRequest callbackRequest;
@@ -373,7 +379,120 @@ public class DocumentGeneratorServiceTest {
         verify(placeholderDecorator).decorate(expectedMap);
     }
 
-/////////////////////////////////////////
+    @Test
+    public void testGenerateProducesWelshDigitalGrantReissueDraft() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT)).thenReturn(Document.builder()
+            .documentFileName(WELSH_DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT);
+
+        assertEquals(WELSH_DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
+    @Test
+    public void testGenerateProducesWelshIntestacyGrantReissueDraft() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT)).thenReturn(Document.builder()
+            .documentFileName(WELSH_INTESTACY_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT);
+
+        assertEquals(WELSH_INTESTACY_DRAFT_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
+    @Test
+    public void testGenerateProducesWelshAdmonGrantReissueDraft() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT)).thenReturn(Document.builder()
+            .documentFileName(WELSH_ADMON_WILL_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT);
+
+        assertEquals(WELSH_ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
+    @Test
+    public void testGenerateProducesWelshDigitalGrantReissue() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_DIGITAL_GRANT_REISSUE)).thenReturn(Document.builder()
+            .documentFileName(WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT_REISSUE);
+
+        assertEquals(WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
+    @Test
+    public void testGenerateProducesWelshIntestacyGrantReissue() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_INTESTACY_GRANT_REISSUE)).thenReturn(Document.builder()
+            .documentFileName(WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT_REISSUE);
+
+        assertEquals(WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
+    @Test
+    public void testGenerateProducesWelshAdmonWIllGrantReissue() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").
+                languagePreferenceWelsh(Constants.YES).build(),
+                LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+            DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE)).thenReturn(Document.builder()
+            .documentFileName(WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE);
+
+        assertEquals(WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME,
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
+    }
+
     @Test
     public void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
         CaseDetails caseDetails =

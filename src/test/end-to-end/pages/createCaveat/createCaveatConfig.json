@@ -35,13 +35,11 @@
   "page3_caveator_forenames_update": "caveator_forenames_UPDATED",
   "page3_caveator_surname_update": "caveator_surname_UPDATED",
   "page3_caveator_email": "test.probate.inbox@gmail.com",
+  "page3_langPrefNo": "No",
+  "page3_solAppReference": "TW123-345",
 
-  "page4_amend_waitForText": "Caveat details",
+  "page4_amend_waitForText": "Amend caveat details",
   "caveat_expiry_date": "XX XXX XXXX",
-  "page4_caveatExpiryDate_day_update": "21",
-  "page4_caveatExpiryDate_month_update": "04",
-  "page4_caveatExpiryDate_year_update": "2020",
-  "page4_caveatExpiryDate_long_update": "21 Apr 2020",
 
   "address_line1": "1",
   "address_line2": "Buckingham Palace",
