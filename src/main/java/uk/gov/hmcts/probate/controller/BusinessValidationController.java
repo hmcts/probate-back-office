@@ -78,9 +78,6 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/sols-apply-as-exec")
     public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
-
-        emailAddressExecutorsValidationRule.validate(request.getCaseDetails());
-
         return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
     }
 
@@ -161,6 +158,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
+        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
