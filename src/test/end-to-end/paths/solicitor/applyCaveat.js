@@ -48,7 +48,6 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, applyCaveatConfig);
     await I.seeCaseDetails(caseRef, notificationsTabConfig, {});
 
-
     endState = 'Caveat updated';
     await I.chooseNextStep(nextStepName);
     await I.caveatApplicationDetailsPage1();
@@ -73,7 +72,7 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     completeApplicationConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     // When emailing the caveator, the Date added for the email document is set to today
     completeApplicationConfig.notification_date = dateFns.format(new Date(), 'D MMM YYYY');
-    
+
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
