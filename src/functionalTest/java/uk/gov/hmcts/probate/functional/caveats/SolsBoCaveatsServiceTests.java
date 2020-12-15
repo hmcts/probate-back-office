@@ -31,6 +31,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_NO_EMAIL= "caveatPayloadNotificationsNoEmail.json";
     private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
+    private static final String CAVEAT_EXTEND_PAYLOAD ="/caveat/caveatExtendPayloadExtend.json";
 
 
     private static final String YES = "Yes";
@@ -171,6 +172,30 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(jsonPath.get("message"),is(equalTo("Invalid payload")));
         assertThat(jsonPath.get("fieldErrors[0].field"),is(equalTo("caseDetails.data.caveatorEmailAddress")));
         assertThat(jsonPath.get("fieldErrors[0].code"),is(equalTo("NotBlank")));
+    }
+
+    @Test
+    public void verifyCaveatExtendShouldReturnOKResponseCode(){
+        ResponseBody response = validatePostSuccess(CAVEAT_EXTEND_PAYLOAD, CAVEAT_EXTEND);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"),is(notNullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("sentEmail"));
+
+    }
+
+    @Test
+    public void verifyCaveatExtendShouldReturnValidationError(){
+        String jsonAsString =  getJsonFromFile(CAVEAT_EXTEND_PAYLOAD);
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"personal@hmcts-test.com\",","\"caveatorEmailAddress\": \"\",");
+        Response response = postJson(jsonAsString, CAVEAT_EXTEND);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("errors[0]"),is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
     }
 
     private Response postJson(String jsonAsString, String caveatConfirmation) {
