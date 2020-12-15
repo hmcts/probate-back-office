@@ -3,13 +3,21 @@ package uk.gov.hmcts.probate.functional.documents;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
+
 import java.time.LocalDate;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -53,7 +61,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
-
+    private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC = "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest";
@@ -64,13 +72,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PRIMARY_APPLICANT_STATEMENT = "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL = "Administrators Applying for Letters of Administration (with will annexed)";
-
+    private static final String HMCTS_VALUE ="HMCTS";
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE= "/document/generate-grant-draft-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT= "/document/generate-sot";
+
+
+    private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
+    private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
+    private static final String GENERATE_LETTER = "/document/generateLetter";
+    private static final String PREVIEW_LETTER ="/document/previewLetter";
+    private static final String RE_PRINT = "/document/reprint";
 
     private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD= "solicitorPDFPayloadProbate.json";
@@ -130,6 +145,56 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
+
+    @Test
+    public void verifyAssembleLetterShouldReturnOkResponseCode(){
+        ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json", ASSEMBLE_LETTER);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        List paragraphDetails = jsonPath.get("data.paragraphDetails");
+        String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
+        response.prettyPrint();
+
+        assertThat(paragraphDetails.size(), is(3));
+        assertThat(templateName,is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
+    }
+
+    @Test
+    public void verifyAssembleLetterShouldReturnBadResponseCode(){
+        String jsonAsString = getJsonFromFile("/document/assembleLetterPayLoad.json");
+        jsonAsString =  jsonAsString.replace("1985-01-01","01-01-01");
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(ASSEMBLE_LETTER)
+                .andReturn();
+
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyDefaultRePrintValuesReturnsOkResponseCode() {
+
+        ResponseBody response = validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        assertThat(jsonPath.get("data.reprintDocument.list_items[0].label"), is(equalTo("Grant")));
+        assertThat(jsonPath.get("data.reprintDocument.list_items[0].code"), is(equalTo("WelshGrantFileName")));
+    }
+
+    @Test
+    public void verifyDefaultRePrintValuesReturnsBadResponseCode() {
+        String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
+        jsonAsString = jsonAsString.replaceFirst("Solicitor", "");
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(DEFAULT_PRINT_VALUES)
+                .andReturn();
+        assertThat(response.getStatusCode(),is(equalTo(400)));
+    }
+
 
     private String generateDocument(String jsonFileName, String path) {
 
@@ -744,29 +809,29 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-//    @Test
-//    public void verifySuccessForGetDigitalGrantDomiciledUK() {
-//        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
-//
-//        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
-//        assertTrue(response.contains(SOLICITOR_INFO3));
-//        assertTrue(response.contains(GOP));
-//        assertTrue(response.contains(PRIMARY_APPLICANT));
-//        assertTrue(response.contains(DIED_ON_OR_SINCE));
-//        assertTrue(response.contains(UK));
-//        assertTrue(response.contains(ENGLAND_AND_WALES));
-//
-//        assertTrue(!response.contains(PA));
-//        assertTrue(!response.contains(WILL_MESSAGE));
-//        assertTrue(!response.contains(ADMIN_MESSAGE));
-//        assertTrue(!response.contains(LIMITATION_MESSAGE));
-//        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-//        assertTrue(!response.contains(POWER_RESERVED));
-//        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-//        assertTrue(!response.contains(TITLE));
-//        assertTrue(!response.contains(HONOURS));
-//
-//    }
+    @Test
+    public void verifySuccessForGetDigitalGrantDomiciledUK() {
+        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO3));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
+        assertTrue(response.contains(UK));
+        assertTrue(response.contains(ENGLAND_AND_WALES));
+
+        assertTrue(!response.contains(PA));
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(ADMIN_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(POWER_RESERVED));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
+
+    }
 
 
     @Test
@@ -800,17 +865,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
     
     //Commented out due to Docmosis not allowing screen readers as images overlay all text
-    //@Test
-    //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
-    //    String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
-    //
-    //    System.out.println(response);
-    //
-    //    assertTrue(response.contains(PRIMARY_APPLICANT));
-    //    assertTrue(response.contains(CASE_REFERENCE));
-    //    assertTrue(response.contains(DECEASED_DETAILS));
-    //    assertTrue(response.contains(DECEASED_DOD));
-    //    assertTrue(response.contains(PRIMARY_APPLICANT));
-    //    assertTrue(response.contains(WATERMARK));
-    //}
+    @Test
+    public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
+        String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+
+
+        assertTrue(response.contains(ENGLAND_AND_WALES));
+        assertTrue(response.contains(CASE_REFERENCE));
+        assertTrue(response.contains(DECEASED_DETAILS));
+        assertTrue(response.contains(DECEASED_DOD));
+        assertTrue(response.contains(HMCTS_VALUE));
+        assertTrue(response.contains(POSTCODE));
+    }
 }
