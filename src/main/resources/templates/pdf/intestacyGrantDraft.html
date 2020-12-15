@@ -153,6 +153,17 @@
             {% if case_details.registryPostcode != null and case_details.registryPostcode != "" %}{{case_details.registryPostcode}}<br />{% endif %}
             {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
 
+            {% elseif case_details.case_data.registryLocation == "Cardiff" %}
+            High Court of Justice England and Wales<br />
+            Probate Registry of Wales<br />
+            {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
+            {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
+            {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
+            {% if case_details.registryAddressLine4 != null and case_details.registryAddressLine4 != "" %}{{case_details.registryAddressLine4}}<br />{% endif %}
+            {% if case_details.registryTown != null and case_details.registryTown != "" %}{{case_details.registryTown}}<br />{% endif %}
+            {% if case_details.registryPostcode != null and case_details.registryPostcode != "" %}{{case_details.registryPostcode}}<br />{% endif %}
+            {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
+
             {% else %}
             High Court of Justice England and Wales <br />
             {{case_details.case_data.registryLocation}} District Probate Registry <br />
@@ -295,8 +306,8 @@
 
             </p>
             <p>The application has stated that the gross value of the estate in England and Wales amounts to
-                &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.##")}} and the net value amounts to
-                &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.##")}}
+                &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.00")}} and the net value amounts to
+                &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.00")}}
             </p>
         </td>
     </tr>

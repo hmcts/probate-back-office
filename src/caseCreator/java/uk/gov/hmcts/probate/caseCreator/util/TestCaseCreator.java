@@ -9,7 +9,7 @@ import io.restassured.http.Headers;
 import io.restassured.parsing.Parser;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
-import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -27,7 +26,7 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 @ContextConfiguration(classes = TestCaseCreatorConfig.class)
 public class TestCaseCreator {
 
@@ -125,7 +124,7 @@ public class TestCaseCreator {
         String rep = getJsonFromFile(fileName).replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
 
 
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
                 .baseUri(solCcdServiceUrl)
@@ -157,7 +156,7 @@ public class TestCaseCreator {
     private String generateEventToken(String role, String eventName, Headers headersWithUserId, String caseType) {
         log.info("User Id: {}", userId);
         RestAssured.baseURI = solCcdServiceUrl;
-        return SerenityRest.given()
+        return RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
                 .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/"+ caseType +"/event-triggers/" + eventName + "/token")

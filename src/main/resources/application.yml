@@ -99,6 +99,18 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
 
 fee.api:
   url: http://localhost:4411
@@ -109,6 +121,10 @@ fee.api:
   channel: default
   applicantType: all
   keyword: NewFee
+  newCopiesFeeKeyword: GrantWill
+  newIssuesFee5kKeyword: SAL5K
+  newIssuesFeeKeyword: SA
+  ihtMinAmt: 5000.00
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -174,6 +190,8 @@ logging:
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+  application-insights:
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
 notifications:
   grantDelayedNotificationPeriodDays: 49
@@ -184,7 +202,8 @@ notifications:
     email:
       english:
         personal:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -192,38 +211,43 @@ notifications:
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
-          grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          grantRaised: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
+          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          grantRaisedCtsc: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
-          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
-          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+          grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
+          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
-          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
+          documentReceived: "82373bf9-b566-4bf4-95c8-bd2d51615070"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          grantRaised: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
+          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
-          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+          grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
+          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
       welsh:
         personal:
-          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
@@ -231,32 +255,36 @@ notifications:
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
-          caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          caveatRaised: "025c2410-f1d4-4688-b03f-c94a6776341c"
+          caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
-          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
-          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+          grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
+          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
-          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
+          documentReceived: "82373bf9-b566-4bf4-95c8-bd2d51615070"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
-          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
+          grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
+          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
 
 documents:
   templates:
@@ -282,11 +310,19 @@ documents:
             gop: DIGITAL_GRANT_DRAFT
       welsh:
         final:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE
+            gop: WELSH_DIGITAL_GRANT_REISSUE
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
         preview:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: WELSH_DIGITAL_GRANT_REISSUE_DRAFT
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
@@ -397,7 +433,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -433,3 +469,10 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
+  user:
+    key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
+    firstName: Probate
+    lastName: Backend

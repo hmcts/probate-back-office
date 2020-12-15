@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import io.micrometer.core.instrument.util.StringUtils;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

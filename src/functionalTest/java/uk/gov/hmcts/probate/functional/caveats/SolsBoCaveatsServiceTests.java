@@ -1,13 +1,16 @@
 package uk.gov.hmcts.probate.functional.caveats;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.time.LocalDate;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
@@ -89,6 +92,30 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForCaveatRaisedEmailApplicationFee() {
+        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
+
+        assertCommons(response);
+        assertTrue(response.contains("1542274092932452"));
+        assertTrue(response.contains("£3 fee"));
+        assertTrue(response.contains("personal@hmcts-test.com"));
+
+    }
+
+    @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN)+ "\""));
+
+    }
+
+    @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
+    }
+
+    @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheet() {
         String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
@@ -134,18 +161,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("country"));
     }
 
-    private void validatePostSuccess(String jsonFileName, String path) {
-        SerenityRest.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .then().assertThat().statusCode(200);
-    }
-
     private String generateDocument(String jsonFileName, String path, int placeholder) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -162,7 +180,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private String validatePostSuccessReturnPayload(String jsonFileName, String path) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))

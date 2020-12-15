@@ -7,7 +7,7 @@
     "last_modified": null,
     "security_classification": "PUBLIC",
     "case_data": {
-      "solsPaymentMethods": "card",
+      "solsPaymentMethods": "fee account",
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
@@ -97,7 +97,8 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate":"No"
+      "solsSOTNeedToUpdate":"No",
+      "applicationGrounds": "Grounds for application"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
-import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -45,15 +43,14 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
@@ -93,7 +90,7 @@ public class NotificationController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        if (isAnEmailAddressPresent(caseData)) {
+        if (isDigitalApplication(caseData) && isAnEmailAddressPresent(caseData)) {
             CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
@@ -107,9 +104,9 @@ public class NotificationController {
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
-            @Validated({EmailAddressNotifyValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        @Validated({EmailAddressNotifyValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
@@ -123,11 +120,11 @@ public class NotificationController {
             response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 log.info("Initiate call to send caveat email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
                 documents.add(document);
                 log.info("Successful response for caveat email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
             }
         } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()) {
 
@@ -135,33 +132,33 @@ public class NotificationController {
             documents.add(coversheet);
 
             log.info("Initiate call to generate Caveat stopped document for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
+                callbackRequest.getCaseDetails().getId());
             Map<String, Object> placeholders = gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document caveatRaisedDoc =
-                    pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
-                            .CAVEAT_STOPPED);
+                pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
+                    .CAVEAT_STOPPED);
             documents.add(caveatRaisedDoc);
             log.info("Successful response for caveat stopped document for case id {} ", callbackRequest.getCaseDetails().getId());
 
             if (caseData.isCaveatStopSendToBulkPrintRequested()) {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
                     bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
                 letterId = sendLetterResponse != null
-                        ? sendLetterResponse.letterId.toString()
-                        : null;
+                    ? sendLetterResponse.letterId.toString()
+                    : null;
                 response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         } else {
             response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 log.info("Initiate call to notify applicant for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
                 documents.add(document);
                 log.info("Successful response from notify for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
             }
         }
         if (response.getErrors().isEmpty()) {
@@ -172,16 +169,16 @@ public class NotificationController {
 
     @PostMapping(path = "/request-information-default-values")
     public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
-            @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
         return ResponseEntity.ok(documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest));
     }
 
@@ -197,9 +194,43 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
+    }
+
+    @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult,
+        HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("start-delayed-notify-period started");
+        notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
+        notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/grant-delayed-scheduled")
+    public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
+        log.info("Calling perform Grants delayed...");
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
+        log.info("...Called perform Grants delayed");
+        return ResponseEntity.ok(grantScheduleResponse);
+    }
+
+    @PostMapping(path = "/grant-awaiting-documents-scheduled")
+    public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
+        log.info("Calling perform Grants Awaiting Documents...");
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+        log.info("Grants awaiting documents attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
+        log.info("...Called perform Grants Awaiting Documents");
+        return ResponseEntity.ok(grantScheduleResponse);
+
     }
 
     private ProbateDocument buildProbateDocument(Document boDocument) {
@@ -223,19 +254,6 @@ public class NotificationController {
         return caseData.isDocsReceivedEmailNotificationRequested();
     }
 
-    @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
-        logRequest(request.getRequestURI(), callbackRequest);
-        log.info("start-delayed-notify-period started");
-        notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
-        notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
-        return ResponseEntity.ok(response);
-    }
-
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
@@ -248,25 +266,8 @@ public class NotificationController {
         }
     }
 
-    @PostMapping(path = "/grant-delayed-scheduled")
-    public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
-        log.info("Calling perform Grants delayed...");
-        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
-        log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
-            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
-        log.info("...Called perform Grants delayed");
-        return ResponseEntity.ok(grantScheduleResponse);
-    }
-
-    @PostMapping(path = "/grant-awaiting-documents-scheduled")
-    public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
-        log.info("Calling perform Grants Awaiting Documents...");
-        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
-        log.info("Grants awaiting documents attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
-            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
-        log.info("...Called perform Grants Awaiting Documents");
-        return ResponseEntity.ok(grantScheduleResponse);
-
+    private boolean isDigitalApplication(CaseData caseData) {
+        return !YES.equalsIgnoreCase(caseData.getPaperForm());
     }
 
 }

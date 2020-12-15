@@ -6,11 +6,11 @@ This caveat application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;20.00
+**Application fee** &pound;3.00
 
-**Payment method** Cheque
+**Payment method** fee account
 
-**Payment reference number** Cheque (payable to 'HM Courts & Tribunals Service')
+**Payment reference number** Fee account PBA-12345
 
 What happens next
 =================

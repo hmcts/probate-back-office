@@ -18,7 +18,9 @@ List<LinkedHashMap<String, Object>> secrets = [
         secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
         secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
         secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
-        secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST')
+        secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
+        secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
+        secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -48,4 +50,11 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
 //                 alwaysLinkToLastBuild: true
 //         ]
 //     }
+    after('functionalTest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('functionalTest:aat') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
 }

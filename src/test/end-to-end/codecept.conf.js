@@ -5,11 +5,12 @@ exports.config = {
     'output': testConfig.TestOutputDir,
     'helpers': {
         'Puppeteer': {
-            'url': testConfig.TestFrontendUrl,
+            'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': 1500,
+            // 'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
+            'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -18,15 +19,23 @@ exports.config = {
                     'height': 960
                 },
                 args: [
+                    // '--headless', 
+                    '--disable-gpu',
                     '--no-sandbox',
+                    '--allow-running-insecure-content',
+                    '--ignore-certificate-errors',
                     '--proxy-server=proxyout.reform.hmcts.net:8080',
                     '--proxy-bypass-list=*beta*LB.reform.hmcts.net',
                     '--window-size=1440,1400'
                 ]
             },
+
         },
         'PuppeteerHelper': {
             'require': './helpers/PuppeteerHelper.js'
+        },
+        'JSWait': {
+            require: './helpers/JSWait.js'
         },
     },
     'include': {
@@ -34,7 +43,7 @@ exports.config = {
     },
     'plugins': {
         'autoDelay': {
-            'enabled': true
+            'enabled': testConfig.TestAutoDelayEnabled
         }
     },
     'multiple': {

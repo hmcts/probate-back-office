@@ -3,10 +3,12 @@
 const testConfig = require('src/test/config');
 const newCaseConfig = require('./newCaseConfig');
 
-module.exports = function () {
+module.exports = async function () {
 
     const I = this;
 
-    I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-    I.waitForNavigationToComplete(newCaseConfig.locator);
+    await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
+
+    // eslint-disable-next-line
+    await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator);
 };

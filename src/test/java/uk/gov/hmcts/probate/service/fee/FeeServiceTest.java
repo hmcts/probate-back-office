@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.fee;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -9,9 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.math.BigDecimal;
 
@@ -39,6 +42,9 @@ public class FeeServiceTest {
 
     @Mock
     AppInsights appInsights;
+
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @Before
     public void setUp() {
@@ -110,5 +116,62 @@ public class FeeServiceTest {
         assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void getTotalFeeWithNewKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("GrantWill");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void getTotalFeeWithOldKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("NewFee");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionIfRestTemplateReturnsNull() {
+        when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
+        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionIfResponseEntityGetBodyReturnsNull() {
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+
+        when(responseEntity.getBody()).thenReturn(null);
+        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void copiesFeeExceptionIfResponseEntityGetBodyReturnsNull() {
+
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
+        when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
+                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
+            eq(Fee.class))).thenReturn(responseEntity);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getBody()).thenReturn(null);
+        feeService.getCopiesFee(1L);
     }
 }

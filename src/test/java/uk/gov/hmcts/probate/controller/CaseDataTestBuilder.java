@@ -29,7 +29,7 @@ public class CaseDataTestBuilder {
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String SOLICITOR_APPLYING = "Yes";
     public static final String IHT_FORM = "IHT207";
-    public static final String PAYMENT_METHOD = "Cheque";
+    public static final String PAYMENT_METHOD = "fee account";
     public static final String WILL_HAS_CODICLIS = "Yes";
     public static final String NUMBER_OF_CODICLIS = "1";
     public static final BigDecimal NET = BigDecimal.valueOf(1000f);
@@ -63,6 +63,7 @@ public class CaseDataTestBuilder {
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
     public static final String APPLICATION_GROUNDS = "Application grounds";
+    public static final String REGISTRY_SEQUENCE_NUMBER = "12345";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -136,7 +137,8 @@ public class CaseDataTestBuilder {
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-                .totalFee(TOTAL_FEE);
+                .totalFee(TOTAL_FEE)
+                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER);
     }
 
 }

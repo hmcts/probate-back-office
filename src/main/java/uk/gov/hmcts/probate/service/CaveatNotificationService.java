@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -57,6 +57,7 @@ public class CaveatNotificationService {
                 caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
+                setCaveatExpiryDate(caveatDetails);
                 caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
             }
         } else {

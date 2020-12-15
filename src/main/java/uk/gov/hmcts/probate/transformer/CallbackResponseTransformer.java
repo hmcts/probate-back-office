@@ -67,8 +67,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
@@ -152,7 +155,7 @@ public class CallbackResponseTransformer {
                     .build();
         }
         responseCaseDataBuilder
-                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotificationRequested(caseData.getValueForCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
@@ -235,9 +238,13 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
                 appendToBulkPrintCollection(bulkPrint, caseData);
@@ -280,11 +287,15 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
@@ -433,7 +444,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
         boolean doTransform = doTransform(callbackRequest);
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
@@ -466,17 +476,20 @@ public class CallbackResponseTransformer {
 
     }
 
-    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+    public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document) {
 
+        if (document != null) {
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.paperForm(ANSWER_YES);
         if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
             if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
                 responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
             }
         }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-
+        responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+        
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -597,7 +610,7 @@ public class CallbackResponseTransformer {
                 .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
 
                 .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
-                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotification(caseData.getValueForCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
                 .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
@@ -647,9 +660,20 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
                 .pcqId(caseData.getPcqId())
+            
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+                .declarationCheckbox(caseData.getDeclarationCheckbox())
+                .ihtGrossValueField(caseData.getIhtGrossValueField())
+                .ihtNetValueField(caseData.getIhtNetValueField())
+                .numberOfExecutors(caseData.getNumberOfExecutors())
+                .numberOfApplicants(caseData.getNumberOfApplicants())
+                .legalDeclarationJson(caseData.getLegalDeclarationJson())
+                .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
+                .registryAddress(caseData.getRegistryAddress())
+                .registryEmailAddress(caseData.getRegistryEmailAddress())
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -899,24 +923,28 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (isPAEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -1112,12 +1140,14 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {

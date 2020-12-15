@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +24,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -98,8 +100,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -453,10 +458,14 @@ public class CallbackResponseTransformerTest {
                 .solsDeceasedAliasNamesList(ALIAS_NAMES)
                 .solsSolicitorAppReference(APP_REF)
                 .solsAdditionalInfo(ADDITIONAL_INFO)
+                .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
                 .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
+                .boEmailGrantReissuedNotification(YES)
+                .boEmailDocsReceivedNotification(BO_DOCS_RECEIVED)
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
+                .boCaveatStopEmailNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaveatStopNotificationRequested(CAVEAT_STOP_NOTIFICATION)
                 .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
@@ -509,6 +518,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK)
                 .statementOfTruthDocument(SOT)
                 .boStopDetailsDeclarationParagraph(YES)
+                .boEmailRequestInfoNotification(YES)
                 .boEmailRequestInfoNotificationRequested(YES)
                 .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
@@ -948,6 +958,69 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSendLetterIdAndPdfSizeWelshGrantReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_DIGITAL_GRANT_REISSUE.getTemplateName(),
+            callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeWelshIntestacyReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName(),
+            callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeWelshAdmonWillReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName(),
+            callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -968,6 +1041,7 @@ public class CallbackResponseTransformerTest {
         CaseData caseData = caseDataBuilder
                 .solsSolicitorEmail(null)
                 .primaryApplicantEmailAddress(null)
+                .boEmailDocsReceivedNotification(NO)
                 .boEmailDocsReceivedNotificationRequested(NO)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -1359,6 +1433,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1372,6 +1449,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -1385,6 +1465,9 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotification());
     }
 
     @Test
@@ -2008,7 +2091,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2126,7 +2210,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2138,6 +2223,22 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
         assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldGetPaperGOPApplicationWithDocument() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.paperForm(YES);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
     }
 
     @Test
@@ -2160,7 +2261,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
     }
@@ -2171,8 +2273,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(null, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(null, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(null, callbackResponse.getData().getSolsSOTJobTitle());
@@ -2189,7 +2292,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertSolsDetails(callbackResponse);
     }
 
@@ -2200,7 +2304,8 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
@@ -2212,7 +2317,8 @@ public class CallbackResponseTransformerTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2224,7 +2330,8 @@ public class CallbackResponseTransformerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2268,7 +2375,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
     }
 
@@ -2291,7 +2400,9 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("SOT.pdf", callbackResponse.getData().getStatementOfTruthDocument().getDocumentFilename());
     }
 
@@ -2482,6 +2593,37 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldUpdateParentBUilderAttributes() {
+        DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
+        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+
+        caseDataBuilder
+            .primaryApplicantForenames("PAFN")
+            .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .ihtGrossValueField("1000").ihtNetValueField("900")
+            .numberOfExecutors(1L).numberOfApplicants(2L)
+            .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
+            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals("PAFN", callbackResponse.getData().getPrimaryApplicantForenames());
+        assertEquals("reprintDocument", callbackResponse.getData().getReprintDocument().getValue().getCode());
+        assertEquals("1", callbackResponse.getData().getReprintNumberOfCopies());
+        assertEquals("solsAmendLegalStatmentSelect", callbackResponse.getData().getSolsAmendLegalStatmentSelect().getValue().getCode());
+        assertEquals("1000", callbackResponse.getData().getIhtGrossValueField());
+        assertEquals("900", callbackResponse.getData().getIhtNetValueField());
+        assertEquals(Long.valueOf(1), callbackResponse.getData().getNumberOfExecutors());
+        assertEquals(Long.valueOf(2), callbackResponse.getData().getNumberOfApplicants());
+        assertEquals("legalDeclarationJson", callbackResponse.getData().getLegalDeclarationJson());
+        assertEquals("checkAnswersSummaryJson", callbackResponse.getData().getCheckAnswersSummaryJson());
+        assertEquals("registryAddress", callbackResponse.getData().getRegistryAddress());
+        assertEquals("registryEmailAddress", callbackResponse.getData().getRegistryEmailAddress());
+        assertEquals("registrySequenceNumber", callbackResponse.getData().getRegistrySequenceNumber());
+    }
+
+    @Test
     public void shouldCallSolLSAmendTransformer() {
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
@@ -2583,6 +2725,105 @@ public class CallbackResponseTransformerTest {
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(DIGITAL_GRANT_REISSUE.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshGrantReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_DIGITAL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_DIGITAL_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshAdmonWillReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+
+    @Test
+    public void shouldAddBPInformationForWelshIntestacyReissueReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_INTESTACY_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
+
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldNotAddBPInformationForWelshGrantReissueNoLetterIdReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_DIGITAL_GRANT_REISSUE)
+            .build();
+        List<Document> documents = Arrays.asList(document);
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE);
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldNotAddBPInformationForWelshAdmonWillReissueNoLetterIdReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
+            .build();
+        List<Document> documents = Arrays.asList(document);
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE);
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldNotAddBPInformationForWelshIntestacyReissueNoLetterIdReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_INTESTACY_GRANT_REISSUE)
+            .build();
+        List<Document> documents = Arrays.asList(document);
+        doAnswer(invoke -> {
+            return true;
+        }).when(documentTransformer).hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE);
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+
+        assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
+        assertNull(callbackResponse.getData().getBulkPrintPdfSize());
     }
 
     @Test

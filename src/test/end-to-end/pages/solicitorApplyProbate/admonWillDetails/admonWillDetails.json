@@ -1,0 +1,24 @@
+{
+  "page2_legateeAndDevisee": "the residuary legatee and devisee",
+  "applicant_email": "solicitor1@hmcts-test.com",
+  "applicant_phone": "01298989891",
+  "applicant_firstname": "Jason1",
+  "applicant_lastname": "Rob1",
+
+  "page3_applicationNotes": "Application notes in grant of probate details",
+
+  "page4_waitForText": "Close and Return to case details",
+
+  "optionYes": "Yes",
+  "optionNo": "No",
+
+  "address_line1": "11",
+  "address_line2": "Buckingham Palace1",
+  "address_line3": "The place to be1",
+  "address_town": "London1",
+  "address_county": "London1",
+  "address_country": "United Kingdom1",
+  "address_postcode": "SW1A 1AA1",
+
+  "UKpostcodeLink": ".manual-link"
+}

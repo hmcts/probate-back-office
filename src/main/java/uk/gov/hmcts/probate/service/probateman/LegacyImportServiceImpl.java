@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.probateman;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
