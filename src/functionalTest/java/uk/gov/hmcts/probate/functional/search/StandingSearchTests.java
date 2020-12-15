@@ -42,11 +42,11 @@ public class StandingSearchTests extends IntegrationTestBase {
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDefaultValues(){
+    public void standingSearchCreatedShouldReturnDefaultValues() {
         //ARRANGE
-        String jsonAsString =        utils.getJsonFromFile("/search/standingSearchPayload.json");
-        jsonAsString =jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",","");
-        jsonAsString =jsonAsString.replaceFirst("\"applicationType\": \"Solicitor\",","");
+        String jsonAsString = utils.getJsonFromFile("/search/standingSearchPayload.json");
+        jsonAsString = jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",", "");
+        jsonAsString = jsonAsString.replaceFirst("\"applicationType\": \"Solicitor\",", "");
         //ACT
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -57,7 +57,7 @@ public class StandingSearchTests extends IntegrationTestBase {
         //ASSERT
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.prettyPrint());
-        assertThat(jsonPath.get("data.registryLocation"),equalTo(DEFAULT_REGISTRY_LOCATION));
-        assertThat(jsonPath.get("data.applicationType"),equalTo(DEFAULT_APPLICATION_TYPE));
+        assertThat(jsonPath.get("data.registryLocation"), equalTo(DEFAULT_REGISTRY_LOCATION));
+        assertThat(jsonPath.get("data.applicationType"), equalTo(DEFAULT_APPLICATION_TYPE));
     }
 }
