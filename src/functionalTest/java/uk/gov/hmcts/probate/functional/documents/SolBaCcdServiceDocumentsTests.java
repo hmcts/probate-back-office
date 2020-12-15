@@ -14,10 +14,10 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -99,6 +99,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
 
+    @Test
+    public void verifySolicitorGenerateLetterReturnResponseCode() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetter.json", GENERATE_LETTER);
+    }
+
+    @Test
+    public void verifySolicitorPreviewLetterReturnResponseCode() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetter.json", PREVIEW_LETTER);
+    }
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
