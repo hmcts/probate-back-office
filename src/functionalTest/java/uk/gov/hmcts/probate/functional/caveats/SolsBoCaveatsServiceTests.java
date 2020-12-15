@@ -3,12 +3,15 @@ package uk.gov.hmcts.probate.functional.caveats;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.time.LocalDate;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
@@ -17,10 +20,18 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_RAISED = "/caveat/raise";
     private static final String CAVEAT_DEFAULT_VALUES = "/caveat/defaultValues";
     private static final String CAVEAT_GENERAL_MESSAGE= "/caveat/general-message";
-
+    private static final String CAVEAT_CONFIRMATION ="/caveat/confirmation";
+    private static final String CAVEAT_EXTEND = "/caveat/extend";
+    private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
+    private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
+    private static final String CAVEAT_VALIDATE = "/caveat/validate";
+    private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
+    private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
     private static final String DEFAULT_PAYLOAD= "caveatPayloadNotifications.json";
     private static final String DEFAULT_PAYLOAD_NO_EMAIL= "caveatPayloadNotificationsNoEmail.json";
     private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
+    private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
+
 
     private static final String YES = "Yes";
     private static final String NO = "No";
@@ -140,6 +151,36 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     }
 
+    @Test
+    public void verifyCaveatConfirmationShouldReturnOKResponseCode() {
+        ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_CONFIRMATION);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        String confirmationText = jsonPath.get("confirmation_body");
+
+        assertThat(confirmationText, containsString("This caveat application has now been submitted"));
+    }
+
+    @Test
+    public void verifyCaveatConfirmationShouldReturnBadResponseCode() {
+        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",","\"caveatorEmailAddress\": \"\",");
+        Response response = postJson(jsonAsString, CAVEAT_CONFIRMATION);
+        response.then().assertThat().statusCode(400);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        assertThat(jsonPath.get("message"),is(equalTo("Invalid payload")));
+        assertThat(jsonPath.get("fieldErrors[0].field"),is(equalTo("caseDetails.data.caveatorEmailAddress")));
+        assertThat(jsonPath.get("fieldErrors[0].code"),is(equalTo("NotBlank")));
+    }
+
+    private Response postJson(String jsonAsString, String caveatConfirmation) {
+        return RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(caveatConfirmation)
+                .andReturn();
+    }
 
     private void assertCommons(String response) {
 
