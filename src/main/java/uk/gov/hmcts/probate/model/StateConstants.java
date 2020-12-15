@@ -46,7 +46,7 @@ public class StateConstants {
 
     // inset text for case progress tab
     public static final String STATE_DESC_DEFAULT = "Default";
-    public static final String STATE_DESC_ESCALATED = "Case escalated to the Registrar";
+    public static final String STATE_DESC_ESCALATED = "Case escalated to a Registrar";
     public static final String STATE_DESC_CASE_STOPPED = "Case stopped";
 
     private StateConstants() {

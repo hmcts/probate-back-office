@@ -36,6 +36,6 @@ public class EscalatedTaskListRendererTest {
         caseDetails.setState(REGISTRAR_ESCALATION.getId());
         String result = renderer.renderHtml(caseDetails);
 
-        assertTrue(result.contains("Case escalated to the Registrar"));
+        assertTrue(result.contains("Case escalated to a Registrar"));
     }
 }
