@@ -44,10 +44,11 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         }
 
     } else {
-
-        for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
-            // eslint-disable-next-line
-            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
+        if (dataConfigKeys) {
+            for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
+                // eslint-disable-next-line
+                await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
+            }
         }
     }
 };
