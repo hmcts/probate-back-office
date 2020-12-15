@@ -32,6 +32,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
     private static final String CAVEAT_EXTEND_PAYLOAD ="/caveat/caveatExtendPayloadExtend.json";
+    private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
 
 
     private static final String YES = "Yes";
@@ -196,6 +197,25 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200);
         assertThat(jsonPath.get("errors[0]"),is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorCreateReturnOkResponseCode() {
+        ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"),is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorCreateReturnBadResponseCode() {
+        String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
+        jsonAsString = jsonAsString.replace(" \"solsSolicitorAppReference\": \"solsSolicitorAppReference\"","");
+        Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
+        response.prettyPrint();
+        response.then().assertThat().statusCode(400);
     }
 
     private Response postJson(String jsonAsString, String caveatConfirmation) {
