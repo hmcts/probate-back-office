@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class FeeService {
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
+    private final FeatureToggleService featureToggleService;
 
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
@@ -53,8 +55,21 @@ public class FeeService {
             .queryParam("event", event)
             .queryParam("amount_or_volume", amount);
 
+        if (FEE_API_EVENT_TYPE_ISSUE.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+            double amountDouble = Double.valueOf(amount);
+            if (amountDouble > feeServiceConfiguration.getIhtMinAmt()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFee5kKeyword());
+            }
+        }
+
         if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
-            builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+            if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+            }
         }
 
         return builder.build().encode().toUri();
