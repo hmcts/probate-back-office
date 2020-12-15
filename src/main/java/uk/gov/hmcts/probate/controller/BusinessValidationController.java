@@ -36,11 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,11 +72,15 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
     @PostMapping(path = "/sols-apply-as-exec")
     public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
+
+        emailAddressExecutorsValidationRule.validate(request.getCaseDetails());
+
         return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
     }
 
