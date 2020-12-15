@@ -340,6 +340,7 @@
         <cve>CVE-2020-14195</cve>
         <cve>CVE-2020-24616</cve>
         <cve>CVE-2020-24750</cve>
+        <cve>CVE-2020-25649</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
