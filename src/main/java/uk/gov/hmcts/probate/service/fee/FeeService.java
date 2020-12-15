@@ -114,7 +114,49 @@ public class FeeService {
             return body;
         }
     }
-    
+
+    public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
+        BigDecimal applicationFee = getApplicationFee(amountInPounds);
+        BigDecimal ukCopiesFee = getCopiesFee(ukCopies);
+        BigDecimal nonUkCopiesFee = getCopiesFee(nonUkCopies);
+        return FeeServiceResponse.builder()
+            .applicationFee(applicationFee)
+            .feeForUkCopies(ukCopiesFee)
+            .feeForNonUkCopies(nonUkCopiesFee)
+            .total(applicationFee.add(ukCopiesFee).add(nonUkCopiesFee))
+            .build();
+    }
+
+    private URI buildUri(String event, String amount) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
+            .queryParam("service", feeServiceConfiguration.getService())
+            .queryParam("jurisdiction1", feeServiceConfiguration.getJurisdiction1())
+            .queryParam("jurisdiction2", feeServiceConfiguration.getJurisdiction2())
+            .queryParam("channel", feeServiceConfiguration.getChannel())
+            .queryParam("applicant_type", feeServiceConfiguration.getApplicantType())
+            .queryParam("event", event)
+            .queryParam("amount_or_volume", amount);
+
+        if (FEE_API_EVENT_TYPE_ISSUE.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+            double amountDouble = Double.valueOf(amount);
+            if (amountDouble > feeServiceConfiguration.getIhtMinAmt()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewIssuesFee5kKeyword());
+            }
+        }
+
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
+            if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+            }
+        }
+
+        return builder.build().encode().toUri();
+    }
+
     private static <T> T nonNull(@Nullable T result) {
         try {
             Assert.state(result != null, "Entity should be non null in FeeService");

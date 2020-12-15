@@ -172,6 +172,34 @@ public class FeeServiceTest {
         verify(feeServiceConfiguration, times(0)).getNewIssuesFeeKeyword();
     }
 
+    @Test
+    public void getTotalFeeWithNewKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("GrantWill");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void getTotalFeeWithOldKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("NewFee");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
     @Test(expected = ClientDataException.class)
     public void testExceptionIfRestTemplateReturnsNull() {
         when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(null);
