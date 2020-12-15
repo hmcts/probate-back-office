@@ -37,6 +37,8 @@ pdf.service:
 payment:
   url: ${PAYMENT_API_URL:http://payment-api-aat.service.core-compute-aat.internal}
   api: /credit-account-payments
+  currency: GBP
+  siteId: devSiteId
 
 pba:
   validation:

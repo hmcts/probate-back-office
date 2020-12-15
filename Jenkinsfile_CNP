@@ -39,7 +39,8 @@ def secrets = [
                 secret('pdfServiceAccessKey', 'PDF_SERVICE_ACCESS_KEY'),
                 secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL'),
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
-                secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD')
+                secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
+                secret('probate-site-id','PAYMENT_SITEID')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),

@@ -24,6 +24,7 @@ java:
         - pdfServiceHealthUrl
         - idam-secret-probate
         - idamRedirectUrl
+        - probate-site-id
 
   postgresql:
     enabled: true

@@ -48,6 +48,8 @@ pdf.service:
 payment:
   url: ${PAYMENT_API_URL:http://localhost:8991}
   api: /credit-account-payments
+  currency: GBP
+  siteId: devSiteId
 
 pba:
   validation:
