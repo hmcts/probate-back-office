@@ -33,6 +33,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
     private static final String CAVEAT_EXTEND_PAYLOAD ="/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
+    private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
 
 
     private static final String YES = "Yes";
@@ -210,12 +211,45 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatSolicitorCreateReturnBadResponseCode() {
+    public void verifyCaveatSolicitorCreateReturnsDefaultLocationAndApplicationType() {
         String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
-        jsonAsString = jsonAsString.replace(" \"solsSolicitorAppReference\": \"solsSolicitorAppReference\"","");
+        jsonAsString.replaceFirst("Solicitor","Personal");
+        jsonAsString.replaceFirst("ctsc","Leeds");
         Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
         response.prettyPrint();
-        response.then().assertThat().statusCode(400);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"),is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorUpdateReturnOKResponseCode() {
+        ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_UPDATE_PAYLOAD, CAVEAT_SOLICITOR_UPDATE);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+
+        assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.paperForm"), is(equalTo("No")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+    }
+
+    @Test
+    public void verifyCaveatSolicitorUpdateReturnDefaultApplicationTypeAndLocationInResponse() {
+        String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_UPDATE_PAYLOAD);
+        jsonAsString.replaceFirst("Solicitor", "Personal");
+        jsonAsString.replaceFirst("ctsc", "Leeds");
+
+        Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_UPDATE);
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
 
     private Response postJson(String jsonAsString, String caveatConfirmation) {
