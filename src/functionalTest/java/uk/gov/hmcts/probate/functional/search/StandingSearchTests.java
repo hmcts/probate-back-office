@@ -43,19 +43,18 @@ public class StandingSearchTests extends IntegrationTestBase {
 
     @Test
     public void standingSearchCreatedShouldReturnDefaultValues(){
-
+        //ARRANGE
         String jsonAsString =        utils.getJsonFromFile("/search/standingSearchPayload.json");
-
-        jsonAsString =jsonAsString.replace("\"registryLocation\": \"Manchester\",","");
-        jsonAsString =jsonAsString.replace("\"applicationType\": \"Solicitor\",","");
-
+        jsonAsString =jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",","");
+        jsonAsString =jsonAsString.replaceFirst("\"applicationType\": \"Solicitor\",","");
+        //ACT
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(jsonAsString)
                 .when().post(STANDING_SEARCH_CREATE)
                 .andReturn();
-
+        //ASSERT
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.prettyPrint());
         assertThat(jsonPath.get("data.registryLocation"),equalTo(DEFAULT_REGISTRY_LOCATION));
