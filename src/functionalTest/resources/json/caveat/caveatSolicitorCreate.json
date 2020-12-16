@@ -1,0 +1,81 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "SolAppCreated",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Solicitor",
+      "registryLocation": "ctsc",
+      "solsSolicitorFirmName": "The Firm & Co",
+      "caveatorEmailAddress": "test@test.com",
+      "solsSolicitorPhoneNumber": "07070707077",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF"
+    },
+    "data_classification": {
+      "applicationType": "Solicitor",
+      "registryLocation": "leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "solsSolicitorPhoneNumber": "0044-2222222",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "solsSolicitorAppReference": "solsSolicitorAppReference"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "solsSolicitorPhoneNumber": "1234",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "solsSolicitorAppReference": "solsSolicitorAppReference"
+    }
+  }
+}
