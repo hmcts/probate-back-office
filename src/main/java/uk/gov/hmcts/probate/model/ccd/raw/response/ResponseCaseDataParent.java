@@ -21,13 +21,15 @@ public class ResponseCaseDataParent {
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
     protected String qualifiedLegalProfessional;
+    protected String SOTForenames;
+    protected String SOTSurname;
 
     ResponseCaseDataParent() {
     }
 
     ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
-                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String qualifiedLegalProfessional) {
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String qualifiedLegalProfessional, String SOTForenames, String SOTSurname) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
@@ -42,6 +44,8 @@ public class ResponseCaseDataParent {
         this.registryEmailAddress = registryEmailAddress;
         this.registrySequenceNumber = registrySequenceNumber;
         this.qualifiedLegalProfessional = qualifiedLegalProfessional;
+        this.SOTForenames = SOTForenames;
+        this.SOTSurname = SOTSurname;
     }
 
     public DynamicList getReprintDocument() {
@@ -98,6 +102,14 @@ public class ResponseCaseDataParent {
         return qualifiedLegalProfessional;
     }
 
+    public String getSOTForenames() {
+        return SOTForenames;
+    }
+
+    public String getSOTSurname() {
+        return SOTSurname;
+    }
+
     public static ResponseCaseDataParentBuilder builder() {
         return new ResponseCaseDataParentBuilder();
     }
@@ -117,6 +129,8 @@ public class ResponseCaseDataParent {
         protected String registryEmailAddress;
         protected String registrySequenceNumber;
         protected String qualifiedLegalProfessional;
+        protected String SOTForenames;
+        protected String SOTSurname;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -187,11 +201,21 @@ public class ResponseCaseDataParent {
             return this;
         }
 
+        public ResponseCaseDataParentBuilder SOTForenames(String SOTForenames) {
+            this.SOTForenames = SOTForenames;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder SOTSurname(String SOTSurname) {
+            this.SOTSurname = SOTSurname;
+            return this;
+        }
+
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
                 solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
-                registryAddress, registryEmailAddress, registrySequenceNumber, qualifiedLegalProfessional);
+                registryAddress, registryEmailAddress, registrySequenceNumber, qualifiedLegalProfessional, SOTForenames, SOTSurname);
         }
     }
 }

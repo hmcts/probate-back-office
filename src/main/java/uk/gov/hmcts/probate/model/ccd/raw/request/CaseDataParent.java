@@ -11,5 +11,7 @@ public class CaseDataParent {
 
     protected String registrySequenceNumber;
     protected String qualifiedLegalProfessional;
+    protected String SOTForenames;
+    protected String SOTSurname;
 
 }
