@@ -158,7 +158,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        //emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
