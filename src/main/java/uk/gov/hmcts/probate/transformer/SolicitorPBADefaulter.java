@@ -15,6 +15,10 @@ public class SolicitorPBADefaulter {
     @Autowired
     PBAValidationService pbaValidationService;
 
+    public void defaultFeeAccounts(ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder, String authToken) {
+        responseCaseDataBuilder.solsPBANumber(getPBAAccounts(authToken));
+    }
+
     private DynamicList getPBAAccounts(String authToken) {
         List<String> pbas = pbaValidationService.getPBAs(authToken);
         List<DynamicListItem> items = new ArrayList<>();
@@ -25,10 +29,6 @@ public class SolicitorPBADefaulter {
                 .build());
         }
         return DynamicList.builder().listItems(items).build();
-    }
-
-    public void defaultFeeAccounts(ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder, String authToken) {
-        responseCaseDataBuilder.solsPBANumber(getPBAAccounts(authToken));
     }
 
 }

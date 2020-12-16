@@ -52,10 +52,6 @@ public class PBAValidationServiceTest {
     @Mock
     private OrganisationEntityResponse organisationEntityResponse;
 
-    @Before
-    public void setup() {
-    }
-
     @Test
     public void shouldReturnPBAs() {
         HashMap map = new HashMap<>();
