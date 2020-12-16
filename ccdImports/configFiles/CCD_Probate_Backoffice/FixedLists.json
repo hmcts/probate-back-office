@@ -1,10 +1,7 @@
 [
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "DiedBefore", "ListElement": "They died before the deceased"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "DiedAfter", "ListElement": "They died after the deceased"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerReserved", "ListElement": "They're holding power reserved"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "Renunciation", "ListElement": "They have renounced"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerOfAttorney", "ListElement": "They have appointed or wish to appoint another person to act as their attorney"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "MentallyIncapable", "ListElement": "They lack capacity to act as executor"},
+  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerReserved", "ListElement": "They are holding power reserved", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "Renunciation", "ListElement": "They have renounced", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerOfAttorney", "ListElement": "They have appointed or wish to appoint another person to act as their attorney", "DisplayOrder": 3},
   {"LiveFrom": "02/01/2017", "ID": "WillAvailability", "ListElementCode": "WillNotAvailable", "ListElement": "Will not available"},
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT205", "ListElement": "IHT 205 - there was no Inheritance Tax to pay"},
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT207", "ListElement": "IHT 207 - there was no Inheritance Tax to pay and the deceased lived abroad"},
