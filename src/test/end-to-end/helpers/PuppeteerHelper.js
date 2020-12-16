@@ -29,7 +29,13 @@ class PuppeteerHelper extends Helper {
         const helper = this.helpers[helperName];
         if (testConfig.TestForXUI) {
             const tabXPath = `//div[text()='${tabTitle}']`;
+
+            // wait for element defined by XPath appear in page
+            await page.waitForXPath(tabXPath);
+
+            // evaluate XPath expression of the target selector (it return array of ElementHandle)
             const clickableTab = await helper.page.$x(tabXPath);
+
             await helper.page.evaluate(el => el.click(), clickableTab[0]);
         } else {
             helper.click(tabTitle);
