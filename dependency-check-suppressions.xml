@@ -340,6 +340,7 @@
         <cve>CVE-2020-14195</cve>
         <cve>CVE-2020-24616</cve>
         <cve>CVE-2020-24750</cve>
+        <cve>CVE-2020-25649</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -502,6 +503,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
         <cve>CVE-2020-10673</cve>
+        <cve>CVE-2020-25649</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
