@@ -98,7 +98,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
     @Before
     public void setUp() throws NotificationClientException, IOException {
-        when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
+        when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
         when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
         when(tokenGenerator.generate()).thenReturn("123");
@@ -118,7 +118,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
                 new CaseDetails(CaseData.builder()
                         .caseType("gop")
                         .applicationType(ApplicationType.PERSONAL)
-                        .primaryApplicantEmailAddress("test@test.com")
+                        .primaryApplicantEmailAddress("primary@probate-test.com")
                         .registryLocation("Bristol")
                         .build(),
                         LAST_MODIFIED, CASE_ID);

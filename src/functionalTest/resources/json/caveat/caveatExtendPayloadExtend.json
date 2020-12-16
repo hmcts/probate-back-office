@@ -1,0 +1,84 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "CavCaveatRaised",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "Leeds",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
+      "deceasedSurname": "SomeName",
+      "deceasedDateOfDeath": "2001-12-31",
+      "deceasedDateOfBirth": "1901-12-31",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "documentsGenerated": [
+      ],
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "expiryDate": "2019-05-15",
+      "messageContent": "content message",
+      "deceasedAnyOtherNames": "No",
+      "caveatorForenames": "Alex",
+      "deceasedForenames": "Maria",
+      "caveatorSurname": "Alexia",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ]
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "applicationGrounds": "applicationGrounds",
+    "ukEstate": {
+      "classification": "PUBLIC",
+      "value": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item",
+            "value": "99"
+          }
+        }
+      ]
+    }
+  }
+}
+
