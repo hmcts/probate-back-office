@@ -17,7 +17,7 @@ public class EmailAddressExecutorsValidationRule implements CaseDetailsValidatio
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
-    private static final String REGEX = "([a-z0-9!#$%&'*+/=?^_`{|}~-])+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+    private static final String REGEX = "([a-z0-9!#$%&'*+/=?^_`{|}~-])+(?:\\.[^.]+)@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
     @Override
     public void validate(CaseDetails caseDetails) {
