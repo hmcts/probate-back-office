@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.fee;
 
 import lombok.Builder;
 import lombok.Data;
-import uk.gov.hmcts.probate.model.payments.PaymentFee;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

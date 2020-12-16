@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.payments.pba;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
@@ -56,7 +54,7 @@ public class PBAValidationServiceTest {
     public void shouldReturnPBAs() {
         HashMap map = new HashMap<>();
         map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map> userResponse = ResponseEntity.of(Optional.of(map));
+        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
         when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
@@ -75,7 +73,7 @@ public class PBAValidationServiceTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldErrorOnGetIdamUserDetails() {
-        ResponseEntity<Map> userResponse = ResponseEntity.of(Optional.empty());
+        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.empty());
         when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
 
         pbaValidationService.getPBAs(AUTH_TOKEN);
@@ -85,7 +83,7 @@ public class PBAValidationServiceTest {
     public void shouldErrorOnGetPBAOrganisation() {
         HashMap map = new HashMap<>();
         map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map> userResponse = ResponseEntity.of(Optional.of(map));
+        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
         when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
@@ -98,9 +96,9 @@ public class PBAValidationServiceTest {
 
     @Test(expected = ClientException.class)
     public void shouldFailOnAuthTokenMatch() {
-        HashMap map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map> userResponse = ResponseEntity.of(Optional.of(map));
+        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
         when(idamService.getUserDetails("ForbiddenToken")).thenReturn(userResponse);
 
         pbaValidationService.getPBAs("ForbiddenToken");

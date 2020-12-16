@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -103,10 +104,11 @@ public class NextStepsUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
         
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock)).thenReturn(paymentResponseMock);
+        when(paymentResponseMock.getStatus()).thenReturn("Success");
     }
 
     @Test
@@ -115,10 +117,9 @@ public class NextStepsUnitTest {
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
-        //when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
@@ -127,17 +128,27 @@ public class NextStepsUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
     }
 
+    @Test(expected = ClientException.class)
+    public void shouldValidateWithPaymentError() {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
+        when(paymentResponseMock.getStatus()).thenReturn("Failure");
+
+        underTest.validate(AUTH, callbackRequestMock,
+            bindingResultMock, httpServletRequestMock);
+    }
+
     @Test(expected = BadRequestException.class)
     public void shouldValidateWithError() {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
 
-        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+        underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
     }
 
     @Test(expected = BadRequestException.class)
@@ -147,11 +158,8 @@ public class NextStepsUnitTest {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
 
-        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+        underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
     }
 
     @Test

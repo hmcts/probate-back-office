@@ -39,22 +39,22 @@ public class PBAValidationService {
     private String pbaApi;
 
     public List<String> getPBAs(String authToken) {
-        ResponseEntity<Map> userResponse = idamService.getUserDetails(authToken);
+        ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);
         Map result = Objects.requireNonNull(userResponse.getBody());
         String emailId = result.get("email").toString().toLowerCase();
 
         URI uri = buildUri(emailId);
-        HttpEntity request = buildRequest(authToken);
+        HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
         log.info("pbaOrganisationEntityResponse : {}", pbaOrganisationResponse);
-        List<String> accounts = pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
-        return accounts;
+
+        return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
     }
 
-    private HttpEntity buildRequest(String authToken) {
+    private HttpEntity<HttpHeaders> buildRequest(String authToken) {
         HttpHeaders headers = new HttpHeaders();
         if (!authToken.matches("^Bearer .+")) {
             throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
@@ -62,7 +62,7 @@ public class PBAValidationService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", authTokenGenerator.generate());
-        return new HttpEntity<>(headers);
+        return new HttpEntity<HttpHeaders>(headers);
     }
 
     private URI buildUri(String emailId) {

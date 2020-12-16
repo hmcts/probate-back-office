@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -61,9 +62,14 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
+        
+        return validatePostSuccessForPayload(payload, path, utils.getHeadersWithUserId());
+    }
+
+    protected ResponseBody validatePostSuccessForPayload(String payload, String path, Headers headers) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithCaseworkerUser())
+            .headers(headers)
             .body(payload)
             .when().post(path)
             .andReturn();

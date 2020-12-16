@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,11 +18,11 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -84,7 +85,13 @@ public class NextStepsController {
             CreditAccountPayment creditAccountPayment =
                 creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
             PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse, paymentResponse);
+            if (!"Success".equalsIgnoreCase(paymentResponse.getStatus())) {
+                log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), "Credit account payment response not " +
+                    "successful");
+                throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Credit account payment response not " +
+                    "successful for caseId:" + callbackRequest.getCaseDetails().getId());
+            }
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);

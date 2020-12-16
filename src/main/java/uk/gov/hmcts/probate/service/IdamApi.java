@@ -49,7 +49,7 @@ public interface IdamApi {
         headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
         consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    ResponseEntity<Map> getUserDetails(
+    ResponseEntity<Map<String, Object>> getUserDetails(
         @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation
     );
 }

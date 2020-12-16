@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.payments;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,7 +17,6 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +36,7 @@ public class PaymentsServiceTest {
 
     @MockBean
     private CreditAccountPayment creditAccountPayment;
-    
+
     @Mock
     private PaymentResponse paymentResponse;
 

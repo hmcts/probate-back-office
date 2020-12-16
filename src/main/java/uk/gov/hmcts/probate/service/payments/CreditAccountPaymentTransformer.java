@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentFee;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class CreditAccountPaymentTransformer {
 
     @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
-    
+
     @Value("${fee.api.service}")
     private String service;
 
@@ -32,7 +31,8 @@ public class CreditAccountPaymentTransformer {
 
     public CreditAccountPayment transform(CaseDetails caseDetails, FeesResponse feesResponse) {
         List<PaymentFee> paymentFees = buildFees(caseDetails.getData(), feesResponse);
-        CreditAccountPayment creditAccountPayment = CreditAccountPayment.builder()
+
+        return CreditAccountPayment.builder()
             .accountNumber(caseDetails.getData().getSolsPBANumber().getValue().getCode())
             .fees(paymentFees)
             .caseReference(caseDetails.getData().getSolsSolicitorAppReference())
@@ -45,11 +45,9 @@ public class CreditAccountPaymentTransformer {
             .siteId(siteId)
             .customerReference(caseDetails.getData().getSolsSolicitorAppReference())
             .build();
-
-        return creditAccountPayment;
     }
 
-    
+
     private List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
         ArrayList<PaymentFee> paymentFees = new ArrayList<>();
         PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(), BigDecimal.ONE);
