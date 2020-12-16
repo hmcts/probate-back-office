@@ -502,7 +502,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformCaseWithTrustCorpAttributes(){
-        String response = transformCase("success.TrustCorpAttribtesSaved.json", TRANSFORM_URL);
+        String response = transformCase("success.TrustCorpAttributesSaved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
