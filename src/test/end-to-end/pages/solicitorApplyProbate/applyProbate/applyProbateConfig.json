@@ -1,0 +1,21 @@
+{
+  "page2_waitForText": "Name of your firm",
+  "page2_firm_name": "Solicitor Rob Firm",
+  "page2_optionYes": "Yes",
+  "page2_optionNo": "No",
+  "page2_sol_forename":"Jason",
+  "page2_sol_surname":"Rob",
+  "page2_app_ref": "SOL-123-456",
+  "page2_sol_email": "solicitor@hmcts-test.com",
+  "page2_phone_num" : "0129898989",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}
