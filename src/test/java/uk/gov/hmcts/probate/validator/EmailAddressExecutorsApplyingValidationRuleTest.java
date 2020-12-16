@@ -54,7 +54,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(YES)
                             .build()));
 

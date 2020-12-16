@@ -19,7 +19,7 @@
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
       "solsSolicitorFirmName": "The Firm & Co",
-      "caveatorEmailAddress": "test@test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "07070707077",
       "caveatorAddress": {
         "AddressLine1": "2",
@@ -36,7 +36,7 @@
       "applicationType": "Solicitor",
       "registryLocation": "leeds",
       "solsSolicitorFirmName": "Alex & Co",
-      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "0044-2222222",
       "caveatorAddress": {
         "classification": "PUBLIC",
@@ -61,7 +61,7 @@
       "applicationType": "Solicitor",
       "registryLocation": "Leeds",
       "solsSolicitorFirmName": "Alex & Co",
-      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "1234",
       "caveatorAddress": {
         "classification": "PUBLIC",

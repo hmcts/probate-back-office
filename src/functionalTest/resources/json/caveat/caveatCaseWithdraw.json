@@ -34,7 +34,7 @@
       },
       "documentsGenerated": [
       ],
-      "caveatorEmailAddress": "personal@hmcts-test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "expiryDate": "2019-05-15",
       "messageContent": "content message",
       "deceasedAnyOtherNames": "No",
@@ -79,7 +79,7 @@
           "Country": ""
         }
       },
-      "caveatorEmailAddress": "caveatorEmailAddress@email.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "expiryDate": "01-01-2010",
       "messageContent": "messageContent",
       "deceasedAnyOtherNames": "PUBLIC",
@@ -135,7 +135,7 @@
           "Country": ""
         }
       },
-      "caveatorEmailAddress": "caveatorEmailAddress@test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "expiryDate": "2020-01-20",
       "messageContent": "messageContent",
       "deceasedAnyOtherNames": "",

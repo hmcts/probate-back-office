@@ -40,7 +40,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(YES)
                             .build()));
 
@@ -49,7 +49,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(NO)
                             .build()));
 
@@ -58,19 +58,19 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(YES)
                             .build()),
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(YES)
                             .build()),
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(NO)
                             .build()));
 
@@ -79,19 +79,19 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(NO)
                             .build()),
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(NO)
                             .build()),
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .email("executor1@probate-test.com")
                             .notification(NO)
                             .build()));
 

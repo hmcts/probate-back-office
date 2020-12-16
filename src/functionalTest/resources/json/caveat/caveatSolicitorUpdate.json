@@ -19,7 +19,7 @@
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
       "solsSolicitorFirmName": "Theee Firm",
-      "caveatorEmailAddress": "test@test.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "07070707077",
       "caveatorAddress": {
         "AddressLine1": "2",
@@ -53,7 +53,7 @@
       "applicationType": "Solicitor",
       "registryLocation": "Leeds",
       "solsSolicitorFirmName": "solsSolicitorFirmName",
-      "caveatorEmailAddress": "caveatorEmailAddress@caveatorEmailAddress.com",
+      "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "123",
       "caveatorAddress": {
         "classification": "PUBLIC",

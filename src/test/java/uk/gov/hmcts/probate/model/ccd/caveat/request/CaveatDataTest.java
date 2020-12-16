@@ -20,7 +20,7 @@ public class CaveatDataTest {
     private static final String CAV_DECEASED_SURNAME = "Deceased_ln";
     private static final String CAV_CAVEATOR_FORENAMES = "Caveator_fn";
     private static final String CAV_CAVEATOR_SURNAME = "Caveator_ln";
-    private static final String CAV_CAVEATOR_EMAIL = "caveator@test.com";
+    private static final String CAV_CAVEATOR_EMAIL = "caveator@probate-test.com";
     private static final String CAV_CAVEATOR_ADDRESS_1 = "15 Hanover Lane";
     private static final String CAV_CAVEATOR_ADDRESS_2 = "Catford";
     private static final String CAV_CAVEATOR_ADDRESS_3 = "";
