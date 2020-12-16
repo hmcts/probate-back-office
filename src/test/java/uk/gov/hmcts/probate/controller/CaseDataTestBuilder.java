@@ -46,7 +46,7 @@ public class CaseDataTestBuilder {
             .postCode(PRIMARY_ADDRESS_PC).build();
     public static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     public static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
-    public static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "test@test.com";
+    public static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primary@probate-test.com";
     public static final String OTHER_EXEC_EXISTS = "No";
     public static final String WILL_EXISTS = "Yes";
     public static final String WILL_TYPE = "WillLeft";

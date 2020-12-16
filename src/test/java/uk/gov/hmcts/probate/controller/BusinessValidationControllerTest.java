@@ -93,7 +93,7 @@ public class BusinessValidationControllerTest {
     private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(EX_ADD_LINE1).postCode(EX_ADD_PC).build();
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
-    private static final String PRIMARY_APPLICANT_EMAIL = "test@test.com";
+    private static final String PRIMARY_APPLICANT_EMAIL = "primary@probate-test.com";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
     private static final String WILL_TYPE_PROBATE = "WillLeft";

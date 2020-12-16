@@ -40,7 +40,7 @@
         "Country": ""
       },
       "applicantForenames": "cf name 2",
-      "applicantEmailAddress": "rabab.rabab@hmcts.net",
+      "applicantEmailAddress": "primary@probate-test.com",
       "deceasedDateOfBirth": "1990-11-11",
       "deceasedForenames": "df name 2",
       "numberOfCopies": "2",
@@ -83,7 +83,7 @@
         }
       },
       "applicantForenames": "applicantForenames",
-      "applicantEmailAddress": "test@test.com",
+      "applicantEmailAddress": "primary@probate-test.com",
       "deceasedDateOfBirth": "2020-01-01",
       "deceasedForenames": "deceasedForenames",
       "numberOfCopies": "2",
@@ -134,7 +134,7 @@
         }
       },
       "applicantForenames": "applicantForenames",
-      "applicantEmailAddress": "test1@test.com",
+      "applicantEmailAddress": "primary@probate-test.com",
       "deceasedDateOfBirth": "2020-01-01",
       "deceasedForenames": "deceasedForenames",
       "numberOfCopies": "2",

@@ -45,7 +45,7 @@
       "solsResiduaryType": "Legatee",
       "solsLifeInterest": "No",
       "deceasedDateOfDeath": "2018-01-01",
-      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "primaryApplicantForenames": "Ex1fn",
       "primaryApplicantAddress": {
         "AddressLine1": "2",
@@ -56,7 +56,7 @@
         "PostCode": "2",
         "Country": "2"
       },
-      "solsSolicitorEmail": "contact@lonGenArt.com",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "90009",

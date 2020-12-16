@@ -132,14 +132,14 @@ public class CaveatNotificationServiceTest {
 
         caveatData = CaveatData.builder()
                 .registryLocation("leeds")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .deceasedForenames("name")
                 .deceasedSurname("name")
                 .build();
 
         responseCaveatData = ResponseCaveatData.builder()
                 .registryLocation("leeds")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .deceasedForenames("name")
                 .deceasedSurname("name")
                 .caveatRaisedEmailNotificationRequested("Yes")
@@ -148,7 +148,7 @@ public class CaveatNotificationServiceTest {
         solsCaveatData = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .registryLocation("ctsc")
-                .caveatorEmailAddress("solicitor@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .deceasedForenames("forename")
                 .deceasedSurname("surname")
                 .build();
@@ -247,7 +247,7 @@ public class CaveatNotificationServiceTest {
 
         responseCaveatData = ResponseCaveatData.builder()
                 .registryLocation("leeds")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .deceasedForenames("name")
                 .deceasedSurname("name")
                 .caveatRaisedEmailNotificationRequested("Yes")
@@ -280,7 +280,7 @@ public class CaveatNotificationServiceTest {
     public void testSolicitorCaveatRaiseWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
-            .caveatorEmailAddress("caveator@email.com")
+            .caveatorEmailAddress("caveator@probate-test.com")
             .applicationType(ApplicationType.SOLICITOR)
             .build();
 
@@ -339,7 +339,7 @@ public class CaveatNotificationServiceTest {
     public void testGenerateExpiryDateWithCaveatorEmailAddress() throws NotificationClientException {
         caveatData = CaveatData.builder()
                 .caveatRaisedEmailNotificationRequested("Yes")
-                .caveatorEmailAddress("caveator@email.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
 
@@ -510,7 +510,7 @@ public class CaveatNotificationServiceTest {
 
         responseCaveatData = ResponseCaveatData.builder()
             .registryLocation("leeds")
-            .caveatorEmailAddress("test@test.com")
+            .caveatorEmailAddress("caveator@probate-test.com")
             .deceasedForenames("name")
             .deceasedSurname("name")
             .caveatRaisedEmailNotificationRequested("Yes")
@@ -549,7 +549,7 @@ public class CaveatNotificationServiceTest {
 
         responseCaveatData = ResponseCaveatData.builder()
             .registryLocation("leeds")
-            .caveatorEmailAddress("test@test.com")
+            .caveatorEmailAddress("caveator@probate-test.com")
             .deceasedForenames("name")
             .deceasedSurname("name")
             .caveatRaisedEmailNotificationRequested("Yes")
@@ -581,7 +581,7 @@ public class CaveatNotificationServiceTest {
     public void testWithDrawEmail() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
                 .caveatRaisedEmailNotificationRequested("Yes")
-                .caveatorEmailAddress("test@test.com").build();
+                .caveatorEmailAddress("caveator@probate-test.com").build();
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
@@ -606,7 +606,7 @@ public class CaveatNotificationServiceTest {
     public void testWithdrawnBluckPrint() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
                 .caveatRaisedEmailNotificationRequested("No")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .sendToBulkPrintRequested("Yes")
                 .build();
 
@@ -645,7 +645,7 @@ public class CaveatNotificationServiceTest {
     public void testWithdrawnBluckPrintValidationFailure() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
                 .caveatRaisedEmailNotificationRequested("No")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .sendToBulkPrintRequested("Yes")
                 .build();
 
@@ -680,7 +680,7 @@ public class CaveatNotificationServiceTest {
     public void testWithdrawnWithoutEmailOrBulkPrint() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
                 .caveatRaisedEmailNotificationRequested("No")
-                .caveatorEmailAddress("test@test.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .sendToBulkPrintRequested("No")
                 .build();
 
