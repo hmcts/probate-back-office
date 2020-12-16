@@ -169,7 +169,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatConfirmationShouldReturnBadResponseCode() {
         String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
-        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",","\"caveatorEmailAddress\": \"\",");
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",","\"caveatorEmailAddress\": \"\",");
         Response response = postJson(jsonAsString, CAVEAT_CONFIRMATION);
         response.then().assertThat().statusCode(400);
         JsonPath jsonPath = JsonPath.from(response.asString());
@@ -194,7 +194,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatExtendShouldReturnValidationError(){
         String jsonAsString =  getJsonFromFile(CAVEAT_EXTEND_PAYLOAD);
-        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"personal@hmcts-test.com\",","\"caveatorEmailAddress\": \"\",");
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",","\"caveatorEmailAddress\": \"\",");
         Response response = postJson(jsonAsString, CAVEAT_EXTEND);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
@@ -271,8 +271,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatValidateShouldReturnBadResponseCode() {
         String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
-        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"test@test.com\",",
-                "\"caveatorEmailAddress\": \"test@test.com\", \"expiryDate \": \"2090-12-12\"");
+        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",",
+                "\"caveatorEmailAddress\": \"caveator@probate-test.com\", \"expiryDate \": \"2090-12-12\"");
         Response response = postJson(jsonAsString, CAVEAT_VALIDATE);
         response.then().assertThat().statusCode(400);
     }
@@ -323,7 +323,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     public void verifyCaveatWithdrawShouldReturnBadResponseCode(){
 
         String jsonAsString =  getJsonFromFile(CAVEAT_CASE_WITHDRAW_PAYLOAD);
-        jsonAsString = jsonAsString.replace("\"personal@hmcts-test.com\"","");
+        jsonAsString = jsonAsString.replace("\"caveator@probate-test.com\"","");
 
         Response response = postJson(jsonAsString, CAVEAT_WITHDRAW);
         JsonPath jsonPath = JsonPath.from(response.asString());
