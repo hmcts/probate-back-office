@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.UrlConstants.*;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.*;
 
 // Renders links / text and also the status tag - i.e. details varying by state
 public class TaskStateRenderer {
@@ -29,7 +29,7 @@ public class TaskStateRenderer {
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     // isProbate - true if application for probate, false if for caveat
-    public static String renderByReplace(TaskListState currState, String html, Long caseId, LocalDate authDate, LocalDate submitDate) {
+    public static String renderByReplace(TaskListState currState, String html, Long caseId, String willType, LocalDate authDate, LocalDate submitDate) {
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS);
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS);
         final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS);
@@ -43,23 +43,23 @@ public class TaskStateRenderer {
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
         return html == null ? null : html
-                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr))
+                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
-                .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr))
+                .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addDeceasedDetails/>", renderTaskStateTag(addDeceasedState))
-                .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr))
+                .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
-                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr))
+                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
-                .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr))
+                .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
-                .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, examineState, EXAMINE_APP_TEXT, caseIdStr))
+                .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, examineState, EXAMINE_APP_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
-                .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT, issueState, ISSUE_GRANT_TEXT, caseIdStr))
+                .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState));
 
     }
@@ -90,8 +90,8 @@ public class TaskStateRenderer {
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId));
     }
 
-    private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId) {
-        String linkUrlTemplate = getLinkUrlTemplate(taskListState);
+    private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId, String willType) {
+        String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         return linkUrlTemplate != null && (currState == TaskState.NOT_STARTED || currState == TaskState.IN_PROGRESS) ?
                 LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId))
                 : linkText;
@@ -113,14 +113,21 @@ public class TaskStateRenderer {
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
-    private static String getLinkUrlTemplate(TaskListState taskListState) {
+    private static String getLinkUrlTemplate(TaskListState taskListState, String willType) {
         switch (taskListState) {
             case TL_STATE_ADD_SOLICITOR_DETAILS:
                 return null;
             case TL_STATE_ADD_DECEASED_DETAILS:
                 return DECEASED_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_APPLICATION_DETAILS:
-                return ADD_APPLICATION_DETAILS_URL_TEMPLATE;
+                switch (willType) {
+                    case "NoWill":
+                        return ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
+                    case "WillLeftAnnexed":
+                        return ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
+                    default:
+                        return ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
+                }
             case TL_STATE_REVIEW_AND_SUBMIT:
                 return REVIEW_OR_SUBMIT_URL_TEMPLATE;
             default:
