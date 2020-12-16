@@ -86,7 +86,7 @@ public class OcrEmailValidatorTest {
                 .map(f -> OCRField
                         .builder()
                         .name(f)
-                        .value(RandomStringUtils.randomAlphabetic(10) + "@test.com")
+                        .value(RandomStringUtils.randomAlphabetic(10) + "@probate-test.com")
                         .build()
                 )
                 .collect(toList());
