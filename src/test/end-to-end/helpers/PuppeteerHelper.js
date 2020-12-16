@@ -30,7 +30,7 @@ class PuppeteerHelper extends Helper {
         if (testConfig.TestForXUI) {
             const tabXPath = `//div[text()='${tabTitle}']`;
             const clickableTab = await helper.page.$x(tabXPath);
-            await page.evaluate(el => el.click(), clickableTab[0]);
+            await helper.page.evaluate(el => el.click(), clickableTab[0]);
         } else {
             helper.click(tabTitle);
         }
