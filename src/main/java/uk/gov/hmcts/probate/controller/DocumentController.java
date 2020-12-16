@@ -77,7 +77,6 @@ public class DocumentController {
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
     private final ReprintService reprintService;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
@@ -155,7 +154,6 @@ public class DocumentController {
 
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        emailAddressExecutorsValidationRule.validate(caseDetails);
         Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
                 DocumentIssueType.GRANT);
 
@@ -242,7 +240,6 @@ public class DocumentController {
                 Optional.of(DocumentIssueType.REISSUE));
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
-        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         documents.add(grantDocument);
         documents.add(coversheet);
