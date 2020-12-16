@@ -920,6 +920,7 @@ public class    CaseDataTest {
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
+            .dispenseWithNotice("Yes").titleAndClearingType("TCTTrustCorpResWithApp")
             .build();
 
         assertEquals("PAFN", caseData.getPrimaryApplicantForenames());
@@ -936,5 +937,7 @@ public class    CaseDataTest {
         assertEquals("registryAddress", caseData.getRegistryAddress());
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
+        assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
     }
 }

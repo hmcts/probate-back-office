@@ -1,0 +1,843 @@
+{
+    "case_details": {
+        "id": 1521205807091932,
+        "jurisdiction": "PROBATE",
+        "state": "SolAnswersChecked",
+        "case_type_id": "GrantOfRepresentation",
+        "created_date": [
+            2018,
+            3,
+            16,
+            13,
+            10,
+            7,
+            9000000
+        ],
+        "last_modified": [
+            2018,
+            3,
+            16,
+            15,
+            22,
+            55,
+            335000000
+        ],
+        "security_classification": "PUBLIC",
+        "case_data": {
+            "otherExecutorExists": "Yes",
+            "deceasedAddress": {
+                "County": "Middlesex",
+                "Country": "United Kingdom",
+                "PostCode": "TW3 3DB",
+                "PostTown": "Hounslow",
+                "AddressLine1": "Test AddressLine1",
+                "AddressLine2": "Test AddressLine2",
+                "AddressLine3": "Test AddressLine3"
+            },
+            "deceasedAnyOtherNames": "Yes",
+            "willHasCodicils": "Yes",
+            "deceasedDateOfBirth": "1987-01-01",
+            "solsDeceasedAliasNamesList": [
+                {
+                    "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                    "value": {
+                        "SolsAliasname": "decAlias1"
+                    }
+                }
+            ],
+            "willAccessOriginal": "Yes",
+            "willExists": "Yes",
+            "solsWillType": "WillLeft",
+            "solsSOTName": "Solicitor_fn Solicitor_ln",
+            "solsSOTForenames": "Solicitor_fn",
+            "solsSOTSurname": "Solicitor_ln",
+            "solsSolicitorIsExec": "No",
+            "solsSolicitorIsMainApplicant": null,
+            "solsSolicitorIsApplying": null,
+            "solsSolicitorNotApplyingReason": null,
+            "solsApplicantRelationshipToDeceased": null,
+            "solsSpouseOrCivilRenouncing": null,
+            "solsAdoptedEnglandOrWales": null,
+            "solsMinorityInterest": null,
+            "solsApplicantSiblings": null,
+            "solsSolicitorFirmName": "SolicitorFirmName",
+            "deceasedDateOfDeath": "2018-01-01",
+            "solsCYAStateTransition": "SolLegalStatementReviewed",
+            "primaryApplicantForenames": "TestPrimaryExecutorFirstName",
+            "primaryApplicantAddress": {
+                "County": "Bucks",
+                "Country": "United Kingdom",
+                "PostCode": "HP5 2PN",
+                "PostTown": "Chesham",
+                "AddressLine1": "151 Hivings Hill",
+                "AddressLine2": "Chesham",
+                "AddressLine3": "Chesham"
+            },
+            "applicationGrounds": "Grounds for application",
+            "ukEstate": [
+                {
+                    "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                    "value": {
+                        "item": "item1",
+                        "value": "1000"
+                    }
+                }
+            ],
+            "deceasedDomicileInEngWales": "Yes",
+            "outsideUKGrantCopies":1,
+            "solsPaymentMethods":"fee account",
+            "extraCopiesOfGrant":1,
+            "ihtNetValue": "90009",
+            "deceasedSurname": "deceasedLastName",
+            "solsAdditionalExecutorList": [
+                {
+                    "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                    "value": {
+                        "additionalApplying": "Yes",
+                        "additionalExecAddress": {
+                            "County": "3",
+                            "Country": "3",
+                            "PostCode": "3",
+                            "PostTown": "3",
+                            "AddressLine1": "3",
+                            "AddressLine2": "3",
+                            "AddressLine3": "3"
+                        },
+                        "additionalExecLastname": "AdditionalExecutor1LastName",
+                        "additionalExecForenames": "AdditionalExecutor1FirstName",
+                        "additionalExecNameOnWill": "Yes",
+                        "additionalExecAliasNameOnWill": "AdditionalExecutor1 willname"
+                    }
+                },
+                {
+                    "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                    "value": {
+                        "additionalApplying": "No",
+                        "additionalExecLastname": "ex3ln",
+                        "additionalExecForenames": "ex3fn",
+                        "additionalExecNameOnWill": "No",
+                        "additionalExecReasonNotApplying": "DiedBefore"
+                    }
+                },
+
+                {
+                    "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                    "value": {
+                        "additionalApplying": "Yes",
+                        "additionalExecLastname": "ex4ln",
+                        "additionalExecForenames": "ex4fn",
+                        "additionalExecNameOnWill": "No",
+                        "additionalExecReasonNotApplying": "DiedBefore",
+                        "additionalExecAddress": {
+                            "County": "Bucks",
+                            "Country": "United Kingom",
+                            "PostCode": "HA1 4ET",
+                            "PostTown": "Harrow",
+                            "AddressLine1": "87A pinner Road",
+                            "AddressLine2": "Harrow",
+                            "AddressLine3": "Harrow"
+                        }
+                    }
+                }
+            ],
+          "solsSolicitorAddress": {
+            "AddressLine1": "SolAddLn1",
+            "AddressLine2": "SolAddLn2",
+            "AddressLine3": "SolAddLn3",
+            "PostTown": "SolAddPT",
+            "County": "SolAddCounty",
+            "PostCode": "firmpc",
+            "Country": "SolAddCo"
+          },
+            "deceasedForenames": "deceasedFirstName",
+            "willNumberOfCodicils": "2",
+            "primaryApplicantIsApplying": "Yes",
+            "solsCYANeedToUpdate": "No",
+            "primaryApplicantHasAlias": "Yes",
+            "ihtGrossValue": "100001",
+            "ihtFormId": "IHT205",
+            "solsExecutorAliasNames": "TestPrimaryExecutorAliasName",
+            "primaryApplicantSurname": "TestPrimaryExecutorLastName",
+            "solsSolicitorAppReference": "refCYA2",
+            "declarationCheckbox": "Yes",
+            "ihtGrossValueField": "100001.0",
+            "ihtNetValueField": "90009.0",
+            "numberOfExecutors":  "2",
+            "numberOfApplicants": "1",
+            "legalDeclarationJson":  "some legal declaration json",
+            "checkAnswersSummaryJson": "some check summary json",
+            "registryAddress":  "RegistryAddress",
+            "registryEmailAddress": "RegistryEmail",
+            "registrySequenceNumber":  "1",
+            "dispenseWithNotice": "Yes",
+            "titleAndClearingType": "TCTTrustCorpResWithApp"
+        },
+        "data_classification": {
+            "otherExecutorExists": "PUBLIC",
+            "deceasedAddress": {
+                "classification": "PUBLIC",
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                }
+            },
+            "deceasedAnyOtherNames": "PUBLIC",
+            "willHasCodicils": "PUBLIC",
+            "deceasedDateOfBirth": "PUBLIC",
+            "solsDeceasedAliasNamesList": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                        "value": {
+                            "SolsAliasname": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "willAccessOriginal": "PUBLIC",
+            "willExists": "PUBLIC",
+            "solsWillType": "PUBLIC",
+            "solsSOTName": "PUBLIC",
+            "solsSOTForenames": "PUBLIC",
+            "solsSOTSurname": "PUBLIC",
+            "solsSolicitorIsExec": "PUBLIC",
+            "solsSolicitorIsMainApplicant": "PUBLIC",
+            "solsSolicitorIsApplying": "PUBLIC",
+            "solsSolicitorNotApplyingReason": "PUBLIC",
+            "solsApplicantRelationshipToDeceased": "PUBLIC",
+            "solsSpouseOrCivilRenouncing": "PUBLIC",
+            "solsAdoptedEnglandOrWales": "PUBLIC",
+            "solsMinorityInterest": "PUBLIC",
+            "solsApplicantSiblings": "PUBLIC",
+            "solsSolicitorFirmName": "PUBLIC",
+            "deceasedDateOfDeath": "PUBLIC",
+            "solsCYAStateTransition": "PUBLIC",
+            "primaryApplicantForenames": "PUBLIC",
+            "primaryApplicantAddress": {
+                "classification": "PUBLIC",
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                }
+            },
+            "applicationGrounds": "PUBLIC",
+            "ukEstate": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                        "value": {
+                            "item": "PUBLIC",
+                            "value": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "deceasedDomicileInEngWales": "PUBLIC",
+            "ihtNetValue": "PUBLIC",
+            "deceasedSurname": "PUBLIC",
+            "solsAdditionalExecutorList": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecAddress": {
+                                "classification": "PUBLIC",
+                                "value": {
+                                    "County": "PUBLIC",
+                                    "Country": "PUBLIC",
+                                    "PostCode": "PUBLIC",
+                                    "PostTown": "PUBLIC",
+                                    "AddressLine1": "PUBLIC",
+                                    "AddressLine2": "PUBLIC",
+                                    "AddressLine3": "PUBLIC"
+                                }
+                            },
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecAliasNameOnWill": "PUBLIC"
+                        }
+                    },
+                    {
+                        "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecReasonNotApplying": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+          "solsSolicitorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "County": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+            "deceasedForenames": "PUBLIC",
+            "willNumberOfCodicils": "PUBLIC",
+            "primaryApplicantIsApplying": "PUBLIC",
+            "solsCYANeedToUpdate": "PUBLIC",
+            "primaryApplicantHasAlias": "PUBLIC",
+            "ihtGrossValue": "PUBLIC",
+            "ihtFormId": "PUBLIC",
+            "solsExecutorAliasNames": "PUBLIC",
+            "primaryApplicantSurname": "PUBLIC",
+            "solsSolicitorAppReference": "PUBLIC"
+        },
+        "after_submit_callback_response": null,
+        "callback_response_status_code": null,
+        "callback_response_status": null,
+        "security_classifications": {
+            "otherExecutorExists": "PUBLIC",
+            "deceasedAddress": {
+                "classification": "PUBLIC",
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                }
+            },
+            "deceasedAnyOtherNames": "PUBLIC",
+            "willHasCodicils": "PUBLIC",
+            "deceasedDateOfBirth": "PUBLIC",
+            "solsDeceasedAliasNamesList": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                        "value": {
+                            "SolsAliasname": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "willAccessOriginal": "PUBLIC",
+            "willExists": "PUBLIC",
+            "solsWillType": "PUBLIC",
+            "solsSOTName": "PUBLIC",
+            "solsSOTForenames": "PUBLIC",
+            "solsSOTSurname": "PUBLIC",
+            "solsSolicitorIsExec": "PUBLIC",
+            "solsSolicitorIsMainApplicant": "PUBLIC",
+            "solsSolicitorIsApplying": "PUBLIC",
+            "solsSolicitorNotApplyingReason": "PUBLIC",
+            "solsApplicantRelationshipToDeceased": "PUBLIC",
+            "solsSpouseOrCivilRenouncing": "PUBLIC",
+            "solsAdoptedEnglandOrWales": "PUBLIC",
+            "solsMinorityInterest": "PUBLIC",
+            "solsApplicantSiblings": "PUBLIC",
+            "solsSolicitorFirmName": "PUBLIC",
+            "deceasedDateOfDeath": "PUBLIC",
+            "solsCYAStateTransition": "PUBLIC",
+            "primaryApplicantForenames": "PUBLIC",
+            "primaryApplicantAddress": {
+                "classification": "PUBLIC",
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                }
+            },
+            "applicationGrounds": "PUBLIC",
+            "ukEstate": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                        "value": {
+                            "item": "PUBLIC",
+                            "value": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "deceasedDomicileInEngWales": "PUBLIC",
+            "ihtNetValue": "PUBLIC",
+            "deceasedSurname": "PUBLIC",
+            "solsAdditionalExecutorList": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecAddress": {
+                                "classification": "PUBLIC",
+                                "value": {
+                                    "County": "PUBLIC",
+                                    "Country": "PUBLIC",
+                                    "PostCode": "PUBLIC",
+                                    "PostTown": "PUBLIC",
+                                    "AddressLine1": "PUBLIC",
+                                    "AddressLine2": "PUBLIC",
+                                    "AddressLine3": "PUBLIC"
+                                }
+                            },
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecAliasNameOnWill": "PUBLIC"
+                        }
+                    },
+                    {
+                        "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecReasonNotApplying": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+          "solsSolicitorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "County": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+            "deceasedForenames": "PUBLIC",
+            "willNumberOfCodicils": "PUBLIC",
+            "primaryApplicantIsApplying": "PUBLIC",
+            "solsCYANeedToUpdate": "PUBLIC",
+            "primaryApplicantHasAlias": "PUBLIC",
+            "ihtGrossValue": "PUBLIC",
+            "ihtFormId": "PUBLIC",
+            "solsExecutorAliasNames": "PUBLIC",
+            "primaryApplicantSurname": "PUBLIC",
+            "solsSolicitorAppReference": "PUBLIC"
+        }
+    },
+    "case_details_before": {
+        "id": 1521205807091932,
+        "jurisdiction": "PROBATE",
+        "state": "SolExecutorDetailsUpdated",
+        "case_type_id": "GrantOfRepresentation",
+        "created_date": [
+            2018,
+            3,
+            16,
+            13,
+            10,
+            7,
+            9000000
+        ],
+        "last_modified": [
+            2018,
+            3,
+            16,
+            13,
+            34,
+            47,
+            583000000
+        ],
+        "security_classification": "PUBLIC",
+        "case_data": {
+            "otherExecutorExists": "Yes",
+            "deceasedAddress": {
+                "County": "1",
+                "Country": "1",
+                "PostCode": "1",
+                "PostTown": "1",
+                "AddressLine1": "1",
+                "AddressLine2": "1",
+                "AddressLine3": "1"
+            },
+            "deceasedAnyOtherNames": "Yes",
+            "willHasCodicils": "Yes",
+            "deceasedDateOfBirth": "1987-01-01",
+            "solsDeceasedAliasNamesList": [
+                {
+                    "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                    "value": {
+                        "SolsAliasname": "decAlias1"
+                    }
+                }
+            ],
+            "willAccessOriginal": "Yes",
+            "willExists": "Yes",
+            "solsWillType": "WillLeft",
+            "solsSOTName": "Solicitor_fn Solicitor_ln",
+            "solsSOTForenames": "Solicitor_fn",
+            "solsSOTSurname": "Solicitor_ln",
+            "solsSolicitorIsExec": "No",
+            "solsSolicitorIsMainApplicant": null,
+            "solsSolicitorIsApplying": null,
+            "solsSolicitorNotApplyingReason": null,
+            "solsApplicantRelationshipToDeceased": null,
+            "solsSpouseOrCivilRenouncing": null,
+            "solsAdoptedEnglandOrWales": null,
+            "solsMinorityInterest": null,
+            "solsApplicantSiblings": null,
+            "solsSolicitorFirmName": "SolicitorFirmName",
+            "deceasedDateOfDeath": "2018-01-01",
+            "primaryApplicantForenames": "ex1fn",
+            "primaryApplicantAddress": {
+                "County": "2",
+                "Country": "2",
+                "PostCode": "2",
+                "PostTown": "2",
+                "AddressLine1": "2",
+                "AddressLine2": "2",
+                "AddressLine3": "2"
+            },
+            "applicationGrounds": "Grounds for application",
+            "ukEstate": [
+                {
+                    "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                    "value": {
+                        "item": "item1",
+                        "value": "1000"
+                    }
+                }
+            ],
+            "deceasedDomicileInEngWales": "Yes",
+            "ihtNetValue": "90009",
+            "deceasedSurname": "deceasedLastName",
+            "solsAdditionalExecutorList": [
+                {
+                    "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                    "value": {
+                        "additionalApplying": "Yes",
+                        "additionalExecAddress": {
+                            "County": "3",
+                            "Country": "3",
+                            "PostCode": "3",
+                            "PostTown": "3",
+                            "AddressLine1": "3",
+                            "AddressLine2": "3",
+                            "AddressLine3": "3"
+                        },
+                        "additionalExecLastname": "ex2ln",
+                        "additionalExecForenames": "ex2fn",
+                        "additionalExecNameOnWill": "Yes",
+                        "additionalExecAliasNameOnWill": "TestPrimaryExecutorAliasName"
+                    }
+                },
+                {
+                    "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                    "value": {
+                        "additionalApplying": "No",
+                        "additionalExecLastname": "ex3ln",
+                        "additionalExecForenames": "ex3fn",
+                        "additionalExecNameOnWill": "No",
+                        "additionalExecReasonNotApplying": "DiedBefore"
+                    }
+                }
+            ],
+          "solsSolicitorAddress": {
+            "AddressLine1": "SolAddLn1",
+            "AddressLine2": "SolAddLn2",
+            "AddressLine3": "SolAddLn3",
+            "PostTown": "SolAddPT",
+            "County": "SolAddCounty",
+            "PostCode": "firmpc",
+            "Country": "SolAddCo"
+          },
+            "willNumberOfCodicils": "2",
+            "primaryApplicantIsApplying": "Yes",
+            "primaryApplicantHasAlias": "Yes",
+            "ihtGrossValue": "100001",
+            "ihtFormId": "IHT205",
+            "solsExecutorAliasNames": "ex1wn",
+            "primaryApplicantSurname": "ex1ln",
+            "solsSolicitorAppReference": "refCYA2"
+        },
+        "data_classification": {
+            "otherExecutorExists": "PUBLIC",
+            "deceasedAddress": {
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                },
+                "classification": "PUBLIC"
+            },
+            "deceasedAnyOtherNames": "PUBLIC",
+            "willHasCodicils": "PUBLIC",
+            "deceasedDateOfBirth": "PUBLIC",
+            "solsDeceasedAliasNamesList": {
+                "value": [
+                    {
+                        "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                        "value": {
+                            "SolsAliasname": "PUBLIC"
+                        }
+                    }
+                ],
+                "classification": "PUBLIC"
+            },
+            "willAccessOriginal": "PUBLIC",
+            "willExists": "PUBLIC",
+            "solsWillType": "PUBLIC",
+            "solsSOTName": "PUBLIC",
+            "solsSOTForenames": "PUBLIC",
+            "solsSOTSurname": "PUBLIC",
+            "solsSolicitorIsExec": "PUBLIC",
+            "solsSolicitorIsMainApplicant": "PUBLIC",
+            "solsSolicitorIsApplying": "PUBLIC",
+            "solsSolicitorNotApplyingReason": "PUBLIC",
+            "solsApplicantRelationshipToDeceased": "PUBLIC",
+            "solsSpouseOrCivilRenouncing": "PUBLIC",
+            "solsAdoptedEnglandOrWales": "PUBLIC",
+            "solsMinorityInterest": "PUBLIC",
+            "solsApplicantSiblings": "PUBLIC",
+            "solsSolicitorFirmName": "PUBLIC",
+            "deceasedDateOfDeath": "PUBLIC",
+            "primaryApplicantForenames": "PUBLIC",
+            "primaryApplicantAddress": {
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                },
+                "classification": "PUBLIC"
+            },
+            "applicationGrounds": "PUBLIC",
+            "ukEstate": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                        "value": {
+                            "item": "PUBLIC",
+                            "value": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "deceasedDomicileInEngWales": "PUBLIC",
+            "ihtNetValue": "PUBLIC",
+            "deceasedSurname": "PUBLIC",
+            "solsAdditionalExecutorList": {
+                "value": [
+                    {
+                        "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecAddress": {
+                                "value": {
+                                    "County": "PUBLIC",
+                                    "Country": "PUBLIC",
+                                    "PostCode": "PUBLIC",
+                                    "PostTown": "PUBLIC",
+                                    "AddressLine1": "PUBLIC",
+                                    "AddressLine2": "PUBLIC",
+                                    "AddressLine3": "PUBLIC"
+                                },
+                                "classification": "PUBLIC"
+                            },
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecAliasNameOnWill": "PUBLIC"
+                        }
+                    },
+                    {
+                        "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecReasonNotApplying": "PUBLIC"
+                        }
+                    }
+                ],
+                "classification": "PUBLIC"
+            },
+          "solsSolicitorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "County": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+            "deceasedForenames": "PUBLIC",
+            "willNumberOfCodicils": "PUBLIC",
+            "primaryApplicantIsApplying": "PUBLIC",
+            "primaryApplicantHasAlias": "PUBLIC",
+            "ihtGrossValue": "PUBLIC",
+            "ihtFormId": "PUBLIC",
+            "solsExecutorAliasNames": "PUBLIC",
+            "primaryApplicantSurname": "PUBLIC",
+            "solsSolicitorAppReference": "PUBLIC"
+        },
+        "after_submit_callback_response": null,
+        "callback_response_status_code": null,
+        "callback_response_status": null,
+        "security_classifications": {
+            "otherExecutorExists": "PUBLIC",
+            "deceasedAddress": {
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                },
+                "classification": "PUBLIC"
+            },
+            "deceasedAnyOtherNames": "PUBLIC",
+            "willHasCodicils": "PUBLIC",
+            "deceasedDateOfBirth": "PUBLIC",
+            "solsDeceasedAliasNamesList": {
+                "value": [
+                    {
+                        "id": "4322cd66-3704-498e-bb30-5ae3bccbdf35",
+                        "value": {
+                            "SolsAliasname": "PUBLIC"
+                        }
+                    }
+                ],
+                "classification": "PUBLIC"
+            },
+            "willAccessOriginal": "PUBLIC",
+            "willExists": "PUBLIC",
+            "solsWillType": "PUBLIC",
+            "solsSOTName": "PUBLIC",
+            "solsSOTForenames": "PUBLIC",
+            "solsSOTSurname": "PUBLIC",
+            "solsSolicitorIsExec": "PUBLIC",
+            "solsSolicitorIsMainApplicant": "PUBLIC",
+            "solsSolicitorIsApplying": "PUBLIC",
+            "solsSolicitorNotApplyingReason": "PUBLIC",
+            "solsApplicantRelationshipToDeceased": "PUBLIC",
+            "solsSpouseOrCivilRenouncing": "PUBLIC",
+            "solsAdoptedEnglandOrWales": "PUBLIC",
+            "solsMinorityInterest": "PUBLIC",
+            "solsApplicantSiblings": "PUBLIC",
+            "solsSolicitorFirmName": "PUBLIC",
+            "deceasedDateOfDeath": "PUBLIC",
+            "primaryApplicantForenames": "PUBLIC",
+            "primaryApplicantAddress": {
+                "value": {
+                    "County": "PUBLIC",
+                    "Country": "PUBLIC",
+                    "PostCode": "PUBLIC",
+                    "PostTown": "PUBLIC",
+                    "AddressLine1": "PUBLIC",
+                    "AddressLine2": "PUBLIC",
+                    "AddressLine3": "PUBLIC"
+                },
+                "classification": "PUBLIC"
+            },
+            "applicationGrounds": "PUBLIC",
+            "ukEstate": {
+                "classification": "PUBLIC",
+                "value": [
+                    {
+                        "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+                        "value": {
+                            "item": "PUBLIC",
+                            "value": "PUBLIC"
+                        }
+                    }
+                ]
+            },
+            "deceasedDomicileInEngWales": "PUBLIC",
+            "ihtNetValue": "PUBLIC",
+            "deceasedSurname": "PUBLIC",
+            "solsAdditionalExecutorList": {
+                "value": [
+                    {
+                        "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecAddress": {
+                                "value": {
+                                    "County": "PUBLIC",
+                                    "Country": "PUBLIC",
+                                    "PostCode": "PUBLIC",
+                                    "PostTown": "PUBLIC",
+                                    "AddressLine1": "PUBLIC",
+                                    "AddressLine2": "PUBLIC",
+                                    "AddressLine3": "PUBLIC"
+                                },
+                                "classification": "PUBLIC"
+                            },
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecAliasNameOnWill": "PUBLIC"
+                        }
+                    },
+                    {
+                        "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+                        "value": {
+                            "additionalApplying": "PUBLIC",
+                            "additionalExecLastname": "PUBLIC",
+                            "additionalExecForenames": "PUBLIC",
+                            "additionalExecNameOnWill": "PUBLIC",
+                            "additionalExecReasonNotApplying": "PUBLIC"
+                        }
+                    }
+                ],
+                "classification": "PUBLIC"
+            },
+          "solsSolicitorAddress": {
+            "AddressLine1": "PUBLIC",
+            "AddressLine2": "PUBLIC",
+            "AddressLine3": "PUBLIC",
+            "PostTown": "PUBLIC",
+            "County": "PUBLIC",
+            "PostCode": "PUBLIC",
+            "Country": "PUBLIC"
+          },
+            "deceasedForenames": "PUBLIC",
+            "willNumberOfCodicils": "PUBLIC",
+            "primaryApplicantIsApplying": "PUBLIC",
+            "primaryApplicantHasAlias": "PUBLIC",
+            "ihtGrossValue": "PUBLIC",
+            "ihtFormId": "PUBLIC",
+            "solsExecutorAliasNames": "PUBLIC",
+            "primaryApplicantSurname": "PUBLIC",
+            "solsSolicitorAppReference": "PUBLIC"
+        }
+    },
+    "event_id": "solicitorCheckYourAnswers"
+}

@@ -64,6 +64,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2();
     await I.grantOfProbatePage3();
+    await I.grantOfProbatePage4();
     await I.cyaPage();
 
     await I.seeEndState(endState);

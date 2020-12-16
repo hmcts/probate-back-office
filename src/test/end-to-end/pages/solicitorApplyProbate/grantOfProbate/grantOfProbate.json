@@ -1,6 +1,9 @@
 {
   "page1_waitForText": "Is the solicitor the main applicant?",
 
+  "page2_dispenseWithNotice": "Yes",
+  "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
+
   "page2_waitForText": "About the executors",
   "page2_primaryApplicantFirstName": "E2E Primary Applicant Firstname",
   "page2_primaryApplicantSurname": "E2E Primary Applicant Surname",
