@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+
 import java.time.LocalDate;
+
 import static org.junit.Assert.assertTrue;
 
 
@@ -114,7 +116,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", GENERATE_GRANT_DRAFT);
     }
-
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
