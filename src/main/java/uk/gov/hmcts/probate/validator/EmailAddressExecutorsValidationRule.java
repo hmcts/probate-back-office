@@ -17,7 +17,8 @@ public class EmailAddressExecutorsValidationRule implements CaseDetailsValidatio
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
-    private static final String REGEX = "([a-z0-9!#$%&'*+/=?^_`{|}~-]{2,})+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+    private static final String REGEX = "([a-z0-9!#$%&'*+/=?^_`{|}~-]{2,})+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*" +
+            "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -27,11 +28,9 @@ public class EmailAddressExecutorsValidationRule implements CaseDetailsValidatio
         String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
 
         caseData.getExecutorsApplyingNotifications().forEach(executor -> {
-            if (executor.getValue().getNotification().equals(YES)) {
-                if (!executor.getValue().getEmail().matches(REGEX)) {
-                    throw new BusinessValidationException(userMessage,
-                            "An applying exec email does not meet the criteria for case id " + caseDetails.getId());
-                }
+            if (executor.getValue().getNotification().equals(YES) && !executor.getValue().getEmail().matches(REGEX)){
+                throw new BusinessValidationException(userMessage,
+                        "An applying exec email does not meet the criteria for case id " + caseDetails.getId());
             }
         });
     }

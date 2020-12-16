@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +77,7 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -162,7 +164,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-
+        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
