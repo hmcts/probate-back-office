@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CreditAccountPaymentTransformer {
     private static final String PROBATE_SOLICITOR_PAYMENT_DESCRIPTION = "Probate Solicitor payment";
 
+    @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
     
     @Value("${fee.api.service}")
@@ -58,7 +60,7 @@ public class CreditAccountPaymentTransformer {
                 BigDecimal.valueOf(caseData.getExtraCopiesOfGrant()));
             paymentFees.add(ukCopiesFee);
         }
-        if (caseData.getExtraCopiesOfGrant() > 0) {
+        if (caseData.getOutsideUKGrantCopies() > 0) {
             PaymentFee overseasCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
                 BigDecimal.valueOf(caseData.getOutsideUKGrantCopies()));
             paymentFees.add(overseasCopiesFee);

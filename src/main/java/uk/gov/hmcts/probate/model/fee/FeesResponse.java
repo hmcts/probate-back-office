@@ -17,10 +17,10 @@ public class FeesResponse {
     private FeeResponse overseasCopiesFeeResponse;
 
     public BigDecimal getTotalAmount() {
-        List<FeeResponse> paymentFees = Arrays.asList(applicationFeeResponse, ukCopiesFeeResponse, overseasCopiesFeeResponse);
+        List<FeeResponse> allFees = Arrays.asList(applicationFeeResponse, ukCopiesFeeResponse, overseasCopiesFeeResponse);
         BigDecimal total = BigDecimal.ZERO;
-        for (FeeResponse paymentFee: paymentFees){
-            total = total.add(paymentFee.getFeeAmount());
+        for (FeeResponse feeResponse: allFees){
+            total = total.add(feeResponse.getFeeAmount());
         }
         return total;
     }
