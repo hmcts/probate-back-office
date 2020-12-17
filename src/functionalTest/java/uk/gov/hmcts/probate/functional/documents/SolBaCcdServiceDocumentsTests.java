@@ -14,8 +14,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -98,16 +97,55 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsIntestacyCardiff.json";
     private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
+    private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
 
     @Test
-    public void verifySolicitorGenerateLetterReturnResponseCode() {
-        ResponseBody responseBody = validatePostSuccess("/document/generateLetter.json", GENERATE_LETTER);
+    public void verifySolicitorGenerateLetterReturnOkResponseCode() {
+        String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
+        assertThat(getJsonFromFile("/document/assembledLetter.txt"),is(equalTo(response)));
     }
 
     @Test
-    public void verifySolicitorPreviewLetterReturnResponseCode() {
-        ResponseBody responseBody = validatePostSuccess("/document/generateLetter.json", PREVIEW_LETTER);
+    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
+
+    @Test
+    public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("/document/generateLetter.json"))
+                .when().post(PREVIEW_LETTER).andReturn();
+        jsonResponse.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
+
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+
+        assertThat(response,is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
+    }
+
+    @Test
+    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", PREVIEW_LETTER);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+    }
+
+//    @Test
+//    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
+//        ResponseBody responseBody = validatePostSuccess(GENERATE_LETTER_PAYLOAD, RE_PRINT);
+//        responseBody.prettyPrint();
+//    }
+
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);

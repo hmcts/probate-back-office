@@ -26,7 +26,7 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
-      "applicationType": "Personal",
+      "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -36,6 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "paperForm": "No",
       "caseType": "gop",
       "boSendToBulkPrint": "No",
       "deceasedAnyOtherNames": "No",
@@ -48,6 +49,7 @@
       "solsSOTNeedToUpdate": "No",
       "primaryApplicantEmailAddress": "solicitor@hmcts-test.net",
       "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAlias" : "primaryApplicantAlias",
       "primaryApplicantAddress": {
         "County": "",
         "Country": "",
