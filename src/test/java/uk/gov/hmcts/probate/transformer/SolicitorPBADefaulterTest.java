@@ -43,7 +43,7 @@ public class SolicitorPBADefaulterTest {
         assertEquals("PBA1111", responseCaseData.getSolsPBANumber().getListItems().get(0).getCode());
         assertEquals("PBA2222", responseCaseData.getSolsPBANumber().getListItems().get(1).getCode());
         assertEquals("PBA3333", responseCaseData.getSolsPBANumber().getListItems().get(2).getCode());
-        assertEquals(null, responseCaseData.getSolsPBANumber().getValue());
+        assertEquals(null, responseCaseData.getSolsPBANumber().getValue().getCode());
     }
 
 }

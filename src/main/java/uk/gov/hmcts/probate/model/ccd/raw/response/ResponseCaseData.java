@@ -1075,6 +1075,11 @@ public class ResponseCaseData extends ResponseCaseDataParent{
             return this;
         }
 
+        public ResponseCaseDataBuilder solsPBANumber(DynamicList solsPBANumber) {
+            this.solsPBANumber = solsPBANumber;
+            return this;
+        }
+
         public ResponseCaseDataBuilder paymentReferenceNumber(String paymentReferenceNumber) {
             this.paymentReferenceNumber = paymentReferenceNumber;
             return this;

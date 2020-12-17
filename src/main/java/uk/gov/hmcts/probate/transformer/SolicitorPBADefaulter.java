@@ -28,7 +28,7 @@ public class SolicitorPBADefaulter {
                 .label(pba)
                 .build());
         }
-        return DynamicList.builder().listItems(items).build();
+        return DynamicList.builder().listItems(items).value(DynamicListItem.builder().build()).build();
     }
 
 }

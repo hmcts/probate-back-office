@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,14 +28,18 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -84,6 +89,11 @@ public class NextStepsUnitTest {
     @Mock
     private CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     @Mock
+    private EventValidationService eventValidationService;
+    @Mock
+    private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
+    
+    @Mock
     private CreditAccountPayment creditAccountPaymentMock;
     @Mock
     private PaymentResponse paymentResponseMock;
@@ -97,8 +107,9 @@ public class NextStepsUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock, callbackResponseTransformerMock,
-                objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, creditAccountPaymentTransformer);
+        underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock, confirmationResponseServiceMock,
+            callbackResponseTransformerMock, objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, 
+            creditAccountPaymentTransformer, creditAccountPaymentValidationRule);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -108,7 +119,6 @@ public class NextStepsUnitTest {
         
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock)).thenReturn(paymentResponseMock);
-        when(paymentResponseMock.getStatus()).thenReturn("Success");
     }
 
     @Test
@@ -120,6 +130,9 @@ public class NextStepsUnitTest {
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
             .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentresponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
@@ -128,17 +141,20 @@ public class NextStepsUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldValidateWithPaymentError() {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
-        when(paymentResponseMock.getStatus()).thenReturn("Failure");
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Arrays.asList("error"));
+        when(eventValidationService.validatePaymentresponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
-        underTest.validate(AUTH, callbackRequestMock,
+        ResponseEntity responseEntity = underTest.validate(AUTH, callbackRequestMock,
             bindingResultMock, httpServletRequestMock);
+        assertThat(responseEntity.getBody(), is(creditPaymentResponseError));
     }
 
     @Test(expected = BadRequestException.class)

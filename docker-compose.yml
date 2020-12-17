@@ -459,6 +459,8 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+      PAYMENT_URL: http://wiremock:8080
+      PRD_API_URL: http://wiremock:8080
     ports:
       - 4104:4104
     depends_on:
@@ -533,7 +535,7 @@ services:
   wiremock:
     image: rodolpheche/wiremock
     ports:
-      - 8991:8080
+      - 8080:8080
     volumes:
       - esdata1:/usr/share/wiremock/data
 

@@ -9,10 +9,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
@@ -110,5 +113,12 @@ public class EventValidationService {
         return CaveatCallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
+    }
+
+    public CallbackResponse validatePaymentresponse(CaseDetails caseDetails, PaymentResponse paymentResponse, CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule.validate(caseDetails, paymentResponse);
+        return CallbackResponse.builder()
+            .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+            .build();
     }
 }

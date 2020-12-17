@@ -181,11 +181,6 @@ public class ResponseCaseDataParent {
             return this;
         }
         
-        public ResponseCaseDataParentBuilder solsPBANumber(DynamicList solsPBANumber) {
-            this.solsPBANumber = solsPBANumber;
-            return this;
-        }
-
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
                 solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 

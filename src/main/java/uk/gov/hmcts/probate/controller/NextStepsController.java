@@ -27,14 +27,17 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -45,6 +48,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @RequestMapping("/nextsteps")
 public class NextStepsController {
 
+    private final EventValidationService eventValidationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
@@ -53,6 +57,7 @@ public class NextStepsController {
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
+    private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -86,13 +91,13 @@ public class NextStepsController {
             CreditAccountPayment creditAccountPayment =
                 creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
             PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
-            if (!"Success".equalsIgnoreCase(paymentResponse.getStatus())) {
-                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), "Credit account payment response not " +
-                    "successful");
-                throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Credit account payment response not " +
-                    "successful for caseId:" + callbackRequest.getCaseDetails().getId());
+            CallbackResponse creditPaymentResponse = eventValidationService.validatePaymentresponse(callbackRequest.getCaseDetails(), 
+                paymentResponse, creditAccountPaymentValidationRule);
+            if (creditPaymentResponse.getErrors().isEmpty()) {
+                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse);
+            } else {
+                callbackResponse = creditPaymentResponse;
             }
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);
