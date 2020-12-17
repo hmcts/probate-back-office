@@ -34,9 +34,7 @@ import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -76,6 +74,9 @@ public class DocumentController {
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
+    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
+    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
     private final ReprintService reprintService;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
@@ -151,6 +152,7 @@ public class DocumentController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
 
+        validateEmailAddresses(callbackRequest);
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
@@ -236,6 +238,8 @@ public class DocumentController {
 
         List<Document> documents = new ArrayList<>();
 
+        validateEmailAddresses(callbackRequest);
+
         Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL,
                 Optional.of(DocumentIssueType.REISSUE));
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
@@ -277,5 +281,11 @@ public class DocumentController {
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
     }
 }

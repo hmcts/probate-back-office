@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatorEmailAddressValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class CaveatController {
     private final NotificationService notificationService;
     private final CaveatNotificationService caveatNotificationService;
     private final ConfirmationResponseService confirmationResponseService;
+    private final CaveatorEmailAddressValidationRule caveatorEmailAddressValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -59,6 +61,7 @@ public class CaveatController {
         @RequestBody CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);

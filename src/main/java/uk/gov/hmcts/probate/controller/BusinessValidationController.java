@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -41,6 +40,9 @@ import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +78,9 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
+    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
+    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -160,6 +165,7 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        validateEmailAddresses(callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
@@ -193,6 +199,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
+        validateEmailAddresses(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         log.info("case-stopped started");
@@ -244,6 +251,7 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) throws NotificationClientException {
 
+        validateEmailAddresses(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         Document document = null;
@@ -317,5 +325,11 @@ public class BusinessValidationController {
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         return emailErrors.isEmpty();
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
     }
 }
