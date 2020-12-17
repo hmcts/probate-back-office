@@ -924,9 +924,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
 
-//    @Test
-//    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
-//        ResponseBody responseBody = validatePostSuccess(GENERATE_LETTER_PAYLOAD, RE_PRINT);
-//        responseBody.prettyPrint();
-//    }
+    @Test
+    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
+        ResponseBody responseBody = validatePostSuccess("/document/rePrint.json", RE_PRINT);
+        responseBody.prettyPrint();
+    }
 }
