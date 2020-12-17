@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.regex.Pattern;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -73,7 +74,11 @@ public class FunctionalTestUtils {
     public String getJsonFromFile(String fileName) {
         try {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            return new String(Files.readAllBytes(file.toPath()));
+            String fileContent = new String(Files.readAllBytes(file.toPath()));
+            // this means it was encoded UTF-8 but decoded by ANSI/Windows-1252
+            fileContent = fileContent.replaceAll(Pattern.quote("â€™"), "’");
+            fileContent = fileContent.replaceAll(Pattern.quote("Â£"), "£");
+            return fileContent;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

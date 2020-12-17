@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -255,7 +256,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                     .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
-            assertTrue(textContent.contains(validationString));
+            textContent = textContent.replaceAll(Pattern.quote("\r"), "");
+            final String valMinusCr = validationString.replaceAll(Pattern.quote("\r"), "");
+            assertTrue(textContent.contains(valMinusCr));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {
