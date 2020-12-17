@@ -473,7 +473,7 @@ public class CallbackResponseTransformerTest {
                 .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
-                .applicationGrounds(APPLICATION_GROUNDS)
+                // .applicationGrounds(APPLICATION_GROUNDS)  - commented for dtsb-904 as likely to be reinstated
                 .willDispose(YES)
                 .englishWill(NO)
                 .appointExec(YES)

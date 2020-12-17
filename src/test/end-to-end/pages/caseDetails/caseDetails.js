@@ -22,7 +22,6 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         // eslint-disable-next-line
         await I.waitForText(tabConfigFile.fields[i]);
-        // await I.see(tabConfigFile.fields[i]);
     }
 
     const dataConfigKeys = tabConfigFile.dataKeys;
