@@ -71,7 +71,8 @@
         }
       ],
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "800000",
+      "ihtReferenceNumber": "IHT-557238-A01",
+      "ihtNetValue": "123",
       "boStopDetails": "stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
@@ -130,6 +131,17 @@
       },
       "deceasedForenames": "deceasedForenames",
       "primaryApplicantIsApplying": "Yes",
+      "categories": {
+        "selectedCategories": [
+          "MissInfo"
+        ],
+        "entSelectedParagraphs": [],
+        "ihtSelectedParagraphs": [],
+        "missInfoSelectedParagraphs": [
+          "MissInfoWill"
+        ],
+        "willSelectedParagraphs": []
+      },
       "primaryApplicantHasAlias": "No",
       "solsSOTName": "",
       "solsSOTForenames": "",

@@ -100,53 +100,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
 
     @Test
-    public void verifySolicitorGenerateLetterReturnOkResponseCode() {
-        String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
-        assertThat(getJsonFromFile("/document/assembledLetter.txt"),is(equalTo(response)));
-    }
-
-    @Test
-    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
-        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
-        responseBody.prettyPrint();
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
-        assertThat(jsonPath.get("data.errors"), is(nullValue()));
-    }
-
-    @Test
-    public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
-        Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("/document/generateLetter.json"))
-                .when().post(PREVIEW_LETTER).andReturn();
-        jsonResponse.prettyPrint();
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
-
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
-
-        assertThat(response,is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
-    }
-
-    @Test
-    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() {
-        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", PREVIEW_LETTER);
-        responseBody.prettyPrint();
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
-        assertThat(jsonPath.get("data.errors"), is(nullValue()));
-    }
-
-//    @Test
-//    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
-//        ResponseBody responseBody = validatePostSuccess(GENERATE_LETTER_PAYLOAD, RE_PRINT);
-//        responseBody.prettyPrint();
-//    }
-
-    @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
     }
@@ -192,57 +145,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
-
-    @Test
-    public void verifyAssembleLetterShouldReturnOkResponseCode(){
-        ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json", ASSEMBLE_LETTER);
-        JsonPath jsonPath = JsonPath.from(response.asString());
-        List paragraphDetails = jsonPath.get("data.paragraphDetails");
-        String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
-        response.prettyPrint();
-
-        assertThat(paragraphDetails.size(), is(3));
-        assertThat(templateName,is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
-    }
-
-    @Test
-    public void verifyAssembleLetterShouldReturnBadResponseCode(){
-        String jsonAsString = getJsonFromFile("/document/assembleLetterPayLoad.json");
-        jsonAsString =  jsonAsString.replace("1985-01-01","01-01-01");
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonAsString)
-                .when().post(ASSEMBLE_LETTER)
-                .andReturn();
-
-        response.then().assertThat().statusCode(400);
-    }
-
-    @Test
-    public void verifyDefaultRePrintValuesReturnsOkResponseCode() {
-
-        ResponseBody response = validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
-        response.prettyPrint();
-        JsonPath jsonPath = JsonPath.from(response.asString());
-        assertThat(jsonPath.get("data.reprintDocument.list_items[0].label"), is(equalTo("Grant")));
-        assertThat(jsonPath.get("data.reprintDocument.list_items[0].code"), is(equalTo("WelshGrantFileName")));
-    }
-
-    @Test
-    public void verifyDefaultRePrintValuesReturnsBadResponseCode() {
-        String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
-        jsonAsString = jsonAsString.replaceFirst("Solicitor", "");
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonAsString)
-                .when().post(DEFAULT_PRINT_VALUES)
-                .andReturn();
-        assertThat(response.getStatusCode(),is(equalTo(400)));
-    }
-
-
     private String generateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -924,4 +826,107 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(HMCTS_VALUE));
         assertTrue(response.contains(POSTCODE));
     }
+
+    @Test
+    public void verifyAssembleLetterShouldReturnOkResponseCode(){
+        ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json", ASSEMBLE_LETTER);
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        List paragraphDetails = jsonPath.get("data.paragraphDetails");
+        String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
+        response.prettyPrint();
+
+        assertThat(paragraphDetails.size(), is(3));
+        assertThat(templateName,is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
+    }
+
+    @Test
+    public void verifyAssembleLetterShouldReturnIHTReferenceNumber(){
+        String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(ASSEMBLE_LETTER)
+                .andReturn();
+
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        response.prettyPrint();
+        response.then().assertThat().statusCode(200);
+        assertThat(jsonPath.get("data.ihtReferenceNumber"),is(equalTo("ONLINE-123434")));
+    }
+
+    @Test
+    public void verifyDefaultRePrintValuesReturnsOkResponseCode() {
+        String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
+
+        ResponseBody response = validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
+
+        response.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        assertThat(jsonPath.get("data.reprintDocument.list_items[0].label"), is(equalTo("Grant")));
+        assertThat(jsonPath.get("data.reprintDocument.list_items[0].code"), is(equalTo("WelshGrantFileName")));
+    }
+
+    @Test
+    public void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() {
+        String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
+        jsonAsString =  jsonAsString.replaceFirst("\"paperForm\": \"Yes\",","\"paperForm\": \"No\",");
+
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(DEFAULT_PRINT_VALUES)
+                .andReturn();
+        assertThat(response.getStatusCode(),is(equalTo(200)));
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        assertThat(jsonPath.get("data.ihtReferenceNumber"),is(equalTo("ONLINE-123434")));
+    }
+
+    @Test
+    public void verifySolicitorGenerateLetterReturnOkResponseCode() {
+        String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
+        assertThat(getJsonFromFile("/document/assembledLetter.txt"),is(equalTo(response)));
+    }
+
+    @Test
+    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+    }
+
+    @Test
+    public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("/document/generateLetter.json"))
+                .when().post(PREVIEW_LETTER).andReturn();
+        jsonResponse.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
+
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+
+        assertThat(response,is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
+    }
+
+    @Test
+    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() {
+        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", PREVIEW_LETTER);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+    }
+
+//    @Test
+//    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
+//        ResponseBody responseBody = validatePostSuccess(GENERATE_LETTER_PAYLOAD, RE_PRINT);
+//        responseBody.prettyPrint();
+//    }
 }
