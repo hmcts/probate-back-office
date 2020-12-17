@@ -133,6 +133,9 @@ If you would like to test a new CCD config locally, you should run:
 To run the back-office app using gradle with environment:
 
 ```bash
+# first time only
+npx @hmcts/probate-dev-env --create
+
 # set CCD_DM_DOMAIN env var when spinning up containers
 CCD_DM_DOMAIN="http://localhost:5006" npx @hmcts/probate-dev-env 
 
