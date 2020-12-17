@@ -59,13 +59,13 @@ public class WillLodgementCallbackResponseTransformerTest {
     private static final String WL_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> WL_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
     private static final ProbateAddress WL_DECEASED_ADDRESS = Mockito.mock(ProbateAddress.class);
-    private static final String WL_DECEASED_EMAIL_ADDRESS = "deceased@email.com";
+    private static final String WL_DECEASED_EMAIL_ADDRESS = "deceased@probate-test.com";
 
     private static final String WL_EXECUTOR_TITLE = "Mr";
     private static final String WL_EXECUTOR_FORENAMES = "Forenames";
     private static final String WL_EXECUTOR_SURNAME = "Surname";
     private static final ProbateAddress WL_EXECUTOR_ADDRESS = Mockito.mock(ProbateAddress.class);
-    private static final String WL_EXECUTOR_EMAIL_ADDRESS = "executor@email.com";
+    private static final String WL_EXECUTOR_EMAIL_ADDRESS = "executor1@probate-test.com";
 
     private static final String WL_WITHDRAWAL_REASON = "cancelled";
     private static final String WILL_LODGEMENT_RECEIPT = "willLodgementDepositReceipt";

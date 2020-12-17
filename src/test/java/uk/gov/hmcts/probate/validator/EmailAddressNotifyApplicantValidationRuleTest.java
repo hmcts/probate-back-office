@@ -50,7 +50,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     public void shouldPassPersonalWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
-            .primaryApplicantEmailAddress("primary@email.com")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
@@ -62,7 +62,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     public void shouldPassSolicitorWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
-            .solsSolicitorEmail("solicitor@email.com")
+            .solsSolicitorEmail("solicitor@probate-test.com")
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
