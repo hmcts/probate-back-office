@@ -94,7 +94,7 @@ To build the project execute the following command:
   ./gradlew build
 ```
 
-## Docker environment
+### Docker environment
 
 Because the probate back office relies on CCD callbacks it must be run inside the docker-compose environment, and must be built before bringing the environment up. You will need to recompile after any code changes.
 
@@ -108,7 +108,6 @@ docker-compose build
 Bring up the environment: 
 
 ```
-
 # build the jar
 ./gradlew assemble
 
@@ -122,7 +121,6 @@ npx @hmcts/probate-dev-env
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
-
 ```
 
 If you would like to test a new CCD config locally, you should run:
@@ -132,140 +130,31 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
 
-## Full setup
-
-Guidance on how to set up probate locally using the updated docker images.
-
-##### 1) Install https://stedolan.github.io/jq/ 
+To run the back-office app using gradle with environment:
 
 ```bash
-  sudo apt-get install jq
-```
+# set CCD_DM_DOMAIN env var when spinning up containers
+CCD_DM_DOMAIN="http://localhost:5006" npx @hmcts/probate-dev-env 
 
-For mac 
-```bash
-  brew install jq
-```
+# stop back-office container
+docker-compose stop probate-back-office
 
-NB. If you download the binary version it is called 'jq-osx-amd64' and the scripts later will fail because they are looking for 'jq'. 
+# generate and import spreadsheets
+# for mac users:
+./ccdImports/conversionScripts/createAllXLS.sh docker.for.mac.localhost:4104
 
-##### 2) Login to azure
+# for linux users:
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 
 
-```bash
-  az login
-  az acr login --name hmctspublic --subscription DCD-CNP-Prod
-  az acr login --name hmctsprivate --subscription DCD-CNP-Prod
-```
+# import xls
+./ccdImports/conversionScripts/importAllXLS.sh
 
-##### 3) Reset your docker images, containers etc. 
-
-```bash
-   docker container rm $(docker container ls -a -q)
-   docker image rm $(docker image ls -a -q)
-   docker volume rm $(docker volume ls -q)
-```
-
-NB. Docker for desktop on a mac only allocates 2GB of memory by default, this is not enough I increased mine 16GB.
-
-##### 4) Run environments script
-```bash
-   ./ccd login
-```
-
-For linux/Mac
-```bash
-   source ./bin/linux-set-environment-variables.sh
-```
-##### 4.1) setup logstash
- 
-In order to work locally on probate-frontend you will need to clone project ccd-logstash from github.
-Checkout the probate-conf branch and build the docker image
-
-```
-   git checkout probate-conf
-   docker build . -t ccd-logstash:probate
-```   
- In probate-back-office/compose/elasticsearch.yml replace
-   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"
-   
-##### 5) Start up docker 
-```bash
-   docker network create compose_default
-   ./ccd compose pull
-   ./ccd compose build
-   ./ccd compose up
-```
-
-##### 6) Create blob store container
-Once docker has started run
-```bash
-   ./bin/document-management-store-create-blob-store-container.sh
-```
-
-##### 7) Restart dm-store container
-Find id of dm-store container
-```bash
-   docker ps | grep dm-store_1
-```
-Use id to stop container
-```bash
-   docker stop compose_dm-store_1_id
-```
-
-Start the dm-store container
-```bash
-   ./ccd compose up -d dm-store
-```
-
-#### 7.1) Restart other containers
-On linux you may have to restart any failing containers. These often fail to start: 
-* dm-store
-* fees-api
-* payments-api
-* sidam-api
-
-Restart in that order
-
-##### 8) Setup IDAM data.
-```bash
-   ./bin/idam-client-setup.sh
-```
-
-To check the IDAM data, you can log into IDAM-web `http://localhost:8082/login` with `idamOwner@hmcts.net/Ref0rmIsFun`.
-
-##### 9) Generate roles, json->xls and import
-
-###### Create roles and users
-```bash
-   ./bin/ccd-add-all-roles.sh
-```
-You can check the user and roles on the IDAM-web by searching for `ProbateSolCW1@gmail.com` on Manager Users page.
-
-###### Generate xls 
-For mac
-```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.mac.localhost:4104
-```
-
-For linux (replace ip with your own ip)
-```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 
-```
-The xls generation adds a empty Banner tab for each case type, which will not load using the /import scrips. Remove this tab from any/all xls file before importing it
-
-###### Import xls
-```bash
-   ./ccdImports/conversionScripts/importAllXLS.sh
+# gradle build and run app
+./gradlew build
+./gradlew bootRun
 ```
  
- 
-##### 10) Start your local service 
-###### Pull probate specific ccd-logstash
-pull ccd-logstash branch probate-conf locally then
-
-docker build . -t ccd-logstash:probate
-
-###### Probate-back-office
+##### Probate-back-office
 Login to ccd on `http://localhost:3451`. Caseworker: `ProbateSolCW1@gmail.com / Pa55word11`. Solicitor  `ProbateSolicitor1@gmail.com / Pa55word11`.
 
 Start logstash-probateman (for legacy cases)
@@ -273,107 +162,8 @@ Start logstash-probateman (for legacy cases)
    sudo /usr/share/logstash/bin/logstash -f logstash/legacy-case-data-local.conf
 ```
 
-Run probate-back-office app. 
-
-##### loging into to ccd-ui
-For a solicitor use ProbateSolicitor1@gmail.com : password  
-Alternatively, for a caseworker use  
-ProbateSolCW1@gmail.com : password
-
 ##### local document-store 
 You can go to a doc in dm by going to `localhost:3453/documents/[**ID**]/binary `.
-
-###### Using Payments and fees
-Add keywords to fees database
-```bash
-    ./bin/fees-add-keyword.sh
-```
-
-## Complete setup for local FE + e2e development
-### probate-frontend
-set following in default.yml
-```
-  useIDAM: 'true'
-  requireCcdCaseId: 'true'
-```
-you shoud then be able to use a citizen user of
-```
-testusername@test.com/Pa55word11
-```
-add a dev.yaml file to the /config folder with contents
-```
-featureToggles:
-  launchDarklyKey: 'sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844'
-```
-emails can be monitored at:
-```
-http://localhost:8025
-```
-run FE using 
-```
-yarn start:ld
-```
-You should also be able to debug on intellij by starting server.js
-
-### probate-caveats-frontend
-##### no changes
-
-### probate-orchestrator
-##### no changes
-
-### probate-business-service
-set the following application.yml
-```
-  port: 8081
-```
-set the following application.yml
-```
-document_management:
-  url: http://localhost:5006
-```
-
-### probate-submit-service
-##### no changes
-
-### probate-backoffice
-You will need to run with payments and fees docker images if you are expecting to make non-zero payments
-
-
-## Running the application as a docker image
-
-Create the image of the application by executing the following command:
-
-```bash
-  ./gradlew installDist
-```
-
-Create docker image:
-
-```bash
-  docker-compose build
-```
-
-Run the distribution (created in `build/install/spring-boot-template` directory)
-by executing the following command:
-
-```bash
-  docker-compose up
-```
-
-This will start the API container exposing the application's port
-(set to `4550` in this template app).
-
-In order to test if the application is up, you can call its health endpoint:
-
-```bash
-  curl http://localhost:4550/health
-```
-
-You should get a response similar to this:
-
-```
-  {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
-```
 
 ## Linking to a Probate-frontend PR
 You must link a probate-frontend pr to a probate-orchestrator pr and that to your probate-backoffice pr
@@ -444,16 +234,6 @@ http://probate-submit-service-pr-334.service.core-compute-preview.internal/healt
 http://probate-business-service-pr-334.service.core-compute-preview.internal/health
 http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
 ```
-
-
-
-
-
-When the containers are restarted, ccd data has to be reloaded
-The user token expires approx every 4 hours
-
-### Mac users
-You will need to reconfigure your docker settings to allow at least 6.5Gb
 
 ## Hystrix
 
