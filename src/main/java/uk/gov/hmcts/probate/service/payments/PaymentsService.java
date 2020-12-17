@@ -36,6 +36,7 @@ public class PaymentsService {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
+        log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
         ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
             request, PaymentResponse.class);
         PaymentResponse paymentResponse = Objects.requireNonNull(responseEntity.getBody());

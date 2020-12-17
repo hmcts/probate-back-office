@@ -69,7 +69,6 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path, Headers headers) {
-        log.info("validatePostSuccessForPayload.payload:" + payload +" path:"+ path);
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(headers)
