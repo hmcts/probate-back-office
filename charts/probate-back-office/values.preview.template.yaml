@@ -33,17 +33,17 @@ idam-pr:
 ccd:
   ccd:
     adminWeb:
-      enabled: true
+      enabled: false
     apiGatewayWeb:
-      enabled: true
+      enabled: false
     definitionImporter:
-      enabled: true
+      enabled: false
     managementWeb:
       enabled: true
     s2s:
-      enabled: true
+      enabled: false
     postgresql:
-      enabled: true
+      enabled: false
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
