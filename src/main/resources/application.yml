@@ -46,7 +46,7 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
-  url: ${PAYMENT_API_URL:http://localhost:8991}
+  url: ${PAYMENT_URL:http://localhost:8991}
   api: /credit-account-payments
   currency: GBP
   siteId: devSiteId
