@@ -39,8 +39,8 @@ public class PaymentFeeBuilderTest {
         assertEquals("feeJurisdiction1", paymentFee.getJurisdiction1());
         assertEquals("feeJurisdiction2", paymentFee.getJurisdiction2());
         assertEquals("feeVersion", paymentFee.getVersion());
-        assertEquals(20, paymentFee.getCalculated_amount().longValue());
-        assertEquals(10, paymentFee.getFee_amount().longValue());
+        assertEquals(20, paymentFee.getCalculatedAmount().longValue());
+        assertEquals(10, paymentFee.getFeeAmount().longValue());
         assertEquals(2, paymentFee.getVolume().longValue());
 
     }

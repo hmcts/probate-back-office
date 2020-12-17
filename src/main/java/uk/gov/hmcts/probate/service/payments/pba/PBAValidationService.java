@@ -40,7 +40,7 @@ public class PBAValidationService {
 
     public List<String> getPBAs(String authToken) {
         ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);
-        Map result = Objects.requireNonNull(userResponse.getBody());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String emailId = result.get("email").toString().toLowerCase();
 
         URI uri = buildUri(emailId);
@@ -62,7 +62,7 @@ public class PBAValidationService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", authTokenGenerator.generate());
-        return new HttpEntity<HttpHeaders>(headers);
+        return new HttpEntity<>(headers);
     }
 
     private URI buildUri(String emailId) {

@@ -54,6 +54,7 @@ public class NextStepsController {
     private final PaymentsService paymentsService;
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
 
+    public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<CallbackResponse> validate(
@@ -72,7 +73,7 @@ public class NextStepsController {
                     .transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             if (bindingResult.hasErrors()) {
-                log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
@@ -86,7 +87,7 @@ public class NextStepsController {
                 creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
             PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
             if (!"Success".equalsIgnoreCase(paymentResponse.getStatus())) {
-                log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), "Credit account payment response not " +
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), "Credit account payment response not " +
                     "successful");
                 throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Credit account payment response not " +
                     "successful for caseId:" + callbackRequest.getCaseDetails().getId());
@@ -113,7 +114,7 @@ public class NextStepsController {
         }
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 

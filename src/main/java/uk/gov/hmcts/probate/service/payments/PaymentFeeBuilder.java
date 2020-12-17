@@ -17,10 +17,10 @@ public class PaymentFeeBuilder {
 
     public PaymentFee buildPaymentFee(FeeResponse feeResponse, BigDecimal volume) {
         return PaymentFee.builder()
-            .calculated_amount(feeResponse.getFeeAmount().multiply(volume))
+            .calculatedAmount(feeResponse.getFeeAmount().multiply(volume))
             .code(feeResponse.getCode())
             .description(feeResponse.getDescription())
-            .fee_amount(feeResponse.getFeeAmount())
+            .feeAmount(feeResponse.getFeeAmount())
             .jurisdiction1(feeServiceConfiguration.getJurisdiction1())
             .jurisdiction2(feeServiceConfiguration.getJurisdiction2())
             .version(feeResponse.getVersion())
