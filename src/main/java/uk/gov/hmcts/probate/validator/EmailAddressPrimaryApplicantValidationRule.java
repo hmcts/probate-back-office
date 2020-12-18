@@ -11,7 +11,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class EmailAddressPrimaryApplicantValidationRule implements CaseDetailsValidationRule{
 
-    private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
+    private static final String EMAIL_NOT_FOUND_PA = "emailNotProvidedPA";
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String REGEX = "[a-z0-9!#$%&'*+/=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-z0-9](?:[a-z0-9-.]{0,30}[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]{0,10}[a-z0-9])?";
 
