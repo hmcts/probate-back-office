@@ -57,7 +57,7 @@ public class CCDDataTransformerTest {
     private static final BigDecimal FEE_NON_UK_COPIES = new BigDecimal(1.50);
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
-    private static final String FEE_ACCOUNT = "1234";
+    private static final String SELECTED_PBA_NUMBER = "PBA1234";
     private static final DynamicList PBA_NUMBERS = DynamicList.builder().listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
 
     @Mock
@@ -113,6 +113,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code(SELECTED_PBA_NUMBER).build()).build());
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
@@ -176,13 +177,29 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_CHEQUE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getSolsPBANumber()).thenReturn(null);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
-        assertAll(ccdData);
+        assertEquals(SOLICITOR_FIRM_NAME, ccdData.getSolicitor().getFirmName());
+        assertEquals(SOLICITOR_FIRM_LINE1, ccdData.getSolicitor().getFirmAddress().getAddressLine1());
+        assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmAddress().getPostCode());
+        assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
+        assertNull(ccdData.getFee().getSolsPBANumber());
+        assertEquals(DECEASED_FIRSTNAME, ccdData.getDeceased().getFirstname());
+        assertEquals(DECEASED_LASTNAME, ccdData.getDeceased().getLastname());
+        assertEquals(DOB, ccdData.getDeceased().getDateOfBirth());
+        assertEquals(DOD, ccdData.getDeceased().getDateOfDeath());
+        assertEquals(IHT_FORM_ID, ccdData.getIht().getFormName());
+        assertEquals(IHT_GROSS, ccdData.getIht().getGrossValue());
+        assertEquals(IHT_NET, ccdData.getIht().getNetValue());
+        assertTrue(ccdData.getExecutors().get(2).isApplying());
+        assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
+        assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
+        assertFees(ccdData);
+
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        assertNull(ccdData.getFee().getSolsFeeAccountNumber());
     }
 
     @Test
@@ -191,14 +208,12 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
-        when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCOUNT);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        assertEquals(FEE_ACCOUNT, ccdData.getFee().getSolsFeeAccountNumber());
     }
 
     @Test
@@ -283,7 +298,7 @@ public class CCDDataTransformerTest {
         assertEquals(SOLICITOR_FIRM_LINE1, ccdData.getSolicitor().getFirmAddress().getAddressLine1());
         assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmAddress().getPostCode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
-        assertEquals(SOLICITOR_SOT_JOB_TITLE, ccdData.getSolicitor().getJobRole());
+        assertEquals(SELECTED_PBA_NUMBER, ccdData.getFee().getSolsPBANumber());
         assertEquals(DECEASED_FIRSTNAME, ccdData.getDeceased().getFirstname());
         assertEquals(DECEASED_LASTNAME, ccdData.getDeceased().getLastname());
         assertEquals(DOB, ccdData.getDeceased().getDateOfBirth());

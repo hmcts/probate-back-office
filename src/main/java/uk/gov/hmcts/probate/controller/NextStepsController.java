@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,7 +17,6 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
@@ -37,7 +35,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;

@@ -54,7 +54,7 @@ public class ConfirmationResponseService {
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
+    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account ";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
 
 
@@ -329,7 +329,7 @@ public class ConfirmationResponseService {
 
     private String getPaymentReference(CCDData ccdData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + ccdData.getFee().getSolsFeeAccountNumber();
+            return PAYMENT_REFERENCE_FEE_PREFIX + ccdData.getFee().getSolsPBANumber();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }

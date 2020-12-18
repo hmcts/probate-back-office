@@ -2075,7 +2075,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "extraCopiesOfGrant", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "outsideUKGrantCopies", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsPaymentMethods", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsFeeAccountNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsFeeAccountNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsPBANumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsAmendLegalStatmentSelect", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationFee", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},

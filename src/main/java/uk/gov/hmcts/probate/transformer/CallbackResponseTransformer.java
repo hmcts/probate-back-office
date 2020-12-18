@@ -461,10 +461,17 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest, String authToken) {
+    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         solicitorLegalStatementNextStepsDefaulter.transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         solicitorPBADefaulter.defaultFeeAccounts(responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());

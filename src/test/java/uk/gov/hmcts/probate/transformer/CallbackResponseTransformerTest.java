@@ -2630,8 +2630,14 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldCallSolLSAmendTransformer() {
-        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock, "Auth");
+        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void shouldCallSolLSPBATransformer() {
+        underTest.transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        verify(solicitorPBADefaulter).defaultFeeAccounts(any(ResponseCaseData.ResponseCaseDataBuilder.class), any(String.class));
     }
 
     @Test

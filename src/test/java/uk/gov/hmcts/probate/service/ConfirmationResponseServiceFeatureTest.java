@@ -59,6 +59,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String SOLS_FEE_ACC = "12345";
+    private static final String SOLS_FEE_PBA = "PBA-12345";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
@@ -216,7 +217,7 @@ public class ConfirmationResponseServiceFeatureTest {
                 .paymentMethod(PAYMENT_METHOD)
                 .amount(TOTAL_FEE)
                 .applicationFee(APPLICATION_FEE)
-                .solsFeeAccountNumber(SOLS_FEE_ACC)
+                .solsPBANumber(SOLS_FEE_PBA)
                 .feeForUkCopies(FEE_UK)
                 .feeForNonUkCopies(FEE_NON_UK)
                 .build();

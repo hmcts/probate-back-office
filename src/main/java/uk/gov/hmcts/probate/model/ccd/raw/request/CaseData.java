@@ -292,7 +292,8 @@ public class CaseData extends CaseDataParent {
     private final String solsPaymentMethods;
 
     private final String solsFeeAccountNumber;
-    
+
+    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsPBANumberIsNull}")
     private final DynamicList solsPBANumber;
 
     private final String casePrinted;

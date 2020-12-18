@@ -20,6 +20,8 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -233,6 +235,7 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
+                .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code("PBA1234").build()).build())
                 .applicationFee(APPLICATION_FEE)
                 .feeForUkCopies(FEE_FOR_UK_COPIES)
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)

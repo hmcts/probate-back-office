@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -30,6 +32,7 @@ public class CaseDataTestBuilder {
     private static final String SOLICITOR_APPLYING = "Yes";
     public static final String IHT_FORM = "IHT207";
     public static final String PAYMENT_METHOD = "fee account";
+    public static final String SOLS_PBA_NUMBER = "PBA1234";
     public static final String WILL_HAS_CODICLIS = "Yes";
     public static final String NUMBER_OF_CODICLIS = "1";
     public static final BigDecimal NET = BigDecimal.valueOf(1000f);
@@ -132,6 +135,7 @@ public class CaseDataTestBuilder {
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
+                .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code(SOLS_PBA_NUMBER).build()).build())
                 .applicationFee(APPLICATION_FEE)
                 .feeForUkCopies(FEE_FOR_UK_COPIES)
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)

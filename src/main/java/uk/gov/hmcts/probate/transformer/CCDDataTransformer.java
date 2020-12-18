@@ -102,8 +102,8 @@ public class CCDDataTransformer {
                 .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
                 .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
                 .paymentMethod(caseData.getSolsPaymentMethods())
-                .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                //.solsPBANumber(caseData.getSolsPBANumber().getValue().getCode())
+                .solsPBANumber(caseData.getSolsPBANumber() == null || caseData.getSolsPBANumber().getValue() == null ? null :
+                    caseData.getSolsPBANumber().getValue().getCode())
                 .applicationFee(caseData.getApplicationFee())
                 .amount(caseData.getTotalFee())
                 .feeForUkCopies(caseData.getFeeForUkCopies())
