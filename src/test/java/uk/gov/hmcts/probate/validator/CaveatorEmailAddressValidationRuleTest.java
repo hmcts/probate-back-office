@@ -26,7 +26,8 @@ public class CaveatorEmailAddressValidationRuleTest {
     private CaveatData CaveatDataEmailInvalid2;
     private CaveatData CaveatDataEmailInvalid3;
     private CaveatData CaveatDataEmailInvalid4;
-    private CaveatData CaveatDataEmailValid;
+    private CaveatData CaveatDataEmailValid1;
+    private CaveatData CaveatDataEmailValid2;
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -71,9 +72,15 @@ public class CaveatorEmailAddressValidationRuleTest {
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailValid = CaveatData.builder()
+        CaveatDataEmailValid1 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("example@test.com")
+                .registryLocation("Bristol")
+                .build();
+
+        CaveatDataEmailValid2 = CaveatData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caveatorEmailAddress("example@test-hmcts.com")
                 .registryLocation("Bristol")
                 .build();
     }
@@ -141,7 +148,14 @@ public class CaveatorEmailAddressValidationRuleTest {
     @Test
     public void ApplyingExecEmailIsValid() {
         CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailValid, LAST_MODIFIED, CASE_ID);
+                new CaveatDetails(CaveatDataEmailValid1, LAST_MODIFIED, CASE_ID);
+        caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+    }
+
+    @Test
+    public void ApplyingExecEmailIsValid2() {
+        CaveatDetails CaveatDetailsEmptyEmail =
+                new CaveatDetails(CaveatDataEmailValid2, LAST_MODIFIED, CASE_ID);
         caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
     }
 
@@ -151,4 +165,5 @@ public class CaveatorEmailAddressValidationRuleTest {
                 new CaveatDetails(CaveatDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
         caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
     }
+
 }

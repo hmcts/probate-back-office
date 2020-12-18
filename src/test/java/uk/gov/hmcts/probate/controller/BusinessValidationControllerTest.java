@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -115,6 +116,7 @@ public class BusinessValidationControllerTest {
     private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final ApplicationType APPLICATION_TYPE = ApplicationType.SOLICITOR;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -237,6 +239,7 @@ public class BusinessValidationControllerTest {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE)
+                .applicationType(APPLICATION_TYPE)
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST);
     }
 

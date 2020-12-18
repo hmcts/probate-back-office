@@ -32,6 +32,7 @@ public class EmailAddressExecutorsValidationRuleTest {
     private CaseData caseDataEmailInvalid3;
     private CaseData caseDataEmailInvalid4;
     private CaseData caseDataEmailValid;
+    private CaseData caseDataNoAdditionalExecs;
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -143,6 +144,10 @@ public class EmailAddressExecutorsValidationRuleTest {
                 .additionalExecutorsApplying(EXECEUTORS_APPLYING_EMAIL_EMPTY)
                 .registryLocation("Bristol").build();
 
+        caseDataNoAdditionalExecs = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .registryLocation("Bristol").build();
+
         caseDataEmailInvalid1 = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .additionalExecutorsApplying(EXECEUTORS_APPLYING_EMAIL_INVALID1)
@@ -246,5 +251,12 @@ public class EmailAddressExecutorsValidationRuleTest {
         CaseDetails caseDetailsEmailNull =
                 new CaseDetails(caseDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
         emailAddressExecutorsValidationRule.validate(caseDetailsEmailNull);
+    }
+
+    @Test
+    public void NoApplyingExecs() {
+        CaseDetails caseDetailsNoExecs =
+                new CaseDetails(caseDataNoAdditionalExecs, LAST_MODIFIED, CASE_ID);
+        emailAddressExecutorsValidationRule.validate(caseDetailsNoExecs);
     }
 }

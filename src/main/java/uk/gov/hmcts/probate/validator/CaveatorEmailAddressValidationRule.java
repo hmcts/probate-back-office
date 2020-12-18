@@ -12,13 +12,13 @@ import java.util.Locale;
 public class CaveatorEmailAddressValidationRule implements CaveatEmailValidationRule{
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
-    private static final String REGEX = "[a-z0-9!#$%&'*+/=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@([a-z0-9]{1,30}\\.){0,5}[a-z0-9](?:[a-z0-9-]{0,10}[a-z0-9])?";
+    private static final String EMAIL_NOT_FOUND_CAVEAT = "emailNotProvidedCaveats";
+    private static final String REGEX = "[a-z0-9!#$%&'*+/=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-z0-9](?:[a-z0-9-.]{0,30}[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]{0,10}[a-z0-9])?";
 
     @Override
     public void validate(CaveatDetails caveatDetails) {
         String[] args = {caveatDetails.getId().toString()};
-        String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
+        String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_CAVEAT, args, Locale.UK);
 
         if (caveatDetails.getData().getCaveatorEmailAddress() != null) {
           if(!caveatDetails.getData().getCaveatorEmailAddress().matches(REGEX)){
