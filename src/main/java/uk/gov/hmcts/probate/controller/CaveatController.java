@@ -106,6 +106,8 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
+
         CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
@@ -117,6 +119,8 @@ public class CaveatController {
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
         BindingResult bindingResult)
         throws NotificationClientException {
+
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
@@ -138,6 +142,7 @@ public class CaveatController {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
 
         CaveatData caveatData = caveatDataTransformer.transformSolsCaveats(caveatCallbackRequest);
 

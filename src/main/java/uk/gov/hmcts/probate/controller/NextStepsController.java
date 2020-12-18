@@ -26,6 +26,9 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -44,6 +47,9 @@ public class NextStepsController {
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
+    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
+    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
+    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
 
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
@@ -54,6 +60,8 @@ public class NextStepsController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse callbackResponse;
         Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
@@ -113,5 +121,11 @@ public class NextStepsController {
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
+        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
     }
 }
