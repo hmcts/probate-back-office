@@ -79,8 +79,8 @@ public class InformationRequestServiceTest {
         executorsApplying = new ArrayList<>();
         bulkPrintIds = new ArrayList<>();
 
-        execApplying = buildExec("1", "Bob Smith", "Bob@test.com", "Yes");
-        execApplying2 = buildExec("2", "John Smith", "John@test.com", "Yes");
+        execApplying = buildExec("1", "Bob Smith", "executor1@probate-test.com", "Yes");
+        execApplying2 = buildExec("2", "John Smith", "executor2@probate-test.com", "Yes");
 
         executorsApplying.add(execApplying);
         executorsApplying.add(execApplying2);
@@ -135,7 +135,7 @@ public class InformationRequestServiceTest {
                 .executorsApplyingNotifications(executorsApplying)
                 .boRequestInfoSendToBulkPrintRequested("No")
                 .paperForm("No")
-                .primaryApplicantEmailAddress("email@email.com").build();
+                .primaryApplicantEmailAddress("primary@probate-test.com").build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(informationRequestCorrespondenceService.emailInformationRequest(caseDetails)).thenReturn(Arrays.asList(SENT_EMAIL_DOCUMENT));

@@ -18,11 +18,11 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     private static final String EXECUTOR_APPLYING_1_NAME = "Conner O'Mailey";
     private static final String EXECUTOR_APPLYING_1_OTHER_NAMES = "Connie O";
     private static final Boolean EXECUTOR_APPLYING_1_HAS_OTHER_NAMES = Boolean.TRUE;
-    private static final String EXECUTOR_APPLYING_1_EMAIL = "connie.omailey@gmail.com";
+    private static final String EXECUTOR_APPLYING_1_EMAIL = "executor1@probate-test.com";
     private static final String EXECUTOR_APPLYING_2_NAME = "Mark Strong";
     private static final String EXECUTOR_APPLYING_2_OTHER_NAMES = null;
     private static final Boolean EXECUTOR_APPLYING_2_HAS_OTHER_NAMES = Boolean.FALSE;
-    private static final String EXECUTOR_APPLYING_2_EMAIL = "mark.strong@gmail.com";
+    private static final String EXECUTOR_APPLYING_2_EMAIL = "executor2@probate-test.com";
 
     private static final String EXECUTOR_APPLYING_1_ADDRESS_LINE1 = "Petty England";
     private static final String EXECUTOR_APPLYING_2_ADDRESS_LINE1 = "Petty Scotland";

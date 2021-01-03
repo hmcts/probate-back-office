@@ -12,7 +12,7 @@
         "Country": "United Kingdom"
       },
       "solsSolicitorAppReference": "12345",
-      "solsSolicitorEmail": "test@test.com",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "12345678",
       "solsSolicitorIsExec": "No",
       "applicationGrounds": "Grounds",
@@ -47,7 +47,7 @@
         "PostCode": "Postcode",
         "Country": ""
       },
-      "primaryApplicantEmailAddress": "test@test.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "willExists": "No",
       "deceasedMaritalStatus": "marriedCivilPartnership",
       "solsApplicantRelationshipToDeceased": "SpouseOrCivil",
