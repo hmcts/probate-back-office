@@ -5,10 +5,10 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#dispenseWithNotice');
-
+    await I.waitForClickable({css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`});
     await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
-    await I.selectOption('#titleAndClearingType', grantOfProbateConfig.page2_titleAndClearingType);
+    await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

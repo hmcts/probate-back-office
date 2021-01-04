@@ -22,7 +22,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
     const willType = 'NoWill';
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';

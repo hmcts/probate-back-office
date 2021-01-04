@@ -1,8 +1,8 @@
 module.exports = {
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
-    TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
+    TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestFrontendUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
@@ -12,6 +12,6 @@ module.exports = {
     TestEnvUser: process.env.TEST_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvPassword: process.env.TEST_USER_PASSWORD || 'Pa55word11',
     TestEnvProfUser: process.env.PROF_USER_EMAIL || 'ProbateSolicitor1@gmail.com',
-    TestEnvProfPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
+    TestEnvProfPassword: process.env.PROF_USER_PASSWORD || 'Pa55word11',
     TestForXUI: process.env.TESTS_FOR_XUI_SERVICE === 'true'
 };

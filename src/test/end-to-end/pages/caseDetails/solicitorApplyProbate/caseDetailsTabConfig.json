@@ -5,15 +5,13 @@
     "Enter the gross value of the estate",
     "Enter the net value of the estate",
     "Did the deceased leave a will?",
-    "Did the deceased have assets in any other names?",
-    "Please state the grounds for making this application and any information in support:"
+    "Did the deceased have assets in any other names?"
   ],
   "dataKeys": [
     "page2_solsIHTFormValue",
     "page2_ihtGrossValueDisplay",
     "page2_ihtNetValueDisplay",
-    "optionNo",
-    "page2_applicationGrounds"
+    "optionNo"
   ],
   "WillLeft": {
     "fields": [

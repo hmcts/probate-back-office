@@ -19,7 +19,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
     const willType = 'WillLeftAnnexed';
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
