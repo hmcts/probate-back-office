@@ -91,6 +91,22 @@
       "deceasedDomicileInEngWales": "Yes",
       "outsideUKGrantCopies":1,
       "solsPaymentMethods":"fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0087535",
+          "label": "PBA0087535"
+        },
+        "list_items": [
+          {
+            "code": "PBA0087535",
+            "label": "PBA0087535"
+          },
+          {
+            "code": "PBA0087535999",
+            "label": "PBA0087535999"
+          }
+        ]
+      },
       "extraCopiesOfGrant":1,
       "ihtNetValue": "90009",
       "deceasedSurname": "deceasedLastName",

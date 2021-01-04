@@ -4,7 +4,15 @@
     "jurisdiction": "PROBATE",
     "state": "SolDraftCase",
     "case_type_id": "GrantOfRepresentation",
-    "last_modified": null,
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
     "security_classification": "PUBLIC",
     "case_data": {
       "solsPaymentMethods": "fee account",
