@@ -1,7 +1,7 @@
 {
   "tabName": "Applicant details",
   "fields": [
-    "Name of your firm",
+    "Name of the firm",
     "Your reference for this application",
     "Building and Street",
     "Address Line 2",
@@ -10,9 +10,9 @@
     "County",
     "Postcode/Zipcode",
     "Country",
-    "Solicitor email address",
-    "Is the solicitor named in the will as an executor?",
-    "Solicitor phone number"
+    "Contact email address",
+    "Is the qualified legal professional named in the will as an executor?",
+    "Contact phone number"
   ],
   "dataKeys": [
     "page2_firm_name",
@@ -31,7 +31,7 @@
     "fields": [
       "First name(s)",
       "Last name(s)",
-      "Name of your firm",
+      "Name of the firm",
       "Enter their full name as it appears on the will",
       "Building and Street",
       "Address Line 2",
