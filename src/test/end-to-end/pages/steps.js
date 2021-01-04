@@ -7,7 +7,7 @@ module.exports = function () {
     return actor({
 
         // Login
-        
+
         authenticateWithIdamIfAvailable: steps.IDAM.signIn,
         selectNewCase: steps.newCase.newCase,
         selectCaseTypeOptions: steps.createCase.createCase,

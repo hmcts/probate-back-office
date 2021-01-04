@@ -77,7 +77,19 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end grantOfProbate",
+            "name": "Mocha test end-end Caseworker will lodgement",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-willLodgement",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },        
+        {
+            "name": "Mocha test end-end Caseworker grantOfProbate",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-grantOfProbate",
@@ -89,16 +101,76 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end will lodgement",
+            "name": "Mocha test end-end Solicitor applyCaveat",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-willLodgement",
+                "test-e2e-sol-applyCaveat",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }
+        }, 
+        {
+            "name": "Mocha test end-end Solicitor grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbate",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        }, 
+        {
+            "name": "Mocha test end-end Solicitor multi grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateMulti",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end Solicitor no will grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateNoWill",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end Solicitor will annexed grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateWillAnnexed",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end Solicitor will annexed failure grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateWillAnnexedFailure",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },             
     ]
 }

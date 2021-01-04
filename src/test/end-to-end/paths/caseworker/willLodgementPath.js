@@ -48,7 +48,6 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
     await I.checkMyAnswers(nextStepName);
-    let endState = 'Will lodgement created';
 
     // SECOND case - the main test case
 
@@ -59,7 +58,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
     await I.checkMyAnswers(nextStepName);
-    endState = 'Will lodgement created';
+    let endState = 'Will lodgement created';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')

@@ -21,7 +21,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
 
     const willType = 'WillLeft';
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
