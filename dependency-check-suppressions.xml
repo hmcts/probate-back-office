@@ -872,5 +872,14 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2019-10102</cve>
         <cve>CVE-2019-10103</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: bcprov-jdk15on-1.60.jar
+   ]]></notes>
+        <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
+        <cpe>cpe:/a:bouncycastle:legion-of-the-bouncy-castle</cpe>
+        <cpe>cpe:/a:bouncycastle:legion-of-the-bouncy-castle-java-crytography-api</cpe>
+        <cve>CVE-2020-26939</cve>
+    </suppress>
 </suppressions>
 
