@@ -509,7 +509,7 @@ public class    CaseDataTest {
     public void isBoEmailRequestInfoNotificationRequestedFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("test@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .build();
 
         assertEquals(true, caseData.isBoEmailRequestInfoNotificationRequested());
@@ -547,7 +547,7 @@ public class    CaseDataTest {
     public void isBoEmailDocsReceivedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("test@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .build();
 
         assertEquals(true, caseData.isDocsReceivedEmailNotificationRequested());
@@ -585,7 +585,7 @@ public class    CaseDataTest {
     public void isBoEmailGrantIssuedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("test@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .build();
 
         assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
@@ -623,7 +623,7 @@ public class    CaseDataTest {
     public void isBoEmailGrantReissuedNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("test@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .build();
 
         assertEquals(true, caseData.isGrantReissuedEmailNotificationRequested());
@@ -661,7 +661,7 @@ public class    CaseDataTest {
     public void isBoCaveatStopEmailNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("test@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .build();
 
         assertEquals(true, caseData.isCaveatStopEmailNotificationRequested());
@@ -869,12 +869,12 @@ public class    CaseDataTest {
     @Test
     public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .solsSolicitorEmail(null)
                 .build();
 
         final CaseData caseData2 = CaseData.builder()
-                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .solsSolicitorEmail("")
                 .build();
 
@@ -886,12 +886,12 @@ public class    CaseDataTest {
     public void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
         final CaseData caseData = CaseData.builder()
                 .primaryApplicantEmailAddress(null)
-                .solsSolicitorEmail("test-solictor@test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
                 .build();
 
         final CaseData caseData2 = CaseData.builder()
                 .primaryApplicantEmailAddress("")
-                .solsSolicitorEmail("test-solictor@test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
                 .build();
 
         assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
