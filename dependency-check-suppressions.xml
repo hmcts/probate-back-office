@@ -628,7 +628,6 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <notes><![CDATA[
    file name: bcprov-jdk15on-1.60.jar
    ]]></notes>
-        <gav regex="true">^org\.bouncycastle/bcprov\-jdk15on@.*$</gav>
         <cve>CVE-2020-26939</cve>
     </suppress>
 </suppressions>
