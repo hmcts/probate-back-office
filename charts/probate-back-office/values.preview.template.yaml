@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: true
+  probate-ccd-stack: false
 
 postgresql:
   enabled: true
@@ -123,9 +123,9 @@ java:
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
     PROBATE_POSTGRESQL_DATABASE: probate
-    CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
-    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
-    CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
+    #CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    #SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    #CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
 
   keyVaults:
     probate:
