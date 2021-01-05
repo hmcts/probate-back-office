@@ -19,11 +19,13 @@ public class EmailAddressSolicitorValidationRule implements CaseDetailsValidatio
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
 
-        if (caseDetails.getData().getApplicationType().getCode().matches("sol")
-                && caseDetails.getData().getSolsSolicitorEmail() != null) {
-            if(!caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)){
-                throw new BusinessValidationException(userMessage,
-                        "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
+        if(caseDetails.getData().getApplicationType() != null){
+            if (caseDetails.getData().getApplicationType().getCode().matches("sol")
+                    && caseDetails.getData().getSolsSolicitorEmail() != null) {
+                if(!caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)){
+                    throw new BusinessValidationException(userMessage,
+                            "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
+                }
             }
         }
     }
