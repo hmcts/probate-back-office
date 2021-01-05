@@ -329,6 +329,9 @@
         <cve>CVE-2020-24616</cve>
         <cve>CVE-2020-24750</cve>
         <cve>CVE-2020-25649</cve>
+        <cve>CVE-2020-35490</cve>
+        <cve>CVE-2020-35491</cve>
+        <cve>CVE-2020-35728</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -881,5 +884,13 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cpe>cpe:/a:bouncycastle:legion-of-the-bouncy-castle-java-crytography-api</cpe>
         <cve>CVE-2020-26939</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: guava-28.0-jre.jar
+   ]]></notes>
+        <gav regex="true">^com\.google\.guava:guava@28.0-jre.*$</gav>
+        <cve>CVE-2020-8908</cve>
+    </suppress>
+
 </suppressions>
 
