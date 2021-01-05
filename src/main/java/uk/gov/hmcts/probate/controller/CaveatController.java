@@ -120,13 +120,12 @@ public class CaveatController {
         BindingResult bindingResult)
         throws NotificationClientException {
 
-        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
-
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
