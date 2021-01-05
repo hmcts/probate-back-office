@@ -68,6 +68,13 @@ module.exports = function () {
         admonWillDetailsPage3: steps.solicitorApplyProbate.admonWillDetails.page3,
         admonWillDetailsPage4: steps.solicitorApplyProbate.admonWillDetails.page4,
         intestacyDetailsPage1: steps.solicitorApplyProbate.intestacyDetails.page1,
-        intestacyDetailsPage2: steps.solicitorApplyProbate.intestacyDetails.page2
+        intestacyDetailsPage2: steps.solicitorApplyProbate.intestacyDetails.page2,
+        applyCaveatPage1: steps.solicitorApplyCaveat.applyCaveat.page1,
+        applyCaveatPage2: steps.solicitorApplyCaveat.applyCaveat.page2,
+        caveatApplicationDetailsPage1: steps.solicitorApplyCaveat.applicationDetails.page1,
+        caveatApplicationDetailsPage2: steps.solicitorApplyCaveat.applicationDetails.page2,
+        completeCaveatApplicationPage1: steps.solicitorApplyCaveat.completeApplication.page1,
+        completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
+        completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3
     });
 };

@@ -72,13 +72,13 @@ public class InformationRequestCorrespondenceServiceTest {
         MockitoAnnotations.initMocks(this);
         execApplying = new CollectionMember<>("1",
                 ExecutorsApplyingNotification.builder()
-                        .email("test@test.com")
+                        .email("executor1@probate-test.com")
                         .address(ADDRESS)
                         .name("Fred Smith")
                         .notification("Yes").build());
         execApplyingNotifIsNo = new CollectionMember<>("2",
                 ExecutorsApplyingNotification.builder()
-                        .email("test@test.com")
+                        .email("executor2@probate-test.com")
                         .address(ADDRESS)
                         .name("Fred Smith")
                         .notification("No").build());
