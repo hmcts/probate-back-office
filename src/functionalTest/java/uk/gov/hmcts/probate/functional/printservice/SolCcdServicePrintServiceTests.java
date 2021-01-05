@@ -9,6 +9,9 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
@@ -87,4 +90,25 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     }
 
+    @Test
+    public void verifyprobateManLegacyCaseReturnsOkResponseCode() {
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .when().get("/template/probateManLegacyCase");
+        response.prettyPrint();
+
+        assertThat(response.statusCode(),is(equalTo(200)));
+        assertTrue(response.getBody().asString().contains("Probate Man Legacy Case"));
+    }
+
+    @Test
+    public void verifyprobateManLegacyCaseReturnsBadResponseCode() {
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId("serviceToken","userId"))
+                .when().get("/template/probateManLegacyCase");
+        response.prettyPrint();
+
+        assertThat(response.statusCode(),is(equalTo(403)));
+        assertTrue(response.getBody().asString().contains("Access Denied"));
+    }
 }
