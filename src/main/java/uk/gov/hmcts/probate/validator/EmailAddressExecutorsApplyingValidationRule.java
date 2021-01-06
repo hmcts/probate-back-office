@@ -17,7 +17,7 @@ public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsV
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
+    private static final String EMAIL_NOT_FOUND_PA = "multipleAddressNotProvidedPA";
 
     @Override
     public void validate(CaseDetails caseDetails) {
