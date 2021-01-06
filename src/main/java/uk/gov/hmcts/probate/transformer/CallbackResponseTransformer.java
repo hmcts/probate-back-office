@@ -586,7 +586,7 @@ public class CallbackResponseTransformer {
                 .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
                 .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
-                .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
+                .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsApplying())
                 .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
                 .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
                 .solsWillType(caseData.getSolsWillType())
@@ -737,7 +737,7 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isSolicitorMainApplicant(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsMainApplicant());
+        return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
     private boolean didDeceasedDieEngOrWales(CaseData caseData) {
