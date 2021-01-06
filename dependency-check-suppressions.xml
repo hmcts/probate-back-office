@@ -330,6 +330,9 @@
         <cve>CVE-2020-24616</cve>
         <cve>CVE-2020-24750</cve>
         <cve>CVE-2020-25649</cve>
+        <cve>CVE-2020-35490</cve>
+        <cve>CVE-2020-35491</cve>
+        <cve>CVE-2020-35728</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -672,6 +675,20 @@ netty-transport-native-kqueue-4.1.33.Final.jar
    ]]></notes>
         <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
         <cve>CVE-2020-26939</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+    file name: guava-28.0-jre.jar
+    ]]></notes>
+        <gav regex="true">^com\.google\.guava:guava.*$</gav>
+        <cve>CVE-2020-8908</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: launchdarkly-java-server-sdk-5.2.0.jar/META-INF/maven/com.google.guava/guava/pom.xml
+]]></notes>
+        <gav regex="true">^com\.google\.guava:guava.*$</gav>
+        <cve>CVE-2020-8908</cve>
     </suppress>
 </suppressions>
 
