@@ -14,25 +14,14 @@
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
         <cpe>cpe:/a:apache:tomcat</cpe>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
-        <cpe>cpe:/a:apache_software_foundation:tomcat</cpe>
-    </suppress>
+
     <suppress>
         <notes><![CDATA[
    file name: tomcat-embed-core-9.0.16.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
         <cpe>cpe:/a:apache_tomcat:apache_tomcat</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cpe>cpe:/a:apache_software_foundation:tomcat</cpe>
         <cve>CVE-2019-0232</cve>
         <cve>CVE-2020-1935</cve>
         <cve>CVE-2020-1745</cve>
@@ -623,6 +612,80 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
         <cve>CVE-2020-13956</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-test-5.1.5.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework:spring-test:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+        <cve>CVE-2020-5398</cve>
+        <cve>CVE-2020-5421</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-test-5.1.1.RELEASE.jar
+   ]]></notes>
+        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+        <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+    <notes><![CDATA[
+   file name: jackson-databind-2.9.8.jar
+   jackson-databind-2.9.8.jar (pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.9.8) : CVE-2019-12086, CVE-2019-12384, CVE-2019-12814, CVE-2019-14379, CVE-2019-14439
+
+   ]]></notes>
+    <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+    <cve>CVE-2019-12086</cve>
+    <cve>CVE-2019-12384</cve>
+    <cve>CVE-2019-12814</cve>
+    <cve>CVE-2019-14379</cve>
+    <cve>CVE-2019-14439</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: netty-transport-native-unix-common-4.1.33.Final.jar
+netty-transport-native-kqueue-4.1.33.Final.jar
+
+   ]]></notes>
+        <gav regex="true">^io\.netty:netty-transport-native-unix-common:.*$</gav>
+        <cve>CVE-2019-16869</cve>
+        <cve>CVE-2019-20444</cve>
+        <cve>CVE-2019-20445</cve>
+        <cve>CVE-2020-11612</cve>
+   </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name:
+netty-transport-native-kqueue-4.1.33.Final.jar
+
+   ]]></notes>
+        <gav regex="true">^io\.netty:netty-transport-native-kqueue:.*$</gav>
+        <cve>CVE-2019-16869</cve>
+        <cve>CVE-2019-20444</cve>
+        <cve>CVE-2019-20445</cve>
+        <cve>CVE-2020-11612</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: bcprov-jdk15on-1.60.jar
+   ]]></notes>
+        <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
+        <cve>CVE-2020-26939</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+    file name: guava-28.0-jre.jar
+    ]]></notes>
+        <gav regex="true">^com\.google\.guava:guava.*$</gav>
+        <cve>CVE-2020-8908</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: launchdarkly-java-server-sdk-5.2.0.jar/META-INF/maven/com.google.guava/guava/pom.xml
+]]></notes>
+        <gav regex="true">^com\.google\.guava:guava.*$</gav>
+        <cve>CVE-2020-8908</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
