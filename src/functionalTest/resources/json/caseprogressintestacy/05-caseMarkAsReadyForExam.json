@@ -45,7 +45,7 @@
 			"deceasedDateOfBirth": "1900-01-01",
 			"willAccessOriginal": "Yes",
 			"willExists": "Yes",
-			"solsWillType": "WillLeft",
+			"solsWillType": "NoWill",
 			"solsApplicantRelationshipToDeceased": null,
 			"solsSpouseOrCivilRenouncing": null,
 			"solsAdoptedEnglandOrWales": null,

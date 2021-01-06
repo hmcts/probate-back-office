@@ -19,7 +19,7 @@
       "deceasedDateOfDeath":"2018-01-01",
       "deceasedDateOfBirth":"1990-01-01",
       "willExists":"Yes",
-      "solsWillType": "WillLeft",
+      "solsWillType": "NoWill",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
