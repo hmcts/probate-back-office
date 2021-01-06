@@ -101,6 +101,17 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/caveat-amend")
+    public ResponseEntity<CaveatCallbackResponse> validateCaveatAmend(
+            @Validated({CaveatCreatedGroup.class})
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+
+        caveatorEmailAddressValidationRule.validate(caveatCallbackRequest.getCaseDetails());
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
     @PostMapping(path = "/solsUpdate")
     public ResponseEntity<CaveatCallbackResponse> updateSolsCaveat(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
