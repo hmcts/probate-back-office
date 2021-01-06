@@ -4,29 +4,30 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (crud) {
+module.exports = async function (crud) {
 
     const I = this;
 
     if (crud === 'create') {
-        I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
-        I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
-        I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
-        I.click('#ukEstate > div > button:nth-child(2)');
-        I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
-        I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page8_ukEstate_0_value);
-        I.click(`#domicilityIHTCert-${createGrantOfProbateConfig.page8_domicilityIHTCertYes}`);
-
+        await I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
+        await I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
+        await I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
+        await I.click('#ukEstate > div > button:nth-child(2)');
+        await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
+        await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page8_ukEstate_0_value);
+        await I.click(`#domicilityIHTCert-${createGrantOfProbateConfig.page8_domicilityIHTCertYes}`);
     }
 
     if (crud === 'update') {
-        I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
-        I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
-        I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
 
-        I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`);
-
+        const locator = {css: `#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`};
+        await I.waitForElement(locator);
+        await I.click(locator);
+        await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

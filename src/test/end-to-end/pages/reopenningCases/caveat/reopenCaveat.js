@@ -4,14 +4,14 @@ const testConfig = require('src/test/config');
 const reopenCaveatConfig = require('./reopenCaveatConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = async function (caseRef) {
 
     const I = this;
-    I.waitForText(reopenCaveatConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(reopenCaveatConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.fillField('#caveatReopenReason', reopenCaveatConfig.reopen_caveat_reason);
+    await I.fillField('#caveatReopenReason', reopenCaveatConfig.reopen_caveat_reason);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

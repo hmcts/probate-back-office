@@ -690,7 +690,7 @@ public class ConfirmationResponseServiceTest {
         when(caveatDataMock.getSolsSolicitorAppReference()).thenReturn("ref");
         when(caveatDataMock.getApplicationSubmittedDate()).thenReturn(date);
         when(caveatDataMock.getSolsSolicitorFirmName()).thenReturn("Sol Firm Name");
-        when(caveatDataMock.getCaveatorEmailAddress()).thenReturn("solicitor@test.com");
+        when(caveatDataMock.getCaveatorEmailAddress()).thenReturn("caveator@probate-test.com");
         when(caveatDataMock.getSolsSolicitorPhoneNumber()).thenReturn("07070707077");
         when(caveatDataMock.getCaveatorAddress()).thenReturn(probateAddressMock);
 

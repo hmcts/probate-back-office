@@ -6,8 +6,10 @@
 /target/
 /jsonToXLS/
 /node_modules/**
+/src/test/end-to-end/functional-output/**
 /src/test/end-to-end/output/**
-output/
+/output/**
+functional-output/
 
 ### STS ###
 .apt_generated
@@ -31,4 +33,4 @@ node_modules/\.bin/
 
 node_modules/
 
-src/test/end-to-end/output/
+src/test/end-to-end/functional-output/

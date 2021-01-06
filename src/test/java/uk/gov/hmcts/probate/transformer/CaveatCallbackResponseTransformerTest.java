@@ -66,7 +66,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String CAV_CAVEATOR_FORENAMES = "Caveator_fn";
     private static final String CAV_CAVEATOR_SURNAME = "Caveator_ln";
-    private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
+    private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "caveator@probate-test.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
     private static final Address CAV_BSP_CAVEATOR_ADDRESS = Mockito.mock(Address.class);
 
@@ -76,10 +76,10 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
-    private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(3);
     private static final String CAV_AUTO_EXPIRED = "Yes";
 
-    private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
+    private static final String CAV_FORMATTED_EXPIRY_DATE = "2020-02-01";
+    private static final LocalDate CAV_EXPIRY_DATE = LocalDate.of(2020, 2, 1);
 
     private static final String CAV_MESSAGE_CONTENT = "";
     private static final String CAV_REOPEN_REASON = "";
@@ -358,7 +358,7 @@ public class CaveatCallbackResponseTransformerTest {
     public void shouldExtendCaveatExpiry() {
         CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
 
-        String extendedDate = dateTimeFormatter.format(LocalDate.now().plusMonths(9));
+        String extendedDate = "2020-08-01";
         assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 

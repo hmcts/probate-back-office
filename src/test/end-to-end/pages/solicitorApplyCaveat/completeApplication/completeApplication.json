@@ -1,0 +1,17 @@
+{
+  "page1_payment_type": "Fee account",
+  "page1_pay_account_num": "1234",
+
+  "page2_waitForText":"Submit application",
+
+  "page3_waitForText":"This caveat application has now been submitted",
+  "page3_app_ref": "SOL-123-456",
+  "page3_application_fee": "Application fee £3.00",
+  "page3_pay_method": "Payment method fee account",
+  "page3_pay_ref": "Payment reference number Fee account PBA-1234",
+  "caveat_expiry_date": "XX XXX XXXX",
+
+  "notification_sent_email": "Sent Email",
+  "notification_pdf": "sentEmail.pdf",
+  "notification_date": "X XXX XXXX"
+}

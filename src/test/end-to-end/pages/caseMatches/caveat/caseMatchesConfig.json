@@ -1,7 +1,8 @@
 {
-  "waitForText" : "Caveat match",
-  "_comment_fullname": "E2E_deceased_forenames E2E_deceased_surname",
-  "dob": "1930-01-01",
-  "dod": "2017-01-01",
-  "postcode": "SW1A 1AA"
+    "waitForText" : "Caveat match",
+    "_comment_fullname": "E2E_deceased_forenames E2E_deceased_surname",
+    "dob": "1930-01-01",
+    "dod": "2017-01-01",
+    "postcode": "SW1A 1AA",
+    "addNewButton": "div#caseMatches > div > button[type=\"button\"]"
 }

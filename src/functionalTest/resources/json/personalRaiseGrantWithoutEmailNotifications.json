@@ -45,7 +45,7 @@
           "id": "1",
           "value": {
             "name": "Bob Smith",
-            "email": "test@test.com",
+            "email": "executor1@probate-test.com",
             "notification": "Yes",
             "responseReceived": "No",
             "address": {
@@ -65,7 +65,7 @@
           "id": null,
           "value": {
             "applyingExecutorName": "Eileen Executor",
-            "applyingExecutorEmail": "test@test.com",
+            "applyingExecutorEmail": "executor1@probate-test.com",
             "applyingExecutorAddress": {
               "County": "",
               "Country": "",
