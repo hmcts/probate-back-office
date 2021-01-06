@@ -65,7 +65,7 @@
   "SolicitorMainApplicantAndExecutor" : {
     "fields": [
       "Is the solicitor the main applicant?",
-      "Is the solicitor applying?",
+      "Is the qualified legal professional acting as an executor?",
       "First name(s)",
       "Last name(s)",
       "Applicant phone number",
