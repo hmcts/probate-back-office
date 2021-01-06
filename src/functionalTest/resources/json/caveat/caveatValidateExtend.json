@@ -1,0 +1,172 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "CavCaveatRaised",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "Leeds",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
+      "deceasedSurname": "dl name 2",
+      "deceasedDateOfDeath": "2017-12-31",
+      "deceasedDateOfBirth": "2016-12-31",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "documentsGenerated": [
+      ],
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "expiryDate": "endDate",
+      "messageContent": "content message",
+      "deceasedAnyOtherNames": "No",
+      "caveatorForenames": "cf name 2",
+      "deceasedForenames": "df name 2",
+      "caveatorSurname": "cl name 2",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ]
+    },
+    "data_classification": {
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "",
+      "deceasedAddress": {
+        "classification": "",
+        "value": {
+          "AddressLine1": "",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "expiryDate": "2020-01-01",
+      "messageContent": "messageContent",
+      "deceasedAnyOtherNames": "",
+      "caveatorForenames": "caveatorForenames",
+      "deceasedForenames": "deceasedForenames",
+      "caveatorSurname": "caveatorSurname",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicationGrounds": "applicationGrounds",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "item",
+              "value": "333"
+            }
+          }
+        ]
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "expiryDate": "2020-01-01",
+      "messageContent": "messageContent",
+      "deceasedAnyOtherNames": "",
+      "caveatorForenames": "caveatorForenames",
+      "deceasedForenames": "deceasedForenames",
+      "caveatorSurname": "caveatorSurname",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "item",
+              "value": "333"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

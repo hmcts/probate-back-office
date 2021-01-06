@@ -45,7 +45,7 @@
       "ihtGrossValue": "300000",
       "primaryApplicantForenames": "fname",
       "primaryApplicantSurname": "lname",
-      "primaryApplicantEmailAddress": "test@test.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "primaryApplicantHasAlias": "No",
       "primaryApplicantAlias": null,
       "primaryApplicantAliasReason": null,

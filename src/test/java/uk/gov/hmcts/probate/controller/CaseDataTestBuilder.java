@@ -46,7 +46,7 @@ public class CaseDataTestBuilder {
             .postCode(PRIMARY_ADDRESS_PC).build();
     public static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     public static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
-    public static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "test@test.com";
+    public static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primary@probate-test.com";
     public static final String OTHER_EXEC_EXISTS = "No";
     public static final String WILL_EXISTS = "Yes";
     public static final String WILL_TYPE = "WillLeft";
@@ -63,6 +63,7 @@ public class CaseDataTestBuilder {
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
     public static final String APPLICATION_GROUNDS = "Application grounds";
+    public static final String REGISTRY_SEQUENCE_NUMBER = "12345";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -136,7 +137,8 @@ public class CaseDataTestBuilder {
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-                .totalFee(TOTAL_FEE);
+                .totalFee(TOTAL_FEE)
+                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER);
     }
 
 }

@@ -1,0 +1,12 @@
+{
+    "tabName": "Copies",
+    "fields": [
+      "How many extra UK copies of the grant do you need?",
+      "How many sealed and certified copies of the grant do you need for use outside the UK?"
+    ],
+    "dataKeys": [
+      "page1_extraCopiesOfGrant",
+      "page1_outsideUKGrantCopies"
+    ]
+  }
+  
