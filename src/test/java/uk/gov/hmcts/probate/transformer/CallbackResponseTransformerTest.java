@@ -142,7 +142,7 @@ public class CallbackResponseTransformerTest {
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
-    private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
+    private static final String SOLICITOR_FIRM_EMAIL = "solicitor@probate-test.com";
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
     private static final String SOLICITOR_SOT_FORENAME = "Andy Middlename";
     private static final String SOLICITOR_SOT_SURNAME = "Test";
@@ -180,7 +180,7 @@ public class CallbackResponseTransformerTest {
     private static final String DOC_NAME = "docName";
     private static final String APPLICANT_FORENAME = "applicant forename";
     private static final String APPLICANT_SURNAME = "applicant surname";
-    private static final String APPLICANT_EMAIL_ADDRESS = "pa@email.com";
+    private static final String APPLICANT_EMAIL_ADDRESS = "primary@probate-test.com";
     private static final String PRIMARY_EXEC_APPLYING = YES;
     private static final String APPLICANT_HAS_ALIAS = YES;
     private static final String OTHER_EXECS_EXIST = NO;
@@ -212,7 +212,7 @@ public class CallbackResponseTransformerTest {
     private static final String EXEC_SURNAME = "EXSName";
     private static final String EXEC_OTHER_NAMES = EXEC_WILL_NAME;
     private static final String EXEC_PHONE = "010101010101";
-    private static final String EXEC_EMAIL = "exEmail@abc.com";
+    private static final String EXEC_EMAIL = "executor1@probate-test.com";
     private static final String EXEC_APPEAR = YES;
     private static final String EXEC_NOTIFIED = YES;
 
@@ -262,6 +262,9 @@ public class CallbackResponseTransformerTest {
     private static final String DECEASED_ANY_CHILDREN = NO;
     private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
     private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
+
+    public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
+    public static final String DECEASED_DIED_ENG_OR_WALES = YES;
 
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
@@ -528,7 +531,9 @@ public class CallbackResponseTransformerTest {
                 .grantDelayedNotificationSent(YES)
                 .grantAwaitingDocumentatioNotificationSent(YES)
                 .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
-                .pcqId(APP_REF);
+                .pcqId(APP_REF)
+                .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
+                .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -1456,7 +1461,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformCaseForPAEmailIsNotEmpty() {
-        caseDataBuilder.primaryApplicantEmailAddress("test@test.com");
+        caseDataBuilder.primaryApplicantEmailAddress("primary@probate-test.com");
         caseDataBuilder.applicationType(PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2392,6 +2397,48 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(null, callbackResponse.getData().getWillNumberOfCodicils());
+    }
+
+    @Test
+    public void shouldSetDeceasedDeathCertificateNull() {
+        caseDataBuilder.deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
+        caseDataBuilder.deceasedDiedEngOrWales(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDeathCertificate());
+    }
+
+    @Test
+    public void shouldSetDeceasedForeignDeathCertTranslationNull() {
+        caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
+        caseDataBuilder.deceasedForeignDeathCertInEnglish(YES);
+        caseDataBuilder.deceasedDiedEngOrWales(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
+    }
+
+    @Test
+    public void shouldSetDeceasedEnglishForeignDeathCertANDForeignDeathCertTranslationNull() {
+        caseDataBuilder.deceasedForeignDeathCertInEnglish(NO);
+        caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
+        caseDataBuilder.deceasedDiedEngOrWales(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertInEnglish());
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
     }
 
     @Test
