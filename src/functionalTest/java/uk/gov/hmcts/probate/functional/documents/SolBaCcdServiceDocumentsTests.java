@@ -817,8 +817,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
         String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
-
-
         assertTrue(response.contains(ENGLAND_AND_WALES));
         assertTrue(response.contains(CASE_REFERENCE));
         assertTrue(response.contains(DECEASED_DETAILS));
@@ -925,8 +923,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorRePrintReturnOkResponseCode() throws Exception {
-        ResponseBody responseBody = validatePostSuccess("/document/rePrint.json", RE_PRINT);
-        responseBody.prettyPrint();
+    public void verifySolicitorRePrintReturnBadResponseCode() {
+
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId("serviceToken","userId"))
+                .body(getJsonFromFile("/document/rePrint.json"))
+                .when().post(RE_PRINT)
+                .andReturn();
+        assertThat(response.statusCode(),is(equalTo(403)));
+        assertTrue(response.getBody().asString().contains("Access Denied"));
+
     }
 }
