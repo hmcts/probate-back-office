@@ -13,6 +13,10 @@ import java.time.LocalDate;
 public class CaseDataParent {
 
     protected String registrySequenceNumber;
+    protected final String deceasedDeathCertificate;
+    protected final String deceasedDiedEngOrWales;
+    protected final String deceasedForeignDeathCertInEnglish;
+    protected final String deceasedForeignDeathCertTranslation;
 
     @Getter
     protected LocalDate authenticatedDate;

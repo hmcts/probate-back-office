@@ -17,7 +17,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static io.restassured.RestAssured.given;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -255,7 +254,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                     .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
-            assertTrue(textContent.contains(validationString));
+            assertTrue(textContent.replace("\r", "").contains(validationString.replace("\r", "")));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {

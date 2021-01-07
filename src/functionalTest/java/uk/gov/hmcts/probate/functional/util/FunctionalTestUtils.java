@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -79,7 +80,7 @@ public class FunctionalTestUtils {
     public String getJsonFromFile(String fileName) {
         try {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            return new String(Files.readAllBytes(file.toPath()));
+            return new String(Files.readString(file.toPath(), Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

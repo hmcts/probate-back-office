@@ -688,7 +688,11 @@ public class CallbackResponseTransformer {
                 .escalatedDate(ofNullable(caseData.getEscalatedDate())
                     .map(dateTimeFormatter::format).orElse(null))
                 .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
-                    .map(dateTimeFormatter::format).orElse(null));
+                    .map(dateTimeFormatter::format).orElse(null))
+                .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
+                .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
+                .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
+                .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -739,6 +743,14 @@ public class CallbackResponseTransformer {
 
     private boolean isSolicitorMainApplicant(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsMainApplicant());
+    }
+
+    private boolean didDeceasedDieEngOrWales(CaseData caseData) {
+        return YES.equals(caseData.getDeceasedDiedEngOrWales());
+    }
+
+    private boolean isForeignDeathCerticateInEnglish(CaseData caseData) {
+        return YES.equals(caseData.getDeceasedForeignDeathCertInEnglish());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -1011,6 +1023,17 @@ public class CallbackResponseTransformer {
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
+        if (!didDeceasedDieEngOrWales(caseData)) {
+            builder.deceasedDeathCertificate(null);
+        } else {
+            builder.deceasedForeignDeathCertInEnglish(null);
+            builder.deceasedForeignDeathCertTranslation(null);
+        }
+
+        if (isForeignDeathCerticateInEnglish(caseData)) {
+            builder.deceasedForeignDeathCertTranslation(null);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -1211,6 +1234,17 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsApplying(null)
                     .solsSolicitorNotApplyingReason(null)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
+        }
+
+        if (!didDeceasedDieEngOrWales(caseData)) {
+            builder.deceasedDeathCertificate(null);
+        } else {
+            builder.deceasedForeignDeathCertInEnglish(null);
+            builder.deceasedForeignDeathCertTranslation(null);
+        }
+
+        if (isForeignDeathCerticateInEnglish(caseData)) {
+            builder.deceasedForeignDeathCertTranslation(null);
         }
 
         if (caseData.getCaseType() == null) {
