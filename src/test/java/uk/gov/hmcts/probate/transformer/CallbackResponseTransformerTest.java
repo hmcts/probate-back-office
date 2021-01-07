@@ -263,6 +263,9 @@ public class CallbackResponseTransformerTest {
     private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
     private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
 
+    public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
+    public static final String DECEASED_DIED_ENG_OR_WALES = YES;
+
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
@@ -528,7 +531,9 @@ public class CallbackResponseTransformerTest {
                 .grantDelayedNotificationSent(YES)
                 .grantAwaitingDocumentatioNotificationSent(YES)
                 .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
-                .pcqId(APP_REF);
+                .pcqId(APP_REF)
+                .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
+                .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -2392,6 +2397,48 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(null, callbackResponse.getData().getWillNumberOfCodicils());
+    }
+
+    @Test
+    public void shouldSetDeceasedDeathCertificateNull() {
+        caseDataBuilder.deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
+        caseDataBuilder.deceasedDiedEngOrWales(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDeathCertificate());
+    }
+
+    @Test
+    public void shouldSetDeceasedForeignDeathCertTranslationNull() {
+        caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
+        caseDataBuilder.deceasedForeignDeathCertInEnglish(YES);
+        caseDataBuilder.deceasedDiedEngOrWales(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
+    }
+
+    @Test
+    public void shouldSetDeceasedEnglishForeignDeathCertANDForeignDeathCertTranslationNull() {
+        caseDataBuilder.deceasedForeignDeathCertInEnglish(NO);
+        caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
+        caseDataBuilder.deceasedDiedEngOrWales(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertInEnglish());
+        assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
     }
 
     @Test
