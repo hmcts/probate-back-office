@@ -87,6 +87,7 @@ public class CallbackResponseTransformer {
     private final SolicitorExecutorService solicitorExecutorService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
+    private final SolicitorExecutorTransformer solicitorExecutorTransformer;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -964,47 +965,7 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        if (isSolicitorExecutor(caseData)) {
-            if (isSolicitorMainApplicant(caseData)) {
-                builder
-                        .primaryApplicantForenames(caseData.getSolsSOTForenames())
-                        .primaryApplicantSurname(caseData.getSolsSOTSurname())
-                        .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                        .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
-                        .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                        .primaryApplicantAlias(null)
-                        .primaryApplicantHasAlias(NO)
-                        .primaryApplicantIsApplying(YES)
-                        .solsSolicitorIsApplying(YES)
-                        .solsSolicitorNotApplyingReason(null)
-                        .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
-                    builder
-                            .primaryApplicantForenames(null)
-                            .primaryApplicantSurname(null)
-                            .primaryApplicantPhoneNumber(null)
-                            .primaryApplicantEmailAddress(null)
-                            .primaryApplicantAddress(null)
-                            .primaryApplicantAlias(null)
-                            .primaryApplicantHasAlias(null)
-                            .primaryApplicantIsApplying(null)
-                            .solsPrimaryExecutorNotApplyingReason(null);
-                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                    builder
-                            .solsPrimaryExecutorNotApplyingReason(null);
-                }
-            } else {
-                builder
-                        .solsPrimaryExecutorNotApplyingReason(null);
-            }
-        } else {
-            builder
-                    .solsSolicitorIsMainApplicant(null)
-                    .solsSolicitorIsApplying(null)
-                    .solsSolicitorNotApplyingReason(null)
-                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
-        }
+        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
 
         if (!didDeceasedDieEngOrWales(caseData)) {
             builder.deceasedDeathCertificate(null);
@@ -1177,47 +1138,7 @@ public class CallbackResponseTransformer {
             builder.willNumberOfCodicils(null);
         }
 
-        if (isSolicitorExecutor(caseData)) {
-            if (isSolicitorMainApplicant(caseData)) {
-                builder
-                        .primaryApplicantForenames(caseData.getSolsSOTForenames())
-                        .primaryApplicantSurname(caseData.getSolsSOTSurname())
-                        .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                        .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
-                        .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                        .primaryApplicantAlias(null)
-                        .primaryApplicantHasAlias(NO)
-                        .primaryApplicantIsApplying(YES)
-                        .solsSolicitorIsApplying(YES)
-                        .solsSolicitorNotApplyingReason(null)
-                        .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
-                    builder
-                            .primaryApplicantForenames(null)
-                            .primaryApplicantSurname(null)
-                            .primaryApplicantPhoneNumber(null)
-                            .primaryApplicantEmailAddress(null)
-                            .primaryApplicantAddress(null)
-                            .primaryApplicantAlias(null)
-                            .primaryApplicantHasAlias(null)
-                            .primaryApplicantIsApplying(null)
-                            .solsPrimaryExecutorNotApplyingReason(null);
-                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                    builder
-                            .solsPrimaryExecutorNotApplyingReason(null);
-                }
-            } else {
-                builder
-                        .solsPrimaryExecutorNotApplyingReason(null);
-            }
-        } else {
-            builder
-                    .solsSolicitorIsMainApplicant(null)
-                    .solsSolicitorIsApplying(null)
-                    .solsSolicitorNotApplyingReason(null)
-                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
-        }
+        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
 
         if (!didDeceasedDieEngOrWales(caseData)) {
             builder.deceasedDeathCertificate(null);
