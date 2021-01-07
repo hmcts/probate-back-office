@@ -422,6 +422,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
 
+    @Mock
+    private SolicitorExecutorTransformer solicitorExecutorTransformer;
+
     @Before
     public void setup() {
 
