@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 public class ExcelaCriteriaService {
 
     private ArrayList<ReturnedCaseDetails> filteredCases;
-    private static final LocalDateTime EARLIEST_DATE = LocalDateTime.parse("2019-07-31T23:59:59");
+    private static final LocalDateTime EARLIEST_DATE = LocalDateTime.parse("2019-03-31T23:59:59");
 
     public List<ReturnedCaseDetails> getFilteredCases(List<ReturnedCaseDetails> cases) {
         log.info("filtering {} cases", cases.size());
