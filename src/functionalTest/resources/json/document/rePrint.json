@@ -1,4 +1,5 @@
 {
+  "title" : "title",
   "case_details": {
     "id": 1528365719153338,
     "jurisdiction": "PROBATE",
@@ -41,6 +42,19 @@
       "boEmailGrantIssuedNotification" : "No",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
+      "reprintDocument": {
+        "value": {
+          "code": "18361040100010111.pdf",
+          "label": "Will"
+        },
+        "list_items": [
+          {
+            "code": "18361040100010111.pdf",
+            "label": "Will"
+          }
+        ]
+      },
+      "reprintNumberOfCopies":"1",
       "willHasCodicils": "No",
       "boSendToBulkPrint": "No",
       "deceasedDateOfBirth": "1900-01-01",
@@ -112,24 +126,7 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title",
-      "reprintDocument": {
-        "value": {
-          "code": "WelshGrantFileName",
-          "label": "Grant"
-        },
-        "list_items": [
-          {
-            "code": "WelshGrantFileName",
-            "label": "Grant"
-          },
-          {
-            "code": "SOTFileName",
-            "label": "SOT"
-          }
-        ]
-      },
-      "reprintNumberOfCopies": "2"
+      "solsSOTJobTitle": "job title"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
