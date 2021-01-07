@@ -1,14 +1,14 @@
 tags:
-  probate-ccd-stack: false
+  probate-ccd-stack: true
 
 idam-pr:
-  enabled: false
+  enabled: true
 
 xui-webapp:
-  enabled: false
+  enabled: true
 
 postgresql:
-  enabled: false
+  enabled: true
 
 java:
   applicationPort: 4104
