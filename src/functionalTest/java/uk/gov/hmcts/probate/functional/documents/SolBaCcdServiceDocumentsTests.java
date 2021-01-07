@@ -924,7 +924,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorRePrintReturnBadResponseCode() {
-
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId("serviceToken","userId"))
