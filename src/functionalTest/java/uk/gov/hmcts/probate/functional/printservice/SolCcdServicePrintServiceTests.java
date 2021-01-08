@@ -112,3 +112,5 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Access Denied"));
     }
 }
+
+
