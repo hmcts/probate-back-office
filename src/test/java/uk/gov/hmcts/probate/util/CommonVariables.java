@@ -16,6 +16,7 @@ public class CommonVariables {
     public static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     public static final SolsAddress SOLICITOR_ADDRESS = SolsAddress.builder().addressLine1(CommonVariables.SOLICITOR_FIRM_LINE1)
             .postCode(CommonVariables.SOLICITOR_FIRM_POSTCODE).build();
+    public static final String SOLICITOR_SOT_NOT_APPLYING_REASON = "Power reserved";
 
     public static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
 

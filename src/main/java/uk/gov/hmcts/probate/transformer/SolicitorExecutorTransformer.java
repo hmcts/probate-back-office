@@ -34,7 +34,7 @@ public class SolicitorExecutorTransformer {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
-                if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                if (caseData.getSolsSolicitorIsApplying() == null || YES.equals(caseData.getSolsSolicitorIsApplying())) {
                     builder
                             .solsPrimaryExecutorNotApplyingReason(null);
                 }
