@@ -4,15 +4,13 @@ const testConfig = require('src/test/config.js');
 const handleEvidenceConfig = require('./handleEvidenceConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
-
+module.exports = async function (caseRef) {
     const I = this;
-    I.waitForText(handleEvidenceConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(handleEvidenceConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-    I.see(caseRef);
+    await I.see(caseRef);
 
-    I.click(`#evidenceHandled-${handleEvidenceConfig.checkbox}`);
+    await I.click(`#evidenceHandled-${handleEvidenceConfig.checkbox}`);
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
-
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

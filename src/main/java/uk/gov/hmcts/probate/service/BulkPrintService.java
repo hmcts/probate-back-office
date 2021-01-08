@@ -35,8 +35,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 
 @Service
 @Slf4j
@@ -197,7 +200,10 @@ public class BulkPrintService {
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT_REISSUE)) {
             extraCopies = addAdditionalCopiesForGrants(callbackRequest);
         }
 

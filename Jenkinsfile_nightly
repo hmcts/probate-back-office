@@ -4,7 +4,8 @@ properties([
         pipelineTriggers([cron('00 21 * * *')]),
         parameters([
                 string(name: 'ENVIRONMENT', defaultValue: 'aat', description: 'Environment to test'),
-                string(name: 'URL_TO_TEST', defaultValue: 'https://www-ccd.aat.platform.hmcts.net/', description: 'The URL you want to run these tests against'),
+                string(name: 'CCDUI_URL_TO_TEST', defaultValue: 'https://www-ccd.aat.platform.hmcts.net/', description: 'The URL you want to run caseworkers tests against'),
+                string(name: 'XUI_URL_TO_TEST', defaultValue: 'https://manage-case.aat.platform.hmcts.net/', description: 'The URL you want to run solicitor tests against'),
         ])
 ])
 
@@ -16,7 +17,9 @@ String component = "back-office"
 def secrets = [
   'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
-    secret('cwUserPass', 'CW_USER_PASSWORD')
+    secret('cwUserPass', 'CW_USER_PASSWORD'),
+    secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
+    secret('solicitorUserPass', 'SOL_USER_PASSWORD')
   ]
 ]
 
@@ -30,9 +33,10 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withNightlyPipeline("nodejs", product, component) {
-    env.TEST_E2E_URL = params.URL_TO_TEST
+    env.TEST_CCD_E2E_URL = params.CCDUI_URL_TO_TEST
+    env.TEST_XUI_E2E_URL = params.XUI_URL_TO_TEST
     loadVaultSecrets(secrets)
-    enableFullFunctionalTest()
+    enableFullFunctionalTest(90)
 
     after('fullFunctionalTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'

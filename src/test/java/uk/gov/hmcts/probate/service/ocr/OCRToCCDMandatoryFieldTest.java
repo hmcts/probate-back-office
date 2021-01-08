@@ -441,7 +441,7 @@ public class OCRToCCDMandatoryFieldTest {
                 .description("Solicitor App Reference").build();
         OCRField field5 = OCRField.builder()
                 .name("solsSolicitorEmail")
-                .value("test@test.com")
+                .value("solicitor@probate-test.com")
                 .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
@@ -471,7 +471,7 @@ public class OCRToCCDMandatoryFieldTest {
                 .description("Solicitor App Reference").build();
         OCRField field5 = OCRField.builder()
                 .name("solsSolicitorEmail")
-                .value("test@test.com")
+                .value("solicitor@probate-test.com")
                 .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
@@ -544,7 +544,7 @@ public class OCRToCCDMandatoryFieldTest {
                 .description("Solicitor address postcode").build();
         OCRField field6 = OCRField.builder()
                 .name("solsSolicitorEmail")
-                .value("test@test.com")
+                .value("solicitor@probate-test.com")
                 .description("Solicitor Email Address").build();
         ocrFields.add(field1);
         ocrFields.add(field2);

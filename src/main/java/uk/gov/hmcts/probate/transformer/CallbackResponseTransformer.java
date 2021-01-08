@@ -67,8 +67,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
@@ -152,7 +155,7 @@ public class CallbackResponseTransformer {
                     .build();
         }
         responseCaseDataBuilder
-                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotificationRequested(caseData.getValueForCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
@@ -235,9 +238,13 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
                 appendToBulkPrintCollection(bulkPrint, caseData);
@@ -280,11 +287,15 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
@@ -433,7 +444,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
         boolean doTransform = doTransform(callbackRequest);
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
@@ -600,7 +610,7 @@ public class CallbackResponseTransformer {
                 .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
 
                 .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
-                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopEmailNotification(caseData.getValueForCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
                 .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
@@ -663,7 +673,11 @@ public class CallbackResponseTransformer {
                 .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
-                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+                .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
+                .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
+                .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
+                .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -712,6 +726,14 @@ public class CallbackResponseTransformer {
 
     private boolean isSolicitorMainApplicant(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsMainApplicant());
+    }
+
+    private boolean didDeceasedDieEngOrWales(CaseData caseData) {
+        return YES.equals(caseData.getDeceasedDiedEngOrWales());
+    }
+
+    private boolean isForeignDeathCerticateInEnglish(CaseData caseData) {
+        return YES.equals(caseData.getDeceasedForeignDeathCertInEnglish());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -913,24 +935,28 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (isPAEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -978,6 +1004,17 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsApplying(null)
                     .solsSolicitorNotApplyingReason(null)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
+        }
+
+        if (!didDeceasedDieEngOrWales(caseData)) {
+            builder.deceasedDeathCertificate(null);
+        } else {
+            builder.deceasedForeignDeathCertInEnglish(null);
+            builder.deceasedForeignDeathCertTranslation(null);
+        }
+
+        if (isForeignDeathCerticateInEnglish(caseData)) {
+            builder.deceasedForeignDeathCertTranslation(null);
         }
 
         if (caseData.getCaseType() == null) {
@@ -1126,12 +1163,14 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES);
+                    .boEmailGrantIssuedNotification(ANSWER_YES)
+                    .boEmailGrantReissuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO);
+                    .boEmailGrantIssuedNotification(ANSWER_NO)
+                    .boEmailGrantReissuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -1178,6 +1217,17 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsApplying(null)
                     .solsSolicitorNotApplyingReason(null)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
+        }
+
+        if (!didDeceasedDieEngOrWales(caseData)) {
+            builder.deceasedDeathCertificate(null);
+        } else {
+            builder.deceasedForeignDeathCertInEnglish(null);
+            builder.deceasedForeignDeathCertTranslation(null);
+        }
+
+        if (isForeignDeathCerticateInEnglish(caseData)) {
+            builder.deceasedForeignDeathCertTranslation(null);
         }
 
         if (caseData.getCaseType() == null) {
