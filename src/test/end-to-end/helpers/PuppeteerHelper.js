@@ -38,7 +38,7 @@ class PuppeteerHelper extends Helper {
 
             await helper.page.evaluate(el => el.click(), clickableTab[0]);
         } else {
-            helper.click(tabTitle);
+            await helper.click(tabTitle);
         }
     }
 

@@ -23,7 +23,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
     const willType = 'WillLeftAnnexed';
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
@@ -35,13 +35,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
