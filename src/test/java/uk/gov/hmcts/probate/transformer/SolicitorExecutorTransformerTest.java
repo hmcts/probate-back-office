@@ -6,12 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.util.CommonVariables;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,6 +77,60 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorIsMainApplicant());
         assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorIsApplying());
         assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
+    }
+
+
+
+    @Test
+    public void shouldRemoveSolicitorPrimaryApplicantDetails(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.YES)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSOTForenames("Forename")
+                .solsSOTSurname("Surname")
+                .primaryApplicantForenames("Forename")
+                .primaryApplicantSurname("Surname")
+                .primaryApplicantEmailAddress("email@mail.com")
+                .primaryApplicantPhoneNumber("1234567890")
+                .primaryApplicantAddress(mock(SolsAddress.class))
+                .primaryApplicantAlias("Alias")
+                .primaryApplicantHasAlias(CommonVariables.YES)
+                .primaryApplicantIsApplying(CommonVariables.YES)
+                .solsSolicitorIsApplying(CommonVariables.NO)
+                .solsSolicitorNotApplyingReason("Not applying");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantForenames());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantSurname());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantPhoneNumber());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantEmailAddress());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAddress());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAlias());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantHasAlias());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantIsApplying());
+        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldRemoveSolicitorPrimaryApplicantDetailsIsApplying(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.YES)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSOTForenames("Forename")
+                .solsSOTSurname("Surname")
+                .primaryApplicantIsApplying(CommonVariables.YES)
+                .solsSolicitorIsApplying(CommonVariables.YES)
+                .solsSolicitorNotApplyingReason("Not applying");
+
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
     }
 
 }

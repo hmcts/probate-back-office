@@ -31,7 +31,7 @@ public class SolicitorExecutorTransformer {
                         .solsPrimaryExecutorNotApplyingReason(null);
             } else {
                 if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
-                   removeSolicitorAsPrimaryApplicant(builder);
+                    removeSolicitorAsPrimaryApplicant(builder);
                 }
 
                 if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
