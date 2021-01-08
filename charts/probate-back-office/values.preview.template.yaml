@@ -98,6 +98,7 @@ ccd:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
+      - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
 
 xui-webapp:
   enabled: true
