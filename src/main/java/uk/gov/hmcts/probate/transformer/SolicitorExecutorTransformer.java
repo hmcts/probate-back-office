@@ -43,8 +43,7 @@ public class SolicitorExecutorTransformer {
             builder
                     .solsSolicitorIsMainApplicant(null)
                     .solsSolicitorIsApplying(null)
-                    .solsSolicitorNotApplyingReason(null)
-                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
+                    .solsSolicitorNotApplyingReason(null);
         }
 
     }
