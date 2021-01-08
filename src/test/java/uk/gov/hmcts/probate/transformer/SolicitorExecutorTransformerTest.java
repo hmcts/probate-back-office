@@ -29,15 +29,14 @@ public class SolicitorExecutorTransformerTest {
 
     @Before
     public void setUp() {
-
         caseDataBuilder = CaseData.builder()
-        .solsSolicitorIsExec(CommonVariables.YES)
-        .solsSolicitorIsMainApplicant(CommonVariables.YES)
-        .solsSOTForenames(CommonVariables.SOLICITOR_SOT_FORENAME)
-        .solsSOTSurname(CommonVariables.SOLICITOR_SOT_SURNAME)
-        .solsSolicitorPhoneNumber(CommonVariables.SOLICITOR_FIRM_PHONE)
-        .solsSolicitorEmail(CommonVariables.SOLICITOR_FIRM_EMAIL)
-        .solsSolicitorAddress(CommonVariables.SOLICITOR_ADDRESS);
+            .solsSolicitorIsExec(CommonVariables.YES)
+            .solsSolicitorIsMainApplicant(CommonVariables.YES)
+            .solsSOTForenames(CommonVariables.SOLICITOR_SOT_FORENAME)
+            .solsSOTSurname(CommonVariables.SOLICITOR_SOT_SURNAME)
+            .solsSolicitorPhoneNumber(CommonVariables.SOLICITOR_FIRM_PHONE)
+            .solsSolicitorEmail(CommonVariables.SOLICITOR_FIRM_EMAIL)
+            .solsSolicitorAddress(CommonVariables.SOLICITOR_ADDRESS);
 
         responseCaseDataBuilder = ResponseCaseData.builder();
     }
@@ -59,6 +58,23 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(CommonVariables.YES, responseCaseDataBuilder.build().getSolsSolicitorIsApplying());
         assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
         assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldRemoveSolicitorAsMainApplicant(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.NO)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSolicitorIsApplying(CommonVariables.NO)
+                .solsSolicitorNotApplyingReason("Not applying");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorIsMainApplicant());
+        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorIsApplying());
+        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
     }
 
 }
