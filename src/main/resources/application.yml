@@ -99,6 +99,18 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantReissueDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantReissue:
+      templateName: FL-PRB-GRP-WEL-00226.doc
 
 fee.api:
   url: http://localhost:4411
@@ -109,6 +121,10 @@ fee.api:
   channel: default
   applicantType: all
   keyword: NewFee
+  newCopiesFeeKeyword: GrantWill
+  newIssuesFee5kKeyword: SAL5K
+  newIssuesFeeKeyword: SA
+  ihtMinAmt: 5000.00
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -230,7 +246,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
       welsh:
         personal:
-          applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
+          applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
           applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
@@ -294,11 +310,19 @@ documents:
             gop: DIGITAL_GRANT_DRAFT
       welsh:
         final:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE
+            gop: WELSH_DIGITAL_GRANT_REISSUE
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
         preview:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: WELSH_DIGITAL_GRANT_REISSUE_DRAFT
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
@@ -409,7 +433,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -445,3 +469,10 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
+  user:
+    key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
+    firstName: Probate
+    lastName: Backend

@@ -4,6 +4,6 @@
     "Caveat expiry date"
   ],
   "dataKeys": [
-    "page4_caveatExpiryDate_long_update"
+    "caveat_expiry_date"
   ]
 }

@@ -29,18 +29,60 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String INFORMATION_REQUEST = "/notify/stopped-information-request";
     private static final String GRANT_RAISED = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED = "/notify/application-received";
-    private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
     private static final String PAPER_FORM = "/case/paperForm";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String GENERATED_DOCUMENT_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_DOCUMENT_URL = "DocumentLink.document_binary_url";
 
     @Test
     public void verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent() {
         postNotificationEmailAndVerifyContents(PAPER_FORM, "paperApplicationRecievedCitizenFromCaseworkerPayload.json", "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL, "verifyCitizenPaperApplicationReceivedByCaseworkerNotificationSent");
+            EMAIL_NOTIFICATION_URL);
+    }
+
+    @Test
+    public void verifyGrantReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
+            "expectedPersonalDocumentGrantReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyIntestacyReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadIntestacyReissued.json",
+            "expectedPersonalDocumentIntestacyReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyAdmonWillReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadAdmonWillReissued.json",
+            "expectedPersonalDocumentAdmonWillReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+    
+    @Test
+    public void verifyWelshGrantReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshGrantReissued.json",
+            "expectedPersonalDocumentWelshGrantReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshIntestacyReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshIntestacyReissued.json",
+            "expectedPersonalDocumentWelshIntestacyReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshAdmonWillReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshAdmonWillReissued.json", 
+            "expectedPersonalDocumentWelshAdmonWillReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
     }
 
     @Test
@@ -66,7 +108,18 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifyPaperApplicationReceivedNotificationNotSent() {
         ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
         assertTrue(!responseBody.asString().contains("DocumentLink"));
+    }
 
+    @Test
+    public void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextWelsh() {
+        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED, "digitalApplicationRecievedPayloadWelsh.json", "digitalApplicationRecievedExpectedResonseWelsh.txt",
+            EMAIL_NOTIFICATION_DOCUMENT_URL);
+    }
+
+    @Test
+    public void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextSolicitorWelsh() {
+        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED, "digitalApplicationRecievedPayloadSolicitorWelsh.json", "digitalApplicationRecievedExpectedResonseSolicitorWelsh.txt",
+            EMAIL_NOTIFICATION_DOCUMENT_URL);
     }
 
     @Test
@@ -95,7 +148,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantRaisedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
             "grantRaisedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -116,7 +169,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
             "documentReceivedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -137,14 +190,14 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantIssuedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
             "grantIssuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     public void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotificationsIntestacy.json",
             "grantIssuedIntestacySolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -158,7 +211,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorGrantReissuedShouldReturnOkResponseCode() {
         postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
             "grantReissuedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
     
     @Test
@@ -174,7 +227,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
         assertExpectedContents("grantReissuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
-    
+
     @Test
     public void verifyPersonalApplicantGrantReissuedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", GRANT_REISSUED);
@@ -193,25 +246,25 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL, "pa");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
         public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL, "pa-welsh");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorWelshResponse.txt",
-            EMAIL_NOTIFICATION_URL, "sol-welsh");
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -320,7 +373,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private void verifyPAEmailInformationRequestRedec(String document) {
-        assertTrue(document.contains("test@test.com"));
+        assertTrue(document.contains("primary@probate-test.com"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains(BIRMINGHAM_NO));
@@ -328,10 +381,24 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
-                                                        String responseDocumentUrl, String testId) {
+                                                        String responseDocumentUrl) {
         ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
         assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
     }
 
+    private void verifyDocumentAndEmailNotificationGenerated(String api, String payload, String documentText, String emailText) {
+        ResponseBody responseBody = validatePostSuccess(payload, api);
+        assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
+        assertExpectedContents(emailText, EMAIL_NOTIFICATION_URL, responseBody);
+    }
 
+    private void verifyEmailGenerated(JsonPath jsonPath, String emailText) {
+        String expectedEmailText = utils.getJsonFromFile(emailText);
+        expectedEmailText = expectedEmailText.replace("\n", "").replace("\r", "");
+
+        String emailUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
+        String response = utils.downloadPdfAndParseToString(emailUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedEmailText));
+    }
 }
