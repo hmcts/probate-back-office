@@ -19,7 +19,7 @@ async function runAccessibility(url, page) {
         path: 'node_modules/html_codesniffer/build/HTMLCS.js'
     });
 
-    const screenshotPath =  './functional-output/assets';
+    const screenshotPath = './functional-output/assets';
     const screenshotName = Date.now() + '.png';
     const screenshotReportRef = 'assets/' + screenshotName;
 
@@ -52,7 +52,7 @@ async function runAccessibility(url, page) {
     try {
         await page.screenshot({path: screenshotPath + '/' + screenshotName, fullPage: true});
     } catch (err) {
-        fs.mkdirSync(screenshotPath, { recursive: true });
+        fs.mkdirSync(screenshotPath, {recursive: true});
         await page.screenshot({path: screenshotPath + '/' + screenshotName, fullPage: true});
     }
 
