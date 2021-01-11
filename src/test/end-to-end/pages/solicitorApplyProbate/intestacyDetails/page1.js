@@ -6,6 +6,8 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#solsMinorityInterest');
+    await I.runAccessibilityTest();
+
     await I.click(`#solsMinorityInterest-${intestacyDetailsConfig.optionNo}`);
     await I.click(`#immovableEstate-${intestacyDetailsConfig.optionYes}`);
     await I.click(`#solsApplicantSiblings-${intestacyDetailsConfig.optionNo}`);

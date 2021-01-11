@@ -6,6 +6,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#willAccessOriginal');
+    await I.runAccessibilityTest();
     await I.click(`#willAccessOriginal-${admonWillDetailsConfig.optionYes}`);
     await I.click(`#willHasCodicils-${admonWillDetailsConfig.optionNo}`);
 

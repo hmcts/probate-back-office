@@ -1,3 +1,7 @@
+const { getAccessibilityTestResult } = require('./accessibility/runner');
+const { generateAccessibilityReport } = require('../../reporter/customReporter');
+const testConfig = require('src/test/config.js');
+
 class JSWait extends codecept_helper {
 
     async navByClick (text, locator, webDriverWait) {
@@ -17,6 +21,13 @@ class JSWait extends codecept_helper {
             // needs to be combined with amOnLoadedPage in the next page really as it may be more than 3 secs
             helper.wait(webDriverWait ? webDriverWait : 3)
         ]);
+    }
+
+    async _finishTest() {
+        if (!testConfig.TestForAccessibility) {
+            return;
+        }
+        await generateAccessibilityReport(getAccessibilityTestResult());
     }
 
     async amOnLoadedPage (url) {

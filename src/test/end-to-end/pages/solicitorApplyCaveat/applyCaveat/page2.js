@@ -3,11 +3,13 @@
 const applyCaveatConfig = require('./applyCaveat');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
+
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#solsSolicitorFirmName');
-    await I.fillField('#solsSolicitorFirmName', applyCaveatConfig.page2_firm_name);
+    await I.runAccessibilityTest();
 
+    await I.fillField('#solsSolicitorFirmName', applyCaveatConfig.page2_firm_name);
     await I.click(applyCaveatConfig.UKpostcodeLink);
     await I.fillField('#caveatorAddress_AddressLine1', applyCaveatConfig.address_line1);
     await I.fillField('#caveatorAddress_AddressLine2', applyCaveatConfig.address_line2);
