@@ -48,7 +48,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
-                .when().post(String.format(VALIDATE_OCR_DATA, formName))
+                .when().post(String.fo:wqrmat(VALIDATE_OCR_DATA, formName))
                 .then().assertThat().statusCode(200)
                 .and().body("warnings", hasSize(warningSize))
                 .and().body("warnings[" + warningItem + "]", equalTo(warningMessage))

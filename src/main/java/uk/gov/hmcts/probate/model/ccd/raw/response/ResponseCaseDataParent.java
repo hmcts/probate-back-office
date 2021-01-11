@@ -20,6 +20,10 @@ public class ResponseCaseDataParent {
     protected String declarationCheckbox;
     protected String ihtGrossValueField;
     protected String ihtNetValueField;
+    protected String deceasedForeignDeathCertTranslation;
+    protected String deceasedForeignDeathCertInEnglish;
+    protected String deceasedDiedEngOrWales;
+    protected String deceasedDeathCertificate;
     protected Long numberOfExecutors;
     protected Long numberOfApplicants;
     protected String legalDeclarationJson;
@@ -31,7 +35,7 @@ public class ResponseCaseDataParent {
     ResponseCaseDataParent() {
     }
 
-    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
+    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, String deceasedDiedEngOrWales, String deceasedDeathCertificate, String deceasedForeignDeathCertInEnglish, String deceasedForeignDeathCertTranslation, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
                            String registryAddress, String registryEmailAddress, String registrySequenceNumber, List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes) {
         this.reprintDocument = reprintDocument;
@@ -40,6 +44,10 @@ public class ResponseCaseDataParent {
         this.declarationCheckbox = declarationCheckbox;
         this.ihtGrossValueField = ihtGrossValueField;
         this.ihtNetValueField = ihtNetValueField;
+        this.deceasedDiedEngOrWales = deceasedDiedEngOrWales;
+        this.deceasedDeathCertificate = deceasedDeathCertificate;
+        this.deceasedForeignDeathCertInEnglish = deceasedForeignDeathCertInEnglish;
+        this.deceasedForeignDeathCertTranslation = deceasedForeignDeathCertTranslation;
         this.numberOfExecutors = numberOfExecutors;
         this.numberOfApplicants = numberOfApplicants;
         this.legalDeclarationJson = legalDeclarationJson;
@@ -77,12 +85,22 @@ public class ResponseCaseDataParent {
     public String getDeclarationCheckbox() {
         return declarationCheckbox;
     }
-
+    
     public String getIhtNetValueField() { return ihtNetValueField; }
 
     public String getIhtGrossValueField() {
         return ihtGrossValueField;
     }
+
+    public String getDeceasedDiedEngOrWales() {
+        return deceasedDiedEngOrWales;
+    }
+
+    public String getDeceasedDeathCertificate() { return deceasedDeathCertificate; }
+
+    public String getDeceasedForeignDeathCertInEnglish() { return deceasedForeignDeathCertInEnglish; }
+
+    public String getDeceasedForeignDeathCertTranslation() { return deceasedForeignDeathCertTranslation; }
 
     public Long getNumberOfExecutors() {
         return numberOfExecutors;
@@ -123,6 +141,10 @@ public class ResponseCaseDataParent {
         protected String declarationCheckbox;
         protected String ihtNetValueField;
         protected String ihtGrossValueField;
+        protected String deceasedDiedEngOrWales;
+        protected String deceasedDeathCertificate;
+        protected String deceasedForeignDeathCertInEnglish;
+        protected String deceasedForeignDeathCertTranslation;
         protected Long numberOfExecutors;
         protected Long numberOfApplicants;
         protected String legalDeclarationJson;
@@ -149,7 +171,6 @@ public class ResponseCaseDataParent {
             this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
             return this;
         }
-
         public ResponseCaseDataParentBuilder bulkScanEnvelopes(List<CollectionMember<BulkScanEnvelope>>  bulkScanEnvelopes) {
             this.bulkScanEnvelopes = bulkScanEnvelopes;
             return this;
@@ -169,6 +190,27 @@ public class ResponseCaseDataParent {
             this.ihtGrossValueField = ihtGrossValueField;
             return this;
         }
+
+        public ResponseCaseDataParentBuilder deceasedDiedEngOrWales(String deceasedDiedEngOrWales) {
+            this.deceasedDiedEngOrWales = deceasedDiedEngOrWales;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder deceasedDeathCertificate(String deceasedDeathCertificate) {
+            this.deceasedDeathCertificate = deceasedDeathCertificate;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder deceasedForeignDeathCertInEnglish(String deceasedForeignDeathCertInEnglish) {
+            this.deceasedForeignDeathCertInEnglish = deceasedForeignDeathCertInEnglish;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder deceasedForeignDeathCertTranslation(String deceasedForeignDeathCertTranslation) {
+            this.deceasedForeignDeathCertTranslation = deceasedForeignDeathCertTranslation;
+            return this;
+        }
+
         public ResponseCaseDataParentBuilder numberOfExecutors(Long numberOfExecutors) {
             this.numberOfExecutors = numberOfExecutors;
             return this;
@@ -202,14 +244,12 @@ public class ResponseCaseDataParent {
         }
 
         public ResponseCaseDataParent build() {
-            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect,
-                    declarationCheckbox, ihtGrossValueField, ihtNetValueField,
-                    numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson,
-                    registryAddress, registryEmailAddress, registrySequenceNumber, bulkScanEnvelopes);
-        }
-
-        public String toString() {
-            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ", solsAmendLegalStatmentSelect=" + solsAmendLegalStatmentSelect + ", bulkScanEnvelopes" + bulkScanEnvelopes + ")";
+            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
+                solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField,
+                    deceasedDiedEngOrWales, deceasedDeathCertificate, deceasedForeignDeathCertInEnglish,
+                    deceasedForeignDeathCertTranslation, numberOfExecutors, numberOfApplicants,
+                    legalDeclarationJson, checkAnswersSummaryJson, registryAddress,
+                    registryEmailAddress, registrySequenceNumber, bulkScanEnvelopes);
         }
     }
 }
