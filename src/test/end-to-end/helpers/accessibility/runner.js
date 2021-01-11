@@ -8,8 +8,8 @@ const result = {
 
 const resultObj = {
     appName: 'Manage cases',
-    pass: 0,
-    fail: 0,
+    passCount: 0,
+    failCount: 0,
     tests: []
 };
 
@@ -62,13 +62,16 @@ async function runAccessibility(url, page) {
 function updateResultObject(url, pageTitle, screenshotReportRef, accessibilityErrorsOnThePage) {
     const isPageAccessible = accessibilityErrorsOnThePage.length === 0 ? result.PASSED : result.FAILED;
 
+    const urlArr = url.split('/');
+
     if (isPageAccessible === result.PASSED) {
-        resultObj.pass += 1;
+        resultObj.passCount += 1;
     } else {
-        resultObj.fail += 1;
+        resultObj.failCount += 1;
     }
 
     resultObj.tests.push({
+        name: urlArr[urlArr.length -2],
         pageUrl: url,
         documentTitle: pageTitle,
         status: isPageAccessible,
