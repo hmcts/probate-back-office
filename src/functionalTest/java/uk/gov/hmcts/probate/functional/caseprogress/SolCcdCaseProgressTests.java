@@ -25,6 +25,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private static final String CASE_PRINTED_URL = "/case/casePrinted";
     private static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
+    private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String CASE_ESCALATED_URL = "/case/case-escalated";
     private static final String CASE_MATCHING_EXAMINING_URL = "/case-matching/import-legacy-from-grant-flow";
@@ -51,7 +53,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
 
     @Test
     public void shouldTransformAppUpdatedStateCorrectly() {
-        final String response = postSolJson("caseprogress/02-appUpdated.json", SOLS_VALIDATE_URL);
+        final String response = postSolJson("caseprogress/02-appUpdated.json", SOLS_VALIDATE_PROBATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 

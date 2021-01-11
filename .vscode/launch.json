@@ -63,7 +63,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },     
+        {
+            "name": "Mocha test end-end caseProgressReenterDeceasedDetails",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressReenterDeceasedDetails",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },             
         {
             "name": "Mocha test end-end caveat",
             "request": "launch",

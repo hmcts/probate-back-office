@@ -120,10 +120,14 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        final CaseDetails cd = callbackRequest.getCaseDetails();
+        // set here to ensure tasklist html is correctly generated
+        cd.setState(newState.orElse(null));
+
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, false)
+                // set here again to make life easier mocking
                 .state(newState.orElse(null))
                 .build();
-
         return transformResponse(responseCaseData);
     }
 
@@ -511,6 +515,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
+                // .state(caseDetails.getState())
                 .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .deceasedForenames(caseData.getDeceasedForenames())
