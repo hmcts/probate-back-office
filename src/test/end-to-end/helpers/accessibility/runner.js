@@ -1,5 +1,6 @@
 const HTMLCS = require('html_codesniffer');
 const fs = require('fs');
+const testConfig = require('src/test/config.js');
 
 const result = {
     PASSED: 'passed',
@@ -19,7 +20,7 @@ async function runAccessibility(url, page) {
         path: 'node_modules/html_codesniffer/build/HTMLCS.js'
     });
 
-    const screenshotPath = './functional-output/assets';
+    const screenshotPath = testConfig.TestOutputDir + '/assets';
     const screenshotName = Date.now() + '.png';
     const screenshotReportRef = 'assets/' + screenshotName;
 

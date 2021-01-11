@@ -1,4 +1,5 @@
 const fs = require('fs');
+const testConfig = require('src/test/config.js');
 
 function generateAccessibilityReport(reportJson) {
     consoleReport(reportJson);
@@ -6,9 +7,8 @@ function generateAccessibilityReport(reportJson) {
     const result = 'var replacejsoncontent = ' + JSON.stringify(reportJson);
 
     const sourceReport = __dirname + '/Report.html';
-    console.log('source report is..', sourceReport);
-    const destReport = './functional-output/' + 'a11y.html';
-    const destJson = './functional-output/' + 'a11y_output.js';
+    const destReport = testConfig.TestOutputDir + '/a11y.html';
+    const destJson = testConfig.TestOutputDir + '/a11y_output.js';
 
     fs.copyFileSync(sourceReport, destReport);
     fs.writeFileSync(destJson, result);
@@ -17,7 +17,7 @@ function generateAccessibilityReport(reportJson) {
 }
 
 function copyResources() {
-    const resourceDir = './functional-output/' + 'resources/';
+    const resourceDir = testConfig.TestOutputDir + '/resources/';
     const cssDir = resourceDir + 'css/';
     if (!fs.existsSync(cssDir)) {
         fs.mkdirSync(cssDir, {recursive: true});
