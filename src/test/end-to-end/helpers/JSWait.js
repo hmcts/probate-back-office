@@ -1,5 +1,5 @@
-const { getAccessibilityTestResult } = require('./accessibility/runner');
-const { generateAccessibilityReport } = require('../../reporter/customReporter');
+const {getAccessibilityTestResult} = require('./accessibility/runner');
+const {generateAccessibilityReport} = require('../../reporter/customReporter');
 const testConfig = require('src/test/config.js');
 
 class JSWait extends codecept_helper {
@@ -23,11 +23,11 @@ class JSWait extends codecept_helper {
         ]);
     }
 
-    async _finishTest() {
+    _finishTest() {
         if (!testConfig.TestForAccessibility) {
             return;
         }
-        await generateAccessibilityReport(getAccessibilityTestResult());
+        generateAccessibilityReport(getAccessibilityTestResult());
     }
 
     async amOnLoadedPage (url) {

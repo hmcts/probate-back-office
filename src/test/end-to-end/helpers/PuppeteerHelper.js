@@ -4,7 +4,7 @@ const Helper = codecept_helper;
 const helperName = 'Puppeteer';
 const testConfig = require('src/test/config.js');
 
-const { runAccessibility } = require('./accessibility/runner');
+const {runAccessibility} = require('./accessibility/runner');
 
 class PuppeteerHelper extends Helper {
 
@@ -95,7 +95,7 @@ class PuppeteerHelper extends Helper {
             return;
         }
         const url = await this.helpers[helperName].grabCurrentUrl();
-        const { page } = await this.helpers[helperName];
+        const {page} = await this.helpers[helperName];
 
         runAccessibility(url, page);
     }

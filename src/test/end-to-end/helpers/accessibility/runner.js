@@ -1,18 +1,17 @@
 const HTMLCS = require('html_codesniffer');
-const testConfig = require('src/test/config');
 const fs = require('fs');
 
 const result = {
     PASSED: 'passed',
     FAILED: 'failed',
-}
+};
 
-let resultObj = {
-    appName:'Manage cases',
+const resultObj = {
+    appName: 'Manage cases',
     pass: 0,
-    fail:0,
-    tests:[] 
-}
+    fail: 0,
+    tests: []
+};
 
 async function runAccessibility(url, page) {
     //Add HMTL code sniffer script
@@ -20,44 +19,43 @@ async function runAccessibility(url, page) {
         path: 'node_modules/html_codesniffer/build/HTMLCS.js'
     });
 
-    const screenshotPath =  process.env.PWD  + '/functional-output/assets';
+    const screenshotPath = process.env.PWD + '/functional-output/assets';
     const screenshotName = Date.now() + '.png';
     const screenshotReportRef = 'assets/' + screenshotName;
 
     const accessibilityErrorsOnThePage = await page.evaluate(() => {
-            var processIssue = function(issue) {
-                return {
-                    code: issue.code,
-                    message: issue.msg,
-                    type: 'error',
-                    element: issue.element, 
-                    runner: 'htmlcs'
-                };
-            }
+        const processIssue = function(issue) {
+            return {
+                code: issue.code,
+                message: issue.msg,
+                type: 'error',
+                element: issue.element,
+                runner: 'htmlcs'
+            };
+        };
 
-            var STANDARD = 'WCAG2AA';
-            let messages;
+        const STANDARD = 'WCAG2AA';
+        let messages;
 
-            HTMLCS.process(STANDARD, window.document, function () {
-                                            messages = HTMLCS
-                                                            .getMessages()
-                                                            .filter(function (m) {
-                                                                return m.type === HTMLCS.ERROR
-                                                            })
-                                                            .map(processIssue);
-            });
+        HTMLCS.process(STANDARD, window.document, function () {
+            messages = HTMLCS
+                .getMessages()
+                .filter(function (m) {
+                    return m.type === HTMLCS.ERROR;
+                })
+                .map(processIssue);
+        });
 
-            return messages;
+        return messages;
     });
 
     try {
-        await page.screenshot({path: screenshotPath + screenshotName , fullPage: true });
-    } catch(err) {
+        await page.screenshot({path: screenshotPath + screenshotName, fullPage: true});
+    } catch (err) {
         fs.mkdirSync(screenshotPath);
-        await page.screenshot({path: screenshotPath + screenshotName , fullPage: true });
+        await page.screenshot({path: screenshotPath + screenshotName, fullPage: true});
     }
-    
-    
+
     updateResultObject(url, await page.title(), screenshotReportRef, accessibilityErrorsOnThePage);
 }
 
@@ -65,9 +63,9 @@ function updateResultObject(url, pageTitle, screenshotReportRef, accessibilityEr
     const isPageAccessible = accessibilityErrorsOnThePage.length === 0 ? result.PASSED : result.FAILED;
 
     if (isPageAccessible === result.PASSED) {
-        resultObj.pass++;
+        resultObj.pass += 1;
     } else {
-        resultObj.fail++; 
+        resultObj.fail += 1;
     }
 
     resultObj.tests.push({
@@ -83,4 +81,4 @@ function getAccessibilityTestResult() {
     return resultObj;
 }
 
-module.exports = { runAccessibility, getAccessibilityTestResult }
+module.exports = {runAccessibility, getAccessibilityTestResult};
