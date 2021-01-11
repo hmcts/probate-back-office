@@ -67,7 +67,7 @@
     { "name": "executorsApplying_1_applyingExecutorAddressTown", "value": "Uxbridge" },
     { "name": "executorsApplying_1_applyingExecutorAddressCounty", "value": "Middlesex" },
     { "name": "executorsApplying_1_applyingExecutorAddressPostCode", "value": "LV2 7SD" },
-    { "name": "executorsApplying_1_applyingExecutorEmail", "value": "executor2@probate-test.com\"" },
+    { "name": "executorsApplying_1_applyingExecutorEmail", "value": "executor2@probate-test.com" },
     { "name": "executorsApplying_2_applyingExecutorForenames", "value": "Bob" },
     { "name": "executorsApplying_2_applyingExecutorMiddleNames", "value": "Billy" },
     { "name": "executorsApplying_2_applyingExecutorSurname", "value": "Marley" },
