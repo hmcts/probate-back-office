@@ -24,13 +24,14 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+    protected String iht217;
 
     ResponseCaseDataParent() {
     }
 
     ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, String deceasedDiedEngOrWales, String deceasedDeathCertificate, String deceasedForeignDeathCertInEnglish, String deceasedForeignDeathCertTranslation, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
                            String checkAnswersSummaryJson,
-                           String registryAddress, String registryEmailAddress, String registrySequenceNumber) {
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber, String iht217) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
@@ -48,6 +49,7 @@ public class ResponseCaseDataParent {
         this.registryAddress = registryAddress;
         this.registryEmailAddress = registryEmailAddress;
         this.registrySequenceNumber = registrySequenceNumber;
+        this.iht217 = iht217;
     }
 
     public DynamicList getReprintDocument() {
@@ -70,6 +72,10 @@ public class ResponseCaseDataParent {
 
     public String getIhtGrossValueField() {
         return ihtGrossValueField;
+    }
+
+    public String getIht217() {
+        return iht217;
     }
 
     public String getDeceasedDiedEngOrWales() {
@@ -132,6 +138,7 @@ public class ResponseCaseDataParent {
         protected String registryAddress;
         protected String registryEmailAddress;
         protected String registrySequenceNumber;
+        protected String iht217;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -158,6 +165,11 @@ public class ResponseCaseDataParent {
 
         public ResponseCaseDataParentBuilder ihtNetValueField(String ihtNetValueField) {
             this.ihtNetValueField = ihtNetValueField;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder iht217(String iht217) {
+            this.iht217 = iht217;
             return this;
         }
 
@@ -224,7 +236,7 @@ public class ResponseCaseDataParent {
                     deceasedDiedEngOrWales, deceasedDeathCertificate, deceasedForeignDeathCertInEnglish,
                     deceasedForeignDeathCertTranslation, numberOfExecutors, numberOfApplicants,
                     legalDeclarationJson, checkAnswersSummaryJson, registryAddress,
-                    registryEmailAddress, registrySequenceNumber);
+                    registryEmailAddress, registrySequenceNumber, iht217);
         }
     }
 }

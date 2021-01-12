@@ -73,6 +73,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedHasAssetsOutsideUK", "Label": "Assets outside uk", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "assetsOutsideNetValue", "Label": "Assets outside uk value", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormId", "Label": "Inheritance Tax form", "FieldType": "FixedList", "FieldTypeParameter": "IHTFormID", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "iht217", "Label": "Was an IHT217 form filled in?", "FieldType": "YesOrNo", "FieldTypeParameter": "iht217", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantNameSameAsWill", "Label": "Executor name same as will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSOTName", "Label": "Solicitor name", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSOTForenames", "Label": "Solicitor first name(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public"},
