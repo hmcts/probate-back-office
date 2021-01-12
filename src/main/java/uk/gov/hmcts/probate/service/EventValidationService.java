@@ -12,7 +12,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
-import uk.gov.hmcts.probate.validator.*;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.EmailValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 
 import java.util.List;
 import java.util.stream.Collectors;
