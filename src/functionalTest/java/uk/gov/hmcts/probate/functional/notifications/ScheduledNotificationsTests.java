@@ -13,7 +13,6 @@ import net.thucydides.core.annotations.Pending;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import net.thucydides.core.annotations.Pending;
 
 import static junit.framework.TestCase.assertTrue;
 import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
@@ -45,7 +44,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE = "grantDelayedNotificationDate";
 
 
-    @Pending
     @Test
     @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
@@ -80,7 +78,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         assertTrue(emailDocText.contains(expectedText));
     }
 
-    @Pending
     @Test
     @Pending
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
