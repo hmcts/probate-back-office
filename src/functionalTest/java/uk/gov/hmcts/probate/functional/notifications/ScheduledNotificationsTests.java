@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import net.thucydides.core.annotations.Pending;
 
 import static junit.framework.TestCase.assertTrue;
 import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
@@ -41,10 +42,10 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String DOC_INDEX = "DOC_INDEX";
     private static final String GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL = "case_data.probateNotificationsGenerated["+DOC_INDEX+"].value.DocumentLink.document_binary_url";
     private static final String ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE = "grantDelayedNotificationDate";
-    
 
-    @Test
+
     @Pending
+    @Test
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -77,8 +78,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         assertTrue(emailDocText.contains(expectedText));
     }
 
-    @Test
     @Pending
+    @Test
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
 
