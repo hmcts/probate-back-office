@@ -31,11 +31,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +101,12 @@ public class BusinessValidationUnitTest {
     private PDFManagementService pdfManagementServiceMock;
     @Mock
     private CaseStoppedService caseStoppedServiceMock;
+    @Mock
+    private EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
+    @Mock
+    private EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
+    @Mock
+    private EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
 
 
     private BusinessValidationController underTest;
@@ -127,7 +129,10 @@ public class BusinessValidationUnitTest {
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
             caseStoppedServiceMock,
-            emailAddressNotifyApplicantValidationRule);
+            emailAddressNotifyApplicantValidationRule,
+            emailAddressExecutorsValidationRule,
+            emailAddressPrimaryApplicantValidationRule,
+            emailAddressSolicitorValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }

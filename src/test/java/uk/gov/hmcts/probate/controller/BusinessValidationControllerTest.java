@@ -40,9 +40,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -115,6 +117,7 @@ public class BusinessValidationControllerTest {
     private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final ApplicationType APPLICATION_TYPE = ApplicationType.SOLICITOR;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -237,6 +240,7 @@ public class BusinessValidationControllerTest {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE)
+                .applicationType(APPLICATION_TYPE)
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST);
     }
 
