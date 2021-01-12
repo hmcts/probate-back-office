@@ -9,13 +9,11 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
+import uk.gov.hmcts.probate.validator.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +39,23 @@ public class EventValidationService {
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
         List<FieldErrorResponse> businessErrors = validate(ccdData, rules);
+
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
+    public List<FieldErrorResponse> validateEmailAddresses(CaseDetails form, List<? extends CaseDetailsEmailValidationRule> rules) {
+        return rules.stream()
+                .map(rule -> rule.validate(form))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
+    public CallbackResponse validateEmailAddresses(CallbackRequest callbackRequest,
+                                            List<? extends CaseDetailsEmailValidationRule> rules) {
+
+        List<FieldErrorResponse> businessErrors = validateEmailAddresses(callbackRequest.getCaseDetails(), rules);
 
         return CallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))

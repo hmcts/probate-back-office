@@ -35,14 +35,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +64,7 @@ public class BusinessValidationController {
     private final List<ValidationRule> allValidationRules;
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
+    private final List<CaseDetailsEmailValidationRule> caseDetailsEmailValidationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
@@ -206,7 +200,11 @@ public class BusinessValidationController {
 
         caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
 
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        CallbackResponse response = eventValidationService.validateEmailAddresses(callbackRequest, caseDetailsEmailValidationRule);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformCase(callbackRequest);
+        }
         return ResponseEntity.ok(response);
     }
 
