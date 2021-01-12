@@ -26,6 +26,8 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -44,6 +46,7 @@ public class NextStepsController {
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
@@ -54,7 +57,7 @@ public class NextStepsController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-
+        validateEmailAddresses(callbackRequest);
         CallbackResponse callbackResponse;
         Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
@@ -112,6 +115,12 @@ public class NextStepsController {
             log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
+        }
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
         }
     }
 }

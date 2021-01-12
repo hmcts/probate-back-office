@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -78,6 +79,7 @@ public class BusinessValidationController {
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
     @PostMapping(path = "/sols-apply-as-exec")
     public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
@@ -162,6 +164,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
@@ -195,6 +198,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         log.info("case-stopped started");
 
@@ -246,6 +250,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         Document document = null;
         if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
@@ -318,5 +323,11 @@ public class BusinessValidationController {
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         return emailErrors.isEmpty();
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }
