@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.htmltemplate.SendDocumentsDetailsHtmlTemplate;
@@ -29,42 +30,48 @@ public class TaskStateRenderer {
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     // isProbate - true if application for probate, false if for caveat
-    public static String renderByReplace(TaskListState currState, String html, Long caseId, String willType, LocalDate authDate, LocalDate submitDate) {
-        final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS);
-        final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS);
-        final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS);
-        final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT);
-        final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS);
-        final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS);
-        final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION);
-        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT);
+    public static String renderByReplace(TaskListState currState, String html, Long caseId, String willType, String solSOTNeedToUpdate, LocalDate authDate, LocalDate submitDate) {
+        final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, solSOTNeedToUpdate);
+        final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS, solSOTNeedToUpdate);
+        final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, solSOTNeedToUpdate);
+        final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT, solSOTNeedToUpdate);
+        final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS, solSOTNeedToUpdate);
+        final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS, solSOTNeedToUpdate);
+        final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION, solSOTNeedToUpdate);
+        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
         return html == null ? null : html
-                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType))
+                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
-                .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType))
+                .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS, currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addDeceasedDetails/>", renderTaskStateTag(addDeceasedState))
-                .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr, willType))
+                .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, currState, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
-                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType))
+                .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT, currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
-                .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType))
+                .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
-                .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, examineState, EXAMINE_APP_TEXT, caseIdStr, willType))
+                .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION, currState, examineState, EXAMINE_APP_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
-                .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType))
+                .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT, currState, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState));
-
     }
 
-    private static TaskState getTaskState(TaskListState currState, TaskListState renderState) {
+    private static TaskState getTaskState(TaskListState currState, TaskListState renderState, String solSOTNeedToUpdate) {
+        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES) && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
+            if (currState.compareTo(renderState) > 0) {
+                return TaskState.COMPLETED;
+            }
+            return TaskState.IN_PROGRESS;
+        }
+
         if (currState == renderState) {
             return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
         }
@@ -90,9 +97,9 @@ public class TaskStateRenderer {
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId));
     }
 
-    private static String renderLinkOrText(TaskListState taskListState, TaskState currState, String linkText, String caseId, String willType) {
+    private static String renderLinkOrText(TaskListState taskListState, TaskListState currState, TaskState currTaskState, String linkText, String caseId, String willType) {
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
-        return linkUrlTemplate != null && (currState == TaskState.NOT_STARTED || currState == TaskState.IN_PROGRESS) ?
+        return linkUrlTemplate != null && currState == taskListState && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS) ?
                 LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId))
                 : linkText;
     }
@@ -135,6 +142,7 @@ public class TaskStateRenderer {
 
         }
     }
+
 
     private TaskStateRenderer() {
         throw new IllegalStateException("Utility class");

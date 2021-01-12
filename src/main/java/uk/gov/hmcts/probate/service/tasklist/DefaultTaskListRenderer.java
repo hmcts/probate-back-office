@@ -32,6 +32,6 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
                                 SecondaryTextRenderer.renderByReplace(
                                         HeadingRenderer.renderByReplace(
                                                 UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
-                                                    details.getId(), willType, authDate, submitLocalDate);
+                                                    details.getId(), willType, caseData.getSolsSOTNeedToUpdate(), authDate, submitLocalDate);
     }
 }
