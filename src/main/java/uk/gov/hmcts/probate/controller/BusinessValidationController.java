@@ -64,7 +64,7 @@ public class BusinessValidationController {
     private final List<ValidationRule> allValidationRules;
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
-    private final List<CaseDetailsEmailValidationRule> caseDetailsEmailValidationRule;
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
@@ -72,9 +72,6 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
-    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
-    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
-    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -159,9 +156,10 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-        validateEmailAddresses(callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
@@ -193,18 +191,14 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        validateEmailAddresses(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         log.info("case-stopped started");
 
         caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
-        CallbackResponse response = eventValidationService.validateEmailAddresses(callbackRequest, caseDetailsEmailValidationRule);
-
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transformCase(callbackRequest);
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -249,8 +243,8 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) throws NotificationClientException {
 
-        validateEmailAddresses(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         Document document = null;
         if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
@@ -326,8 +320,8 @@ public class BusinessValidationController {
     }
 
     private void validateEmailAddresses(CallbackRequest callbackRequest) {
-        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }

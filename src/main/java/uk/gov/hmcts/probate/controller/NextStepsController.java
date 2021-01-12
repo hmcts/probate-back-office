@@ -26,11 +26,13 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -47,9 +49,7 @@ public class NextStepsController {
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
-    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
-    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
-    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
@@ -124,8 +124,8 @@ public class NextStepsController {
     }
 
     private void validateEmailAddresses(CallbackRequest callbackRequest) {
-        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }

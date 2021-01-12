@@ -1,11 +1,8 @@
 package uk.gov.hmcts.probate.validator;
-
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-
-import java.util.List;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 public interface CaseDetailsEmailValidationRule {
-
-    List<FieldErrorResponse> validate(CaseDetails caseDetails);
+    String REGEX = "[a-z0-9!#$%&'*+/=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-z0-9](?:[a-z0-9-.]{0,30}[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]{0,10}[a-z0-9])?";
+    void validate(CaseDetails caseDetails);
 }

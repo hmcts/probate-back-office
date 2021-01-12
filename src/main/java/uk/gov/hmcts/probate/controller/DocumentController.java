@@ -73,10 +73,8 @@ public class DocumentController {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    private final EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
-    private final EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
-    private final EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
     private final ReprintService reprintService;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
@@ -284,8 +282,8 @@ public class DocumentController {
     }
 
     private void validateEmailAddresses(CallbackRequest callbackRequest) {
-        emailAddressPrimaryApplicantValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressSolicitorValidationRule.validate(callbackRequest.getCaseDetails());
-        emailAddressExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }
