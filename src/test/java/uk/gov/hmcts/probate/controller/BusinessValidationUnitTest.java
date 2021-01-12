@@ -102,11 +102,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private CaseStoppedService caseStoppedServiceMock;
     @Mock
-    private EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
-    @Mock
-    private EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
-    @Mock
-    private EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
 
     private BusinessValidationController underTest;
@@ -130,9 +126,7 @@ public class BusinessValidationUnitTest {
             redeclarationSoTValidationRuleMock,
             caseStoppedServiceMock,
             emailAddressNotifyApplicantValidationRule,
-            emailAddressExecutorsValidationRule,
-            emailAddressPrimaryApplicantValidationRule,
-            emailAddressSolicitorValidationRule);
+            allCaseDetailsEmailValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }

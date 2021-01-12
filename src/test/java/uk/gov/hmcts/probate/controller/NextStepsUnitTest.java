@@ -27,11 +27,13 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -77,11 +79,7 @@ public class NextStepsUnitTest {
     @Mock
     private StateChangeService stateChangeServiceMock;
     @Mock
-    private EmailAddressExecutorsValidationRule emailAddressExecutorsValidationRule;
-    @Mock
-    private EmailAddressPrimaryApplicantValidationRule emailAddressPrimaryApplicantValidationRule;
-    @Mock
-    private EmailAddressSolicitorValidationRule emailAddressSolicitorValidationRule;
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
     @MockBean
     private AppInsights appInsights;
@@ -91,8 +89,7 @@ public class NextStepsUnitTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock, callbackResponseTransformerMock,
-                objectMapperMock, feeServiceMock, stateChangeServiceMock, emailAddressExecutorsValidationRule, emailAddressPrimaryApplicantValidationRule,
-                emailAddressSolicitorValidationRule);
+                objectMapperMock, feeServiceMock, stateChangeServiceMock, allCaseDetailsEmailValidationRule);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
