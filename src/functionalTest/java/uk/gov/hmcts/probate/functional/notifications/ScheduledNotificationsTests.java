@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import net.thucydides.core.annotations.Pending;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
