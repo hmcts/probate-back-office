@@ -11,9 +11,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class CaveatorEmailAddressValidationRule implements CaveatEmailValidationRule{
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
-
     private static final String EMAIL_NOT_FOUND_CAVEAT = "emailNotProvidedCaveats";
-    private static final String REGEX = "[a-z0-9!#$%&'*+/=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-z0-9](?:[a-z0-9-.]{0,30}[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]{0,10}[a-z0-9])?";
 
     @Override
     public void validate(CaveatDetails caveatDetails) {
