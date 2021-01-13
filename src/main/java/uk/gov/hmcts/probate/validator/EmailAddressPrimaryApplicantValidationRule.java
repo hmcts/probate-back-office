@@ -9,7 +9,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class EmailAddressPrimaryApplicantValidationRule implements CaseDetailsEmailValidationRule{
-    private static final String EMAIL_NOT_FOUND_PA = "emailNotProvidedPA";
+    private static final String EMAIL_NOT_FOUND_PA = "emailInvalidPA";
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     @Override
