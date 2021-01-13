@@ -473,6 +473,16 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldTransformCaseWithIht217Attributes(){
+        String response = transformCase("success.iht217Saved.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String iht217 = jsonPath.get("data.iht217");
+
+        assertEquals("Yes", iht217);
+    }
+
+    @Test
     public void shouldTransformCaseWithCitizenAttributes() {
         String response = transformCase("success.CitizenAttribtesSaved.json", TRANSFORM_URL);
 
