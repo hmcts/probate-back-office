@@ -21,6 +21,10 @@ public class ResponseCaseDataParentTest {
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
             .dispenseWithNotice("Yes").titleAndClearingType("TCTTrustCorpResWithApp")
+            .deceasedDeathCertificate("deathCertificate")
+            .deceasedDiedEngOrWales("Yes")
+            .deceasedForeignDeathCertInEnglish("Yes")
+            .deceasedForeignDeathCertTranslation("Yes")
             .build();
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
@@ -38,7 +42,10 @@ public class ResponseCaseDataParentTest {
         assertEquals("registrySequenceNumber", responseCaseDataParent.getRegistrySequenceNumber());
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
-
+        assertEquals("deathCertificate", responseCaseDataParent.getDeceasedDeathCertificate());
+        assertEquals("Yes", responseCaseDataParent.getDeceasedDiedEngOrWales());
+        assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertInEnglish());
+        assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertTranslation());
     }
 
 
