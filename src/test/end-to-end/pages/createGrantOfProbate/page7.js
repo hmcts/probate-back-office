@@ -11,7 +11,7 @@ module.exports = async function (crud) {
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
         await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page7_applyingAsAttorneyYes}`);
-        await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');        
+        await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
@@ -27,7 +27,7 @@ module.exports = async function (crud) {
             // lost dev time
             await I.wait(0.25);
         }
-                
+
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);

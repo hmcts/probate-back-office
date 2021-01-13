@@ -67,7 +67,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             numNotStarted: 0,
             linkText: 'Add deceased details',
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
-            goToNextStep: true});        
+            goToNextStep: true});
 
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressContinueWithoutChangingAnything();
@@ -95,9 +95,9 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             linkText: 'Review and sign legal statement and submit application',
             linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
             goToNextStep: true});
-        
+
         console.info('Confirm application');
-        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);    
+        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
         await I.caseProgressConfirmApplication();
 
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
