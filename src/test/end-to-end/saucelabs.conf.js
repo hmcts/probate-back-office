@@ -69,7 +69,7 @@ const setupConfig = {
             retries: 2
         },
         autoDelay: {
-            enabled: true,
+            enabled: testConfig.TestAutoDelayEnabled,
             delayAfter: 2000
         }
     },
