@@ -12,9 +12,11 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
-    // just a small delay - occasionally we get issues at I.grabNumberOfVisibleElements(btnLocator) or await I.waitForEnabled(commonConfig.continueButton) below.
+    // just a small delay - occasionally we get issues.
     // Only necessary where we have no auto delay (local dev).
-    await I.wait(0.25);
+    if (!testConfig.TestAutoDelayEnabled) {
+        await I.wait(0.25);
+    }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     if (numOfElements > 0) {
@@ -28,13 +30,19 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
         await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
-        // just a small delay - occasionally we get issues here but only relevant for local dev
-        await I.wait(0.25);
+        // Just a small delay - occasionally we get issues here but only relevant for local dev.
+        // Only necessary where we have no auto delay (local dev).
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.25);
+        }
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
-        // just a small delay - occasionally we get issues here but only relevant for local dev
-        await I.wait(0.25);
+        // Just a small delay - occasionally we get issues here but only relevant for local dev.
+        // Only necessary where we have no auto delay (local dev).
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.25);
+        }
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
@@ -53,6 +61,11 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     if (skipMatchingInfo) {
         await I.waitForElement({css: '#field-trigger-summary'});
         await I.waitForEnabled(commonConfig.continueButton);
+        // Just a small delay - occasionally we get issues here but only relevant for local dev.
+        // Only necessary where we have no auto delay (local dev).
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.25);
+        }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
 };
