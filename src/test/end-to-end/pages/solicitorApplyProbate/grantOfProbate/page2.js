@@ -36,7 +36,7 @@ module.exports = async function (isSolcitorMainApplicant = false) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.25);
-        }        
+        }
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
         await I.click(`#solsAdditionalExecutorList_0_additionalExecNameOnWill-${grantOfProbateConfig.optionYes}`);
         await I.click(`#solsAdditionalExecutorList_0_additionalApplying-${grantOfProbateConfig.optionYes}`);
