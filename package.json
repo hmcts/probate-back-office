@@ -18,7 +18,7 @@
     "test-e2e-caveat4": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath4.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-willLodgement": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
-    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
+    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --reporter mocha-multi",
     "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
     "test:fullfunctional": "./bin/run-e2e-tests.sh"
   },
@@ -34,8 +34,10 @@
     "eslint-plugin-mocha": "^4.8.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
-    "mocha-jenkins-reporter": "^0.3.8",
-    "mochawesome": "^3.0.2",
+    "mocha-jenkins-reporter": "^0.4.5",
+    "mocha-junit-reporter": "^1.23.3",
+    "mocha-multi": "^1.1.3",
+    "mochawesome": "^4.0.1",
     "nock": "^9.3.0",
     "nodemon": "^1.11.0",
     "nsp": "^2.6.2",
@@ -54,6 +56,7 @@
     "unirest": "^0.5.1",
     "uuid": "^3.1.0",
     "watch": "^1.0.1",
+    "webdriverio": "^6.11.3",
     "when": "^3.7.7",
     "date-fns": "^1.30.1"
   }
