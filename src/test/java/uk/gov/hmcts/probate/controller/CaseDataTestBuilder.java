@@ -66,7 +66,12 @@ public class CaseDataTestBuilder {
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
     public static final String APPLICATION_GROUNDS = "Application grounds";
+
     public static final String REGISTRY_SEQUENCE_NUMBER = "12345";
+    public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
+    public static final String DECEASED_DIED_ENG_OR_WALES = "Yes";
+    public static final String DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH = "Yes";
+    public static final String DECEASED_FOREIGN_DEATH_CERT_TRANSLATION = "Yes";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -142,7 +147,11 @@ public class CaseDataTestBuilder {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE)
-                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER);
+                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER)
+                .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
+                .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
+                .deceasedForeignDeathCertInEnglish(DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH)
+                .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION);
     }
 
 }
