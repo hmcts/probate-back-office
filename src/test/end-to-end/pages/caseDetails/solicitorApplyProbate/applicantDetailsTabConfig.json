@@ -2,7 +2,7 @@
   "tabName": "Applicant details",
   "fields": [
     "Firm name",
-    "Your reference for this application",
+    "Your reference",
     "Building and Street",
     "Address Line 2",
     "Address Line 3",
