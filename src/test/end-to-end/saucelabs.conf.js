@@ -14,7 +14,6 @@ const defaultSauceOptions = {
     tags: ['probate_expertui']
 };
 
-
 function merge (intoObject, fromObject) {
     return Object.assign({}, intoObject, fromObject);
 }
@@ -32,6 +31,7 @@ function getBrowserConfig(browserGroup) {
                 capabilities: candidateCapabilities
             });
         } else {
+            // eslint-disable-next-line no-console
             console.error('ERROR: supportedBrowsers.js is empty or incorrectly defined');
         }
     }
