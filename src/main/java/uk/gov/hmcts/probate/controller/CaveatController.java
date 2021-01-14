@@ -96,6 +96,7 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
+        validateEmailAddresses(caveatCallbackRequest);
         CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);

@@ -26,5 +26,11 @@ public class EmailAddressSolicitorValidationRule implements CaseDetailsEmailVali
                 }
             }
         }
+        else if(caseDetails.getData().getSolsSolicitorEmail() != null) {
+            if(!caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)){
+                throw new BusinessValidationException(userMessage,
+                        "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
+            }
+        }
     }
 }

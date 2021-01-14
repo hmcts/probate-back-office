@@ -349,6 +349,19 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
+    @Test(expected = BadRequestException.class)
+    public void shouldValidateSolCaseCreationWithFieldErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
     @Test
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);

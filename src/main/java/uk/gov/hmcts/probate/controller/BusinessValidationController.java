@@ -81,6 +81,19 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
     }
 
+    @PostMapping(path = "/sols-validate-creation", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateCreation(
+            @Validated({ApplicationCreatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
+
+        return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(callbackRequest));
+    }
+
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> solsValidate(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
