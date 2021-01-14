@@ -49,7 +49,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.click(addNewButtonLocator);
     }
 
-    if (retainFirstItem || addNewButtonLocator) {
+    if (numOfElements > 0 && retainFirstItem) {
         await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
         await I.click({css: 'input[id$="valid-Yes"]'});
         await I.click({css: 'input[id$="doImport-No"]'});
