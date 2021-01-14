@@ -28,11 +28,8 @@ import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressExecutorsValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressPrimaryApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressSolicitorValidationRule;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,8 +75,8 @@ public class NextStepsUnitTest {
     private CallbackResponse callbackResponseMock;
     @Mock
     private StateChangeService stateChangeServiceMock;
-    @Mock
-    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
+
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule = new ArrayList<CaseDetailsEmailValidationRule>();
 
     @MockBean
     private AppInsights appInsights;

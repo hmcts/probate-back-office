@@ -24,21 +24,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.CaseStoppedService;
-import uk.gov.hmcts.probate.service.ConfirmationResponseService;
-import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.*;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -101,9 +94,8 @@ public class BusinessValidationUnitTest {
     private PDFManagementService pdfManagementServiceMock;
     @Mock
     private CaseStoppedService caseStoppedServiceMock;
-    @Mock
-    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule = new ArrayList<CaseDetailsEmailValidationRule>();
 
     private BusinessValidationController underTest;
 
