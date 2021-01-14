@@ -44,10 +44,13 @@ ccd:
       enabled: false
     postgresql:
       enabled: false
+    ccd-case-management-web:
+      enabled: true
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
+    ccdCaseManagementWebIngress: ccd-case-management-web-${SERVICE_FQDN}
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
@@ -99,6 +102,19 @@ ccd:
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
       - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
+  ccd-case-management-web:
+    java:
+      imagePullPolicy: Always
+      releaseNameOverride: ${SERVICE_NAME}-ccd-case-management-web
+      image: hmctspublic.azurecr.io/ccd/case-management-web:latest
+      ingressHost: ccd-case-management-web-${SERVICE_FQDN}
+      environment:
+       IDAM_LOGIN_URL: https://idam-api.aat.platform.hmcts.net
+       CCD_GATEWAY_BASE_URL: gateway-${SERVICE_FQDN}
+       CCD_ACTIVITY_URL:
+       DM_GATEWAY_BASE_URL: https://api-gateway.dev.dm.reform.hmcts.net
+       OAUTH2_CLIENT_ID:
+       DM_URL: http://dm-store-aat.service.core-compute-aat.internal
 
 xui-webapp:
   enabled: true
