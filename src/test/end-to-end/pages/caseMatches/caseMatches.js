@@ -49,18 +49,26 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.click(addNewButtonLocator);
     }
 
-    if (numOfElements > 0 && retainFirstItem) {
-        await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
+    if (retainFirstItem && (numOfElements > 0 || addNewButtonLocator)) {
+        // Just a small delay - occasionally we get issues here but only relevant for local dev.
+        // Only necessary where we have no auto delay (local dev).
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.5);
+        }
+        await I.scrollTo({css: 'input[id$="valid-Yes"]'});
+        await I.waitForElement({css: 'input[id$="valid-Yes"]'});
         await I.click({css: 'input[id$="valid-Yes"]'});
+        await I.waitForElement({css: 'input[id$="doImport-No"]'});
         await I.click({css: 'input[id$="doImport-No"]'});
     }
 
-    await I.waitForEnabled(commonConfig.continueButton);
+    await I.scrollTo({css: commonConfig.continueButton});
+    await I.waitForClickable(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     if (skipMatchingInfo) {
         await I.waitForElement({css: '#field-trigger-summary'});
-        await I.waitForEnabled(commonConfig.continueButton);
+        await I.waitForClickable(commonConfig.continueButton);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {

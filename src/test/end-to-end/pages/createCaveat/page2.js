@@ -44,7 +44,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click(createCaveatConfig.UKpostcodeLink);
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.25); // implicit wait needed here
-        }        
+        }
         await I.fillField('#deceasedAddress_AddressLine1', createCaveatConfig.address_line1);
         await I.fillField('#deceasedAddress_AddressLine2', createCaveatConfig.address_line2);
         await I.fillField('#deceasedAddress_AddressLine3', createCaveatConfig.address_line3);
