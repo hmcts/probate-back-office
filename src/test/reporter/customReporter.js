@@ -36,8 +36,8 @@ function copyResources() {
 function consoleReport(reportjson) {
     /* eslint-disable no-console */
     console.log('\t Total tests : ' + reportjson.tests.length);
-    console.log('\t Passed tests : ' + reportjson.pass);
-    console.log('\t Failed tests : ' + reportjson.fail);
+    console.log('\t Passed tests : ' + reportjson.passCount);
+    console.log('\t Failed tests : ' + reportjson.passCount);
 
     for (let count = 0; count < reportjson.tests.length; count++) {
         const test = reportjson.tests[count];
