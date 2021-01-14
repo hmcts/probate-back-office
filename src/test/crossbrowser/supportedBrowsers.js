@@ -8,7 +8,7 @@ const supportedBrowsers = {
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: IE11',
+                name: 'Probate Back Office - XUI: IE11',
                 screenResolution: '1400x1050'
             }
         },
@@ -17,7 +17,7 @@ const supportedBrowsers = {
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: Edge_Win10'
+                name: 'Probate Back Office - XUI: Edge_Win10'
             }
         }
     },
@@ -27,7 +27,7 @@ const supportedBrowsers = {
             platformName: 'macOS 10.14',
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: MAC_SAFARI',
+                name: 'Probate Back Office - XUI: MAC_SAFARI',
                 seleniumVersion: '3.141.59',
                 screenResolution: '1400x1050'
             }
@@ -39,7 +39,7 @@ const supportedBrowsers = {
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: WIN_CHROME_LATEST'
+                name: 'Probate Back Office - XUI: WIN_CHROME_LATEST'
             }
         },
         chrome_mac_latest: {
@@ -47,7 +47,7 @@ const supportedBrowsers = {
             platformName: LATEST_MAC,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: MAC_CHROME_LATEST'
+                name: 'Probate Back Office - XUI: MAC_CHROME_LATEST'
             }
         }
     },
@@ -57,7 +57,7 @@ const supportedBrowsers = {
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: WIN_FIREFOX_LATEST'
+                name: 'Probate Back Office - XUI: WIN_FIREFOX_LATEST'
             }
         },
         firefox_mac_latest: {
@@ -65,7 +65,7 @@ const supportedBrowsers = {
             platformName: LATEST_MAC,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Caveats: MAC_FIREFOX_LATEST'
+                name: 'Probate Back Office - XUI: MAC_FIREFOX_LATEST'
             }
         }
     }
