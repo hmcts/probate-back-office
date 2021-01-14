@@ -5,11 +5,11 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import net.thucydides.core.annotations.Pending;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -45,7 +45,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     
 
     @Test
-    @Ignore
+    @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -78,8 +78,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         assertTrue(emailDocText.contains(expectedText));
     }
 
-    @Ignore
     @Test
+    @Pending
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
 
