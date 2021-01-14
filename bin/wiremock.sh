@@ -97,7 +97,7 @@ curl -X POST \
             }
           },
           "response": {
-            "status": 403,
+            "status": 201,
             "headers": {
               "Content-Type": "application/json"
             },
@@ -137,7 +137,7 @@ curl -X POST \
             }
           },
           "response": {
-            "status": 403,
+            "status": 201,
             "headers": {
               "Content-Type": "application/json"
             },
