@@ -24,7 +24,8 @@ const executorTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/w
 
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
 const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
+// this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
+// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
@@ -118,7 +119,8 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Will lodged';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
+    // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Withdraw will';
     await I.chooseNextStep(nextStepName);

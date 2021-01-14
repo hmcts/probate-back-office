@@ -43,8 +43,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);
 
-        await I.selectOption({css: '#deceasedMaritalStatus'}, createGrantOfProbateConfig.page4_deceasedMaritalStatus);
-
+        await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatus}`)
         await I.click(`#foreignAsset-${createGrantOfProbateConfig.page4_foreignAssetYes}`);
         await I.waitForVisible('#foreignAssetEstateValue');
         await I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page4_foreignAssetEstateValue);

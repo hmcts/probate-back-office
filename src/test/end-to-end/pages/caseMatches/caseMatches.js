@@ -11,10 +11,6 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText);
 
-    await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
-
-    await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
-
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
@@ -34,10 +30,20 @@ module.exports = async function (caseRef, caseMatchesConfig, nextStepName, retai
         await I.click(caseMatchesConfig.addNewButton);
     }
 
-    await I.waitForEnabled({css: 'input[id$="valid-Yes"]'});
-    await I.click({css: 'input[id$="valid-Yes"]'});
-    await I.click({css: 'input[id$="doImport-No"]'});
+    if (numOfElements > 0 || (retainFirstItem && addNewItem)) {        
+        await I.scrollTo({css: 'input[id$="valid-Yes"]'});
+        await I.waitForClickable({css: 'input[id$="valid-Yes"]'});
+        await I.click({css: 'input[id$="valid-Yes"]'});
+        await I.waitForClickable({css: 'input[id$="doImport-No"]'});
+        await I.click({css: 'input[id$="doImport-No"]'});    
+    }
 
-    await I.waitForEnabled(commonConfig.continueButton);
+    if (!testConfig.TestAutoDelayEnabled) {
+        // if auto delay off in local dev env, occasionally get issues
+        await I.wait(0.25);
+    }
+    
+    await I.scrollTo({css: commonConfig.continueButton});
+    await I.waitForClickable(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
