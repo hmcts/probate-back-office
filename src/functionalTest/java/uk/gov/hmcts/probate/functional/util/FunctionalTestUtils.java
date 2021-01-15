@@ -230,12 +230,7 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseCreateJson)
             .when().post(submitForCaseworkerUrl).andReturn();
-        try {
-            Thread.sleep(20000l);
-        }
-        catch(Exception exception) {
-            log.error("error {} ",exception);
-        }
+
         log.info("caseCreated {}");
         return submitResponse.getBody().asString();
     }

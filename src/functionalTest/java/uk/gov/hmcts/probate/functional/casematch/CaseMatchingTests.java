@@ -46,7 +46,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String DATE_OF_DEATH = "2020-01-01";
 
     @Test
-    public void shouldReturnMatchingCaseWhenGOPSearchFlow() {
+    public void shouldReturnMatchingCaseWhenGOPSearchFlow() throws InterruptedException {
         createCase();
         Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.prettyPrint();
@@ -66,7 +66,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() {
+    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() throws InterruptedException{
         createCase();
         Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
         response.prettyPrint();
@@ -88,7 +88,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenStandingSearchFlow() {
+    public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws InterruptedException {
         createCase();
         Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
@@ -109,7 +109,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() {
+    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws InterruptedException {
         createCase();
         Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.prettyPrint();
@@ -221,17 +221,12 @@ public class CaseMatchingTests extends IntegrationTestBase {
         return json;
     }
 
-    private void createCase()  {
+    private void createCase() throws InterruptedException {
         //Create Case
         String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
         String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, CASE_CREATE_EVENT);
         String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, CASE_CREATE_EVENT);
-        try {
-            Thread.sleep(20000l);
-        }
-        catch(Exception exception) {
-            log.error("error {} ",exception);
-        }
+        Thread.sleep(60000);
         JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
         String caseId = jsonPathApply.get("id").toString();
         log.info("CaseMatchingTests : createCase : caseId {} ",caseId);
