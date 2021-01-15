@@ -24,6 +24,7 @@
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh"
   },
   "dependencies": {
+    "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesC
 
     await I.see(caseRef);
     await I.clickTab(tabConfigFile.tabName);
+    await I.runAccessibilityTest();
 
     if (tabUpdates) {
         const updatedConfig = tabConfigFile[tabUpdates];
