@@ -155,6 +155,8 @@ public class CaseData extends CaseDataParent {
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
+    private final String iht205extraInfo;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class,
             ApplicationProbateGroup.class,
             ApplicationIntestacyGroup.class,

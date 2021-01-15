@@ -58,6 +58,7 @@ public class ResponseCaseData extends ResponseCaseDataParent{
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String iht205extraInfo;
     private final String solsSolicitorIsExec;
     private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
