@@ -133,4 +133,19 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
     }
 
+    @Test
+    public void shouldSetPrimaryExecutorNotApplyingReasonToNULLForNULLSolsApplyAsExecTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.YES)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSolicitorIsApplying(null)
+                .solsPrimaryExecutorNotApplyingReason(CommonVariables.SOLICITOR_SOT_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
+    }
+
 }
