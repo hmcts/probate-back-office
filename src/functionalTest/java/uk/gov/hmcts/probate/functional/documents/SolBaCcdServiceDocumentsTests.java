@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     // Grant fields
