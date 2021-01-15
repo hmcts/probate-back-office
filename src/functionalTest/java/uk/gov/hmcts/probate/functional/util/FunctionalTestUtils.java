@@ -222,7 +222,10 @@ public class FunctionalTestUtils {
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
+        startResponse.then().assertThat().statusCode(200);
+
         String token = startResponse.getBody().jsonPath().get("token");
+        log.info("createCaseAsCaseworker : token {}",token);
         String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
@@ -230,7 +233,7 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseCreateJson)
             .when().post(submitForCaseworkerUrl).andReturn();
-
+        submitResponse.then().assertThat().statusCode(201);
         log.info("caseCreated {}");
         return submitResponse.getBody().asString();
     }
