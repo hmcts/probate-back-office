@@ -120,10 +120,10 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
-    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
-    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
-    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+    PROBATE_POSTGRESQL_USER: "hmcts"
+    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
+    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
+    PROBATE_POSTGRESQL_DATABASE: probate
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
