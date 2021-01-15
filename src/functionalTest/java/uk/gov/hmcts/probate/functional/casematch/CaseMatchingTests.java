@@ -20,6 +20,7 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CaseMatchingTests extends IntegrationTestBase {
 
+
     private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayoad.json";
     private static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     private static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
