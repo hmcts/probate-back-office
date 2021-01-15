@@ -6,7 +6,8 @@ import uk.gov.hmcts.probate.model.StateConstants;
 public enum CaseProgressState {
     DEFAULT(StateConstants.STATE_DESC_DEFAULT),
     CASE_ESCALATED(StateConstants.STATE_DESC_ESCALATED),
-    CASE_STOPPED(StateConstants.STATE_DESC_CASE_STOPPED);
+    CASE_STOPPED(StateConstants.STATE_DESC_CASE_STOPPED),
+    APPLICATION_STOPPED(StateConstants.STATE_DESC_APPLICATION_STOPPED);
 
     private String displayText;
 
@@ -30,6 +31,9 @@ public enum CaseProgressState {
 
             case StateConstants.STATE_BO_REGISTRAR_ESCALATION:
                 return CASE_ESCALATED;
+
+            case StateConstants.STATE_APPLICATION_STOPPED:
+                return APPLICATION_STOPPED;
 
             default:
                 return DEFAULT;

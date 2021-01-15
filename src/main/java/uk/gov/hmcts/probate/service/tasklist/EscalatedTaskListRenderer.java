@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.model.htmltemplate.CaseEscalatedToRegistrarHtmlTempl
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class EscalatedTaskListRenderer extends NoTaskListRenderer {
+public class EscalatedTaskListRenderer extends NoTaskListCaseRenderer {
 
     public String renderBody(CaseDetails details) {
 

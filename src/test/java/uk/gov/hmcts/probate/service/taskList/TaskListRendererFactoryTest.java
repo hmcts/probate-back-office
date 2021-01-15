@@ -1,11 +1,7 @@
 package uk.gov.hmcts.probate.service.taskList;
 
 import org.junit.Test;
-import uk.gov.hmcts.probate.service.tasklist.BaseTaskListRenderer;
-import uk.gov.hmcts.probate.service.tasklist.DefaultTaskListRenderer;
-import uk.gov.hmcts.probate.service.tasklist.EscalatedTaskListRenderer;
-import uk.gov.hmcts.probate.service.tasklist.StoppedTaskListRenderer;
-import uk.gov.hmcts.probate.service.tasklist.TaskListRendererFactory;
+import uk.gov.hmcts.probate.service.tasklist.*;
 
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
@@ -14,6 +10,7 @@ import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_RED
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_REISSUE;
 import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
 
 public class TaskListRendererFactoryTest {
@@ -54,5 +51,11 @@ public class TaskListRendererFactoryTest {
     public void shouldReturnCorrectRendererForState_BORegistrarEscalation() {
         renderer = taskListRendererFactory.getTaskListRenderer(REGISTRAR_ESCALATION.getId());
         assertEquals(EscalatedTaskListRenderer.class, renderer.getClass());
+    }
+
+    @Test
+    public void shouldReturnCorrectRendererForState_Stopped() {
+        renderer = taskListRendererFactory.getTaskListRenderer(STOPPED.getId());
+        assertEquals(AppStoppedTaskListRenderer.class, renderer.getClass());
     }
 }

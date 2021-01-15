@@ -13,9 +13,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-// A render to render case progress html for when we don't want to display a task list
 public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
-
     public String renderHtml(CaseDetails caseDetails) {
 
         final List<String> lines = new LinkedList<>();
@@ -45,26 +43,11 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     }
 
     private String renderBodyHeader() {
-        return HeadingRenderer.render("What happens next");
+        return HeadingRenderer.render(getWhatNextText());
     }
 
-    public String renderContactDetails() {
-        final List<String> lines = new LinkedList<>();
-
-        lines.add(HeadingRenderer.render("Get help with your application"));
-        lines.add(SubheadingRenderer.render("Telephone"));
-        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.CONTACT_TEMPLATE)
-                .replaceFirst("<englishPhoneNumber>", "0300 303 0648")
-                .replaceFirst("<welshPhoneNumber>", "0300 303 0654")
-        );
-        lines.add(LinkRenderer.renderOutside("Find out about call charges", "https://www.gov.uk/call-charges"));
-        lines.add(SubheadingRenderer.render("Email"));
-        lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.EMAIL_TEMPLATE)
-                .replaceFirst("<email>", LinkRenderer.render("contactprobate@justice.gov.uk", "mailto:contactprobate@justice.gov.uk"))
-        );
-
-        return String.join("\n\n", lines);
-    }
-
+    protected abstract String renderContactDetails();
     protected abstract String renderBody(CaseDetails caseDetails);
+    protected abstract String getWhatNextText();
+
 }
