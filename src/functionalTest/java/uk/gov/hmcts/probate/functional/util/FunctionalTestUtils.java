@@ -227,7 +227,10 @@ public class FunctionalTestUtils {
         String token = startResponse.getBody().jsonPath().get("token");
         log.info("createCaseAsCaseworker : token {}",token);
         String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
+        log.info("********Gop Payload {}*************",caseCreateJson);
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
+        log.info(" createCaseAsCaseworker : submitForCaseworkerUrl :  {}",submitForCaseworkerUrl);
+
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
