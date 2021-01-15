@@ -56,11 +56,13 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    public void updateSolicitorExecutors(CaseData caseData, SolicitorExecutorService solicitorExecutorService,
+    public void updateSolicitorExecutors(CaseData caseData,
+                                         SolicitorExecutorService solicitorExecutorService,
                                          ResponseCaseData.ResponseCaseDataBuilder builder){
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
-
+        // TODO: check if these two pieces are redundant as they will always be overwritten
+        // either remove or add a method break to not bother continuing
         if (caseData.getAdditionalExecutorsApplying() != null) {
             execsApplying = mapApplyingAdditionalExecutors(caseData);
         }
@@ -77,16 +79,9 @@ public class SolicitorExecutorTransformer {
                 execsNotApplying = solicitorExecutorService.updateSolicitorNotApplyingExecutor(caseData, execsNotApplying);
                 execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
             }
-        }
-
-        if (NO.equals(caseData.getSolsSolicitorIsExec())) {
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorMainApplicant(caseData)) {
             execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
             execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-        }
-
-        if (isSolicitorMainApplicant(caseData)) {
-            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
         }
 
         builder

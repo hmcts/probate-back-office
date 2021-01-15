@@ -6,13 +6,21 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.util.CommonVariables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +35,14 @@ public class SolicitorExecutorTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @InjectMocks
+    private SolicitorExecutorService solicitorExecutorService;
+
+    @InjectMocks
     private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
+
+    List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
+    List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
+
 
     @Before
     public void setUp() {
@@ -41,6 +56,23 @@ public class SolicitorExecutorTransformerTest {
             .solsSolicitorAddress(CommonVariables.SOLICITOR_ADDRESS);
 
         responseCaseDataBuilder = ResponseCaseData.builder();
+
+        additionalExecutorApplying = new ArrayList<>();
+        additionalExecutorNotApplying = new ArrayList<>();
+
+        AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorName(CommonVariables.SOLICITOR_SOT_FORENAME + " " + CommonVariables.SOLICITOR_SOT_SURNAME)
+                .applyingExecutorPhoneNumber(CommonVariables.SOLICITOR_FIRM_PHONE)
+                .applyingExecutorEmail(CommonVariables.SOLICITOR_FIRM_EMAIL)
+                .applyingExecutorAddress(CommonVariables.SOLICITOR_ADDRESS)
+                .build();
+        additionalExecutorApplying.add(new CollectionMember<>(CommonVariables.SOL_AS_EXEC_ID, execApplying));
+
+        AdditionalExecutorNotApplying execNotApplying = AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(CommonVariables.SOLICITOR_SOT_FORENAME + " " + CommonVariables.SOLICITOR_SOT_SURNAME)
+                .notApplyingExecutorReason(CommonVariables.SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .build();
+        additionalExecutorNotApplying.add(new CollectionMember<>(CommonVariables.SOL_AS_EXEC_ID, execNotApplying));
     }
 
     @Test
@@ -146,6 +178,66 @@ public class SolicitorExecutorTransformerTest {
         solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
 
         assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsExecNotMainApplicantIsApplyingTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.YES)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSolicitorIsApplying(CommonVariables.YES);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.updateSolicitorExecutors(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertEquals(additionalExecutorApplying, responseCaseDataBuilder.build().getAdditionalExecutorsApplying());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsExecNotMainApplicantIsNotApplyingTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.YES)
+                .solsSolicitorIsMainApplicant(CommonVariables.NO)
+                .solsSolicitorIsApplying(CommonVariables.NO)
+                .solsSolicitorNotApplyingReason(CommonVariables.SOLICITOR_SOT_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.updateSolicitorExecutors(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertEquals(additionalExecutorNotApplying, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsNotExecTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.NO)
+                .solsSolicitorNotApplyingReason(CommonVariables.SOLICITOR_SOT_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.updateSolicitorExecutors(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsNotExecIsMainApplicantTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(CommonVariables.NO)
+                .solsSolicitorIsMainApplicant(CommonVariables.YES)
+                .solsSolicitorNotApplyingReason(CommonVariables.SOLICITOR_SOT_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.updateSolicitorExecutors(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
     }
 
 }
