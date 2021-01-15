@@ -35,7 +35,7 @@ ccd:
     adminWeb:
       enabled: false
     apiGatewayWeb:
-      enabled: false
+      enabled: true
     definitionImporter:
       enabled: false
     managementWeb:
