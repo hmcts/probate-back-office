@@ -115,7 +115,7 @@ public class FunctionalTestUtils {
         return getSolicitorHeadersWithUserId(serviceToken, userId);
     }
 
-    private Headers getHeadersWithUserId(String serviceToken, String userId) {
+    public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
