@@ -44,13 +44,10 @@ ccd:
       enabled: false
     postgresql:
       enabled: false
-    ccd-case-management-web:
-      enabled: true
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
-    ccdCaseManagementWebIngress: ccd-case-management-web-${SERVICE_FQDN}
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
@@ -102,19 +99,6 @@ ccd:
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
       - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
-  ccd-case-management-web:
-    java:
-      imagePullPolicy: Always
-      releaseNameOverride: ${SERVICE_NAME}-ccd-case-management-web
-      image: hmctspublic.azurecr.io/ccd/case-management-web:latest
-      ingressHost: ccd-case-management-web-${SERVICE_FQDN}
-      environment:
-       IDAM_LOGIN_URL: https://idam-api.aat.platform.hmcts.net
-       CCD_GATEWAY_BASE_URL: gateway-${SERVICE_FQDN}
-       CCD_ACTIVITY_URL:
-       DM_GATEWAY_BASE_URL: https://api-gateway.dev.dm.reform.hmcts.net
-       OAUTH2_CLIENT_ID:
-       DM_URL: http://dm-store-aat.service.core-compute-aat.internal
 
 xui-webapp:
   enabled: true
@@ -136,10 +120,10 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: "hmcts"
-    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
-    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
-    PROBATE_POSTGRESQL_DATABASE: probate
+    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
+    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
+    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
