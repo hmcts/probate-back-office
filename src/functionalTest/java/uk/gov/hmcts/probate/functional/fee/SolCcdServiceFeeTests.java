@@ -2,18 +2,19 @@ package uk.gov.hmcts.probate.functional.fee;
 
 
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
 

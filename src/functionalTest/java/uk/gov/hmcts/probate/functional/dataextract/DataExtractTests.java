@@ -1,20 +1,16 @@
 package uk.gov.hmcts.probate.functional.dataextract;
 
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
     private static final String EXCELA_URL = "/data-extract/exela";

@@ -3,16 +3,18 @@ package uk.gov.hmcts.probate.functional.hardstops;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";

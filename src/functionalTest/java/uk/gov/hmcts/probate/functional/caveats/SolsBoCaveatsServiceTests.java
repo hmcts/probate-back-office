@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -15,7 +16,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-
+@Ignore
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private static final String CAVEAT_RAISED = "/caveat/raise";

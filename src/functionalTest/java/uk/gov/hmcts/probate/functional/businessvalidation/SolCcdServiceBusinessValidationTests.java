@@ -7,19 +7,16 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";

@@ -1,21 +1,19 @@
 package uk.gov.hmcts.probate.functional.notifications;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertNull;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
+@Ignore
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String PA_STOP_DETAILS = "PA stop details";

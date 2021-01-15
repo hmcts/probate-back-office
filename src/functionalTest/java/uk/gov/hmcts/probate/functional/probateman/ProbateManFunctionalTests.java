@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.probateman;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.Headers;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(SerenityParameterizedRunner.class)
+@Ignore
 public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @Value("${user.auth.provider.oauth2.url}")
