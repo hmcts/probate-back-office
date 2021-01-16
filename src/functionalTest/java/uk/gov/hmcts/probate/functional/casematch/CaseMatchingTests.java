@@ -47,7 +47,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String DATE_OF_DEATH = "2020-01-01";
 
     @Test
-    public void shouldReturnMatchingCaseWhenGOPSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenGOPSearchFlow()  {
         createCase();
         Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.prettyPrint();
@@ -237,12 +237,11 @@ public class CaseMatchingTests extends IntegrationTestBase {
         return json;
     }
 
-    public void createCase() throws InterruptedException {
+    public void createCase() {
         //Create Case
         String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
         String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, CASE_CREATE_EVENT);
         String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, CASE_CREATE_EVENT);
-        Thread.sleep(160000);
         JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
         String caseId = jsonPathApply.get("id").toString();
         assertThat(caseId,is(notNullValue()));
