@@ -242,8 +242,10 @@ public class CaseMatchingTests extends IntegrationTestBase {
         String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
         String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, CASE_CREATE_EVENT);
         String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, CASE_CREATE_EVENT);
+        log.info("createCase step 1 ");
         JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
         String caseId = jsonPathApply.get("id").toString();
+        log.info("createCase : caseId {} ",caseId);
         assertThat(caseId,is(notNullValue()));
         log.info("CaseMatchingTests : createCase : caseId {} ",caseId);
         //Update Case
