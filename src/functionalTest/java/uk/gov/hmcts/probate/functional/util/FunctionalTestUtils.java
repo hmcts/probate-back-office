@@ -236,6 +236,7 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseCreateJson)
             .when().post(submitForCaseworkerUrl).andReturn();
+        log.info("createCaseAsCaseworker submitForCaseworkerUrl : response status {} ", submitResponse.prettyPrint());
         submitResponse.then().assertThat().statusCode(201);
         log.info("caseCreated {}");
         return submitResponse.getBody().asString();
