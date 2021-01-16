@@ -40,7 +40,6 @@ public class CaseMatchingTests extends IntegrationTestBase {
     private static final String IMPORT_LEGACY_CAVEAT_FLOW = "/case-matching/import-legacy-from-caveat-flow";
     private static final String IMPORT_LEGACY_STANDING_SEARCH = "/case-matching/import-legacy-from-standing-search-flow";
     private static final String IMPORT_LEGACY_WILL_LODGEMENT_SEARCH ="/case-matching/import-legacy-from-will-lodgement-flow";
-    private static final String LEGACY_GRANT_FLOW_JSON= "casematch/legacyimport/grantOfProbateForLegacy.json";
     public static final String NAME = "Ned Stark";
     public static final String DATE_OF_BIRTH = "1900-01-01";
     public static final String DATE_OF_DEATH = "2020-01-01";
