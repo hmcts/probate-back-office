@@ -51,5 +51,10 @@ class WebDriverHelper extends Helper {
             await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
         }
     }
+
+    async runAccessibilityTest() {
+        //Ignore this for web driver
+        await Promise.resolve();
+    }
 }
 module.exports = WebDriverHelper;
