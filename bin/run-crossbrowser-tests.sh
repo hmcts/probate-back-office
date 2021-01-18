@@ -7,6 +7,7 @@ export E2E_TEST_PATH="./paths/solicitor/applyGrantOfProbateMultiExecutor.js"
 export TEST_USER_EMAIL=${SOL_USER_EMAIL}
 export TEST_USER_PASSWORD=${SOL_USER_PASSWORD}
 export TESTS_FOR_XUI_SERVICE='true'
+export TESTS_FOR_ACCESSIBILITY='false'
 
 if [[ "$BROWSER_GROUP" == "" ]]
 then
