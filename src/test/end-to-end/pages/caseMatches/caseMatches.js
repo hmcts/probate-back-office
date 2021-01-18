@@ -63,11 +63,13 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     }
 
     await I.scrollTo({css: commonConfig.continueButton});
+    await I.waitForElement(commonConfig.continueButton);
     await I.waitForClickable(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     if (skipMatchingInfo) {
         await I.waitForElement({css: '#field-trigger-summary'});
+        await I.waitForElement(commonConfig.continueButton);
         await I.waitForClickable(commonConfig.continueButton);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).

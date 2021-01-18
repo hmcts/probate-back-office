@@ -46,15 +46,15 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'}, 
-            {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'}, 
-            {locator: {css: '#primaryApplicantHasAlias-No'}}, 
-            {locator: {css: '#primaryApplicantIsApplying-No'}}, 
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '6: MentallyIncapable'}, 
+            {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
+            {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
+            {locator: {css: '#primaryApplicantHasAlias-No'}},
+            {locator: {css: '#primaryApplicantIsApplying-No'}},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '6: MentallyIncapable'},
             {locator: {css: '#otherExecutorExists-No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
-        
+
         // More extensive checks already performed at this stage for stop/escalate issue
         console.info('Check answers');
         await I.caseProgressCheckYourAnswers();
