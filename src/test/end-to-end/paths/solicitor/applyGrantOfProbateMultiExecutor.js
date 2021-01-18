@@ -87,4 +87,4 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
 
 }).tag('@crossbrowser')
-.retry(testConfig.TestRetryScenarios);
+    .retry(testConfig.TestRetryScenarios);

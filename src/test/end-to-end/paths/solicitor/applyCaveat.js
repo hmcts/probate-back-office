@@ -77,4 +77,4 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
 }).tag('@crossbrowser')
-.retry(testConfig.TestRetryScenarios);
+    .retry(testConfig.TestRetryScenarios);
