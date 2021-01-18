@@ -58,7 +58,7 @@ class WebDriverHelper extends Helper {
     }
 
     async clickTab(tabTitle) {
-        const helper = this.helpers[helperName];
+        const helper = this.helpers.WebDriver;
         if (testConfig.TestForXUI) {
             const tabXPath = `//div[text()='${tabTitle}']`;
 
