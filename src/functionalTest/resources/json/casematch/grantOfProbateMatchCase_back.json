@@ -1,0 +1,245 @@
+{
+  "case_details":{
+    "case_data":{
+      "solsSolicitorFirmName":"Arun & Co",
+      "solsSolicitorAddress":{
+        "AddressLine1":"131 Regency Square",
+        "AddressLine2":"",
+        "AddressLine3":"",
+        "County":"Cheshire",
+        "PostTown":"Warrington",
+        "PostCode":"WA5 0EX",
+        "Country":"United Kingdom"
+      },
+      "solsSolicitorAppReference":"1234",
+      "solsSolicitorIsExec":"Yes",
+      "solsSolicitorIsMainApplicant":"Yes",
+      "solsSolicitorIsApplying":"Yes",
+      "deceasedForenames":"Alex",
+      "deceasedSurname":"Alex",
+      "deceasedDateOfDeath":{
+        "year":2020,
+        "month":"JANUARY",
+        "monthValue":1,
+        "dayOfMonth":1,
+        "era":"CE",
+        "dayOfYear":1,
+        "dayOfWeek":"WEDNESDAY",
+        "leapYear":true,
+        "chronology":{
+          "calendarType":"iso8601",
+          "id":"ISO"
+        }
+      },
+      "currentDate":{
+        "year":2021,
+        "month":"JANUARY",
+        "monthValue":1,
+        "dayOfMonth":13,
+        "era":"CE",
+        "dayOfYear":13,
+        "dayOfWeek":"WEDNESDAY",
+        "leapYear":false,
+        "chronology":{
+          "calendarType":"iso8601",
+          "id":"ISO"
+        }
+      },
+      "currentDateFormatted":"13th January 2021",
+      "deceasedDateOfDeathFormatted":"1st January 2020",
+      "deceasedDateOfBirth":{
+        "year":1900,
+        "month":"JANUARY",
+        "monthValue":1,
+        "dayOfMonth":1,
+        "era":"CE",
+        "dayOfYear":1,
+        "dayOfWeek":"MONDAY",
+        "leapYear":false,
+        "chronology":{
+          "calendarType":"iso8601",
+          "id":"ISO"
+        }
+      },
+      "deceasedDomicileInEngWales":"No",
+      "deceasedAddress":{
+        "AddressLine1":"1",
+        "AddressLine2":"12",
+        "AddressLine3":"",
+        "County":"",
+        "PostTown":"London",
+        "PostCode":"SW1A1AA",
+        "Country":"United Kingdom"
+      },
+      "deceasedAnyOtherNames":"No",
+      "ihtFormId":"IHT205",
+      "ihtNetValue":33300,
+      "ihtGrossValue":33300,
+      "primaryApplicantForenames":"Aunkumar",
+      "primaryApplicantSurname":"Duraraj",
+      "primaryApplicantHasAlias":"No",
+      "primaryApplicantIsApplying":"Yes",
+      "primaryApplicantAddress":{
+        "AddressLine1":"131 Regency Square",
+        "AddressLine2":"",
+        "AddressLine3":"",
+        "County":"Cheshire",
+        "PostTown":"Warrington",
+        "PostCode":"WA5 0EX",
+        "Country":"United Kingdom"
+      },
+      "otherExecutorExists":"No",
+      "willExists":"Yes",
+      "boEmailDocsReceivedNotification":"No",
+      "boEmailGrantIssuedNotification":"No",
+      "boSendToBulkPrint":"Yes",
+      "probateDocumentsGenerated":[
+
+      ],
+      "probateNotificationsGenerated":[
+
+      ],
+      "caseMatches":[
+
+      ],
+      "boDocumentsUploaded":[
+        {
+          "id":"7fc808fa-44fa-4207-8f2e-33a788b3fdcb",
+          "value":{
+            "DocumentLink":{
+              "document_url":"http://dm-store:8080/documents/1eba363c-1fd3-4d3a-a50c-b21066f92a26",
+              "document_binary_url":"http://dm-store:8080/documents/1eba363c-1fd3-4d3a-a50c-b21066f92a26/binary",
+              "document_filename":"check-your-answers 1.pdf"
+            },
+            "DocumentType":"deathCertificate",
+            "Comment":"Test"
+          }
+        }
+      ],
+      "solsSOTName":"Aunkumar Duraraj",
+      "solsSOTForenames":"Aunkumar",
+      "solsSOTSurname":"Duraraj",
+      "boCaseStopReasonList":[
+        {
+          "id":"1ada735d-d512-4ca5-95ad-c5e0b01dc25c",
+          "value":{
+            "caseStopReason":"Other"
+          }
+        }
+      ],
+      "boStopDetails":"as",
+      "ihtReferenceNumber":"123444",
+      "ihtFormCompletedOnline":"Yes",
+      "applicationType":"Solicitor",
+      "registryLocation":"Oxford",
+      "applicationSubmittedDate":"2020-11-01",
+      "caseType":"gop",
+      "paperForm":"No",
+      "languagePreferenceWelsh":"No",
+      "domicilityCountry":"United Kingdom",
+      "dateOfDeathType":"diedOn",
+      "boStopDetailsDeclarationParagraph":"No",
+      "executorsApplyingNotifications":[
+        {
+          "id":"1",
+          "value":{
+            "name":"Aunkumar Duraraj",
+            "email":null,
+            "address":{
+              "AddressLine1":"131 Regency Square",
+              "AddressLine2":"",
+              "AddressLine3":"",
+              "County":"Cheshire",
+              "PostTown":"Warrington",
+              "PostCode":"WA5 0EX",
+              "Country":"United Kingdom"
+            },
+            "notification":"No",
+            "responseReceived":null
+          }
+        }
+      ],
+      "boCaveatStopEmailNotification":"No",
+      "boEmailGrantReissuedNotification":"No",
+      "boCaveatStopSendToBulkPrint":"Yes",
+      "boGrantReissueSendToBulkPrint":"Yes",
+      "bulkPrintId":[
+
+      ],
+      "probateSotDocumentsGenerated":[
+
+      ],
+      "paragraphDetails":[
+
+      ],
+      "boEmailRequestInfoNotification":"No",
+      "boRequestInfoSendToBulkPrint":"Yes",
+      "boAssembleLetterSendToBulkPrint":"Yes",
+      "executorsApplyingForLegalStatement":[
+        {
+          "id":null,
+          "value":{
+            "additionalExecForenames":"Aunkumar",
+            "additionalExecLastname":"Duraraj",
+            "additionalExecNameOnWill":"No",
+            "additionalExecAliasNameOnWill":null,
+            "additionalApplying":"Yes",
+            "additionalExecAddress":{
+              "AddressLine1":"131 Regency Square",
+              "AddressLine2":"",
+              "AddressLine3":"",
+              "County":"Cheshire",
+              "PostTown":"Warrington",
+              "PostCode":"WA5 0EX",
+              "Country":"United Kingdom"
+            },
+            "additionalExecReasonNotApplying":null
+          }
+        }
+      ],
+      "executorsNotApplyingForLegalStatement":[
+
+      ],
+      "defaultValueForCaveatStopEmailNotification":"No",
+      "sendForBulkPrintingRequestedGrantReIssued":true,
+      "sendForBulkPrintingRequested":true,
+      "grantIssuedEmailNotificationRequested":false,
+      "grantReissuedEmailNotificationRequested":false,
+      "caveatStopNotificationRequested":false,
+      "caveatStopEmailNotificationRequested":false,
+      "caveatStopSendToBulkPrintRequested":true,
+      "docsReceivedEmailNotificationRequested":false,
+      "deceasedFullName":"Alex Alex",
+      "primaryApplicantFullName":"Aunkumar Duraraj",
+      "languagePreference":"ENGLISH",
+      "primaryApplicantApplying":true,
+      "valueForCaveatStopEmailNotification":"No",
+      "defaultValueForEmailNotifications":"No",
+      "executorsApplying":[
+
+      ],
+      "executorsNotApplying":[
+
+      ]
+    },
+    "last_modified":[
+      "2020",
+      "12",
+      "15",
+      "19",
+      "42",
+      "27",
+      "362401000"
+    ],
+    "id":1607092265551913,
+    "grantSignatureBase64":null,
+    "registryAddressLine1":null,
+    "registryAddressLine2":null,
+    "registryAddressLine3":null,
+    "registryAddressLine4":null,
+    "registryTown":null,
+    "registryPostcode":null,
+    "registryTelephone":null,
+    "ctscTelephone":null
+  }
+}
