@@ -7,7 +7,7 @@ const testConfig = require('src/test/config');
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#deceasedForenames');
-
+    await I.runAccessibilityTest();
     await I.fillField('#deceasedForenames', applicationDetailsConfig.page2_deceased_forename);
     await I.fillField('#deceasedSurname', applicationDetailsConfig.page2_deceased_surname);
 

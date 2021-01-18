@@ -14,6 +14,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
 
     await I.clickTab(tabConfigFile.tabName);
+    await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {
         await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);

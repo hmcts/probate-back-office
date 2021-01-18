@@ -6,6 +6,8 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApplicant = false) {
     const I = this;
     await I.waitForElement('#solsSolicitorFirmName');
+    await I.runAccessibilityTest();
+
     await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
 
     if (isSolicitorExecutor) {

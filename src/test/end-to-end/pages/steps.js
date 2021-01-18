@@ -96,6 +96,7 @@ module.exports = function () {
         admonWillDetailsPage4: steps.solicitorApplyProbate.admonWillDetails.page4,
         intestacyDetailsPage1: steps.solicitorApplyProbate.intestacyDetails.page1,
         intestacyDetailsPage2: steps.solicitorApplyProbate.intestacyDetails.page2,
+        intestacyDetailsPage3: steps.solicitorApplyProbate.intestacyDetails.page3,
         applyCaveatPage1: steps.solicitorApplyCaveat.applyCaveat.page1,
         applyCaveatPage2: steps.solicitorApplyCaveat.applyCaveat.page2,
         caveatApplicationDetailsPage1: steps.solicitorApplyCaveat.applicationDetails.page1,

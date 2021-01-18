@@ -58,6 +58,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
     await I.chooseNextStep(nextStepName);
     await I.intestacyDetailsPage1();
     await I.intestacyDetailsPage2();
+    await I.intestacyDetailsPage3();
     await I.cyaPage();
 
     await I.seeEndState(endState);
