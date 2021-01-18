@@ -10,6 +10,4 @@ module.exports = async function () {
     await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
-
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
