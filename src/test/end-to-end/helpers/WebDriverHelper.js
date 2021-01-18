@@ -56,5 +56,22 @@ class WebDriverHelper extends Helper {
         //Ignore this for web driver
         await Promise.resolve();
     }
+
+    async clickTab(tabTitle) {
+        const helper = this.helpers[helperName];
+        if (testConfig.TestForXUI) {
+            const tabXPath = `//div[text()='${tabTitle}']`;
+
+            // wait for element defined by XPath appear in page
+            await helper.page.waitForXPath(tabXPath);
+
+            // evaluate XPath expression of the target selector (it return array of ElementHandle)
+            const clickableTab = await helper.page.$x(tabXPath);
+
+            await helper.page.evaluate(el => el.click(), clickableTab[0]);
+        } else {
+            helper.click(tabTitle);
+        }
+    }
 }
 module.exports = WebDriverHelper;
