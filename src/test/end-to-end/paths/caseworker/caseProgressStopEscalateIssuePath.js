@@ -12,7 +12,7 @@ const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgress
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
+Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
     try {
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);
@@ -164,7 +164,7 @@ Scenario('02 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             checkSubmittedDate: true,
             signOut: true});
 
-        console.info('02 BO Case Progress E2E - stop/escalate/issue: complete');
+        console.info('04 BO Case Progress E2E - stop/escalate/issue: complete');
     } catch (e) {
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);
         return Promise.reject(e);

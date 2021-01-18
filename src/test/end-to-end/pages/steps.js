@@ -50,6 +50,9 @@ module.exports = function () {
         caseProgressFeePayment: steps.caseProgress.feePayment,
         caseProgressContinueWithoutChangingAnything: steps.caseProgress.continueWithoutChangingAnything,
 
+        caseProgressAppStoppedDetails: steps.caseProgressAppStopped.appStoppedDetails,
+        caseProgressAppStoppedTabCheck: steps.caseProgressAppStopped.appStoppedTabCheck,
+
         caseProgressStandardDeceasedDetailsCheck: steps.caseProgressStandard.deceasedDetailsCheck,
 
         caseProgressStopEscalateIssueDeceasedDetailsCheck: steps.caseProgressStopEscalateIssue.deceasedDetailsCheck,

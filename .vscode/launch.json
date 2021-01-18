@@ -77,6 +77,18 @@
             "type": "pwa-node"
         },             
         {
+            "name": "Mocha test end-end caseProgressAppStopped",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressAppStopped",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },             
+        {
             "name": "Mocha test end-end caveat",
             "request": "launch",
             "runtimeArgs": [

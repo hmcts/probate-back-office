@@ -9,7 +9,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Case Progress E2E - standard path', async function (I) {
+Scenario('02 BO Case Progress E2E - standard path', async function (I) {
     // IDAM
     /* eslint-disable no-console */
     try {
@@ -253,7 +253,7 @@ Scenario('01 BO Case Progress E2E - standard path', async function (I) {
             checkSubmittedDate: true,
             signOut: true});
 
-        console.info('01 BO Case Progress E2E - standard: complete');
+        console.info('02 BO Case Progress E2E - standard: complete');
 
     } catch (e) {
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);
