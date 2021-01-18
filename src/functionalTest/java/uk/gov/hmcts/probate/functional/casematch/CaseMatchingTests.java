@@ -21,15 +21,16 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 public class CaseMatchingTests extends IntegrationTestBase {
 
 
+    public static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
     private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayoad.json";
     private static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     private static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
     private static final String WILL_LODGEMENT_MATCH_CASE_JSON = "casematch/willLodgementMatchCase.json";
     private static final String CAVEAT_MATCH_CASE_JSON = "casematch/caveatFlowSearchMatchCase.json";
 
-    private static final String EVENT_PARM = "EVENT_PARM";
-    private static final String CASE_CREATE_EVENT = "applyForGrant";
-    private static final String CASE_UPDATE_EVENT = "createCase";
+    private static final String EVENT_PARAMETER = "EVENT_PARM";
+    private static final String APPLY_GRANT_EVENT = "applyForGrant";
+    private static final String CREATE_CASE_EVENT = "createCase";
 
     private static final String SEARCH_GRANT_FLOW = "/case-matching/search-from-grant-flow";
     private static final String SEARCH_FROM_CAVEAT_FLOW = "/case-matching/search-from-caveat-flow";
@@ -43,6 +44,10 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String NAME = "Ned Stark";
     public static final String DATE_OF_BIRTH = "1900-01-01";
     public static final String DATE_OF_DEATH = "2020-01-01";
+    public static final String PROBATE_LEGACY_SEARCH_JSON = "casematch/grantOfProbateLegacy.json";
+    public static final String CAVEAT_LEGACY_SEARCH_JSON = "casematch/caveatLegacySearch.json";
+    public static final String WILL_LODGEMENT_LEGACY_SEARCH_JSON = "casematch/willLodgementLegacySearch.json";
+    public static final String STANDING_SEARCH_LEGACY_SEARCH_JSON = "casematch/standingSearchLegacySearch.json";
 
     @Test
     public void shouldReturnMatchingCaseWhenGOPSearchFlow()  {
@@ -129,7 +134,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnOKResponseWhenNoCaseMatchInLegacyGrantFlow(){
+    public void shouldReturnSucessWhenNoCaseMatchInLegacyGrantFlow(){
         Response response = search(CAVEAT_MATCH_CASE_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
@@ -138,15 +143,15 @@ public class CaseMatchingTests extends IntegrationTestBase {
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyGrantFlowImport(){
 
-        Response response = search("casematch/grantOfProbateLegacy.json", IMPORT_LEGACY_GRANT_FLOW);
+        Response response = search(PROBATE_LEGACY_SEARCH_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
-        assertThat(jsonPath.get("errors[0]"), is(equalTo("You may only select one legacy record for import at a time.")));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     @Test
-    public void shouldReturnOKResponseWhenNoCaseMatchInLegacyCaveatFlowImport(){
+    public void shouldReturnSucessWhenNoCaseMatchInLegacyCaveatFlowImport(){
         Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
@@ -154,15 +159,15 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnErrorWheNoCaseMatchInLegacyCaveatFlowImport(){
-        Response response = search("casematch/caveatLegacySearch.json", IMPORT_LEGACY_CAVEAT_FLOW);
+        Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
-        assertThat(jsonPath.get("errors[0]"), is(equalTo("You may only select one legacy record for import at a time.")));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     @Test
-    public void shouldReturnOKResponseWhenNoCaseMatchInLegacyWillLodgementImport(){
+    public void shouldReturnSucessWhenNoCaseMatchInLegacyWillLodgementImport(){
         Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
@@ -170,35 +175,34 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyWillLodgementImport(){
-        Response response = search("casematch/willLodgementLegacySearch.json", IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
+        Response response = search(WILL_LODGEMENT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
-        assertThat(jsonPath.get("errors[0]"), is(equalTo("You may only select one legacy record for import at a time.")));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     @Test
-    public void shouldReturnOKResponseWhenNoCaseMatchInLegacyStandingSearchImport(){
+    public void shouldReturSucessWhenNoCaseMatchInLegacyStandingSearchImport(){
         Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
-
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyStandingSearchImport(){
-        Response response = search("casematch/standingSearchLegacySearch.json", IMPORT_LEGACY_STANDING_SEARCH);
+        Response response = search(STANDING_SEARCH_LEGACY_SEARCH_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
-        assertThat(jsonPath.get("errors[0]"), is(equalTo("You may only select one legacy record for import at a time.")));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     private Response search(String path) {
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithCaseworkerUser())
-                .body(updateDodInJson())
+                .body(modifyDODInJson())
                 .when().post(path)
                 .andReturn();
         response.prettyPrint();
@@ -215,7 +219,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
                 .andReturn();
     }
 
-    private String updateDodInJson() {
+    private String modifyDODInJson() {
         String json = getJsonFromFile(GRANT_OF_PROBATE_MATCH_CASE_JSON);
         json = json.replaceAll("2020-01-01", "2021-01-01");
         return json;
@@ -224,8 +228,8 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public void createCase() {
         //Create Case
         String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
-        String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, CASE_CREATE_EVENT);
-        String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, CASE_CREATE_EVENT);
+        String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARAMETER, APPLY_GRANT_EVENT);
+        String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, APPLY_GRANT_EVENT);
         JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
         String caseId = jsonPathApply.get("id").toString();
         log.info("createCase : caseId {} ",caseId);
@@ -233,9 +237,9 @@ public class CaseMatchingTests extends IntegrationTestBase {
         log.info("CaseMatchingTests : createCase : caseId {} ",caseId);
         //Update Case
         //Move PAAppCreated to createCase state
-        String updateToken = utils.startUpdateCaseAsCaseworker(caseId, CASE_UPDATE_EVENT);
+        String updateToken = utils.startUpdateCaseAsCaseworker(caseId, CREATE_CASE_EVENT);
         String updateBaseCase = utils.replaceAttribute(baseCaseJson, TOKEN_PARM, updateToken);
-        updateBaseCase = utils.replaceAttribute(updateBaseCase, EVENT_PARM, CASE_UPDATE_EVENT);
+        updateBaseCase = utils.replaceAttribute(updateBaseCase, EVENT_PARAMETER, CREATE_CASE_EVENT);
         String updateResponse = utils.continueUpdateCaseAsCaseworker(updateBaseCase, caseId);
     }
 }
