@@ -60,7 +60,6 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     // SECOND case - the main test case
 
-    nextStepName = 'PA1P/PA1A/Solicitors';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.enterGrantOfProbatePage1('create');
