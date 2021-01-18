@@ -184,6 +184,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         response.then().assertThat().statusCode(200);
     }
 
+
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyStandingSearchImport(){
         Response response = search("casematch/standingSearchLegacySearch.json", IMPORT_LEGACY_STANDING_SEARCH);
