@@ -59,10 +59,7 @@ class WebDriverHelper extends Helper {
 
     async clickTab(tabTitle) {
         const helper = this.helpers.WebDriver;
-        // evaluate XPath expression of the target selector (it return array of ElementHandle)
-        const clickableTab = helper._locateClickable(tabTitle);
-
-        await helper.click(clickableTab);
+        await helper.click(tabTitle);
     }
 }
 module.exports = WebDriverHelper;
