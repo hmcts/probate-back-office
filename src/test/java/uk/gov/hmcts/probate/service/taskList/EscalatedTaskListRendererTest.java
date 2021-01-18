@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.service.tasklist.EscalatedTaskListRenderer;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 
 public class EscalatedTaskListRendererTest {
@@ -62,6 +62,6 @@ public class EscalatedTaskListRendererTest {
                 "</div>";
         final String result = renderer.renderHtml(caseDetails);
 
-        assertTrue(expectedHtml.equals(result));
+        assertEquals(expectedHtml, result);
     }
 }

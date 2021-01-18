@@ -1,15 +1,13 @@
 package uk.gov.hmcts.probate.service.taskList;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.tasklist.AppStoppedTaskListRenderer;
 
-import java.time.LocalDate;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
 public class AppStoppedTaskListRendererTest {
@@ -41,6 +39,6 @@ public class AppStoppedTaskListRendererTest {
                 "</div>";
         final String result = renderer.renderHtml(caseDetails);
 
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 }

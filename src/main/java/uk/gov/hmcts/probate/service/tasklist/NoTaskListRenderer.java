@@ -1,12 +1,8 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
 import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
-import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
-import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
-import uk.gov.hmcts.probate.htmlrendering.SubheadingRenderer;
 import uk.gov.hmcts.probate.model.caseprogress.CaseProgressState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.htmltemplate.ContactDetailsHtmlTemplate;
 
 import java.util.LinkedList;
 import java.util.List;

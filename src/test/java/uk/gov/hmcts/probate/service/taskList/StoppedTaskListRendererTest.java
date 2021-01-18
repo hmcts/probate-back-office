@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.service.tasklist.StoppedTaskListRenderer;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 
 public class StoppedTaskListRendererTest {
@@ -66,6 +66,6 @@ public class StoppedTaskListRendererTest {
                 "</div>";
         final String result = renderer.renderHtml(caseDetails);
 
-        assertTrue(expectedHtml.equals(result));
+        assertEquals(expectedHtml, result);
     }
 }

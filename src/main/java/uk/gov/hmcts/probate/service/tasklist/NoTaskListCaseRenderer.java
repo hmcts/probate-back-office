@@ -4,14 +4,10 @@ import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.htmlrendering.SubheadingRenderer;
-import uk.gov.hmcts.probate.model.caseprogress.CaseProgressState;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmltemplate.ContactDetailsHtmlTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.lang.String.format;
 
 // A render to render case progress html for when we don't want to display a task list
 public abstract class NoTaskListCaseRenderer extends NoTaskListRenderer {
