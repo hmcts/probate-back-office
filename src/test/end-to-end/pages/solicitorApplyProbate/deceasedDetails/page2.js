@@ -5,6 +5,10 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
+    
+    await I.waitForElement('#deceasedDomicileInEngWales');
+    await I.runAccessibilityTest();
+    
     await I.click(`#deceasedDomicileInEngWales-${deceasedDetailsConfig.optionYes}`);
     await I.click(`#deceasedAnyOtherNames-${deceasedDetailsConfig.optionNo}`);
 

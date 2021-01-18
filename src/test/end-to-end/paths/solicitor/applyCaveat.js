@@ -76,4 +76,4 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
-});
+}).retry(testConfig.TestRetryScenarios);
