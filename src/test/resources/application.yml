@@ -363,7 +363,7 @@ idam-s2s-auth:
     eureka:
       enabled: false
 
-excelaEmail: probatetest@gmail.com
+excelaEmail: excela@probate-test.com
 
 welsh:
   months:

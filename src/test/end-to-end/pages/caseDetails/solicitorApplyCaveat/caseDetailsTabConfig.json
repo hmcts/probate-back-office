@@ -1,0 +1,17 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "Application type",
+    "Registry location",
+    "Name of your firm",
+    "Phone number",
+    "Your reference for this application"
+  ],
+  "dataKeys": [
+    "page2_firm_name",
+    "application_type",
+    "registry_location",
+    "page2_app_ref",
+    "page2_phone_num"
+  ]
+}

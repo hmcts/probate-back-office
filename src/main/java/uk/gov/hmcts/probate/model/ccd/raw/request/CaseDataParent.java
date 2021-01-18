@@ -10,5 +10,9 @@ import lombok.extern.jackson.Jacksonized;
 public class CaseDataParent {
 
     protected String registrySequenceNumber;
+    protected final String deceasedDeathCertificate;
+    protected final String deceasedDiedEngOrWales;
+    protected final String deceasedForeignDeathCertInEnglish;
+    protected final String deceasedForeignDeathCertTranslation;
 
 }

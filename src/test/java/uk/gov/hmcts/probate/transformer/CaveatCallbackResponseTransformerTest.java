@@ -66,7 +66,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String CAV_CAVEATOR_FORENAMES = "Caveator_fn";
     private static final String CAV_CAVEATOR_SURNAME = "Caveator_ln";
-    private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
+    private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "caveator@probate-test.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
     private static final Address CAV_BSP_CAVEATOR_ADDRESS = Mockito.mock(Address.class);
 

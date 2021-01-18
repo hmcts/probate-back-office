@@ -19,11 +19,11 @@
     "test-e2e-grantOfProbate": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-willLodgement": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
-    "test-xui-e2e": "NODE_PATH=. TEST_E2E_URL=${TEST_XUI_E2E_URL} BO_E2E_AUTO_DELAY_ENABLED='true' E2E_TEST_PATH='./paths/solicitor/**/*.js' node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
-    "test-ccdui-e2e": "NODE_PATH=. TEST_E2E_URL=${TEST_CCD_E2E_URL} BO_E2E_AUTO_DELAY_ENABLED='true' E2E_TEST_PATH='./paths/caseworker/**/*.js' node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
-    "test:fullfunctional": "yarn test-xui-e2e; yarn test-ccdui-e2e"
+    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test:fullfunctional": "./bin/run-e2e-tests.sh"
   },
   "dependencies": {
+    "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
   "devDependencies": {

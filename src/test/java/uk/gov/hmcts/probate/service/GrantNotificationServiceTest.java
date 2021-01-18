@@ -79,7 +79,7 @@ public class GrantNotificationServiceTest {
 
         caseData1 = CaseData.builder()
             .registryLocation("Registry1")
-            .primaryApplicantEmailAddress("test1@test1.com")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
             .primaryApplicantForenames("Forename1")
             .primaryApplicantSurname("Surname1")
             .applicationType(ApplicationType.PERSONAL)
@@ -87,7 +87,7 @@ public class GrantNotificationServiceTest {
 
         caseData2 = CaseData.builder()
             .registryLocation("Registry2")
-            .primaryApplicantEmailAddress("test2@test2.com")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
             .primaryApplicantForenames("Forename2")
             .primaryApplicantSurname("Surname2")
             .applicationType(ApplicationType.PERSONAL)
@@ -96,7 +96,7 @@ public class GrantNotificationServiceTest {
 
         caseData3 = CaseData.builder()
             .registryLocation("Registry3")
-            .solsSolicitorEmail("test3@test3.com")
+            .solsSolicitorEmail("solicitor@probate-test.com")
             .primaryApplicantForenames("Forename3")
             .primaryApplicantSurname("Surname3")
             .applicationType(ApplicationType.SOLICITOR)

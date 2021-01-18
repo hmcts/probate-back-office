@@ -40,7 +40,7 @@
         "PostCode": "postcode",
         "Country": "country"
       },
-      "deceasedEmailAddress": "email@email.com",
+      "deceasedEmailAddress": "deceased@probate-test.com",
       "executorTitle": "Professor",
       "executorForenames": "Ex1 First Name",
       "executorSurname": "Ex2 last name",
@@ -53,7 +53,7 @@
         "PostCode": "postcode",
         "Country": "country"
       },
-      "executorEmailAddress": "ex1@email.com",
+      "executorEmailAddress": "executor1@probate-test.com",
       "additionalExecutorList": [
         {
           "value": {
@@ -69,7 +69,7 @@
               "PostCode": "postcode",
               "Country": "country"
             },
-            "executorEmailAddress": "ex2@email.com"
+            "executorEmailAddress": "executor2@probate-test.com"
           },
           "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
         }

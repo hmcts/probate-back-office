@@ -26,7 +26,7 @@
     { "name": "caveatorForenames", "value": "Jessica" },
     { "name": "caveatorMiddleNames", "value": "Diana" },
     { "name": "caveatorSurnames", "value": "Simpson" },
-    { "name": "caveatorEmailAddress", "value": "testemail@mail.com" },
+    { "name": "caveatorEmailAddress", "value": "caveator@probate-test.com" },
     { "name": "caveatorAddressLine1", "value": "1 January Street" },
     { "name": "caveatorAddressLine2", "value": "January Grove" },
     { "name": "caveatorAddressTown", "value": "January Town" },

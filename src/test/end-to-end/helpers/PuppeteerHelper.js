@@ -4,6 +4,8 @@ const Helper = codecept_helper;
 const helperName = 'Puppeteer';
 const testConfig = require('src/test/config.js');
 
+const {runAccessibility} = require('./accessibility/runner');
+
 class PuppeteerHelper extends Helper {
 
     async clickBrowserBackButton() {
@@ -13,16 +15,33 @@ class PuppeteerHelper extends Helper {
 
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
+        const promises = [];
 
-        const promises = [
-            page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']}) // The promise resolves after navigation has finished
-        ];
+        if (!testConfig.TestForXUI) {
+            promises.push(page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
+        }
 
         if (locator) {
             promises.push(page.click(locator));
         }
-
         await Promise.all(promises);
+    }
+
+    async clickTab(tabTitle) {
+        const helper = this.helpers[helperName];
+        if (testConfig.TestForXUI) {
+            const tabXPath = `//div[text()='${tabTitle}']`;
+
+            // wait for element defined by XPath appear in page
+            await helper.page.waitForXPath(tabXPath);
+
+            // evaluate XPath expression of the target selector (it return array of ElementHandle)
+            const clickableTab = await helper.page.$x(tabXPath);
+
+            await helper.page.evaluate(el => el.click(), clickableTab[0]);
+        } else {
+            helper.click(tabTitle);
+        }
     }
 
     async navigateToPage(url) {
@@ -69,6 +88,16 @@ class PuppeteerHelper extends Helper {
             // eslint-disable-next-line no-await-in-loop
             await actionFunc(elements[i]);
         }
+    }
+
+    async runAccessibilityTest() {
+        if (!testConfig.TestForAccessibility) {
+            return;
+        }
+        const url = await this.helpers[helperName].grabCurrentUrl();
+        const {page} = await this.helpers[helperName];
+
+        runAccessibility(url, page);
     }
 }
 module.exports = PuppeteerHelper;
