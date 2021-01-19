@@ -363,7 +363,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestInTestacySuccessForDefaultNext(){
         ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json"),
-            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithSolicitorUser());
+            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
 
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
@@ -376,7 +376,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestProbateSuccessForDefaultNext(){
         ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile("solicitorPDFPayloadProbate.json"),
-            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithSolicitorUser());
+            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
@@ -388,7 +388,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test()
     public void verifyRequestProbateSuccessForDefaultingPBAsOnNextSteps() {
         ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile("solicitorPDFPayloadProbate.json"), 
-            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithSolicitorUser());
+            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
         JsonPath jsonPath = JsonPath.from(body.asString());
         String errors = jsonPath.get("data.errors");
         HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");

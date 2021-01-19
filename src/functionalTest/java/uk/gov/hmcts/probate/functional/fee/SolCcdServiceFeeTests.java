@@ -101,7 +101,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
         log.info("wireMockServer.baseUrl:"+wireMockServer.baseUrl());
         log.info("wireMockServer.port:"+wireMockServer.port());
-        given().headers(utils.getHeadersWithSolicitorUser())
+        given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
@@ -112,7 +112,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
-        given().headers(utils.getHeadersWithSolicitorUser())
+        given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .when().post("/nextsteps/validate").then()

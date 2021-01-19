@@ -120,7 +120,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
         Response response = given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithSolicitorUser())
+            .headers(utils.getHeadersWithCaseworkerUser())
             .body(replaceString(oldString, replacingString))
             .post("/nextsteps/validate");
         assertEquals(400, response.getStatusCode());
@@ -134,7 +134,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void verifyAll(String url, String jsonInput, int statusCode, String message, String fieldError) {
         Response response = given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithSolicitorUser())
+            .headers(utils.getHeadersWithCaseworkerUser())
             .body(utils.getJsonFromFile(jsonInput))
             .post(url);
         assertEquals(statusCode, response.getStatusCode());
