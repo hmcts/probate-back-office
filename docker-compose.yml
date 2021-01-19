@@ -323,6 +323,7 @@ services:
       - GOV_PAY_AUTH_KEY_CMC=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_PROBATE_BACKEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_OPERATIONAL_SERVICES=ccd_gw
       - GOV_PAY_URL=https://publicapi.payments.service.gov.uk/v1/payments
       - payments.report.file.location=.
@@ -362,12 +363,13 @@ services:
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST=*
       - SPRING_MAIL_PORT=25
       - SPRING_MAIL_HOST=smtp-server
-      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
+      - TRUSTED_S2S_SERVICE_NAMES=probate_backend,cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
       - PAYBUBBLE_HOME_URL=https://ccpay-bubble-frontend-aat.service.core-compute-aat.internal
       - PCI_PAL_CALLBACK_URL=https://core-api-mgmt-aat.azure-api.net/telephony-api/telephony/callback
       - ASB_CONNECTION_STRING=some-azure-service-bus-connection-string
       - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
       - CORE_CASE_DATA_API_URL=http://ccd-data-store-api:4452
+      - LAUNCH_DARKLY_SDK_KEY=sdk-06456c8b-312c-475c-b154-ca585f5ca063
     ports:
       - 8383:8080
     depends_on:
@@ -459,8 +461,8 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
-      PAYMENT_URL: http://wiremock:8080
-      PRD_API_URL: http://wiremock:8080
+      PAYMENT_URL: http://payments-api:8080
+      PRD_API_URL: http://payments-api:8080
     ports:
       - 4104:4104
     depends_on:
