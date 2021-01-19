@@ -8,11 +8,10 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     if (tabConfigFile.tabName) {
         const tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
-        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60, tabXPath);
+        await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
-    await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
 
     await I.clickTab(tabConfigFile.tabName);
     await I.runAccessibilityTest();
