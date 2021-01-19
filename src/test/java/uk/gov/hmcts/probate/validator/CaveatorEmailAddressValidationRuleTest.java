@@ -27,7 +27,6 @@ public class CaveatorEmailAddressValidationRuleTest {
     private CaveatData CaveatDataEmailInvalid3;
     private CaveatData CaveatDataEmailInvalid4;
     private CaveatData CaveatDataEmailValid1;
-    private CaveatData CaveatDataEmailValid2;
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -50,39 +49,34 @@ public class CaveatorEmailAddressValidationRuleTest {
 
         CaveatDataEmailInvalid1 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress("example.@test.com")
+                .caveatorEmailAddress("example.@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         CaveatDataEmailInvalid2 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress("example@.test.com")
+                .caveatorEmailAddress("example@.probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         CaveatDataEmailInvalid3 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress("example@test.com.")
+                .caveatorEmailAddress("example@probate-test.com.")
                 .registryLocation("Bristol")
                 .build();
 
         CaveatDataEmailInvalid4 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress(".example@test.com")
+                .caveatorEmailAddress(".example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         CaveatDataEmailValid1 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress("example@test.com")
+                .caveatorEmailAddress("example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailValid2 = CaveatData.builder()
-                .applicationType(ApplicationType.SOLICITOR)
-                .caveatorEmailAddress("example@test-hmcts.com")
-                .registryLocation("Bristol")
-                .build();
     }
 
     @Test
@@ -149,13 +143,6 @@ public class CaveatorEmailAddressValidationRuleTest {
     public void ApplyingExecEmailIsValid() {
         CaveatDetails CaveatDetailsEmptyEmail =
                 new CaveatDetails(CaveatDataEmailValid1, LAST_MODIFIED, CASE_ID);
-        caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
-    }
-
-    @Test
-    public void ApplyingExecEmailIsValid2() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailValid2, LAST_MODIFIED, CASE_ID);
         caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
     }
 

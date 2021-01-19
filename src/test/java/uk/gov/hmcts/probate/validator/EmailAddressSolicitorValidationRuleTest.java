@@ -49,31 +49,31 @@ public class EmailAddressSolicitorValidationRuleTest {
 
         caseDataEmailInvalid1 = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail("example.@test.com")
+                .solsSolicitorEmail("example.@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid2 = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail("example@.test.com")
+                .solsSolicitorEmail("example@.probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid3 = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail("example@test.com.")
+                .solsSolicitorEmail("example@probate-test.com.")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid4 = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail(".example@test.com")
+                .solsSolicitorEmail(".example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailValid = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail("example@test.com")
+                .solsSolicitorEmail("example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
     }

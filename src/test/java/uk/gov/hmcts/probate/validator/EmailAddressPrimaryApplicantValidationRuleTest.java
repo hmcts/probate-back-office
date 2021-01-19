@@ -49,31 +49,31 @@ public class EmailAddressPrimaryApplicantValidationRuleTest {
 
         caseDataEmailInvalid1 = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("example.@test.com")
+                .primaryApplicantEmailAddress("example.@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid2 = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("example@.test.com")
+                .primaryApplicantEmailAddress("example@.probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid3 = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("example@test.com.")
+                .primaryApplicantEmailAddress("example@probate-test.com.")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailInvalid4 = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(".example@test.com")
+                .primaryApplicantEmailAddress(".example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
         caseDataEmailValid = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("example@test.com")
+                .primaryApplicantEmailAddress("example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
     }

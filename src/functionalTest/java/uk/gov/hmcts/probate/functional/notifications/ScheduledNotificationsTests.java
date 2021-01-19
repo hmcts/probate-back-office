@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import net.thucydides.core.annotations.Pending;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +20,7 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class ScheduledNotificationsTests extends IntegrationTestBase {
-    
+
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
     private String grantAwaitingDocumentationNotificationPeriodDays;
 
@@ -35,7 +34,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String EVENT_PARM = "EVENT_PARM";
     private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
     private static final long ES_DELAY = 20000l;
-    
+
     private static final String EVENT_APPLY = "applyforGrantPaperApplicationMan";
     private static final String EVENT_PRINT_CASE = "boPrintCase";
     private static final String EVENT_MARK_AS_READY_FOR_EXAMINATION = "boMarkAsReadyForExamination";
@@ -43,7 +42,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String DOC_INDEX = "DOC_INDEX";
     private static final String GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL = "case_data.probateNotificationsGenerated["+DOC_INDEX+"].value.DocumentLink.document_binary_url";
     private static final String ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE = "grantDelayedNotificationDate";
-    
+
 
     @Test
     @Pending
@@ -52,7 +51,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDelayCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
-        
+
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson, EVENT_APPLY);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
@@ -69,7 +68,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String markAsReadyForExaminationUpdateResponse = utils.continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
 
         postAndAssertAsScheduler(GRANT_DELAYED, delayedDate, caseId);
-        
+
         String expectedText = utils.getJsonFromFile(GRANT_DELAY_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
