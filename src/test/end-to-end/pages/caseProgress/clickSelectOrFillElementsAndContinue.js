@@ -8,7 +8,7 @@ module.exports = async function (elementLocators) {
     for (let i=0; i < elementLocators.length; i++) {
         const itm = elementLocators[i];
         // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-        await I.waitForElement(itm.locator);
+        await I.waitForVisible(itm.locator);
         if (itm.text) {
             await I.fillField(itm.locator, itm.text);
         } else if (itm.option) {

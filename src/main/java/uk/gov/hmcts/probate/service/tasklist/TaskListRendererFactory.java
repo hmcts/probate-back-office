@@ -15,6 +15,8 @@ public class TaskListRendererFactory {
                 return new StoppedTaskListRenderer();
             case CASE_ESCALATED:
                 return new EscalatedTaskListRenderer();
+            case APPLICATION_STOPPED:
+                return new AppStoppedTaskListRenderer();
             default:
                 return new DefaultTaskListRenderer();
         }

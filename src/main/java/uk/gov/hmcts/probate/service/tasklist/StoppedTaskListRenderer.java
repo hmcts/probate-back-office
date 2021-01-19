@@ -8,9 +8,9 @@ import uk.gov.hmcts.probate.model.htmltemplate.CaseStoppedHtmlTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class StoppedTaskListRenderer extends NoTaskListRenderer {
+public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
 
-    public String renderBody(CaseDetails details) {
+    protected String renderBody(CaseDetails details) {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
         LocalDate stoppedDate = details.getData().getGrantStoppedDate();
