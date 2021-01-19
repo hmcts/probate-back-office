@@ -86,7 +86,6 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.chooseNextStep(nextStepName);
     await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Case created';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend case details';
