@@ -11,7 +11,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         if (testConfig.TestForXUI) {
             tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
         } else {
-            tabXPath = `//a[contains(text(),'${tabConfigFile.tabName}')]`;
+            tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
         }
         //Tabs are hidden when there are more tabs
         await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
