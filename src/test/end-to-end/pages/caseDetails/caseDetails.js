@@ -7,7 +7,8 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     const I = this;
 
     if (tabConfigFile.tabName) {
-        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60);
+        const tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
+        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60, tabXPath);
     }
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
