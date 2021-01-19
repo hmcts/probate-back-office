@@ -36,7 +36,7 @@ withNightlyPipeline("nodejs", product, component) {
     env.TEST_CCD_E2E_URL = params.CCDUI_URL_TO_TEST
     env.TEST_XUI_E2E_URL = params.XUI_URL_TO_TEST
     loadVaultSecrets(secrets)
-    //enableFullFunctionalTest(90)
+    enableFullFunctionalTest(90)
     enableCrossBrowserTest()
     after('fullFunctionalTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
