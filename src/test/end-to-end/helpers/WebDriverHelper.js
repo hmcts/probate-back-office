@@ -60,7 +60,6 @@ class WebDriverHelper extends Helper {
     async clickTab(tabTitle) {
         const helper = this.helpers.WebDriver;
         const tabXPath = `//div[text()='${tabTitle}']`;
-        // must be a button to click
         await helper.waitForClickable(tabXPath, testConfig.TestTimeToWaitForText);
         await helper.click(tabXPath);
     }
