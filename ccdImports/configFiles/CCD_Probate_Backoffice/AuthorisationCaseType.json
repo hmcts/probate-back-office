@@ -9,5 +9,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-charity", "CRUD": "R"}
 ]
