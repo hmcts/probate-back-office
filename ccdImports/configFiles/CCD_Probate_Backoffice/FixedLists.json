@@ -20,7 +20,7 @@
   {"LiveFrom": "06/01/2017", "ID": "checkYourAnswersEventTransitions", "ListElementCode": "SolWillDetailsUpdated", "ListElement": "Update deceased estate details"},
   {"LiveFrom": "06/01/2017", "ID": "checkYourAnswersEventTransitions", "ListElementCode": "SolEstateDetailsUpdated", "ListElement": "Update executor details"},
   {"LiveFrom": "06/01/2017", "ID": "registryLocations", "ListElementCode": "Oxford", "ListElement": "Oxford"},
-  {"LiveFrom": "01/01/2017", "ID": "registryLocations", "ListElementCode": "Birmingham", "ListElement": "Birmingham"},
+  {"LiveFrom": "06/01/2017", "ID": "registryLocations", "ListElementCode": "Birmingham", "ListElement": "Birmingham"},
   {"LiveFrom": "07/01/2017", "ID": "registryLocations", "ListElementCode": "Manchester", "ListElement": "Manchester"},
   {"LiveFrom": "01/01/2017", "ID": "registryLocations", "ListElementCode": "Leeds", "ListElement": "Leeds"},
   {"LiveFrom": "01/01/2017", "ID": "registryLocations", "ListElementCode": "Liverpool", "ListElement": "Liverpool"},
