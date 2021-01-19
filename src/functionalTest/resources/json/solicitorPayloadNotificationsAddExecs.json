@@ -58,7 +58,7 @@
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
@@ -69,7 +69,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "deceasedSurname": "Deceased Last Name",
@@ -357,7 +357,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "deceasedSurname": "Deceased Last Name",

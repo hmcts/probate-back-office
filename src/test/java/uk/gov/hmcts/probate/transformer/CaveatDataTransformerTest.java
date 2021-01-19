@@ -32,7 +32,7 @@ public class CaveatDataTransformerTest {
     private static final LocalDate EXPIRY_DATE = LocalDate.now();
     private static final LocalDate APP_SUBMITTED_DATE = LocalDate.of(2018, 1, 2);
     private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
-    private static final String CAVEATOR_EMAIL = "cav@email.com";
+    private static final String CAVEATOR_EMAIL = "caveator@probate-test.com";
     private static final String REGISTRY_LOCATION = "registryLocation";
     private static final String SOL_APP_REF = "solsSolicitorAppReference";
     private static final String SOL_PAY_METHODS = "solsPaymentMethods";

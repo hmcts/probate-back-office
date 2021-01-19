@@ -58,6 +58,8 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
+  keyword: NewFee
+  newCopiesFeeKeyword: GrantWill
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -361,7 +363,7 @@ idam-s2s-auth:
     eureka:
       enabled: false
 
-excelaEmail: probatetest@gmail.com
+excelaEmail: excela@probate-test.com
 
 welsh:
   months:
@@ -377,3 +379,10 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+ld:
+  sdk_key: ${LAUNCHDARKLY_KEY:off}
+  user:
+    key: ${LD_USER_KEY:off}
+    firstName: Probate
+    lastName: Backend

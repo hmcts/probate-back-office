@@ -44,7 +44,7 @@
           "id": "1",
           "value": {
             "name": "Bob Smith",
-            "email": "test@test.com",
+            "email": "executor1@probate-test.com",
             "notification": "Yes",
             "responseReceived": "No",
             "address": {
@@ -64,7 +64,7 @@
           "id": null,
           "value": {
             "applyingExecutorName": "Eileen Executor",
-            "applyingExecutorEmail": "test@test.com",
+            "applyingExecutorEmail": "executor1@probate-test.com",
             "applyingExecutorAddress": {
               "County": "",
               "Country": "",
@@ -88,7 +88,7 @@
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
@@ -99,7 +99,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {
@@ -387,7 +387,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {

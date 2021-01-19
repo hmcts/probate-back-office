@@ -103,21 +103,21 @@ public class StateChangeServiceTest {
         execResponseReceived = new CollectionMember<>(
                 ExecutorsApplyingNotification.builder()
                         .notification("Yes")
-                        .email("test@test.com")
+                        .email("executor1@probate-test.com")
                         .responseReceived("Yes")
                         .build());
 
         execResponseNotReceived = new CollectionMember<>(
                 ExecutorsApplyingNotification.builder()
                         .notification("Yes")
-                        .email("test@test.com")
+                        .email("executor2@probate-test.com")
                         .responseReceived("No")
                         .build());
 
         execResponseNotificationNo = new CollectionMember<>(
                 ExecutorsApplyingNotification.builder()
                         .notification("No")
-                        .email("test@test.com")
+                        .email("executor3@probate-test.com")
                         .responseReceived("No")
                         .build());
     }
