@@ -61,7 +61,7 @@ class WebDriverHelper extends Helper {
         const helper = this.helpers.WebDriver;
         const tabXPath = `//div[text()='${tabTitle}']`;
         await helper.waitForClickable(tabXPath, testConfig.TestTimeToWaitForText);
-        await helper.click(tabXPath);
+        await helper.forceClick(tabXPath);
     }
 }
 module.exports = WebDriverHelper;
