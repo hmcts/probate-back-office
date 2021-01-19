@@ -57,9 +57,7 @@ class WebDriverHelper extends Helper {
         await Promise.resolve();
     }
 
-
     async clickTab(tabTitle) {
-
         const helper = this.helpers.WebDriver;
         const tabXPath = `//div[text()='${tabTitle}']`;
         const elements = await helper._locateClickable(tabXPath);
