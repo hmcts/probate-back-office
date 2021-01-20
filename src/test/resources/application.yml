@@ -35,14 +35,15 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
-  url: ${PAYMENT_API_URL:http://payment-api-aat.service.core-compute-aat.internal}
+  url: ${PAYMENT_URL:http://localhost:8991}
   api: /credit-account-payments
   currency: GBP
-  siteId: devSiteId
+  siteId: ABA6
+  service: PROBATE
 
 pba:
   validation:
-    url: ${PRD_API_URL:http://localhost:8090}
+    url: ${PRD_API_URL:http://localhost:8991}
     health.url: ${pba.validation.url}/health
     api: /refdata/external/v1/organisations/pbas
 

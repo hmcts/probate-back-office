@@ -140,11 +140,11 @@ public class CreditAccountPaymentTransformerTest {
         assertEquals("PBA1111", creditAccountPayment.getAccountNumber());
         assertEquals("solsAppRef", creditAccountPayment.getCaseReference());
         assertEquals("1234", creditAccountPayment.getCcdCaseNumber());
-        assertEquals("GBP", creditAccountPayment.getCurrency());
         assertEquals("solsAppRef", creditAccountPayment.getCustomerReference());
         assertEquals("Probate Solicitor payment", creditAccountPayment.getDescription());
         assertEquals("SolicitorFirmName", creditAccountPayment.getOrganisationName());
-        assertEquals("probate", creditAccountPayment.getService());
-        assertEquals("devSiteId", creditAccountPayment.getSiteId());
+        assertEquals("GBP", creditAccountPayment.getCurrency());
+        assertEquals("PROBATE", creditAccountPayment.getService());
+        assertEquals("ABA6", creditAccountPayment.getSiteId());
     }
 }
