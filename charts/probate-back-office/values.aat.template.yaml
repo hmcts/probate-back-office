@@ -2,3 +2,6 @@
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  environment:
+    PAYMENT_URL: http:localhost:8991
+    PRD_API_URL: http:localhost:8991
