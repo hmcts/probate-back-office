@@ -701,7 +701,7 @@ file name: launchdarkly-java-server-sdk-5.2.0.jar/META-INF/maven/com.google.guav
         <notes><![CDATA[
    file name: jackson-datatype-jsr310-2.9.4.jar
    ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-datatype:jsr310@.*$</gav>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype:.*$</gav>
         <cve>CVE-2018-1000873</cve>
     </suppress>
 </suppressions>
