@@ -65,6 +65,7 @@ public class CaveatPersonalisationService {
         CaveatData caveatData = caveatDetails.getData();
 
         HashMap<String, String> personalisation = new HashMap<>();
+        final String DOB_EXISTS = "dob_exists";
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatData.getCaveatorFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
@@ -78,8 +79,14 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         return personalisation;
     }
@@ -88,6 +95,7 @@ public class CaveatPersonalisationService {
         CaveatData caveatData = caveatDetails.getData();
 
         HashMap<String, String> personalisation = new HashMap<>();
+        final String DOB_EXISTS = "dob_exists";
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, "Sir/Madam");
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
@@ -102,8 +110,14 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         return personalisation;
     }

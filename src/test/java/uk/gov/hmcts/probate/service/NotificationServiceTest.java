@@ -209,6 +209,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth";
+    private static final String DOB_EXISTS = "dob_exists";
 
     @Before
     public void setUp() throws NotificationClientException, IOException {
@@ -1098,7 +1099,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
@@ -1127,7 +1135,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
 
@@ -1156,7 +1171,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
@@ -1185,7 +1207,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseDataBilingual);
 
@@ -1214,7 +1243,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
 
@@ -1658,7 +1694,14 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        if(caveatData.getDeceasedDateOfBirth() != null){
+            personalisation.put(DOB_EXISTS, "yes");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }
+        else {
+            personalisation.put(DOB_EXISTS, "no");
+        }
 
         notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatRaisedCaseData);
 
