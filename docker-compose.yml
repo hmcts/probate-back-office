@@ -370,6 +370,7 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
       - CORE_CASE_DATA_API_URL=http://ccd-data-store-api:4452
       - LAUNCH_DARKLY_SDK_KEY=sdk-06456c8b-312c-475c-b154-ca585f5ca063
+      - SPRING_PROFILES_ACTIVE=local,liberataMock
     ports:
       - 8383:8080
     depends_on:

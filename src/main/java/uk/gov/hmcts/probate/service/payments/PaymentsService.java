@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
@@ -35,6 +37,13 @@ public class PaymentsService {
     public PaymentResponse getCreditAccountPaymentResponse(String authToken, CreditAccountPayment creditAccountPayment) {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            log.info("creditAccountPayment:{}", objectMapper.writeValueAsString(creditAccountPayment));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
         ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
