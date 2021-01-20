@@ -61,7 +61,6 @@ public class CaveatController {
         @RequestBody CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
-        validateEmailAddresses(caveatCallbackRequest);
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
