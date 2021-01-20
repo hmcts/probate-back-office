@@ -10,6 +10,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorActingForTrustCorp;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
@@ -507,11 +512,25 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
+        String trustCorpName = jsonPath.get("data.trustCorpName");
+        String actingTrustCorpName = jsonPath.get("data.actingTrustCorpName");
+        String positionInTrustCorp = jsonPath.get("data.positionInTrustCorp");
+        String othersActingForTrustCorp = jsonPath.get("data.othersActingForTrustCorp");
+        String lodgementAddress = jsonPath.get("data.lodgementAddress");
+        String lodgementDate = jsonPath.get("data.lodgementDate");
+        String otherActingForTrustCorpName = jsonPath.get("data.othersActingForTrustCorpList[0].value.otherActingForTrustCorpName");
+        String otherActingForTrustCorpPosition = jsonPath.get("data.othersActingForTrustCorpList[0].value.otherActingForTrustCorpPosition");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
-
-
+        assertEquals("Trust Corporation Name", trustCorpName);
+        assertEquals("Acting for trust corp name", actingTrustCorpName);
+        assertEquals("Solicitor", positionInTrustCorp);
+        assertEquals("Yes", othersActingForTrustCorp);
+        assertEquals("London", lodgementAddress);
+        assertEquals("2020-01-01", lodgementDate);
+        assertEquals("Other acting for trust corp name", otherActingForTrustCorpName);
+        assertEquals("Solicitor", otherActingForTrustCorpPosition);
     }
 
     private String transformCase(String jsonFileName, String path) {
