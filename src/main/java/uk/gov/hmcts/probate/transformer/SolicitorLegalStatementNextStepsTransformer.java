@@ -30,7 +30,7 @@ public class SolicitorLegalStatementNextStepsTransformer {
 
 
     public void transformLegalStatmentAmendStates(@Valid CaseDetails caseDetails,
-                                          ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder) {
+                                          ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.solsAmendLegalStatmentSelect(getAppropriateNextEventsForSolicitorLegalStatementAmend(caseDetails.getData()));
     }
 
