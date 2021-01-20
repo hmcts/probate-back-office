@@ -43,3 +43,4 @@ java:
         - idam-secret-probate
         - idamRedirectUrl
         - launchdarkly-key
+        - launchdarklyUserkeyBackend
