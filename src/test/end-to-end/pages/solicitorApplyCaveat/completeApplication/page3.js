@@ -8,6 +8,8 @@ module.exports = async function () {
     const I = this;
     await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
 
+    await I.runAccessibilityTest();
+
     await I.see(completeApplicationConfig.page3_app_ref);
     await I.see(completeApplicationConfig.page3_application_fee);
     await I.see(completeApplicationConfig.page3_pay_method);

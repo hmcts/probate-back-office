@@ -336,6 +336,13 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: jackson-datatype-jsr310-2.9.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
+        <cve>CVE-2018-1000873</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: gradle-pitest-plugin-1.3.0.jar
    ]]></notes>
         <gav regex="true">^info\.solidsoft\.gradle\.pitest:gradle-pitest-plugin:.*$</gav>
@@ -554,18 +561,18 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2019-14900</cve>
         <cve>CVE-2020-25638</cve>
     </suppress>
-   <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: jackson-databind-2.9.9.3.jar
    ]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-       <cpe>cpe:/a:fasterxml:jackson-databind</cpe>
-       <cpe>cpe:/a:fasterxml:jackson</cpe>
-       <cve>CVE-2020-24616</cve>
-       <cve>CVE-2020-10968</cve>
-       <cve>CVE-2020-10672</cve>
-       <cve>CVE-2020-10673</cve>
-       <cve>CVE-2020-24750</cve>
+        <cpe>cpe:/a:fasterxml:jackson-databind</cpe>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
+        <cve>CVE-2020-24616</cve>
+        <cve>CVE-2020-10968</cve>
+        <cve>CVE-2020-10672</cve>
+        <cve>CVE-2020-10673</cve>
+        <cve>CVE-2020-24750</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -576,7 +583,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2020-7019</cve>
         <cve>CVE-2020-7020</cve>
     </suppress>
-   <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: snakeyaml-1.23.jar
    ]]></notes>
@@ -633,17 +640,17 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2020-5408</cve>
     </suppress>
     <suppress>
-    <notes><![CDATA[
+        <notes><![CDATA[
    file name: jackson-databind-2.9.8.jar
    jackson-databind-2.9.8.jar (pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.9.8) : CVE-2019-12086, CVE-2019-12384, CVE-2019-12814, CVE-2019-14379, CVE-2019-14439
 
    ]]></notes>
-    <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-    <cve>CVE-2019-12086</cve>
-    <cve>CVE-2019-12384</cve>
-    <cve>CVE-2019-12814</cve>
-    <cve>CVE-2019-14379</cve>
-    <cve>CVE-2019-14439</cve>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2019-12086</cve>
+        <cve>CVE-2019-12384</cve>
+        <cve>CVE-2019-12814</cve>
+        <cve>CVE-2019-14379</cve>
+        <cve>CVE-2019-14439</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -656,7 +663,7 @@ netty-transport-native-kqueue-4.1.33.Final.jar
         <cve>CVE-2019-20444</cve>
         <cve>CVE-2019-20445</cve>
         <cve>CVE-2020-11612</cve>
-   </suppress>
+    </suppress>
     <suppress>
         <notes><![CDATA[
    file name:
@@ -691,4 +698,3 @@ file name: launchdarkly-java-server-sdk-5.2.0.jar/META-INF/maven/com.google.guav
         <cve>CVE-2020-8908</cve>
     </suppress>
 </suppressions>
-
