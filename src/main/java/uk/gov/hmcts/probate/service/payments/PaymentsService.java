@@ -42,7 +42,6 @@ public class PaymentsService {
             ObjectMapper objectMapper = new ObjectMapper();
             log.info("creditAccountPayment:{}", objectMapper.writeValueAsString(creditAccountPayment));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
