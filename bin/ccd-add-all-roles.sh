@@ -19,6 +19,7 @@ binFolder=$(dirname "$0")
 (${binFolder}/idam-create-caseworker.sh caseworker,caseworker-probate,caseworker-probate-scheduler ProbateSchedulerDEV@gmail.com)
 (${binFolder}/idam-create-caseworker.sh caseworker,caseworker-probate,caseworker-probate-pcqextractor ProbatePcqExtractor@gmail.com)
 (${binFolder}/idam-create-caseworker.sh citizen testusername@test.com)
+(${binFolder}/idam-create-caseworker.sh caseworker,caseworker-probate,caseworker-probate-charity ProbateCharity@gmail.com)
 
 (${binFolder}/ccd-add-role.sh payment)
 (${binFolder}/ccd-add-role.sh citizen)
@@ -35,6 +36,6 @@ binFolder=$(dirname "$0")
 (${binFolder}/ccd-add-role.sh caseworker-probate-registrar)
 (${binFolder}/ccd-add-role.sh caseworker-probate-superuser)
 (${binFolder}/ccd-add-role.sh caseworker-probate-scheduler)
-
+(${binFolder}/ccd-add-role.sh caseworker-probate-charity)
 (${binFolder}/ccd-add-role.sh caseworker-probate-bulkscan)
 
