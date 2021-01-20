@@ -39,6 +39,8 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
     private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
+    private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
+    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth";
 
     public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
@@ -74,6 +76,10 @@ public class CaveatPersonalisationService {
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
+        personalisation.put(PERSONALISATION_DATE_OF_DEATH,
+                dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
 
         return personalisation;
     }
@@ -94,6 +100,10 @@ public class CaveatPersonalisationService {
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
+        personalisation.put(PERSONALISATION_DATE_OF_DEATH,
+                dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
 
         return personalisation;
     }
