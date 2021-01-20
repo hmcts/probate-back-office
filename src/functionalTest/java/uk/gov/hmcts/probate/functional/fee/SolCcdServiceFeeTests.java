@@ -4,14 +4,16 @@ package uk.gov.hmcts.probate.functional.fee;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -22,19 +24,29 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    private WireMockServer wireMockServer;
+    private final static String WIREMOCK_STUB_PAYMENT_RESPONSE_SUCCESS = "{\"reference\": \"RC-1590-6786-1063-9996\", \"date_created\": " +
+        "\"2020-05-28T15:10:10.694+0000\", \"status\": \"Success\", \"payment_group_reference\": \"2020-1590678609071\", " +
+        "\"status_histories\": [{\"status\": \"success\", \"date_created\": \"2020-05-28T15:10:10.700+0000\", \"date_updated\": " +
+        "\"2020-05-28T15:10:10.700+0000\"}]}";
+    private static WireMockServer wireMockServer;
     
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         wireMockServer = new WireMockServer(options().port(8991));
         wireMockServer.start();
+        wireMockServer.resetRequests();
+        stubCreditAccountPayment(WIREMOCK_STUB_PAYMENT_RESPONSE_SUCCESS);
     }
 
-    @After
-    public void cleanup() {
+    @AfterClass
+    public static void cleanup() {
         wireMockServer.stop();
-
     }
+
+    @Before
+    public void setupPerTest() {
+    }
+
     @Test
     public void verifyNetValue10000() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
@@ -75,8 +87,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
     }
 
-    private void stubCreditAccountPayment(String response) {
-        wireMockServer.stubFor(post("/credit-account-payments")
+    private static void stubCreditAccountPayment(String response) {
+        wireMockServer.stubFor(post(urlEqualTo("/credit-account-payments"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
@@ -84,23 +96,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
-        String response = "{\n" +
-            "                \"reference\": \"RC-1590-6786-1063-9996\",\n" +
-            "                \"date_created\": \"2020-05-28T15:10:10.694+0000\",\n" +
-            "                \"status\": \"Success\",\n" +
-            "                \"payment_group_reference\": \"2020-1590678609071\",\n" +
-            "                \"status_histories\": [\n" +
-            "                  {\n" +
-            "                    \"status\": \"success\",\n" +
-            "                    \"date_created\": \"2020-05-28T15:10:10.700+0000\",\n" +
-            "                    \"date_updated\": \"2020-05-28T15:10:10.700+0000\"\n" +
-            "                  }\n" +
-            "                ]\n" +
-            "            }";
-        stubCreditAccountPayment(response);
 
-        log.info("wireMockServer.baseUrl:"+wireMockServer.baseUrl());
-        log.info("wireMockServer.port:"+wireMockServer.port());
         given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))

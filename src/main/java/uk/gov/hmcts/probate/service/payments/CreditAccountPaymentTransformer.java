@@ -20,14 +20,14 @@ public class CreditAccountPaymentTransformer {
     @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
 
-    @Value("${fee.api.service}")
-    private String service;
-
     @Value("${payment.currency}")
     private String currency;
 
     @Value("${payment.siteId}")
     private String siteId;
+
+    @Value("${payment.service}")
+    private String service;
 
     public CreditAccountPayment transform(CaseDetails caseDetails, FeesResponse feesResponse) {
         List<PaymentFee> paymentFees = buildFees(caseDetails.getData(), feesResponse);
