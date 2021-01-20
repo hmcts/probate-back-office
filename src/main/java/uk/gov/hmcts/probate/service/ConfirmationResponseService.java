@@ -248,7 +248,7 @@ public class ConfirmationResponseService {
         String originalWill = "\n*   the original will";
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
-        } else if("Yes".equals(caseData.getWillHasCodicils())) {
+        } else if("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*  the original will and any codicils";
         }
         keyValue.put("{{originalWill}}", originalWill);
