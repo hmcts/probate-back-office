@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
@@ -65,7 +66,7 @@ public class CaveatPersonalisationService {
         CaveatData caveatData = caveatDetails.getData();
 
         HashMap<String, String> personalisation = new HashMap<>();
-        final String DOB_EXISTS = "dob_exists";
+
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatData.getCaveatorFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
@@ -79,14 +80,7 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        if(caveatData.getDeceasedDateOfBirth() != null){
-            personalisation.put(DOB_EXISTS, "yes");
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
-        }
-        else {
-            personalisation.put(DOB_EXISTS, "no");
-        }
+        checkIfDobExists(caveatData, personalisation);
 
         return personalisation;
     }
@@ -95,7 +89,6 @@ public class CaveatPersonalisationService {
         CaveatData caveatData = caveatDetails.getData();
 
         HashMap<String, String> personalisation = new HashMap<>();
-        final String DOB_EXISTS = "dob_exists";
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, "Sir/Madam");
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
@@ -110,6 +103,14 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+        checkIfDobExists(caveatData, personalisation);
+
+        return personalisation;
+    }
+
+    private void checkIfDobExists(CaveatData caveatData, HashMap<String, String> personalisation){
+        final String DOB_EXISTS = "dob_exists";
+
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(DOB_EXISTS, "yes");
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
@@ -118,9 +119,6 @@ public class CaveatPersonalisationService {
         else {
             personalisation.put(DOB_EXISTS, "no");
         }
-
-        return personalisation;
     }
-
 
 }
