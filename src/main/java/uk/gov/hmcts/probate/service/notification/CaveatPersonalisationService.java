@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
