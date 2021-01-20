@@ -1126,6 +1126,9 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
+        personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
+        personalisation.put(PERSONALISATION_DATE_OF_BIRTH, dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
 
         verify(notificationClient).sendEmail(
