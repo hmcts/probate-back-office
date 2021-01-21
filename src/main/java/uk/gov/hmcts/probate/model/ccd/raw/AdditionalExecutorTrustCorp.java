@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AdditionalExecutorTrustCorp {
 
-    private final String otherActingForTrustCorpName;
-    private final String otherActingForTrustCorpPosition;
+    private final String additionalExecutorTrustCorpName;
+    private final String additionalExecutorTrustCorpPosition;
 
 }

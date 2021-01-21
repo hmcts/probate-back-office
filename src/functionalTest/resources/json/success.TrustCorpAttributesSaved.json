@@ -29,13 +29,13 @@
             "trustCorpName": "Trust Corporation Name",
             "actingTrustCorpName": "Acting for trust corp name",
             "positionInTrustCorp": "Solicitor",
-            "othersActingForTrustCorp": "Yes",
-            "othersActingForTrustCorpList": [
+            "additionalExecutorsTrustCorp": "Yes",
+            "additionalExecutorsTrustCorpList": [
                 {
                     "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
                     "value": {
-                        "otherActingForTrustCorpName": "Other acting for trust corp name",
-                        "otherActingForTrustCorpPosition": "Solicitor"
+                        "additionalExecutorTrustCorpName": "Other acting for trust corp name",
+                        "additionalExecutorTrustCorpPosition": "Solicitor"
                     }
                 }
             ],

@@ -2655,8 +2655,8 @@ public class CallbackResponseTransformerTest {
     public void shouldApplyTrustCorpAttributes() {
 
         CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
-        List<CollectionMember<AdditionalExecutorTrustCorp>> othersActingForTrustCorpList = new ArrayList<>();
-        othersActingForTrustCorpList.add(additionalExecutorTrustCorp);
+        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
 
         caseDataBuilder
                 .dispenseWithNotice(YES)
@@ -2664,8 +2664,8 @@ public class CallbackResponseTransformerTest {
                 .trustCorpName("Trust corp name")
                 .actingTrustCorpName("Acting trust corp name")
                 .positionInTrustCorp("Solicitor")
-                .othersActingForTrustCorp(YES)
-                .othersActingForTrustCorpList(othersActingForTrustCorpList)
+                .additionalExecutorsTrustCorp(YES)
+                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
 
@@ -2678,9 +2678,9 @@ public class CallbackResponseTransformerTest {
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("Acting trust corp name", callbackResponse.getData().getActingTrustCorpName());
         assertEquals("Solicitor", callbackResponse.getData().getPositionInTrustCorp());
-        assertEquals("Yes", callbackResponse.getData().getOthersActingForTrustCorp());
-        assertEquals("Executor name", callbackResponse.getData().getOthersActingForTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
-        assertEquals("Solicitor", callbackResponse.getData().getOthersActingForTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("Yes", callbackResponse.getData().getAdditionalExecutorsTrustCorp());
+        assertEquals("Executor name", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
+        assertEquals("Solicitor", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());
         assertEquals("2020-01-01", callbackResponse.getData().getLodgementDate());
 

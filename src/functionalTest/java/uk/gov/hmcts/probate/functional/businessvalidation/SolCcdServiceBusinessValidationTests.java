@@ -510,22 +510,22 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String trustCorpName = jsonPath.get("data.trustCorpName");
         String actingTrustCorpName = jsonPath.get("data.actingTrustCorpName");
         String positionInTrustCorp = jsonPath.get("data.positionInTrustCorp");
-        String othersActingForTrustCorp = jsonPath.get("data.othersActingForTrustCorp");
+        String additionalExecutorsTrustCorp = jsonPath.get("data.additionalExecutorsTrustCorp");
         String lodgementAddress = jsonPath.get("data.lodgementAddress");
         String lodgementDate = jsonPath.get("data.lodgementDate");
-        String otherActingForTrustCorpName = jsonPath.get("data.othersActingForTrustCorpList[0].value.otherActingForTrustCorpName");
-        String otherActingForTrustCorpPosition = jsonPath.get("data.othersActingForTrustCorpList[0].value.otherActingForTrustCorpPosition");
+        String additionalExecutorTrustCorpName = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpName");
+        String additionalExecutorTrustCorpPosition = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
         assertEquals("Trust Corporation Name", trustCorpName);
         assertEquals("Acting for trust corp name", actingTrustCorpName);
         assertEquals("Solicitor", positionInTrustCorp);
-        assertEquals("Yes", othersActingForTrustCorp);
+        assertEquals("Yes", additionalExecutorsTrustCorp);
         assertEquals("London", lodgementAddress);
         assertEquals("2020-01-01", lodgementDate);
-        assertEquals("Other acting for trust corp name", otherActingForTrustCorpName);
-        assertEquals("Solicitor", otherActingForTrustCorpPosition);
+        assertEquals("Other acting for trust corp name", additionalExecutorTrustCorpName);
+        assertEquals("Solicitor", additionalExecutorTrustCorpPosition);
     }
 
     private String transformCase(String jsonFileName, String path) {

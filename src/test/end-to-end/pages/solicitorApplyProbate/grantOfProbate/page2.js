@@ -17,11 +17,11 @@ module.exports = async function () {
     await I.fillField('#actingTrustCorpName', grantOfProbateConfig.page2_executorFirstName);
     await I.fillField('#positionInTrustCorp', grantOfProbateConfig.page2_positionInTrustCorp);
 
-    await I.click(`#othersActingForTrustCorp-${grantOfProbateConfig.optionYes}`);
+    await I.click(`#additionalExecutorsTrustCorp-${grantOfProbateConfig.optionYes}`);
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
-    await I.click('#othersActingForTrustCorpList > div > button');
-    await I.fillField('#othersActingForTrustCorpList_0_otherActingForTrustCorpName', grantOfProbateConfig.page2_executorFirstName);
-    await I.fillField('#othersActingForTrustCorpList_0_otherActingForTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
+    await I.click('#additionalExecutorsTrustCorpList > div > button');
+    await I.fillField('#additionalExecutorsTrustCorpList_0_otherActingForTrustCorpName', grantOfProbateConfig.page2_executorFirstName);
+    await I.fillField('#additionalExecutorsTrustCorpList_0_otherActingForTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
 
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
