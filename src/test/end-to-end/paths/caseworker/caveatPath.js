@@ -9,6 +9,8 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
+
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
@@ -91,8 +93,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
-    // await I.seeCaseDetails(caseRef, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
     await I.chooseNextStep(nextStepName);
