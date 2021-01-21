@@ -937,7 +937,38 @@ public class    CaseDataTest {
         assertEquals("registryAddress", caseData.getRegistryAddress());
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
+
+    }
+
+    @Test
+    public void shouldApplyTrustCorpAttributes() {
+        CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
+        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        final CaseData caseData = CaseData.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTTrustCorpResWithApp")
+                .trustCorpName("Trust corp name")
+                .positionInTrustCorp("Solicitor")
+                .actingTrustCorpName("Acting trust corp name")
+                .positionInTrustCorp("Solicitor")
+                .additionalExecutorsTrustCorp("Yes")
+                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
+                .lodgementAddress("London")
+                .lodgementDate(LOCAL_DATE)
+                .build();
+
         assertEquals("Yes", caseData.getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
+        assertEquals("Trust corp name", caseData.getTrustCorpName());
+        assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
+        assertEquals("Solicitor", caseData.getPositionInTrustCorp());
+        assertEquals("Yes", caseData.getAdditionalExecutorsTrustCorp());
+        assertEquals("Executor name", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
+        assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("London", caseData.getLodgementAddress());
+        assertEquals(LOCAL_DATE, caseData.getLodgementDate());
     }
+
 }

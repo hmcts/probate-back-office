@@ -15,24 +15,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -129,7 +112,6 @@ public class CallbackResponseTransformerTest {
     private static final String RESIDUARY = "Yes";
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String DOMICILITY_COUNTRY = "OtherCountry";
-    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
@@ -213,7 +195,6 @@ public class CallbackResponseTransformerTest {
     private static final String EXEC_OTHER_NAMES = EXEC_WILL_NAME;
     private static final String EXEC_PHONE = "010101010101";
     private static final String EXEC_EMAIL = "executor1@probate-test.com";
-    private static final String EXEC_APPEAR = YES;
     private static final String EXEC_NOTIFIED = YES;
 
     private static final String BO_BULK_PRINT = YES;
@@ -2640,7 +2621,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldUpdateParentBUilderAttributes() {
+    public void shouldUpdateParentBuilderAttributes() {
         DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
 
@@ -2650,8 +2631,7 @@ public class CallbackResponseTransformerTest {
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
-            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
-            .dispenseWithNotice("Yes").titleAndClearingType("TCTTrustCorpResWithApp");
+            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2669,8 +2649,41 @@ public class CallbackResponseTransformerTest {
         assertEquals("registryAddress", callbackResponse.getData().getRegistryAddress());
         assertEquals("registryEmailAddress", callbackResponse.getData().getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", callbackResponse.getData().getRegistrySequenceNumber());
+    }
+
+    @Test
+    public void shouldApplyTrustCorpAttributes() {
+
+        CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
+        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        caseDataBuilder
+                .dispenseWithNotice(YES)
+                .titleAndClearingType("TCTTrustCorpResWithApp")
+                .trustCorpName("Trust corp name")
+                .actingTrustCorpName("Acting trust corp name")
+                .positionInTrustCorp("Solicitor")
+                .additionalExecutorsTrustCorp(YES)
+                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
+                .lodgementAddress("London")
+                .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", callbackResponse.getData().getTitleAndClearingType());
+        assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
+        assertEquals("Acting trust corp name", callbackResponse.getData().getActingTrustCorpName());
+        assertEquals("Solicitor", callbackResponse.getData().getPositionInTrustCorp());
+        assertEquals("Yes", callbackResponse.getData().getAdditionalExecutorsTrustCorp());
+        assertEquals("Executor name", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
+        assertEquals("Solicitor", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("London", callbackResponse.getData().getLodgementAddress());
+        assertEquals("2020-01-01", callbackResponse.getData().getLodgementDate());
+
     }
 
     @Test

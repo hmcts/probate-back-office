@@ -3,7 +3,11 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorp;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+
+import java.util.List;
 
 @Jacksonized
 @SuperBuilder
@@ -30,6 +34,15 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+
     protected String dispenseWithNotice;
     protected String titleAndClearingType;
+    protected String trustCorpName;
+    protected String actingTrustCorpName;
+    protected String positionInTrustCorp;
+    protected String additionalExecutorsTrustCorp;
+    protected List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList;
+    protected String lodgementAddress;
+    protected String lodgementDate;
+
 }
