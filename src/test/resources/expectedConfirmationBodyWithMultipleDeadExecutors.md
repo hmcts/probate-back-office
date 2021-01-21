@@ -40,7 +40,7 @@ You now need to send us:
 
 *   the original will
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form IHT207
+*   the inheritance tax form IHT207
 *   death certificate for Bob Martin
 *   death certificate for John Martin
 *   a photocopy of the signed legal statement and declaration
