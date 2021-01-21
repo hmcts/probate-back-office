@@ -86,8 +86,7 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
-    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth";
-    private static final String PERSONALISATION_DOB_EXISTS = "dob_exists";
+    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
 
     HashMap<String, Object> personalisation = new HashMap<>();
     private CaseData caseDataPersonal;
@@ -211,7 +210,6 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
         assertEquals("10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
-        assertEquals("yes", response.get(PERSONALISATION_DOB_EXISTS));
     }
 
     @Test
@@ -227,8 +225,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals(null, response.get(PERSONALISATION_DATE_OF_BIRTH));
-        assertEquals("no", response.get(PERSONALISATION_DOB_EXISTS));
+        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
     @Test
@@ -244,7 +241,6 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
         assertEquals("10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
-        assertEquals("yes", response.get(PERSONALISATION_DOB_EXISTS));
     }
 
     @Test
@@ -259,8 +255,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals(null, response.get(PERSONALISATION_DATE_OF_BIRTH));
-        assertEquals("no", response.get(PERSONALISATION_DOB_EXISTS));
+        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
 

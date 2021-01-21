@@ -40,7 +40,7 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
     private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
-    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth";
+    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
 
     public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
@@ -108,15 +108,12 @@ public class CaveatPersonalisationService {
     }
 
     private void checkIfDobExists(CaveatData caveatData, HashMap<String, String> personalisation){
-        final String DOB_EXISTS = "dob_exists";
 
         if(caveatData.getDeceasedDateOfBirth() != null){
-            personalisation.put(DOB_EXISTS, "yes");
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "The deceased's date of birth: " + dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
         }
         else {
-            personalisation.put(DOB_EXISTS, "no");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
     }
 
