@@ -109,6 +109,7 @@ public class CaveatPersonalisationService {
 
     private void checkIfDobExists(CaveatData caveatData, HashMap<String, String> personalisation){
 
+        //Whole text being pushed to the email template as the template does not support multiple parameters within the same brackets
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "The deceased's date of birth: " + dateFormatterService.formatDate(caveatData.getDeceasedDateOfBirth()));
         }
