@@ -61,8 +61,8 @@ public class PaymentsService {
         headers.add("Content-Type", "application/json");
         String sa = authTokenGenerator.generate();
         headers.add("ServiceAuthorization", sa);
-//        log.info("auth:"+authToken);
-//        log.info("sa:"+sa);
+        log.info("auth:"+authToken);
+        log.info("sa:"+sa);
         
         return new HttpEntity<>(creditAccountPayment, headers);
     }
