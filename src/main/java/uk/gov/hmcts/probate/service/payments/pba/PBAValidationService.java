@@ -34,9 +34,9 @@ public class PBAValidationService {
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     @Value("${pba.validation.url}")
-    private String pbaUri;
+    protected String pbaUri;
     @Value("${pba.validation.api}")
-    private String pbaApi;
+    protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
         ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);

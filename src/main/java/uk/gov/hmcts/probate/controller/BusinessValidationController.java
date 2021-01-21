@@ -281,7 +281,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
     }
 
-    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForPBANumbers(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest) {

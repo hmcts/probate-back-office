@@ -1,15 +1,14 @@
 package uk.gov.hmcts.probate.service.payments.pba;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -28,19 +27,17 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class PBAValidationServiceTest {
 
-    @MockBean
-    private IdamApi idamService;
-    @MockBean(name = "restTemplate")
-    private RestTemplate restTemplate;
-    @MockBean
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
+    @InjectMocks
     private PBAValidationService pbaValidationService;
+
+    @Mock
+    private IdamApi idamService;
+    @Mock(name = "restTemplate")
+    private RestTemplate restTemplate;
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
 
     private static final String AUTH_TOKEN = "Bearer .AUTH";
 
@@ -49,6 +46,13 @@ public class PBAValidationServiceTest {
 
     @Mock
     private OrganisationEntityResponse organisationEntityResponse;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        pbaValidationService.pbaApi = "/pbaUri";
+        pbaValidationService.pbaUri = "http://pbaApi";
+    }
 
     @Test
     public void shouldReturnPBAs() {
