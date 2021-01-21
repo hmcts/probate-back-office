@@ -20,8 +20,8 @@ module.exports = async function () {
     await I.click(`#additionalExecutorsTrustCorp-${grantOfProbateConfig.optionYes}`);
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
     await I.click('#additionalExecutorsTrustCorpList > div > button');
-    await I.fillField('#additionalExecutorsTrustCorpList_0_otherActingForTrustCorpName', grantOfProbateConfig.page2_executorFirstName);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_otherActingForTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
+    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpName', grantOfProbateConfig.page2_executorFirstName);
+    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
 
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);

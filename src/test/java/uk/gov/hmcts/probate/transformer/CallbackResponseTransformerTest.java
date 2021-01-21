@@ -2679,8 +2679,8 @@ public class CallbackResponseTransformerTest {
         assertEquals("Acting trust corp name", callbackResponse.getData().getActingTrustCorpName());
         assertEquals("Solicitor", callbackResponse.getData().getPositionInTrustCorp());
         assertEquals("Yes", callbackResponse.getData().getAdditionalExecutorsTrustCorp());
-        assertEquals("Executor name", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
-        assertEquals("Solicitor", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("Executor name", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
+        assertEquals("Solicitor", callbackResponse.getData().getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());
         assertEquals("2020-01-01", callbackResponse.getData().getLodgementDate());
 

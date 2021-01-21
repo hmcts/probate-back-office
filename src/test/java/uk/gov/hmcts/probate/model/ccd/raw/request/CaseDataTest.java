@@ -965,8 +965,8 @@ public class    CaseDataTest {
         assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
         assertEquals("Solicitor", caseData.getPositionInTrustCorp());
         assertEquals("Yes", caseData.getAdditionalExecutorsTrustCorp());
-        assertEquals("Executor name", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
-        assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("Executor name", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
+        assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
     }
