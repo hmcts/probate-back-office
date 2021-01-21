@@ -99,7 +99,7 @@ public class CaveatControllerTest {
 
         mockMvc.perform(post("/caveat/solsCreate")
             .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
 
@@ -136,7 +136,7 @@ public class CaveatControllerTest {
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -157,11 +157,11 @@ public class CaveatControllerTest {
 
         mockMvc.perform(post("/caveat/raise")
             .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this caveator. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 
@@ -171,11 +171,11 @@ public class CaveatControllerTest {
 
         mockMvc.perform(post("/caveat/raise")
             .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Bulk Print is currently unavailable please contact support desk."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 
@@ -197,11 +197,11 @@ public class CaveatControllerTest {
 
         mockMvc.perform(post("/caveat/general-message")
             .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this caveator. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 
@@ -246,7 +246,7 @@ public class CaveatControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend an already expired caveat."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -263,7 +263,7 @@ public class CaveatControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend a caveat that is more than 1 month from expiry."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
