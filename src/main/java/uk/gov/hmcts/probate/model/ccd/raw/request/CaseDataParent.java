@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorActingForTrustCorp;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorp;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.time.LocalDate;
@@ -26,7 +26,7 @@ public class CaseDataParent {
     protected String actingTrustCorpName;
     protected String positionInTrustCorp;
     protected String othersActingForTrustCorp;
-    protected List<CollectionMember<AdditionalExecutorActingForTrustCorp>> othersActingForTrustCorpList;
+    protected List<CollectionMember<AdditionalExecutorTrustCorp>> othersActingForTrustCorpList;
     protected String lodgementAddress;
     protected LocalDate lodgementDate;
 }

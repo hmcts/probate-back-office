@@ -10,11 +10,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorActingForTrustCorp;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
