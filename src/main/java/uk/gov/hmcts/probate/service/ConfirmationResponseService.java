@@ -216,6 +216,7 @@ public class ConfirmationResponseService {
     }
 
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
+        System.out.println("=====================================generateNextStepsBodyMarkdown");
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
         String caseSubmissionDate = "";
@@ -249,10 +250,10 @@ public class ConfirmationResponseService {
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
         } else if("Yes".equals(ccdData.getWillHasCodicils())) {
-            originalWill = "\n*  the original will and any codicils";
+            originalWill = "\n*   the original will and any codicils";
         }
         keyValue.put("{{originalWill}}", originalWill);
-
+        
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -263,8 +264,7 @@ public class ConfirmationResponseService {
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
             ihtText = "\n*   the inheritance tax form ";
-            System.out.println("INHERITANCE TAX FORM 217" + ccdData.getIht217());
-            if (ccdData.getIht217().equals(null) && "Yes".equals(ccdData.getIht217())) {
+            if ("Yes".equals(ccdData.getIht217())) {
                 ihtForm = "IHT217";
             } else {
                 ihtForm = ccdData.getIht().getFormName();
