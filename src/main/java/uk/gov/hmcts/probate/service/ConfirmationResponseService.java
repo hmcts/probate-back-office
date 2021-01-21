@@ -263,7 +263,12 @@ public class ConfirmationResponseService {
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
             ihtText = "\n*   the inheritance tax form ";
-            ihtForm = ccdData.getIht().getFormName();
+            System.out.println("INHERITANCE TAX FORM 217" + ccdData.getIht217());
+            if (ccdData.getIht217().equals(null) && "Yes".equals(ccdData.getIht217())) {
+                ihtForm = "IHT217";
+            } else {
+                ihtForm = ccdData.getIht().getFormName();
+            }
         }
 
         String iht400 = "";
