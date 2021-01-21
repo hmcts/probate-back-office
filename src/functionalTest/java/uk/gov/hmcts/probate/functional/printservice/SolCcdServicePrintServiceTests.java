@@ -109,7 +109,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         response.prettyPrint();
 
         assertThat(response.statusCode(),is(equalTo(403)));
-        assertTrue(response.getBody().asString().contains("Access Denied"));
+        assertTrue(response.getBody().asString().contains("Forbidden"));
     }
 }
 

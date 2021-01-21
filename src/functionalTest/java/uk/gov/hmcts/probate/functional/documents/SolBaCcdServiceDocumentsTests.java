@@ -1048,7 +1048,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 .when().post(RE_PRINT)
                 .andReturn();
         assertThat(response.statusCode(),is(equalTo(403)));
-        assertTrue(response.getBody().asString().contains("Access Denied"));
+        assertTrue(response.getBody().asString().contains("Forbidden"));
 
     }
 }
