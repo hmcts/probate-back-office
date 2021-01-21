@@ -41,6 +41,7 @@
       "solsSolicitorNotApplyingReason": null,
       "solsSOTJobTitle": "job title",
       "otherExecutorExists": "Yes",
+      "applicationGrounds": "Grounds for application",
       "deceasedAddress": {
         "AddressLine1": "1",
         "AddressLine2": "1",
@@ -85,18 +86,10 @@
       },
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
-      "applicationGrounds": "Grounds for application",
-      "ukEstate": [
-        {
-          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
-          "value": {
-            "item": "item1",
-            "value": "1000"
-          }
-        }
-      ],
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "90009",
+      "ihtNetValue": "1000000",
+      "extraCopiesOfGrant": 1,
+      "outsideUKGrantCopies": 1,
       "deceasedSurname": "decln",
       "solsAdditionalExecutorList": [
         {
@@ -129,7 +122,7 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate":"No"
+      "solsSOTNeedToUpdate": "No"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",
