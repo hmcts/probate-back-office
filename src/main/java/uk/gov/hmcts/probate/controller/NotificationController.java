@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
@@ -56,7 +55,7 @@ import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/notify", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 @Slf4j
 public class NotificationController {
@@ -199,7 +198,7 @@ public class NotificationController {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }
 
-    @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,

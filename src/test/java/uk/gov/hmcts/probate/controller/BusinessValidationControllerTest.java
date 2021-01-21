@@ -296,7 +296,7 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         
-        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -317,9 +317,9 @@ public class BusinessValidationControllerTest {
                 .build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
                 .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
     }
 
@@ -341,9 +341,9 @@ public class BusinessValidationControllerTest {
                 .build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
                 .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementIntestacy.pdf"));
     }
 
@@ -366,9 +366,9 @@ public class BusinessValidationControllerTest {
                 .build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
                 .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
     }
 
@@ -380,7 +380,7 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -415,7 +415,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -430,7 +430,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -445,7 +445,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -461,7 +461,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -476,7 +476,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -489,38 +489,38 @@ public class BusinessValidationControllerTest {
     public void shouldReturnAliasNameTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void shouldReturnAdditionalExecutorsTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("Ensure all checks have been completed, cancel to return to the examining state"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 
@@ -528,10 +528,10 @@ public class BusinessValidationControllerTest {
     public void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
 
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("Ensure all checks have been completed, cancel to return to the examining state"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 
@@ -539,9 +539,9 @@ public class BusinessValidationControllerTest {
     public void shouldReturnCheckListValidateSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
 
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -553,9 +553,9 @@ public class BusinessValidationControllerTest {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(emailDocument);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -563,9 +563,9 @@ public class BusinessValidationControllerTest {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(null);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -575,23 +575,23 @@ public class BusinessValidationControllerTest {
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
         String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(containsString("controlNumber\":\"1234")))
                 .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
 
@@ -602,9 +602,9 @@ public class BusinessValidationControllerTest {
     public void shouldStopCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseStopped(any(CaseDetails.class));
     }
@@ -613,10 +613,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("CaseCreated"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
@@ -625,10 +625,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopCasePrinted.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("CasePrinted"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
@@ -637,10 +637,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
@@ -649,10 +649,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOExamining"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
@@ -661,10 +661,10 @@ public class BusinessValidationControllerTest {
     public void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
         String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
 
-        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value(REDEC_NOTIFICATION_SENT_STATE))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -673,19 +673,19 @@ public class BusinessValidationControllerTest {
 
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

@@ -425,7 +425,7 @@ services:
       - 9200:9200
 
   ccd-logstash:
-    image: hmctspublic.azurecr.io/ccd/logstash:probate-latest
+    image: hmctspublic.azurecr.io/ccd/logstash:ccd-probate-logstash-latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - XPACK_MONITORING_ENABLED=false
