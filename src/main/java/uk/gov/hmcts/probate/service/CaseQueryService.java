@@ -153,10 +153,10 @@ public class CaseQueryService {
             returnedCases = nonNull(restTemplate.postForObject(uri, entity, ReturnedCases.class));
             log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
-            log.error("CaseMatchingException on CaseQueryService, message="+e.getMessage());
+            log.error("CaseMatchingException on CaseQueryService, message=" + e.getMessage());
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 

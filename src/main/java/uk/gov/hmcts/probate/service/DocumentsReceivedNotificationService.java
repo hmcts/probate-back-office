@@ -66,6 +66,6 @@ public class DocumentsReceivedNotificationService {
     }
 
     private boolean isCaseCreatedFromBulkScan(final CaseData caseData) {
-        return (StringUtils.isBlank(caseData.getBulkScanCaseReference())?false:true);
+        return (StringUtils.isBlank(caseData.getBulkScanCaseReference()) ? false : true);
     }
 }

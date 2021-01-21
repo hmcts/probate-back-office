@@ -26,13 +26,13 @@ public class DocumentService {
 
 
         collect.forEach(collectionMember -> {
-                    try {
-                        uploadService.expire(collectionMember.getValue());
-                        callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().remove(collectionMember);
-                    } catch (Exception e) {
-                        log.warn("Unable to expiry document: {} for case id: {}", collectionMember.getValue().getDocumentLink(), callbackRequest.getCaseDetails().getId());
-                    }
-                }
+            try {
+                uploadService.expire(collectionMember.getValue());
+                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().remove(collectionMember);
+            } catch (Exception e) {
+                log.warn("Unable to expiry document: {} for case id: {}", collectionMember.getValue().getDocumentLink(), callbackRequest.getCaseDetails().getId());
+            }
+        }
         );
 
     }

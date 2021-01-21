@@ -82,8 +82,8 @@ public class OCRFieldAddressMapper {
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress
     public Address toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
-        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1()) ||
-                StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1())
+            || StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
             return buildSolicitorAddress(ocrFields);
         } else {
             return buildCaveatorAddress(ocrFields);

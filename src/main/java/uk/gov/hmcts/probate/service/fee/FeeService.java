@@ -42,10 +42,10 @@ public class FeeService {
         }
 
         Fee body = responseEntity.getBody();
-        if( body == null){
+        if (body == null) {
             throw new ClientDataException("No Body in FeeService: getApplicationFee");
         }
-        else{
+        else {
             return body.getFeeAmount();
         }
 
@@ -65,12 +65,11 @@ public class FeeService {
         }
 
         Fee body = responseEntity.getBody();
-        if(body == null){
+        if (body == null) {
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
         }
         else{
-            return body.getFeeAmount();
-        }
+            return body.getFeeAmount(); }
     }
 
     public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
@@ -118,7 +117,7 @@ public class FeeService {
     private static <T> T nonNull(@Nullable T result) {
         try {
             Assert.state(result != null, "Entity should be non null in FeeService");
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
         return result;

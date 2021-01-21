@@ -95,13 +95,14 @@ public class ExceptionRecordController {
                         erRequest, GrantType.INTESTACY, warnings);
                 break;
             default:
-                throw new OCRMappingException("This Exception Record form currently has no case mapping for case "+erRequest.getId());
+                throw new OCRMappingException("This Exception Record form currently has no case mapping for case " + erRequest.getId());
         }
 
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @ApiOperation(value = "Updates a case based on availability of OCR data and documents", notes = "Will return errors if unsuccessful or no new documents found.")
+    @ApiOperation(value = "Updates a case based on availability of OCR data and documents",
+        notes = "Will return errors if unsuccessful or no new documents found.")
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
@@ -133,7 +134,7 @@ public class ExceptionRecordController {
             }
             default: {
                 log.error("This Exception Record form currently has no case mapping");
-                throw new OCRMappingException("This Exception Record form currently has no case mapping for case: "+erRequest.getId());
+                throw new OCRMappingException("This Exception Record form currently has no case mapping for case: " + erRequest.getId());
             }
         }
 

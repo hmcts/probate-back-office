@@ -52,8 +52,8 @@ public interface ExceptionRecordCaveatMapper {
     @AfterMapping
     default void setSolsPaymentMethod(
             @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
-                StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
+            && StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
             caseData.setSolsPaymentMethods(SolsPaymentMethods.FEE_ACCOUNT);
         }
     }
@@ -61,8 +61,8 @@ public interface ExceptionRecordCaveatMapper {
     @AfterMapping
     default void setSolsSolicitorEmail(
             @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
-                StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
+            && StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
             caseData.setCaveatorEmailAddress(ocrField.getSolsSolicitorEmail());
         }
     }
@@ -70,13 +70,13 @@ public interface ExceptionRecordCaveatMapper {
     @AfterMapping
     default void setSolsSolicitorRepresentativeName(
             @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
-                (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
+            && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
             String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
-                caseData.setCaveatorSurname(names.get(names.size()-1));
-                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size()-1)));
+                caseData.setCaveatorSurname(names.get(names.size() - 1));
+                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size() -1 )));
             } else if(names.size() == 1) {
                 caseData.setCaveatorSurname("");
                 caseData.setCaveatorForenames(names.get(0));

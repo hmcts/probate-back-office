@@ -112,7 +112,8 @@ public class ExceptionRecordService {
 
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}", erRequest.getId());
-            GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
+            GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper
+                .toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getId());
@@ -187,7 +188,8 @@ public class ExceptionRecordService {
 
             // Validate caveat extension
             log.info("Validating caveat extension.");
-            CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
+            CaveatCallbackResponse caveatCallbackResponse = eventValidationService
+                .validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
             if (caveatCallbackResponse.getErrors().isEmpty()) { 
                 LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData()
                         .getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
@@ -213,8 +215,8 @@ public class ExceptionRecordService {
                     .warnings(caveatCallbackResponse.getWarnings())
                     .build();
 
-        } catch(Exception e){
-            log.error("Error Extending Caveat case from Exception Record", e);
+        } catch (Exception e) {
+            log.error ("Error Extending Caveat case from Exception Record", e);
             throw new OCRMappingException(e.getMessage());
         }
     }
@@ -234,12 +236,12 @@ public class ExceptionRecordService {
         exceptionScannedDocuments.forEach(newScannedDoc -> {
             AtomicBoolean foundDoc = new AtomicBoolean(false);
             caseScannedDocuments.forEach(caseScannedDoc -> {
-                        if (StringUtils.isNotBlank(newScannedDoc.controlNumber) &&
-                                newScannedDoc.controlNumber.equalsIgnoreCase(caseScannedDoc.getValue().getControlNumber())) {
-                            foundDoc.set(true);
-                        }
-                    }
-                );
+                if (StringUtils.isNotBlank(newScannedDoc.controlNumber)
+                    && newScannedDoc.controlNumber.equalsIgnoreCase(caseScannedDoc.getValue().getControlNumber())) {
+                    foundDoc.set(true);
+                }
+            }
+            );
 
             if (!foundDoc.get()) {
                 log.info("Adding document with DCN {} to case", newScannedDoc.controlNumber);

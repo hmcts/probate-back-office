@@ -66,7 +66,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class CaseData extends CaseDataParent {
 
@@ -625,7 +625,8 @@ public class CaseData extends CaseDataParent {
         return (solsWillType != null && solsFeeAccountNumber == null);
     }
 
-    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
         AdditionalExecutorApplying exec;
         AdditionalExecutor newExec;
         CollectionMember<AdditionalExecutor> newAdditionalExecutor;
@@ -634,7 +635,7 @@ public class CaseData extends CaseDataParent {
         for (CollectionMember<AdditionalExecutorApplying> e : additionalExecutors) {
             exec = e.getValue();
 
-            if(exec == null) {
+            if (exec == null) {
                 continue;
             }
 
@@ -644,10 +645,10 @@ public class CaseData extends CaseDataParent {
             if (exec.getApplyingExecutorFirstName() == null || exec.getApplyingExecutorLastName() == null) {
                 List<String> names = splitFullname(exec.getApplyingExecutorName());
 
-                if(names.size() > 2) {
-                    surname = names.remove(names.size()-1);
+                if (names.size() > 2) {
+                    surname = names.remove(names.size() - 1);
                     forenames = String.join(" ", names);
-                } else if(names.size() == 1) {
+                } else if (names.size() == 1) {
                     forenames = names.get(0);
                 } else {
                     surname = names.get(1);
@@ -671,7 +672,8 @@ public class CaseData extends CaseDataParent {
         return newAdditionalExecutors;
     }
 
-    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsNotApplying(List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutors) {
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsNotApplying(
+        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutors) {
         AdditionalExecutorNotApplying exec;
         AdditionalExecutor newExec;
         CollectionMember<AdditionalExecutor> newAdditionalExecutor;
@@ -680,20 +682,20 @@ public class CaseData extends CaseDataParent {
         for (CollectionMember<AdditionalExecutorNotApplying> e : additionalExecutors) {
             exec = e.getValue();
 
-            if(exec == null) {
+            if (exec == null) {
                 continue;
             }
 
             String forenames = null;
             String surname = null;
 
-            if(exec.getNotApplyingExecutorName() != null) {
+            if (exec.getNotApplyingExecutorName() != null) {
                 List<String> names = splitFullname(exec.getNotApplyingExecutorName());
 
-                if(names.size() > 2) {
-                    surname = names.remove(names.size()-1);
+                if (names.size() > 2) {
+                    surname = names.remove(names.size() - 1);
                     forenames = String.join(" ", names);
-                } else if(names.size() == 1) {
+                } else if (names.size() == 1) {
                     forenames = names.get(0);
                 } else {
                     surname = names.get(1);

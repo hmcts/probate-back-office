@@ -89,7 +89,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "deceasedMaritalStatus", source = "ocrFields.deceasedMartialStatus", qualifiedBy = {ToMartialStatus.class})
 
     @Mapping(target = "dateOfMarriageOrCP", source = "ocrFields.dateOfMarriageOrCP", qualifiedBy = {ToDefaultLocalDate.class})
-    @Mapping(target = "dateOfDivorcedCPJudicially", source = "ocrFields.dateOfDivorcedCPJudicially", qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "dateOfDivorcedCPJudicially", source = "ocrFields.dateOfDivorcedCPJudicially",
+        qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "courtOfDecree", source = "ocrFields.courtOfDecree")
 
     @Mapping(target = "foreignAsset", source = "ocrFields.foreignAsset", qualifiedBy = {ToYesOrNo.class})
@@ -188,8 +189,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setSolsPaymentMethod(
             @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
-                StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
+            && StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
             caseData.setSolsPaymentMethods(SolsPaymentMethods.FEE_ACCOUNT);
         }
     }
@@ -197,13 +198,13 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setSolsSolicitorRepresentativeName(
             @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
-                (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
+            && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
             String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
-                caseData.setSolsSOTSurname(names.get(names.size()-1));
-                caseData.setSolsSOTForenames(String.join(" ", names.subList(0, names.size()-1)));
+                caseData.setSolsSOTSurname(names.get(names.size() - 1));
+                caseData.setSolsSOTForenames(String.join(" ", names.subList(0, names.size() - 1)));
             } else if(names.size() == 1) {
                 caseData.setSolsSOTSurname("");
                 caseData.setSolsSOTForenames(names.get(0));

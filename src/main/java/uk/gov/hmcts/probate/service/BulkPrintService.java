@@ -63,7 +63,8 @@ public class BulkPrintService {
         return sendToBulkPrint(callbackRequest, grantDocument, coverSheet, false);
     }
     
-    public SendLetterResponse sendToBulkPrintForCaveat(CaveatCallbackRequest caveatCallbackRequest, Document grantDocument, Document coverSheet) {
+    public SendLetterResponse sendToBulkPrintForCaveat(
+        CaveatCallbackRequest caveatCallbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
             String authHeaderValue = serviceAuthTokenGenerator.generate();
@@ -73,7 +74,8 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
+            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = arrangePdfDocumentsForBulkPrinting(
+                caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                     new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
@@ -127,7 +129,8 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
-    private SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet, boolean forReprint) {
+    private SendLetterResponse sendToBulkPrint(
+        CallbackRequest callbackRequest, Document grantDocument, Document coverSheet, boolean forReprint) {
         SendLetterResponse sendLetterResponse = null;
         try {
             String authHeaderValue = serviceAuthTokenGenerator.generate();
@@ -208,8 +211,10 @@ public class BulkPrintService {
         }
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument =
+            new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document =
+            new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
 
         documents.add(coversheetDocument);
         documents.add(document);

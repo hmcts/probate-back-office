@@ -39,24 +39,17 @@ mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 sourceCompatibility = 11
 targetCompatibility = 11
 
-checkstyle.toolVersion = '8.18'
 checkstyle.configFile = new File(rootDir, "checkstyle.xml")
+checkstyle {
+    maxWarnings = 10
+    toolVersion = '8.18'
+    // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
+    configDir = new File(rootDir, 'config/checkstyle')
+}
+
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 ext['selenium.version']='3.8.1'
-
-// check.dependsOn dependencyCheckAnalyze
-// make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
-tasks.withType(Checkstyle).each { checkstyleTask ->
-  checkstyleTask.doLast {
-    reports.all { report ->
-      def outputFile = report.destination
-      if (outputFile.exists() && outputFile.text.contains("<error ")) {
-        //throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
-      }
-    }
-  }
-}
 
 jacoco {
   toolVersion = '0.8.2'
@@ -80,7 +73,7 @@ test.finalizedBy jacocoTestReport
 dependencyCheck {
   // Specifies if the build should be failed if a CVSS score above a specified level is identified.
   // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+  //failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
   suppressionFile = 'dependency-check-suppressions.xml'
 }
 
