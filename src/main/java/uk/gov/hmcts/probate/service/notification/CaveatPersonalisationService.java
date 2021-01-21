@@ -81,8 +81,7 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH,
-                localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
+        passWelshDod(caveatData, personalisation);
         checkIfDobExists(caveatData, personalisation);
 
         return personalisation;
@@ -106,8 +105,7 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH,
-                localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
+        passWelshDod(caveatData, personalisation);
         checkIfDobExists(caveatData, personalisation);
 
         return personalisation;
@@ -125,6 +123,11 @@ public class CaveatPersonalisationService {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
         }
+    }
+
+    private void passWelshDod(CaveatData caveatData, HashMap<String, String> personalisation){
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH,
+                localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
     }
 
 }
