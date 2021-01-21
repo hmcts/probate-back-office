@@ -37,18 +37,6 @@ public class ApplicationConfiguration {
         return new RestTemplate();
     }
 
-    @Primary
-    @Bean
-    public ObjectMapper objectMapper(ObjectMapper objectMapper) {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
-        objectMapper.registerModule(module);
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(new LocalDateTimeSerializer());
-        objectMapper.registerModule(javaTimeModule);
-        return objectMapper;
-    }
-
     @Bean
     public Parser parser() {
         return Parser.builder().build();
