@@ -12,57 +12,55 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-@EnableSwagger2
 @Configuration
 public class SwaggerConfig {
 
     @Bean
     public Docket validationApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .globalOperationParameters(Arrays.asList(serviceAuthorizationParameterBuilder(),
-                        authorizationParameterBuilder()))
-                .directModelSubstitute(LocalDate.class, java.sql.Date.class)
-                .apiInfo(apiInfo())
-                .tags(new Tag("tag1", "Tag 1 description."),
-                        new Tag("tag2", "Tag 2 description."),
-                        new Tag("tag2", "Tag 3 description."))
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.probate.controller"))
-                .paths(PathSelectors.any())
-                .build();
+            .globalOperationParameters(Arrays.asList(serviceAuthorizationParameterBuilder(),
+                authorizationParameterBuilder()))
+            .directModelSubstitute(LocalDate.class, java.sql.Date.class)
+            .apiInfo(apiInfo())
+            .tags(new Tag("tag1", "Tag 1 description."),
+                new Tag("tag2", "Tag 2 description."),
+                new Tag("tag2", "Tag 3 description."))
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.probate.controller"))
+            .paths(PathSelectors.any())
+            .build();
     }
 
     private Parameter serviceAuthorizationParameterBuilder() {
         return new ParameterBuilder()
-                .name("ServiceAuthorization")
-                .description("User authorization header")
-                .required(true)
-                .parameterType("header")
-                .modelRef(new ModelRef("string"))
-                .build();
+            .name("ServiceAuthorization")
+            .description("User authorization header")
+            .required(true)
+            .parameterType("header")
+            .modelRef(new ModelRef("string"))
+            .build();
     }
 
     private Parameter authorizationParameterBuilder() {
         return new ParameterBuilder()
-                .name("Authorization")
-                .description("Authorization header")
-                .required(true)
-                .parameterType("header")
-                .modelRef(new ModelRef("string"))
-                .build();
+            .name("Authorization")
+            .description("Authorization header")
+            .required(true)
+            .parameterType("header")
+            .modelRef(new ModelRef("string"))
+            .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Solicitor CCD service")
-                .description("Provides data validation and other services")
-                .license("MIT License")
-                .version("1.0")
-                .build();
+            .title("Solicitor CCD service")
+            .description("Provides data validation and other services")
+            .license("MIT License")
+            .version("1.0")
+            .build();
     }
 }

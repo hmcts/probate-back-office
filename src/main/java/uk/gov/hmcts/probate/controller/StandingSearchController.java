@@ -10,11 +10,11 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallb
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/standing-search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/standing-search", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 public class StandingSearchController {
 
