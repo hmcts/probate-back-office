@@ -56,9 +56,9 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    public void updateSolicitorExecutors(CaseData caseData,
-                                         SolicitorExecutorService solicitorExecutorService,
-                                         ResponseCaseData.ResponseCaseDataBuilder builder){
+    public void solicitorExecutorTransformation(CaseData caseData,
+                                                SolicitorExecutorService solicitorExecutorService,
+                                                ResponseCaseData.ResponseCaseDataBuilder builder){
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
         // TODO: check if these two pieces are redundant as they will always be overwritten

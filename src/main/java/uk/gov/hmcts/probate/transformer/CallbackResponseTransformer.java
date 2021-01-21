@@ -1021,7 +1021,7 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.updateSolicitorExecutors(caseData, solicitorExecutorService, builder);
+        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
 
         builder
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
@@ -1148,7 +1148,7 @@ public class CallbackResponseTransformer {
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             if (YES.equals(caseData.getSolsSolicitorIsExec())) {
 
-                solicitorExecutorTransformer.updateSolicitorExecutors(caseData, solicitorExecutorService, builder);
+                solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
 
             } else {
                 builder
