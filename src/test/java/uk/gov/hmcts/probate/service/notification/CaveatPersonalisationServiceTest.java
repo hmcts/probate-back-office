@@ -209,7 +209,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
+        assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
+        assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
     @Test
