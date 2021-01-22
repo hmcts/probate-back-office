@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.*;
+import static uk.gov.hmcts.probate.model.Constants.REGEX;
 
 @Slf4j
 @Component

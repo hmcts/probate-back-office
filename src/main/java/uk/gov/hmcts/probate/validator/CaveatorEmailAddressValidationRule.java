@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.Locale;
+import static uk.gov.hmcts.probate.model.Constants.REGEX;
 
 @Component
 @RequiredArgsConstructor

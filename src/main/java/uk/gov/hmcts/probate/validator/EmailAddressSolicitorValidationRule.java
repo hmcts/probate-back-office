@@ -5,6 +5,7 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.*;
+import static uk.gov.hmcts.probate.model.Constants.REGEX;
 
 @Component
 @RequiredArgsConstructor
