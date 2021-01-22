@@ -87,4 +87,38 @@ public class ResponseCaseDataParentTest {
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
 
     }
+
+    @Test
+    public void shouldApplyTrustCorpNoneOfTheseAttributes() {
+
+        CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
+        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTNoT")
+                .titleAndClearingTypeNoT("Reason")
+                .trustCorpName("Trust corp name")
+                .actingTrustCorpName("Acting trust corp name")
+                .positionInTrustCorp("Solicitor")
+                .additionalExecutorsTrustCorp("Yes")
+                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
+                .lodgementAddress("London")
+                .lodgementDate("02-02-2020")
+                .build();
+
+        assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
+        assertEquals("TCTNoT", responseCaseDataParent.getTitleAndClearingType());
+        assertEquals("Reason", responseCaseDataParent.getTitleAndClearingTypeNoT());
+        assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
+        assertEquals("Acting trust corp name", responseCaseDataParent.getActingTrustCorpName());
+        assertEquals("Solicitor", responseCaseDataParent.getPositionInTrustCorp());
+        assertEquals("Yes", responseCaseDataParent.getAdditionalExecutorsTrustCorp());
+        assertEquals("Executor name", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
+        assertEquals("Solicitor", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
+        assertEquals("London", responseCaseDataParent.getLodgementAddress());
+        assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
+
+    }
 }
