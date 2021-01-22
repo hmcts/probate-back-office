@@ -16,14 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
+import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -58,7 +57,7 @@ public class SecurityConfigurationTest {
     private SubjectResolver<Service> serviceResolver;
 
     @MockBean
-    private RequestAuthorizer<User> userRequestAuthorizer;
+    private UserRequestAuthorizer<User> userRequestAuthorizer;
 
     @MockBean
     private AppInsights appInsights;
