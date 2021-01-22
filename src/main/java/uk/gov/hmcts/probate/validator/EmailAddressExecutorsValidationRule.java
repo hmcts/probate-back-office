@@ -23,11 +23,9 @@ public class EmailAddressExecutorsValidationRule implements CaseDetailsEmailVali
 
         if(caseData.getAdditionalExecutorsApplying() != null) {
             caseData.getAdditionalExecutorsApplying().forEach(executor -> {
-                if (executor.getValue().getApplyingExecutorEmail() != null)
-                    if(!executor.getValue().getApplyingExecutorEmail().matches(REGEX)) {
-                        throw new BusinessValidationException(userMessage,
-                                "An applying exec email does not meet the criteria for case id " + caseDetails.getId());
-                    }
+                if (executor.getValue().getApplyingExecutorEmail() != null && !executor.getValue().getApplyingExecutorEmail().matches(REGEX))
+                    throw new BusinessValidationException(userMessage,
+                            "An applying exec email does not meet the criteria for case id " + caseDetails.getId());
             });
         }
     }

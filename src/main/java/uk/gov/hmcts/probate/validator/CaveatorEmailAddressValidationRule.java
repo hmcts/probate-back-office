@@ -18,11 +18,9 @@ public class CaveatorEmailAddressValidationRule implements CaveatEmailValidation
         String[] args = {caveatDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_CAVEAT, args, Locale.UK);
 
-        if (caveatDetails.getData().getCaveatorEmailAddress() != null) {
-            if(!caveatDetails.getData().getCaveatorEmailAddress().matches(REGEX)){
-                throw new BusinessValidationException(userMessage,
-                        "Caveator email does not meet the criteria for case id " + caveatDetails.getId());
-            }
+        if (caveatDetails.getData().getCaveatorEmailAddress() != null && !caveatDetails.getData().getCaveatorEmailAddress().matches(REGEX)) {
+            throw new BusinessValidationException(userMessage,
+                    "Caveator email does not meet the criteria for case id " + caveatDetails.getId());
         }
     }
 }

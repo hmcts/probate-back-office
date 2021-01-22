@@ -19,18 +19,15 @@ public class EmailAddressSolicitorValidationRule implements CaseDetailsEmailVali
 
         if(caseDetails.getData().getApplicationType() != null){
             if (caseDetails.getData().getApplicationType().getCode().matches("sol")
-                    && caseDetails.getData().getSolsSolicitorEmail() != null) {
-                if(!caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)){
-                    throw new BusinessValidationException(userMessage,
-                            "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
-                }
-            }
-        }
-        else if(caseDetails.getData().getSolsSolicitorEmail() != null) {
-            if(!caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)){
+                    && caseDetails.getData().getSolsSolicitorEmail() != null
+                    && !caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)) {
                 throw new BusinessValidationException(userMessage,
                         "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
             }
+        }
+        else if(caseDetails.getData().getSolsSolicitorEmail() != null && !caseDetails.getData().getSolsSolicitorEmail().matches(REGEX)) {
+            throw new BusinessValidationException(userMessage,
+                    "Solicitor's email does not meet the criteria for case id " + caseDetails.getId());
         }
     }
 }
