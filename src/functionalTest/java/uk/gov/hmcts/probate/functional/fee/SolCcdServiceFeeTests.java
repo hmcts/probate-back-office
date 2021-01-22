@@ -54,17 +54,17 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyFeeForUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForUKCopies.json", "feeForUkCopies", "150");
     }
 
     @Test
     public void verifyFeeForNonUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForNonUKCopies.json", "feeForNonUkCopies", "150");
     }
 
     @Test
     public void verifyTotal() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
+        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "15800");
     }
 
     @Test

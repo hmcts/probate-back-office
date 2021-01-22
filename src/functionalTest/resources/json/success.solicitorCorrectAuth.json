@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1512040945631114,
+    "id": 1512040945638398,
     "jurisdiction": "PROBATE",
     "state": "SolDraftCase",
     "case_type_id": "GrantOfRepresentation",
@@ -41,6 +41,7 @@
       "solsSolicitorNotApplyingReason": null,
       "solsSOTJobTitle": "job title",
       "otherExecutorExists": "Yes",
+      "applicationGrounds": "Grounds for application",
       "deceasedAddress": {
         "AddressLine1": "1",
         "AddressLine2": "1",
@@ -86,7 +87,7 @@
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "500000",
+      "ihtNetValue": "1000000",
       "extraCopiesOfGrant": 1,
       "outsideUKGrantCopies": 1,
       "deceasedSurname": "decln",
@@ -121,8 +122,7 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate":"No",
-      "applicationGrounds": "Grounds for application"
+      "solsSOTNeedToUpdate": "No"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",
