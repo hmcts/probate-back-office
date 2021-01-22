@@ -29,7 +29,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         "\"status_histories\": [{\"status\": \"success\", \"date_created\": \"2020-05-28T15:10:10.700+0000\", \"date_updated\": " +
         "\"2020-05-28T15:10:10.700+0000\"}]}";
     private static WireMockServer wireMockServer;
-    
+
     @BeforeClass
     public static void setup() {
         wireMockServer = new WireMockServer(options().port(8991));
