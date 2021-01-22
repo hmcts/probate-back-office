@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @AllArgsConstructor
 public class SolicitorExecutorTransformer {
 
-    public void mainApplicantTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder builder) {
+    public void mainApplicantTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData)) {
             if (isSolicitorMainApplicant(caseData)) {
                 builder
@@ -34,7 +34,7 @@ public class SolicitorExecutorTransformer {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
-                if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                if (caseData.getSolsSolicitorIsApplying() == null || YES.equals(caseData.getSolsSolicitorIsApplying())) {
                     builder
                             .solsPrimaryExecutorNotApplyingReason(null);
                 }
@@ -48,7 +48,7 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder builder) {
+    private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .primaryApplicantForenames(null)
                 .primaryApplicantSurname(null)
