@@ -5,10 +5,12 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import net.thucydides.core.annotations.Pending;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,9 +43,10 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String DOC_INDEX = "DOC_INDEX";
     private static final String GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL = "case_data.probateNotificationsGenerated["+DOC_INDEX+"].value.DocumentLink.document_binary_url";
     private static final String ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE = "grantDelayedNotificationDate";
-    
+
 
     @Test
+    @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -77,6 +80,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     }
 
     @Test
+    @Pending
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
 
