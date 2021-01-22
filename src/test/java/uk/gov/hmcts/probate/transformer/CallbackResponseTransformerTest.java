@@ -79,10 +79,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -195,10 +192,10 @@ public class CallbackResponseTransformerTest {
             <uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplying>>
             BSP_ADDITIONAL_EXEC_LIST_NOT_APP = emptyList();
     private static final List<CollectionMember<AliasName>> DECEASED_ALIAS_NAMES_LIST = emptyList();
-    private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final Address BSP_APPLICANT_ADDRESS = Mockito.mock(Address.class);
-    private static final Address BSP_DECEASED_ADDRESS = Mockito.mock(Address.class);
+    private static final SolsAddress DECEASED_ADDRESS = mock(SolsAddress.class);
+    private static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
+    private static final Address BSP_APPLICANT_ADDRESS = mock(Address.class);
+    private static final Address BSP_DECEASED_ADDRESS = mock(Address.class);
     private static final List<CollectionMember<AliasName>> ALIAS_NAMES = emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
@@ -213,7 +210,6 @@ public class CallbackResponseTransformerTest {
     private static final String EXEC_OTHER_NAMES = EXEC_WILL_NAME;
     private static final String EXEC_PHONE = "010101010101";
     private static final String EXEC_EMAIL = "executor1@probate-test.com";
-    private static final String EXEC_APPEAR = YES;
     private static final String EXEC_NOTIFIED = YES;
 
     private static final String BO_BULK_PRINT = YES;
@@ -253,7 +249,6 @@ public class CallbackResponseTransformerTest {
 
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
-    private static final String PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED = "partner";
     private static final String DECEASED_SPOUSE_NOT_APPLYING_REASON = "notApplyingReason";
     private static final String DECEASED_OTHER_CHILDREN = YES;
     private static final String ALL_DECEASED_CHILDREN_OVER_EIGHTEEN = YES;
@@ -1113,6 +1108,13 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void verifySolicitorExecutorTranformerIsCalled() {
+        underTest.transformCase(callbackRequestMock);
+
+        verify(solicitorExecutorTransformer, times(1)).mainApplicantTransformation(any(), any());
+    }
+
+        @Test
     public void shouldTransformPersonalCaseForDeceasedAliasNamesExist() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
