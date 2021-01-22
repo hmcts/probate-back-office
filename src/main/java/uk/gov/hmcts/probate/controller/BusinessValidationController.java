@@ -172,6 +172,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
@@ -186,6 +187,7 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, checkListAmendCaseValidationRules);
 
@@ -256,6 +258,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         Document document = null;
         if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
