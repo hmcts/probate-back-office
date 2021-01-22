@@ -38,12 +38,6 @@ public class PaymentsService {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            log.info("creditAccountPayment:{}", objectMapper.writeValueAsString(creditAccountPayment));
-        } catch (JsonProcessingException e) {
-        }
-
         log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
         ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
             request, PaymentResponse.class);
@@ -61,8 +55,6 @@ public class PaymentsService {
         headers.add("Content-Type", "application/json");
         String sa = authTokenGenerator.generate();
         headers.add("ServiceAuthorization", sa);
-        log.info("auth:"+authToken);
-        log.info("sa:"+sa);
         
         return new HttpEntity<>(creditAccountPayment, headers);
     }

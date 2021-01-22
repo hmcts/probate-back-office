@@ -471,7 +471,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
         boolean doTransform = doTransform(callbackRequest);
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         solicitorPBADefaulter.defaultFeeAccounts(responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());

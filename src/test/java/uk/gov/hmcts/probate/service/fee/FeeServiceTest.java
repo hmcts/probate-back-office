@@ -116,9 +116,9 @@ public class FeeServiceTest {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
-        when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
-                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
-            eq(FeeResponse.class))).thenReturn(responseEntity);
+        when(restTemplate.getForEntity("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
+                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee",
+            FeeResponse.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);

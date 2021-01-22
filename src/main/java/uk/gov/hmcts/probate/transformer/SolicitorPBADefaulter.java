@@ -15,7 +15,7 @@ public class SolicitorPBADefaulter {
     @Autowired
     PBAValidationService pbaValidationService;
 
-    public void defaultFeeAccounts(ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder, String authToken) {
+    public void defaultFeeAccounts(ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder, String authToken) {
         responseCaseDataBuilder.solsPBANumber(getPBAAccounts(authToken));
     }
 
