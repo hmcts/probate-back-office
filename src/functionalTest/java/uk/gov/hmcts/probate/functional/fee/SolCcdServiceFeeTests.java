@@ -24,29 +24,6 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    private final static String WIREMOCK_STUB_PAYMENT_RESPONSE_SUCCESS = "{\"reference\": \"RC-1590-6786-1063-9996\", \"date_created\": " +
-        "\"2020-05-28T15:10:10.694+0000\", \"status\": \"Success\", \"payment_group_reference\": \"2020-1590678609071\", " +
-        "\"status_histories\": [{\"status\": \"success\", \"date_created\": \"2020-05-28T15:10:10.700+0000\", \"date_updated\": " +
-        "\"2020-05-28T15:10:10.700+0000\"}]}";
-    private static WireMockServer wireMockServer;
-
-    @BeforeClass
-    public static void setup() {
-        wireMockServer = new WireMockServer(options().port(8991));
-        wireMockServer.start();
-        wireMockServer.resetRequests();
-        stubCreditAccountPayment(WIREMOCK_STUB_PAYMENT_RESPONSE_SUCCESS);
-    }
-
-    @AfterClass
-    public static void cleanup() {
-        wireMockServer.stop();
-    }
-
-    @Before
-    public void setupPerTest() {
-    }
-
     @Test
     public void verifyNetValue10000() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
@@ -85,14 +62,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     @Test
     public void verifyEmptyApplicationFeeReturns400() {
         verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
-    }
-
-    private static void stubCreditAccountPayment(String response) {
-        wireMockServer.stubFor(post(urlEqualTo("/credit-account-payments"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(response)));
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {

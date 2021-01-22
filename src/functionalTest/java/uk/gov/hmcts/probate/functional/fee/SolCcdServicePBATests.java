@@ -22,7 +22,6 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -51,6 +50,7 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
         stubCreditAccountPayment(utils.getJsonFromFile("pbaWiremockResponses.json"));
     }
 
+    //We are waiting for dat from the ref data team so that this test can run on PR + AAT
     @Test
     @Pending
     public void shouldValidateDefaultPBAs() {
