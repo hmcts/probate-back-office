@@ -9,11 +9,11 @@ module.exports = async function (jurisdiction, caseType, event) {
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
 
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
-    await I.selectOption('#cc-jurisdiction', jurisdiction);
+    await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
-    await I.selectOption('#cc-case-type', caseType);
+    await I.retry(5).selectOption('#cc-case-type', caseType);
     await I.waitForEnabled({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 60);
-    await I.selectOption('#cc-event', event);
+    await I.retry(5).selectOption('#cc-event', event);
 
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
