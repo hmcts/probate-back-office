@@ -81,8 +81,8 @@ public class ResponseCaseDataParentTest {
         assertEquals("Acting trust corp name", responseCaseDataParent.getActingTrustCorpName());
         assertEquals("Solicitor", responseCaseDataParent.getPositionInTrustCorp());
         assertEquals("Yes", responseCaseDataParent.getAdditionalExecutorsTrustCorp());
-        assertEquals("Executor name", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpName());
-        assertEquals("Solicitor", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getOtherActingForTrustCorpPosition());
+        assertEquals("Executor name", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
+        assertEquals("Solicitor", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
 
