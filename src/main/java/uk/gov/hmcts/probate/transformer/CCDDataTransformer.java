@@ -35,9 +35,6 @@ public class CCDDataTransformer {
     private CCDData buildCCDData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        System.out.println("CASE DATA");
-        System.out.println(caseData);
-
         return CCDData.builder()
                 .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))

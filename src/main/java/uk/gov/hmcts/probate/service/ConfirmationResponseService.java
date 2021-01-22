@@ -216,7 +216,6 @@ public class ConfirmationResponseService {
     }
 
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
-        System.out.println("=====================================generateNextStepsBodyMarkdown");
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
         String caseSubmissionDate = "";
