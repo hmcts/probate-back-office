@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
+import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
+import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.AuthCheckerServiceAndUserFilter;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 
@@ -22,8 +24,8 @@ public class SecurityConfiguration {
 
         private final AuthCheckerServiceAndUserFilter authCheckerServiceAndUserFilter;
 
-        public AuthCheckerServiceAndUSerFilterConfigurerAdapter(RequestAuthorizer<User> userRequestAuthorizer,
-                                                                RequestAuthorizer<Service> serviceRequestAuthorizer,
+        public AuthCheckerServiceAndUSerFilterConfigurerAdapter(UserRequestAuthorizer<User> userRequestAuthorizer,
+                                                                ServiceRequestAuthorizer serviceRequestAuthorizer,
                                                                 AuthenticationManager authenticationManager) {
             authCheckerServiceAndUserFilter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
             authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);

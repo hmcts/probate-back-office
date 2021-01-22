@@ -32,7 +32,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @Controller
@@ -49,7 +49,7 @@ public class NextStepsController {
     private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
 
 
-    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validate(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
             @RequestBody CallbackRequest callbackRequest,
@@ -81,7 +81,7 @@ public class NextStepsController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> getNextSteps(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class,
                     NextStepsConfirmationGroup.class})
