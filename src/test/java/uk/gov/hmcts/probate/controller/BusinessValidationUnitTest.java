@@ -18,6 +18,8 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -528,5 +530,12 @@ public class BusinessValidationUnitTest {
         verify(notificationService, times(1)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+    
+    @Test
+    public void shouldDefaultPBAs() {
+        ResponseEntity<CallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1)).transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

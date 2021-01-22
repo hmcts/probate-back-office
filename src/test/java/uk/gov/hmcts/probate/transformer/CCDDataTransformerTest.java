@@ -217,6 +217,39 @@ public class CCDDataTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWithNoPBAsSet() {
+
+        when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getSolsPBANumber()).thenReturn(null);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertBasic(ccdData);
+        assertFees(ccdData);
+        assertEquals(null, ccdData.getFee().getSolsPBANumber());
+        assertCaseSubmissionDate(ccdData);
+        assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithNoPBAValueSet() {
+
+        when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder().build());
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertBasic(ccdData);
+        assertFees(ccdData);
+        assertEquals(null, ccdData.getFee().getSolsPBANumber());
+        assertCaseSubmissionDate(ccdData);
+        assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
+    }
+    @Test
     public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
         when(caseDataMock.getFeeForNonUkCopies()).thenReturn(null);
@@ -226,11 +259,6 @@ public class CCDDataTransformerTest {
         assertBasic(ccdData);
         assertNull(ccdData.getFee().getFeeForUkCopies());
         assertNull(ccdData.getFee().getFeeForNonUkCopies());
-    }
-
-    private void assertFees(CCDData ccdData) {
-        assertEquals(FEE_UK_COPIES.floatValue(), ccdData.getFee().getFeeForUkCopies().floatValue(), 0.01);
-        assertEquals(FEE_NON_UK_COPIES.floatValue(), ccdData.getFee().getFeeForNonUkCopies().floatValue(), 0.01);
     }
 
     @Test
@@ -291,6 +319,7 @@ public class CCDDataTransformerTest {
     private void assertAll(CCDData ccdData) {
         assertBasic(ccdData);
         assertFees(ccdData);
+        assertPBAs(ccdData);
     }
 
     private void assertBasic(CCDData ccdData) {
@@ -298,7 +327,6 @@ public class CCDDataTransformerTest {
         assertEquals(SOLICITOR_FIRM_LINE1, ccdData.getSolicitor().getFirmAddress().getAddressLine1());
         assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmAddress().getPostCode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
-        assertEquals(SELECTED_PBA_NUMBER, ccdData.getFee().getSolsPBANumber());
         assertEquals(DECEASED_FIRSTNAME, ccdData.getDeceased().getFirstname());
         assertEquals(DECEASED_LASTNAME, ccdData.getDeceased().getLastname());
         assertEquals(DOB, ccdData.getDeceased().getDateOfBirth());
@@ -318,4 +346,15 @@ public class CCDDataTransformerTest {
         assertEquals(3, ccdData.getExecutors().size());
 
     }
+
+    private void assertFees(CCDData ccdData) {
+        assertEquals(FEE_UK_COPIES.floatValue(), ccdData.getFee().getFeeForUkCopies().floatValue(), 0.01);
+        assertEquals(FEE_NON_UK_COPIES.floatValue(), ccdData.getFee().getFeeForNonUkCopies().floatValue(), 0.01);
+    }
+
+    private void assertPBAs(CCDData ccdData) {
+        assertEquals(SELECTED_PBA_NUMBER, ccdData.getFee().getSolsPBANumber());
+    }
+
+
 }

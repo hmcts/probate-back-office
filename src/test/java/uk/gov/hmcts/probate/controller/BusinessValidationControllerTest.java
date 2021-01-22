@@ -132,6 +132,8 @@ public class BusinessValidationControllerTest {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
+    private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
+    private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
             .documentBinaryUrl("http://somedoc")
@@ -692,7 +694,7 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForProbateCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
             .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
@@ -708,7 +710,7 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForIntestacyCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
             .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
@@ -724,7 +726,7 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForAdmonCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
             .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
@@ -736,5 +738,21 @@ public class BusinessValidationControllerTest {
             .andReturn();
     }
 
+    @Test
+    public void shouldDefaultSolicitorPBAs() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
+        when(pbaValidationService.getPBAs("Auth")).thenReturn(Arrays.asList("PBA1234", "PBA3456"));
+        mockMvc.perform(post(DEFAULT_SOLS_PBA)
+            .header("Authorization", "Auth")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.solsPBANumber.list_items[0].code", is("PBA1234")))
+            .andExpect(jsonPath("$.data.solsPBANumber.list_items[0].label", is("PBA1234")))
+            .andExpect(jsonPath("$.data.solsPBANumber.list_items[1].code", is("PBA3456")))
+            .andExpect(jsonPath("$.data.solsPBANumber.list_items[1].label", is("PBA3456")))
+            .andReturn();
+    }
+    
 }
 
