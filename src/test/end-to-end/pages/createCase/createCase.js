@@ -7,7 +7,7 @@ module.exports = async function (jurisdiction, caseType, event) {
 
     const I = this;
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
-
+    await I.wait(5);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
