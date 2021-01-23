@@ -1,7 +1,6 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const config = require('../../../config');
 const createCaseConfig = require('./createCaseConfig');
 
 module.exports = async function (jurisdiction, caseType, event) {
