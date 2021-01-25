@@ -251,7 +251,6 @@ For linux (replace ip with your own ip)
 ```bash
    ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 
 ```
-The xls generation adds a empty Banner tab for each case type, which will not load using the /import scrips. Remove this tab from any/all xls file before importing it
 
 ###### Import xls
 ```bash

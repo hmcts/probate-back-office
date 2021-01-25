@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
@@ -58,7 +58,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/document", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/document", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 public class DocumentController {
 
@@ -87,7 +87,7 @@ public class DocumentController {
         return GRANT_ISSUED;
     };
 
-    @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> assembleLetter(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
@@ -98,7 +98,7 @@ public class DocumentController {
 
     }
 
-    @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> previewLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
@@ -109,7 +109,7 @@ public class DocumentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> generateLetter(
             @RequestBody CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -133,7 +133,7 @@ public class DocumentController {
     }
 
 
-    @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
         registryDetailsService.getRegistryDetails(callbackRequest.getCaseDetails());
         Document document = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
@@ -142,7 +142,7 @@ public class DocumentController {
                 Arrays.asList(document), null, null));
     }
 
-    @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
             @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
@@ -205,7 +205,7 @@ public class DocumentController {
     }
 
 
-    @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -220,7 +220,7 @@ public class DocumentController {
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }
 
-    @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
         Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
@@ -230,7 +230,7 @@ public class DocumentController {
                 Arrays.asList(document), null, null));
     }
 
-    @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
@@ -261,7 +261,7 @@ public class DocumentController {
                 documents, letterId, pdfSize));
     }
 
-    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("Initiating call for SoT");
@@ -269,12 +269,12 @@ public class DocumentController {
                 documentGeneratorService.generateSoT(callbackRequest)));
     }
     
-    @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> defaultReprintValues(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }
     
-    @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
     }
