@@ -6,12 +6,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.*;
 
@@ -26,7 +36,42 @@ public class SolicitorExecutorTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @InjectMocks
+    private SolicitorExecutorService solicitorExecutorService;
+
+    @InjectMocks
     private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
+
+    List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
+    List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
+
+    @Before
+    public void setUp() {
+        caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
+                .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS);
+
+        responseCaseDataBuilder = ResponseCaseData.builder();
+
+        additionalExecutorApplying = new ArrayList<>();
+        additionalExecutorNotApplying = new ArrayList<>();
+
+        AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorName(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME)
+                .applyingExecutorPhoneNumber(SOLICITOR_FIRM_PHONE)
+                .applyingExecutorEmail(SOLICITOR_FIRM_EMAIL)
+                .applyingExecutorAddress(SOLICITOR_ADDRESS)
+                .build();
+        additionalExecutorApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execApplying));
+
+        AdditionalExecutorNotApplying execNotApplying = AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME)
+                .notApplyingExecutorReason(SOLICITOR_NOT_APPLYING_REASON)
+                .build();
+        additionalExecutorNotApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execNotApplying));
+    }
 
     @Test
     public void shouldSetMainApplicantDetailsWithSolicitorInfo(){
@@ -187,5 +232,134 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(NO, responseCaseData.getSolsSolicitorIsApplying());
         assertEquals(SOLICITOR_NOT_APPLYING_REASON, responseCaseData.getSolsSolicitorNotApplyingReason());
     }
+
+
+    @Test
+    public void shouldRemoveSolicitorPrimaryApplicantDetails(){
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSOTForenames("Forename")
+                .solsSOTSurname("Surname")
+                .primaryApplicantForenames("Forename")
+                .primaryApplicantSurname("Surname")
+                .primaryApplicantEmailAddress("email@mail.com")
+                .primaryApplicantPhoneNumber("1234567890")
+                .primaryApplicantAddress(mock(SolsAddress.class))
+                .primaryApplicantAlias("Alias")
+                .primaryApplicantHasAlias(YES)
+                .primaryApplicantIsApplying(YES)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason("Not applying");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantForenames());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantSurname());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantPhoneNumber());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantEmailAddress());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAddress());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAlias());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantHasAlias());
+        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantIsApplying());
+        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldRemoveSolicitorPrimaryApplicantDetailsIsApplying(){
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSOTForenames("Forename")
+                .solsSOTSurname("Surname")
+                .primaryApplicantIsApplying(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason("Not applying");
+
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldSetPrimaryExecutorNotApplyingReasonToNULLForNULLSolsApplyAsExecTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(null)
+                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsExecNotMainApplicantIsApplyingTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertEquals(additionalExecutorApplying, responseCaseDataBuilder.build().getAdditionalExecutorsApplying());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsExecNotMainApplicantIsNotApplyingTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertEquals(additionalExecutorNotApplying, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsNotExecTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsSolsIsNotExecIsMainApplicantTransform(){
+        caseDataBuilder
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorService, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
 
 }

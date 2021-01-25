@@ -29,10 +29,9 @@ public class SolicitorExecutorService {
 
         if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorAsApplyingExecutor(execs);
-            updatedExecs.add(getSolicitorApplyingExecutor(caseData));
-        } else {
-            updatedExecs.add(getSolicitorApplyingExecutor(caseData));
         }
+        updatedExecs.add(getSolicitorApplyingExecutor(caseData));
+
 
         return updatedExecs;
     }
@@ -44,10 +43,8 @@ public class SolicitorExecutorService {
 
         if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorAsNotApplyingExecutor(execs);
-            updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
-        } else {
-            updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
         }
+        updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
 
         return updatedExecs;
     }

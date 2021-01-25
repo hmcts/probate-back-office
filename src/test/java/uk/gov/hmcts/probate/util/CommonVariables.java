@@ -17,7 +17,7 @@ public class CommonVariables {
     public static final SolsAddress SOLICITOR_ADDRESS = SolsAddress.builder().addressLine1(CommonVariables.SOLICITOR_FIRM_LINE1)
             .postCode(CommonVariables.SOLICITOR_FIRM_POSTCODE).build();
     public static final String SOLICITOR_NOT_APPLYING_REASON = "Not applying";
-
+    public static final String SOL_AS_EXEC_ID = "solicitor";
 
     public static final String PRIMARY_APPLICANT_FORENAME = "Primary app forename";
     public static final String PRIMARY_APPLICANT_SURNAME = "Primary app surname";

@@ -3,8 +3,16 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -48,6 +56,39 @@ public class SolicitorExecutorTransformer {
 
     }
 
+    public void solicitorExecutorTransformation(CaseData caseData,
+                                                SolicitorExecutorService solicitorExecutorService,
+                                                ResponseCaseData.ResponseCaseDataBuilder builder){
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
+        // TODO: check if these two pieces are redundant as they will always be overwritten
+        // either remove or add a method break to not bother continuing
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            execsApplying = mapApplyingAdditionalExecutors(caseData);
+        }
+
+        if (caseData.getAdditionalExecutorsNotApplying() != null) {
+            execsNotApplying = caseData.getAdditionalExecutorsNotApplying();
+        }
+
+        if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
+            if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                execsApplying = solicitorExecutorService.updateSolicitorApplyingExecutor(caseData, execsApplying);
+                execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+            } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                execsNotApplying = solicitorExecutorService.updateSolicitorNotApplyingExecutor(caseData, execsNotApplying);
+                execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
+            }
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorMainApplicant(caseData)) {
+            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
+            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+        }
+
+        builder
+                .additionalExecutorsApplying(execsApplying)
+                .additionalExecutorsNotApplying(execsNotApplying);
+    }
+
     private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .primaryApplicantForenames(null)
@@ -59,6 +100,35 @@ public class SolicitorExecutorTransformer {
                 .primaryApplicantHasAlias(null)
                 .primaryApplicantIsApplying(null)
                 .solsPrimaryExecutorNotApplyingReason(null);
+    }
+
+    private List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            return caseData.getAdditionalExecutorsApplying()
+                    .stream()
+                    .map(this::buildApplyingAdditionalExecutors)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
+        if (additionalExecutorApplying.getValue().getApplyingExecutorName() == null) {
+            AdditionalExecutorApplying newExec = additionalExecutorApplying.getValue();
+            newExec = AdditionalExecutorApplying.builder()
+                    .applyingExecutorName(newExec.getApplyingExecutorFirstName()
+                            + " " + newExec.getApplyingExecutorLastName())
+                    .applyingExecutorPhoneNumber(newExec.getApplyingExecutorPhoneNumber())
+                    .applyingExecutorEmail(newExec.getApplyingExecutorEmail())
+                    .applyingExecutorAddress(newExec.getApplyingExecutorAddress())
+                    .applyingExecutorOtherNames(newExec.getApplyingExecutorOtherNames())
+                    .applyingExecutorOtherNamesReason(newExec.getApplyingExecutorOtherNamesReason())
+                    .applyingExecutorOtherReason(newExec.getApplyingExecutorOtherReason())
+                    .build();
+
+            return new CollectionMember<>(additionalExecutorApplying.getId(), newExec);
+        }
+        return additionalExecutorApplying;
     }
 
     private boolean isSolicitorExecutor(CaseData caseData) {
