@@ -38,7 +38,8 @@ public class CaseStoppedService {
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
             LocalDate notificationDate = caseData.getGrantAwaitingDocumentationNotificationDate().plusDays(period.getDays());
-            log.info("From case-stopped/resolved, setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            log.info("From case-stopped/resolved, setting grantAwaitingDocumentationNotificationDate {} for case {}",
+                    notificationDate.toString(), caseDetails.getId());
             caseData.setGrantAwaitingDocumentationNotificationDate(notificationDate);
         }
     }
@@ -54,7 +55,8 @@ public class CaseStoppedService {
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
             LocalDate notificationDate = caseData.getGrantDelayedNotificationDate().plusDays(period.getDays());
-            log.info("From case-stopped/resolved, setting grantDelayedNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            log.info("From case-stopped/resolved, setting grantDelayedNotificationDate {} for case {}",
+                    notificationDate.toString(), caseDetails.getId());
             caseData.setGrantDelayedNotificationDate(notificationDate);
         }
     }

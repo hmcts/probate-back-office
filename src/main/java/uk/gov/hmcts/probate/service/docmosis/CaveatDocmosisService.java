@@ -43,11 +43,13 @@ public class CaveatDocmosisService {
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        placeholders.put(PERSONALISATION_CASE_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(caveatDetails.getId().toString()));
+        placeholders.put(PERSONALISATION_CASE_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(
+                caveatDetails.getId().toString()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
         placeholders.put(PERSONALISATION_PA8A_URL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatDetails.getData().getExpiryDate()));
+        placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(
+                caveatDetails.getData().getExpiryDate()));
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatDetails.getData().getCaveatorFullName());
         placeholders.put(PERSONALISATION_DECEASED_NAME, caveatDetails.getData().getDeceasedFullName());
         

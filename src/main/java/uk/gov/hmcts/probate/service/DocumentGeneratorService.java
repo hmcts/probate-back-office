@@ -102,6 +102,16 @@ public class DocumentGeneratorService {
         return document;
     }
 
+    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus, DocumentIssueType documentIssueType) {
+        Document document;
+        if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
+            document = generateGrant(callbackRequest, documentStatus, documentIssueType);
+        } else {
+            document = getPDFGrant(callbackRequest, documentStatus, documentIssueType);
+        }
+        return document;
+    }
+
     public Document generateCoversheet(CallbackRequest callbackRequest) {
         return generateCoversheet(callbackRequest,
                 callbackRequest.getCaseDetails().getData().getPrimaryApplicantFullName(),
@@ -249,15 +259,5 @@ public class DocumentGeneratorService {
                         status,
                         issueType,
                         DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
-    }
-
-    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus, DocumentIssueType documentIssueType) {
-        Document document;
-        if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
-            document = generateGrant(callbackRequest, documentStatus, documentIssueType);
-        } else {
-            document = getPDFGrant(callbackRequest, documentStatus, documentIssueType);
-        }
-        return document;
     }
 }

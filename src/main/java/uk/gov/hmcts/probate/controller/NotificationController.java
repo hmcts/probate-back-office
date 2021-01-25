@@ -90,7 +90,8 @@ public class NotificationController {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if (isDigitalApplication(caseData) && isAnEmailAddressPresent(caseData)) {
-            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest,
+                    emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
                 return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));

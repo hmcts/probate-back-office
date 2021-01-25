@@ -24,7 +24,8 @@ public class OcrEmailValidator {
     private static final String SOLS_SOLICITOR_EMAIL_DESCRIPTION = "Solicitor email address";
 
     private static Map<String, String> emailFields = new HashMap<>();
-    static{
+
+    static {
         emailFields.put(PRIMARY_APPLICANT_EMAIL_ADDRESS, PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION);
         emailFields.put(CAVEATOR_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS_DESCRIPTION);
         emailFields.put(SOLS_SOLICITOR_EMAIL, SOLS_SOLICITOR_EMAIL_DESCRIPTION);

@@ -68,7 +68,8 @@ public class GrantOfRepresentationDocmosisMapperService {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         placeholders.put(PERSONALISATION_APPLICATION_TYPE,
-                (caseDetails.getData().getApplicationType().getCode().equals(ApplicationType.SOLICITOR.getCode()) ? "Solicitor" : "Personal"));
+                (caseDetails.getData().getApplicationType().getCode().equals(ApplicationType.SOLICITOR.getCode())
+                        ? "Solicitor" : "Personal"));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
 
         return placeholders;

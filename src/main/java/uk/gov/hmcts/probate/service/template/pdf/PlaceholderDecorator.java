@@ -32,10 +32,12 @@ public class PlaceholderDecorator {
 
         if (placeholders.get(DECEASED_DATE_OF_BIRTH) != null) {
             String deceasedDateOfBirth = (String) placeholders.get(DECEASED_DATE_OF_BIRTH);
-            placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDateOfBirth)));
+            placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH, localDateToWelshStringConverter
+                    .convert(LocalDate.parse(deceasedDateOfBirth)));
         }
         placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> dateTimeFormatter.format(LocalDate.now()));
-        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
+        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH, localDateToWelshStringConverter
+                .convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
 
     }
 }

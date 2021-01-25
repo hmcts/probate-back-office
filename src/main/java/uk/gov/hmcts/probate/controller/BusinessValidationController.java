@@ -249,7 +249,8 @@ public class BusinessValidationController {
 
         Document document = null;
         if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
-            document = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
+            document = notificationService.sendEmail(
+                    APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
 

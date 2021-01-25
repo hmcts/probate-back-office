@@ -176,7 +176,8 @@ public class CaveatData {
     }
 
     public LanguagePreference getLanguagePreference() {
-        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
+        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh())
+                ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
     }
 
 }

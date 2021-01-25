@@ -108,16 +108,13 @@ public class NotificationService {
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info("template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: {}, origin: {}", 
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-                caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
+            caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
 
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
             registry);
-        String emailReplyToId = registry.getEmailReplyToId();
-        String emailAddress = getEmail(caseData);
-        String reference = caseData.getSolsSolicitorAppReference();
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
@@ -126,6 +123,9 @@ public class NotificationService {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils.isEmpty(caseData.getSolsSOTName())) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
@@ -140,7 +140,7 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailAddress = executor.getEmail();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
             registry);
@@ -162,7 +162,7 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(),
-            caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
+                caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation;
 
@@ -198,7 +198,7 @@ public class NotificationService {
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
         NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
-            .get(caseDetails.get(0).getData().getApplicationType()).getExcelaData();
+                .get(caseDetails.get(0).getData().getApplicationType()).getExcelaData();
         Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
@@ -220,8 +220,8 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
-            caseDetails.getData().getRegistryLocation(),
-            caseDetails.getData().getLanguagePreference());
+                caseDetails.getData().getRegistryLocation(),
+                caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =
@@ -288,7 +288,8 @@ public class NotificationService {
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
         String defaultRegistryLocation = (languagePreference == null
-                || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+                || LanguagePreference.ENGLISH.equals(languagePreference))
+                ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
         return registriesProperties.getRegistries()
                 .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }

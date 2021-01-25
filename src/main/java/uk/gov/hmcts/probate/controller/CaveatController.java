@@ -146,7 +146,8 @@ public class CaveatController {
     @PostMapping(path = "/validate-extend")
     public ResponseEntity<CaveatCallbackResponse> validateExtend(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
+        CaveatCallbackResponse caveatCallbackResponse = eventValidationService
+                .validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
         }

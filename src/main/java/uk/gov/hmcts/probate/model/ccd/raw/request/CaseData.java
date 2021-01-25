@@ -749,7 +749,8 @@ public class CaseData extends CaseDataParent {
     }
     
     public String getValueForCaveatStopEmailNotification() {
-        return getBoCaveatStopEmailNotification() != null ? getBoCaveatStopEmailNotification() : getDefaultValueForCaveatStopEmailNotification();
+        return getBoCaveatStopEmailNotification() != null ? getBoCaveatStopEmailNotification()
+                : getDefaultValueForCaveatStopEmailNotification();
     }
 
     public String getDefaultValueForCaveatStopEmailNotification() {
@@ -801,7 +802,8 @@ public class CaseData extends CaseDataParent {
     }
 
     public LanguagePreference getLanguagePreference() {
-        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
+        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh())
+                ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
     }
 
     public boolean isLanguagePreferenceWelsh() {

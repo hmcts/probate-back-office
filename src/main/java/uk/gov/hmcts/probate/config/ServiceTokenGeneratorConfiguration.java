@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.config;
 
-import feign.Feign;	
+import feign.Feign;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
