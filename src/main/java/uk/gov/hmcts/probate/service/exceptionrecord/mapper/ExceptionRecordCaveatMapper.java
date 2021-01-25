@@ -76,8 +76,8 @@ public interface ExceptionRecordCaveatMapper {
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
                 caseData.setCaveatorSurname(names.get(names.size() - 1));
-                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size() -1 )));
-            } else if(names.size() == 1) {
+                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size() - 1)));
+            } else if (names.size() == 1) {
                 caseData.setCaveatorSurname("");
                 caseData.setCaveatorForenames(names.get(0));
             } else {

@@ -60,7 +60,7 @@ public class HmrcDataExtractService {
     }
 
     private String buildFileName(String toDate) {
-        return "1_" + fileExtractDateFormatter.getHMRCFormattedFileDate(toDate, LocalDateTime.now()) + ".new";
+        return "1_" + fileExtractDateFormatter.getHmrcFormattedFileDate(toDate, LocalDateTime.now()) + ".new";
     }
 
 }

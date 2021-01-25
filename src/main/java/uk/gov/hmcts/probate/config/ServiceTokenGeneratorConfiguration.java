@@ -18,9 +18,9 @@ public class ServiceTokenGeneratorConfiguration {
         @Value("${idam.s2s-auth.microservice}") String microservice) {
 
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
-                                .encoder(new JacksonEncoder())	
-                                .contract(new SpringMvcContract())	
-                                .target(ServiceAuthorisationApi.class, s2sUrl);
+                .encoder(new JacksonEncoder())
+                .contract(new SpringMvcContract())
+                .target(ServiceAuthorisationApi.class, s2sUrl);
 
         return new ServiceAuthTokenGenerator(secret, microservice, serviceAuthorisationApi);
     }

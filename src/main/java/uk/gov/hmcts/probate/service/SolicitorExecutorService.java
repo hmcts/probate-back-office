@@ -55,7 +55,9 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorAsApplyingExecutor(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
 
-        if (execsApplying.isEmpty()) return execsApplying;
+        if (execsApplying.isEmpty()) {
+            return execsApplying;
+        }
 
         return execsApplying.stream()
                 .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
@@ -65,7 +67,9 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorAsNotApplyingExecutor(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
 
-        if (execsNotApplying.isEmpty()) return execsNotApplying;
+        if (execsNotApplying.isEmpty()) {
+            return execsNotApplying;
+        }
 
         return execsNotApplying.stream()
                 .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
@@ -92,7 +96,8 @@ public class SolicitorExecutorService {
         return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(
+            CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
@@ -113,7 +118,8 @@ public class SolicitorExecutorService {
         return updatedExecs;
     }
 
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(
+            CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {

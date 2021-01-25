@@ -107,14 +107,16 @@ public class NotificationService {
         log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info("template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: {}, origin: {}", 
-            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
+            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
-        String emailReplyToId = registry.getEmailReplyToId();
-        String emailAddress = getEmail(caseData);
+
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
             registry);
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
 
         if (state == state.CASE_STOPPED_CAVEAT) {
@@ -285,9 +287,10 @@ public class NotificationService {
     }
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
-        String defaultRegistryLocation = (languagePreference == null ||
-            LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getRegistries().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
+        String defaultRegistryLocation = (languagePreference == null
+                || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+        return registriesProperties.getRegistries()
+                .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {

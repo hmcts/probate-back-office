@@ -44,12 +44,10 @@ public class FeeService {
         Fee body = responseEntity.getBody();
         if (body == null) {
             throw new ClientDataException("No Body in FeeService: getApplicationFee");
-        }
-        else {
+        } else {
             return body.getFeeAmount();
         }
-
-      }
+    }
 
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
@@ -67,9 +65,9 @@ public class FeeService {
         Fee body = responseEntity.getBody();
         if (body == null) {
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
+        } else {
+            return body.getFeeAmount();
         }
-        else{
-            return body.getFeeAmount(); }
     }
 
     public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {

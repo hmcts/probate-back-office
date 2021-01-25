@@ -70,7 +70,8 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
-    public CaveatCallbackResponse caveatExtendExpiry(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+    public CaveatCallbackResponse caveatExtendExpiry(
+            CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
@@ -152,7 +153,8 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transformResponseWithExtendedExpiry(CaveatCallbackRequest caveatCallbackRequest) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails()
                 .getData().getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS));
@@ -160,7 +162,8 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }

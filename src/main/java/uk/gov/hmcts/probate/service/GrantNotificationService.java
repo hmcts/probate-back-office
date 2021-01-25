@@ -125,10 +125,10 @@ public class GrantNotificationService {
                 return true;
             }
         } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null &&
-                "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null &&
-                "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
+            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
+                    && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
+                    && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
             ) {
                 return true;
             }
@@ -153,8 +153,8 @@ public class GrantNotificationService {
 
     }
 
-    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
-                                 Boolean grantAwaitingDocumentatioNotificationSent) {
+    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent,
+                                 Boolean grantDelayedNotificationSent, Boolean grantAwaitingDocumentatioNotificationSent) {
         log.info("Updating case for grant notification, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
@@ -169,12 +169,12 @@ public class GrantNotificationService {
 
     }
 
-    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(Document emailDocument,
-                                                                                                                List<CollectionMember<Document>> probateDocumentsGenerated) {
+    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(
+            Document emailDocument, List<CollectionMember<Document>> probateDocumentsGenerated) {
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> probateDocuments = new ArrayList<>();
         for (CollectionMember<Document> documentCollectionMember : probateDocumentsGenerated) {
-            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(documentCollectionMember.getId(),
-                getProbateDocument(documentCollectionMember.getValue())));
+            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(
+                    documentCollectionMember.getId(), getProbateDocument(documentCollectionMember.getValue())));
         }
         probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, getProbateDocument(emailDocument)));
         return probateDocuments;

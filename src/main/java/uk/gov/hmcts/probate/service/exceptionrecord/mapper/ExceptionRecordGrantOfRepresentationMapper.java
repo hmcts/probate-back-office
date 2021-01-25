@@ -205,7 +205,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             if (names.size() > 2) {
                 caseData.setSolsSOTSurname(names.get(names.size() - 1));
                 caseData.setSolsSOTForenames(String.join(" ", names.subList(0, names.size() - 1)));
-            } else if(names.size() == 1) {
+            } else if (names.size() == 1) {
                 caseData.setSolsSOTSurname("");
                 caseData.setSolsSOTForenames(names.get(0));
             } else {

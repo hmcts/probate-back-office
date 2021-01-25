@@ -216,15 +216,14 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
-            log.error ("Error Extending Caveat case from Exception Record", e);
+            log.error("Error Extending Caveat case from Exception Record", e);
             throw new OCRMappingException(e.getMessage());
         }
     }
 
-    private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>> mergeScannedDocuments(
-            List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>> caseScannedDocuments,
-            List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference
-    ) {
+    private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
+    mergeScannedDocuments(List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
+                                  caseScannedDocuments, List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference) {
         log.info("About to merge Caveat Scanned Documents to existing case.");
         List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>> newScannedDocuments;
         if (caseScannedDocuments == null) {

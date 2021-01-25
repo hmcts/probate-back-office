@@ -84,7 +84,8 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, caseData.getBoStopDetailsDeclarationParagraph());
-        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert(caseData.getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert(
+                caseData.getDeceasedDateOfDeath()));
 
         return personalisation;
     }

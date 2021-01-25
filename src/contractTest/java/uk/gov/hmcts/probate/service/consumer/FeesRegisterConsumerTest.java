@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;

@@ -48,7 +48,8 @@ public class SendLetterServiceConsumerTest {
     ObjectMapper objectMapper;
 
     @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController", "localhost", 8486, this);
+    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController",
+            "localhost", 8486, this);
 
     @Pact(provider = "rpeSendLetterService_SendLetterController", consumer = "probate_backOffice")
     public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder) throws IOException, URISyntaxException {

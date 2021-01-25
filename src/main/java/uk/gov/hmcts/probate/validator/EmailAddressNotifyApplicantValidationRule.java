@@ -29,7 +29,8 @@ public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNo
         if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL))
                 && StringUtils.isEmpty(ccdData.getPrimaryApplicantEmailAddress())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA"));
-        } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR)) && StringUtils.isEmpty(ccdData.getSolsSolicitorEmail())) {
+        } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR))
+                && StringUtils.isEmpty(ccdData.getSolsSolicitorEmail())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"));
         }
         return new ArrayList<>(errors);

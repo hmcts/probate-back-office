@@ -19,7 +19,9 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +62,7 @@ public class EmUploadService implements UploadService {
     private static <T> T nonNull(@Nullable T result) {
         try {
             Assert.state(result != null, "Entity should be non null in EmUploadService");
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
         return result;

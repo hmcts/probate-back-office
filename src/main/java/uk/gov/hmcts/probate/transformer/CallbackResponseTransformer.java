@@ -1248,10 +1248,10 @@ public class CallbackResponseTransformer {
             builder
                     .primaryApplicantAlias(null);
         } else if (caseData.getSolsExecutorAliasNames() != null) {
-                builder.primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
+            builder.primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
                         .solsExecutorAliasNames(null);
         } else {
-                builder.primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+            builder.primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                         .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
         }
 
@@ -1338,7 +1338,8 @@ public class CallbackResponseTransformer {
         return null;
     }
 
-    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
+    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(
+            CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
         if (additionalExecutorApplying.getValue().getApplyingExecutorName() == null) {
             AdditionalExecutorApplying newExec = additionalExecutorApplying.getValue();
             newExec = AdditionalExecutorApplying.builder()
@@ -1357,7 +1358,8 @@ public class CallbackResponseTransformer {
         return additionalExecutorApplying;
     }
 
-    private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+    private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(
+            CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {

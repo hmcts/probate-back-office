@@ -223,17 +223,19 @@ public class BulkPrintService {
     }
 
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForReprint(CallbackRequest callbackRequest,
-                                                                                                          Document grantDocument,
-                                                                                                          Document coverSheetDocument,
-                                                                                                          String authHeaderValue) throws IOException {
+                                                                                                     Document grantDocument,
+                                                                                                     Document coverSheetDocument,
+                                                                                                     String authHeaderValue) throws IOException {
         Long extraCopies = Long.parseLong(callbackRequest.getCaseDetails().getData().getReprintNumberOfCopies());
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
         
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new
+                uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new
+                uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
 
         documents.add(coversheetDocument);
         documents.add(document);
@@ -242,15 +244,17 @@ public class BulkPrintService {
     }
 
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(CaveatCallbackRequest caveatCallbackRequest,
-                                                            Document grantDocument,
-                                                            Document coverSheetDocument,
-                                                            String authHeaderValue) throws IOException {
+                                                                                                          Document grantDocument,
+                                                                                                          Document coverSheetDocument,
+                                                                                                          String authHeaderValue) throws IOException {
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, caveatCallbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, caveatCallbackRequest);
 
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new
+                uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new
+                uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, 1);
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(coversheetDocument);
