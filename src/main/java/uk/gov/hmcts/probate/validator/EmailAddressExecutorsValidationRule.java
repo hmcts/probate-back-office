@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.*;
-import static uk.gov.hmcts.probate.model.Constants.REGEX;
+import static uk.gov.hmcts.probate.model.Constants.EMAIL_VALIDATION_REGEX;
 
 @Slf4j
 @Component
@@ -24,7 +24,7 @@ public class EmailAddressExecutorsValidationRule implements CaseDetailsEmailVali
 
         if(caseData.getAdditionalExecutorsApplying() != null) {
             caseData.getAdditionalExecutorsApplying().forEach(executor -> {
-                if (executor.getValue().getApplyingExecutorEmail() != null && !executor.getValue().getApplyingExecutorEmail().matches(REGEX))
+                if (executor.getValue().getApplyingExecutorEmail() != null && !executor.getValue().getApplyingExecutorEmail().matches(EMAIL_VALIDATION_REGEX))
                     throw new BusinessValidationException(userMessage,
                             "An applying exec email does not meet the criteria for case id " + caseDetails.getId());
             });
