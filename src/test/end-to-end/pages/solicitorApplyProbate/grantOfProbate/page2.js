@@ -9,6 +9,11 @@ module.exports = async function () {
     await I.waitForClickable({css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`});
     await I.runAccessibilityTest();
     await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
+
+    await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
+    await I.click({css: '#titleAndClearingType-TCTNoT'});
+    await I.fillField('#titleAndClearingTypeNoT', grantOfProbateConfig.page2_titleAndClearingTypeNoT);
+
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 

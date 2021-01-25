@@ -3,6 +3,7 @@
 
   "page2_dispenseWithNotice": "Yes",
   "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
+  "page2_titleAndClearingTypeNoT": "Reason for None of These",
   "page2_nameOfTrustCorp": "Trust Corporation Name",
   "page2_positionInTrustCorp": "Solicitor",
   "page2_waitForAdditionPerson": "Additional person acting on behalf of trust corporation",
