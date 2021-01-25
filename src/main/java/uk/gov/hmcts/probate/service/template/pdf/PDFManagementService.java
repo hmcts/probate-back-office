@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -125,9 +126,17 @@ public class PDFManagementService {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
+            Optional<Link> binaryOptionalLink = store.getLink("binary");
+            Optional<Link> selfOptionalLink = store.getLink(Link.REL_SELF);
+            if (!binaryOptionalLink.isPresent()) {
+                throw new IOException("binary link is not present");
+            }
+            if (!selfOptionalLink.isPresent()) {
+                throw new IOException("self link is not present");
+            }
             DocumentLink documentLink = DocumentLink.builder()
-                    .documentBinaryUrl(store.getLink("binary").getHref())
-                    .documentUrl(store.getLink(Link.REL_SELF).getHref())
+                    .documentBinaryUrl(((Link) binaryOptionalLink.get()).getHref())
+                    .documentUrl(((Link) selfOptionalLink.get()).getHref())
                     .documentFilename(documentType.getTemplateName() + ".pdf")
                     .build();
 
