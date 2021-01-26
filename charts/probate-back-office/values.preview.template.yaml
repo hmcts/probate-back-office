@@ -77,7 +77,7 @@ ccd:
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
       keyVaults: []
-      ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+      #ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
@@ -93,7 +93,7 @@ ccd:
       enviroment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
       keyVaults: []
-      ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+      #ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
