@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: true
+  probate-ccd-stack: false
 
 postgresql:
   enabled: true
@@ -39,7 +39,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: true
+      enabled: false
     s2s:
       enabled: false
     postgresql:
@@ -86,7 +86,7 @@ ccd:
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
       keyVaults: []
-      ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      #ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -120,13 +120,13 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: "hmcts"
-    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
-    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
-    PROBATE_POSTGRESQL_DATABASE: probate
-    CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
-    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
-    CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
+    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
+    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
+    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+    #CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    #SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    #CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
 
   keyVaults:
     probate:
