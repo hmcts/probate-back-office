@@ -138,12 +138,6 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
 
-to use woremock for the PBA testing
-```
-./bin/wiremock.sh
-```
-
-
 ## Full setup
 
 Guidance on how to set up probate locally using the updated docker images.
