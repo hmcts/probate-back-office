@@ -3,7 +3,7 @@
 const applyProbateConfig = require('./applyProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApplicant = false) {
+module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
     await I.waitForElement('#solsApplyPage');
     await I.runAccessibilityTest();
@@ -15,10 +15,10 @@ module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApp
     await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
     await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
 
-    if (isSolicitorExecutor) {
+    if (isSolicitorNamedExecutor) {
         await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionYes}`);
 
-        if (isSolicitorMainApplicant) {
+        if (isSolicitorApplyingExecutor) {
             await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionYes}`);
         } else {
             await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionNo}`);
