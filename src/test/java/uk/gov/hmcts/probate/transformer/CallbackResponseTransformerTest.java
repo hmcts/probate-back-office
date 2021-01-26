@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -2988,7 +2987,6 @@ public class CallbackResponseTransformerTest {
     private void assertCommon(CallbackResponse callbackResponse) {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
-        assertCommonAdditionalExecutors(callbackResponse);
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
@@ -3083,12 +3081,6 @@ public class CallbackResponseTransformerTest {
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
         assertEquals(applicationType, callbackResponse.getData().getApplicationType());
-    }
-
-    private void assertCommonAdditionalExecutors(CallbackResponse callbackResponse) {
-        assertEquals(emptyList(), callbackResponse.getData().getSolsAdditionalExecutorList());
-        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsApplying());
-        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
 
     private void assertCommonPaperForm(CallbackResponse callbackResponse) {

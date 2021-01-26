@@ -18,9 +18,9 @@ import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.*;
@@ -360,6 +360,5 @@ public class SolicitorExecutorTransformerTest {
         assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
     }
-
 
 }
