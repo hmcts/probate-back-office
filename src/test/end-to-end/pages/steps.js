@@ -56,6 +56,8 @@ module.exports = function () {
         deceasedDetailsPage4: steps.solicitorApplyProbate.deceasedDetails.page4,
         grantOfProbatePage1: steps.solicitorApplyProbate.grantOfProbate.page1,
         grantOfProbatePage2: steps.solicitorApplyProbate.grantOfProbate.page2,
+        verifyTitleAndClearingTypeOption: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
+        verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
         completeApplicationPage1: steps.solicitorApplyProbate.completeApplication.page1,
@@ -78,6 +80,6 @@ module.exports = function () {
         caveatApplicationDetailsPage2: steps.solicitorApplyCaveat.applicationDetails.page2,
         completeCaveatApplicationPage1: steps.solicitorApplyCaveat.completeApplication.page1,
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
-        completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3
+        completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
     });
 };
