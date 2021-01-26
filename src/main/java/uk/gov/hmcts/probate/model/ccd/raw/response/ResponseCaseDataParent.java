@@ -37,6 +37,9 @@ public class ResponseCaseDataParent {
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
 
+    protected String solsForenames;
+    protected String solsSurname;
+    protected String solsSolicitorWillSignSOT;
     protected String dispenseWithNotice;
     protected String titleAndClearingType;
     protected String trustCorpName;
