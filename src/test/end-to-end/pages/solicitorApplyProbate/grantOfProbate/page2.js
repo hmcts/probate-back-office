@@ -7,6 +7,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (isSolcitorMainApplicant = false) {
     const I = this;
     await I.waitForElement('#otherExecutorExists');
+    await I.runAccessibilityTest();
 
     if (isSolcitorMainApplicant) {
         await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionNo}`);

@@ -17,7 +17,7 @@ import uk.gov.hmcts.probate.service.template.printservice.PrintService;
 
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @Slf4j
@@ -28,7 +28,7 @@ public class PrintServiceTemplateController {
 
     private final PrintService printService;
 
-    @PostMapping(path = "/documents", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/documents", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List> getAllDocuments(@RequestBody CaseDetails caseDetails, BindingResult bindingResult) {
 
         log.info("POST /template/documents ", "Case id: {} ", caseDetails.getId());
@@ -45,21 +45,21 @@ public class PrintServiceTemplateController {
         return ResponseEntity.ok(docs);
     }
 
-    @GetMapping(path = "/case-details/sol", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {TEXT_HTML_VALUE})
+    @GetMapping(path = "/case-details/sol", consumes = APPLICATION_JSON_VALUE, produces = {TEXT_HTML_VALUE})
     public ResponseEntity<String> getSolicitorCaseDetailsTemplate() {
 
         String callbackResponse = printService.getSolicitorCaseDetailsTemplateForPrintService();
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @GetMapping(path = "/case-details/pa", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {TEXT_HTML_VALUE})
+    @GetMapping(path = "/case-details/pa", consumes = APPLICATION_JSON_VALUE, produces = {TEXT_HTML_VALUE})
     public ResponseEntity<String> getPACaseDetailsTemplate() {
 
         String callbackResponse = printService.getPACaseDetailsTemplateForPrintService();
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @GetMapping(path = "/probateManLegacyCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {TEXT_HTML_VALUE})
+    @GetMapping(path = "/probateManLegacyCase", consumes = APPLICATION_JSON_VALUE, produces = {TEXT_HTML_VALUE})
     public ResponseEntity<String> getProbateManLegacyCase() {
 
         String callbackResponse = printService.getProbateManLegacyCase();

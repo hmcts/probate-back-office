@@ -33,12 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/case-matching", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/case-matching", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 @Slf4j
 public class CaseMatchingController {
@@ -90,7 +90,7 @@ public class CaseMatchingController {
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addMatches(request, caseMatches));
     }
 
-    @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> doImportFromGrant(@RequestBody CallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
@@ -109,7 +109,7 @@ public class CaseMatchingController {
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 
-    @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> doImportFromCaveat(@RequestBody CaveatCallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
@@ -128,7 +128,7 @@ public class CaseMatchingController {
     }
 
     @PostMapping(path = "/import-legacy-from-standing-search-flow",
-            consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<StandingSearchCallbackResponse> doImportFromStandingSearch(
             @RequestBody StandingSearchCallbackRequest callbackRequest, HttpServletRequest request) {
 
@@ -147,7 +147,7 @@ public class CaseMatchingController {
     }
 
     @PostMapping(path = "/import-legacy-from-will-lodgement-flow",
-            consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<WillLodgementCallbackResponse> doImportFromWillLodgement(
             @RequestBody WillLodgementCallbackRequest callbackRequest, HttpServletRequest request) {
 
