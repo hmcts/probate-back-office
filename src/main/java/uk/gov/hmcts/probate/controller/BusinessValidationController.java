@@ -36,11 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +72,7 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final List<IHTFourHundredDateValidationRule> ihtFourHundredDateValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -151,6 +148,12 @@ public class BusinessValidationController {
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON, ADMON_WILL_NAME);
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-iht400")
+    public void solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
+        validateIHT400Date(callbackRequest);
+        // THINK I NEED TO RETURN A CALLBACK RESPONSE HERE BUT NOT SURE WHAT???
     }
 
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -318,5 +321,11 @@ public class BusinessValidationController {
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         return emailErrors.isEmpty();
+    }
+
+    private void validateIHT400Date(CallbackRequest callbackRequest) {
+        for(IHTFourHundredDateValidationRule rule : ihtFourHundredDateValidationRule){
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }
