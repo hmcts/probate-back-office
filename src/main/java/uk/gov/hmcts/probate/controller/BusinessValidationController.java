@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -43,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -150,10 +148,10 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-iht400")
-    public void solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
+    @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
         validateIHT400Date(callbackRequest);
-        // THINK I NEED TO RETURN A CALLBACK RESPONSE HERE BUT NOT SURE WHAT???
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -3,12 +3,10 @@ package uk.gov.hmcts.probate.validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Component
@@ -19,15 +17,13 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
     public static final String IHT_DATE_IS_IN_FUTURE = "iht400DateIsInFuture";
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
-    private final CaseData caseData;
 
     @Override
     public void validate(CaseDetails caseDetails) {
 
         LocalDate iht400Date = caseDetails.getData().getSolsIHT400Date();
         LocalDate twentyDaysBeforeToday = LocalDate.now().minusDays(20);
-        String[] args = {caseData.convertDate(twentyDaysBeforeToday)};
-//        String[] args = {twentyDaysBeforeToday.format(DateTimeFormatter.BASIC_ISO_DATE)};
+        String[] args = {caseDetails.getData().convertDate(twentyDaysBeforeToday)};
 
         String userMessage;
 
@@ -40,7 +36,7 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
         if (iht400Date.isAfter(LocalDate.now())) {
             userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the future (" + LocalDate.now() + ")");
+                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
         }
     }
 }
