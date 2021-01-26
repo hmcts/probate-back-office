@@ -39,9 +39,9 @@ public class CaseMatchingService {
                 .map(alias -> getAliasesToAliasesSubQueryTemplate().replace(":deceasedAliases", alias))
                 .collect(Collectors.joining());
 
-        String optionalDeceasedDateOfBirth = Optional.ofNullable(criteria.getDeceasedDateOfBirthRaw())
-                .map(data -> getDoBTemplate().replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth()))
-                .orElse("");
+//        String optionalDeceasedDateOfBirth = Optional.ofNullable(criteria.getDeceasedDateOfBirthRaw())
+//                .map(data -> getDoBTemplate().replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth()))
+//                .orElse("");
 
         String optionalDeceasedDateOfDeath = Optional.ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .map(data -> getDoDTemplate().replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath()))
@@ -51,7 +51,7 @@ public class CaseMatchingService {
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
                 .replace(":deceasedFullName", criteria.getDeceasedFullName())
-                .replace(":optionalDeceasedDateOfBirth", optionalDeceasedDateOfBirth)
+//                .replace(":optionalDeceasedDateOfBirth", optionalDeceasedDateOfBirth)
                 .replace(":optionalDeceasedDateOfDeath", optionalDeceasedDateOfDeath)
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
