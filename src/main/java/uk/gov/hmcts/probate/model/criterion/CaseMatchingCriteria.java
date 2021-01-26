@@ -51,8 +51,6 @@ public class CaseMatchingCriteria {
                         .map(CollectionMember::getValue)
                         .map(AliasName::getSolsAliasname)
                         .collect(Collectors.toList()))
-                .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
-                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
                 .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
@@ -71,8 +69,6 @@ public class CaseMatchingCriteria {
                         .map(CollectionMember::getValue)
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
-                .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
-                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
                 .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
@@ -91,8 +87,6 @@ public class CaseMatchingCriteria {
                         .map(CollectionMember::getValue)
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
-                .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
-                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
                 .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
@@ -111,8 +105,6 @@ public class CaseMatchingCriteria {
                         .map(CollectionMember::getValue)
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
-                .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
-                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
                 .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
