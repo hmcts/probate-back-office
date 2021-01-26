@@ -17,8 +17,8 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
 Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
-    const isSolicitorExecutor = true;
-    const isSolicitorMainApplicant = true;
+    const isSolicitorNamedExecutor = true;
+    const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';
 
     // IdAM
@@ -29,7 +29,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.applyForProbatePage1();
-    await I.applyForProbatePage2(isSolicitorExecutor, isSolicitorMainApplicant);
+    await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.cyaPage();
 
     await I.seeEndState(endState);
@@ -65,7 +65,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2();
-    await I.grantOfProbatePage3(isSolicitorMainApplicant);
+    await I.grantOfProbatePage3(isSolicitorApplyingExecutor);
     await I.grantOfProbatePage4();
     await I.cyaPage();
 
