@@ -14,8 +14,8 @@ postgresql:
       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: "{{ .Values.postgresql.postgresqlUsername}}"
-  postgresqlPassword: "{{ .Values.postgresql.postgresqlPassword}}"
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
   persistence:
     enabled: false
 
@@ -54,8 +54,8 @@ ccd:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    postgresUsername: "{{ .Values.postgresql.postgresqlUsername}}"
-    postgresPassword: "{{ .Values.postgresql.postgresqlPassword}}"
+    postgresUsername: hmcts
+    postgresPassword: hmcts
     devMode: true
 
   ccd-api-gateway-web:
@@ -120,10 +120,10 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
-    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    PROBATE_POSTGRESQL_USER: "hmcts"
+    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
-    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+    PROBATE_POSTGRESQL_DATABASE: probate
     #CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     #SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     #CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
