@@ -58,19 +58,16 @@ public class SolicitorExecutorTransformer {
 
     public void solicitorExecutorTransformation(CaseData caseData,
                                                 SolicitorExecutorService solicitorExecutorService,
-                                                ResponseCaseData.ResponseCaseDataBuilder builder){
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
-        // TODO: check if these two pieces are redundant as they will always be overwritten
-        // either remove or add a method break to not bother continuing
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            execsApplying = mapApplyingAdditionalExecutors(caseData);
-        }
+                                                ResponseCaseData.ResponseCaseDataBuilder builder) {
 
-        if (caseData.getAdditionalExecutorsNotApplying() != null) {
-            execsNotApplying = caseData.getAdditionalExecutorsNotApplying();
-        }
+        // Initialise lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = caseData.getAdditionalExecutorsApplying() == null ?
+                new ArrayList<>() : mapApplyingAdditionalExecutors(caseData);
 
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = caseData.getAdditionalExecutorsNotApplying() == null ?
+                new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
+
+        // Transform lists
         if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
             if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
                 execsApplying = solicitorExecutorService.updateSolicitorApplyingExecutor(caseData, execsApplying);
@@ -103,15 +100,14 @@ public class SolicitorExecutorTransformer {
     }
 
     private List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            return caseData.getAdditionalExecutorsApplying()
+        return caseData.getAdditionalExecutorsApplying()
                     .stream()
                     .map(this::buildApplyingAdditionalExecutors)
                     .collect(Collectors.toList());
-        }
-        return null;
     }
 
+
+    // TODO refactor this function
     private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
         if (additionalExecutorApplying.getValue().getApplyingExecutorName() == null) {
             AdditionalExecutorApplying newExec = additionalExecutorApplying.getValue();
@@ -135,9 +131,7 @@ public class SolicitorExecutorTransformer {
         return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 
-    private boolean isSolicitorMainApplicant(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsMainApplicant());
-    }
+    private boolean isSolicitorMainApplicant(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsMainApplicant()); }
 
     private String getSolsSOTName(String firstNames, String surname) {
         StringBuilder sb = new StringBuilder();
