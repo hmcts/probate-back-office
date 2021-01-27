@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,30 @@ public class ResponseCaseDataParentTest {
         assertEquals("Solicitor", responseCaseDataParent.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
+    }
 
+    @Test
+    public void shouldApplyNonTrustCorpOptionAttributes() {
+        CollectionMember<OtherPartnerExecutorApplying> otherPartner = new CollectionMember<>(new OtherPartnerExecutorApplying("Jim Smith"));
+        List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersList = new ArrayList<>();
+        otherPartnersList.add(otherPartner);
+
+        final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTPartSuccPowerRes")
+                .nameOfFirmNamedInWill("Test Solicitor Ltd")
+                .nameOfExecutorApplying("Fred Bloggs")
+                .anyPartnersApplyingToActAsExecutor("Yes")
+                .otherPartnersApplyingAsExecutors(otherPartnersList)
+                .nameOfSucceededFirm("New Firm Ltd")
+                .build();
+
+        assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
+        assertEquals("TCTPartSuccPowerRes", responseCaseDataParent.getTitleAndClearingType());
+        assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
+        assertEquals("Fred Bloggs", responseCaseDataParent.getNameOfExecutorApplying());
+        assertEquals("Yes", responseCaseDataParent.getAnyPartnersApplyingToActAsExecutor());
+        assertEquals("Jim Smith", responseCaseDataParent.getOtherPartnersApplyingAsExecutors().get(0).getValue().getNameOfExecutorApplying());
+        assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
     }
 }
