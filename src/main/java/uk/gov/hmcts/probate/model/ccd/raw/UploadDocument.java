@@ -13,7 +13,7 @@ public class UploadDocument {
     private final DocumentLink documentLink;
 
     @JsonProperty("DocumentType")
-    private final DocumentType documentType;
+    private final DynamicList documentType;
 
     @JsonProperty("Comment")
     private final String comment;

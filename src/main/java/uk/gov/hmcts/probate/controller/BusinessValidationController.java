@@ -280,6 +280,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
     }
 
+    @PostMapping(path = "/default-doc-upload-types", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> defaultDocumentUPloadTypes(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        return ResponseEntity.ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
+    }
+
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
