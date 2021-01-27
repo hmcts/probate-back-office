@@ -62,6 +62,9 @@ public enum DocumentType {
     @JsonProperty("correspondence")
     CORRESPONDENCE("correspondence"),
 
+    @JsonProperty("will")
+    WILL("will"),
+
     @JsonProperty("caveatCoversheet")
     CAVEAT_COVERSHEET("caveatCoversheet"),
 
