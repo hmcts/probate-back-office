@@ -28,10 +28,10 @@ module.exports = async function (optName) {
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
 
     if (!isNa && !isTrustOption && isSuccessorFirm) {
-        await I.click({ css: '#anyPartnersApplyingToActAsExecutor-Yes'});
+        await I.click({css: '#anyPartnersApplyingToActAsExecutor-Yes'});
         await I.waitForText('Names of executors applying');
         await I.waitForClickable({css: '#otherPartnersApplyingAsExecutors button'});
-        await I.click({ css: '#anyPartnersApplyingToActAsExecutor-No'});
+        await I.click({css: '#anyPartnersApplyingToActAsExecutor-No'});
         await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors button'});
-    } 
+    }
 };

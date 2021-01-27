@@ -14,7 +14,7 @@ module.exports = async function () {
     if (testConfig.TestForXUI) {
         await I.see(completeApplicationConfig.page7_additionalCopiesFee);
         await I.see(completeApplicationConfig.page7_feeForCertifiedCopies);
-        await I.see(completeApplicationConfig.page7_totalFeeAmount);    
+        await I.see(completeApplicationConfig.page7_totalFeeAmount);
     }
 
     await I.waitForNavigationToComplete(commonConfig.goButton);
