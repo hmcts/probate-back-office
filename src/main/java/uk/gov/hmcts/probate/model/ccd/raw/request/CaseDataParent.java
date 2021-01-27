@@ -27,6 +27,7 @@ public class CaseDataParent {
     protected String actingTrustCorpName;
     protected String positionInTrustCorp;
     protected String additionalExecutorsTrustCorp;
+
     protected List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList;
     protected String lodgementAddress;
     protected LocalDate lodgementDate;
@@ -34,5 +35,6 @@ public class CaseDataParent {
     protected String nameOfExecutorApplying;
     protected String anyPartnersApplyingToActAsExecutor;
     protected String nameOfSucceededFirm;
+
     protected List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersApplyingAsExecutors;
 }

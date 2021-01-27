@@ -1,0 +1,72 @@
+{
+  "case_details": {
+    "id": 1521205807091932,
+    "jurisdiction": "PROBATE",
+    "state": "SolAnswersChecked",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      3,
+      16,
+      13,
+      10,
+      7,
+      9000000
+    ],
+    "last_modified": [
+      2018,
+      3,
+      16,
+      15,
+      22,
+      55,
+      335000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "dispenseWithNotice": "Yes",
+      "titleAndClearingType": "TCTPartSuccPowerRes",
+      "nameOfFirmNamedInWill": "Test Solicitor Ltd",
+      "nameOfExecutorApplying": "Fred Bloggs",
+      "anyPartnersApplyingToActAsExecutor": "Yes",
+      "otherPartnersApplyingAsExecutors": [
+        {
+          "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
+          "value": { "nameOfExecutorApplying": "Jim Smith" }
+        }
+      ],
+      "nameOfSucceededFirm": "New Firm Ltd"
+    },
+    "data_classification": {},
+    "case_details_before": {
+      "id": 1521205807091932,
+      "jurisdiction": "PROBATE",
+      "state": "SolExecutorDetailsUpdated",
+      "case_type_id": "GrantOfRepresentation",
+      "created_date": [
+        2018,
+        3,
+        16,
+        13,
+        10,
+        7,
+        9000000
+      ],
+      "last_modified": [
+        2018,
+        3,
+        16,
+        13,
+        34,
+        47,
+        583000000
+      ],
+      "security_classification": "PUBLIC",
+      "case_data": {},
+      "data_classification": {}},
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {},
+    "event_id": "solicitorCheckYourAnswers"
+  }}

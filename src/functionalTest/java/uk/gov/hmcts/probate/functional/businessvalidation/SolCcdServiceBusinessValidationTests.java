@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -526,6 +528,28 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("2020-01-01", lodgementDate);
         assertEquals("Other acting for trust corp name", additionalExecutorTrustCorpName);
         assertEquals("Solicitor", additionalExecutorTrustCorpPosition);
+    }
+
+    @Test
+    public void shouldTransformCaseWithNonTrustCorpOptionAttributes(){
+        String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
+        String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
+        String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
+        String nameOfExecutorApplying = jsonPath.get("data.nameOfExecutorApplying");
+        String anyPartnersApplyingToActAsExecutor = jsonPath.get("data.anyPartnersApplyingToActAsExecutor");
+        String otherPartnersApplyingAsExecutors = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.nameOfExecutorApplying");
+        String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
+
+        assertEquals("Yes", dispenseWithNotice);
+        assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
+        assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
+        assertEquals("Fred Bloggs", nameOfExecutorApplying);
+        assertEquals("Yes", anyPartnersApplyingToActAsExecutor);
+        assertEquals("Jim Smith", otherPartnersApplyingAsExecutors);
+        assertEquals("New Firm Ltd", nameOfSucceededFirm);
     }
 
     private String transformCase(String jsonFileName, String path) {
