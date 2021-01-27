@@ -54,15 +54,6 @@ public class SolicitorExecutorTransformerTest {
 
     @Before
     public void setUp() {
-        caseDataBuilder = CaseData.builder()
-                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
-                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
-                .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
-                .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
-                .solsSolicitorAddress(SOLICITOR_ADDRESS);
-
-        responseCaseDataBuilder = ResponseCaseData.builder();
-
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorNotApplying = new ArrayList<>();
 
@@ -239,74 +230,6 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(SOLICITOR_SOT_SURNAME, responseCaseData.getSolsSOTSurname());
         assertEquals(NO, responseCaseData.getSolsSolicitorIsApplying());
         assertEquals(SOLICITOR_NOT_APPLYING_REASON, responseCaseData.getSolsSolicitorNotApplyingReason());
-    }
-
-
-    @Test
-    public void shouldRemoveSolicitorPrimaryApplicantDetails(){
-        caseDataBuilder
-                .solsSolicitorIsExec(YES)
-                .solsSolicitorIsMainApplicant(NO)
-                .solsSOTForenames("Forename")
-                .solsSOTSurname("Surname")
-                .primaryApplicantForenames("Forename")
-                .primaryApplicantSurname("Surname")
-                .primaryApplicantEmailAddress("email@mail.com")
-                .primaryApplicantPhoneNumber("1234567890")
-                .primaryApplicantAddress(mock(SolsAddress.class))
-                .primaryApplicantAlias("Alias")
-                .primaryApplicantHasAlias(YES)
-                .primaryApplicantIsApplying(YES)
-                .solsSolicitorIsApplying(NO)
-                .solsSolicitorNotApplyingReason("Not applying");
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
-
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantForenames());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantSurname());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantPhoneNumber());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantEmailAddress());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAddress());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantAlias());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantHasAlias());
-        assertEquals(null, responseCaseDataBuilder.build().getPrimaryApplicantIsApplying());
-        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
-    }
-
-    @Test
-    public void shouldRemoveSolicitorPrimaryApplicantDetailsIsApplying(){
-        caseDataBuilder
-                .solsSolicitorIsExec(YES)
-                .solsSolicitorIsMainApplicant(NO)
-                .solsSOTForenames("Forename")
-                .solsSOTSurname("Surname")
-                .primaryApplicantIsApplying(YES)
-                .solsSolicitorIsApplying(YES)
-                .solsSolicitorNotApplyingReason("Not applying");
-
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
-
-        assertEquals(null, responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
-    }
-
-    @Test
-    public void shouldSetPrimaryExecutorNotApplyingReasonToNULLForNULLSolsApplyAsExecTransform(){
-        caseDataBuilder
-                .solsSolicitorIsExec(YES)
-                .solsSolicitorIsMainApplicant(NO)
-                .solsSolicitorIsApplying(null)
-                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        solicitorExecutorTransformerMock.mainApplicantTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
-
-        assertEquals(null, responseCaseDataBuilder.build().getSolsSolicitorNotApplyingReason());
     }
 
     @Test
@@ -569,7 +492,7 @@ public class SolicitorExecutorTransformerTest {
         assertApplyingExecutorDetails(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().get(0).getValue());
         assertEquals(1, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().size());
         assertNotApplyingExecutorDetails(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().get(0).getValue());
-        assertEquals(0, responseCaseDataBuilder.build().getSolsAdditionalExecutorList().size());
+         assertEquals(0, responseCaseDataBuilder.build().getSolsAdditionalExecutorList().size());
         assertEquals(YES, responseCaseDataBuilder.build().getOtherExecutorExists());
     }
 
