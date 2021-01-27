@@ -46,7 +46,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
 
     @Test
-    @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -58,15 +57,18 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String caseId = jsonPathApply.get("id").toString();
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
+        log.info("createCaseAndVerifyGrantDelayed.printCaseStartResponseToken:"+printCaseStartResponseToken);
         String printCaseUpdateJson = utils.replaceAttribute(baseCaseJson, TOKEN_PARM, printCaseStartResponseToken);
         printCaseUpdateJson = utils.replaceAttribute(printCaseUpdateJson, EVENT_PARM, EVENT_PRINT_CASE);
         printCaseUpdateJson = utils.addAttribute(printCaseUpdateJson, ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE, delayedDate);
         String printCaseUpdateResponse = utils.continueUpdateCaseAsCaseworker(printCaseUpdateJson, caseId);
+        log.info("createCaseAndVerifyGrantDelayed.printCaseUpdateResponse:"+printCaseUpdateResponse);
 
         String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateJson, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = utils.replaceAttribute(markAsReadyForExaminationUpdateJson, EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateResponse = utils.continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
+        log.info("createCaseAndVerifyGrantDelayed.markAsReadyForExaminationUpdateResponse:"+markAsReadyForExaminationUpdateResponse);
 
         postAndAssertAsScheduler(GRANT_DELAYED, delayedDate, caseId);
         
@@ -80,18 +82,19 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Pending
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
 
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson, EVENT_APPLY);
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation.applyforGrantPaperApplicationManResponse:"+applyforGrantPaperApplicationManResponse);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
         String updateGrantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(updateGrantDocCaseJson, EVENT_PRINT_CASE, caseId);
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation.printCaseUpdateResponse:"+printCaseUpdateResponse);
 
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
