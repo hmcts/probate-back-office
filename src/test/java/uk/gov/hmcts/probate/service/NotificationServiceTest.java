@@ -1094,7 +1094,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCaseData.getId().toString());
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
@@ -1129,7 +1129,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCaseDataBilingual.getId().toString());
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseDataBilingual.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
@@ -1684,7 +1684,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCaseData.getId().toString());
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
@@ -1718,7 +1718,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
         personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
         personalisation.put(PERSONALISATION_DECEASED_NAME, personalGrantDelayedOxford.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
@@ -1755,7 +1755,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
         personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
         personalisation.put(PERSONALISATION_DECEASED_NAME, personalGrantDelayedOxford.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
