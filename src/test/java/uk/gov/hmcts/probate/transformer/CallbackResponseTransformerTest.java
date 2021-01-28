@@ -1223,44 +1223,6 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithPaperFormIsNo() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
-        caseDataBuilder.paperForm(NO);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertCommonDetails(callbackResponse);
-        assertLegacyInfo(callbackResponse);
-        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
-        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
-        assertSolsDetails(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
-    }
-
-    @Test
-    public void shouldTransformCaseForSolicitorWithPaperFormIsNull() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
-        caseDataBuilder.paperForm(null);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertCommonDetails(callbackResponse);
-        assertLegacyInfo(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
-        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
-        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
-        assertSolsDetails(callbackResponse);
-    }
-
-    @Test
     public void shouldTransformCaseForSolicitorWithProbate() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
