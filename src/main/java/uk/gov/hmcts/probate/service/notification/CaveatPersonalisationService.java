@@ -78,7 +78,7 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        checkIfDobExists(caveatData, personalisation);
+        getDOBPersonalisation(caveatData, personalisation);
 
         return personalisation;
     }
@@ -101,12 +101,12 @@ public class CaveatPersonalisationService {
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
                 dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
-        checkIfDobExists(caveatData, personalisation);
+        getDOBPersonalisation(caveatData, personalisation);
 
         return personalisation;
     }
 
-    private void checkIfDobExists(CaveatData caveatData, HashMap<String, String> personalisation){
+    private void getDOBPersonalisation(CaveatData caveatData, HashMap<String, String> personalisation){
         //Whole text being pushed to the email template as the template does not support multiple parameters within the same brackets
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
