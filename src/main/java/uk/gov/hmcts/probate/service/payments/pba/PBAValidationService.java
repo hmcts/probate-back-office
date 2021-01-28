@@ -42,7 +42,7 @@ public class PBAValidationService {
         ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String emailId = result.get("email").toString().toLowerCase();
-
+        log.info("emailId"+emailId);
         URI uri = buildUri(emailId);
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
@@ -59,9 +59,12 @@ public class PBAValidationService {
         if (!authToken.matches("^Bearer .+")) {
             throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
         }
+        String s2s = authTokenGenerator.generate();
+        log.info("Authorization:"+authToken);
+        log.info("s2s:"+s2s);
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
-        headers.add("ServiceAuthorization", authTokenGenerator.generate());
+        headers.add("ServiceAuthorization", s2s);
         return new HttpEntity<>(headers);
     }
 
