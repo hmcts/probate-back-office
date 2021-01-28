@@ -70,7 +70,7 @@ public class BusinessValidationController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
-    private final List<IHTFourHundredDateValidationRule> ihtFourHundredDateValidationRule;
+    private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -322,8 +322,6 @@ public class BusinessValidationController {
     }
 
     private void validateIHT400Date(CallbackRequest callbackRequest) {
-        for(IHTFourHundredDateValidationRule rule : ihtFourHundredDateValidationRule){
-            rule.validate(callbackRequest.getCaseDetails());
-        }
+        ihtFourHundredDateValidationRule.validate(callbackRequest.getCaseDetails());
     }
 }

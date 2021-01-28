@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -102,7 +103,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private CaseStoppedService caseStoppedServiceMock;
     @Mock
-    private List<IHTFourHundredDateValidationRule> ihtFourHundredDateValidationRules;
+    private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
 
     private BusinessValidationController underTest;
@@ -126,7 +127,7 @@ public class BusinessValidationUnitTest {
             redeclarationSoTValidationRuleMock,
             caseStoppedServiceMock,
             emailAddressNotifyApplicantValidationRule,
-            ihtFourHundredDateValidationRules);
+            ihtFourHundredDateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -527,5 +528,11 @@ public class BusinessValidationUnitTest {
         verify(notificationService, times(1)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldValidateIHT400Date() {
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
