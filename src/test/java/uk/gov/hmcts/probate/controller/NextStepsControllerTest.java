@@ -68,18 +68,6 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldValidateNextStepsWithNoErrors() throws Exception {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
     public void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorFirmName(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
