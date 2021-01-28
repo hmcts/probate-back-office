@@ -211,6 +211,14 @@ public class FunctionalTestUtils {
             new Header("Authorization", "Bearer " + authorizationToken));
     }
 
+    public Headers getHeadersWithSolicitorUser() {
+        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(solicitorEmail, solicitorPassword);
+        return Headers.headers(
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", "Bearer " + authorizationToken));
+    }
+
     public Headers getHeadersWithSchedulerCaseworkerUser() {
         String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail, schedulerPassword);
         String id = getUserId(schedulerEmail, schedulerPassword);

@@ -4,7 +4,6 @@ package uk.gov.hmcts.probate.functional.fee;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,16 +49,14 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
         stubCreditAccountPayment(utils.getJsonFromFile("pbaWiremockResponses.json"));
     }
 
-    //We are waiting for dat from the ref data team so that this test can run on PR + AAT
     @Test
-    @Pending
     public void shouldValidateDefaultPBAs() {
-        validatePostRequestSuccessForDefaultingPBAs("solicitorPDFPayloadProbate.json", 
-            "{\"code\":\"PBA0087535\",\"label\":\"PBA0087535\"},{\"code\":\"PBA0088063\",\"label\":\"PBA0088063\"}");
+        validatePostRequestSuccessForDefaultingPBAs("solicitorPDFPayloadProbate.json",
+            "{\"code\":\"PBA0022222\",\"label\":\"PBA0022222\"},{\"code\":\"PBA0011111\",\"label\":\"PBA0011111\"}");
     }
 
     private static void stubCreditAccountPayment(String response) {
-        wireMockServer.stubFor(get(urlEqualTo("/refdata/external/v1/organisations/pbas?email=probatesolcw1@gmail.com"))
+        wireMockServer.stubFor(get(urlEqualTo("/refdata/external/v1/organisations/pbas?email=probatesolicitortestorgtest1@gmail.com"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
@@ -68,7 +65,7 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
 
     private void validatePostRequestSuccessForDefaultingPBAs(String fileName, String expectedValue) {
 
-        String body = given().headers(utils.getHeadersWithCaseworkerUser())
+        String body = given().headers(utils.getHeadersWithSolicitorUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
