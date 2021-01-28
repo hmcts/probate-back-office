@@ -209,6 +209,8 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
     private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
+    private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
+    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
 
     @Before
     public void setUp() throws NotificationClientException, IOException {
@@ -1101,9 +1103,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
@@ -1136,9 +1141,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
@@ -1171,9 +1179,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
 
@@ -1206,9 +1217,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseDataBilingual);
@@ -1241,9 +1255,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
@@ -1691,9 +1708,12 @@ public class NotificationServiceTest {
         if(caveatData.getDeceasedDateOfBirth() != null){
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
                     "Dyddiad marwolaeth yr ymadawedig yw: " + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
+                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
         }
         else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatRaisedCaseData);
