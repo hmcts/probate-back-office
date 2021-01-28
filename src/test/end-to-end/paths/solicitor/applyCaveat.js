@@ -22,7 +22,7 @@ Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 Scenario('Solicitor - Apply Caveat', async function (I) {
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Application details';
     let endState = 'Caveat created';
