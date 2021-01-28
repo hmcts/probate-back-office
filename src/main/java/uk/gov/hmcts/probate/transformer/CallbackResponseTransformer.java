@@ -1036,41 +1036,9 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
-
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            execsApplying = mapApplyingAdditionalExecutors(caseData);
-        }
-
-        if (caseData.getAdditionalExecutorsNotApplying() != null) {
-            execsNotApplying = caseData.getAdditionalExecutorsNotApplying();
-        }
-
-        if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
-            if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                execsApplying = solicitorExecutorService.updateSolicitorApplyingExecutor(caseData, execsApplying);
-                execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-            } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                execsNotApplying = solicitorExecutorService.updateSolicitorNotApplyingExecutor(caseData, execsNotApplying);
-                execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-            }
-        }
-
-        if (NO.equals(caseData.getSolsSolicitorIsExec())) {
-            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-        }
-
-        if (isSolicitorMainApplicant(caseData)) {
-            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-        }
+        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
 
         builder
-                .additionalExecutorsApplying(execsApplying)
-                .additionalExecutorsNotApplying(execsNotApplying)
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
@@ -1189,42 +1157,9 @@ public class CallbackResponseTransformer {
                         .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
         }
 
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
-
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             if (YES.equals(caseData.getSolsSolicitorIsExec())) {
-                if (caseData.getAdditionalExecutorsApplying() != null) {
-                    execsApplying = mapApplyingAdditionalExecutors(caseData);
-                }
-
-                if (caseData.getAdditionalExecutorsNotApplying() != null) {
-                    execsNotApplying = caseData.getAdditionalExecutorsNotApplying();
-                }
-
-                if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
-                    if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                        execsApplying = solicitorExecutorService.updateSolicitorApplyingExecutor(caseData, execsApplying);
-                        execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-                    } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                        execsNotApplying = solicitorExecutorService.updateSolicitorNotApplyingExecutor(caseData, execsNotApplying);
-                        execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-                    }
-                }
-
-                if (NO.equals(caseData.getSolsSolicitorIsExec())) {
-                    execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-                    execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-                }
-
-                if (isSolicitorMainApplicant(caseData)) {
-                    execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-                    execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-                }
-
-                builder
-                        .additionalExecutorsApplying(execsApplying)
-                        .additionalExecutorsNotApplying(execsNotApplying);
+                solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
             } else {
                 builder
                         .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
@@ -1258,35 +1193,6 @@ public class CallbackResponseTransformer {
                 .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
                 .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
                 .build();
-    }
-
-    private List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            return caseData.getAdditionalExecutorsApplying()
-                    .stream()
-                    .map(this::buildApplyingAdditionalExecutors)
-                    .collect(Collectors.toList());
-        }
-        return null;
-    }
-
-    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
-        if (additionalExecutorApplying.getValue().getApplyingExecutorName() == null) {
-            AdditionalExecutorApplying newExec = additionalExecutorApplying.getValue();
-            newExec = AdditionalExecutorApplying.builder()
-                    .applyingExecutorName(newExec.getApplyingExecutorFirstName()
-                            + " " + newExec.getApplyingExecutorLastName())
-                    .applyingExecutorPhoneNumber(newExec.getApplyingExecutorPhoneNumber())
-                    .applyingExecutorEmail(newExec.getApplyingExecutorEmail())
-                    .applyingExecutorAddress(newExec.getApplyingExecutorAddress())
-                    .applyingExecutorOtherNames(newExec.getApplyingExecutorOtherNames())
-                    .applyingExecutorOtherNamesReason(newExec.getApplyingExecutorOtherNamesReason())
-                    .applyingExecutorOtherReason(newExec.getApplyingExecutorOtherReason())
-                    .build();
-
-            return new CollectionMember<>(additionalExecutorApplying.getId(), newExec);
-        }
-        return additionalExecutorApplying;
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
