@@ -106,6 +106,26 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
+    @Test
+    public void verifyEmptySolicitorEmailReturnsError() {
+        Response response = given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(utils.getJsonFromFile("failure.missingSolicitorEmail.json"))
+                .post("/nextsteps/validate");
+        assertEquals(400, response.getStatusCode());
+        assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
+    }
+
+    @Test
+    public void verifyInvalidSolicitorEmailReturnsError() {
+        Response response = given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(utils.getJsonFromFile("failure.invalidSolicitorEmail.json"))
+                .post("/nextsteps/validate");
+        assertEquals(400, response.getStatusCode());
+        assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
+    }
+
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
                 .relaxedHTTPSValidation()

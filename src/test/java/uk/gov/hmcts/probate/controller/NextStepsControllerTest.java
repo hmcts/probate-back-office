@@ -35,6 +35,7 @@ public class NextStepsControllerTest {
   
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
+    private static final String NEXTSTEPS_VALIDATE_URL = "/nextsteps/validate";
     private static final String APPLICATION_GROUNDS = "Application grounds";
 
     @Autowired
@@ -67,6 +68,18 @@ public class NextStepsControllerTest {
     }
 
     @Test
+    public void shouldValidateNextStepsWithNoErrors() throws Exception {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     public void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorFirmName(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -74,6 +87,22 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
+    }
+
+    @Test
+    public void shouldValidateNextStepsWithSolicitorFirmIsNullError() throws Exception {
+        caseDataBuilder.solsSolicitorFirmName(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
