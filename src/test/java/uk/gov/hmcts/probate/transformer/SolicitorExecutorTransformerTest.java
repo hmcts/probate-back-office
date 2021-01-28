@@ -6,13 +6,23 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 import static uk.gov.hmcts.probate.util.CommonVariables.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,8 +35,34 @@ public class SolicitorExecutorTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
+    @Mock
+    private SolicitorExecutorService solicitorExecutorServiceMock;
+
     @InjectMocks
     private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
+
+    private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
+
+    @Before
+    public void setUp() {
+        additionalExecutorApplying = new ArrayList<>();
+        additionalExecutorNotApplying = new ArrayList<>();
+
+        AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .applyingExecutorEmail(EXEC_EMAIL)
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .build();
+        additionalExecutorApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execApplying));
+
+        AdditionalExecutorNotApplying execNotApplying = AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(EXEC_NAME)
+                .notApplyingExecutorReason(SOLICITOR_NOT_APPLYING_REASON)
+                .build();
+        additionalExecutorNotApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execNotApplying));
+    }
 
     @Test
     public void shouldSetMainApplicantDetailsWithSolicitorInfo(){
@@ -188,4 +224,137 @@ public class SolicitorExecutorTransformerTest {
         assertEquals(SOLICITOR_NOT_APPLYING_REASON, responseCaseData.getSolsSolicitorNotApplyingReason());
     }
 
+    @Test
+    public void shouldUpdateExecutorListsWhenSolicitorIs_Exec_NotMainApplicant_IsApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES)
+                .additionalExecutorsApplying(additionalExecutorApplying);
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> updatedRemoveList = additionalExecutorNotApplying;
+        updatedRemoveList.remove(0);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorServiceMock.updateSolicitorApplyingExecutor(caseDetailsMock.getData(), additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
+        when(solicitorExecutorServiceMock.removeSolicitorAsNotApplyingExecutor(additionalExecutorNotApplying)).thenReturn(updatedRemoveList);
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertEquals(additionalExecutorApplying, responseCaseDataBuilder.build().getAdditionalExecutorsApplying());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+        verify(solicitorExecutorServiceMock, times(1)).updateSolicitorApplyingExecutor(any(), any());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsNotApplyingExecutor(any());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsWhenSolicitorIs_Exec_NotMainApplicant_NotApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .additionalExecutorsNotApplying(additionalExecutorNotApplying);
+
+        List<CollectionMember<AdditionalExecutorApplying>> updatedApplyingList = additionalExecutorApplying;
+        updatedApplyingList.remove(0);
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> updatedNotApplyingList = additionalExecutorNotApplying;
+        AdditionalExecutorNotApplying execNotApplying = AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME)
+                .notApplyingExecutorReason(SOLICITOR_NOT_APPLYING_REASON)
+                .build();
+        updatedNotApplyingList.add(new CollectionMember(SOL_AS_EXEC_ID, execNotApplying));
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(solicitorExecutorServiceMock.updateSolicitorNotApplyingExecutor(caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(updatedNotApplyingList);
+        when(solicitorExecutorServiceMock.removeSolicitorAsApplyingExecutor(additionalExecutorApplying)).thenReturn(updatedApplyingList);
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertEquals(additionalExecutorNotApplying, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsApplyingExecutor(any());
+        verify(solicitorExecutorServiceMock, times(1)).updateSolicitorNotApplyingExecutor(any(), any());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsWhenSolicitorIs_NotExec() {
+        caseDataBuilder
+                .solsSolicitorIsExec(NO);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsApplyingExecutor(any());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsNotApplyingExecutor(any());
+    }
+
+    @Test
+    public void shouldUpdateExecutorListsWhenSolicitorIs_Exec_MainApplicant() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsApplyingExecutor(any());
+        verify(solicitorExecutorServiceMock, times(1)).removeSolicitorAsNotApplyingExecutor(any());
+    }
+
+    @Test
+    public void shouldInitialiseExecutorListsWithCaseData() {
+        caseDataBuilder
+                .additionalExecutorsApplying(additionalExecutorApplying)
+                .additionalExecutorsNotApplying(additionalExecutorNotApplying);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertEquals(additionalExecutorApplying, responseCaseDataBuilder.build().getAdditionalExecutorsApplying());
+        assertEquals(additionalExecutorNotApplying, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldInitialiseExecutorListsWithEmptyList() {
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+
+    @Test
+    public void shouldSetExecName() {
+
+        // Create exec without name set
+        List<CollectionMember<AdditionalExecutorApplying>> additionExecApplyingNoName = new ArrayList<>();
+        AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .build();
+        additionExecApplyingNoName.add(new CollectionMember<>(SOL_AS_EXEC_ID, execApplying));
+
+        caseDataBuilder
+                .additionalExecutorsApplying(additionExecApplyingNoName)
+                .additionalExecutorsNotApplying(additionalExecutorNotApplying);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        // Check that name has been set and other values are unchanged
+        assertEquals(EXEC_NAME, responseCaseDataBuilder.build().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+        assertEquals(EXEC_PHONE, responseCaseDataBuilder.build().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorPhoneNumber());
+    }
 }
