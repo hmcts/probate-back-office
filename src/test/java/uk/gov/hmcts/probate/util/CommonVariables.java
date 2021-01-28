@@ -16,9 +16,7 @@ public class CommonVariables {
     public static final String SOLICITOR_FIRM_PHONE = "0123456789";
     public static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
-    public static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
-    public static final SolsAddress SOLICITOR_ADDRESS = SolsAddress.builder().addressLine1(CommonVariables.SOLICITOR_FIRM_LINE1)
-            .postCode(CommonVariables.SOLICITOR_FIRM_POSTCODE).build();
+    public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);;
     public static final String SOLICITOR_NOT_APPLYING_REASON = "Not applying";
     public static final String SOL_AS_EXEC_ID = "solicitor";
 
@@ -27,10 +25,10 @@ public class CommonVariables {
     public static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
 
     public static final String EXEC_FIRST_NAME = "ExFName";
-    public static final String EXEC_NAME = "ExName";
+    public static final String EXEC_SURNAME = "EXSName";
+    public static final String EXEC_NAME = "ExFName EXSName";
     public static final String EXEC_NAME_DIFF = "Ex name difference comment";
     public static final String EXEC_WILL_NAME = "Ex will name";
-    public static final String EXEC_SURNAME = "EXSName";
     public static final String EXEC_OTHER_NAMES = EXEC_WILL_NAME;
     public static final String EXEC_PHONE = "010101010101";
     public static final String EXEC_EMAIL = "executor1@probate-test.com";

@@ -6,12 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
@@ -20,17 +17,12 @@ import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.util.CommonVariables.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -58,15 +50,15 @@ public class SolicitorExecutorTransformerTest {
         additionalExecutorNotApplying = new ArrayList<>();
 
         AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
-                .applyingExecutorName(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME)
-                .applyingExecutorPhoneNumber(SOLICITOR_FIRM_PHONE)
-                .applyingExecutorEmail(SOLICITOR_FIRM_EMAIL)
-                .applyingExecutorAddress(SOLICITOR_ADDRESS)
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .applyingExecutorEmail(EXEC_EMAIL)
+                .applyingExecutorAddress(EXEC_ADDRESS)
                 .build();
         additionalExecutorApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execApplying));
 
         AdditionalExecutorNotApplying execNotApplying = AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME)
+                .notApplyingExecutorName(EXEC_NAME)
                 .notApplyingExecutorReason(SOLICITOR_NOT_APPLYING_REASON)
                 .build();
         additionalExecutorNotApplying.add(new CollectionMember<>(SOL_AS_EXEC_ID, execNotApplying));
@@ -338,5 +330,31 @@ public class SolicitorExecutorTransformerTest {
 
         assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying().isEmpty());
+    }
+
+
+    @Test
+    public void shouldSetExecName() {
+
+        // Create exec without name set
+        List<CollectionMember<AdditionalExecutorApplying>> additionExecApplyingNoName = new ArrayList<>();
+        AdditionalExecutorApplying execApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .build();
+        additionExecApplyingNoName.add(new CollectionMember<>(SOL_AS_EXEC_ID, execApplying));
+
+        caseDataBuilder
+                .additionalExecutorsApplying(additionExecApplyingNoName)
+                .additionalExecutorsNotApplying(additionalExecutorNotApplying);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), solicitorExecutorServiceMock, responseCaseDataBuilder);
+
+        // Check that name has been set and other values are unchanged
+        assertEquals(EXEC_NAME, responseCaseDataBuilder.build().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+        assertEquals(EXEC_PHONE, responseCaseDataBuilder.build().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorPhoneNumber());
     }
 }

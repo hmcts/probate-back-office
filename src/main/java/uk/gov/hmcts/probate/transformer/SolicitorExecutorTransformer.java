@@ -106,24 +106,14 @@ public class SolicitorExecutorTransformer {
                     .collect(Collectors.toList());
     }
 
-
-    // TODO refactor this function
     private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
-        if (additionalExecutorApplying.getValue().getApplyingExecutorName() == null) {
-            AdditionalExecutorApplying newExec = additionalExecutorApplying.getValue();
-            newExec = AdditionalExecutorApplying.builder()
-                    .applyingExecutorName(newExec.getApplyingExecutorFirstName()
-                            + " " + newExec.getApplyingExecutorLastName())
-                    .applyingExecutorPhoneNumber(newExec.getApplyingExecutorPhoneNumber())
-                    .applyingExecutorEmail(newExec.getApplyingExecutorEmail())
-                    .applyingExecutorAddress(newExec.getApplyingExecutorAddress())
-                    .applyingExecutorOtherNames(newExec.getApplyingExecutorOtherNames())
-                    .applyingExecutorOtherNamesReason(newExec.getApplyingExecutorOtherNamesReason())
-                    .applyingExecutorOtherReason(newExec.getApplyingExecutorOtherReason())
-                    .build();
+        AdditionalExecutorApplying tempExec = additionalExecutorApplying.getValue();
 
-            return new CollectionMember<>(additionalExecutorApplying.getId(), newExec);
+        if (tempExec.getApplyingExecutorName() == null) {
+            additionalExecutorApplying.getValue().setApplyingExecutorName(tempExec.getApplyingExecutorFirstName()
+                    + " " + tempExec.getApplyingExecutorLastName());
         }
+
         return additionalExecutorApplying;
     }
 
