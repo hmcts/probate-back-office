@@ -107,7 +107,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptySolicitorEmailReturnsError() {
+    public void verifyInvalidPrimaryApplicantEmailReturnsError() {
         Response response = given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile("failure.invalidPrimaryApplicantEmail.json"))
