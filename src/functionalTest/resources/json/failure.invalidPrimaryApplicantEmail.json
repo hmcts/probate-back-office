@@ -54,7 +54,6 @@
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
       "solsWillType": "WillLeft",
-      "solsSolicitorEmail": "",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
@@ -63,6 +62,7 @@
       "solsSolicitorFirmName": "SolicitorFirmName",
       "deceasedDateOfDeath": "2018-01-01",
       "solsConfirmSOTNeedToUpdate": "No",
+      "primaryApplicantEmail": ".example@probate-test.com",
       "primaryApplicantForenames": "TestPrimaryExecutorFirstName",
       "primaryApplicantAddress": {
         "County": "2",

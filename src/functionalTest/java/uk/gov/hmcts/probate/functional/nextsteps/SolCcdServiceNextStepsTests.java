@@ -110,7 +110,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     public void verifyEmptySolicitorEmailReturnsError() {
         Response response = given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("failure.missingSolicitorEmail.json"))
+                .body(utils.getJsonFromFile("failure.invalidPrimaryApplicantEmail.json"))
                 .post("/nextsteps/validate");
         assertEquals(400, response.getStatusCode());
         assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
