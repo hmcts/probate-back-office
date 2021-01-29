@@ -391,41 +391,6 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateCaseCreationWithSolIsExecutorIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorIsExec(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_CREATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsExec"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor named as an exec must be chosen"));
-    }
-
-
-    @Test
-    public void shouldValidateCaseCreationWithSolFirmNameIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorFirmName(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_CREATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
-    }
-
-    @Test
     public void shouldValidateWithDodIsNullErrorForCaseDetails() throws Exception {
         validateDodIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
     }
