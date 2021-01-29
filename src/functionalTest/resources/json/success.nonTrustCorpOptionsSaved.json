@@ -27,12 +27,12 @@
       "dispenseWithNotice": "Yes",
       "titleAndClearingType": "TCTPartSuccPowerRes",
       "nameOfFirmNamedInWill": "Test Solicitor Ltd",
-      "nameOfExecutorApplying": "Fred Bloggs",
+      "otherPartnerExecutorName": "Fred Bloggs",
       "anyPartnersApplyingToActAsExecutor": "Yes",
       "otherPartnersApplyingAsExecutors": [
         {
           "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
-          "value": { "nameOfExecutorApplying": "Jim Smith" }
+          "value": { "otherPartnerExecutorName": "Jim Smith" }
         }
       ],
       "nameOfSucceededFirm": "New Firm Ltd"

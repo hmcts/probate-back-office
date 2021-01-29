@@ -535,15 +535,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
-        String nameOfExecutorApplying = jsonPath.get("data.nameOfExecutorApplying");
+        String otherPartnerExecutorName = jsonPath.get("data.otherPartnerExecutorName");
         String anyPartnersApplyingToActAsExecutor = jsonPath.get("data.anyPartnersApplyingToActAsExecutor");
-        String otherPartnersApplyingAsExecutors = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.nameOfExecutorApplying");
+        String otherPartnersApplyingAsExecutors = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.otherPartnerExecutorName");
         String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
         assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
-        assertEquals("Fred Bloggs", nameOfExecutorApplying);
+        assertEquals("Fred Bloggs", otherPartnerExecutorName);
         assertEquals("Yes", anyPartnersApplyingToActAsExecutor);
         assertEquals("Jim Smith", otherPartnersApplyingAsExecutors);
         assertEquals("New Firm Ltd", nameOfSucceededFirm);

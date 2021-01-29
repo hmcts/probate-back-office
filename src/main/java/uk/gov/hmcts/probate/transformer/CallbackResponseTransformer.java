@@ -690,7 +690,7 @@ public class CallbackResponseTransformer {
                 .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
                 .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
                 .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
-                .nameOfExecutorApplying(caseData.getNameOfExecutorApplying())
+                .otherPartnerExecutorName(caseData.getOtherPartnerExecutorName())
                 .anyPartnersApplyingToActAsExecutor(caseData.getAnyPartnersApplyingToActAsExecutor())
                 .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
                 .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors());

@@ -8,5 +8,5 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class OtherPartnerExecutorApplying {
-    private final String nameOfExecutorApplying;
+    private final String otherPartnerExecutorName;
 }

@@ -981,7 +981,7 @@ public class    CaseDataTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
-                .nameOfExecutorApplying("Fred Bloggs")
+                .otherPartnerExecutorName("Fred Bloggs")
                 .anyPartnersApplyingToActAsExecutor("Yes")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
@@ -990,9 +990,9 @@ public class    CaseDataTest {
         assertEquals("Yes", caseData.getDispenseWithNotice());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
-        assertEquals("Fred Bloggs", caseData.getNameOfExecutorApplying());
+        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
         assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
-        assertEquals("Jim Smith", caseData.getOtherPartnersApplyingAsExecutors().get(0).getValue().getNameOfExecutorApplying());
+        assertEquals("Jim Smith", caseData.getOtherPartnersApplyingAsExecutors().get(0).getValue().getOtherPartnerExecutorName());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
     }
 

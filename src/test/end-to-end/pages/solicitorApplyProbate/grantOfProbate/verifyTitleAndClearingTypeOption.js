@@ -18,12 +18,12 @@ module.exports = async function (optName) {
     const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing';
 
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
-    const nameOfExecutorApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfExecutorApplying'})) > 0;
+    const otherPartnerExecutorNameVisible = (await I.grabNumberOfVisibleElements ({css: '#otherPartnerExecutorName'})) > 0;
     const anyPartnersApplyingToActAsExecutorYesVisible = (await I.grabNumberOfVisibleElements ({css: '#anyPartnersApplyingToActAsExecutor-Yes'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
 
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
-    assert (isNa || isTrustOption ? !nameOfExecutorApplyingVisible : nameOfExecutorApplyingVisible);
+    assert (isNa || isTrustOption ? !otherPartnerExecutorNameVisible : otherPartnerExecutorNameVisible);
     assert (isNa || isTrustOption ? !anyPartnersApplyingToActAsExecutorYesVisible : anyPartnersApplyingToActAsExecutorYesVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
 

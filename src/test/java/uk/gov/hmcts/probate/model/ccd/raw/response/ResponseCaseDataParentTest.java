@@ -98,7 +98,7 @@ public class ResponseCaseDataParentTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
-                .nameOfExecutorApplying("Fred Bloggs")
+                .otherPartnerExecutorName("Fred Bloggs")
                 .anyPartnersApplyingToActAsExecutor("Yes")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
@@ -107,9 +107,9 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
         assertEquals("TCTPartSuccPowerRes", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
-        assertEquals("Fred Bloggs", responseCaseDataParent.getNameOfExecutorApplying());
+        assertEquals("Fred Bloggs", responseCaseDataParent.getOtherPartnerExecutorName());
         assertEquals("Yes", responseCaseDataParent.getAnyPartnersApplyingToActAsExecutor());
-        assertEquals("Jim Smith", responseCaseDataParent.getOtherPartnersApplyingAsExecutors().get(0).getValue().getNameOfExecutorApplying());
+        assertEquals("Jim Smith", responseCaseDataParent.getOtherPartnersApplyingAsExecutors().get(0).getValue().getOtherPartnerExecutorName());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
     }
 }

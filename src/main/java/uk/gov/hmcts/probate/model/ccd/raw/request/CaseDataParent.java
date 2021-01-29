@@ -32,7 +32,7 @@ public class CaseDataParent {
     protected String lodgementAddress;
     protected LocalDate lodgementDate;
     protected String nameOfFirmNamedInWill;
-    protected String nameOfExecutorApplying;
+    protected String otherPartnerExecutorName;
     protected String anyPartnersApplyingToActAsExecutor;
     protected String nameOfSucceededFirm;
 
