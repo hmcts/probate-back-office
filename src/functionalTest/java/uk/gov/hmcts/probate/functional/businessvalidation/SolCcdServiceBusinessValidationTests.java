@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,6 +26,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
     private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_IHT_400_DATE = "/case/sols-validate-iht400";
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
@@ -109,6 +112,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithNegativeIhtGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsNegative.json",
                 "Gross IHT cannot be negative", 400);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsValid() {
+        String payload = utils.getJsonFromFile("success.iht400DateIsValid.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\"", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(10) + "\"");
+        validatePostSuccess(payload, VALIDATE_IHT_400_DATE);
     }
 
     @Test
