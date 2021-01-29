@@ -971,4 +971,29 @@ public class    CaseDataTest {
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
     }
 
+    @Test
+    public void shouldApplyNonTrustCorpOptionAttributes() {
+        CollectionMember<OtherPartnerExecutorApplying> otherPartner = new CollectionMember<>(new OtherPartnerExecutorApplying("Jim Smith"));
+        List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersList = new ArrayList<>();
+        otherPartnersList.add(otherPartner);
+
+        final CaseData caseData = CaseData.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTPartSuccPowerRes")
+                .nameOfFirmNamedInWill("Test Solicitor Ltd")
+                .otherPartnerExecutorName("Fred Bloggs")
+                .anyPartnersApplyingToActAsExecutor("Yes")
+                .otherPartnersApplyingAsExecutors(otherPartnersList)
+                .nameOfSucceededFirm("New Firm Ltd")
+                .build();
+
+        assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
+        assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
+        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
+        assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
+        assertEquals("Jim Smith", caseData.getOtherPartnersApplyingAsExecutors().get(0).getValue().getOtherPartnerExecutorName());
+        assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
+    }
+
 }

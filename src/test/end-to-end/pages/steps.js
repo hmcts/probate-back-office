@@ -56,6 +56,8 @@ module.exports = function () {
         deceasedDetailsPage4: steps.solicitorApplyProbate.deceasedDetails.page4,
         grantOfProbatePage1: steps.solicitorApplyProbate.grantOfProbate.page1,
         grantOfProbatePage2: steps.solicitorApplyProbate.grantOfProbate.page2,
+        verifyTitleAndClearingTypeOption: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
+        verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
         completeApplicationPage1: steps.solicitorApplyProbate.completeApplication.page1,

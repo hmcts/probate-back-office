@@ -358,5 +358,10 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentatioNotificationSent", "Label": "Has a grant awaiting documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "pcqId", "Label": "PCQ ID", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintDocument", "Label": "Which document do you wish to reprint?",  "FieldType": "DynamicList", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintNumberOfCopies", "Label": "How many copies are needed?", "FieldType": "Number", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintNumberOfCopies", "Label": "How many copies are needed?", "FieldType": "Number", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "nameOfFirmNamedInWill", "Label": "Name of firm named in will", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "otherPartnerExecutorName", "Label": "Name of executor applying", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyPartnersApplyingToActAsExecutor", "Label": "Are there any other partners applying to act as an executor?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "nameOfSucceededFirm", "Label": "Name of firm that has succeeded to, and carried on the practice", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "otherPartnersApplyingAsExecutors", "Label": "Names of executors applying", "FieldType": "Collection", "FieldTypeParameter": "OtherPartnerExecutorApplying", "SecurityClassification": "Public"}
 ]
