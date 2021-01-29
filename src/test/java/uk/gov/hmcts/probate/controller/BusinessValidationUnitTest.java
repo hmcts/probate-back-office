@@ -534,8 +534,6 @@ public class BusinessValidationUnitTest {
 
     @Test
     public void shouldValidateSolicitorEmail() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-
         ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
