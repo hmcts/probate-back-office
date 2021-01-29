@@ -350,17 +350,6 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateSolCaseCreationWithFieldErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
