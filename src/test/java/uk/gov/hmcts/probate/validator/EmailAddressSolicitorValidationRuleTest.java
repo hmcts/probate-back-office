@@ -27,6 +27,8 @@ public class EmailAddressSolicitorValidationRuleTest {
     private CaseData caseDataEmailInvalid3;
     private CaseData caseDataEmailInvalid4;
     private CaseData caseDataEmailValid;
+    private CaseData caseDataEmailInvalidNoApplicationType;
+    private CaseData caseDataEmailValid2;
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -71,8 +73,20 @@ public class EmailAddressSolicitorValidationRuleTest {
                 .registryLocation("Bristol")
                 .build();
 
+        caseDataEmailInvalidNoApplicationType = CaseData.builder()
+                .applicationType(null)
+                .solsSolicitorEmail(".example@probate-test.com")
+                .registryLocation("Bristol")
+                .build();
+
         caseDataEmailValid = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
+                .solsSolicitorEmail("example@probate-test.com")
+                .registryLocation("Bristol")
+                .build();
+
+        caseDataEmailValid2 = CaseData.builder()
+                .applicationType(null)
                 .solsSolicitorEmail("example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
@@ -139,9 +153,28 @@ public class EmailAddressSolicitorValidationRuleTest {
     }
 
     @Test
+    public void shouldThrowApplyingExecEmailIsInvalid5() {
+        CaseDetails caseDetailsEmailInvalid =
+                new CaseDetails(caseDataEmailInvalidNoApplicationType, LAST_MODIFIED, CASE_ID);
+
+        Assertions.assertThatThrownBy(() -> {
+            emailAddressSolicitorValidationRule.validate(caseDetailsEmailInvalid);
+        })
+                .isInstanceOf(BusinessValidationException.class)
+                .hasMessage("Solicitor's email does not meet the criteria for case id 12345678987654321");
+    }
+
+    @Test
     public void ApplyingExecEmailIsValid() {
         CaseDetails caseDetailsEmailValid =
                 new CaseDetails(caseDataEmailValid, LAST_MODIFIED, CASE_ID);
+        emailAddressSolicitorValidationRule.validate(caseDetailsEmailValid);
+    }
+
+    @Test
+    public void ApplyingExecEmailIsValid2() {
+        CaseDetails caseDetailsEmailValid =
+                new CaseDetails(caseDataEmailValid2, LAST_MODIFIED, CASE_ID);
         emailAddressSolicitorValidationRule.validate(caseDetailsEmailValid);
     }
 
