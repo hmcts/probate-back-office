@@ -349,17 +349,15 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldValidateSolCaseCreationWithFieldErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock,
-                bindingResultMock, httpServletRequest);
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
     @Test
@@ -532,5 +530,13 @@ public class BusinessValidationUnitTest {
         verify(notificationService, times(1)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldValidateSolicitorEmail() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateCreation(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
