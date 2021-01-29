@@ -118,7 +118,7 @@ public class NextStepsController {
         }
     }
 
-    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+    public void validateEmailAddresses(CallbackRequest callbackRequest) {
         for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
             rule.validate(callbackRequest.getCaseDetails());
         }
