@@ -11,8 +11,8 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     await I.waitForText('Sign in');
 
-    const un = testConfig.TestEnvProfUser.subStr(0,3);
-    const x = process.env.PROF_USER_EMAIL.subStr(0,3);
+    const un = testConfig.TestEnvProfUser.subStr(0, 3);
+    const x = process.env.PROF_USER_EMAIL.subStr(0, 3);
 
     /* eslint-disable no-console */
     console.info (`1 = ${un}`);
