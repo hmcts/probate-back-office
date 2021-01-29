@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 
@@ -116,9 +118,30 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithIhtDateIsValid() {
-        String payload = utils.getJsonFromFile("success.iht400DateIsValid.json");
-        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\"", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(10) + "\"");
-        validatePostSuccess(payload, VALIDATE_IHT_400_DATE);
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(10) + "\",");
+        validatePostSuccessForPayload(payload, VALIDATE_IHT_400_DATE);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsInFutureReturnsError() {
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().plusDays(10) + "\",");
+        validatePostFailureWithPayload(
+                payload, "The date you sent the IHT400 and IHT421 to HMRC must be in the past",
+                200, VALIDATE_IHT_400_DATE
+                );
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIs20DaysBeforeCurrentDateReturnsError() {
+        CaseData caseData = CaseData.builder().build();
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(25) + "\",");
+        validatePostFailureWithPayload(
+                payload, "You cannot submit this application until " + caseData.convertDate(LocalDate.now().minusDays(20)) + " (20 working days after sending the IHT400 and IHT421 forms to HMRC). Submit this application on or after this date",
+                200, VALIDATE_IHT_400_DATE
+        );
     }
 
     @Test
@@ -561,6 +584,31 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(URL)
                 .thenReturn();
+
+        if (statusCode == 200) {
+            response.then().assertThat().statusCode(statusCode)
+                    .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
+                    .and().body("errors", hasItem(containsString(errorMessage)));
+        } else if (statusCode == 400) {
+            response.then().assertThat().statusCode(statusCode)
+                    .and().body("error", equalTo("Invalid Request"))
+                    .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
+                    .and().body("fieldErrors[0].message", equalTo(errorMessage));
+        } else {
+            assert false;
+        }
+    }
+
+    private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String URL) {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(payload)
+                .when().post(URL)
+                .thenReturn();
+
+        System.out.println("!!!!!!!!!!!!!");
+        System.out.println(response.body().prettyPeek());
 
         if (statusCode == 200) {
             response.then().assertThat().statusCode(statusCode)
