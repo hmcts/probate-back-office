@@ -696,9 +696,7 @@ public class CallbackResponseTransformer {
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
-
         } else {
-
             updateCaseBuilder(caseData, builder);
         }
 
@@ -733,14 +731,6 @@ public class CallbackResponseTransformer {
 
     private boolean isCodicil(CaseData caseData) {
         return YES.equals(caseData.getWillHasCodicils());
-    }
-
-    private boolean isSolicitorExecutor(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsExec());
-    }
-
-    private boolean isSolicitorMainApplicant(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
     private boolean didDeceasedDieEngOrWales(CaseData caseData) {
@@ -1033,7 +1023,7 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
+        solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
         solicitorExecutorTransformer.populateAdditionalExecutorList(caseData, solicitorExecutorService, builder);
 
         builder
@@ -1046,9 +1036,7 @@ public class CallbackResponseTransformer {
 
             builder.solsAdditionalExecutorList(solsExecutors);
 
-            if (isSolicitorExecutor(caseData) && !isSolicitorMainApplicant(caseData)) {
-                builder.otherExecutorExists(YES);
-            }
+            solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
@@ -1140,14 +1128,14 @@ public class CallbackResponseTransformer {
             builder
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
+//
+//        if (!isSolicitorMainApplicant(caseData) && caseData.getSolsExecutorAliasNames() != null) {
+//                builder
+//                        .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
+//                        .solsExecutorAliasNames(null);
+//        }
 
-        if (!isSolicitorMainApplicant(caseData) && caseData.getSolsExecutorAliasNames() != null) {
-                builder
-                        .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
-                        .solsExecutorAliasNames(null);
-        }
-
-        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
+        solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
         solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
     }
 

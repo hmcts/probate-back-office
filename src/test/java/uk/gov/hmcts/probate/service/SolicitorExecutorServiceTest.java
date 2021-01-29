@@ -136,7 +136,7 @@ public class SolicitorExecutorServiceTest {
     @Test
     public void shouldUpdateSolNotApplyingExec() {
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
-        newExecsNotApplying = underTest.updateSolicitorNotApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
+        newExecsNotApplying = underTest.addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_SOT_NAME + " UPDATED", newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
@@ -163,7 +163,7 @@ public class SolicitorExecutorServiceTest {
         assertNull(additionalExecutorsNotApplyingMock.get(0).getId());
 
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
-        newExecsNotApplying = underTest.updateSolicitorNotApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
+        newExecsNotApplying = underTest.addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_SOT_ID, newExecsNotApplying.get(1).getId());
@@ -173,7 +173,7 @@ public class SolicitorExecutorServiceTest {
     public void shouldRemoveSolApplyingExec() {
         additionalExecutorsApplyingMock.remove(1);
         List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
-        newExecsApplying = underTest.removeSolicitorAsApplyingExecutor(additionalExecutorsApplyingMock);
+        newExecsApplying = underTest.removeSolicitorFromApplyingList(additionalExecutorsApplyingMock);
 
         assertEquals(1, newExecsApplying.size());
         assertEquals(EXEC1_APPLYING_NAME, newExecsApplying.get(0).getValue().getApplyingExecutorName());
@@ -184,7 +184,7 @@ public class SolicitorExecutorServiceTest {
     public void shouldRemoveSolNotApplyingExec() {
         additionalExecutorsNotApplyingMock.remove(1);
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
-        newExecsNotApplying = underTest.removeSolicitorAsNotApplyingExecutor(additionalExecutorsNotApplyingMock);
+        newExecsNotApplying = underTest.removeSolicitorFromNotApplyingList(additionalExecutorsNotApplyingMock);
 
         assertEquals(1, newExecsNotApplying.size());
         assertEquals(EXEC1_NOT_APPLYING_NAME, newExecsNotApplying.get(0).getValue().getNotApplyingExecutorName());
