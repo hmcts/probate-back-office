@@ -975,8 +975,6 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
-
         if (!didDeceasedDieEngOrWales(caseData)) {
             builder.deceasedDeathCertificate(null);
         } else {
@@ -1031,7 +1029,8 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
+        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
+        solicitorExecutorTransformer.populateAdditionalExecutorList(caseData, solicitorExecutorService, builder);
 
         builder
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
@@ -1061,6 +1060,7 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
         if (caseData.getApplicationType() != PERSONAL) {
@@ -1116,8 +1116,6 @@ public class CallbackResponseTransformer {
             builder.willNumberOfCodicils(null);
         }
 
-        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
-
         if (!didDeceasedDieEngOrWales(caseData)) {
             builder.deceasedDeathCertificate(null);
         } else {
@@ -1139,55 +1137,14 @@ public class CallbackResponseTransformer {
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
-        if (isSolicitorMainApplicant(caseData)) {
-            builder
-                    .primaryApplicantAlias(null);
-        } else if (caseData.getSolsExecutorAliasNames() != null) {
+        if (!isSolicitorMainApplicant(caseData) && caseData.getSolsExecutorAliasNames() != null) {
                 builder
                         .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
                         .solsExecutorAliasNames(null);
-        } else {
-                builder
-                        .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-                        .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
         }
 
-        if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
-            if (YES.equals(caseData.getSolsSolicitorIsExec())) {
-                solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
-            } else {
-                builder
-                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
-            }
-        } else {
-            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();
-            List<CollectionMember<AdditionalExecutorNotApplying>> notApplyingExec = new ArrayList<>();
-
-            for (CollectionMember<AdditionalExecutor> additionalExec : caseData.getSolsAdditionalExecutorList()) {
-                if (ANSWER_YES.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-                    applyingExec.add( new CollectionMember<>(additionalExec.getId(), buildApplyingAdditionalExecutor(additionalExec.getValue())));
-                } else if (ANSWER_NO.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-                    notApplyingExec.add( new CollectionMember<>(additionalExec.getId(), buildNotApplyingAdditionalExecutor(additionalExec.getValue())));
-                }
-            }
-
-            builder
-                    .additionalExecutorsApplying(applyingExec)
-                    .additionalExecutorsNotApplying(notApplyingExec)
-                    .solsAdditionalExecutorList(EMPTY_LIST);
-        }
-    }
-
-    private AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
-        return AdditionalExecutorApplying.builder()
-                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
-                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
-                .applyingExecutorPhoneNumber(null)
-                .applyingExecutorEmail(null)
-                .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
-                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
-                .build();
+        solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
+        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
@@ -1215,15 +1172,6 @@ public class CallbackResponseTransformer {
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
         return AliasName.builder()
                 .solsAliasname(aliasNames.getForenames() + " " + aliasNames.getLastName())
-                .build();
-    }
-
-    private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
-        return AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
-                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
-                .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
-                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
                 .build();
     }
 
