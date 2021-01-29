@@ -98,7 +98,6 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
-    private static final String SOL_AS_EXEC_ID = "solicitor";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -1038,7 +1037,7 @@ public class CallbackResponseTransformer {
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
             List<CollectionMember<AdditionalExecutor>> solsExecutors = caseData.getSolsAdditionalExecutorList();
-            solsExecutors = mapSolsAdditionalExecutors(caseData, solsExecutors);
+            solsExecutors = solicitorExecutorTransformer.mapSolsAdditionalExecutors(caseData, solsExecutors, solicitorExecutorService);
 
             builder.solsAdditionalExecutorList(solsExecutors);
 
@@ -1145,28 +1144,6 @@ public class CallbackResponseTransformer {
 
         solicitorExecutorTransformer.mainApplicantTransformation(caseData, builder);
         solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
-    }
-
-    private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
-        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
-
-        if (execs != null && !execs.isEmpty()) {
-            updatedExecs.addAll(execs);
-        }
-
-        if (updatedExecs.stream().anyMatch(exec -> SOL_AS_EXEC_ID.equalsIgnoreCase(exec.getId()))) {
-            return updatedExecs;
-        }
-
-        if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
-            if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                updatedExecs = solicitorExecutorService.addSolicitorApplyingExecutor(caseData, updatedExecs);
-            } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                updatedExecs = solicitorExecutorService.addSolicitorNotApplyingExecutor(caseData, updatedExecs);
-            }
-        }
-
-        return updatedExecs;
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
