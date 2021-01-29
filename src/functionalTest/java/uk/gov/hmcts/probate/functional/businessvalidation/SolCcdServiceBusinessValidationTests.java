@@ -33,6 +33,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDECLARATION_SOT ="/case/redeclarationSot";
     private static final String SOL_APPLY_AS_EXECUTOR_URL ="/case/sols-apply-as-exec";
+    private static final String SOLS_VALIDATE_CREATION_URL ="/case/sols-validate-creation";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
 
     @Test
@@ -152,6 +153,56 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_URL);
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_CASE_AMEND_URL);
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", SOLS_VALIDATE_CREATION_URL);
+    }
+
+    @Test
+    public void verifyRequestSuccessForSlicitorCreate() {
+        validatePostSuccess("success.solicitorCreate.json", SOLS_VALIDATE_CREATION_URL);
+    }
+
+    @Test
+    public void verifyRequestFailureForSolicitorCreateNoEmail() {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body("failure.solicitorCreateNoEmail.json")
+                .when().post(SOLS_VALIDATE_CREATION_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyRequestFailureForSolicitorCreateInvalidEmail() {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body("failure.solicitorCreateNoEmail.json")
+                .when().post(SOLS_VALIDATE_CREATION_URL)
+                .andReturn();
+
+        response.getBody()
+                .asString()
+                .replace("\"solsSolicitorEmail\": \"null\",", "\"solsSolicitorEmail\": \".example@probate-test.com\",");
+
+        response.then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyRequestFailureForSolicitorCreateInvalidEmail2() {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body("failure.solicitorCreateNoEmail.json")
+                .when().post(SOLS_VALIDATE_CREATION_URL)
+                .andReturn();
+
+        response.getBody()
+                .asString()
+                .replace("\"solsSolicitorEmail\": \"null\",", "\"solsSolicitorEmail\": \"example.@probate-test.com\",");
+
+        response.then().assertThat().statusCode(400);
     }
 
     @Test
