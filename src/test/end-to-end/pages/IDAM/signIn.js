@@ -10,6 +10,10 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
     }
 
     await I.waitForText('Sign in');
+
+    console.info (`useProfessionalUser = ${useProfessionalUser}`);
+    console.info (`username = ${useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser}`);
+
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
 
