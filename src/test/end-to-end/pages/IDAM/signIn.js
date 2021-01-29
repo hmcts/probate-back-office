@@ -11,10 +11,12 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     await I.waitForText('Sign in');
 
+    const un = testConfig.TestEnvProfUser.subStr(0,3);
+    const x = process.env.PROF_USER_EMAIL.subStr(0,3);
+
     /* eslint-disable no-console */
-    console.info (`useProfessionalUser = ${useProfessionalUser}`);
-    console.info (`username = ${useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser}`);
-    console.info (`prof user env var = ${process.env.PROF_USER_EMAIL}`);
+    console.info (`1 = ${un}`);
+    console.info (`2 = ${x}`);
 
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
