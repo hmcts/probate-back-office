@@ -607,9 +607,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .when().post(URL)
                 .thenReturn();
 
-        System.out.println("!!!!!!!!!!!!!");
-        System.out.println(response.body().prettyPeek());
-
         if (statusCode == 200) {
             response.then().assertThat().statusCode(statusCode)
                     .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
