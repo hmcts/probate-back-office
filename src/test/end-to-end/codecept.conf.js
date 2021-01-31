@@ -47,6 +47,10 @@ exports.config = {
     'plugins': {
         'autoDelay': {
             'enabled': testConfig.TestAutoDelayEnabled
+        },
+        screenshotOnFail: {
+            enabled: true,
+            fullPageScreenshots: 'true'
         }
     },
     'multiple': {
