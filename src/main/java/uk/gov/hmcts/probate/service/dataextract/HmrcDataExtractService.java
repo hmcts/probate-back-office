@@ -55,7 +55,8 @@ public class HmrcDataExtractService {
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
             log.error("Failed to upload HMRC file for :" + dateDesc);
-            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload HMRC file for " + dateDesc);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to upload HMRC file for " + dateDesc);
         }
     }
 

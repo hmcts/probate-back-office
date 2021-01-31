@@ -46,7 +46,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REIS
 @RequiredArgsConstructor
 public class DocumentGeneratorService {
 
-    private final PlaceholderDecorator placeholderDecorator;
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -59,21 +58,25 @@ public class DocumentGeneratorService {
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private static final String FULL_REDEC = "fullRedec";
     private static final String APP_NAME = "applicantName";
+    private final PlaceholderDecorator placeholderDecorator;
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
     private final PreviewLetterService previewLetterService;
     private final DocumentTemplateService documentTemplateService;
 
-    private Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueType) {
+    private Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status,
+                                   DocumentIssueType issueType) {
         return getDocument(callbackRequest, status, Optional.of(issueType));
     }
 
-    public Document generateGrantReissue(CallbackRequest callbackRequest, DocumentStatus status, Optional<DocumentIssueType> issueType) {
+    public Document generateGrantReissue(CallbackRequest callbackRequest, DocumentStatus status,
+                                         Optional<DocumentIssueType> issueType) {
         return getDocument(callbackRequest, status, issueType);
     }
 
-    private Document getDocument(CallbackRequest callbackRequest, DocumentStatus status, Optional<DocumentIssueType> issueType) {
+    private Document getDocument(CallbackRequest callbackRequest, DocumentStatus status,
+                                 Optional<DocumentIssueType> issueType) {
         Map<String, Object> images;
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -104,21 +107,21 @@ public class DocumentGeneratorService {
 
     public Document generateCoversheet(CallbackRequest callbackRequest) {
         return generateCoversheet(callbackRequest,
-                callbackRequest.getCaseDetails().getData().getPrimaryApplicantFullName(),
-                callbackRequest.getCaseDetails().getData().getPrimaryApplicantAddress());
+            callbackRequest.getCaseDetails().getData().getPrimaryApplicantFullName(),
+            callbackRequest.getCaseDetails().getData().getPrimaryApplicantAddress());
     }
 
 
     public Document generateCoversheet(CallbackRequest callbackRequest, String name, SolsAddress address) {
 
         log.info("Initiate call to generate coversheet for case id {} ",
-                callbackRequest.getCaseDetails().getId());
+            callbackRequest.getCaseDetails().getId());
         Map<String, Object> placeholders = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
         genericMapperService.appendExecutorDetails(placeholders, name, address);
         Document coversheet = pdfManagementService
-                .generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_COVERSHEET);
+            .generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_COVERSHEET);
         log.info("Successful response for coversheet for case id {} ",
-                callbackRequest.getCaseDetails().getId());
+            callbackRequest.getCaseDetails().getId());
 
         return coversheet;
     }
@@ -138,7 +141,7 @@ public class DocumentGeneratorService {
         placeholders.put(FULL_REDEC, NO);
 
         Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.SOT_INFORMATION_REQUEST);
+            DocumentType.SOT_INFORMATION_REQUEST);
         log.info("Successful response for letter for case id {}", caseDetails.getId());
 
         return letter;
@@ -158,7 +161,7 @@ public class DocumentGeneratorService {
                 CaseDetails caseDetails = callbackRequest.getCaseDetails();
                 log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
                 Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-                if(caseDetails.getData().isLanguagePreferenceWelsh()) {
+                if (caseDetails.getData().isLanguagePreferenceWelsh()) {
                     placeholderDecorator.decorate(placeholders);
                     documentType = DocumentType.WELSH_STATEMENT_OF_TRUTH;
                 }
@@ -182,7 +185,7 @@ public class DocumentGeneratorService {
         }
 
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.ASSEMBLED_LETTER);
+            DocumentType.ASSEMBLED_LETTER);
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
@@ -205,9 +208,11 @@ public class DocumentGeneratorService {
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT, WELSH_ADMON_WILL_GRANT_DRAFT, WELSH_INTESTACY_GRANT_DRAFT,
-                WELSH_DIGITAL_GRANT_REISSUE_DRAFT, WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT, WELSH_ADMON_WILL_GRANT_DRAFT,
+            WELSH_INTESTACY_GRANT_DRAFT,
+            WELSH_DIGITAL_GRANT_REISSUE_DRAFT, WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT,
+            WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -222,8 +227,9 @@ public class DocumentGeneratorService {
             DocumentIssueType documentIssueType = issueType.orElse(DocumentIssueType.GRANT);
             DocumentType template = getDocumentType(caseDetails, status, documentIssueType);
             document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
-            log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ", caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, documentIssueType,
-                    caseDetails.getData().getCaseType());
+            log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ",
+                caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, documentIssueType,
+                caseDetails.getData().getCaseType());
         }
         return document;
     }
@@ -235,8 +241,9 @@ public class DocumentGeneratorService {
         } else {
             DocumentType template = getDocumentType(callbackRequest.getCaseDetails(), status, issueType);
             document = pdfManagementService.generateAndUpload(callbackRequest, template);
-            log.info("Generated and Uploaded {} {} document with template {} for the case id {}", callbackRequest.getCaseDetails().getData().getCaseType(), status,
-                    template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+            log.info("Generated and Uploaded {} {} document with template {} for the case id {}",
+                callbackRequest.getCaseDetails().getData().getCaseType(), status,
+                template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
         }
         expireDrafts(callbackRequest);
         return document;
@@ -244,12 +251,13 @@ public class DocumentGeneratorService {
 
     private DocumentType getDocumentType(CaseDetails caseDetails, DocumentStatus status, DocumentIssueType issueType) {
         return documentTemplateService.getTemplateId(caseDetails.getData().getLanguagePreference(),
-                        status,
-                        issueType,
-                        DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
+            status,
+            issueType,
+            DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
     }
 
-    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus, DocumentIssueType documentIssueType) {
+    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus,
+                                DocumentIssueType documentIssueType) {
         Document document;
         if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
             document = generateGrant(callbackRequest, documentStatus, documentIssueType);

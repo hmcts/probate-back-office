@@ -27,20 +27,17 @@ import java.math.BigDecimal;
 @SpringBootTest
 public class FeesRegisterConsumerTest {
 
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("feeRegister_lookUp", "localhost", 4411, this);
-
-    @Autowired
-    FeeService feeService;
-
-    @MockBean
-    AppInsights appInsights;
-
-    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
-
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
+    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String USER_ID = "user-id";
     private static final String DOCUMENT_ID = "12345";
+    @Rule
+    public PactHttpsProviderRuleMk2 mockProvider =
+        new PactHttpsProviderRuleMk2("feeRegister_lookUp", "localhost", 4411, this);
+    @Autowired
+    FeeService feeService;
+    @MockBean
+    AppInsights appInsights;
 
     @Pact(provider = "feeRegister_lookUp", consumer = "probate_backOffice")
     public RequestResponsePact createApplicationFeeFragment(PactDslWithProvider builder) throws IOException {

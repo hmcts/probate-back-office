@@ -37,74 +37,54 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Data
 public class CaveatData {
 
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String sendToBulkPrint = YES;
     private ApplicationType applicationType;
-    private String registryLocation;
 
     // EVENT = cavRaiseCaveat - deceased data
-
+    private String registryLocation;
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedForenamesIsNull}")
     private String deceasedForenames;
-
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedSurnameIsNull}")
     private String deceasedSurname;
-
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfDeathIsNull}")
     private LocalDate deceasedDateOfDeath;
-
     private LocalDate deceasedDateOfBirth;
-
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private String deceasedAnyOtherNames;
-
     private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
+    // EVENT = cavRaiseCaveat - caveator data
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     private ProbateAddress deceasedAddress;
-
-    // EVENT = cavRaiseCaveat - caveator data
-
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorForenamesIsNull}")
     private String caveatorForenames;
-
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorSurnameIsNull}")
     private String caveatorSurname;
-
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{caveatorEmailAddressIsNull}")
     private String caveatorEmailAddress;
 
-    @NotNull(groups = {CaveatCreatedGroup.class}, message = "{caveatorAddressIsNull}")
-    private ProbateAddress caveatorAddress;
-
     // EVENT = solicitorCreateCaveat - firm data
-
-    @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
-    private String solsSolicitorFirmName;
-
-    private String solsSolicitorPhoneNumber;
-
-    @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
-    private String solsSolicitorAppReference;
-
-    // EVENT = solicitorUpdateCaveat - application details
-
-    private String solsDeceasedNameSection;
-
-    // EVENT = cavConfirmation - confirmation details
-    private String solsFeeAccountNumber;
-
-    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
-    private String solsPaymentMethods;
-
     // EVENT = cavRaiseCaveat - caveat details
     //both these used in multiple sceanrios - CaveatRaised, CaveatExtend etc. Ignore the naming here
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
+    @NotNull(groups = {CaveatCreatedGroup.class}, message = "{caveatorAddressIsNull}")
+    private ProbateAddress caveatorAddress;
+    @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
+    private String solsSolicitorFirmName;
+
+    // EVENT = solicitorUpdateCaveat - application details
+    private String solsSolicitorPhoneNumber;
+    @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
+    private String solsSolicitorAppReference;
+    private String solsDeceasedNameSection;
+    // EVENT = cavConfirmation - confirmation details
+    private String solsFeeAccountNumber;
+    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
+    private String solsPaymentMethods;
     private String caveatRaisedEmailNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String sendToBulkPrint = YES;
-
     private String sendToBulkPrintRequested;
 
     private LocalDate applicationSubmittedDate;
@@ -171,12 +151,13 @@ public class CaveatData {
         return YES.equals(getCaveatRaisedEmailNotificationRequested());
     }
 
-    @JsonPOJOBuilder(withPrefix = "")
-    public static final class CaveatDataBuilder {
+    public LanguagePreference getLanguagePreference() {
+        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ?
+            LanguagePreference.WELSH : LanguagePreference.ENGLISH;
     }
 
-    public LanguagePreference getLanguagePreference() {
-        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class CaveatDataBuilder {
     }
 
 }
