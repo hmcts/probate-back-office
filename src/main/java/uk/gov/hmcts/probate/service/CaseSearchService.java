@@ -33,7 +33,6 @@ public class CaseSearchService {
     private static final String DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DECEASED_SURNAME = "data.deceasedSurname";
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
-    private static final String DECEASED_DOB = "data.deceasedDateOfBirth";
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
     private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
     private static final String IMPORTED_TO_CCD_Y = "Y";
@@ -84,9 +83,6 @@ public class CaseSearchService {
                     fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND));
                     strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(0).boost(2).operator(AND));
                 });
-
-        ofNullable(criteria.getDeceasedDateOfBirthRaw())
-                .ifPresent(date -> filter.must(termQuery(DECEASED_DOB, date)));
 
         ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));
