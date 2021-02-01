@@ -84,7 +84,7 @@ public class SolicitorExecutorTransformer {
 
     public void populateAdditionalExecutorList(CaseData caseData,
                                                SolicitorExecutorService solicitorExecutorService,
-                                               ResponseCaseData.ResponseCaseDataBuilder builder) {
+                                               ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         // Initialise lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = caseData.getAdditionalExecutorsApplying() == null ?
@@ -112,7 +112,7 @@ public class SolicitorExecutorTransformer {
                 .additionalExecutorsNotApplying(execsNotApplying);
     }
 
-    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder builder ) {
+    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
             builder.otherExecutorExists(YES);
         }
@@ -120,7 +120,7 @@ public class SolicitorExecutorTransformer {
 
 
     public void solicitorExecutorTransformation(CaseData caseData, SolicitorExecutorService solicitorExecutorService,
-                     ResponseCaseData.ResponseCaseDataBuilder builder) {
+                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
 

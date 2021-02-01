@@ -1128,12 +1128,6 @@ public class CallbackResponseTransformer {
             builder
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-//
-//        if (!isSolicitorMainApplicant(caseData) && caseData.getSolsExecutorAliasNames() != null) {
-//                builder
-//                        .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
-//                        .solsExecutorAliasNames(null);
-//        }
 
         solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
         solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
