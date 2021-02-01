@@ -163,7 +163,6 @@
       "filter": {
         "bool": {
           "must": [
-            :optionalDeceasedDateOfBirth
             :optionalDeceasedDateOfDeath
             {
               "bool": {
