@@ -117,8 +117,6 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         Document document;
         List<Document> documents = new ArrayList<>();
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -126,6 +124,8 @@ public class CaveatNotificationService {
 
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
         documents.add(document);
+        CaveatCallbackResponse caveatCallbackResponse =
+            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =

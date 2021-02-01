@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -186,7 +185,7 @@ public class HmrcFileServiceTest {
         when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
         when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
         when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDate))).thenReturn("24-OCT-2018");
-        when(fileExtractDateFormatter.getHMRCFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
+        when(fileExtractDateFormatter.getHmrcFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
     }
 
     @Test

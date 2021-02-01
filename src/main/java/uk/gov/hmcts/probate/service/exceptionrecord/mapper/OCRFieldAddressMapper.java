@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class OCRFieldAddressMapper {
 
-    private final static String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
+    private static final String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
     private String addressLine1;
     private String addressLine2;
     private String addressLine3;
@@ -82,8 +82,8 @@ public class OCRFieldAddressMapper {
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress
     public Address toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
-        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1()) ||
-            StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1())
+            || StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
             return buildSolicitorAddress(ocrFields);
         } else {
             return buildCaveatorAddress(ocrFields);

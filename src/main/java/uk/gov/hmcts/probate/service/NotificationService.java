@@ -110,12 +110,9 @@ public class NotificationService {
             caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(),
             caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
-        String emailReplyToId = registry.getEmailReplyToId();
-        String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
-        String reference = caseData.getSolsSolicitorAppReference();
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
@@ -125,6 +122,9 @@ public class NotificationService {
             .isEmpty(caseData.getSolsSOTName())) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
@@ -297,8 +297,8 @@ public class NotificationService {
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
         String defaultRegistryLocation =
-            (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ?
-                RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+            (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference))
+                ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
         return registriesProperties.getRegistries()
             .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }

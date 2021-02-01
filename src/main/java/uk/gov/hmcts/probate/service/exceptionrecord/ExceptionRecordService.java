@@ -228,10 +228,10 @@ public class ExceptionRecordService {
         }
     }
 
-    private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>> mergeScannedDocuments(
-        List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>> caseScannedDocuments,
-        List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference
-    ) {
+    private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
+        > mergeScannedDocuments(
+           List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
+               caseScannedDocuments,List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference) {
         log.info("About to merge Caveat Scanned Documents to existing case.");
         List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
             newScannedDocuments;

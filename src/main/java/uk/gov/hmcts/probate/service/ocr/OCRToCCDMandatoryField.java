@@ -265,8 +265,8 @@ public class OCRToCCDMandatoryField {
                 }
 
                 if ((ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPE)
-                    && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE))) ||
-                    (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPEREASON)
+                    && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE)))
+                    || (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPEREASON)
                         && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPEREASON)))) {
                     log.warn("Solictor details include a will type or reason to be flagged.");
                     warnings.add(

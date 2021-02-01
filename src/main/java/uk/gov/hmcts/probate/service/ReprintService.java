@@ -69,8 +69,8 @@ public class ReprintService {
                     .documentFileName(scannedDocument.get().getValue().getFileName())
                     .build();
             }
-        } else if (LABEL_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel()) ||
-            LABEL_REISSUED_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())) {
+        } else if (LABEL_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())
+            || LABEL_REISSUED_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())) {
             String fileName = selectedDocumentItem.getCode();
             Optional<CollectionMember<Document>> document = data.getProbateDocumentsGenerated().stream()
                 .filter(doc -> doc.getValue().getDocumentFileName().equals(fileName))

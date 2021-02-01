@@ -77,28 +77,12 @@ public class ConfirmationResponseService {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
-        Map<String, String> keyValue = new HashMap<>();
-        keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
-        String caseSubmissionDate = "";
-        if (caveatData.getApplicationSubmittedDate() != null) {
-            caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
-        }
-        keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
-        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
-
-        return markdownSubstitutionService
-            .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
         return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
-    }
-
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
@@ -208,6 +192,22 @@ public class ConfirmationResponseService {
             .confirmationHeader(null)
             .confirmationBody(templateResponse.getTemplate())
             .build();
+    }
+
+    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
+        String caseSubmissionDate = "";
+        if (caveatData.getApplicationSubmittedDate() != null) {
+            caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
+        }
+        keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
+        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
+        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
+        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
+
+        return markdownSubstitutionService
+            .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {

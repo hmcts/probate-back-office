@@ -75,6 +75,17 @@ public class DocumentGeneratorService {
         return getDocument(callbackRequest, status, issueType);
     }
 
+    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus,
+                                DocumentIssueType documentIssueType) {
+        Document document;
+        if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
+            document = generateGrant(callbackRequest, documentStatus, documentIssueType);
+        } else {
+            document = getPDFGrant(callbackRequest, documentStatus, documentIssueType);
+        }
+        return document;
+    }
+
     private Document getDocument(CallbackRequest callbackRequest, DocumentStatus status,
                                  Optional<DocumentIssueType> issueType) {
         Map<String, Object> images;
@@ -254,16 +265,5 @@ public class DocumentGeneratorService {
             status,
             issueType,
             DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
-    }
-
-    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus,
-                                DocumentIssueType documentIssueType) {
-        Document document;
-        if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
-            document = generateGrant(callbackRequest, documentStatus, documentIssueType);
-        } else {
-            document = getPDFGrant(callbackRequest, documentStatus, documentIssueType);
-        }
-        return document;
     }
 }

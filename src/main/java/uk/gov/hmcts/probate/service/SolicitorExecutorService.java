@@ -97,7 +97,7 @@ public class SolicitorExecutorService {
     }
 
     public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData,
-                                                                                   List<CollectionMember<AdditionalExecutor>> execs) {
+                                                          List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
@@ -119,7 +119,7 @@ public class SolicitorExecutorService {
     }
 
     public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData,
-                                                                                      List<CollectionMember<AdditionalExecutor>> execs) {
+                                                           List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
