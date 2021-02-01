@@ -36,7 +36,8 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     public void shouldTransformLegalStatmentAmendStatesForProbate() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeft");
-        solicitorLegalStatementNextStepsTransformer.transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
+        solicitorLegalStatementNextStepsTransformer
+            .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
         assertListCode(0, "SolAppCreated");
@@ -49,7 +50,8 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     public void shouldTransformLegalStatmentAmendStatesForIntestacy() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("NoWill");
-        solicitorLegalStatementNextStepsTransformer.transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
+        solicitorLegalStatementNextStepsTransformer
+            .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
         assertListCode(0, "SolAppCreated");
@@ -62,20 +64,25 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     public void shouldTransformLegalStatmentAmendStatesForAdmon() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeftAnnexed");
-        solicitorLegalStatementNextStepsTransformer.transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
+        solicitorLegalStatementNextStepsTransformer
+            .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
         assertListCode(0, "SolAppCreated");
         assertListValue(0, "Deceased Details");
         assertListCode(1, "WillLeftAnnexed");
-        assertListValue(1, "Letters of administration with will annexed where the deceased left a will but none of the executors can apply");
+        assertListValue(1,
+            "Letters of administration with will annexed where the deceased left a will but none of the executors can"
+                + " apply");
     }
 
     private void assertListCode(int ind, String value) {
-        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().get(ind).getCode(), is(value));
+        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().get(ind).getCode(),
+            is(value));
     }
 
     private void assertListValue(int ind, String label) {
-        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().get(ind).getLabel(), is(label));
+        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().get(ind).getLabel(),
+            is(label));
     }
 }

@@ -31,9 +31,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class HmrcFileServiceTest {
+    private static final String FILE_DATE = "20190101-123456";
+    private static final String FILE_NAME = "1_20190101.dat";
+    private static final String[] LAST_MODIFIED = {"2019", "3", "3", "0", "0", "0", "0"};
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
-    private HmrcFileService hmrcFileService = new HmrcFileService(new TextFileBuilderService(), fileExtractDateFormatter);
-
+    private HmrcFileService hmrcFileService =
+        new HmrcFileService(new TextFileBuilderService(), fileExtractDateFormatter);
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseDataSolictor;
     private CaseData.CaseDataBuilder caseDataPersonal;
@@ -41,9 +44,6 @@ public class HmrcFileServiceTest {
     private CaseData.CaseDataBuilder caseDataMissingData;
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
-    private static final String FILE_DATE = "20190101-123456";
-    private static final String FILE_NAME = "1_20190101.dat";
-    private static final String[] LAST_MODIFIED = {"2019", "3", "3", "0", "0", "0", "0"};
 
     @Before
     public void setup() {
@@ -282,7 +282,7 @@ public class HmrcFileServiceTest {
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
-        
+
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(expected));
     }
@@ -298,7 +298,7 @@ public class HmrcFileServiceTest {
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(expected));
     }
-    
+
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);

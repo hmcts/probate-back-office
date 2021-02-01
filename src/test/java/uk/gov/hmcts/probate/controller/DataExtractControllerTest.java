@@ -31,28 +31,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class DataExtractControllerTest {
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @MockBean
     private HmrcDataExtractService hmrcDataExtractService;
-
     @MockBean
     private IronMountainDataExtractService ironMountainDataExtractService;
-
     @MockBean
     private ExelaDataExtractService exelaDataExtractService;
-
     @MockBean
     private DataExtractDateValidator dataExtractDateValidator;
-
     @MockBean
     private AppInsights appInsights;
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Before
     public void setup() {
@@ -74,7 +67,8 @@ public class DataExtractControllerTest {
 
     @Test
     public void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
-        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-2-3");
+        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
+            .dateValidator("2019-2-3");
         mockMvc.perform(post("/data-extract/iron-mountain?date=2019-2-3"))
             .andExpect(status().is4xxClientError());
     }
@@ -95,7 +89,8 @@ public class DataExtractControllerTest {
 
     @Test
     public void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
-        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-09-13", "2019-04-13");
+        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
+            .dateValidator("2019-09-13", "2019-04-13");
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-09-13&toDate=2019-04-13"))
             .andExpect(status().is4xxClientError());
     }
@@ -114,7 +109,8 @@ public class DataExtractControllerTest {
 
     @Test
     public void shouldThrowClientExceptionWithBadRequestForHmrcWithIncorrectDateFormat() throws Exception {
-        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-2-3");
+        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
+            .dateValidator("2019-2-3");
         mockMvc.perform(post("/data-extract/hmrc?date=2019-2-3"))
             .andExpect(status().is4xxClientError());
     }

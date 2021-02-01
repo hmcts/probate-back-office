@@ -33,6 +33,7 @@ public class FileExtractDateFormatterTest {
         TemporalAccessor nowDateTime = (DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").parse("20201231-123456"));
         String fileDateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(fileDate);
         String expectedString = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").format(nowDateTime);
-        assertEquals(expectedString, fileExtractDateFormatter.getHmrcFormattedFileDate(fileDateString, LocalDateTime.from(nowDateTime)));
+        assertEquals(expectedString,
+            fileExtractDateFormatter.getHmrcFormattedFileDate(fileDateString, LocalDateTime.from(nowDateTime)));
     }
 }
