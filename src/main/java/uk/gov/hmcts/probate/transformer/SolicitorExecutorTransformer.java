@@ -49,8 +49,7 @@ public class SolicitorExecutorTransformer {
             }
         } else {
             builder
-                    .solsSolicitorIsMainApplicant(null)
-                    .solsSolicitorIsApplying(null)
+                    .solsSolicitorIsApplying(NO)
                     .solsSolicitorNotApplyingReason(null);
         }
 
@@ -94,17 +93,18 @@ public class SolicitorExecutorTransformer {
                 new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
 
         // Transform lists
-        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
+        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
 
             // Add solicitor to not applying list
             execsNotApplying = solicitorExecutorService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
             execsApplying = solicitorExecutorService.removeSolicitorFromApplyingList(execsApplying);
 
-        } else if (!isSolicitorExecutor(caseData) || isSolicitorApplying(caseData)) {
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorApplying(caseData)) {
 
             // Remove solicitor from executor lists as they are primary applicant
             execsApplying = solicitorExecutorService.removeSolicitorFromApplyingList(execsApplying);
             execsNotApplying = solicitorExecutorService.removeSolicitorFromNotApplyingList(execsNotApplying);
+
         }
 
         builder

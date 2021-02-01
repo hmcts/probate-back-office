@@ -358,7 +358,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        responseCaseDataBuilder.solicitorIsMainApplicant(caseData.solicitorIsMainApplicant());
+        responseCaseDataBuilder.solicitorIsMainApplicant(caseData.solicitorIsApplying());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
