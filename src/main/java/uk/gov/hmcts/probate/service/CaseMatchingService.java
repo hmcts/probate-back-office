@@ -46,7 +46,7 @@ public class CaseMatchingService {
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
                 .replace(":deceasedFullName", criteria.getDeceasedFullName())
-                .replace(":optionalDeceasedDateOfBirth", null)
+                .replace(":optionalDeceasedDateOfBirth", "")
                 .replace(":optionalDeceasedDateOfDeath", optionalDeceasedDateOfDeath)
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);

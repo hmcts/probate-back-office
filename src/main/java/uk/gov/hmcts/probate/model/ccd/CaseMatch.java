@@ -14,7 +14,6 @@ public class CaseMatch implements Serializable {
     private final String ccdCaseId;
     private final String fullName;
     private final String aliases;
-    private final String dob;
     private final String dod;
     private final String postcode;
     private final String valid;

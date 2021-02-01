@@ -274,7 +274,6 @@ public class CaseMatchingControllerTest {
         assertEquals("DecAN1 DecAN2", caseMatchFound.getAliases());
         assertEquals("1111222233334444", caseMatchFound.getCaseLink().getCaseReference());
         assertEquals("Some comment", caseMatchFound.getComment());
-        assertEquals("1999-01-01", caseMatchFound.getDob());
         assertEquals("2018-01-01", caseMatchFound.getDod());
         assertEquals("Y", caseMatchFound.getDoImport());
         assertEquals("DecFN DecSN", caseMatchFound.getFullName());
