@@ -58,7 +58,6 @@ public class CaseMatchingTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
-        assertThat(jsonPath.get("data.caseMatches[0].value.dob"), is(equalTo(DATE_OF_BIRTH)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dod"), is(equalTo(DATE_OF_DEATH)));
     }
 
@@ -79,7 +78,6 @@ public class CaseMatchingTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
-        assertThat(jsonPath.get("data.caseMatches[0].value.dob"), is(equalTo(DATE_OF_BIRTH)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dod"), is(equalTo(DATE_OF_DEATH)));
     }
 
@@ -101,7 +99,6 @@ public class CaseMatchingTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
-        assertThat(jsonPath.get("data.caseMatches[0].value.dob"), is(equalTo(DATE_OF_BIRTH)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dod"), is(equalTo(DATE_OF_DEATH)));
     }
 
@@ -122,7 +119,6 @@ public class CaseMatchingTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
-        assertThat(jsonPath.get("data.caseMatches[0].value.dob"), is(equalTo(DATE_OF_BIRTH)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dod"), is(equalTo(DATE_OF_DEATH)));
     }
 
