@@ -31,7 +31,7 @@ public class ReprintTransformer {
 
 
     public void transformReprintDocuments(@Valid CaseDetails caseDetails,
-                                          ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder) {
+                                          ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.reprintDocument(getDocumentsAsDynamicList(caseDetails.getData()));
     }
 
