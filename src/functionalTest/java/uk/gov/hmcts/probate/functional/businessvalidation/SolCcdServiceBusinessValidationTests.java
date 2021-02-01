@@ -500,6 +500,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldTransformSolicitorInfoAttributes(){
+        String response = transformCase("success.SolicitorInfoAttributes.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String solsForenames = jsonPath.get("data.solsForenames");
+        String solsSurname = jsonPath.get("data.solsSurname");
+        String solsSolicitorWillSignSOT = jsonPath.get("data.solsSolicitorWillSignSOT");
+
+        assertEquals("Solicitor Forenames", solsForenames);
+        assertEquals("Solicitor Surname", solsSurname);
+        assertEquals("Yes", solsSolicitorWillSignSOT);
+    }
+
+    @Test
     public void shouldTransformCaseWithTrustCorpAttributes(){
         String response = transformCase("success.TrustCorpAttributesSaved.json", TRANSFORM_URL);
 

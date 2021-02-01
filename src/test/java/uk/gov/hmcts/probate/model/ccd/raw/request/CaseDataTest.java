@@ -941,6 +941,19 @@ public class    CaseDataTest {
     }
 
     @Test
+    public void shouldApplySolicitorInfoAttributes() {
+        final CaseData caseData = CaseData.builder()
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        assertEquals("Solicitor Forename", caseData.getSolsForenames());
+        assertEquals("Solicitor Surname", caseData.getSolsSurname());
+        assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
+    }
+
+    @Test
     public void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
         List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();

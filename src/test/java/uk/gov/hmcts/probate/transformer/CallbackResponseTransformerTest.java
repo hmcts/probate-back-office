@@ -2099,6 +2099,24 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldApplySolicitorInfoAttributes() {
+        caseDataBuilder
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals("Solicitor Forename", callbackResponse.getData().getSolsForenames());
+        assertEquals("Solicitor Surname", callbackResponse.getData().getSolsSurname());
+        assertEquals("Yes", callbackResponse.getData().getSolsSolicitorWillSignSOT());
+
+    }
+
+    @Test
     public void shouldApplyTrustCorpAttributes() {
 
         CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));

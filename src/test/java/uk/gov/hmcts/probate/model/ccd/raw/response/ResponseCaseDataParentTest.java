@@ -58,6 +58,20 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
+    public void shouldApplySolicitorInfoAttributes() {
+
+        final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        assertEquals("Solicitor Forename", responseCaseDataParent.getSolsForenames());
+        assertEquals("Solicitor Surname", responseCaseDataParent.getSolsSurname());
+        assertEquals("Yes", responseCaseDataParent.getSolsSolicitorWillSignSOT());
+    }
+
+    @Test
     public void shouldApplyTrustCorpAttributes() {
 
         CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
