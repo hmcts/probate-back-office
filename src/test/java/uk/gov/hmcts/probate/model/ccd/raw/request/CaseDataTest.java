@@ -842,10 +842,10 @@ public class    CaseDataTest {
     @Test
     public void solicitorIsMainApplicantIsYes() {
         final CaseData caseData = CaseData.builder()
-                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
                 .build();
 
-        assertEquals(YES, caseData.solicitorIsMainApplicant());
+        assertEquals(YES, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -854,7 +854,7 @@ public class    CaseDataTest {
                 .solsSolicitorIsMainApplicant(NO)
                 .build();
 
-        assertEquals(NO, caseData.solicitorIsMainApplicant());
+        assertEquals(NO, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -863,7 +863,7 @@ public class    CaseDataTest {
                 .solsSolicitorIsMainApplicant(null)
                 .build();
 
-        assertEquals(NO, caseData.solicitorIsMainApplicant());
+        assertEquals(NO, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -938,6 +938,19 @@ public class    CaseDataTest {
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
 
+    }
+
+    @Test
+    public void shouldApplySolicitorInfoAttributes() {
+        final CaseData caseData = CaseData.builder()
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        assertEquals("Solicitor Forename", caseData.getSolsForenames());
+        assertEquals("Solicitor Surname", caseData.getSolsSurname());
+        assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
     }
 
     @Test

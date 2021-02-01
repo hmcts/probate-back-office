@@ -21,6 +21,9 @@ public class CaseDataParent {
     protected final String deceasedForeignDeathCertInEnglish;
     protected final String deceasedForeignDeathCertTranslation;
 
+    protected String solsForenames;
+    protected String solsSurname;
+    protected String solsSolicitorWillSignSOT;
     protected String dispenseWithNotice;
     protected String titleAndClearingType;
     protected String trustCorpName;

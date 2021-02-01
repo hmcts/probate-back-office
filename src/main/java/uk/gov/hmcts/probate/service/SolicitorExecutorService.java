@@ -28,7 +28,7 @@ public class SolicitorExecutorService {
         List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
 
         if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
-            updatedExecs = removeSolicitorAsApplyingExecutor(execs);
+            updatedExecs = removeSolicitorFromApplyingList(execs);
         }
         updatedExecs.add(getSolicitorApplyingExecutor(caseData));
 
@@ -36,20 +36,20 @@ public class SolicitorExecutorService {
         return updatedExecs;
     }
 
-    public List<CollectionMember<AdditionalExecutorNotApplying>> updateSolicitorNotApplyingExecutor(
+    public List<CollectionMember<AdditionalExecutorNotApplying>> addSolicitorToNotApplyingList(
             CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> updatedExecs = new ArrayList<>();
 
         if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
-            updatedExecs = removeSolicitorAsNotApplyingExecutor(execs);
+            updatedExecs = removeSolicitorFromNotApplyingList(execs);
         }
         updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
 
         return updatedExecs;
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorAsApplyingExecutor(
+    public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorFromApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
 
         if (execsApplying.isEmpty()) return execsApplying;
@@ -59,7 +59,7 @@ public class SolicitorExecutorService {
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorAsNotApplyingExecutor(
+    public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorFromNotApplyingList(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
 
         if (execsNotApplying.isEmpty()) return execsNotApplying;
@@ -90,11 +90,10 @@ public class SolicitorExecutorService {
     }
 
     public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
-        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
-        if (execs != null && !execs.isEmpty()) {
-            updatedExecs.addAll(execs);
-        }
+        // Initialise list
+        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
+        if (execs != null && !execs.isEmpty()) updatedExecs.addAll(execs);
 
         AdditionalExecutor solicitor = AdditionalExecutor.builder()
                 .additionalExecForenames(caseData.getSolsSOTForenames())

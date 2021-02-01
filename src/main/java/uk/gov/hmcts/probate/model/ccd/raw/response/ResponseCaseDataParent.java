@@ -51,4 +51,7 @@ public class ResponseCaseDataParent {
     protected String anyPartnersApplyingToActAsExecutor;
     protected String nameOfSucceededFirm;
     protected List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersApplyingAsExecutors;
+    protected String solsForenames;
+    protected String solsSurname;
+    protected String solsSolicitorWillSignSOT;
 }

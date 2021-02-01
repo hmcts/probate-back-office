@@ -1090,7 +1090,7 @@ public class CallbackResponseTransformerTest {
     public void verifySolicitorExecutorTranformerIsCalled() {
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1)).mainApplicantTransformation(any(), any());
+        verify(solicitorExecutorTransformer, times(1)).solicitorIsApplyingTransformation(any(), any());
     }
 
         @Test
@@ -2096,6 +2096,24 @@ public class CallbackResponseTransformerTest {
         assertEquals("registryAddress", callbackResponse.getData().getRegistryAddress());
         assertEquals("registryEmailAddress", callbackResponse.getData().getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", callbackResponse.getData().getRegistrySequenceNumber());
+    }
+
+    @Test
+    public void shouldApplySolicitorInfoAttributes() {
+        caseDataBuilder
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals("Solicitor Forename", callbackResponse.getData().getSolsForenames());
+        assertEquals("Solicitor Surname", callbackResponse.getData().getSolsSurname());
+        assertEquals("Yes", callbackResponse.getData().getSolsSolicitorWillSignSOT());
+
     }
 
     @Test
