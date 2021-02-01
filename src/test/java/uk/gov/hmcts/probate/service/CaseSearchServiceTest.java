@@ -57,7 +57,6 @@ public class CaseSearchServiceTest {
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
         when(caseMatchingCriteria.getDeceasedFullName()).thenReturn("name surname");
         when(caseMatchingCriteria.getDeceasedAliases()).thenReturn(Collections.singletonList("name surname"));
-        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
         when(caseMock.getData()).thenReturn(caseData);
@@ -93,7 +92,6 @@ public class CaseSearchServiceTest {
         when(caseMatchingCriteria.getDeceasedForenames()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedFullName()).thenReturn(null);
-        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn(null);
 
         CaseMatch caseMatch = CaseMatch.builder()

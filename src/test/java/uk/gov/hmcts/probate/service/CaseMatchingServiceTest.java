@@ -60,8 +60,6 @@ public class CaseMatchingServiceTest {
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
         when(caseMatchingCriteria.getDeceasedFullName()).thenReturn("name surname");
         when(caseMatchingCriteria.getDeceasedAliases()).thenReturn(Collections.singletonList("name surname"));
-        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
-        when(caseMatchingCriteria.getDeceasedDateOfBirthRaw()).thenReturn(LocalDate.of(1900, 1, 1));
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
         when(caseMock.getData()).thenReturn(caseData);
