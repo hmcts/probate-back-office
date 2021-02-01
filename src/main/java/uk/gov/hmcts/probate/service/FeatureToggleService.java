@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
-import com.launchdarkly.sdk.EvaluationDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
