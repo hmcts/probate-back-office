@@ -49,7 +49,6 @@ public class IHTFourHundredDateValidationRuleTest {
     @Test
     public void testValidateFailureWithDate20DaysBeforeToday() {
         CaseDetails caseDetails = new CaseDetails(caseDataWithInvalidDate20DaysBeforeToday, LAST_MODIFIED, CASE_ID);
-        String[] args = {caseDetails.getData().convertDate(validDate)};
         Assertions.assertThatThrownBy(() -> {
             underTest.validate(caseDetails);
         })
