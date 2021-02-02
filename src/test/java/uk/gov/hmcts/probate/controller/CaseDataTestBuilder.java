@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CaseDataTestBuilder {
+    private CaseDataTestBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     public static final LocalDate DOD = LocalDate.of(2017, 4, 4);

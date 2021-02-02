@@ -19,9 +19,9 @@ public class RelaxedServiceAuthTokenGenerator {
     private String idamS2sAuthUrl;
 
     public RelaxedServiceAuthTokenGenerator(
-            final String secret,
-            final String microService,
-            final String idamS2sAuthUrl
+        final String secret,
+        final String microService,
+        final String idamS2sAuthUrl
     ) {
         this.secret = secret;
         this.microService = microService;
@@ -37,11 +37,11 @@ public class RelaxedServiceAuthTokenGenerator {
         signInDetails.put("oneTimePassword", oneTimePassword);
 
         return RestAssured.given()
-                .baseUri(idamS2sAuthUrl)
-                .relaxedHTTPSValidation()
-                .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
-                .body(signInDetails)
-                .when().post("/lease")
-                .then().extract().body().asString();
+            .baseUri(idamS2sAuthUrl)
+            .relaxedHTTPSValidation()
+            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
+            .body(signInDetails)
+            .when().post("/lease")
+            .then().extract().body().asString();
     }
 }

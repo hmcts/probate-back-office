@@ -30,19 +30,12 @@ import java.util.Base64;
 @ContextConfiguration(classes = TestCaseCreatorConfig.class)
 public class TestCaseCreator {
 
-    {
-        System.setProperty("socksProxyHost", "localhost");
-        System.setProperty("socksProxyPort", "9090");
-    }
-
     private static final String EVENT_NAME_GOR_PA = "applyForGrant";
-
     private static final String EVENT_NAME_CAVEAT_PA = "applyForCaveat";
-
     private static final String GOR = "GrantOfRepresentation";
-
     private static final String CAVEAT = "Caveat";
-
+    @Rule
+    public SpringIntegrationMethodRule springIntegration;
     private String clientToken;
 
     private String userId;
@@ -75,11 +68,12 @@ public class TestCaseCreator {
 
     @Autowired
     private RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator;
-
-    @Rule
-    public SpringIntegrationMethodRule springIntegration;
-
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    {
+        System.setProperty("socksProxyHost", "localhost");
+        System.setProperty("socksProxyPort", "9090");
+    }
 
     public TestCaseCreator() {
         this.springIntegration = new SpringIntegrationMethodRule();
@@ -121,17 +115,18 @@ public class TestCaseCreator {
         Headers headersWithUserId = getHeadersWithUserId();
         userId = getUserId(clientToken);
         String token = generateEventToken(role, eventName, headersWithUserId, caseType);
-        String rep = getJsonFromFile(fileName).replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
+        String rep =
+            getJsonFromFile(fileName).replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
 
 
         RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(headersWithUserId)
-                .baseUri(solCcdServiceUrl)
-                .body(rep)
-                .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/"+ caseType +"/cases").
-                        then()
-                .statusCode(201);
+            .relaxedHTTPSValidation()
+            .headers(headersWithUserId)
+            .baseUri(solCcdServiceUrl)
+            .body(rep)
+            .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/" + caseType + "/cases").
+            then()
+            .statusCode(201);
     }
 
 
@@ -148,19 +143,20 @@ public class TestCaseCreator {
 
     public Headers getHeadersWithUserId(String serviceToken) throws Exception {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization", generateUserTokenWithNoRoles()));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", generateUserTokenWithNoRoles()));
     }
 
     private String generateEventToken(String role, String eventName, Headers headersWithUserId, String caseType) {
         log.info("User Id: {}", userId);
         RestAssured.baseURI = solCcdServiceUrl;
         return RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(headersWithUserId)
-                .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/"+ caseType +"/event-triggers/" + eventName + "/token")
-                .then().assertThat().statusCode(200).extract().path("token");
+            .relaxedHTTPSValidation()
+            .headers(headersWithUserId)
+            .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/" + caseType + "/event-triggers/"
+                + eventName + "/token")
+            .then().assertThat().statusCode(200).extract().path("token");
     }
 
 
@@ -173,20 +169,21 @@ public class TestCaseCreator {
     private String generateClientToken() throws Exception {
         String code = generateClientCode();
         log.info("Client Code: {}", code);
-        return "Bearer " + RestAssured.given().relaxedHTTPSValidation().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
-                "&client_secret=" + idamSecret +
-                "&client_id=probate" +
-                "&redirect_uri=" + redirectUri +
-                "&grant_type=authorization_code")
-                .body().path("access_token");
+        return "Bearer " + RestAssured.given().relaxedHTTPSValidation()
+            .post(idamUserBaseUrl + "/oauth2/token?code=" + code
+                + "&client_secret=" + idamSecret
+                + "&client_id=probate"
+                + "&redirect_uri=" + redirectUri
+                + "&grant_type=authorization_code")
+            .body().path("access_token");
     }
 
     private String generateClientCode() throws Exception {
         final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
         JsonNode jsonNode = objectMapper.readValue(RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
-                .header("Authorization", "Basic " + encoded)
-                .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
-                .body().print(), JsonNode.class);
+            .header("Authorization", "Basic " + encoded)
+            .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
+            .body().print(), JsonNode.class);
         return jsonNode.get("code").asText();
     }
 
@@ -202,9 +199,9 @@ public class TestCaseCreator {
 
     public String getUserId(String userToken) {
         return "" + RestAssured.given()
-                .header("Authorization", userToken)
-                .get(idamUserBaseUrl + "/details")
-                .body()
-                .path("id");
+            .header("Authorization", userToken)
+            .get(idamUserBaseUrl + "/details")
+            .body()
+            .path("id");
     }
 }

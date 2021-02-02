@@ -10,9 +10,10 @@ import org.springframework.context.annotation.PropertySource;
 public class TestCaseCreatorConfig {
 
     @Bean
-    public RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator(@Value("${service.auth.provider.base.url}") String s2sUrl,
-                                                                             @Value("${s2s-auth.totp_secret}") String secret,
-                                                                             @Value("${service.name}") String microservice) {
+    public RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator(
+        @Value("${service.auth.provider.base.url}") String s2sUrl,
+        @Value("${s2s-auth.totp_secret}") String secret,
+        @Value("${service.name}") String microservice) {
         return new RelaxedServiceAuthTokenGenerator(secret, microservice, s2sUrl);
     }
 }

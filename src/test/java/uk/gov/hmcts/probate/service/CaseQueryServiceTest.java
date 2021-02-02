@@ -145,8 +145,8 @@ public class CaseQueryServiceTest {
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
-        String expected = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":" +
-            "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
+        String expected = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":"
+            + "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
             + "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
             + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true,"
             +

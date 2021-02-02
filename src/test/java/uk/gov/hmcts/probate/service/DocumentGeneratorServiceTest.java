@@ -658,8 +658,8 @@ public class DocumentGeneratorServiceTest {
                 .languagePreferenceWelsh(Constants.YES)
                 .deceasedDateOfBirth(LocalDate.of(2018, 10, 19))
                 .deceasedDateOfDeath(LocalDate.of(2018, 10, 19))
-                .applicationType(ApplicationType.PERSONAL).
-                build(),
+                .applicationType(ApplicationType.PERSONAL)
+                .build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);

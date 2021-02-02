@@ -813,34 +813,6 @@ public class BulkPrintServiceTest {
     @Test
     public void shouldErrorOnSendToBulkPrintForReprint() {
 
-        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
-        CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .reprintNumberOfCopies("10")
-            .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
-        DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
-        Document grant = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
-        Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
 
@@ -857,6 +829,37 @@ public class BulkPrintServiceTest {
         when(businessValidationMessageService.generateError(any(), any()))
             .thenReturn(FieldErrorResponse.builder().build());
 
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames("first")
+            .primaryApplicantSurname("last")
+            .primaryApplicantAddress(address)
+            .reprintNumberOfCopies("10")
+            .build();
+
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        Document grant = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
         assertThatThrownBy(() -> bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet))
             .isInstanceOf(BulkPrintException.class)
             .hasMessage("Bulk print send letter for reprint response is null for: 0");
@@ -912,10 +915,8 @@ public class BulkPrintServiceTest {
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), documentType))
             .thenReturn(true);
 
-        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
-
         verify(sendLetterApiMock).sendLetter(anyString(), letterV3ArgumentCaptor.capture());
-
+        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
 

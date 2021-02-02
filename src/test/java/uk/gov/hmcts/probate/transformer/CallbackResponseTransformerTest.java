@@ -300,8 +300,8 @@ public class CallbackResponseTransformerTest {
                 .url(SCANNED_DOCUMENT_URL)
                 .build()));
 
-    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>>
-        BSP_SCANNED_DOCUMENTS_LIST = Arrays.asList(
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember
+        <uk.gov.hmcts.reform.probate.model.ScannedDocument>> BSP_SCANNED_DOCUMENTS_LIST = Arrays.asList(
         new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>(
             "id",
             uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
@@ -3378,7 +3378,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetPrimaryApplicantFieldsToNULLForSolsApplyAsExec() {
+    public void shouldSetPrimaryApplicantFieldsToNullForSolsApplyAsExec() {
         caseDataBuilder
             .applicationType(SOLICITOR)
             .recordId(RECORD_ID)
@@ -3417,7 +3417,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolsPrimaryExecutorNotApplyingReasonToNULLForSolsApplyAsExec() {
+    public void shouldSetSolsPrimaryExecutorNotApplyingReasonToNullForSolsApplyAsExec() {
         caseDataBuilder
             .applicationType(SOLICITOR)
             .recordId(RECORD_ID)
@@ -3479,7 +3479,7 @@ public class CallbackResponseTransformerTest {
 
 
     @Test
-    public void shouldSetPrimaryApplicantFieldsToNULLSolsAsExecTransform() {
+    public void shouldSetPrimaryApplicantFieldsToNullSolsAsExecTransform() {
         caseDataBuilder
             .applicationType(APPLICATION_TYPE)
             .recordId(null)
@@ -3555,7 +3555,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetPrimaryExecutorNotApplyingReasonToNULLForNULLSolsApplyAsExecTransform() {
+    public void shouldSetPrimaryExecutorNotApplyingReasonToNullForNullSolsApplyAsExecTransform() {
         caseDataBuilder
             .applicationType(APPLICATION_TYPE)
             .recordId(null)
@@ -3585,7 +3585,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolsPrimaryExecutorNotApplyingReasonToNULLForSolsApplyAsExecTransform() {
+    public void shouldSetSolsPrimaryExecutorNotApplyingReasonToNullForSolsApplyAsExecTransform() {
         caseDataBuilder
             .applicationType(APPLICATION_TYPE)
             .recordId(null)
