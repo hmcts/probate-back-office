@@ -574,8 +574,8 @@ public class CaseData extends CaseDataParent {
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement = getAllExecutors(false);
 
-    public String solicitorIsMainApplicant() {
-        return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
+    public String solicitorIsApplying() {
+        return YES.equals(solsSolicitorIsApplying) ? YES : NO;
     }
 
     public boolean isPrimaryApplicantApplying() {

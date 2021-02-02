@@ -842,10 +842,10 @@ public class    CaseDataTest {
     @Test
     public void solicitorIsMainApplicantIsYes() {
         final CaseData caseData = CaseData.builder()
-                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
                 .build();
 
-        assertEquals(YES, caseData.solicitorIsMainApplicant());
+        assertEquals(YES, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -854,7 +854,7 @@ public class    CaseDataTest {
                 .solsSolicitorIsMainApplicant(NO)
                 .build();
 
-        assertEquals(NO, caseData.solicitorIsMainApplicant());
+        assertEquals(NO, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -863,7 +863,7 @@ public class    CaseDataTest {
                 .solsSolicitorIsMainApplicant(null)
                 .build();
 
-        assertEquals(NO, caseData.solicitorIsMainApplicant());
+        assertEquals(NO, caseData.solicitorIsApplying());
     }
 
     @Test
@@ -941,6 +941,19 @@ public class    CaseDataTest {
     }
 
     @Test
+    public void shouldApplySolicitorInfoAttributes() {
+        final CaseData caseData = CaseData.builder()
+                .solsForenames("Solicitor Forename")
+                .solsSurname("Solicitor Surname")
+                .solsSolicitorWillSignSOT("Yes")
+                .build();
+
+        assertEquals("Solicitor Forename", caseData.getSolsForenames());
+        assertEquals("Solicitor Surname", caseData.getSolsSurname());
+        assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
+    }
+
+    @Test
     public void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
         List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
@@ -1002,6 +1015,31 @@ public class    CaseDataTest {
         assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
+    }
+
+    @Test
+    public void shouldApplyNonTrustCorpOptionAttributes() {
+        CollectionMember<OtherPartnerExecutorApplying> otherPartner = new CollectionMember<>(new OtherPartnerExecutorApplying("Jim Smith"));
+        List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersList = new ArrayList<>();
+        otherPartnersList.add(otherPartner);
+
+        final CaseData caseData = CaseData.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTPartSuccPowerRes")
+                .nameOfFirmNamedInWill("Test Solicitor Ltd")
+                .otherPartnerExecutorName("Fred Bloggs")
+                .anyPartnersApplyingToActAsExecutor("Yes")
+                .otherPartnersApplyingAsExecutors(otherPartnersList)
+                .nameOfSucceededFirm("New Firm Ltd")
+                .build();
+
+        assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
+        assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
+        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
+        assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
+        assertEquals("Jim Smith", caseData.getOtherPartnersApplyingAsExecutors().get(0).getValue().getOtherPartnerExecutorName());
+        assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
     }
 
 }
