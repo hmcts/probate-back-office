@@ -573,7 +573,6 @@ services:
     links:
       - shared-database
       - service-auth-provider-api
-      -
 volumes:
   ccd-docker-azure-blob-data:
   esdata1:
