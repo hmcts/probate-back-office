@@ -137,22 +137,22 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end grantOfProbate",
+            "name": "Mocha test end-end Caseworker will lodgement",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-grantOfProbate",
+                "test-e2e-willLodgement",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },
+        },        
         {
-            "name": "Mocha test end-end will lodgement",
+            "name": "Mocha test end-end Caseworker grantOfProbate",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-willLodgement",
+                "test-e2e-grantOfProbate",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -231,6 +231,6 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }        
+        }
     ]
 }

@@ -18,6 +18,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
+                    // '--headless',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
@@ -35,6 +36,9 @@ exports.config = {
         'JSWait': {
             require: './helpers/JSWait.js'
         },
+        'Mochawesome': {
+            uniqueScreenshotNames: 'true'
+        }
     },
     'include': {
         'I': './pages/steps.js'
@@ -42,6 +46,10 @@ exports.config = {
     'plugins': {
         'autoDelay': {
             'enabled': testConfig.TestAutoDelayEnabled
+        },
+        screenshotOnFail: {
+            enabled: true,
+            fullPageScreenshots: 'true'
         }
     },
     'multiple': {
