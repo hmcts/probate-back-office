@@ -117,6 +117,7 @@
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
         <cve>CVE-2020-17527</cve>
+        <cve>CVE-2021-24122</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -124,6 +125,7 @@
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
         <cve>CVE-2020-17527</cve>
+        <cve>CVE-2021-24122</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -199,6 +201,7 @@
         <cve>CVE-2020-9546</cve>
         <cve>CVE-2020-9547</cve>
         <cve>CVE-2020-9548</cve>
+        <cve>CVE-2021-20190</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
