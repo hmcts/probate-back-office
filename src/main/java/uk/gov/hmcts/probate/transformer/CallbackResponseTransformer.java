@@ -23,7 +23,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -81,7 +80,6 @@ public class CallbackResponseTransformer {
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
-    private final SolicitorExecutorService solicitorExecutorService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final SolicitorExecutorTransformer solicitorExecutorTransformer;
@@ -1025,7 +1023,7 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
-        solicitorExecutorTransformer.populateAdditionalExecutorList(caseData, solicitorExecutorService, builder);
+        solicitorExecutorTransformer.populateAdditionalExecutorList(caseData, builder);
 
         builder
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
@@ -1033,7 +1031,7 @@ public class CallbackResponseTransformer {
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
             List<CollectionMember<AdditionalExecutor>> solsExecutors = caseData.getSolsAdditionalExecutorList();
-            solsExecutors = solicitorExecutorTransformer.mapSolsAdditionalExecutors(caseData, solsExecutors, solicitorExecutorService);
+            solsExecutors = solicitorExecutorTransformer.mapSolsAdditionalExecutors(caseData, solsExecutors);
 
             builder.solsAdditionalExecutorList(solsExecutors);
 
@@ -1131,7 +1129,7 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
-        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, solicitorExecutorService, builder);
+        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
