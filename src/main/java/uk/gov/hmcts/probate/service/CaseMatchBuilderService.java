@@ -38,6 +38,9 @@ public class CaseMatchBuilderService {
     private CaseMatch.CaseMatchBuilder getCaseMatchBuilder(Case c) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
         caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
+        if (c.getData().getDeceasedDateOfBirth() != null) {
+            caseMatchBuilder.dob(c.getData().getDeceasedDateOfBirth().format(dateTimeFormatter));
+        }
         if (c.getData().getDeceasedDateOfDeath() != null) {
             caseMatchBuilder.dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter));
         }
