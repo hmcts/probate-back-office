@@ -9,11 +9,11 @@ module.exports = {
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
     TestTimeToWaitForText: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 60),
     TestActionWaitTime: parseInt(process.env.BO_E2E_TEST_ACTION_WAIT_TIME || '1500'),
-    TestAutoDelayEnabled: process.env.BO_E2E_AUTO_DELAY_ENABLED === 'true',
+    TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvUser: process.env.TEST_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvPassword: process.env.TEST_USER_PASSWORD || 'Pa55word11',
     TestEnvProfUser: process.env.PROF_USER_EMAIL || 'ProbateSolicitor1@gmail.com',
-    TestEnvProfPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
+    TestEnvProfPassword: process.env.PROF_USER_PASSWORD || 'Pa55word11',
     TestForXUI: process.env.TESTS_FOR_XUI_SERVICE === 'true',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
     TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
