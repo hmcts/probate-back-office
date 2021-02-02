@@ -26,6 +26,7 @@ public class CaseDataParent {
     protected String solsSolicitorWillSignSOT;
     protected String dispenseWithNotice;
     protected String titleAndClearingType;
+    protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
     protected String actingTrustCorpName;
     protected String positionInTrustCorp;

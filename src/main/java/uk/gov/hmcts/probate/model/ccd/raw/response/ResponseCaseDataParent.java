@@ -39,6 +39,7 @@ public class ResponseCaseDataParent {
 
     protected String dispenseWithNotice;
     protected String titleAndClearingType;
+    protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
     protected String actingTrustCorpName;
     protected String positionInTrustCorp;

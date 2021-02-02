@@ -676,6 +676,7 @@ public class CallbackResponseTransformer {
                 .solsSolicitorWillSignSOT(caseData.getSolsSolicitorWillSignSOT())
                 .dispenseWithNotice(caseData.getDispenseWithNotice())
                 .titleAndClearingType(caseData.getTitleAndClearingType())
+                .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
                 .trustCorpName(caseData.getTrustCorpName())
                 .actingTrustCorpName(caseData.getActingTrustCorpName())
                 .positionInTrustCorp(caseData.getPositionInTrustCorp())
