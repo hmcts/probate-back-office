@@ -1,11 +1,132 @@
+tags:
+  probate-ccd-stack: false
+
+postgresql:
+  enabled: true
+  image:
+    tag: '11.3.0'
+  resources:
+    requests:
+      cpu: 25m
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
+  persistence:
+    enabled: false
+
+idam-pr:
+  enabled: true
+  releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
+  redirect_uris:
+    Probate:
+      - https://${SERVICE_FQDN}/oauth2/callback
+    XUI:
+      - https://xui-${SERVICE_FQDN}/oauth2/callback
+      - http://xui-${SERVICE_FQDN}/oauth2/callback
+    CCD:
+      - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+ccd:
+  ccd:
+    adminWeb:
+      enabled: false
+    apiGatewayWeb:
+      enabled: true
+    definitionImporter:
+      enabled: false
+    managementWeb:
+      enabled: false
+    s2s:
+      enabled: false
+    postgresql:
+      enabled: false
+
+  global:
+    ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
+    ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
+    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
+    ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
+    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
+    idamApiUrl: https://idam-api.aat.platform.hmcts.net
+    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    postgresUsername: hmcts
+    postgresPassword: hmcts
+    devMode: true
+
+  ccd-api-gateway-web:
+    nodejs:
+      imagePullPolicy: Always
+      environment:
+        ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
+        IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
+        IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
+        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+      ingressHost: gateway-${SERVICE_FQDN}
+      ingressIP: ${INGRESS_IP}
+      keyVaults: []
+  ccd-data-store-api:
+    java:
+      imagePullPolicy: Always
+      environment:
+        DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
+        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+      keyVaults: []
+      #ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+  ccd-definition-store-api:
+    java:
+      imagePullPolicy: Always
+      environment:
+        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
+        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+      keyVaults: []
+      #ingressHost: ccd-definition-store-${SERVICE_FQDN}
+  ccd-user-profile-api:
+    java:
+      imagePullPolicy: Always
+      enviroment:
+        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+      keyVaults: []
+      #ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+  ccd-user-profile-importer:
+    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
+    users:
+      - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
+      - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
+
+xui-webapp:
+  enabled: true
+  nodejs:
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-xui-webapp
+    image: hmctspublic.azurecr.io/xui/webapp:latest
+    ingressHost: xui-${SERVICE_FQDN}
+    environment:
+      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
+      SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
+      JURISDICTIONS: PROBATE
+
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
-    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
-    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
-    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+    PROBATE_POSTGRESQL_USER: "hmcts"
+    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
+    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
+    PROBATE_POSTGRESQL_DATABASE: probate
+    #CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    #SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    #CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
 
   keyVaults:
     probate:
@@ -24,6 +145,5 @@ java:
         - pdfServiceHealthUrl
         - idam-secret-probate
         - idamRedirectUrl
+        - launchdarkly-key
 
-  postgresql:
-    enabled: true
