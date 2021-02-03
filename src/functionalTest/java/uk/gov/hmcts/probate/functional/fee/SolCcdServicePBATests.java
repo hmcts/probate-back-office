@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -56,7 +57,7 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
     }
 
     private static void stubCreditAccountPayment(String response) {
-        wireMockServer.stubFor(get(urlEqualTo("/refdata/external/v1/organisations/pbas?email=probatesolicitortestorgtest1@gmail.com"))
+        wireMockServer.stubFor(get(urlMatching("\\/(refdata\\/external\\/v1\\/organisations\\/pbas\\?email=.+)"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
