@@ -1,6 +1,10 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import uk.gov.hmcts.probate.htmlrendering.*;
+import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
+import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
+import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
+import uk.gov.hmcts.probate.htmlrendering.SecondaryTextRenderer;
+import uk.gov.hmcts.probate.htmlrendering.UnorderedListRenderer;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -20,18 +24,19 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
         final LocalDate submitLocalDate = submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
         final LocalDate authDate = caseData.getAuthenticatedDate();
         String willType = caseData.getSolsWillType();
-        // switch statement inside rendering requires not null, default to gop if not provided (though will not be relevant to returned html),
+        // switch statement inside rendering requires not null, default to gop
+        // if not provided (though will not be relevant to returned html),
         // in order to prevent test failures
         if (willType == null) {
             willType = "WillLeft";
         }
         return
             TaskStateRenderer.renderByReplace(tlState,
-                    ParagraphRenderer.renderByReplace(
-                        GridRenderer.renderByReplace(
-                                SecondaryTextRenderer.renderByReplace(
-                                        HeadingRenderer.renderByReplace(
-                                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
-                                                    details.getId(), willType, caseData.getSolsSOTNeedToUpdate(), authDate, submitLocalDate);
+                ParagraphRenderer.renderByReplace(
+                    GridRenderer.renderByReplace(
+                        SecondaryTextRenderer.renderByReplace(
+                            HeadingRenderer.renderByReplace(
+                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
+                                    details.getId(), willType, caseData.getSolsSOTNeedToUpdate(), authDate, submitLocalDate);
     }
 }

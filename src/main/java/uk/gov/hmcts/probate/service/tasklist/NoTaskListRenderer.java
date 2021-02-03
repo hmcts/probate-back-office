@@ -43,7 +43,8 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     }
 
     protected abstract String renderContactDetails();
-    protected abstract String renderBody(CaseDetails caseDetails);
-    protected abstract String getWhatNextText();
 
+    protected abstract String renderBody(CaseDetails caseDetails);
+
+    protected abstract String getWhatNextText();
 }

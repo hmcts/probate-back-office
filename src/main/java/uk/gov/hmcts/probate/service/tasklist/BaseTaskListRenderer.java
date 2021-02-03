@@ -5,6 +5,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 public abstract class BaseTaskListRenderer {
     public abstract String renderHtml(CaseDetails caseDetails);
+    
     protected String renderMainHeader() {
         return HeadingRenderer.render("Case progress");
     }
