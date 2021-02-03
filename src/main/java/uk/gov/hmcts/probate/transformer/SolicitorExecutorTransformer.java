@@ -161,14 +161,11 @@ public class SolicitorExecutorTransformer {
                 new ArrayList<>() : new ArrayList<>(executorList);
 
         // If list does NOT contain an solicitor, then update
-        if (!listContainsSolicitor(tempExecsList))  {
+        if (!listContainsSolicitor(tempExecsList) && isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
 
-            if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
+            // Add solicitor to list
+            tempExecsList = solicitorExecutorService.addSolicitorAsNotApplyingExecutorToList(caseData);
 
-                // Add solicitor to list
-                tempExecsList = solicitorExecutorService.addSolicitorAsNotApplyingExecutorToList(caseData);
-
-            }
         }
 
         builder.solsAdditionalExecutorList(tempExecsList);
