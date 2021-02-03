@@ -961,6 +961,11 @@ public class    CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
+                .dispenseWithNoticeLeaveGiven("No")
+                .dispenseWithNoticeOverview("Overview")
+                .dispenseWithNoticeSupportingDocs("Supporting docs")
+                .executorWithPowerReserved("Name")
+                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .positionInTrustCorp("Solicitor")
@@ -973,6 +978,11 @@ public class    CaseDataTest {
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
+        assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
+        assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
+        assertEquals("Name", caseData.getExecutorWithPowerReserved());
+        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
@@ -992,6 +1002,11 @@ public class    CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
+                .dispenseWithNoticeLeaveGiven("No")
+                .dispenseWithNoticeOverview("Overview")
+                .dispenseWithNoticeSupportingDocs("Supporting docs")
+                .executorWithPowerReserved("Name")
+                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTNoT")
                 .titleAndClearingTypeNoT("Reason")
                 .trustCorpName("Trust corp name")
@@ -1005,6 +1020,11 @@ public class    CaseDataTest {
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
+        assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
+        assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
+        assertEquals("Name", caseData.getExecutorWithPowerReserved());
+        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTNoT", caseData.getTitleAndClearingType());
         assertEquals("Reason", caseData.getTitleAndClearingTypeNoT());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
@@ -1025,6 +1045,11 @@ public class    CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
+                .dispenseWithNoticeLeaveGiven("No")
+                .dispenseWithNoticeOverview("Overview")
+                .dispenseWithNoticeSupportingDocs("Supporting docs")
+                .executorWithPowerReserved("Name")
+                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnerExecutorName("Fred Bloggs")
@@ -1034,6 +1059,11 @@ public class    CaseDataTest {
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
+        assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
+        assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
+        assertEquals("Name", caseData.getExecutorWithPowerReserved());
+        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
