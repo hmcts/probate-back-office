@@ -60,8 +60,6 @@ public class PBAValidationService {
             throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
         }
         String s2s = authTokenGenerator.generate();
-        log.info("Authorization:"+authToken);
-        log.info("s2s:"+s2s);
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
