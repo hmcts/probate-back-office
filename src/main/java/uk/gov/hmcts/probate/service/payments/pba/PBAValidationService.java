@@ -39,17 +39,17 @@ public class PBAValidationService {
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
+        log.info("Getting user details");
         ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String emailId = result.get("email").toString().toLowerCase();
-        log.info("emailId"+emailId);
         URI uri = buildUri(emailId);
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
+        log.info("Getting org details");
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
-        log.info("pbaOrganisationEntityResponse : {}", pbaOrganisationResponse);
 
         return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
     }
