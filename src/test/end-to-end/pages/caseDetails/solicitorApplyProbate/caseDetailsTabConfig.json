@@ -5,7 +5,8 @@
     "Enter the gross value of the estate",
     "Enter the net value of the estate",
     "Did the deceased leave a will?",
-    "Did the deceased have assets in any other names?"
+    "Did the deceased have assets in any other names?",
+    "Please state the title and clearing for making the application, limitations and any information in support"
   ],
   "dataKeys": [
     "page2_solsIHTFormValue",
