@@ -49,7 +49,8 @@ def secrets = [
                 secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
         ],
         'ccd-${env}'      : [
-                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
+                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
+                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
 
@@ -75,17 +76,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
 
-//  before('buildinfra:prod') {
-//     error 'Deliberately breaking pipeline to prevent prod deployment'
-//  }
-
-    after('test') {
-    try {
-      //sh './gradlew pitest'
-    } finally {
-      //steps.archiveArtifacts "build/reports/pitest/**/*.*"
-    }
-
+  after('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
     publishHTML target: [
@@ -104,15 +95,6 @@ withPipeline("java", product, component) {
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
             reportName           : "back-office Code Coverage Report"
-    ]
-
-    publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "build/reports/findbugs",
-            reportFiles          : "main.html",
-            reportName           : "back-office find Bugs Report"
     ]
   }
 
