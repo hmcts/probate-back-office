@@ -13,13 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
 public class SolicitorExecutorService {
 
-    private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String SOLICITOR_ID = "solicitor";
 
 
     public List<CollectionMember<AdditionalExecutorApplying>> updateSolicitorApplyingExecutor(
@@ -27,7 +26,7 @@ public class SolicitorExecutorService {
 
         List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
 
-        if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
+        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorFromApplyingList(execs);
         }
         updatedExecs.add(getSolicitorApplyingExecutor(caseData));
@@ -41,7 +40,7 @@ public class SolicitorExecutorService {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> updatedExecs = new ArrayList<>();
 
-        if (execs.stream().anyMatch(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))) {
+        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorFromNotApplyingList(execs);
         }
         updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
@@ -55,7 +54,7 @@ public class SolicitorExecutorService {
         if (execsApplying.isEmpty()) return execsApplying;
 
         return execsApplying.stream()
-                .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
+                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -65,7 +64,7 @@ public class SolicitorExecutorService {
         if (execsNotApplying.isEmpty()) return execsNotApplying;
 
         return execsNotApplying.stream()
-                .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
+                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +76,7 @@ public class SolicitorExecutorService {
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .build();
 
-        return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
+        return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> getSolicitorNotApplyingExecutor(CaseData caseData) {
@@ -86,48 +85,27 @@ public class SolicitorExecutorService {
                 .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
                 .build();
 
-        return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
+        return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorAsNotApplyingExecutorToList(CaseData caseData) {
 
         // Initialise list
-        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
-        if (execs != null && !execs.isEmpty()) updatedExecs.addAll(execs);
+        List<CollectionMember<AdditionalExecutor>> execsList = caseData.getSolsAdditionalExecutorList();
+        List<CollectionMember<AdditionalExecutor>> tempExecsList = execsList == null || execsList.isEmpty() ?
+                new ArrayList<>() : new ArrayList<>(execsList);
 
-        AdditionalExecutor solicitor = AdditionalExecutor.builder()
-                .additionalExecForenames(caseData.getSolsSOTForenames())
-                .additionalExecLastname(caseData.getSolsSOTSurname())
-                .additionalExecNameOnWill(NO)
-                .additionalApplying(YES)
-                .additionalExecAddress(caseData.getSolsSolicitorAddress())
-                .build();
-
-        CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
-        updatedExecs.add(updatedExec);
-
-        return updatedExecs;
-    }
-
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
-        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
-
-        if (execs != null && !execs.isEmpty()) {
-            updatedExecs.addAll(execs);
-        }
-
-        AdditionalExecutor solicitor = AdditionalExecutor.builder()
+        // Add solicitor as executor to list
+        CollectionMember<AdditionalExecutor> solicitorExecutor = new CollectionMember<>(SOLICITOR_ID, AdditionalExecutor.builder()
                 .additionalExecForenames(caseData.getSolsSOTForenames())
                 .additionalExecLastname(caseData.getSolsSOTSurname())
                 .additionalExecNameOnWill(NO)
                 .additionalApplying(NO)
                 .additionalExecReasonNotApplying(caseData.getSolsSolicitorNotApplyingReason())
-                .build();
+                .build());
+        tempExecsList.add(solicitorExecutor);
 
-        CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
-        updatedExecs.add(updatedExec);
-
-        return updatedExecs;
+        return tempExecsList;
     }
 }
 

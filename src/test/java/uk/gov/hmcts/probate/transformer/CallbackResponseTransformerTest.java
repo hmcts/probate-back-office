@@ -1090,7 +1090,7 @@ public class CallbackResponseTransformerTest {
     public void verifySolicitorExecutorTranformerIsCalled() {
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1)).solicitorIsApplyingTransformation(any(), any());
+        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
     }
 
         @Test

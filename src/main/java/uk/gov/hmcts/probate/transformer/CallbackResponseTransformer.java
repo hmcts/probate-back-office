@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -1022,19 +1021,16 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
-        solicitorExecutorTransformer.populateAdditionalExecutorList(caseData, builder);
+        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
+        solicitorExecutorTransformer.setExecutorApplyingListsWithSolicitorInfo(caseData, builder);
 
         builder
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
-            List<CollectionMember<AdditionalExecutor>> solsExecutors = caseData.getSolsAdditionalExecutorList();
-            solsExecutors = solicitorExecutorTransformer.mapSolsAdditionalExecutors(caseData, solsExecutors);
 
-            builder.solsAdditionalExecutorList(solsExecutors);
-
+            solicitorExecutorTransformer.addSolicitorToSolsAdditionalExecList(caseData, builder);
             solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
         }
 
@@ -1128,7 +1124,7 @@ public class CallbackResponseTransformer {
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
-        solicitorExecutorTransformer.solicitorIsApplyingTransformation(caseData, builder);
+        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, builder);
     }
 
