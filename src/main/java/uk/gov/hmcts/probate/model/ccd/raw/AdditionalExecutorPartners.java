@@ -9,8 +9,6 @@ public class AdditionalExecutorPartners {
 
     private final String additionalExecForenames;
     private final String additionalExecLastname;
-    private final String additionalExecNameOnWill;
-    private final String additionalExecAliasNameOnWill;
     private final SolsAddress additionalExecAddress;
 
 }
