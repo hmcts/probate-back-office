@@ -12,6 +12,13 @@
     "eslint-src": "NODE_PATH=. eslint ./src",
     "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
+    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
+    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test:fullfunctional": "./bin/run-e2e-tests.sh",
+    "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
+
+
+    "dev-scripts-comment": "Developer scripts for running/debugging a single test locally are specified below.",
     "test-e2e-caveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat2": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath2.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat3": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath3.js -c ./src/test/end-to-end/ --steps",
@@ -23,11 +30,7 @@
     "test-e2e-sol-grantOfProbateMulti": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateMultiExecutor.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-sol-grantOfProbateNoWill": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateNoWill.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-sol-grantOfProbateWillAnnexed": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexed.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbateWillAnnexedFailure": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexedFailure.js -c ./src/test/end-to-end/ --steps",
-    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
-    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
-    "test:fullfunctional": "./bin/run-e2e-tests.sh",
-    "test:crossbrowser": "./bin/run-crossbrowser-tests.sh"
+    "test-e2e-sol-grantOfProbateWillAnnexedFailure": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexedFailure.js -c ./src/test/end-to-end/ --steps"
   },
   "dependencies": {
     "html_codesniffer": "^2.5.1",

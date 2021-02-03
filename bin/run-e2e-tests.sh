@@ -26,4 +26,3 @@ export E2E_OUTPUT_DIR='./functional-output/ccd'
 
 yarn test:functional
 
-
