@@ -40,7 +40,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ResponseCaseData extends ResponseCaseDataParent {
 

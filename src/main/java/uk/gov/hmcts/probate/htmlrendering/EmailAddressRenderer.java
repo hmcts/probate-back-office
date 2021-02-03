@@ -10,7 +10,7 @@ public class EmailAddressRenderer {
     // pre-condition - html contains <[emailAddress]/>
     public static String renderByReplace(String html, String emailAddress) {
         return html == null ? null :
-                html.replaceAll(Pattern.quote("<" + emailAddress + "/>"), "<a href=\"mailto:" + emailAddress +
-                        "\" class=\"govuk-link\" target=\"_blank\">" + emailAddress + "</a>");
+                html.replaceAll(Pattern.quote("<" + emailAddress + "/>"), "<a href=\"mailto:" + emailAddress
+                        + "\" class=\"govuk-link\" target=\"_blank\">" + emailAddress + "</a>");
     }
 }

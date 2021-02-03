@@ -15,6 +15,7 @@ public class HeadingRenderer {
     public static String render(String headerText) {
         return format(OPEN_TAG + "%s" + CLOSE_TAG, headerText);
     }
+
     public static String renderByReplace(String html) {
         return html == null ? null :
                 html.replaceAll(Pattern.quote("<h>"), OPEN_TAG)

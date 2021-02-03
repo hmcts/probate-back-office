@@ -1,4 +1,5 @@
 package uk.gov.hmcts.probate.model.caseprogress;
+
 import lombok.Getter;
 import uk.gov.hmcts.probate.model.StateConstants;
 
