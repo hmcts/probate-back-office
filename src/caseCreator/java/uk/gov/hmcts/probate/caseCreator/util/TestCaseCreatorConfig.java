@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.caseCreator.util;
+package uk.gov.hmcts.probate.casecreator.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

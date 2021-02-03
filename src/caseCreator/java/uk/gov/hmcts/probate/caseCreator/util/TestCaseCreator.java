@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.caseCreator.util;
+package uk.gov.hmcts.probate.casecreator.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -124,8 +124,8 @@ public class TestCaseCreator {
             .headers(headersWithUserId)
             .baseUri(solCcdServiceUrl)
             .body(rep)
-            .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/" + caseType + "/cases").
-            then()
+            .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/" + caseType + "/cases")
+            .then()
             .statusCode(201);
     }
 
@@ -134,18 +134,17 @@ public class TestCaseCreator {
         return getHeadersWithUserId(generateServiceToken());
     }
 
-
-    public String generateServiceToken() {
-        String serviceToken = relaxedServiceAuthTokenGenerator.generate();
-        log.info("Service Token: {}", serviceToken);
-        return serviceToken;
-    }
-
     public Headers getHeadersWithUserId(String serviceToken) throws Exception {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
             new Header("Authorization", generateUserTokenWithNoRoles()));
+    }
+
+    public String generateServiceToken() {
+        String serviceToken = relaxedServiceAuthTokenGenerator.generate();
+        log.info("Service Token: {}", serviceToken);
+        return serviceToken;
     }
 
     private String generateEventToken(String role, String eventName, Headers headersWithUserId, String caseType) {
