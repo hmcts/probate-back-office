@@ -6,7 +6,15 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -911,7 +919,8 @@ public class    CaseDataTest {
     @Test
     public void shouldApplyParentAttributes() {
         DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
-        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder()
+                .code("solsAmendLegalStatmentSelect").build()).build();
         
         final CaseData caseData = CaseData.builder().primaryApplicantForenames("PAFN")
             .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
@@ -919,7 +928,8 @@ public class    CaseDataTest {
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
-            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
+            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
+                .registrySequenceNumber("registrySequenceNumber")
             .build();
 
         assertEquals("PAFN", caseData.getPrimaryApplicantForenames());

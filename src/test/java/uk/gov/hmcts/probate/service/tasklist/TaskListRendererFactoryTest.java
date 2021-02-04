@@ -1,7 +1,6 @@
-package uk.gov.hmcts.probate.service.taskList;
+package uk.gov.hmcts.probate.service.tasklist;
 
 import org.junit.Test;
-import uk.gov.hmcts.probate.service.tasklist.*;
 
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
@@ -35,6 +34,7 @@ public class TaskListRendererFactoryTest {
         renderer = taskListRendererFactory.getTaskListRenderer(BO_CASE_STOPPED.getId());
         assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
     }
+
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStoppedReissue() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_REISSUE.getId());
