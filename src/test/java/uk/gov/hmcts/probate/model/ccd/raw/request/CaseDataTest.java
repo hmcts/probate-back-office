@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class    CaseDataTest {
+public class CaseDataTest {
 
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
@@ -953,72 +953,20 @@ public class    CaseDataTest {
         assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
     }
 
-//    @Test
-//    public void shouldApplyTrustCorpAttributes() {
-//        CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
-//        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
-//        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-//
-//        final CaseData caseData = CaseData.builder()
-//                .dispenseWithNotice("Yes")
-//                .titleAndClearingType("TCTTrustCorpResWithApp")
-//                .trustCorpName("Trust corp name")
-//                .positionInTrustCorp("Solicitor")
-//                .actingTrustCorpName("Acting trust corp name")
-//                .positionInTrustCorp("Solicitor")
-//                .additionalExecutorsTrustCorp("Yes")
-//                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
-//                .lodgementAddress("London")
-//                .lodgementDate(LOCAL_DATE)
-//                .build();
-//
-//        assertEquals("Yes", caseData.getDispenseWithNotice());
-//        assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
-//        assertEquals("Trust corp name", caseData.getTrustCorpName());
-//        assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
-//        assertEquals("Solicitor", caseData.getPositionInTrustCorp());
-//        assertEquals("Yes", caseData.getAdditionalExecutorsTrustCorp());
-//        assertEquals("Executor name", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
-//        assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
-//        assertEquals("London", caseData.getLodgementAddress());
-//        assertEquals(LOCAL_DATE, caseData.getLodgementDate());
-//    }
-
-//    @Test
-//    public void shouldApplyNonTrustCorpOptionAttributes() {
-//        CollectionMember<OtherPartnerExecutorApplying> otherPartner = new CollectionMember<>(new OtherPartnerExecutorApplying("Jim Smith"));
-//        List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersList = new ArrayList<>();
-//        otherPartnersList.add(otherPartner);
-//
-//        final CaseData caseData = CaseData.builder()
-//                .dispenseWithNotice("Yes")
-//                .titleAndClearingType("TCTPartSuccPowerRes")
-//                .nameOfFirmNamedInWill("Test Solicitor Ltd")
-//                .otherPartnerExecutorName("Fred Bloggs")
-//                .anyPartnersApplyingToActAsExecutor("Yes")
-//                .otherPartnersApplyingAsExecutors(otherPartnersList)
-//                .nameOfSucceededFirm("New Firm Ltd")
-//                .build();
-//
-//        assertEquals("Yes", caseData.getDispenseWithNotice());
-//        assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
-//        assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
-//        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
-//        assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
-//        assertEquals("Jim Smith", caseData.getOtherPartnersApplyingAsExecutors().get(0).getValue().getOtherPartnerExecutorName());
-//        assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
-//    }
-
     @Test
-    public void shouldApplyTrustCorpNoneOfTheseAttributes() {
-        CollectionMember<AdditionalExecutorTrustCorp> additionalExecutorTrustCorp = new CollectionMember<>(new AdditionalExecutorTrustCorp("Executor name", "Solicitor"));
-        List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList = new ArrayList<>();
+    public void shouldApplyTrustCorpAttributes() {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor",
+                        mock(SolsAddress.class)));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
-                .titleAndClearingType("TCTNoT")
-                .titleAndClearingTypeNoT("Reason")
+                .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .positionInTrustCorp("Solicitor")
                 .actingTrustCorpName("Acting trust corp name")
@@ -1029,17 +977,65 @@ public class    CaseDataTest {
                 .lodgementDate(LOCAL_DATE)
                 .build();
 
-        assertEquals("TCTNoT", caseData.getTitleAndClearingType());
         assertEquals("Yes", caseData.getDispenseWithNotice());
-        assertEquals("Reason", caseData.getTitleAndClearingTypeNoT());
+        assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
         assertEquals("Solicitor", caseData.getPositionInTrustCorp());
         assertEquals("Yes", caseData.getAdditionalExecutorsTrustCorp());
-        assertEquals("Executor name", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpName());
-        assertEquals("Solicitor", caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecutorTrustCorpPosition());
+        assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
+        assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
     }
-        assertEquals("London", caseData.getLodgementAddress());
+
+    @Test
+    public void shouldApplyNonTrustCorpOptionAttributes() {
+        CollectionMember<AdditionalExecutorPartners> otherPartner = new CollectionMember<>(
+                new AdditionalExecutorPartners(
+                        "Executor forename",
+                        "Executor surname",
+                        mock(SolsAddress.class)));
+        List<CollectionMember<AdditionalExecutorPartners>> otherPartnersList = new ArrayList<>();
+        otherPartnersList.add(otherPartner);
+
+        final CaseData caseData = CaseData.builder()
+                .dispenseWithNotice("Yes")
+                .titleAndClearingType("TCTPartSuccPowerRes")
+                .nameOfFirmNamedInWill("Test Solicitor Ltd")
+                .otherPartnerExecutorName("Fred Bloggs")
+                .anyPartnersApplyingToActAsExecutor("Yes")
+                .otherPartnersApplyingAsExecutors(otherPartnersList)
+                .nameOfSucceededFirm("New Firm Ltd")
+                .build();
+
+        assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
+        assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
+        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
+        assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
+        assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
+        assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
+    }
+
+    @Test
+    public void shouldApplyTrustCorpNoneOfTheseAttributes() {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor",
+                        mock(SolsAddress.class)));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        final CaseData caseData = CaseData.builder()
+                .titleAndClearingType("TCTNoT")
+                .titleAndClearingTypeNoT("Reason")
+                .build();
+
+        assertEquals("TCTNoT", caseData.getTitleAndClearingType());
+        assertEquals("Reason", caseData.getTitleAndClearingTypeNoT());
+
+    }
 
 }
