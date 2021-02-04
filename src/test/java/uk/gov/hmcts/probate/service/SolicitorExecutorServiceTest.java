@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -46,15 +47,9 @@ public class SolicitorExecutorServiceTest {
     @Mock
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingMock;
 
-    @Mock
-    private List<CollectionMember<AdditionalExecutor>> solAdditionalExecutorsApplyingMock;
-
-    @Mock
-    private List<CollectionMember<AdditionalExecutor>> solAdditionalExecutorsNotApplyingMock;
-
     private CaseData.CaseDataBuilder caseDataBuilder;
 
-    private static final String SOLICITOR_SOT_ID = "solicitor";
+    private static final String SOLICITOR_ID = "solicitor";
     private static final String SOLICITOR_SOT_NAME = "Solicitor_fn Solicitor_mn Solicitor_ln";
     private static final String SOLICITOR_SOT_FORENAMES = "Solicitor_fn Solicitor_mn";
     private static final String SOLICITOR_SOT_SURNAME = "Solicitor_ln";
@@ -114,10 +109,8 @@ public class SolicitorExecutorServiceTest {
         additionalExecutorsNotApplyingMock = new ArrayList<>();
         additionalExecutorsApplyingMock.add(new CollectionMember<>(null, ADDITIONAL_EXECUTOR_APPLYING));
         additionalExecutorsNotApplyingMock.add(new CollectionMember<>(null, ADDITIONAL_EXECUTOR_NOT_APPLYING));
-        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, ADDITIONAL_SOL_EXECUTOR_APPLYING));
-        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, ADDITIONAL_SOL_EXECUTOR_NOT_APPLYING));
-        solAdditionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, SOLICITOR_ADDITIONAL_EXECUTOR_APPLYING));
-        solAdditionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, SOLICITOR_ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_SOL_EXECUTOR_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_SOL_EXECUTOR_NOT_APPLYING));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -130,7 +123,7 @@ public class SolicitorExecutorServiceTest {
 
         assertEquals(2, newExecsApplying.size());
         assertEquals(SOLICITOR_SOT_NAME + " UPDATED", newExecsApplying.get(1).getValue().getApplyingExecutorName());
-        assertEquals(SOLICITOR_SOT_ID, newExecsApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsApplying.get(1).getId());
     }
 
     @Test
@@ -140,7 +133,7 @@ public class SolicitorExecutorServiceTest {
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_SOT_NAME + " UPDATED", newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
-        assertEquals(SOLICITOR_SOT_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
     }
 
     @Test
@@ -153,7 +146,7 @@ public class SolicitorExecutorServiceTest {
         newExecsApplying = underTest.updateSolicitorApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsApplyingMock);
 
         assertEquals(2, newExecsApplying.size());
-        assertEquals(SOLICITOR_SOT_ID, newExecsApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsApplying.get(1).getId());
     }
 
     @Test
@@ -166,7 +159,7 @@ public class SolicitorExecutorServiceTest {
         newExecsNotApplying = underTest.addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
     }
 
     @Test
@@ -192,20 +185,19 @@ public class SolicitorExecutorServiceTest {
     }
 
     @Test
-    public void shouldAddSolApplyingExecForSolicitorJourney() {
-        List<CollectionMember<AdditionalExecutor>> newExecsApplying;
-        newExecsApplying = underTest.addSolicitorApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), new ArrayList<>());
+    public void shouldAddSolicitorAsNotApplyingExecToList() {
+        caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAMES)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(mock(SolsAddress.class))
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON);
 
-        assertEquals(1, newExecsApplying.size());
-        assertEquals(SOLICITOR_SOT_ID, newExecsApplying.get(0).getId());
-    }
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-    @Test
-    public void shouldAddSolNotApplyingExecForSolicitorJourney() {
-        List<CollectionMember<AdditionalExecutor>> newExecsNotApplying;
-        newExecsNotApplying = underTest.addSolicitorNotApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), new ArrayList<>());
+        List<CollectionMember<AdditionalExecutor>> updateExecsList = underTest.addSolicitorAsNotApplyingExecutorToList(callbackRequestMock.getCaseDetails().getData());
 
-        assertEquals(1, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_ID, newExecsNotApplying.get(0).getId());
+        assertEquals(1, updateExecsList.size());
+        assertEquals(SOLICITOR_ID, updateExecsList.get(0).getId());
+        assertEquals(SOLICITOR_ADDITIONAL_EXECUTOR_NOT_APPLYING, updateExecsList.get(0).getValue());
     }
 }

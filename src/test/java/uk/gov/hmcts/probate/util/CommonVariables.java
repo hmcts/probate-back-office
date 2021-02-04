@@ -18,7 +18,7 @@ public class CommonVariables {
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
     public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);;
     public static final String SOLICITOR_NOT_APPLYING_REASON = "Not applying";
-    public static final String SOL_AS_EXEC_ID = "solicitor";
+    public static final String SOLICITOR_ID = "solicitor";
 
     public static final String PRIMARY_APPLICANT_FORENAME = "Primary app forename";
     public static final String PRIMARY_APPLICANT_SURNAME = "Primary app surname";
@@ -34,6 +34,7 @@ public class CommonVariables {
     public static final String EXEC_EMAIL = "executor1@probate-test.com";
     public static final String EXEC_NOTIFIED = YES;
     public static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
+    public static final String EXEC_ID = "exec";
 
     public static final String GOP = "WillLeft";
 
@@ -42,7 +43,5 @@ public class CommonVariables {
     public static final String SOLS_ALIAS_NAME = "AliasFN AliasSN";
 
     public static final String STOP_REASON = "Some reason";
-
-
 
 }
