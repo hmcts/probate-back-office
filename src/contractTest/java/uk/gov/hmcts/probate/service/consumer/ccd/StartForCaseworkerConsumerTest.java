@@ -29,7 +29,7 @@ public class StartForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
     public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4456, this);
 
 
-    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOfficeService")
+    @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOffice")
     public RequestResponsePact startForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
         // @formatter:off
         return builder

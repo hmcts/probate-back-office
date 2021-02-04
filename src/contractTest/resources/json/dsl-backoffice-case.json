@@ -31,7 +31,6 @@
       "PostTown": "London"
     },
     "deceasedAliasNameList": [
-
     ],
     "deceasedAnyOtherNames": "No",
     "deceasedDateOfBirth": "1930-01-01",
@@ -115,7 +114,6 @@
     "primaryApplicantSameWillName": "Yes",
     "primaryApplicantSurname": "Applicant ln",
     "probateNotificationsGenerated": [
-
     ],
     "registryAddress": "Line 1 Ox\nLine 2 Ox\nLine 3 Ox\nPostCode Ox\n",
     "registryEmailAddress": "ctsc@email.com",
@@ -148,7 +146,6 @@
     "executorsNotApplying": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "deceasedDateOfDeath": "PUBLIC",
@@ -156,7 +153,6 @@
     "probateSotDocumentsGenerated": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtReferenceNumber": "PUBLIC",
@@ -195,7 +191,6 @@
     "executorsApplying": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtGrossValue": "PUBLIC",
@@ -216,13 +211,11 @@
         "executorsNotApplying": {
           "classification": "PUBLIC",
           "value": [
-
           ]
         },
         "executorsApplying": {
           "classification": "PUBLIC",
           "value": [
-
           ]
         }
       }
@@ -258,7 +251,6 @@
     "caseMatches": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "primaryApplicantAddress": {
@@ -304,7 +296,6 @@
     "probateDocumentsGenerated": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtFormCompletedOnline": "PUBLIC",
@@ -343,7 +334,6 @@
     "executorsNotApplying": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "deceasedDateOfDeath": "PUBLIC",
@@ -351,7 +341,6 @@
     "probateSotDocumentsGenerated": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtReferenceNumber": "PUBLIC",
@@ -390,7 +379,6 @@
     "executorsApplying": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtGrossValue": "PUBLIC",
@@ -411,13 +399,11 @@
         "executorsNotApplying": {
           "classification": "PUBLIC",
           "value": [
-
           ]
         },
         "executorsApplying": {
           "classification": "PUBLIC",
           "value": [
-
           ]
         }
       }
@@ -453,7 +439,6 @@
     "caseMatches": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "primaryApplicantAddress": {
@@ -499,7 +484,6 @@
     "probateDocumentsGenerated": {
       "classification": "PUBLIC",
       "value": [
-
       ]
     },
     "ihtFormCompletedOnline": "PUBLIC",

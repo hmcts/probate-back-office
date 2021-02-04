@@ -34,7 +34,7 @@ public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTes
     @Rule
     public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4457, this);
 
-    @Pact(consumer = "probate_backOfficeService")
+    @Pact(consumer = "probate_backOffice")
     public RequestResponsePact submitEventForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
         return builder
             .given("A Submit Event for a Caseworker is requested", setUpStateMapForProviderWithCaseData(APPLY_FOR_GRANT))
