@@ -21,9 +21,9 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
 
-#  - name: elasticsearch
-#    version: 13.0.2
-#    repository: "https://charts.bitnami.com/bitnami"
-#  - name: logstash
-#    version: ~2.4.1
-#    repository: '@hmctspublic'
+  - name: elasticsearch
+    version: 13.0.2
+    repository: "https://charts.bitnami.com/bitnami"
+  - name: logstash
+    version: ~2.4.1
+    repository: '@hmctspublic'
