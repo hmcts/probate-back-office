@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +31,9 @@ public class FindWillService {
     private ObjectMapper objectMapper;
     private uk.gov.hmcts.probate.model.ccd.raw.Document will;
 
-    public Document findWill(CallbackRequest callbackRequest){
+    public Document findWill(CaseData caseData){
         listOfUploadedWills = new ArrayList<UploadDocument>();
         listOfScannedWills = new ArrayList<ScannedDocument>();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if(caseData.getBoDocumentsUploaded() != null){
             for(CollectionMember<UploadDocument> document : caseData.getBoDocumentsUploaded()){

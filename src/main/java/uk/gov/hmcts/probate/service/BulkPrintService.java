@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.exception.BulkPrintException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -192,7 +193,12 @@ public class BulkPrintService {
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
-        String encodedWillDocument = getPdfAsBase64EncodedString(findWillService.findWill(callbackRequest), authHeaderValue, callbackRequest);
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document will = findWillService.findWill(caseData);
+        String encodedWillDocument = "";
+        if(will != null){
+            encodedWillDocument = getPdfAsBase64EncodedString(will, authHeaderValue, callbackRequest);
+        }
 
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
@@ -211,12 +217,15 @@ public class BulkPrintService {
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document willDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document willDocument;
+        if(!encodedWillDocument.matches("")){
+            willDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
+            documents.add(willDocument);
+        }
 
         documents.add(coversheetDocument);
         documents.add(document);
-        documents.add(willDocument);
 
         return documents;
     }
@@ -229,16 +238,22 @@ public class BulkPrintService {
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
-        String encodedWillDocument = getPdfAsBase64EncodedString(findWillService.findWill(callbackRequest), authHeaderValue, callbackRequest);
-        
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document will = findWillService.findWill(caseData);
+        String encodedWillDocument = "";
+        if(will != null){
+            encodedWillDocument = getPdfAsBase64EncodedString(will, authHeaderValue, callbackRequest);
+        }
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document willDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
-
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document willDocument;
+        if(!encodedWillDocument.matches("")){
+            willDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
+            documents.add(willDocument);
+        }
 
         documents.add(coversheetDocument);
-        documents.add(willDocument);
         documents.add(document);
 
         return documents;
