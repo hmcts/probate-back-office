@@ -968,10 +968,6 @@ public class CaseDataTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
-                .positionInTrustCorp("Solicitor")
-                .actingTrustCorpName("Acting trust corp name")
-                .positionInTrustCorp("Solicitor")
-                .additionalExecutorsTrustCorp("Yes")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LOCAL_DATE)
@@ -980,9 +976,6 @@ public class CaseDataTest {
         assertEquals("Yes", caseData.getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
-        assertEquals("Acting trust corp name", caseData.getActingTrustCorpName());
-        assertEquals("Solicitor", caseData.getPositionInTrustCorp());
-        assertEquals("Yes", caseData.getAdditionalExecutorsTrustCorp());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
@@ -1002,8 +995,6 @@ public class CaseDataTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
-                .otherPartnerExecutorName("Fred Bloggs")
-                .anyPartnersApplyingToActAsExecutor("Yes")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
                 .build();
@@ -1011,8 +1002,6 @@ public class CaseDataTest {
         assertEquals("Yes", caseData.getDispenseWithNotice());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
-        assertEquals("Fred Bloggs", caseData.getOtherPartnerExecutorName());
-        assertEquals("Yes", caseData.getAnyPartnersApplyingToActAsExecutor());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
     }

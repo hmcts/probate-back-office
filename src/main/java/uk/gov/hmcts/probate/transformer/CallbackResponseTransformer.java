@@ -675,9 +675,6 @@ public class CallbackResponseTransformer {
                 .titleAndClearingType(caseData.getTitleAndClearingType())
                 .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
                 .trustCorpName(caseData.getTrustCorpName())
-                .actingTrustCorpName(caseData.getActingTrustCorpName())
-                .positionInTrustCorp(caseData.getPositionInTrustCorp())
-                .additionalExecutorsTrustCorp(caseData.getAdditionalExecutorsTrustCorp())
                 .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
                 .lodgementAddress(caseData.getLodgementAddress())
                 .lodgementDate(ofNullable(caseData.getLodgementDate())
@@ -687,8 +684,6 @@ public class CallbackResponseTransformer {
                 .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
                 .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
                 .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
-                .otherPartnerExecutorName(caseData.getOtherPartnerExecutorName())
-                .anyPartnersApplyingToActAsExecutor(caseData.getAnyPartnersApplyingToActAsExecutor())
                 .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
                 .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors());
 

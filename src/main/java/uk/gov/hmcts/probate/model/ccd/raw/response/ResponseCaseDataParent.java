@@ -38,15 +38,10 @@ public class ResponseCaseDataParent {
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
-    protected String actingTrustCorpName;
-    protected String positionInTrustCorp;
-    protected String additionalExecutorsTrustCorp;
     protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected String lodgementAddress;
     protected String lodgementDate;
     protected String nameOfFirmNamedInWill;
-    protected String otherPartnerExecutorName;
-    protected String anyPartnersApplyingToActAsExecutor;
     protected String nameOfSucceededFirm;
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected String solsForenames;

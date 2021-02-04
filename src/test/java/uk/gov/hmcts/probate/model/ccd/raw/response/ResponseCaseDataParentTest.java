@@ -86,9 +86,6 @@ public class ResponseCaseDataParentTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
-                .actingTrustCorpName("Acting trust corp name")
-                .positionInTrustCorp("Solicitor")
-                .additionalExecutorsTrustCorp("Yes")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate("02-02-2020")
@@ -97,9 +94,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
-        assertEquals("Acting trust corp name", responseCaseDataParent.getActingTrustCorpName());
-        assertEquals("Solicitor", responseCaseDataParent.getPositionInTrustCorp());
-        assertEquals("Yes", responseCaseDataParent.getAdditionalExecutorsTrustCorp());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
@@ -119,8 +113,6 @@ public class ResponseCaseDataParentTest {
                 .dispenseWithNotice("Yes")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
-                .otherPartnerExecutorName("Fred Bloggs")
-                .anyPartnersApplyingToActAsExecutor("Yes")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
                 .build();
@@ -128,8 +120,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
         assertEquals("TCTPartSuccPowerRes", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
-        assertEquals("Fred Bloggs", responseCaseDataParent.getOtherPartnerExecutorName());
-        assertEquals("Yes", responseCaseDataParent.getAnyPartnersApplyingToActAsExecutor());
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
     }

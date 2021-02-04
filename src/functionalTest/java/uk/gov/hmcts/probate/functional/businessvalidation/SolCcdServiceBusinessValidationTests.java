@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -515,52 +516,50 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformCaseWithTrustCorpAttributes(){
-        String response = transformCase("success.TrustCorpAttributesSaved.json", TRANSFORM_URL);
+        String response = transformCase("success.trustCorpAttributesSaved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         String trustCorpName = jsonPath.get("data.trustCorpName");
-        String actingTrustCorpName = jsonPath.get("data.actingTrustCorpName");
-        String positionInTrustCorp = jsonPath.get("data.positionInTrustCorp");
-        String additionalExecutorsTrustCorp = jsonPath.get("data.additionalExecutorsTrustCorp");
         String lodgementAddress = jsonPath.get("data.lodgementAddress");
         String lodgementDate = jsonPath.get("data.lodgementDate");
-        String additionalExecutorTrustCorpName = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpName");
-        String additionalExecutorTrustCorpPosition = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
+        String additionalExecForename = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecForenames");
+        String additionalExecLastname = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecLastname");
+        String additionalExecPosition = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
+        String additionalExecAddressLine1 = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
         assertEquals("Trust Corporation Name", trustCorpName);
-        assertEquals("Acting for trust corp name", actingTrustCorpName);
-        assertEquals("Solicitor", positionInTrustCorp);
-        assertEquals("Yes", additionalExecutorsTrustCorp);
         assertEquals("London", lodgementAddress);
         assertEquals("2020-01-01", lodgementDate);
-        assertEquals("Other acting for trust corp name", additionalExecutorTrustCorpName);
-        assertEquals("Solicitor", additionalExecutorTrustCorpPosition);
+        assertEquals("Exec forename", additionalExecForename);
+        assertEquals("Exec lastname", additionalExecLastname);
+        assertEquals("Solicitor", additionalExecPosition);
+        assertEquals("Address line 1", additionalExecAddressLine1);
     }
 
     @Test
-    public void shouldTransformCaseWithNonTrustCorpOptionAttributes(){
+    public void shouldTransformCaseWithPartnerAttributes(){
         String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
-        String otherPartnerExecutorName = jsonPath.get("data.otherPartnerExecutorName");
-        String anyPartnersApplyingToActAsExecutor = jsonPath.get("data.anyPartnersApplyingToActAsExecutor");
-        String otherPartnersApplyingAsExecutors = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.otherPartnerExecutorName");
         String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
+        String additionalExecForename = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames");
+        String additionalExecLastname = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname");
+        String additionalExecAddressLine1 = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
         assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
-        assertEquals("Fred Bloggs", otherPartnerExecutorName);
-        assertEquals("Yes", anyPartnersApplyingToActAsExecutor);
-        assertEquals("Jim Smith", otherPartnersApplyingAsExecutors);
         assertEquals("New Firm Ltd", nameOfSucceededFirm);
+        assertEquals("Exec forename", additionalExecForename);
+        assertEquals("Exec lastname", additionalExecLastname);
+        assertEquals("Address line 1", additionalExecAddressLine1);
     }
 
     private String transformCase(String jsonFileName, String path) {
