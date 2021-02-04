@@ -482,11 +482,6 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
-            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
-                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
-            }
-        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         
