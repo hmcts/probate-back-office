@@ -75,8 +75,6 @@ public class BulkPrintServiceTest {
     private ResponseCaseData responseCaseData;
     @Mock
     private DocumentTransformer documentTransformer;
-    @Captor
-    private ArgumentCaptor<LetterV3> letterV3ArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
@@ -89,32 +87,32 @@ public class BulkPrintServiceTest {
     public void testSuccessfulSendToBulkPrintWithNoExtraCopies() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document grant = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -126,37 +124,38 @@ public class BulkPrintServiceTest {
         assertThat(response.letterId, is(uuid));
     }
 
+
     @Test
     public void testSuccessfulSendToBulkPrintWithSixExtraCopies() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(6L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(6L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -174,37 +173,37 @@ public class BulkPrintServiceTest {
     @Test
     public void testHttpClientException() {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(6L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(6L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "StatusText", "Body".getBytes(),
-            Charset.defaultCharset()))
+             Charset.defaultCharset()))
             .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
         SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
@@ -253,37 +252,37 @@ public class BulkPrintServiceTest {
     @Test
     public void shouldThrowIOException() throws IOException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(6L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(6L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.ASSEMBLED_LETTER)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.ASSEMBLED_LETTER)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         doThrow(new IOException("Error retrieving document from store with url"))
-            .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+                .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
 
         bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
@@ -375,34 +374,34 @@ public class BulkPrintServiceTest {
     @Test
     public void testHttpClientExceptionCaveats() {
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
-            .proAddressLine2("Address 2")
-            .proPostCode("EC2")
-            .proCountry("UK")
-            .build();
+                .proAddressLine2("Address 2")
+                .proPostCode("EC2")
+                .proCountry("UK")
+                .build();
         CaveatData caseData = CaveatData.builder()
-            .caveatorEmailAddress("caveator@probate-test.com")
-            .caveatorForenames("firstname")
-            .caveatorSurname("surname")
-            .caveatorAddress(address)
-            .build();
+                .caveatorEmailAddress("caveator@probate-test.com")
+                .caveatorForenames("firstname")
+                .caveatorSurname("surname")
+                .caveatorAddress(address)
+                .build();
         CaveatCallbackRequest callbackRequest = new CaveatCallbackRequest(new CaveatDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.CAVEAT_RAISED)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "StatusText", "Body".getBytes(),
             Charset.defaultCharset()))
@@ -416,34 +415,34 @@ public class BulkPrintServiceTest {
     public void testSuccessfulSendToBulkPrintForCaveats() {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
-            .proAddressLine2("Address 2")
-            .proPostCode("EC2")
-            .proCountry("UK")
-            .build();
+                .proAddressLine2("Address 2")
+                .proPostCode("EC2")
+                .proCountry("UK")
+                .build();
         CaveatData caseData = CaveatData.builder()
-            .caveatorEmailAddress("caveator@probate-test.com")
-            .caveatorForenames("firstname")
-            .caveatorSurname("surname")
-            .caveatorAddress(address)
-            .build();
+                .caveatorEmailAddress("caveator@probate-test.com")
+                .caveatorForenames("firstname")
+                .caveatorSurname("surname")
+                .caveatorAddress(address)
+                .build();
         CaveatCallbackRequest callbackRequest = new CaveatCallbackRequest(new CaveatDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.CAVEAT_RAISED)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -504,41 +503,41 @@ public class BulkPrintServiceTest {
     public void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantEmailAddress("primary@probate-test.com")
-            .primaryApplicantForenames("firstname")
-            .primaryApplicantSurname("surname")
-            .primaryApplicantAddress(address)
-            .build();
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .primaryApplicantForenames("firstname")
+                .primaryApplicantSurname("surname")
+                .primaryApplicantAddress(address)
+                .build();
         final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         final Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         final Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         List<String> errors = new ArrayList<>();
         errors.add("test error");
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
-            .data(responseCaseData)
-            .errors(errors)
-            .build();
+                .data(responseCaseData)
+                .errors(errors)
+                .build();
 
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(null);
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
@@ -553,53 +552,53 @@ public class BulkPrintServiceTest {
     @Test
     public void testNoSendToBulkPrintReturnsNull() {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantEmailAddress("primary@probate-test.com")
-            .primaryApplicantForenames("firstname")
-            .primaryApplicantSurname("surname")
-            .primaryApplicantAddress(address)
-            .build();
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .primaryApplicantForenames("firstname")
+                .primaryApplicantSurname("surname")
+                .primaryApplicantAddress(address)
+                .build();
         final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         assertNull(bulkPrintService.optionallySendToBulkPrint(callbackRequest, Document.builder().build(),
-            Document.builder().build(), false));
+                Document.builder().build(), false));
     }
 
     @Test
     public void sendToBulkPrintWith50ExtraCopiesWDG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(50L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.WELSH_DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -619,33 +618,33 @@ public class BulkPrintServiceTest {
     public void sendToBulkPrintWith50ExtraCopiesWIG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(50L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.WELSH_INTESTACY_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_INTESTACY_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -665,33 +664,33 @@ public class BulkPrintServiceTest {
     public void sendToBulkPrintWith50ExtraCopiesAWDG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .extraCopiesOfGrant(50L)
-            .build();
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
+                .documentUrl("http://localhost")
+                .build();
         Document document = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.WELSH_ADMON_WILL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_ADMON_WILL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
@@ -706,6 +705,9 @@ public class BulkPrintServiceTest {
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
+
+    @Captor
+    private ArgumentCaptor<LetterV3> letterV3ArgumentCaptor;
 
     @Test
     public void shouldSendToBulkPrintForReprint() {
@@ -813,6 +815,34 @@ public class BulkPrintServiceTest {
     @Test
     public void shouldErrorOnSendToBulkPrintForReprint() {
 
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames("first")
+            .primaryApplicantSurname("last")
+            .primaryApplicantAddress(address)
+            .reprintNumberOfCopies("10")
+            .build();
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+        final Document grant = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        final Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
 
@@ -829,37 +859,6 @@ public class BulkPrintServiceTest {
         when(businessValidationMessageService.generateError(any(), any()))
             .thenReturn(FieldErrorResponse.builder().build());
 
-        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
-            .addressLine2("Address 2")
-            .postCode("EC2")
-            .country("UK")
-            .build();
-
-        CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames("first")
-            .primaryApplicantSurname("last")
-            .primaryApplicantAddress(address)
-            .reprintNumberOfCopies("10")
-            .build();
-
-        DocumentLink documentLink = DocumentLink.builder()
-            .documentUrl("http://localhost")
-            .build();
-
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
-        Document grant = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
-        Document coverSheet = Document.builder()
-            .documentFileName("test.pdf")
-            .documentGeneratedBy("test")
-            .documentDateAdded(LocalDate.now())
-            .documentLink(documentLink)
-            .build();
         assertThatThrownBy(() -> bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet))
             .isInstanceOf(BulkPrintException.class)
             .hasMessage("Bulk print send letter for reprint response is null for: 0");
@@ -915,8 +914,10 @@ public class BulkPrintServiceTest {
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), documentType))
             .thenReturn(true);
 
+        final String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
+
         verify(sendLetterApiMock).sendLetter(anyString(), letterV3ArgumentCaptor.capture());
-        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
+
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
 
