@@ -9,7 +9,6 @@ import java.nio.file.Files;
 public class FileUtils {
 
     private FileUtils() {
-        throw new IllegalStateException("Utility Class");
     }
 
     public static String getStringFromFile(String fileName) throws IOException {

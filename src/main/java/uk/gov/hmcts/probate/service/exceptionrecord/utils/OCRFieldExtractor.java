@@ -13,7 +13,6 @@ import java.util.List;
 public class OCRFieldExtractor {
 
     private OCRFieldExtractor() {
-        throw new IllegalStateException("Utility Class");
     }
 
     public static String get(List<OCRField> ocrFields, String name) {

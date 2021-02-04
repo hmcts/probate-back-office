@@ -12,7 +12,6 @@ import java.util.List;
 
 public class CaseDataTestBuilder {
     private CaseDataTestBuilder() {
-        throw new IllegalStateException("Utility class");
     }
 
     public static final LocalDate DOB = LocalDate.of(1990, 4, 4);
