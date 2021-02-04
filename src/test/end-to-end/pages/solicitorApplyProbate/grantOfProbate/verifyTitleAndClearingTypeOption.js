@@ -12,7 +12,7 @@ module.exports = async function (optName) {
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(0.25);
     }
-    const isNa = optName === 'TCTNA';
+    const isNa = optName === 'TCTNoT';
     const isTrustOption = optName.startsWith('TCTTrustCorp');
 
     const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing';
