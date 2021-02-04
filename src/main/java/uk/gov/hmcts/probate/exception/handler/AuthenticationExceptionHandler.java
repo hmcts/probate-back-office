@@ -25,7 +25,7 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint,
         String message = mapper.writeValueAsString(authError);
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(message);
     }
 }

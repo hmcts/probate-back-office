@@ -1,7 +1,11 @@
+const {getAccessibilityTestResult} = require('./accessibility/runner');
+const {generateAccessibilityReport} = require('../../reporter/customReporter');
+const testConfig = require('src/test/config.js');
+
 class JSWait extends codecept_helper {
 
     async navByClick (text, locator, webDriverWait) {
-        const helper = this.helpers.WebDriverIO || this.helpers.Puppeteer;
+        const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
         const helperIsPuppeteer = this.helpers.Puppeteer;
 
         if (helperIsPuppeteer) {
@@ -19,8 +23,15 @@ class JSWait extends codecept_helper {
         ]);
     }
 
+    _finishTest() {
+        if (!testConfig.TestForAccessibility) {
+            return;
+        }
+        generateAccessibilityReport(getAccessibilityTestResult());
+    }
+
     async amOnLoadedPage (url) {
-        const helper = this.helpers.WebDriverIO || this.helpers.Puppeteer;
+        const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
         const helperIsPuppeteer = this.helpers.Puppeteer;
 
         if (helperIsPuppeteer) {

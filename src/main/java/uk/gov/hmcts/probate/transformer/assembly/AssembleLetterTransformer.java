@@ -288,7 +288,7 @@ public class AssembleLetterTransformer {
     }
 
     public void setupAllLetterParagraphDetails(@Valid CaseDetails caseDetails,
-                                               ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder) {
+                                               ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         CaseData caseData = caseDetails.getData();
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();

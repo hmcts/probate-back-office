@@ -296,7 +296,7 @@ public class BulkPrintServiceTest {
             .proCountry("UK")
             .build();
         CaveatData caseData = CaveatData.builder()
-            .caveatorEmailAddress("email@email.com")
+            .caveatorEmailAddress("caveator@probate-test.com")
             .caveatorForenames("firstname")
             .caveatorSurname("surname")
             .caveatorAddress(address)
@@ -337,7 +337,7 @@ public class BulkPrintServiceTest {
             .proCountry("UK")
             .build();
         CaveatData caseData = CaveatData.builder()
-            .caveatorEmailAddress("email@email.com")
+            .caveatorEmailAddress("caveator@probate-test.com")
             .caveatorForenames("firstname")
             .caveatorSurname("surname")
             .caveatorAddress(address)
@@ -377,7 +377,7 @@ public class BulkPrintServiceTest {
                 .proCountry("UK")
                 .build();
         CaveatData caseData = CaveatData.builder()
-                .caveatorEmailAddress("email@email.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .caveatorForenames("firstname")
                 .caveatorSurname("surname")
                 .caveatorAddress(address)
@@ -417,7 +417,7 @@ public class BulkPrintServiceTest {
                 .proCountry("UK")
                 .build();
         CaveatData caseData = CaveatData.builder()
-                .caveatorEmailAddress("email@email.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
                 .caveatorForenames("firstname")
                 .caveatorSurname("surname")
                 .caveatorAddress(address)
@@ -505,7 +505,7 @@ public class BulkPrintServiceTest {
                 .country("UK")
                 .build();
         CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("email@email.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantForenames("firstname")
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
@@ -552,7 +552,7 @@ public class BulkPrintServiceTest {
                 .country("UK")
                 .build();
         CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("email@email.com")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
                 .primaryApplicantForenames("firstname")
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
@@ -857,7 +857,7 @@ public class BulkPrintServiceTest {
             .country("UK")
             .build();
         CaseData caseData = CaseData.builder()
-            .primaryApplicantEmailAddress("email@email.com")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
             .primaryApplicantForenames("firstname")
             .primaryApplicantSurname("surname")
             .primaryApplicantAddress(address)
