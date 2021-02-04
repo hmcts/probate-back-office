@@ -64,8 +64,7 @@ public class FindWillService {
         return will;
     }
 
-    private String toJson(Object data) {
-        objectMapper = new ObjectMapper();
+    public String toJson(Object data) {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {

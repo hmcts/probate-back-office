@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class FindWillServiceTest {
     }
 
     @Test
-    public void testSuccessfulFindWill() {
+    public void testSuccessfulFindWill() throws JsonProcessingException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -69,15 +70,12 @@ public class FindWillServiceTest {
                 .scannedDocuments(null)
                 .build();
 
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         when(listOfUploadedWills.add(will)).thenReturn(true);
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(WILL)))
+        String json = "{}";
+        objectMapper = new ObjectMapper();
+        json = objectMapper.writeValueAsString(will);
+        when(pdfManagementService.generateAndUpload(json, DocumentType.WILL))
                 .thenReturn(Document.builder().documentType(WILL).build());
 
-        UUID uuid = UUID.randomUUID();
-//        Document response = findWillService.findWill(callbackRequest);
-//
-//        assertNotNull(response);
-//        assertThat(response.letterId, is(uuid));
     }
 }
