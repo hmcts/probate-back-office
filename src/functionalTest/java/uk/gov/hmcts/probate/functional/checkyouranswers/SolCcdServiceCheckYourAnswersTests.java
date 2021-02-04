@@ -258,8 +258,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private String extractDocumentId(Response response) {
         String bodyString = response.body().asString();
         JsonPath jsonPath = JsonPath.from(bodyString);
-        String url_node = jsonPath.get("data.solsLegalStatementDocument.document_url");
-        String[] url = url_node.split("/");
+        String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
+        String[] url = urlNode.split("/");
         return url[4];
     }
 

@@ -29,7 +29,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
     private static final String EVENT_PARM = "EVENT_PARM";
     private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
-    private static final long ES_DELAY = 20000l;
+    private static final long ES_DELAY = 20000L;
     private static final String EVENT_APPLY = "applyforGrantPaperApplicationMan";
     private static final String EVENT_PRINT_CASE = "boPrintCase";
     private static final String EVENT_MARK_AS_READY_FOR_EXAMINATION = "boMarkAsReadyForExamination";

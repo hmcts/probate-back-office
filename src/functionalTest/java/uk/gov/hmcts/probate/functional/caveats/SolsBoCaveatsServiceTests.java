@@ -151,7 +151,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() {
-        String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
+        final String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 1);
 
         assertCommons(response);
@@ -266,13 +266,13 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     public void verifyCaveatValidateShouldReturnOKResponseCode() {
         ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_VALIDATE);
         JsonPath jsonPath = JsonPath.from(response.asString());
-        DateTimeFormatter iso_8601_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate today = LocalDate.now();
         LocalDate extended = today.plusMonths(6);
-        today.format(iso_8601_formatter);
+        today.format(iso8601Formatter);
 
-        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso_8601_formatter))));
-        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso_8601_formatter))));
+        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso8601Formatter))));
+        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso8601Formatter))));
     }
 
     @Test
@@ -292,11 +292,11 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatValidateExtendShouldReturnOKResponseCode() {
-        DateTimeFormatter iso_8601_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.now();
         LocalDate extended = localDate.plusMonths(6);
-        String today = localDate.format(iso_8601_formatter);
-        String extendedDate = extended.format(iso_8601_formatter);
+        String today = localDate.format(iso8601Formatter);
+        String extendedDate = extended.format(iso8601Formatter);
         String jsonAsString = getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
         jsonAsString = jsonAsString.replace("endDate", today);
 

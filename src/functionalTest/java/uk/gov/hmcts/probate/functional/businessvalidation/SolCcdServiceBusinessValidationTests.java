@@ -409,11 +409,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String controlNumber = jsonPath.get("data.scannedDocuments[0].value.controlNumber");
         String fileName = jsonPath.get("data.scannedDocuments[0].value.fileName");
         String type = jsonPath.get("data.scannedDocuments[0].value.type");
-        String subtype = jsonPath.get("data.scannedDocuments[0].value.subtype");
-        String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
-        String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
-        String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
-        String exceptionRecordReference = jsonPath.get("data.scannedDocuments[0].value.exceptionRecordReference");
+        final String subtype = jsonPath.get("data.scannedDocuments[0].value.subtype");
+        final String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
+        final String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
+        final String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
+        final String exceptionRecordReference = jsonPath.get("data.scannedDocuments[0].value.exceptionRecordReference");
 
         assertEquals("1234", controlNumber);
         assertEquals("scanneddocument.pdf", fileName);
@@ -427,7 +427,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseSOLSAdditionalExec() {
+    public void shouldTransformCaseSolsAdditionalExec() {
         String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
@@ -435,25 +435,25 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
         String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
 
-        String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
-        String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
-        String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
-        String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
-        String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
-        String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
-        String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
+        final String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
+        final String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
+        final String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
+        final String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
+        final String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
+        final String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
+        final String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
+        final String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
+        final String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
 
-        String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
-        String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
-        String addressLine1Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
-        String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
-        String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
-        String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
-        String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+        final String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
+        final String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
+        final String addressLine1Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
+        final String addressLine2Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
+        final String addressLine3Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
+        final String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
+        final String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
+        final String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
+        final String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
 
 
         assertEquals("exfn2 exln2", notApplyingName);

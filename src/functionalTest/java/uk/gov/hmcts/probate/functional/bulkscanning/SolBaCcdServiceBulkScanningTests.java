@@ -222,7 +222,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         String expiryDate7DaysFromNow =
             LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        String expectedExpiryDate6MonthsFromNow =
+        final String expectedExpiryDate6MonthsFromNow =
             LocalDate.now().plusDays(7).plusMonths(6).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
         jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
