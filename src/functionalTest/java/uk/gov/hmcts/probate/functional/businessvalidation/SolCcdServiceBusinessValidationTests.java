@@ -437,9 +437,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         final String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
         final String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
-        final String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
-        final String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
-        final String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
+        final String addressLine1 =
+            jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
+        final String addressLine2 =
+            jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
+        final String addressLine3 =
+            jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
         final String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
         final String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
         final String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
@@ -447,9 +450,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         final String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
         final String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
-        final String addressLine1Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
-        final String addressLine2Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
-        final String addressLine3Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
+        final String addressLine1Exec2 =
+            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
+        final String addressLine2Exec2 =
+            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
+        final String addressLine3Exec2 =
+            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
         final String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
         final String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
         final String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
@@ -491,13 +497,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String declarationCheckbox = jsonPath.get("data.declarationCheckbox");
         String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
         String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
-        int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
-        int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
-        String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
-        String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
-        String registryAddress = jsonPath.get("data.registryAddress");
-        String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
-        String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
+        final int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
+        final int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
+        final String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
+        final String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
+        final String registryAddress = jsonPath.get("data.registryAddress");
+        final String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
+        final String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
 
         assertEquals("Yes", declarationCheckbox);
         assertEquals("100001.0", ihtGrossValueField);
@@ -523,13 +529,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
-    private void validatePostSuccessAndCheckValue(String jsonPayload, String URL, String caseDataAttribute,
+    private void validatePostSuccessAndCheckValue(String jsonPayload, String url, String caseDataAttribute,
                                                   String caseDataValue) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonPayload)
-            .when().post(URL)
+            .when().post(url)
             .thenReturn();
 
         response.then().assertThat().statusCode(200)
@@ -559,12 +565,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailure(jsonFileName, errorMessage, 200, CHECKLIST_URL);
     }
 
-    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
+    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(URL)
+            .when().post(url)
             .thenReturn();
 
         if (statusCode == 200) {
