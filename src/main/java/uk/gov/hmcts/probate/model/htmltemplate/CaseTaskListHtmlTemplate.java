@@ -34,7 +34,7 @@ public class CaseTaskListHtmlTemplate {
         + SEPARATOR
         + "<gridRow><gridCol-two-thirds><p>Send documents<br/><sendDocsLink/></p></gridCol-two-thirds><gridCol-one-third>"
         + "<status-sendDocuments/>"
-            + CLOSE_GRID_ROW
+        + CLOSE_GRID_ROW
         + SEPARATOR
         + "<br/>\n"
         + "<h>3. Review application</h>\n"
