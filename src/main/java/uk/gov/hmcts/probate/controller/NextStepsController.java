@@ -88,7 +88,7 @@ public class NextStepsController {
             CreditAccountPayment creditAccountPayment =
                 creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
             PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken, creditAccountPayment);
-            CallbackResponse creditPaymentResponse = eventValidationService.validatePaymentresponse(callbackRequest.getCaseDetails(), 
+            CallbackResponse creditPaymentResponse = eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(), 
                 paymentResponse, creditAccountPaymentValidationRule);
             if (creditPaymentResponse.getErrors().isEmpty()) {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feesResponse);

@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -23,7 +22,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -132,7 +130,7 @@ public class NextStepsUnitTest {
             .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
-        when(eventValidationService.validatePaymentresponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
@@ -150,7 +148,7 @@ public class NextStepsUnitTest {
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Arrays.asList("error"));
-        when(eventValidationService.validatePaymentresponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
         ResponseEntity responseEntity = underTest.validate(AUTH, callbackRequestMock,
             bindingResultMock, httpServletRequestMock);

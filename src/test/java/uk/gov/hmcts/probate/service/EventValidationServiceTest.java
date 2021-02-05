@@ -56,22 +56,6 @@ public class EventValidationServiceTest {
 
     }
 
-    @Test
-    public void shouldGatherPaymentValidationErrors() {
-
-        CreditAccountPaymentValidationRule creditAccountPaymentValidationRuleMock = Mockito.mock(CreditAccountPaymentValidationRule.class);
-        CaseDetails caseDetailsMock = Mockito.mock(CaseDetails.class);
-        PaymentResponse paymentResponseMock = Mockito.mock(PaymentResponse.class);
-
-        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(), FieldErrorResponse.builder().build());
-        when(creditAccountPaymentValidationRuleMock.validate(caseDetailsMock, paymentResponseMock)).thenReturn(errors);
-        CallbackResponse fieldErrorResponses = eventValidationService
-            .validatePaymentresponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRuleMock);
-
-        assertEquals(2, fieldErrorResponses.getErrors().size());
-
-    }
-
     private class SimpleValidationRule implements ValidationRule {
         @Override
         public List<FieldErrorResponse> validate(CCDData form) {
