@@ -195,7 +195,7 @@ def versions = [
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
         probateCommonsVersion           : '1.1.0.2',
-        ccdClient                       : '4.7.3',
+        ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
         pact_version                    : '4.1.0'
