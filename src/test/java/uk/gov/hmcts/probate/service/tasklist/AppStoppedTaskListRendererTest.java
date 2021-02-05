@@ -5,8 +5,8 @@ import org.junit.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
-
 import static org.junit.Assert.assertEquals;
+
 import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
 public class AppStoppedTaskListRendererTest {

@@ -65,8 +65,8 @@ public class EscalatedTaskListRendererTest {
             + "\n"
             + "<a href=\"mailto:contactprobate@justice.gov.uk\" class=\"govuk-link\">contactprobate@justice.gov.uk</a>"
             + "<p class=\"govuk-body-s\">We aim to respond within 10 working days</p>\n"
-            + "\n" +
-            "</div>";
+            + "\n"
+            + "</div>";
         final String result = renderer.renderHtml(caseDetails);
 
         assertEquals(expectedHtml, result);

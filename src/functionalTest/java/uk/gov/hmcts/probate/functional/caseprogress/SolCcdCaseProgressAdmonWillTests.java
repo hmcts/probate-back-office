@@ -34,7 +34,6 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
     private static final String GENERATE_GRANT_URL = "/document/generate-grant";
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
 
-
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
         final String response = postSolJson("caseprogressadmonwill/01-appCreated.json", TASKLIST_UPDATE_URL);
@@ -107,7 +106,8 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList); // make sure tasklist controller update in db works when called separately, which happens prior to first state change
+        // make sure tasklist controller update in db works when called separately, which happens prior to first state change
+        assertEquals(expected, taskList);
     }
 
     @Test
@@ -252,10 +252,10 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + "<h2 class=\"govuk-heading-l\">3. Review application</h2>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
             + "<font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks "
-            + "before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n" +
-            "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n" +
-            "\n" +
-            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents"
+            + "before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+            + "\n"
+            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents"
             + "</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
             + "<font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div>"
@@ -293,7 +293,9 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + "\n"
             + "</div>\n"
             + "</div>\n";
-        assertEquals(expectedHtml, taskList); // make sure tasklist controller update in db works when called separately, which happens prior to first state change
+
+        // make sure tasklist controller update in db works when called separately, which happens prior to first state change
+        assertEquals(expectedHtml, taskList);
     }
 
     @Test
@@ -501,7 +503,8 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div>"
             + "</div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div>"
+            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+            + "Add application details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -728,6 +731,7 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + "target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">Find out about call charges</a>\n\n"
             + "<h3 class=\"govuk-heading-m\">Email</h3>\n\n<a href=\"mailto:contactprobate@justice.gov.uk\" class=\"govuk-link\">"
             + "contactprobate@justice.gov.uk</a><p class=\"govuk-body-s\">We aim to respond within 10 working days</p>\n\n</div>";
+
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
         assertEquals(expectedHtml, taskList);
@@ -951,8 +955,8 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n" +
-            "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\">"
+            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
+            + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\">"
             + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
             + "These steps are to be completed by the legal professional.</font></p></div><div class=\"govuk-grid-column-one-third\">"
             + "&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
@@ -1197,15 +1201,18 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
                 + "Your application will update through any of these case states as it is reviewed by our team:</font></p></div>"
                 + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n"
                 + "<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n"
-                + "<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<li>Ready to issue</li>\n</ul>"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
                 + "<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\">"
                 + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is "
                 + "completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">"
                 + "&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-                + "<p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n"
+                + "<p class=\"govuk-body-s\">Issue grant of representation</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-                + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font>"
+                + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">"
+                + "The grant will be delivered in the post a few days after issuing.</font>"
                 + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
@@ -1242,8 +1249,8 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
         Response response = given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json")).
-                        when().post("/nextsteps/validate");
+                .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
+                .when().post("/nextsteps/validate");
 
         TestCase.assertEquals(200, response.getStatusCode());
     }
