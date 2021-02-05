@@ -18,20 +18,13 @@ module.exports = async function (optName) {
     const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing';
 
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
-    const otherPartnerExecutorNameVisible = (await I.grabNumberOfVisibleElements ({css: '#otherPartnerExecutorName'})) > 0;
-    const anyPartnersApplyingToActAsExecutorYesVisible = (await I.grabNumberOfVisibleElements ({css: '#anyPartnersApplyingToActAsExecutor-Yes'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
 
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
-    assert (isNa || isTrustOption ? !otherPartnerExecutorNameVisible : otherPartnerExecutorNameVisible);
-    assert (isNa || isTrustOption ? !anyPartnersApplyingToActAsExecutorYesVisible : anyPartnersApplyingToActAsExecutorYesVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
 
     if (!isNa && !isTrustOption && isSuccessorFirm) {
-        await I.click({css: '#anyPartnersApplyingToActAsExecutor-Yes'});
-        await I.waitForText('Names of executors applying');
+        await I.waitForText('Name of firm named in will');
         await I.waitForClickable({css: '#otherPartnersApplyingAsExecutors button'});
-        await I.click({css: '#anyPartnersApplyingToActAsExecutor-No'});
-        await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors button'});
     }
 };
