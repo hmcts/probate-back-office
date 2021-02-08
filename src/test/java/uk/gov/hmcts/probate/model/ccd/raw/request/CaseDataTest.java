@@ -980,7 +980,6 @@ public class CaseDataTest {
         assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
-        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
@@ -1014,7 +1013,6 @@ public class CaseDataTest {
         assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
-        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());

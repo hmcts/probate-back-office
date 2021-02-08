@@ -98,7 +98,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("No", responseCaseDataParent.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", responseCaseDataParent.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", responseCaseDataParent.getDispenseWithNoticeSupportingDocs());
-        assertEquals("No", responseCaseDataParent.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
