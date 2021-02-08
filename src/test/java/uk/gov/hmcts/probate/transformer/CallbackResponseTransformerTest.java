@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.FindWillsService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -383,9 +384,6 @@ public class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @Mock
-    private CaseData caseDataMock;
-
-    @Mock
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingMock;
 
     @Mock
@@ -412,6 +410,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private UploadDocument uploadDocumentMock;
+    
+    @Mock
+    private FindWillsService findWillsService;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -2943,6 +2944,20 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
+    @Test
+    public void shouldDetermineWillsOnCase() {
+        when(findWillsService.findWills(any())).thenReturn(Arrays.asList(Document.builder().build(), Document.builder().build()));
+        CallbackResponse callbackResponse = underTest.transformCaseWillList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getHasMultipleWills());
+    }
+
+    @Test
+    public void shouldDetermineNoWillsOnCase() {
+        when(findWillsService.findWills(any())).thenReturn(Collections.emptyList());
+        CallbackResponse callbackResponse = underTest.transformCaseWillList(callbackRequestMock);
+        assertEquals("No", callbackResponse.getData().getHasMultipleWills());
+    }
+    
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)

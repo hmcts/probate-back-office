@@ -40,13 +40,11 @@ public class FindWillsService {
     }
 
     private Document buildDocument(UploadDocument uploadDocument) {
-        Document document = Document.builder()
+        return Document.builder()
             .documentType(uploadDocument.getDocumentType())
             .documentLink(uploadDocument.getDocumentLink())
             .documentFileName(uploadDocument.getDocumentLink().getDocumentFilename())
             .build();
-
-        return document;
     }
 
     private Document buildDocument(ScannedDocument scannedDocument) {

@@ -62,4 +62,57 @@ public class FindWillsServiceTest {
         assertEquals("scanUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("scanBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
     }
+
+    @Test
+    public void testSuccessfulFindWillForNonWillUPloadAndScans() {
+        UploadDocument will = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
+                "uploadBinaryUrl").build())
+            .documentType(DocumentType.WILL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
+        UploadDocument email = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
+                "uploadBinaryUrl").build())
+            .documentType(DocumentType.EMAIL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberEmaill = new CollectionMember(email);
+        List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
+        uploadDocumentsList.add(collectionMemberWill);
+        uploadDocumentsList.add(collectionMemberEmaill);
+
+        ScannedDocument scan = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("other")
+            .subtype("will")
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
+        ScannedDocument scanNonWill = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("other")
+            .subtype("somethingelse")
+            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1").documentBinaryUrl("scanBinaryUrl1").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
+        List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
+        scannedDocumentsList.add(collectionMemberScan);
+        scannedDocumentsList.add(collectionMemberScanNonWill);
+
+        CaseData caseData = CaseData.builder()
+            .boDocumentsUploaded(uploadDocumentsList)
+            .scannedDocuments(scannedDocumentsList)
+            .build();
+
+        List<Document> wills = findWillService.findWills(caseData);
+        assertEquals(2, wills.size());
+        assertEquals("uploadFileName", wills.get(0).getDocumentFileName());
+        assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("Scanned", wills.get(1).getDocumentFileName());
+        assertEquals("scanUrl", wills.get(1).getDocumentLink().getDocumentUrl());
+        assertEquals("scanBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
+    }
 }
