@@ -12,4 +12,5 @@ public class AdditionalExecutorNotApplying {
     private final String notApplyingExecutorNameDifferenceComment;
     private final String notApplyingExecutorReason;
     private final String notApplyingExecutorNotified;
+
 }
