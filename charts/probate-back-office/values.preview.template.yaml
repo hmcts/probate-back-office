@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: false
+  probate-ccd-stack: true
 
 postgresql:
   enabled: true
@@ -39,7 +39,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: false
+      enabled: true
     s2s:
       enabled: false
     postgresql:
