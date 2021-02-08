@@ -45,6 +45,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -143,7 +144,7 @@ public class NotificationController {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
-                    bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
+                    bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet, Collections.EMPTY_LIST);
                 letterId = sendLetterResponse != null
                     ? sendLetterResponse.letterId.toString()
                     : null;

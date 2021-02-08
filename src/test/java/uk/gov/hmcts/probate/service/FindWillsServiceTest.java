@@ -1,0 +1,65 @@
+package uk.gov.hmcts.probate.service;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
+public class FindWillsServiceTest {
+    @InjectMocks
+    private FindWillsService findWillService;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testSuccessfulFindWill() {
+        UploadDocument will = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
+                "uploadBinaryUrl").build())
+            .documentType(DocumentType.WILL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
+        List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
+        uploadDocumentsList.add(collectionMemberWill);
+
+        ScannedDocument scan = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("other")
+            .subtype("will")
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
+        List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
+        scannedDocumentsList.add(collectionMemberScan);
+
+        CaseData caseData = CaseData.builder()
+            .boDocumentsUploaded(uploadDocumentsList)
+            .scannedDocuments(scannedDocumentsList)
+            .build();
+
+        List<Document> wills = findWillService.findWills(caseData);
+        assertEquals(2, wills.size());
+        assertEquals("uploadFileName", wills.get(0).getDocumentFileName());
+        assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("Scanned", wills.get(1).getDocumentFileName());
+        assertEquals("scanUrl", wills.get(1).getDocumentLink().getDocumentUrl());
+        assertEquals("scanBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
+    }
+}

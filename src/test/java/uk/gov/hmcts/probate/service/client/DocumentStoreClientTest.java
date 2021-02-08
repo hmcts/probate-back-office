@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -36,6 +38,8 @@ public class DocumentStoreClientTest {
     private CloseableHttpClient closeableHttpClientMock;
     @Mock
     private CloseableHttpResponse closeableHttpResponseMock;
+    @Mock
+    private SecurityUtils securityUtils;
 
     @InjectMocks
     private DocumentStoreClient documentStoreClient;
@@ -46,6 +50,7 @@ public class DocumentStoreClientTest {
         closeableHttpResponseMock.setEntity(entity);
 
         when(closeableHttpResponseMock.getEntity()).thenReturn(entity);
+        when(securityUtils.getSecurityDTO()).thenReturn(SecurityDTO.builder().userId("user1").build());
     }
 
     @Test

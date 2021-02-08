@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.FindWillsService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -43,11 +44,11 @@ import uk.gov.service.notify.NotificationClientException;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
@@ -77,6 +78,7 @@ public class DocumentController {
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final ReprintService reprintService;
+    private final FindWillsService findWillService;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
 
@@ -124,7 +126,7 @@ public class DocumentController {
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    letter, true);
+                    letter, Collections.EMPTY_LIST, true);
         }
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
@@ -161,10 +163,13 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
+        List<Document> willDocuments = findWillService.findWills(caseData);
+        log.info("number of willDocuments found on case: {}", willDocuments.size());
+
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet, willDocuments);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -248,7 +253,7 @@ public class DocumentController {
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    grantDocument, true);
+                    grantDocument, Collections.EMPTY_LIST, true);
         }
 
         String pdfSize = getPdfSize(caseData);

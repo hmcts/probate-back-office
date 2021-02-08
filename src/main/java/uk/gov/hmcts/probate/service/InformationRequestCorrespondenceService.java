@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRul
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class InformationRequestCorrespondenceService {
     public List<String> getLetterId(List<Document> documents, CallbackRequest callbackRequest) {
         List<String> letterIds = new ArrayList<>();
         String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
-                callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested());
+            Collections.EMPTY_LIST, callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested());
 
         letterIds.add(letterId);
         return letterIds;

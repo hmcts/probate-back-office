@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRul
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +99,7 @@ public class InformationRequestCorrespondenceServiceTest {
         when(documentGeneratorService.generateCoversheet(callbackRequest, execApplying.getValue().getName(),
                 execApplying.getValue().getAddress())).thenReturn(COVERSHEET);
         when(documentGeneratorService.generateRequestForInformation(caseDetails, execApplying.getValue())).thenReturn(GENERIC_DOCUMENT);
-        when(bulkPrintService.optionallySendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, true))
+        when(bulkPrintService.optionallySendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, Collections.EMPTY_LIST, true))
                 .thenReturn("123");
     }
 

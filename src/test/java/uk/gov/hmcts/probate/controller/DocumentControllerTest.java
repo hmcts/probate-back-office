@@ -178,10 +178,10 @@ public class DocumentControllerTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
-                any(Document.class))).thenReturn(sendLetterResponse);
+                any(Document.class), any())).thenReturn(sendLetterResponse);
 
         when(bulkPrintService.optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
-                any(Document.class), eq(true))).thenReturn(LETTER_UUID);
+                any(Document.class), any(), eq(true))).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
@@ -241,7 +241,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class), any(Document.class));
+        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class), any(Document.class), any());
     }
 
     @Test
@@ -256,7 +256,8 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT_REISSUE.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+        verify(bulkPrintService).optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class),
+            any(), eq(true));
     }
 
     @Test

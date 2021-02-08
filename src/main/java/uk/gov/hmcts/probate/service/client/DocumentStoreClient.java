@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.client;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -7,6 +8,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,14 +20,16 @@ public class DocumentStoreClient {
     private CloseableHttpClient closeableHttpClient = HttpClientBuilder.create().build();
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String USER_ID = "user-id";
+    private SecurityUtils securityUtils;
 
     public byte[] retrieveDocument(Document document, String authHeaderValue) throws IOException {
 
         byte[] bytes = null;
         try {
+            String userId = securityUtils.getSecurityDTO().getUserId()  ;
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
-            request.setHeader(USER_ID, document.getDocumentGeneratedBy());
+            request.setHeader(USER_ID, userId);
             log.info("About to retrieve " + document + " from dm-store with binary url: "
                     + document.getDocumentLink().getDocumentBinaryUrl());
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request);

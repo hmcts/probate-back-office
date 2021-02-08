@@ -75,6 +75,8 @@ public class BulkPrintServiceTest {
     private ResponseCaseData responseCaseData;
     @Mock
     private DocumentTransformer documentTransformer;
+    
+    private List<Document> emptyWillList = Collections.EMPTY_LIST;
 
     @Before
     public void setUp() throws Exception {
@@ -111,12 +113,13 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, grant, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, grant, coverSheet, emptyWillList);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
@@ -154,6 +157,7 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
         UUID uuid = UUID.randomUUID();
@@ -161,7 +165,7 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.DIGITAL_GRANT)).thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
@@ -198,12 +202,13 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "StatusText", "Body".getBytes(), Charset.defaultCharset()))
             .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         assertNull(response);
     }
@@ -236,13 +241,14 @@ public class BulkPrintServiceTest {
         Document coverSheet = Document.builder()
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentDateAdded(LocalDate.now())
             .documentLink(documentLink)
             .build();
 
         doThrow(new RuntimeException("Some exception"))
             .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         assertNull(response);
     }
@@ -275,6 +281,7 @@ public class BulkPrintServiceTest {
         Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
@@ -282,7 +289,7 @@ public class BulkPrintServiceTest {
         doThrow(new IOException("Error retrieving document from store with url"))
                 .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
 
-        bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
     }
@@ -317,6 +324,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
 
@@ -358,6 +366,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
 
@@ -398,6 +407,7 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
 
@@ -437,6 +447,7 @@ public class BulkPrintServiceTest {
         Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
@@ -525,6 +536,7 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+               .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
 
@@ -540,7 +552,7 @@ public class BulkPrintServiceTest {
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
         when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 
-        assertThatThrownBy(() -> bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true))
+        assertThatThrownBy(() -> bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, emptyWillList, true))
                 .isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
     }
 
@@ -560,7 +572,7 @@ public class BulkPrintServiceTest {
         final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         assertNull(bulkPrintService.optionallySendToBulkPrint(callbackRequest, Document.builder().build(),
-                Document.builder().build(), false));
+                Document.builder().build(), emptyWillList, false));
     }
 
     @Test
@@ -592,6 +604,7 @@ public class BulkPrintServiceTest {
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentLink(documentLink)
                 .build();
         UUID uuid = UUID.randomUUID();
@@ -599,7 +612,7 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_DIGITAL_GRANT)).thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
@@ -635,6 +648,7 @@ public class BulkPrintServiceTest {
         Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
@@ -643,7 +657,7 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_INTESTACY_GRANT)).thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
@@ -679,6 +693,7 @@ public class BulkPrintServiceTest {
         Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
@@ -687,7 +702,7 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_ADMON_WILL_GRANT)).thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet, emptyWillList);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
@@ -727,6 +742,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
         UUID uuid = UUID.randomUUID();
@@ -779,6 +795,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
         UUID uuid = UUID.randomUUID();
@@ -829,6 +846,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
         UUID uuid = UUID.randomUUID();
@@ -879,6 +897,7 @@ public class BulkPrintServiceTest {
             .documentFileName("test.pdf")
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .documentLink(documentLink)
             .build();
 
@@ -899,7 +918,7 @@ public class BulkPrintServiceTest {
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), documentType)).thenReturn(true);
 
-        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
+        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, emptyWillList, true);
 
         verify(sendLetterApiMock).sendLetter(anyString(), letterV3ArgumentCaptor.capture());
 
