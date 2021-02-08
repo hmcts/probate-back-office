@@ -676,8 +676,6 @@ public class CallbackResponseTransformer {
                 .dispenseWithNoticeLeaveGivenDate(caseData.getDispenseWithNoticeLeaveGivenDate())
                 .dispenseWithNoticeOverview(caseData.getDispenseWithNoticeOverview())
                 .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
-                .executorWithPowerReserved(caseData.getExecutorWithPowerReserved())
-                .dispenseWithNoticeOtherExecs(caseData.getDispenseWithNoticeOtherExecs())
                 .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
                 .titleAndClearingType(caseData.getTitleAndClearingType())
                 .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())

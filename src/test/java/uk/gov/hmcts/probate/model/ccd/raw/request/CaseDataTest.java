@@ -969,8 +969,6 @@ public class CaseDataTest {
                 .dispenseWithNoticeLeaveGiven("No")
                 .dispenseWithNoticeOverview("Overview")
                 .dispenseWithNoticeSupportingDocs("Supporting docs")
-                .executorWithPowerReserved("Name")
-                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
@@ -982,7 +980,6 @@ public class CaseDataTest {
         assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
-        assertEquals("Name", caseData.getExecutorWithPowerReserved());
         assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
@@ -1007,8 +1004,6 @@ public class CaseDataTest {
                 .dispenseWithNoticeLeaveGiven("No")
                 .dispenseWithNoticeOverview("Overview")
                 .dispenseWithNoticeSupportingDocs("Supporting docs")
-                .executorWithPowerReserved("Name")
-                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
@@ -1019,7 +1014,6 @@ public class CaseDataTest {
         assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
-        assertEquals("Name", caseData.getExecutorWithPowerReserved());
         assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());

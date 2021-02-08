@@ -28,8 +28,6 @@
             "dispenseWithNoticeLeaveGiven": "No",
             "dispenseWithNoticeOverview": "Overview",
             "dispenseWithNoticeSupportingDocs": "Supporting docs",
-            "executorWithPowerReserved": "Name",
-            "dispenseWithNoticeOtherExecs": "No",
             "titleAndClearingType": "TCTTrustCorpResWithApp",
             "trustCorpName": "Trust Corporation Name",
             "additionalExecutorsTrustCorpList": [

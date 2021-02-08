@@ -30,8 +30,6 @@ public class CaseDataParent {
     protected String dispenseWithNoticeLeaveGivenDate;
     protected String dispenseWithNoticeOverview;
     protected String dispenseWithNoticeSupportingDocs;
-    protected String executorWithPowerReserved;
-    protected String dispenseWithNoticeOtherExecs;
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;

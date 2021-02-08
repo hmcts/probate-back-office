@@ -87,8 +87,6 @@ public class ResponseCaseDataParentTest {
                 .dispenseWithNoticeLeaveGiven("No")
                 .dispenseWithNoticeOverview("Overview")
                 .dispenseWithNoticeSupportingDocs("Supporting docs")
-                .executorWithPowerReserved("Name")
-                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
@@ -100,7 +98,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("No", responseCaseDataParent.getDispenseWithNoticeLeaveGiven());
         assertEquals("Overview", responseCaseDataParent.getDispenseWithNoticeOverview());
         assertEquals("Supporting docs", responseCaseDataParent.getDispenseWithNoticeSupportingDocs());
-        assertEquals("Name", responseCaseDataParent.getExecutorWithPowerReserved());
         assertEquals("No", responseCaseDataParent.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
