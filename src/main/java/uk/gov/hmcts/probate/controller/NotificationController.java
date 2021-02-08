@@ -144,7 +144,7 @@ public class NotificationController {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
-                    bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet, Collections.EMPTY_LIST);
+                    bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet, Collections.emptyList());
                 letterId = sendLetterResponse != null
                     ? sendLetterResponse.letterId.toString()
                     : null;

@@ -126,7 +126,7 @@ public class DocumentController {
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    letter, Collections.EMPTY_LIST, true);
+                    letter, Collections.emptyList(), true);
         }
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
@@ -262,7 +262,7 @@ public class DocumentController {
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    grantDocument, Collections.EMPTY_LIST, true);
+                    grantDocument, Collections.emptyList(), true);
         }
 
         String pdfSize = getPdfSize(caseData);

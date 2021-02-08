@@ -64,7 +64,7 @@ public class FindWillsServiceTest {
     }
 
     @Test
-    public void testSuccessfulFindWillForNonWillUPloadAndScans() {
+    public void testSuccessfulFindWillForNonWillUploadAndScans() {
         UploadDocument will = UploadDocument.builder()
             .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
                 "uploadBinaryUrl").build())
@@ -97,9 +97,17 @@ public class FindWillsServiceTest {
             .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1").documentBinaryUrl("scanBinaryUrl1").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
+        ScannedDocument scanNonOther = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("NotOther")
+            .subtype("somethingelse")
+            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1").documentBinaryUrl("scanBinaryUrl1").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScanNonOther = new CollectionMember(scanNonOther);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
         scannedDocumentsList.add(collectionMemberScan);
         scannedDocumentsList.add(collectionMemberScanNonWill);
+        scannedDocumentsList.add(collectionMemberScanNonOther);
 
         CaseData caseData = CaseData.builder()
             .boDocumentsUploaded(uploadDocumentsList)
