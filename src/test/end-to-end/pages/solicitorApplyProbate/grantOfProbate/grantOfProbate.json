@@ -30,10 +30,14 @@
   "page2_executorAddress_town": "Slough",
   "page2_executorAddress_country": "United Kingdom",
 
-  "page3_waitForText":"Notes for this application",
-  "page3_applicationNotes": "Application notes in grant of probate details",
+  "page3_executorWithPowerReserved": "E2E PowerReserved Firstname",
+  "page3_dispenseWithNoticeOverview": "Overview",
+  "page3_dispenseWithNoticeSupportingDocs": "Supporting docs",
 
-  "page4_waitForText": "",
+  "page4_waitForText":"Notes for this application",
+  "page4_applicationNotes": "Application notes in grant of probate details",
+
+  "page5_waitForText": "",
 
   "optionYes": "Yes",
   "optionNo": "No",
