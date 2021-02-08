@@ -25,6 +25,11 @@
         "security_classification": "PUBLIC",
         "case_data": {
             "dispenseWithNotice": "Yes",
+            "dispenseWithNoticeLeaveGiven": "No",
+            "dispenseWithNoticeOverview": "Overview",
+            "dispenseWithNoticeSupportingDocs": "Supporting docs",
+            "executorWithPowerReserved": "Name",
+            "dispenseWithNoticeOtherExecs": "No",
             "titleAndClearingType": "TCTTrustCorpResWithApp",
             "trustCorpName": "Trust Corporation Name",
             "actingTrustCorpName": "Acting for trust corp name",
