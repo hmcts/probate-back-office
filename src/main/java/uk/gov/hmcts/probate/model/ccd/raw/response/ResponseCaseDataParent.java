@@ -35,6 +35,13 @@ public class ResponseCaseDataParent {
     protected String registrySequenceNumber;
 
     protected String dispenseWithNotice;
+    protected String dispenseWithNoticeLeaveGiven;
+    protected String dispenseWithNoticeLeaveGivenDate;
+    protected String dispenseWithNoticeOverview;
+    protected String dispenseWithNoticeSupportingDocs;
+    protected String executorWithPowerReserved;
+    protected String dispenseWithNoticeOtherExecs;
+    protected String dispenseWithNoticeOtherExecsList;
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;

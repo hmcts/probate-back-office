@@ -60,6 +60,7 @@ module.exports = function () {
         verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
+        grantOfProbatePage5: steps.solicitorApplyProbate.grantOfProbate.page5,
         completeApplicationPage1: steps.solicitorApplyProbate.completeApplication.page1,
         completeApplicationPage2: steps.solicitorApplyProbate.completeApplication.page2,
         completeApplicationPage3: steps.solicitorApplyProbate.completeApplication.page3,

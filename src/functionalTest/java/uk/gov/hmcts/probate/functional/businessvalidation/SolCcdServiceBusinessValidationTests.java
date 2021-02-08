@@ -520,6 +520,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
+        String dispenseWithNoticeLeaveGiven = jsonPath.get("data.dispenseWithNoticeLeaveGiven");
+        String dispenseWithNoticeOverview = jsonPath.get("data.dispenseWithNoticeOverview");
+        String dispenseWithNoticeSupportingDocs = jsonPath.get("data.dispenseWithNoticeSupportingDocs");
+        String executorWithPowerReserved = jsonPath.get("data.executorWithPowerReserved");
+        String dispenseWithNoticeOtherExecs = jsonPath.get("data.dispenseWithNoticeOtherExecs");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         String trustCorpName = jsonPath.get("data.trustCorpName");
         String lodgementAddress = jsonPath.get("data.lodgementAddress");
@@ -530,6 +535,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String additionalExecAddressLine1 = jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
+        assertEquals("No", dispenseWithNoticeLeaveGiven);
+        assertEquals("Overview", dispenseWithNoticeOverview);
+        assertEquals("Supporting docs", dispenseWithNoticeSupportingDocs);
+        assertEquals("Name", executorWithPowerReserved);
+        assertEquals("No", dispenseWithNoticeOtherExecs);
         assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
         assertEquals("Trust Corporation Name", trustCorpName);
         assertEquals("London", lodgementAddress);
@@ -546,6 +556,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(response);
         String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
+        String dispenseWithNoticeLeaveGiven = jsonPath.get("data.dispenseWithNoticeLeaveGiven");
+        String dispenseWithNoticeOverview = jsonPath.get("data.dispenseWithNoticeOverview");
+        String dispenseWithNoticeSupportingDocs = jsonPath.get("data.dispenseWithNoticeSupportingDocs");
+        String executorWithPowerReserved = jsonPath.get("data.executorWithPowerReserved");
+        String dispenseWithNoticeOtherExecs = jsonPath.get("data.dispenseWithNoticeOtherExecs");
         String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
         String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
@@ -554,6 +569,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String additionalExecAddressLine1 = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
+        assertEquals("No", dispenseWithNoticeLeaveGiven);
+        assertEquals("Overview", dispenseWithNoticeOverview);
+        assertEquals("Supporting docs", dispenseWithNoticeSupportingDocs);
+        assertEquals("Name", executorWithPowerReserved);
+        assertEquals("No", dispenseWithNoticeOtherExecs);
         assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
         assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
         assertEquals("New Firm Ltd", nameOfSucceededFirm);

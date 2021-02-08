@@ -966,6 +966,11 @@ public class CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
+                .dispenseWithNoticeLeaveGiven("No")
+                .dispenseWithNoticeOverview("Overview")
+                .dispenseWithNoticeSupportingDocs("Supporting docs")
+                .executorWithPowerReserved("Name")
+                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
@@ -974,6 +979,11 @@ public class CaseDataTest {
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
+        assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
+        assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
+        assertEquals("Name", caseData.getExecutorWithPowerReserved());
+        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
@@ -982,6 +992,7 @@ public class CaseDataTest {
     }
 
     @Test
+                
     public void shouldApplyNonTrustCorpOptionAttributes() {
         CollectionMember<AdditionalExecutorPartners> otherPartner = new CollectionMember<>(
                 new AdditionalExecutorPartners(
@@ -993,6 +1004,11 @@ public class CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
+                .dispenseWithNoticeLeaveGiven("No")
+                .dispenseWithNoticeOverview("Overview")
+                .dispenseWithNoticeSupportingDocs("Supporting docs")
+                .executorWithPowerReserved("Name")
+                .dispenseWithNoticeOtherExecs("No")
                 .titleAndClearingType("TCTPartSuccPowerRes")
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
@@ -1000,6 +1016,11 @@ public class CaseDataTest {
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
+        assertEquals("No", caseData.getDispenseWithNoticeLeaveGiven());
+        assertEquals("Overview", caseData.getDispenseWithNoticeOverview());
+        assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
+        assertEquals("Name", caseData.getExecutorWithPowerReserved());
+        assertEquals("No", caseData.getDispenseWithNoticeOtherExecs());
         assertEquals("TCTPartSuccPowerRes", caseData.getTitleAndClearingType());
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
