@@ -154,6 +154,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private final String hasMultipleWills;
     private final String evidenceHandled;
 
     private final String caseType;

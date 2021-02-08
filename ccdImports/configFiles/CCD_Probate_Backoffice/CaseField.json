@@ -163,6 +163,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "payments", "Label": "Online payments received", "FieldType": "Collection", "FieldTypeParameter": "Payment", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "selectionList", "Label": "Please select the information you would like to amend", "FieldType": "FixedList", "FieldTypeParameter": "selectionFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "scannedDocuments", "Label": "Documents scanned", "FieldType": "Collection", "FieldTypeParameter": "ScannedDocument", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hasMultipleWills", "Label": "Has Multiple wills", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "evidenceHandled", "Label": "Supplementary evidence handled", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "spouseOrPartner", "Label": "Did the person who has died leave a surviving spouse or civil partner? ", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childrenSurvived", "Label": "Were there any sons or daughters of the person who died survived them? ", "FieldType": "YesOrNo", "SecurityClassification": "Public"},

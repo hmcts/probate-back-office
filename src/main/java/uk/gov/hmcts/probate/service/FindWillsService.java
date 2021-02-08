@@ -50,12 +50,10 @@ public class FindWillsService {
     }
 
     private Document buildDocument(ScannedDocument scannedDocument) {
-        Document document = Document.builder()
+        return Document.builder()
             .documentType(DocumentType.OTHER)
             .documentLink(scannedDocument.getUrl())
             .documentFileName(scannedDocument.getFileName())
             .build();
-
-        return document;
     }
 }

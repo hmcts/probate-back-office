@@ -644,7 +644,19 @@ public class DocumentControllerTest {
             .andExpect(jsonPath("$.data.reprintDocument.value.code", is("WelshGrantFileName")))
             .andReturn();
     }
-    
+
+    @Test
+    public void shouldValidateMultipleWills() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithWillsForBulkPrint.json");
+
+        mockMvc.perform(post("/document/determine-wills-available")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.hasMultipleWills", is("Yes")))
+            .andReturn();
+    }
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

@@ -144,6 +144,15 @@ public class DocumentController {
                 Arrays.asList(document), null, null));
     }
 
+    @PostMapping(path = "/determine-wills-available", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> determineWillsAvailable(
+        @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest) {
+
+        CallbackResponse callbackResponse = callbackResponseTransformer.transformCaseWillList(callbackRequest);
+        return ResponseEntity.ok(callbackResponse);
+    }
+
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
             @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
