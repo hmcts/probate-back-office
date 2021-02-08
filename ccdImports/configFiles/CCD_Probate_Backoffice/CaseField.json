@@ -1,5 +1,5 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customHistoryViewer", "Label": "TEST Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationID", "Label": "Application ID", "FieldType": "Number", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationSubmittedDate", "Label": "Date application was submitted", "HintText": "This is the date that the application is received by the Registry either via post or digital", "FieldType": "Date", "SecurityClassification": "Public"},
