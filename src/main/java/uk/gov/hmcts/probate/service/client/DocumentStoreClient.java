@@ -25,7 +25,11 @@ public class DocumentStoreClient {
 
         byte[] bytes = null;
         try {
-            String userId = securityUtils.getSecurityDTO().getUserId()  ;
+            String userId = document.getDocumentGeneratedBy();
+            if (userId == null) {
+                userId = securityUtils.getSecurityDTO().getUserId();
+            }
+
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
             request.setHeader(USER_ID, userId);
