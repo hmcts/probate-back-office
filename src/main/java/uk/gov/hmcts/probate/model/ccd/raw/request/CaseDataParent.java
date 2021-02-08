@@ -21,25 +21,23 @@ public class CaseDataParent {
     protected final String deceasedDiedEngOrWales;
     protected final String deceasedForeignDeathCertInEnglish;
     protected final String deceasedForeignDeathCertTranslation;
-
     protected String solsForenames;
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;
     protected String dispenseWithNotice;
+    protected String titleAndClearingType;
+    protected String titleAndClearingTypeNoT;
+    protected String trustCorpName;
+    protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
+    protected String lodgementAddress;
+    protected LocalDate lodgementDate;
+    protected String nameOfFirmNamedInWill;
+    protected String nameOfSucceededFirm;
+    protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected String dispenseWithNoticeLeaveGiven;
     protected String dispenseWithNoticeLeaveGivenDate;
     protected String dispenseWithNoticeOverview;
     protected String dispenseWithNoticeSupportingDocs;
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
-    protected String titleAndClearingType;
-    protected String titleAndClearingTypeNoT;
 
-    protected String trustCorpName;
-    protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
-    protected String lodgementAddress;
-    protected LocalDate lodgementDate;
-
-    protected String nameOfFirmNamedInWill;
-    protected String nameOfSucceededFirm;
-    protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
 }

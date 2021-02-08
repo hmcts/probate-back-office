@@ -14,11 +14,8 @@ import java.util.List;
 public class ResponseCaseDataParent {
 
     protected DynamicList reprintDocument;
-
     protected String reprintNumberOfCopies;
-
     protected DynamicList solsAmendLegalStatmentSelect;
-
     protected String declarationCheckbox;
     protected String ihtGrossValueField;
     protected String ihtNetValueField;
@@ -33,7 +30,6 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
-
     protected String dispenseWithNotice;
     protected String dispenseWithNoticeLeaveGiven;
     protected String dispenseWithNoticeLeaveGivenDate;
@@ -52,4 +48,5 @@ public class ResponseCaseDataParent {
     protected String solsForenames;
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;
+
 }
