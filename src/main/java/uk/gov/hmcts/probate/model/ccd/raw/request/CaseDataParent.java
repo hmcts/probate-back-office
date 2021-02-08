@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -31,7 +32,7 @@ public class CaseDataParent {
     protected String dispenseWithNoticeSupportingDocs;
     protected String executorWithPowerReserved;
     protected String dispenseWithNoticeOtherExecs;
-    protected String dispenseWithNoticeOtherExecsList;
+    protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
 

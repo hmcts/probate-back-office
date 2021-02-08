@@ -38,16 +38,13 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "additionalExecutorsTrustCorpList", "Label": "Add all people acting on behalf of trust corporation", "HintText": "Maximum 4", "FieldType": "Collection", "FieldTypeParameter": "ExecutorActingForTrustCorp", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lodgementAddress", "Label": "Where is the resolution lodged?", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lodgementDate", "Label": "Lodgement date", "HintText": "For example, 12 11 2007", "FieldType": "Date", "SecurityClassification": "Public"},
-
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeLeaveGiven", "Label": "Has leave already been given to dispense with notice?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeLeaveGivenDate", "Label": "On what date was leave given to dispense with notice", "HintText": "For example, 12 11 2007", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeOverview", "Label": "Please give a brief overview of why notice should be dispensed with", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeSupportingDocs", "Label": "Please list any supporting documents you are providing as part of your application", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorWithPowerReserved", "Label": "Name of the executor to whom power is reserved", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeOtherExecs", "Label": "Is a dispense with notice required for any other executors?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeOtherExecsList", "Label": " ", "FieldType": "Collection", "FieldTypeParameter": "DispenseWithNoticeExecutor", "SecurityClassification": "Public"},
-
-
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dispenseWithNoticeOtherExecsList", "Label": "Add all executors to whom power is reserved", "FieldType": "Collection", "FieldTypeParameter": "DispenseWithNoticeExecutor", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willLatestCodicilHasDate", "Label": "Latest Codicil have a date ", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willLatestCodicilDate", "Label": "Latest Codicil date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfApplicants", "Label": "Number of applicants", "FieldType": "Number", "SecurityClassification": "Public"},
