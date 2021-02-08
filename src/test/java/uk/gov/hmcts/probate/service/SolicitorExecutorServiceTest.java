@@ -117,16 +117,6 @@ public class SolicitorExecutorServiceTest {
     }
 
     @Test
-    public void shouldUpdateSolApplyingExec() {
-        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
-        newExecsApplying = underTest.updateSolicitorApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsApplyingMock);
-
-        assertEquals(2, newExecsApplying.size());
-        assertEquals(SOLICITOR_SOT_NAME + " UPDATED", newExecsApplying.get(1).getValue().getApplyingExecutorName());
-        assertEquals(SOLICITOR_ID, newExecsApplying.get(1).getId());
-    }
-
-    @Test
     public void shouldUpdateSolNotApplyingExec() {
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
         newExecsNotApplying = underTest.addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsNotApplyingMock);
@@ -134,19 +124,6 @@ public class SolicitorExecutorServiceTest {
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_SOT_NAME + " UPDATED", newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
         assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
-    }
-
-    @Test
-    public void shouldAddSolApplyingExec() {
-        additionalExecutorsApplyingMock.remove(1);
-        assertEquals(1, additionalExecutorsApplyingMock.size());
-        assertNull(additionalExecutorsApplyingMock.get(0).getId());
-
-        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
-        newExecsApplying = underTest.updateSolicitorApplyingExecutor(callbackRequestMock.getCaseDetails().getData(), additionalExecutorsApplyingMock);
-
-        assertEquals(2, newExecsApplying.size());
-        assertEquals(SOLICITOR_ID, newExecsApplying.get(1).getId());
     }
 
     @Test

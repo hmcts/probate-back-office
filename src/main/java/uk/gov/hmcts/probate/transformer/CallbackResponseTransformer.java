@@ -351,6 +351,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse setExecutorListsForSolicitor(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> builder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
+
+        return transformResponse(builder.build());
+    }
+
+
     public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         CaseData caseData = callbackRequest.getCaseDetails().getData();

@@ -13,27 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
 public class SolicitorExecutorService {
 
     private static final String SOLICITOR_ID = "solicitor";
-
-
-    public List<CollectionMember<AdditionalExecutorApplying>> updateSolicitorApplyingExecutor(
-            CaseData caseData, List<CollectionMember<AdditionalExecutorApplying>> execs) {
-
-        List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
-
-        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
-            updatedExecs = removeSolicitorFromApplyingList(execs);
-        }
-        updatedExecs.add(getSolicitorApplyingExecutor(caseData));
-
-
-        return updatedExecs;
-    }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> addSolicitorToNotApplyingList(
             CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
@@ -67,18 +53,7 @@ public class SolicitorExecutorService {
                 .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
                 .collect(Collectors.toList());
     }
-
-    private CollectionMember<AdditionalExecutorApplying> getSolicitorApplyingExecutor(CaseData caseData) {
-        AdditionalExecutorApplying exec = AdditionalExecutorApplying.builder()
-                .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-                .applyingExecutorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                .applyingExecutorEmail(caseData.getSolsSolicitorEmail())
-                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
-                .build();
-
-        return new CollectionMember<>(SOLICITOR_ID, exec);
-    }
-
+    
     private CollectionMember<AdditionalExecutorNotApplying> getSolicitorNotApplyingExecutor(CaseData caseData) {
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
@@ -106,6 +81,60 @@ public class SolicitorExecutorService {
         tempExecsList.add(solicitorExecutor);
 
         return tempExecsList;
+    }
+
+
+    public boolean listContainsSolicitor(List<CollectionMember<AdditionalExecutor>> executorsList) {
+        return executorsList.stream().anyMatch(exec -> SOLICITOR_ID.equalsIgnoreCase(exec.getId()));
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
+        return caseData.getAdditionalExecutorsApplying()
+                .stream()
+                .map(this::buildApplyingAdditionalExecutors)
+                .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
+        AdditionalExecutorApplying tempExec = additionalExecutorApplying.getValue();
+
+        if (tempExec.getApplyingExecutorName() == null) {
+            additionalExecutorApplying.getValue().setApplyingExecutorName(tempExec.getApplyingExecutorFirstName()
+                    + " " + tempExec.getApplyingExecutorLastName());
+        }
+
+        return additionalExecutorApplying;
+    }
+
+    public AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
+        return AdditionalExecutorApplying.builder()
+                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
+                .applyingExecutorPhoneNumber(null)
+                .applyingExecutorEmail(null)
+                .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
+                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
+                .build();
+    }
+
+    public AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
+        return AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
+                .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
+                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
+                .build();
+    }
+
+    public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
+
+    public boolean isSolicitorApplying(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsApplying()); }
+
+    public String getSolsSOTName(String firstNames, String surname) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(firstNames);
+        sb.append(" " + surname);
+        return sb.toString();
     }
 }
 
