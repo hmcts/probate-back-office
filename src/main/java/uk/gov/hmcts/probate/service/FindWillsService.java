@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -20,20 +22,22 @@ public class FindWillsService {
 
     public List<Document> findWills(CaseData caseData) {
         List<Document> wills = new ArrayList<>();
+        if (!caseData.getCaseType().equals(DocumentCaseType.INTESTACY.getCaseType())) {
+            if (caseData.getBoDocumentsUploaded() != null) {
+                for (CollectionMember<UploadDocument> document : caseData.getBoDocumentsUploaded()) {
+                    if (document.getValue().getDocumentType() == DocumentType.WILL) {
+                        wills.add(buildDocument(document.getValue()));
+                    }
+                }
+            }
+            if (caseData.getScannedDocuments() != null) {
+                for (CollectionMember<ScannedDocument> document : caseData.getScannedDocuments()) {
+                    if ("Other".equalsIgnoreCase(document.getValue().getType()) && "will".equalsIgnoreCase(document.getValue().getSubtype())) {
+                        wills.add(buildDocument(document.getValue()));
+                    }
+                }
+            }
 
-        if (caseData.getBoDocumentsUploaded() != null) {
-            for (CollectionMember<UploadDocument> document : caseData.getBoDocumentsUploaded()) {
-                if (document.getValue().getDocumentType() == DocumentType.WILL) {
-                    wills.add(buildDocument(document.getValue()));
-                }
-            }
-        }
-        if (caseData.getScannedDocuments() != null) {
-            for (CollectionMember<ScannedDocument> document : caseData.getScannedDocuments()) {
-                if ("Other".equalsIgnoreCase(document.getValue().getType()) && "will".equalsIgnoreCase(document.getValue().getSubtype())) {
-                    wills.add(buildDocument(document.getValue()));
-                }
-            }
         }
 
         return wills;
