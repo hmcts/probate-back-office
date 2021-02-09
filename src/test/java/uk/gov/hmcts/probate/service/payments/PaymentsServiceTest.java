@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
@@ -63,6 +64,14 @@ public class PaymentsServiceTest {
     @Test(expected = ClientException.class)
     public void shouldFailOnAuthTokenMatch() {
         paymentsService.getCreditAccountPaymentResponse("FORBIDDEN_AUTH", creditAccountPayment);
+    }
+
+    @Test(expected = ClientException.class)
+    public void shouldFailOnAccountDeleted() {
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+            any(HttpEntity.class), any(Class.class))).thenThrow(HttpClientErrorException.class);
+
+        paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
     }
 
 }

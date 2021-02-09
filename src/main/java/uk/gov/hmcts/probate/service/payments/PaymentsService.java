@@ -8,7 +8,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -37,10 +39,17 @@ public class PaymentsService {
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
         log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
-        ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
-            request, PaymentResponse.class);
-        PaymentResponse paymentResponse = Objects.requireNonNull(responseEntity.getBody());
-        log.info("paymentResponse : {}", paymentResponse);
+        PaymentResponse paymentResponse = null;
+        ResponseEntity<PaymentResponse> responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(uri, POST,
+                request, PaymentResponse.class);
+            paymentResponse = Objects.requireNonNull(responseEntity.getBody());
+            log.info("paymentResponse : {}", paymentResponse);
+        } catch (HttpClientErrorException e) {
+            String message = e.getMessage();
+            throw new BusinessValidationException("PBA payment failed: " + message, message);
+        }
         return paymentResponse;
     }
 

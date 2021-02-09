@@ -462,7 +462,7 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
-      PAYMENT_URL: http://payments-api:8080
+      PAYMENT_URL: http://wiremock:8080
       PRD_API_URL: http://wiremock:8080
     ports:
       - 4104:4104
