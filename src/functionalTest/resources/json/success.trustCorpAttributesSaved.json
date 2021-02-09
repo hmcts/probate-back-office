@@ -28,19 +28,24 @@
             "dispenseWithNoticeLeaveGiven": "No",
             "dispenseWithNoticeOverview": "Overview",
             "dispenseWithNoticeSupportingDocs": "Supporting docs",
-            "executorWithPowerReserved": "Name",
-            "dispenseWithNoticeOtherExecs": "No",
             "titleAndClearingType": "TCTTrustCorpResWithApp",
             "trustCorpName": "Trust Corporation Name",
-            "actingTrustCorpName": "Acting for trust corp name",
-            "positionInTrustCorp": "Solicitor",
-            "additionalExecutorsTrustCorp": "Yes",
             "additionalExecutorsTrustCorpList": [
                 {
                     "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
                     "value": {
-                        "additionalExecutorTrustCorpName": "Other acting for trust corp name",
-                        "additionalExecutorTrustCorpPosition": "Solicitor"
+                        "additionalExecForenames": "Exec forename",
+                        "additionalExecLastname": "Exec lastname",
+                        "additionalExecutorTrustCorpPosition": "Solicitor",
+                        "additionalExecAddress": {
+                            "County": "Address County",
+                            "Country": "Address Country",
+                            "PostCode": "POST CODE",
+                            "PostTown": "POST TOWN",
+                            "AddressLine1": "Address line 1",
+                            "AddressLine2": "Address line 2",
+                            "AddressLine3": "Address line 3"
+                        }
                     }
                 }
             ],

@@ -36,7 +36,6 @@
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorAgreed", "FieldType": "YesOrNo", "ElementLabel": "Has agreed?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorHasOtherName", "FieldType": "YesOrNo", "ElementLabel": "Has other name?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorApplicant", "FieldType": "YesOrNo", "ElementLabel": "Is applicant?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "OtherPartnerExecutorApplying", "ListElementCode": "otherPartnerExecutorName", "FieldType": "Text", "ElementLabel": "Name of executor applying", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorPerson", "FieldType": "Person", "ElementLabel": "Executor", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorAddress", "FieldType": "Address", "ElementLabel": "Executor Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorNameOnWill", "FieldType": "Text", "ElementLabel": "Executor Name on Will", "SecurityClassification": "Public"},
@@ -48,8 +47,13 @@
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalApplying", "FieldType": "YesOrNo", "ElementLabel": "Are they applying?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecAddress", "FieldType": "AddressUK", "ElementLabel": "What is their address?", "FieldShowCondition": "additionalApplying=\"Yes\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecReasonNotApplying", "FieldType": "FixedList", "FieldTypeParameter": "notApplyingExecutorReasonFixedList", "ElementLabel": "Why aren't they applying?", "FieldShowCondition": "additionalApplying=\"No\"", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "OtherActingForTrustCorp", "ListElementCode": "additionalExecutorTrustCorpName", "FieldType": "Text", "ElementLabel": "Name of person acting on behalf of trust corporation", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "OtherActingForTrustCorp", "ListElementCode": "additionalExecutorTrustCorpPosition", "FieldType": "Text", "ElementLabel": "Name of their position within the trust corporation as per the resolution", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ExecutorActingForTrustCorp", "ListElementCode": "additionalExecForenames", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ExecutorActingForTrustCorp", "ListElementCode": "additionalExecLastname", "FieldType": "Text", "ElementLabel": "Last name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ExecutorActingForTrustCorp", "ListElementCode": "additionalExecutorTrustCorpPosition", "FieldType": "Text", "ElementLabel": "Name of their position within the trust corporation as per the resolution", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ExecutorActingForTrustCorp", "ListElementCode": "additionalExecAddress", "FieldType": "AddressUK", "ElementLabel": "What is their address?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OtherPartnerExecutorApplying", "ListElementCode": "additionalExecForenames", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OtherPartnerExecutorApplying", "ListElementCode": "additionalExecLastname", "FieldType": "Text", "ElementLabel": "Last name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OtherPartnerExecutorApplying", "ListElementCode": "additionalExecAddress", "FieldType": "AddressUK", "ElementLabel": "What is their address?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatementExecutorNotApplying", "ListElementCode": "executor", "FieldType": "Text", "ElementLabel": "Executor", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatementExecutorApplying", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": "Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatementExecutorApplying", "ListElementCode": "sign", "FieldType": "Text", "ElementLabel": "Sign", "SecurityClassification": "Public"},
@@ -160,5 +164,5 @@
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaValue", "FieldType": "TextArea", "FieldShowCondition": "enableType=\"TextArea\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableType=\"List\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "DispenseWithNoticeExecutor", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "DispenseWithNoticeExecutor", "ListElementCode": "notApplyingExecutorName", "FieldType": "Text", "ElementLabel": "Name of the executor to whom power is reserved", "SecurityClassification": "Public"}
 ]

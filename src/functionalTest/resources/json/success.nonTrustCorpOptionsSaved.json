@@ -28,16 +28,24 @@
       "dispenseWithNoticeLeaveGiven": "No",
       "dispenseWithNoticeOverview": "Overview",
       "dispenseWithNoticeSupportingDocs": "Supporting docs",
-      "executorWithPowerReserved": "Name",
-      "dispenseWithNoticeOtherExecs": "No",
       "titleAndClearingType": "TCTPartSuccPowerRes",
       "nameOfFirmNamedInWill": "Test Solicitor Ltd",
-      "otherPartnerExecutorName": "Fred Bloggs",
-      "anyPartnersApplyingToActAsExecutor": "Yes",
       "otherPartnersApplyingAsExecutors": [
         {
           "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
-          "value": { "otherPartnerExecutorName": "Jim Smith" }
+          "value": {
+            "additionalExecForenames": "Exec forename",
+            "additionalExecLastname": "Exec lastname",
+            "additionalExecAddress": {
+              "County": "Address County",
+              "Country": "Address Country",
+              "PostCode": "POST CODE",
+              "PostTown": "POST TOWN",
+              "AddressLine1": "Address line 1",
+              "AddressLine2": "Address line 2",
+              "AddressLine3": "Address line 3"
+            }
+          }
         }
       ],
       "nameOfSucceededFirm": "New Firm Ltd"

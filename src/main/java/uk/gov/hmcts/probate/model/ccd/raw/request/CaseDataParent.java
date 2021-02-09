@@ -3,9 +3,10 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorp;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.OtherPartnerExecutorApplying;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,32 +21,23 @@ public class CaseDataParent {
     protected final String deceasedDiedEngOrWales;
     protected final String deceasedForeignDeathCertInEnglish;
     protected final String deceasedForeignDeathCertTranslation;
-
     protected String solsForenames;
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;
     protected String dispenseWithNotice;
+    protected String titleAndClearingType;
+    protected String titleAndClearingTypeNoT;
+    protected String trustCorpName;
+    protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
+    protected String lodgementAddress;
+    protected LocalDate lodgementDate;
+    protected String nameOfFirmNamedInWill;
+    protected String nameOfSucceededFirm;
+    protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected String dispenseWithNoticeLeaveGiven;
     protected String dispenseWithNoticeLeaveGivenDate;
     protected String dispenseWithNoticeOverview;
     protected String dispenseWithNoticeSupportingDocs;
-    protected String executorWithPowerReserved;
-    protected String dispenseWithNoticeOtherExecs;
-    protected String dispenseWithNoticeOtherExecsList;
-    protected String titleAndClearingType;
-    protected String titleAndClearingTypeNoT;
-    protected String trustCorpName;
-    protected String actingTrustCorpName;
-    protected String positionInTrustCorp;
-    protected String additionalExecutorsTrustCorp;
+    protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
 
-    protected List<CollectionMember<AdditionalExecutorTrustCorp>> additionalExecutorsTrustCorpList;
-    protected String lodgementAddress;
-    protected LocalDate lodgementDate;
-    protected String nameOfFirmNamedInWill;
-    protected String otherPartnerExecutorName;
-    protected String anyPartnersApplyingToActAsExecutor;
-    protected String nameOfSucceededFirm;
-
-    protected List<CollectionMember<OtherPartnerExecutorApplying>> otherPartnersApplyingAsExecutors;
 }

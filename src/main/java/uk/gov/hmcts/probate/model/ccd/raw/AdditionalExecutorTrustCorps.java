@@ -7,9 +7,11 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class AdditionalExecutorTrustCorp {
+public class AdditionalExecutorTrustCorps {
 
-    private final String additionalExecutorTrustCorpName;
+    private final String additionalExecForenames;
+    private final String additionalExecLastname;
     private final String additionalExecutorTrustCorpPosition;
+    private final SolsAddress additionalExecAddress;
 
 }
