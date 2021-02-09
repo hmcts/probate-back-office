@@ -50,7 +50,6 @@ public class DocumentStoreClientTest {
         closeableHttpResponseMock.setEntity(entity);
 
         when(closeableHttpResponseMock.getEntity()).thenReturn(entity);
-        when(securityUtils.getSecurityDTO()).thenReturn(SecurityDTO.builder().userId("user1").build());
     }
 
     @Test
@@ -58,14 +57,32 @@ public class DocumentStoreClientTest {
         when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
 
         DocumentLink documentLink = DocumentLink.builder()
-                .documentBinaryUrl("http://localhost")
-                .build();
+            .documentBinaryUrl("http://localhost")
+            .build();
         Document document = Document.builder()
-                .documentFileName("test.pdf")
-                .documentGeneratedBy("test")
-                .documentDateAdded(LocalDate.now())
-                .documentLink(documentLink)
-                .build();
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        byte[] bytes = documentStoreClient.retrieveDocument(document, "");
+
+        assertTrue(bytes.length > 0);
+    }
+
+    @Test
+    public void shouldReturnDocumentInBytesWithNotDocUserId() throws IOException {
+        when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
+        when(securityUtils.getSecurityDTO()).thenReturn(SecurityDTO.builder().userId("user1").build());
+
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentBinaryUrl("http://localhost")
+            .build();
+        Document document = Document.builder()
+            .documentFileName("test.pdf")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
         byte[] bytes = documentStoreClient.retrieveDocument(document, "");
 
         assertTrue(bytes.length > 0);
