@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -66,7 +67,7 @@ public class PaymentsServiceTest {
         paymentsService.getCreditAccountPaymentResponse("FORBIDDEN_AUTH", creditAccountPayment);
     }
 
-    @Test(expected = ClientException.class)
+    @Test(expected = BusinessValidationException.class)
     public void shouldFailOnAccountDeleted() {
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenThrow(HttpClientErrorException.class);
