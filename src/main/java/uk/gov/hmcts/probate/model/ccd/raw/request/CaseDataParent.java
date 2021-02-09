@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 public class CaseDataParent {
 
+    protected String schemaVersion;
     protected String registrySequenceNumber;
     protected final String deceasedDeathCertificate;
     protected final String deceasedDiedEngOrWales;
