@@ -35,7 +35,7 @@ public class ResponseCaseDataParent {
     protected String dispenseWithNoticeLeaveGivenDate;
     protected String dispenseWithNoticeOverview;
     protected String dispenseWithNoticeSupportingDocs;
-    protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
+    protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> powerReservedExecutorList;
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
