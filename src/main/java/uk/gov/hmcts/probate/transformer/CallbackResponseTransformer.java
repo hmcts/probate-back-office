@@ -487,7 +487,9 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformResponse(responseCaseDataBuilder
+                .schemaVersion(SCHEMA_VERSION)
+                .build());
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
