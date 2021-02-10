@@ -257,7 +257,6 @@ public class NotificationController {
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
             if (log.isDebugEnabled()) {
                 log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
             }

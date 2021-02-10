@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
@@ -367,6 +368,8 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     
     private final String hasMultipleWills;
+
+    private final List<CollectionMember<WillDocument>> willSelection;
     
     private final String evidenceHandled;
 

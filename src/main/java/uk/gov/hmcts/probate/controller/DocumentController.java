@@ -28,7 +28,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.FindWillsService;
+import uk.gov.hmcts.probate.service.document.FindWillsService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -51,6 +51,8 @@ import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -172,7 +174,13 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
-        List<Document> willDocuments = findWillService.findWills(caseData);
+        List<Document> willDocuments = Collections.emptyList();
+        if (YES.equals(caseData.getHasMultipleWills())) {
+            willDocuments = findWillService.findSelectedWills(caseData);
+        } else {
+            willDocuments = findWillService.findWills(caseData);
+        }
+            
         log.info("number of willDocuments found on case: {}", willDocuments.size());
 
         String letterId = null;

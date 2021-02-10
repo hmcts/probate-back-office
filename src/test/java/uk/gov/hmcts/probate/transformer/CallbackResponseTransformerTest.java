@@ -41,7 +41,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FindWillsService;
+import uk.gov.hmcts.probate.service.document.FindWillsService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;

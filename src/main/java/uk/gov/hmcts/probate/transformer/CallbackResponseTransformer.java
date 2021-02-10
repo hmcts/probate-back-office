@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -26,7 +27,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FindWillsService;
+import uk.gov.hmcts.probate.service.document.FindWillsService;
+import uk.gov.hmcts.probate.service.document.OrderWillsService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -89,6 +91,7 @@ public class CallbackResponseTransformer {
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final FindWillsService findWillService;
+    private final OrderWillsService orderWillsService;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -465,8 +468,13 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseWillList(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
-        boolean moreThan1Will = findWillService.findWills(callbackRequest.getCaseDetails().getData()).size() > 1;
+        List<Document> wills = findWillService.findWills(callbackRequest.getCaseDetails().getData());
+        boolean moreThan1Will = wills.size() > 1;
         responseCaseDataBuilder.hasMultipleWills(moreThan1Will ? YES : NO);
+        if (moreThan1Will) {
+            List<CollectionMember<WillDocument>> willsCollection = orderWillsService.orderWillDocuments(wills);
+            responseCaseDataBuilder.willSelection(willsCollection);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
