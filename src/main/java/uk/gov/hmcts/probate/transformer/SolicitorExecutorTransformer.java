@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 
 import java.util.ArrayList;
@@ -172,15 +173,32 @@ public class SolicitorExecutorTransformer {
         builder.solsAdditionalExecutorList(tempExecsList);
     }
 
-    /**
-     *
-     * @param caseData
-     * @param builder
-     */
     public void mapSolicitorExecutorListsToCaseworkerExecutorsLists(CaseData caseData,
                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
+        // Initialise lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = caseData.getAdditionalExecutorsApplying() == null ?
+                new ArrayList<>() : solicitorExecutorService.mapApplyingAdditionalExecutors(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = caseData.getAdditionalExecutorsNotApplying() == null ?
+                new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
 
+        // Get solicitor trust corp executor lists
+        List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsList = caseData.getAdditionalExecutorsTrustCorpList();
+        List<CollectionMember<AdditionalExecutorPartners>> partnersList = caseData.getOtherPartnersApplyingAsExecutors();
+        List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> powerReserved = caseData.getPowerReservedExecutorList();
 
+        if (trustCorpsList != null) {
+            execsApplying.addAll(solicitorExecutorService.mapFromTrustCorpExecutorsToApplyingExecutors(trustCorpsList));
+        } else if (partnersList != null) {
+            execsApplying.addAll(solicitorExecutorService.mapFromPartnerExecutorsToApplyingExecutors(partnersList));
+        }
+
+        if (powerReserved != null) {
+            execsNotApplying.addAll(solicitorExecutorService.mapFromPowerReservedExecutorsToNotApplyingExecutors(powerReserved));
+        }
+
+        builder.additionalExecutorsApplying(execsApplying);
+        builder.additionalExecutorsNotApplying(execsNotApplying);
     }
+
 }

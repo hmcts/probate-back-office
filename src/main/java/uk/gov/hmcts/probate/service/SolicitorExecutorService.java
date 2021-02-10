@@ -2,11 +2,11 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorTrustCorps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,6 @@ public class SolicitorExecutorService {
         return tempExecsList;
     }
 
-
     public boolean listContainsSolicitor(List<CollectionMember<AdditionalExecutor>> executorsList) {
         return executorsList.stream().anyMatch(exec -> SOLICITOR_ID.equalsIgnoreCase(exec.getId()));
     }
@@ -124,6 +123,54 @@ public class SolicitorExecutorService {
                 .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
                 .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
                 .build();
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsList) {
+        return trustCorpsList
+                .stream()
+                .map(this::buildApplyingExecFromTrustCorpExec)
+                .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> buildApplyingExecFromTrustCorpExec(CollectionMember<AdditionalExecutorTrustCorps> trustCorpExec) {
+        AdditionalExecutorTrustCorps tempExec = trustCorpExec.getValue();
+
+        return new CollectionMember<>(trustCorpExec.getId(), AdditionalExecutorApplying.builder()
+                .applyingExecutorName(tempExec.getAdditionalExecForenames() + " " + tempExec.getAdditionalExecLastname())
+                .applyingExecutorAddress(tempExec.getAdditionalExecAddress())
+                .build());
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(List<CollectionMember<AdditionalExecutorPartners>> partnersList) {
+        return partnersList
+                .stream()
+                .map(this::buildApplyingExecFromPartnerExec)
+                .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> buildApplyingExecFromPartnerExec(CollectionMember<AdditionalExecutorPartners> partnerExec) {
+        AdditionalExecutorPartners tempExec = partnerExec.getValue();
+
+        return new CollectionMember<>(partnerExec.getId(), AdditionalExecutorApplying.builder()
+                .applyingExecutorName(tempExec.getAdditionalExecForenames() + " " + tempExec.getAdditionalExecLastname())
+                .applyingExecutorAddress(tempExec.getAdditionalExecAddress())
+                .build());
+    }
+
+    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromPowerReservedExecutorsToNotApplyingExecutors(List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> powerReservedList) {
+        return powerReservedList
+                .stream()
+                .map(this::buildNotApplyingExecFromPowerReservedExec)
+                .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorNotApplying> buildNotApplyingExecFromPowerReservedExec(CollectionMember<AdditionalExecutorNotApplyingPowerReserved> powerReservedExec) {
+        AdditionalExecutorNotApplyingPowerReserved tempExec = powerReservedExec.getValue();
+
+        return new CollectionMember<>(powerReservedExec.getId(), AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(tempExec.getNotApplyingExecutorName())
+                .notApplyingExecutorReason("PowerReserved")
+                .build());
     }
 
     public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }

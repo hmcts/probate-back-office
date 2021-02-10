@@ -190,6 +190,9 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, numberOfApplyingExecutorsValidationRule);
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.setExecutorListsForSolicitor(callbackRequest);
+        }
 
         return ResponseEntity.ok(response);
     }

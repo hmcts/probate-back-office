@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.ccd.raw;
+package uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors;
 
 import lombok.Builder;
 import lombok.Data;

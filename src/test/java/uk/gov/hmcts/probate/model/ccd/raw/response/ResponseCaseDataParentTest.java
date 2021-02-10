@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorTrustCorps;
 
 import java.util.ArrayList;
 import java.util.List;
