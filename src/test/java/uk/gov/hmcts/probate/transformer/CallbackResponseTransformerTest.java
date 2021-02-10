@@ -739,6 +739,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSchemaVersionCorrectly() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
+    }
+
+    @Test
     public void shouldTestForNullDOB() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
                 .build();
