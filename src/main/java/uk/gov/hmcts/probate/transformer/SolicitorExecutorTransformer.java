@@ -84,6 +84,21 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
+    public void setPrimaryApplicantWithExecutorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        if (caseData.getPrimaryApplicantForenames() == null && caseData.getAdditionalExecutorsApplying() != null) {
+
+            // Todo check if I then need to get remove this exec from execs applying list.
+            AdditionalExecutorApplying exec = caseData.getAdditionalExecutorsApplying().get(0).getValue();
+
+            builder
+                    .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
+                    .primaryApplicantSurname(exec.getApplyingExecutorLastName())
+                    .primaryApplicantAddress(exec.getApplyingExecutorAddress())
+                    .primaryApplicantIsApplying(YES)
+                    .solsPrimaryExecutorNotApplyingReason(null);
+        }
+    }
+
     public void setExecutorApplyingListsWithSolicitorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         // Initialise lists

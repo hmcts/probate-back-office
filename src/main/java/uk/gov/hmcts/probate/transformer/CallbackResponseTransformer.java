@@ -356,6 +356,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
+        solicitorExecutorTransformer.setPrimaryApplicantWithExecutorInfo(caseData, builder);
 
         return transformResponse(builder.build());
     }
@@ -1135,7 +1136,8 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
-//        solicitorExecutorTransformer.mapFromSolsAdditionalExecutorListToCaseworkerExecutorLists(caseData, builder);
+        // Todo check if this is the most appropriate place for our mappings call.
+        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
