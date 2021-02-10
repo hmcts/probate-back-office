@@ -25,7 +25,7 @@ public class FeatureToggleService {
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false);
+        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
     }
 
 }
