@@ -113,7 +113,7 @@ public class CCDDataTransformer {
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
-            executors = caseData.getSolsAdditionalExecutorList().stream()
+            executors.addAll(caseData.getSolsAdditionalExecutorList().stream()
                     .map(CollectionMember::getValue)
                     .map(executor -> Executor.builder()
                             .applying(YES.equals(executor.getAdditionalApplying()))
@@ -122,11 +122,11 @@ public class CCDDataTransformer {
                             .forename(executor.getAdditionalExecForenames())
                             .lastname(executor.getAdditionalExecLastname())
                             .build())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
 
         if (caseData.getAdditionalExecutorsTrustCorpList() != null ) {
-            executors = caseData.getAdditionalExecutorsTrustCorpList().stream()
+            executors.addAll(caseData.getAdditionalExecutorsTrustCorpList().stream()
                     .map(CollectionMember::getValue)
                     .map(executor -> Executor.builder()
                             .applying(true)
@@ -135,11 +135,11 @@ public class CCDDataTransformer {
                             .forename(executor.getAdditionalExecForenames())
                             .lastname(executor.getAdditionalExecLastname())
                             .build())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
 
         if (caseData.getOtherPartnersApplyingAsExecutors() != null ) {
-            executors = caseData.getOtherPartnersApplyingAsExecutors().stream()
+            executors.addAll(caseData.getOtherPartnersApplyingAsExecutors().stream()
                     .map(CollectionMember::getValue)
                     .map(executor -> Executor.builder()
                             .applying(true)
@@ -148,7 +148,7 @@ public class CCDDataTransformer {
                             .forename(executor.getAdditionalExecForenames())
                             .lastname(executor.getAdditionalExecLastname())
                             .build())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
 
         Executor primaryExecutor = Executor.builder()

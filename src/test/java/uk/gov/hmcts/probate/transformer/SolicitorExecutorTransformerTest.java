@@ -361,7 +361,7 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.solicitorExecutorTransformation(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.mapFromSolsAdditionalExecutorListToCaseworkerExecutorLists(caseDetailsMock.getData(), responseCaseDataBuilder);
 
         assertEquals(EMPTY_LIST, responseCaseDataBuilder.build().getAdditionalExecutorsApplying());
         assertEquals(EMPTY_LIST, responseCaseDataBuilder.build().getAdditionalExecutorsNotApplying());

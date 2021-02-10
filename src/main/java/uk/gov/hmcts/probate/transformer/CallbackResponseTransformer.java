@@ -1135,7 +1135,7 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
-        solicitorExecutorTransformer.solicitorExecutorTransformation(caseData, builder);
+//        solicitorExecutorTransformer.mapFromSolsAdditionalExecutorListToCaseworkerExecutorLists(caseData, builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

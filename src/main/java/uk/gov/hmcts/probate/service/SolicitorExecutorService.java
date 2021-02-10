@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.solicitorexecutors.AdditionalExecutorPartners;
@@ -105,72 +106,80 @@ public class SolicitorExecutorService {
         return additionalExecutorApplying;
     }
 
-    public AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
-        return AdditionalExecutorApplying.builder()
-                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
-                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
-                .applyingExecutorPhoneNumber(null)
-                .applyingExecutorEmail(null)
-                .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
-                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
-                .build();
-    }
+//    public AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
+//        return AdditionalExecutorApplying.builder()
+//                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
+//                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
+//                .applyingExecutorPhoneNumber(null)
+//                .applyingExecutorEmail(null)
+//                .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
+//                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
+//                .build();
+//    }
 
-    public AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
-        return AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
-                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
-                .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
-                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
-                .build();
-    }
+//    public AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
+//        return AdditionalExecutorNotApplying.builder()
+//                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
+//                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
+//                .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
+//                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
+//                .build();
+//    }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsList) {
-        return trustCorpsList
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(CaseData caseData) {
+        return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
-                .map(this::buildApplyingExecFromTrustCorpExec)
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
+                .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
+                .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
+                .build()))
                 .collect(Collectors.toList());
     }
 
-    public CollectionMember<AdditionalExecutorApplying> buildApplyingExecFromTrustCorpExec(CollectionMember<AdditionalExecutorTrustCorps> trustCorpExec) {
-        AdditionalExecutorTrustCorps tempExec = trustCorpExec.getValue();
-
-        return new CollectionMember<>(trustCorpExec.getId(), AdditionalExecutorApplying.builder()
-                .applyingExecutorName(tempExec.getAdditionalExecForenames() + " " + tempExec.getAdditionalExecLastname())
-                .applyingExecutorAddress(tempExec.getAdditionalExecAddress())
-                .build());
-    }
-
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(List<CollectionMember<AdditionalExecutorPartners>> partnersList) {
-        return partnersList
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(CaseData caseData) {
+        return caseData.getOtherPartnersApplyingAsExecutors()
                 .stream()
-                .map(this::buildApplyingExecFromPartnerExec)
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
+                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                        .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
+                        .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
+                        .build()))
                 .collect(Collectors.toList());
     }
 
-    public CollectionMember<AdditionalExecutorApplying> buildApplyingExecFromPartnerExec(CollectionMember<AdditionalExecutorPartners> partnerExec) {
-        AdditionalExecutorPartners tempExec = partnerExec.getValue();
-
-        return new CollectionMember<>(partnerExec.getId(), AdditionalExecutorApplying.builder()
-                .applyingExecutorName(tempExec.getAdditionalExecForenames() + " " + tempExec.getAdditionalExecLastname())
-                .applyingExecutorAddress(tempExec.getAdditionalExecAddress())
-                .build());
-    }
-
-    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromPowerReservedExecutorsToNotApplyingExecutors(List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> powerReservedList) {
-        return powerReservedList
+    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromPowerReservedExecutorsToNotApplyingExecutors(CaseData caseData) {
+        return caseData.getPowerReservedExecutorList()
                 .stream()
-                .map(this::buildNotApplyingExecFromPowerReservedExec)
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
+                        .notApplyingExecutorName(exec.getValue().getNotApplyingExecutorName())
+                        .notApplyingExecutorReason("PowerReserved")
+                        .build()))
                 .collect(Collectors.toList());
     }
 
-    public CollectionMember<AdditionalExecutorNotApplying> buildNotApplyingExecFromPowerReservedExec(CollectionMember<AdditionalExecutorNotApplyingPowerReserved> powerReservedExec) {
-        AdditionalExecutorNotApplyingPowerReserved tempExec = powerReservedExec.getValue();
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsAdditionalExecutorListToApplyingExecutors(CaseData caseData) {
+        return caseData.getSolsAdditionalExecutorList()
+                .stream()
+                .filter(exec -> exec.getValue().getAdditionalApplying() == YES)
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
+                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                        .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
+                        .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
+                        .build()))
+                .collect(Collectors.toList());
+    }
 
-        return new CollectionMember<>(powerReservedExec.getId(), AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(tempExec.getNotApplyingExecutorName())
-                .notApplyingExecutorReason("PowerReserved")
-                .build());
+    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromSolsAdditionalExecutorListToNotApplyingExecutors(CaseData caseData) {
+        return caseData.getSolsAdditionalExecutorList()
+                .stream()
+                .filter(exec -> exec.getValue().getAdditionalApplying() == NO)
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
+                        .notApplyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
+                        .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
+                        .build()))
+                .collect(Collectors.toList());
     }
 
     public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
