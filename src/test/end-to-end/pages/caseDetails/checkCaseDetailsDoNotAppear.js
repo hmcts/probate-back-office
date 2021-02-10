@@ -3,9 +3,7 @@
 const testConfig = require('src/test/config.js');
 const assert = require('assert');
 
-// pre-condition 1 - caseDetails.js already invoked to switch to this tab
-// pre-condition 2 - we haven't done something daft like store the data label
-//                   as a value for one of the other fields on the tab
+// pre-condition - caseDetails.js already invoked to switch to this tab
 module.exports = async function (tabName, fieldLabelsNotToBeShown) {
 
     const I = this;
