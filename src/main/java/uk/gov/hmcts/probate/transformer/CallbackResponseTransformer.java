@@ -1040,7 +1040,7 @@ public class CallbackResponseTransformer {
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
 
-            solicitorExecutorTransformer.addSolicitorToSolsAdditionalExecList(caseData, builder);
+//            solicitorExecutorTransformer.addSolicitorToSolsAdditionalExecList(caseData, builder);
             solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
         }
 

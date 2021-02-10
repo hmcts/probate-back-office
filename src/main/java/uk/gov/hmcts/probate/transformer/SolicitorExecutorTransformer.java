@@ -118,63 +118,6 @@ public class SolicitorExecutorTransformer {
         }
     }
 
-//    public void mapFromSolsAdditionalExecutorListToCaseworkerExecutorLists(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-//
-//        if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
-//
-//            if (solicitorExecutorService.isSolicitorExecutor(caseData)) {
-//                setExecutorApplyingListsWithSolicitorInfo(caseData, builder);
-//
-//            } else {
-//                builder
-//                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-//                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
-//            }
-//
-//        } else {
-//
-//            // Initialise lists
-//            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();
-//            List<CollectionMember<AdditionalExecutorNotApplying>> notApplyingExec = new ArrayList<>();
-//
-//            // Populate lists
-//            for (CollectionMember<AdditionalExecutor> additionalExec : caseData.getSolsAdditionalExecutorList()) {
-//                if (ANSWER_YES.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-//                    applyingExec.add( new CollectionMember<>(additionalExec.getId(),
-//                            solicitorExecutorService.buildApplyingAdditionalExecutor(additionalExec.getValue())));
-//                } else if (ANSWER_NO.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-//                    notApplyingExec.add( new CollectionMember<>(additionalExec.getId(),
-//                            solicitorExecutorService.buildNotApplyingAdditionalExecutor(additionalExec.getValue())));
-//                }
-//            }
-//
-//            builder
-//                    .additionalExecutorsApplying(applyingExec)
-//                    .additionalExecutorsNotApplying(notApplyingExec)
-//                    .solsAdditionalExecutorList(EMPTY_LIST);
-//        }
-//    }
-
-    public void addSolicitorToSolsAdditionalExecList(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-
-        // Initialise lists
-        List<CollectionMember<AdditionalExecutor>> executorList = caseData.getSolsAdditionalExecutorList();
-        List<CollectionMember<AdditionalExecutor>> tempExecsList = executorList == null || executorList.isEmpty() ?
-                new ArrayList<>() : new ArrayList<>(executorList);
-
-        // If list does NOT contain an solicitor, then update
-        if (!solicitorExecutorService.listContainsSolicitor(tempExecsList)
-                && solicitorExecutorService.isSolicitorExecutor(caseData)
-                && !solicitorExecutorService.isSolicitorApplying(caseData)) {
-
-            // Add solicitor to list
-            tempExecsList = solicitorExecutorService.addSolicitorAsNotApplyingExecutorToList(caseData);
-
-        }
-
-        builder.solsAdditionalExecutorList(tempExecsList);
-    }
-
     public void mapSolicitorExecutorListsToCaseworkerExecutorsLists(CaseData caseData,
                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         // Initialise lists
