@@ -1,6 +1,5 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
 const assert = require('assert');
 
 // pre-condition - caseDetails.js already invoked to switch to this tab
