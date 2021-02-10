@@ -125,6 +125,32 @@ public class CCDDataTransformer {
                     .collect(Collectors.toList());
         }
 
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null ) {
+            executors = caseData.getAdditionalExecutorsTrustCorpList().stream()
+                    .map(CollectionMember::getValue)
+                    .map(executor -> Executor.builder()
+                            .applying(true)
+                            .address(executor.getAdditionalExecAddress())
+                            .reasonNotApplying(null)
+                            .forename(executor.getAdditionalExecForenames())
+                            .lastname(executor.getAdditionalExecLastname())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
+        if (caseData.getOtherPartnersApplyingAsExecutors() != null ) {
+            executors = caseData.getOtherPartnersApplyingAsExecutors().stream()
+                    .map(CollectionMember::getValue)
+                    .map(executor -> Executor.builder()
+                            .applying(true)
+                            .address(executor.getAdditionalExecAddress())
+                            .reasonNotApplying(null)
+                            .forename(executor.getAdditionalExecForenames())
+                            .lastname(executor.getAdditionalExecLastname())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
         Executor primaryExecutor = Executor.builder()
                 .applying(caseData.isPrimaryApplicantApplying())
                 .address(caseData.getPrimaryApplicantAddress())

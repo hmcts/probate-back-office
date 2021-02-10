@@ -36,11 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +70,7 @@ public class BusinessValidationController {
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
     private final CaseStoppedService caseStoppedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
@@ -185,6 +182,17 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateExecutors (
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, numberOfApplyingExecutorsValidationRule);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
