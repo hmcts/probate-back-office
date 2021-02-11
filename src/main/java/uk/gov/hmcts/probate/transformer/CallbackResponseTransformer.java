@@ -370,6 +370,10 @@ public class CallbackResponseTransformer {
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .schemaVersion(SCHEMA_VERSION)
+                // set these as these properties are still used for in-flight cases on old schema /
+                // bulk scan created cases and ccd has limited logic facilities
+                .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
+                .solicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -488,7 +492,6 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         
         return transformResponse(responseCaseDataBuilder
-                .schemaVersion(SCHEMA_VERSION)
                 .build());
     }
 
