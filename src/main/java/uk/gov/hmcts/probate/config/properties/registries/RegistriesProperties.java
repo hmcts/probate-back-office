@@ -16,5 +16,5 @@ import java.util.Map;
 @ConfigurationProperties("registry")
 public class RegistriesProperties {
 
-    private Map<String, Registry> registries = new HashMap<>();
+    private Map<String, Map<String, RegistryCountry>> registryCountry = new HashMap()
 }
