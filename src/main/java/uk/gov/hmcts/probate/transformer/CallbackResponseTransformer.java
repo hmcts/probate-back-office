@@ -504,11 +504,6 @@ public class CallbackResponseTransformer {
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
-            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
-                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
-            }
-        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
@@ -582,7 +577,9 @@ public class CallbackResponseTransformer {
             .boDeceasedTitle(caseData.getBoDeceasedTitle())
             .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-            .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+            .ihtFormCompletedOnline(
+                caseData.getIhtFormCompletedOnline() == null && caseData.getIhtFormId() != null ? NO :
+                    caseData.getIhtFormCompletedOnline())
 
             .boWillMessage(caseData.getBoWillMessage())
             .boExecutorLimitation(caseData.getBoExecutorLimitation())
@@ -729,18 +726,18 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isIntestacy(CaseData caseData) {
-        return INTESTACY.getName().equals(caseData.getCaseType())
-            || GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType());
+        return INTESTACY.getName().equals(caseData.getCaseType()) || GRANT_TYPE_INTESTACY
+            .equals(caseData.getSolsWillType());
     }
 
     private boolean isSolsEmailSet(CaseData caseData) {
-        return SOLICITOR.equals(caseData.getApplicationType())
-            && StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+        return SOLICITOR.equals(caseData.getApplicationType()) && StringUtils
+            .isNotBlank(caseData.getSolsSolicitorEmail());
     }
 
     private boolean isPAEmailSet(CaseData caseData) {
-        return PERSONAL.equals(caseData.getApplicationType())
-            && StringUtils.isNotBlank(caseData.getPrimaryApplicantEmailAddress());
+        return PERSONAL.equals(caseData.getApplicationType()) && StringUtils
+            .isNotBlank(caseData.getPrimaryApplicantEmailAddress());
     }
 
     private boolean isCodicil(CaseData caseData) {
@@ -1007,8 +1004,8 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsApplying(YES)
                     .solsSolicitorNotApplyingReason(null)
                     .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())
-                || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO
+                .equals(caseData.getSolsSolicitorIsApplying())) {
                 if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname())
                     .equals(caseData.getPrimaryApplicantFullName())) {
                     builder
@@ -1223,8 +1220,8 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsApplying(YES)
                     .solsSolicitorNotApplyingReason(null)
                     .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())
-                || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO
+                .equals(caseData.getSolsSolicitorIsApplying())) {
                 if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname())
                     .equals(caseData.getPrimaryApplicantFullName())) {
                     builder
@@ -1394,7 +1391,7 @@ public class CallbackResponseTransformer {
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData,
-                                                            List<CollectionMember<AdditionalExecutor>> execs) {
+                                                                     List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
