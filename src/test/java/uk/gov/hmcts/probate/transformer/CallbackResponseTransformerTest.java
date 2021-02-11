@@ -1783,6 +1783,20 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNotChosen() {
+        caseDataBuilder.ihtReferenceNumber("123456");
+        caseDataBuilder.ihtFormId(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertNull(callbackResponse.getData().getIhtFormId());
+        assertSolsDetails(callbackResponse);
+    }
+    
+    @Test
     public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
         CaseData.CaseDataBuilder caseDataBuilder2;
         caseDataBuilder2 = CaseData.builder().ihtReferenceNumber(null);
