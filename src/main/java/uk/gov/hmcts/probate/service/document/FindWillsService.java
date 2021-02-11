@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Service
 @Slf4j
@@ -49,10 +50,31 @@ public class FindWillsService {
     public List<Document> findSelectedWills(CaseData caseData) {
         List<Document> documents = new ArrayList<>();
         for (CollectionMember<WillDocument> collectionMember : caseData.getWillSelection()) {
-            documents.add(collectionMember.getValue().getDocument());
+            if (YES.equals(collectionMember.getValue().getDocumentSelected())) {
+                Document doc = findDocumentByBinaryURL(caseData, collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl());
+                if (doc != null) {
+                    documents.add(doc);
+                }
+            }
         }
        
         return documents;
+    }
+
+    private Document findDocumentByBinaryURL(CaseData caseData, String documentBinaryUrl) {
+        for (CollectionMember<UploadDocument> collectionMember : caseData.getBoDocumentsUploaded()) {
+            UploadDocument uploadDocument = collectionMember.getValue();
+            if (documentBinaryUrl.equals(uploadDocument.getDocumentLink().getDocumentBinaryUrl())) {
+                return buildUploadedDocument(uploadDocument);
+            }
+        }
+        for (CollectionMember<ScannedDocument> collectionMember : caseData.getScannedDocuments()) {
+            ScannedDocument scannedDocument = collectionMember.getValue();
+            if (documentBinaryUrl.equals(scannedDocument.getUrl().getDocumentBinaryUrl())) {
+                return buildScannedDocument(scannedDocument);
+            }
+        }
+        return null;
     }
 
     private Document buildUploadedDocument(UploadDocument uploadDocument) {

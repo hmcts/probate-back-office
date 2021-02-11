@@ -53,10 +53,9 @@ public class OrderWillsService {
 
     private CollectionMember<WillDocument> buildWillDocumentCollectionMember(Document document) {
         WillDocument willDocument = WillDocument.builder()
-            .documentDate(willDateFormatter.format(document.getDocumentDateAdded()))
+            .documentDate(document.getDocumentDateAdded() == null ? null : willDateFormatter.format(document.getDocumentDateAdded()))
             .documentLabel(document.getDocumentType().getTemplateName())
             .documentLink(document.getDocumentLink())
-            .document(document)
             .build();
         return new CollectionMember<>(willDocument);
     }

@@ -162,6 +162,7 @@ public class BulkPrintService {
         } catch (IOException ioe) {
             log.error("Error retrieving document from store with url {}", ioe);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error sending pdfs to bulk print {}", e.getMessage());
         }
         return sendLetterResponse;
@@ -193,15 +194,11 @@ public class BulkPrintService {
                                                               String authHeaderValue) throws IOException {
         Long extraCopies = 1L;
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
-        log.info("arrangePdfDocumentsForBulkPrinting.willDocuments:"+willDocuments.size());
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
-        log.info("encodedCoverSheet");
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
-        log.info("encodedCoverSheet");
         List<String> encodedWillDocuments = new ArrayList<>();
         for (Document will : willDocuments) {
             encodedWillDocuments.add(getPdfAsBase64EncodedString(will, authHeaderValue, callbackRequest));
-            log.info("encodedWillDocuments");
         }
 
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)

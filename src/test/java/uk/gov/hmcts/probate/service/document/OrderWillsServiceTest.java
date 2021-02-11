@@ -36,8 +36,10 @@ public class OrderWillsServiceTest {
         Document other2 = buildDocument("other2", "2009-02-01", DocumentType.OTHER);
         Document codicil1 = buildDocument("codicil1", "2001-05-01", DocumentType.IHT);
         Document codicil2 = buildDocument("codicil2", "2019-12-31", DocumentType.IHT);
+        Document codicil3 = buildDocument("codicil3", null, DocumentType.IHT);
         
         List<Document> documentList = new ArrayList<>();
+        documentList.add(codicil3);
         documentList.add(other1);
         documentList.add(codicil2);
         documentList.add(other2);
@@ -50,8 +52,9 @@ public class OrderWillsServiceTest {
         assertWillDocument(willDocuments.get(1), "will", "2010-01-01", "binaryurl-will2");
         assertWillDocument(willDocuments.get(2), "IHT", "2001-05-01", "binaryurl-codicil1");
         assertWillDocument(willDocuments.get(3), "IHT", "2019-12-31", "binaryurl-codicil2");
-        assertWillDocument(willDocuments.get(4), "other", "2001-01-01", "binaryurl-other1");
-        assertWillDocument(willDocuments.get(5), "other", "2009-02-01", "binaryurl-other2");
+        assertWillDocument(willDocuments.get(4), "IHT", null, "binaryurl-codicil3");
+        assertWillDocument(willDocuments.get(5), "other", "2001-01-01", "binaryurl-other1");
+        assertWillDocument(willDocuments.get(6), "other", "2009-02-01", "binaryurl-other2");
     }
 
     private void assertWillDocument(CollectionMember<WillDocument> willDocument, String label, String date, String binary) {
@@ -63,7 +66,7 @@ public class OrderWillsServiceTest {
     private Document buildDocument(String fileName, String dateAdded, DocumentType docType) {
         return Document.builder()
             .documentFileName("will1")
-            .documentDateAdded(LocalDate.from(willDateFormatter.parse(dateAdded)))
+            .documentDateAdded(dateAdded == null ? null : LocalDate.from(willDateFormatter.parse(dateAdded)))
             .documentType(docType)
             .documentLink(DocumentLink.builder().documentBinaryUrl("binaryurl-"+fileName).build())
             .build();

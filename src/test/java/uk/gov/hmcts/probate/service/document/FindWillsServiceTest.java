@@ -11,8 +11,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.document.FindWillsService;
+import uk.gov.hmcts.reform.probate.model.forms.Will;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -290,6 +292,76 @@ public class FindWillsServiceTest {
 
         List<Document> wills = findWillService.findWills(caseData);
         assertEquals(0, wills.size());
+    }
+
+    @Test
+    public void shouldFindSelectedWills() {
+        UploadDocument will = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
+                "uploadBinaryUrl").build())
+            .documentType(DocumentType.WILL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
+        List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
+        uploadDocumentsList.add(collectionMemberWill);
+
+        ScannedDocument scan = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("other")
+            .subtype("will")
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
+        List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
+        scannedDocumentsList.add(collectionMemberScan);
+
+        List<CollectionMember<WillDocument>> willSelection = new ArrayList<>();
+        WillDocument willDoc1 = WillDocument.builder()
+            .documentSelected("Yes")
+            .documentDate("date1")
+            .documentLabel("will1")
+            .documentLink(DocumentLink.builder().documentFilename("file1").documentBinaryUrl("uploadBinaryUrl").build())
+            .build();
+        CollectionMember<WillDocument> will1 = new CollectionMember<WillDocument>(willDoc1);
+        WillDocument willDoc2 = WillDocument.builder()
+            .documentSelected("Yes")
+            .documentDate("date2")
+            .documentLabel("will2")
+            .documentLink(DocumentLink.builder().documentFilename("file2").documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<WillDocument> will2 = new CollectionMember<WillDocument>(willDoc2);
+        WillDocument willDoc3 = WillDocument.builder()
+            .documentSelected("No")
+            .documentDate("date3")
+            .documentLabel("will3")
+            .documentLink(DocumentLink.builder().documentFilename("file3").documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<WillDocument> will3 = new CollectionMember<WillDocument>(willDoc3);
+        WillDocument willDoc4 = WillDocument.builder()
+            .documentSelected(null)
+            .documentDate("date4")
+            .documentLabel("will4")
+            .documentLink(DocumentLink.builder().documentFilename("file4").documentBinaryUrl("scanBinaryUrlOther").build())
+            .build();
+        CollectionMember<WillDocument> will4 = new CollectionMember<WillDocument>(willDoc4);
+
+        willSelection.add(will1);
+        willSelection.add(will2);
+        willSelection.add(will3);
+        willSelection.add(will4);
+        CaseData caseData = CaseData.builder()
+            .boDocumentsUploaded(uploadDocumentsList)
+            .scannedDocuments(scannedDocumentsList)
+            .caseType(DocumentCaseType.GOP.getCaseType())
+            .willSelection(willSelection)
+            .build();
+
+        List<Document> selectedWills = findWillService.findSelectedWills(caseData);
+        assertEquals(2, selectedWills.size());
+        assertEquals("file1", selectedWills.get(0).getDocumentFileName());
+        assertEquals("file2", selectedWills.get(2).getDocumentFileName());
+
     }
 
 }

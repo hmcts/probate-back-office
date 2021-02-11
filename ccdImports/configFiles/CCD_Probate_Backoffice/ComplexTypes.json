@@ -157,9 +157,8 @@
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaValue", "FieldType": "TextArea", "FieldShowCondition": "enableType=\"TextArea\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableType=\"List\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentSelected", "FieldType": "Label", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLabel", "FieldType": "Label", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentDate", "FieldType": "Label", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLink", "FieldType": "Document", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "document", "FieldType": "ProbateDocument", "FieldShowCondition": "documentSelected=\"NeverShowThis\"","ElementLabel": " ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentSelected", "FieldType": "YesOrNo", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLabel", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentDate", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLink", "FieldType": "Document", "ElementLabel": " ", "SecurityClassification": "Public"}
 ]
