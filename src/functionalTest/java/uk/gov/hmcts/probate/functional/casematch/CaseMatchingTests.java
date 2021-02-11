@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -17,6 +18,7 @@ import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
 
 @Slf4j
+@Ignore
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CaseMatchingTests extends IntegrationTestBase {
 
