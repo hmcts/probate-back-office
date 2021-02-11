@@ -109,6 +109,10 @@ fee.api:
   channel: default
   applicantType: all
   keyword: NewFee
+  newCopiesFeeKeyword: GrantWill
+  newIssuesFee5kKeyword: SAL5K
+  newIssuesFeeKeyword: SA
+  ihtMinAmt: 5000.00
 
 markdown.templatesDirectory: templates/markdown/
 

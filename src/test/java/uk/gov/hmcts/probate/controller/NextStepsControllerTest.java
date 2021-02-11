@@ -84,7 +84,8 @@ public class NextStepsControllerTest {
 
     @Test
     public void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorAddress(SolsAddress.builder().addressLine1(CaseDataTestBuilder.SOLICITOR_FIRM_LINE1).build());
+        caseDataBuilder
+            .solsSolicitorAddress(SolsAddress.builder().addressLine1(CaseDataTestBuilder.SOLICITOR_FIRM_LINE1).build());
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
