@@ -85,7 +85,8 @@ public class SolicitorExecutorTransformer {
     }
 
     public void setPrimaryApplicantWithExecutorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (caseData.getPrimaryApplicantForenames() == null && caseData.getAdditionalExecutorsApplying() != null) {
+        if (caseData.getPrimaryApplicantForenames() == null &&
+                (caseData.getAdditionalExecutorsApplying() != null && !caseData.getAdditionalExecutorsApplying().isEmpty())) {
 
             // Todo check if I then need to get remove this exec from execs applying list.
             AdditionalExecutorApplying exec = caseData.getAdditionalExecutorsApplying().get(0).getValue();
@@ -136,9 +137,11 @@ public class SolicitorExecutorTransformer {
     public void mapSolicitorExecutorListsToCaseworkerExecutorsLists(CaseData caseData,
                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         // Initialise lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = caseData.getAdditionalExecutorsApplying() == null ?
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty() ?
                 new ArrayList<>() : solicitorExecutorService.mapApplyingAdditionalExecutors(caseData);
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = caseData.getAdditionalExecutorsNotApplying() == null ?
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                caseData.getAdditionalExecutorsNotApplying() == null || caseData.getAdditionalExecutorsNotApplying().isEmpty() ?
                 new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
 
         if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
@@ -157,7 +160,7 @@ public class SolicitorExecutorTransformer {
         if (caseData.getSolsAdditionalExecutorList() != null) {
             // Add main solicitor executor list
             execsApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
-            execsNotApplying.addAll(solicitorExecutorService.mapFromPowerReservedExecutorsToNotApplyingExecutors(caseData));
+            execsNotApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToNotApplyingExecutors(caseData));
         }
 
         builder.additionalExecutorsApplying(execsApplying);
