@@ -31,9 +31,10 @@ public class TestContextConfiguration {
     private String datasourcePassword;
 
     @Bean
-    public ServiceAuthTokenGenerator serviceAuthTokenGenerator(@Value("${service.auth.provider.base.url}") String s2sUrl,
-                                                               @Value("${s2s-auth.totp_secret}") String secret,
-                                                               @Value("${service.name}") String microservice) {
+    public ServiceAuthTokenGenerator serviceAuthTokenGenerator(
+                                                              @Value("${service.auth.provider.base.url}") String s2sUrl,
+                                                              @Value("${s2s-auth.totp_secret}") String secret,
+                                                              @Value("${service.name}") String microservice) {
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
                 .encoder(new JacksonEncoder())
                 .contract(new SpringMvcContract())
