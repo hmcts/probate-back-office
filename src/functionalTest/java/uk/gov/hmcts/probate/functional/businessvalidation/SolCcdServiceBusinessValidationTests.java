@@ -119,7 +119,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithIhtDateIsValid() {
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
-        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(10) + "\",");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(20) + "\",");
         validatePostSuccessForPayload(payload, VALIDATE_IHT_400_DATE);
     }
 
@@ -134,12 +134,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithIhtDateIs20DaysBeforeCurrentDateReturnsError() {
+    public void verifyRequestWithIhtDateIsAfter20DaysBeforeCurrentDateReturnsError() {
         CaseData caseData = CaseData.builder().build();
+        LocalDate solsIHT400Date = LocalDate.now().minusDays(5);
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
-        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + LocalDate.now().minusDays(25) + "\",");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",", "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
         validatePostFailureWithPayload(
-                payload, "You cannot submit this application until " + caseData.convertDate(LocalDate.now().minusDays(20)) + " (20 working days after sending the IHT400 and IHT421 forms to HMRC). Submit this application on or after this date",
+                payload, "You cannot submit this application until " + caseData.convertDate(solsIHT400Date.plusDays(20)) + " (20 working days after sending the IHT400 and IHT421 forms to HMRC). Submit this application on or after this date",
                 200, VALIDATE_IHT_400_DATE
         );
     }

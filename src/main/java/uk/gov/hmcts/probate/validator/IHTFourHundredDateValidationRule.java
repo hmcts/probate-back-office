@@ -23,20 +23,20 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
 
         LocalDate iht400Date = caseDetails.getData().getSolsIHT400Date();
         LocalDate twentyDaysBeforeToday = LocalDate.now().minusDays(20);
-        String[] args = {caseDetails.getData().convertDate(twentyDaysBeforeToday)};
+        String[] args = {caseDetails.getData().convertDate(iht400Date.plusDays(20))};
 
         String userMessage;
-
-        if (iht400Date.isBefore(twentyDaysBeforeToday)) {
-            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be before 20 days before current date (" + twentyDaysBeforeToday + ")");
-        }
 
         if (iht400Date.isAfter(LocalDate.now())) {
             userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
                     "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
+        }
+
+        if (iht400Date.isAfter(twentyDaysBeforeToday)) {
+            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be before 20 days before current date (" + twentyDaysBeforeToday + ")");
         }
     }
 }
