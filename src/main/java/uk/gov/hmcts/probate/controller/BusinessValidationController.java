@@ -133,6 +133,18 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateExecutors (
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, numberOfApplyingExecutorsValidationRule);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/sols-validate-admon", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidateAdmon(
             @Validated({ApplicationAdmonGroup.class}) @RequestBody CallbackRequest callbackRequest,
@@ -179,21 +191,6 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.selectForQA(callbackRequest);
         }
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> solsValidateExecutors (
-            @RequestBody CallbackRequest callbackRequest,
-            HttpServletRequest request) {
-
-        logRequest(request.getRequestURI(), callbackRequest);
-
-        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, numberOfApplyingExecutorsValidationRule);
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.setExecutorListsForSolicitor(callbackRequest);
-        }
-
         return ResponseEntity.ok(response);
     }
 

@@ -351,17 +351,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse setExecutorListsForSolicitor(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> builder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
-        solicitorExecutorTransformer.setPrimaryApplicantWithExecutorInfo(caseData, builder);
-
-        return transformResponse(builder.build());
-    }
-
-
     public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -1138,6 +1127,7 @@ public class CallbackResponseTransformer {
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         // Todo check if this is the most appropriate place for our mappings call.
         solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
+        solicitorExecutorTransformer.setPrimaryApplicantWithExecutorInfo(caseData, builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
