@@ -482,9 +482,6 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getIhtFormId() != null) {
-            responseCaseDataBuilder.ihtFormCompletedOnline(YES);
-        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         
@@ -557,7 +554,8 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline() == null && caseData.getIhtFormId() != null ? NO :
+                    caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
                 .boExecutorLimitation(caseData.getBoExecutorLimitation())
