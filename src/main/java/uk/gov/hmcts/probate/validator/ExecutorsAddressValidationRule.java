@@ -26,13 +26,13 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         ccdData.getExecutors().stream()
-                .filter(Executor::isApplying)
-                .map(Executor::getAddress)
-                .forEach(address -> {
-                    if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
-                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
-                    }
-                });
+            .filter(Executor::isApplying)
+            .map(Executor::getAddress)
+            .forEach(address -> {
+                if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
+                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                }
+            });
 
         return new ArrayList<>(errors);
     }
