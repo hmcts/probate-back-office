@@ -17,7 +17,8 @@ public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
 
         return ParagraphRenderer.renderByReplace(CaseStoppedHtmlTemplate.BASE_TEMPLATE)
                 .replaceFirst("<stopDate>", stoppedDate == null ? "Unknown" : stoppedDate.format(dateFormat))
-                .replaceFirst("<caseStopReasonsList>", UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS))
+                .replaceFirst("<caseStopReasonsList>",
+                        UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS))
                 .replaceFirst("<numWeeks>", "4");
     }
 }

@@ -33,16 +33,28 @@ public class TaskStateRenderer {
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
+    private TaskStateRenderer() {
+        throw new IllegalStateException("Utility class");
+    }
+
     // isProbate - true if application for probate, false if for caveat
-    public static String renderByReplace(TaskListState currState, String html, Long caseId, String willType, String solSOTNeedToUpdate,
+    public static String renderByReplace(TaskListState currState, String html, Long caseId,
+                                         String willType, String solSOTNeedToUpdate,
                                          LocalDate authDate, LocalDate submitDate) {
-        final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS, solSOTNeedToUpdate);
-        final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS, solSOTNeedToUpdate);
-        final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS, solSOTNeedToUpdate);
-        final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT, solSOTNeedToUpdate);
-        final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS, solSOTNeedToUpdate);
-        final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS, solSOTNeedToUpdate);
-        final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION, solSOTNeedToUpdate);
+        final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                solSOTNeedToUpdate);
+        final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
+                solSOTNeedToUpdate);
+        final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+                solSOTNeedToUpdate);
+        final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
+                solSOTNeedToUpdate);
+        final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
+                solSOTNeedToUpdate);
+        final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
+                solSOTNeedToUpdate);
+        final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
+                solSOTNeedToUpdate);
         final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
 
         // the only time caseId will be null is when running unit tests!
@@ -76,7 +88,8 @@ public class TaskStateRenderer {
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState));
     }
 
-    private static TaskState getTaskState(TaskListState currState, TaskListState renderState, String solSOTNeedToUpdate) {
+    private static TaskState getTaskState(TaskListState currState, TaskListState renderState,
+                                          String solSOTNeedToUpdate) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
@@ -115,15 +128,16 @@ public class TaskStateRenderer {
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         return linkUrlTemplate != null && currState == taskListState
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                    ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)) : linkText;
+                ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)) : linkText;
     }
 
     private static String renderAuthenticatedDate(LocalDate authDate) {
         if (authDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
-        String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE.replaceFirst("<stateChangeDateText/>",
-                format("Authenticated on %s", authDate.format(dateFormat)));
+        String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
+                .replaceFirst("<stateChangeDateText/>",
+                    format("Authenticated on %s", authDate.format(dateFormat)));
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
@@ -131,8 +145,9 @@ public class TaskStateRenderer {
         if (submitDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
-        String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE.replaceFirst("<stateChangeDateText/>",
-                format("Submitted on %s", submitDate.format(dateFormat)));
+        String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
+                .replaceFirst("<stateChangeDateText/>",
+                    format("Submitted on %s", submitDate.format(dateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
@@ -156,10 +171,5 @@ public class TaskStateRenderer {
             default:
                 return null;
         }
-    }
-
-
-    private TaskStateRenderer() {
-        throw new IllegalStateException("Utility class");
     }
 }

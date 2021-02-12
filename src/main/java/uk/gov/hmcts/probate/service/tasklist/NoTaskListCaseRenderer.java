@@ -18,15 +18,19 @@ public abstract class NoTaskListCaseRenderer extends NoTaskListRenderer {
         lines.add(HeadingRenderer.render("Get help with your application"));
         lines.add(SubheadingRenderer.render("Telephone"));
         lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.CONTACT_TEMPLATE)
-                .replaceFirst("<englishPhoneNumber/>", "0300 303 0648")
-                .replaceFirst("<welshPhoneNumber/>", "0300 303 0654")
-                .replaceFirst("<englishOpeningTimes/>", "Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)")
-                .replaceFirst("<welshOpeningTimes/>", "Monday to Friday, 8am to 5pm (except public holidays)")
+            .replaceFirst("<englishPhoneNumber/>", "0300 303 0648")
+            .replaceFirst("<welshPhoneNumber/>", "0300 303 0654")
+            .replaceFirst("<englishOpeningTimes/>",
+                    "Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)")
+            .replaceFirst("<welshOpeningTimes/>",
+                    "Monday to Friday, 8am to 5pm (except public holidays)")
         );
-        lines.add(LinkRenderer.renderOutside("Find out about call charges", "https://www.gov.uk/call-charges"));
+        lines.add(LinkRenderer.renderOutside("Find out about call charges",
+                "https://www.gov.uk/call-charges"));
         lines.add(SubheadingRenderer.render("Email"));
         lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.EMAIL_TEMPLATE)
-                .replaceFirst("<email>", LinkRenderer.render("contactprobate@justice.gov.uk", "mailto:contactprobate@justice.gov.uk"))
+                .replaceFirst("<email>", LinkRenderer.render("contactprobate@justice.gov.uk",
+                        "mailto:contactprobate@justice.gov.uk"))
         );
 
         return String.join("\n\n", lines);

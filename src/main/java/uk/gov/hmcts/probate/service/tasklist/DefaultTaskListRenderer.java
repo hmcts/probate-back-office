@@ -21,7 +21,8 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
         }
         final CaseData caseData = details.getData();
         final String submitDate = caseData.getApplicationSubmittedDate();
-        final LocalDate submitLocalDate = submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
+        final LocalDate submitLocalDate =
+                submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
         final LocalDate authDate = caseData.getAuthenticatedDate();
         String willType = caseData.getSolsWillType();
         // switch statement inside rendering requires not null, default to gop
@@ -37,6 +38,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
                         SecondaryTextRenderer.renderByReplace(
                             HeadingRenderer.renderByReplace(
                                 UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
-                                    details.getId(), willType, caseData.getSolsSOTNeedToUpdate(), authDate, submitLocalDate);
+                                    details.getId(), willType, caseData.getSolsSOTNeedToUpdate(),
+                                        authDate, submitLocalDate);
     }
 }

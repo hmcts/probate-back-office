@@ -35,7 +35,8 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
             progressStateName = progressState.getDisplayText();
         }
 
-        return format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>", progressStateName);
+        return format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>",
+                progressStateName);
     }
 
     private String renderBodyHeader() {

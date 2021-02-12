@@ -83,6 +83,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -303,16 +304,18 @@ public class CallbackResponseTransformerTest {
 
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember
         <uk.gov.hmcts.reform.probate.model.ScannedDocument>> BSP_SCANNED_DOCUMENTS_LIST = Arrays.asList(
-        new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>(
-            "id",
-            uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
-                .fileName("scanneddocument.pdf")
-                .controlNumber("1234")
-                .scannedDate(scannedDate)
-                .type("other")
-                .subtype("will")
-                .url(BSP_SCANNED_DOCUMENT_URL)
-                .build()));
+        new
+            uk.gov.hmcts.reform.probate.model.cases
+                .CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>(
+                "id",
+                    uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
+                    .fileName("scanneddocument.pdf")
+                    .controlNumber("1234")
+                    .scannedDate(scannedDate)
+                    .type("other")
+                    .subtype("will")
+                    .url(BSP_SCANNED_DOCUMENT_URL)
+                    .build()));
 
     private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION =
         Arrays.asList(
@@ -660,7 +663,8 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(taskListUpdateService.generateTaskList(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class)))
+        when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
+                any(ResponseCaseData.ResponseCaseDataBuilder.class)))
                 .thenAnswer(invocation -> invocation.getArgument(1));
 
     }
@@ -937,7 +941,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
         assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
-        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -960,7 +965,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(INTESTACY_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -983,7 +989,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_DIGITAL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1005,7 +1012,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1027,7 +1035,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1066,7 +1075,8 @@ public class CallbackResponseTransformerTest {
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents, null, null);
+        CallbackResponse callbackResponse = underTest
+                .addDocuments(callbackRequestMock, documents, null, null);
 
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
@@ -2493,7 +2503,8 @@ public class CallbackResponseTransformerTest {
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
-        assertEquals("SOT.pdf", callbackResponse.getData().getStatementOfTruthDocument().getDocumentFilename());
+        assertEquals("SOT.pdf", callbackResponse
+                .getData().getStatementOfTruthDocument().getDocumentFilename());
     }
 
     @Test
@@ -2690,7 +2701,8 @@ public class CallbackResponseTransformerTest {
         DynamicList reprintDocument =
             DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect =
-            DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+            DynamicList.builder().value(DynamicListItem.builder()
+                    .code("solsAmendLegalStatmentSelect").build()).build();
 
         caseDataBuilder
             .primaryApplicantForenames("PAFN")
@@ -3171,7 +3183,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
-        assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME, callbackResponse.getData().getSolsSOTName());
+        assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME,
+                callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
 
@@ -3238,7 +3251,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoAssembleLetterSendToBulkPrintRequested());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
-        assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse.getData().getExecutorsApplyingNotifications());
+        assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse
+                .getData().getExecutorsApplyingNotifications());
         assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
         assertEquals(DIED_OR_NOT_APPLYING, callbackResponse.getData().getSolsDiedOrNotApplying());
         assertEquals(ENTITLED_MINORITY, callbackResponse.getData().getSolsEntitledMinority());
@@ -3395,7 +3409,8 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals("123-456", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals("123-456", callbackResponse
+                .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
     }
 
     @Test
@@ -3641,8 +3656,9 @@ public class CallbackResponseTransformerTest {
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails gorCreationDetails) {
         uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData
             grantOfRepresentationData =
-            (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData) gorCreationDetails
-                .getCaseData();
+            (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData)
+                    gorCreationDetails
+                        .getCaseData();
         assertEquals(GOR_EXCEPTION_RECORD_EVENT_ID, gorCreationDetails.getEventId());
         assertEquals(GOR_EXCEPTION_RECORD_CASE_TYPE_ID, gorCreationDetails.getCaseTypeId());
         assertEquals(BULK_SCAN_REGISTRY_LOCATION.name(), grantOfRepresentationData.getRegistryLocation().name());
@@ -3791,8 +3807,9 @@ public class CallbackResponseTransformerTest {
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
-        verify(taskListUpdateService, times(1) ).generateTaskList(any(), any());
+        CallbackResponse callbackResponse =
+                underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
+        verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
     }
 }

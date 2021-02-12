@@ -15,9 +15,15 @@ public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
     protected String renderBody(CaseDetails details) {
 
         return ParagraphRenderer.renderByReplace(
-                EmailAddressRenderer.renderByReplace(AppStoppedHtmlTemplate.BASE_TEMPLATE, "probatefeedback@justice.co.uk"))
-                .replaceFirst("<paperformLink/>", LinkRenderer.renderOutside("paper form", "https://www.gov.uk/government/collections/probate-forms"))
-                .replaceFirst("<guidanceLink/>", LinkRenderer.renderOutside("Guidance on exemptions, conditions and when applications must be submitted by paper.", "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"));
+            EmailAddressRenderer.renderByReplace(AppStoppedHtmlTemplate.BASE_TEMPLATE,
+                "probatefeedback@justice.co.uk"))
+            .replaceFirst("<paperformLink/>",
+                LinkRenderer.renderOutside("paper form",
+                    "https://www.gov.uk/government/collections/probate-forms"))
+            .replaceFirst("<guidanceLink/>",
+                LinkRenderer.renderOutside(
+                    "Guidance on exemptions, conditions and when applications must be submitted by paper.",
+                        "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"));
     }
 
     protected String getWhatNextText() {

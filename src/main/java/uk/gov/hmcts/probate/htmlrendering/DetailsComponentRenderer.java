@@ -2,8 +2,6 @@ package uk.gov.hmcts.probate.htmlrendering;
 
 import uk.gov.hmcts.probate.model.htmltemplate.DetailsComponentHtmlTemplate;
 
-import static java.lang.String.format;
-
 public class DetailsComponentRenderer {
     private DetailsComponentRenderer() {
         throw new IllegalStateException("Utility class");
