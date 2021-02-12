@@ -295,6 +295,8 @@ public class CaseData extends CaseDataParent {
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsPBANumberIsNull}")
     private final DynamicList solsPBANumber;
 
+    private final String solsOrgHasPBAs;
+
     private final String casePrinted;
 
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;

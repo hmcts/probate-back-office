@@ -31,4 +31,5 @@ public class ResponseCaseDataParent {
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
     protected DynamicList solsPBANumber;
+    protected String solsOrgHasPBAs;
 }

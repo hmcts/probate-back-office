@@ -10,13 +10,18 @@ import uk.gov.hmcts.probate.service.payments.pba.PBAValidationService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Service
 public class SolicitorPBADefaulter {
     @Autowired
     PBAValidationService pbaValidationService;
 
     public void defaultFeeAccounts(ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder, String authToken) {
-        responseCaseDataBuilder.solsPBANumber(getPBAAccounts(authToken));
+        DynamicList pbas = getPBAAccounts(authToken);
+        responseCaseDataBuilder.solsPBANumber(pbas);
+        responseCaseDataBuilder.solsOrgHasPBAs(!pbas.getListItems().isEmpty() ? YES : NO);
     }
 
     private DynamicList getPBAAccounts(String authToken) {
