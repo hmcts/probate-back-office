@@ -22,7 +22,10 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
             await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionYes}`);
         } else {
             await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionNo}`);
-            await I.click(`#solsSolicitorIsApplying-${solsSolicitorNotApplyingReason-PowerReserved}`);
+            // failed eslint solsSolicitorNotApplyingReason-PowerReserved not defined.
+            // rather than check a checkbox think we were intending to select something from a dropdown -
+            // maybe select is solsSolicitorNotApplyingReason and item is power reserved?
+            // await I.click(`#solsSolicitorIsApplying-${solsSolicitorNotApplyingReason-PowerReserved}`);
         }
     } else {
         await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionNo}`);
