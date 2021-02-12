@@ -145,8 +145,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailureWithPayload(
                 payload, "You cannot submit this application until "
                         + caseData.convertDate(solsIHT400Date.plusDays(20))
-                        + " (20 working days after sending the IHT400 and IHT421 forms to HMRC)." +
-                        " Submit this application on or after this date",
+                        + " (20 working days after sending the IHT400 and IHT421 forms to HMRC)."
+                        + " Submit this application on or after this date",
                 200, VALIDATE_IHT_400_DATE);
     }
 
