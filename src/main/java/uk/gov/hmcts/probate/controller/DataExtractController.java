@@ -80,4 +80,22 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Exela data extract finished");
     }
 
+    @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/exela")
+    public ResponseEntity initiateExelaExtractDateRange(@ApiParam(value = "Date to find cases against", required = true)
+                                               @RequestParam("date") String fromDate,
+                                                @RequestParam("date") String toDate) {
+
+        dataExtractDateValidator.dateValidator(fromDate, toDate);
+
+        log.info("Calling perform Exela data extract from date...");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> {
+            exelaDataExtractService.performExelaExtractForDateRange(fromDate, toDate);
+        });
+        log.info("Perform Exela data extract from date finished");
+
+        return ResponseEntity.accepted().body("Exela data extract finished");
+    }
+
 }

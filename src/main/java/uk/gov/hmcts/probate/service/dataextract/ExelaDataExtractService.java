@@ -40,4 +40,23 @@ public class ExelaDataExtractService {
         }
     }
 
+    public void performExelaExtractForDateRange(String fromDate, String toDate) {
+        log.info("Excela data extract initiated from date: {}", fromDate);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+        log.info("Found {} cases with dated document for Excela", cases.size());
+        List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
+
+        log.info("Sending email to Excela for {} filtered cases", filteredCases.size());
+        if (!filteredCases.isEmpty()) {
+            log.info("Sending email to Excela");
+            try {
+                notificationService.sendExcelaEmail(filteredCases);
+            } catch (NotificationClientException e) {
+                log.warn("NotificationService exception sending email to Exela", e);
+                throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
+                        "Error on NotificationService sending email to Exela");
+            }
+        }
+    }
+
 }
