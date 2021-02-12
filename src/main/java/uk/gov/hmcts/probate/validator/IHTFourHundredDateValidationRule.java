@@ -36,7 +36,8 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
         if (iht400Date.isAfter(twentyDaysBeforeToday)) {
             userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be before 20 days before current date (" + twentyDaysBeforeToday + ")");
+                    "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")" +
+                            " needs to be before 20 days before current date (" + twentyDaysBeforeToday + ")");
         }
     }
 }
