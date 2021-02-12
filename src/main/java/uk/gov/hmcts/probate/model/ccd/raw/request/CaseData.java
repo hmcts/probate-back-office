@@ -185,11 +185,11 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
     private final String solsLifeInterest;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class, ApplicationReviewedGroup.class},
             message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class, ApplicationReviewedGroup.class},
             message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
@@ -197,13 +197,13 @@ public class CaseData extends CaseDataParent {
 
     private final String solsExecutorAliasNames;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationReviewedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotNull(groups = {ApplicationAdmonGroup.class,
-            ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
+    @NotNull(groups = {ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class, ApplicationReviewedGroup.class},
+            message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationAdmonGroup.class,
