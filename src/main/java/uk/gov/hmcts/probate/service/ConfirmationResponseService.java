@@ -249,6 +249,7 @@ public class ConfirmationResponseService {
         } else if("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*   the original will and any codicils";
         }
+        
         keyValue.put("{{originalWill}}", originalWill);
         
         String additionalInfo = ccdData.getSolsAdditionalInfo();
