@@ -490,7 +490,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithIht217Attributes(){
+    public void shouldTransformCaseWithIht217Attributes() {
         String response = transformCase("success.iht217Saved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
