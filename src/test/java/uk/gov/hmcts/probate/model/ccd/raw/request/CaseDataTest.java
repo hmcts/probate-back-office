@@ -9,12 +9,12 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class    CaseDataTest {
+public class CaseDataTest {
 
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
@@ -38,7 +38,7 @@ public class    CaseDataTest {
     private static final String DECEASED_FIRST_NAME = "Name";
     private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
-    private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 01, 01);
     private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Mock
@@ -123,14 +123,14 @@ public class    CaseDataTest {
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplying3Mock);
 
         underTest = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(additionalExecutorsList)
-                .otherExecutorExists(YES)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(additionalExecutorsList)
+            .otherExecutorExists(YES)
+            .build();
     }
 
     @Test
@@ -140,15 +140,15 @@ public class    CaseDataTest {
         when(additionalExecutorApplying3Mock.getApplyingExecutorName()).thenReturn("Applying Name");
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsApplying(additionalExecutorsApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsApplying(additionalExecutorsApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
 
@@ -158,15 +158,15 @@ public class    CaseDataTest {
     @Test
     public void shouldNOTMapExecsApplying() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsApplying(null)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsApplying(null)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
 
@@ -180,15 +180,15 @@ public class    CaseDataTest {
         when(additionalExecutorNotApplying3Mock.getNotApplyingExecutorName()).thenReturn("NotApplying Name");
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
 
@@ -198,15 +198,15 @@ public class    CaseDataTest {
     @Test
     public void shouldNOTMapExecsNotApplying() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsNotApplying(null)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsNotApplying(null)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
 
@@ -216,16 +216,16 @@ public class    CaseDataTest {
     @Test
     public void shouldNOTMapExecsApplyingWhenSolicitorCreatedGrant() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(WILL_TYPE_PROBATE)
-                .additionalExecutorsApplying(additionalExecutorsApplyingList)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(WILL_TYPE_PROBATE)
+            .additionalExecutorsApplying(additionalExecutorsApplyingList)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsApplyingForLegalStatement();
 
@@ -235,16 +235,16 @@ public class    CaseDataTest {
     @Test
     public void shouldNOTMapExecsNotApplyingWhenSolicitorCreatedGrant() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(WILL_TYPE_PROBATE)
-                .additionalExecutorsApplying(additionalExecutorsApplyingList)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(WILL_TYPE_PROBATE)
+            .additionalExecutorsApplying(additionalExecutorsApplyingList)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsNotApplyingForLegalStatement();
 
@@ -318,33 +318,33 @@ public class    CaseDataTest {
         additionalExecutorsList.add(additionalExecutors3Mock);
         additionalExecutorsList.add(null);
         return CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(additionalExecutorsList)
-                .otherExecutorExists(YES)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(additionalExecutorsList)
+            .otherExecutorExists(YES)
+            .build();
     }
 
     @Test
     public void shouldReturnPrimaryApplicantFullName() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .build();
 
         assertEquals(PRIMARY_APPLICANT_FIRST_NAME + " " + PRIMARY_APPLICANT_SURNAME,
-                caseData.getPrimaryApplicantFullName());
+            caseData.getPrimaryApplicantFullName());
     }
 
     @Test
     public void shouldReturnDeceasedFullName() {
         final CaseData caseData = CaseData.builder()
-                .deceasedForenames(DECEASED_FIRST_NAME)
-                .deceasedSurname(DECEASED_SURNAME)
-                .build();
+            .deceasedForenames(DECEASED_FIRST_NAME)
+            .deceasedSurname(DECEASED_SURNAME)
+            .build();
 
         assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
     }
@@ -356,15 +356,15 @@ public class    CaseDataTest {
         when(additionalExecutorApplying3Mock.getApplyingExecutorName()).thenReturn("Appl-ying Na-me");
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsApplying(additionalExecutorsApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsApplying(additionalExecutorsApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
 
@@ -384,15 +384,15 @@ public class    CaseDataTest {
         when(additionalExecutorsApplying3Mock.getValue()).thenReturn(null);
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(YES)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsApplying(additionalExecutorsApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsApplying(additionalExecutorsApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
 
@@ -408,15 +408,15 @@ public class    CaseDataTest {
         when(additionalExecutorNotApplying3Mock.getNotApplyingExecutorName()).thenReturn("NotAppl-ying Na-me");
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
 
@@ -436,15 +436,15 @@ public class    CaseDataTest {
         when(additionalExecutorsNotApplying3Mock.getValue()).thenReturn(null);
 
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(NO)
-                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-                .solsAdditionalExecutorList(null)
-                .solsWillType(null)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(null)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .build();
 
         List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
 
@@ -456,8 +456,8 @@ public class    CaseDataTest {
     @Test
     public void shouldReturnDODFormattedWithST() {
         final CaseData caseData = CaseData.builder()
-                .deceasedDateOfDeath(LOCAL_DATE)
-                .build();
+            .deceasedDateOfDeath(LOCAL_DATE)
+            .build();
 
         assertEquals("1st January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
@@ -471,8 +471,8 @@ public class    CaseDataTest {
     @Test
     public void shouldReturnDODFormattedWithND() {
         final CaseData caseData = CaseData.builder()
-                .deceasedDateOfDeath(LocalDate.of(2000,01,02))
-                .build();
+            .deceasedDateOfDeath(LocalDate.of(2000, 01, 02))
+            .build();
 
         assertEquals("2nd January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
@@ -480,8 +480,8 @@ public class    CaseDataTest {
     @Test
     public void shouldReturnDODFormattedWithRD() {
         final CaseData caseData = CaseData.builder()
-                .deceasedDateOfDeath(LocalDate.of(2000,01,03))
-                .build();
+            .deceasedDateOfDeath(LocalDate.of(2000, 01, 03))
+            .build();
 
         assertEquals("3rd January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
@@ -489,8 +489,8 @@ public class    CaseDataTest {
     @Test
     public void shouldReturnDODFormattedWithTH() {
         final CaseData caseData = CaseData.builder()
-                .deceasedDateOfDeath(LocalDate.of(2000,01,04))
-                .build();
+            .deceasedDateOfDeath(LocalDate.of(2000, 01, 04))
+            .build();
 
         assertEquals("4th January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
@@ -498,8 +498,8 @@ public class    CaseDataTest {
     @Test
     public void shouldThrowParseException() {
         final CaseData caseData = CaseData.builder()
-                .deceasedDateOfDeath(LocalDate.of(300000,01,04))
-                .build();
+            .deceasedDateOfDeath(LocalDate.of(300000, 01, 04))
+            .build();
 
         assertEquals(null, caseData.getDeceasedDateOfDeathFormatted());
     }
@@ -507,8 +507,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedTrue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailRequestInfoNotification(YES)
-                .build();
+            .boEmailRequestInfoNotification(YES)
+            .build();
 
         assertEquals(true, caseData.isBoEmailRequestInfoNotificationRequested());
     }
@@ -516,9 +516,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .build();
 
         assertEquals(true, caseData.isBoEmailRequestInfoNotificationRequested());
     }
@@ -526,8 +526,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedFalse() {
         final CaseData caseData = CaseData.builder()
-                .boEmailRequestInfoNotification(NO)
-                .build();
+            .boEmailRequestInfoNotification(NO)
+            .build();
 
         assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
     }
@@ -535,9 +535,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailRequestInfoNotificationRequestedFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(null)
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
+            .build();
 
         assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
     }
@@ -545,8 +545,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailDocsReceivedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotification(YES)
-                .build();
+            .boEmailDocsReceivedNotification(YES)
+            .build();
 
         assertEquals(true, caseData.isDocsReceivedEmailNotificationRequested());
     }
@@ -554,9 +554,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailDocsReceivedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .build();
 
         assertEquals(true, caseData.isDocsReceivedEmailNotificationRequested());
     }
@@ -564,8 +564,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailDocsReceivedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotification(NO)
-                .build();
+            .boEmailDocsReceivedNotification(NO)
+            .build();
 
         assertEquals(false, caseData.isDocsReceivedEmailNotificationRequested());
     }
@@ -573,9 +573,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailDocsReceivedNotificationFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(null)
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
+            .build();
 
         assertEquals(false, caseData.isDocsReceivedEmailNotificationRequested());
     }
@@ -583,8 +583,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantIssuedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotification(YES)
-                .build();
+            .boEmailGrantIssuedNotification(YES)
+            .build();
 
         assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
     }
@@ -592,9 +592,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantIssuedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .build();
 
         assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
     }
@@ -602,8 +602,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantIssuedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotification(NO)
-                .build();
+            .boEmailGrantIssuedNotification(NO)
+            .build();
 
         assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
     }
@@ -611,9 +611,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(null)
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
+            .build();
 
         assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
     }
@@ -621,8 +621,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantReissuedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantReissuedNotification(YES)
-                .build();
+            .boEmailGrantReissuedNotification(YES)
+            .build();
 
         assertEquals(true, caseData.isGrantReissuedEmailNotificationRequested());
     }
@@ -630,9 +630,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantReissuedNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .build();
 
         assertEquals(true, caseData.isGrantReissuedEmailNotificationRequested());
     }
@@ -640,8 +640,8 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantReissuedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotification(NO)
-                .build();
+            .boEmailGrantIssuedNotification(NO)
+            .build();
 
         assertEquals(false, caseData.isGrantReissuedEmailNotificationRequested());
     }
@@ -649,9 +649,9 @@ public class    CaseDataTest {
     @Test
     public void isBoEmailGrantReissuedNotificationWithDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(null)
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
+            .build();
 
         assertEquals(false, caseData.isGrantReissuedEmailNotificationRequested());
     }
@@ -659,8 +659,8 @@ public class    CaseDataTest {
     @Test
     public void isBoCaveatStopEmailNotificationTrue() {
         final CaseData caseData = CaseData.builder()
-                .boCaveatStopEmailNotification(YES)
-                .build();
+            .boCaveatStopEmailNotification(YES)
+            .build();
 
         assertEquals(true, caseData.isCaveatStopEmailNotificationRequested());
     }
@@ -668,9 +668,9 @@ public class    CaseDataTest {
     @Test
     public void isBoCaveatStopEmailNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .build();
 
         assertEquals(true, caseData.isCaveatStopEmailNotificationRequested());
     }
@@ -678,8 +678,8 @@ public class    CaseDataTest {
     @Test
     public void isBoCaveatStopEmailNotificationFalse() {
         final CaseData caseData = CaseData.builder()
-                .boCaveatStopEmailNotification(NO)
-                .build();
+            .boCaveatStopEmailNotification(NO)
+            .build();
 
         assertEquals(false, caseData.isCaveatStopEmailNotificationRequested());
     }
@@ -687,9 +687,9 @@ public class    CaseDataTest {
     @Test
     public void isBoCaveatStopEmailNotificationWithDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantEmailAddress(null)
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
+            .build();
 
         assertEquals(false, caseData.isCaveatStopEmailNotificationRequested());
     }
@@ -705,14 +705,14 @@ public class    CaseDataTest {
     public void probateDocumentsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateDocuments = new ArrayList<>();
         CollectionMember<Document> probateDocument =
-                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+            new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
                 .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
                 .build());
         probateDocuments.add(probateDocument);
 
         final CaseData caseData = CaseData.builder()
-                .probateDocumentsGenerated(probateDocuments)
-                .build();
+            .probateDocumentsGenerated(probateDocuments)
+            .build();
 
         assertEquals(probateDocuments, caseData.getProbateDocumentsGenerated());
     }
@@ -728,14 +728,14 @@ public class    CaseDataTest {
     public void probateNotificationsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateNotifications = new ArrayList<>();
         CollectionMember<Document> probateNotification =
-                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+            new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
                 .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
                 .build());
         probateNotifications.add(probateNotification);
 
         final CaseData caseData = CaseData.builder()
-                .probateNotificationsGenerated(probateNotifications)
-                .build();
+            .probateNotificationsGenerated(probateNotifications)
+            .build();
 
         assertEquals(probateNotifications, caseData.getProbateNotificationsGenerated());
     }
@@ -751,14 +751,14 @@ public class    CaseDataTest {
     public void probateSotDocumentsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateSOTDocuments = new ArrayList<>();
         CollectionMember<Document> probateSOTDocument =
-                new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
-                        .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
-                        .build());
+            new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                .build());
         probateSOTDocuments.add(probateSOTDocument);
 
         final CaseData caseData = CaseData.builder()
-                .probateSotDocumentsGenerated(probateSOTDocuments)
-                .build();
+            .probateSotDocumentsGenerated(probateSOTDocuments)
+            .build();
 
         assertEquals(probateSOTDocuments, caseData.getProbateSotDocumentsGenerated());
     }
@@ -773,12 +773,13 @@ public class    CaseDataTest {
     @Test
     public void caseMatchesIgnoresDefault() {
         List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
-        CollectionMember<CaseMatch> caseMatch = new CollectionMember<>(CaseMatch.builder().fullName("Name One").build());
+        CollectionMember<CaseMatch> caseMatch =
+            new CollectionMember<>(CaseMatch.builder().fullName("Name One").build());
         caseMatches.add(caseMatch);
 
         final CaseData caseData = CaseData.builder()
-                .caseMatches(caseMatches)
-                .build();
+            .caseMatches(caseMatches)
+            .build();
 
         assertEquals(caseMatches, caseData.getCaseMatches());
     }
@@ -793,8 +794,8 @@ public class    CaseDataTest {
     @Test
     public void boCaveatStopSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
-                .boCaveatStopSendToBulkPrint(NO)
-                .build();
+            .boCaveatStopSendToBulkPrint(NO)
+            .build();
 
         assertEquals(NO, caseData.getBoCaveatStopSendToBulkPrint());
     }
@@ -809,8 +810,8 @@ public class    CaseDataTest {
     @Test
     public void boGrantReissueSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
-                .boGrantReissueSendToBulkPrint(NO)
-                .build();
+            .boGrantReissueSendToBulkPrint(NO)
+            .build();
 
         assertEquals(NO, caseData.getBoGrantReissueSendToBulkPrint());
     }
@@ -825,8 +826,8 @@ public class    CaseDataTest {
     @Test
     public void boRequestInfoSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
-                .boRequestInfoSendToBulkPrint(NO)
-                .build();
+            .boRequestInfoSendToBulkPrint(NO)
+            .build();
 
         assertEquals(NO, caseData.getBoRequestInfoSendToBulkPrint());
     }
@@ -841,8 +842,8 @@ public class    CaseDataTest {
     @Test
     public void boAssembleLetterSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
-                .boAssembleLetterSendToBulkPrint(NO)
-                .build();
+            .boAssembleLetterSendToBulkPrint(NO)
+            .build();
 
         assertEquals(NO, caseData.getBoAssembleLetterSendToBulkPrint());
     }
@@ -850,8 +851,8 @@ public class    CaseDataTest {
     @Test
     public void solicitorIsMainApplicantIsYes() {
         final CaseData caseData = CaseData.builder()
-                .solsSolicitorIsMainApplicant(YES)
-                .build();
+            .solsSolicitorIsMainApplicant(YES)
+            .build();
 
         assertEquals(YES, caseData.solicitorIsMainApplicant());
     }
@@ -859,8 +860,8 @@ public class    CaseDataTest {
     @Test
     public void solicitorIsMainApplicantIsNoWhenNoMainApplicant() {
         final CaseData caseData = CaseData.builder()
-                .solsSolicitorIsMainApplicant(NO)
-                .build();
+            .solsSolicitorIsMainApplicant(NO)
+            .build();
 
         assertEquals(NO, caseData.solicitorIsMainApplicant());
     }
@@ -868,8 +869,8 @@ public class    CaseDataTest {
     @Test
     public void solicitorIsMainApplicantIsNoWhenNullMainApplicant() {
         final CaseData caseData = CaseData.builder()
-                .solsSolicitorIsMainApplicant(null)
-                .build();
+            .solsSolicitorIsMainApplicant(null)
+            .build();
 
         assertEquals(NO, caseData.solicitorIsMainApplicant());
     }
@@ -877,14 +878,14 @@ public class    CaseDataTest {
     @Test
     public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .solsSolicitorEmail(null)
-                .build();
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .solsSolicitorEmail(null)
+            .build();
 
         final CaseData caseData2 = CaseData.builder()
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .solsSolicitorEmail("")
-                .build();
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .solsSolicitorEmail("")
+            .build();
 
         assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
         assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
@@ -893,14 +894,14 @@ public class    CaseDataTest {
     @Test
     public void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress(null)
-                .solsSolicitorEmail("solicitor@probate-test.com")
-                .build();
+            .primaryApplicantEmailAddress(null)
+            .solsSolicitorEmail("solicitor@probate-test.com")
+            .build();
 
         final CaseData caseData2 = CaseData.builder()
-                .primaryApplicantEmailAddress("")
-                .solsSolicitorEmail("solicitor@probate-test.com")
-                .build();
+            .primaryApplicantEmailAddress("")
+            .solsSolicitorEmail("solicitor@probate-test.com")
+            .build();
 
         assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
         assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
@@ -909,27 +910,29 @@ public class    CaseDataTest {
     @Test
     public void shouldGetDefaultValueForEmailNotificationsWhenEmailAddressNotSet() {
         final CaseData caseData = CaseData.builder()
-                .primaryApplicantEmailAddress("")
-                .solsSolicitorEmail(null)
-                .build();
+            .primaryApplicantEmailAddress("")
+            .solsSolicitorEmail(null)
+            .build();
 
         assertEquals(NO, caseData.getDefaultValueForEmailNotifications());
     }
-    
+
     @Test
     public void shouldApplyParentAttributes() {
-        DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
-        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder()
-                .code("solsAmendLegalStatmentSelect").build()).build();
-        
+        DynamicList reprintDocument =
+            DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
+        DynamicList solsAmendLegalStatmentSelect =
+            DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+
         final CaseData caseData = CaseData.builder().primaryApplicantForenames("PAFN")
-            .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .reprintDocument(reprintDocument).reprintNumberOfCopies("1")
+            .solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
             .declarationCheckbox("Yes")
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
-                .registrySequenceNumber("registrySequenceNumber")
+            .registrySequenceNumber("registrySequenceNumber")
             .build();
 
         assertEquals("PAFN", caseData.getPrimaryApplicantForenames());

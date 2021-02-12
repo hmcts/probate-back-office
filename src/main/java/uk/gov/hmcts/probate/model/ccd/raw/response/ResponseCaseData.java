@@ -310,17 +310,15 @@ public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final Categories categories;
     private final DocumentLink previewLink;
-
-    @Builder.Default
-    private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-    private String bulkScanCaseReference;
-
     private final String grantDelayedNotificationDate;
     private final String grantStoppedDate;
-    private String grantDelayedNotificationIdentified;
     private final String grantDelayedNotificationSent;
     private final String grantAwaitingDocumentationNotificationDate;
     private final String grantAwaitingDocumentatioNotificationSent;
     private final String pcqId;
+    @Builder.Default
+    private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+    private String bulkScanCaseReference;
+    private String grantDelayedNotificationIdentified;
 
 }

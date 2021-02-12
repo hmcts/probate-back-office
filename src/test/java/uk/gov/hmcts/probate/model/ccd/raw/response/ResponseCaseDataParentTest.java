@@ -10,18 +10,20 @@ public class ResponseCaseDataParentTest {
 
     @Test
     public void shouldApplyParentAttributes() {
-        DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
-        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder()
-                .code("solsAmendLegalStatmentSelect").build()).build();
+        DynamicList reprintDocument =
+            DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
+        DynamicList solsAmendLegalStatmentSelect =
+            DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
 
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
-            .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .reprintDocument(reprintDocument).reprintNumberOfCopies("1")
+            .solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
             .declarationCheckbox("Yes")
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
-                .registrySequenceNumber("registrySequenceNumber")
+            .registrySequenceNumber("registrySequenceNumber")
             .deceasedDeathCertificate("deathCertificate")
             .deceasedDiedEngOrWales("Yes")
             .deceasedForeignDeathCertInEnglish("Yes")
@@ -30,7 +32,8 @@ public class ResponseCaseDataParentTest {
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
         assertEquals("1", responseCaseDataParent.getReprintNumberOfCopies());
-        assertEquals("solsAmendLegalStatmentSelect", responseCaseDataParent.getSolsAmendLegalStatmentSelect().getValue().getCode());
+        assertEquals("solsAmendLegalStatmentSelect",
+            responseCaseDataParent.getSolsAmendLegalStatmentSelect().getValue().getCode());
         assertEquals("Yes", responseCaseDataParent.getDeclarationCheckbox());
         assertEquals("1000", responseCaseDataParent.getIhtGrossValueField());
         assertEquals("900", responseCaseDataParent.getIhtNetValueField());
