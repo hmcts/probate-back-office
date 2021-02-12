@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 
 import lombok.Builder;
 import lombok.Data;
-import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 
 @Data
 @Builder

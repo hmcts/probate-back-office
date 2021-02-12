@@ -13,8 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.document.FindWillsService;
-import uk.gov.hmcts.reform.probate.model.forms.Will;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +31,8 @@ public class FindWillsServiceTest {
     @Test
     public void testSuccessfulFindWillForGOP() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
@@ -46,7 +44,8 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -73,22 +72,22 @@ public class FindWillsServiceTest {
     @Test
     public void testSuccessfulFindWillForNonWillUploadAndScansForGOP() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
         CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
         UploadDocument email = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.EMAIL)
             .comment("")
             .build();
         CollectionMember<UploadDocument> collectionMemberEmaill = new CollectionMember(email);
         UploadDocument codicil = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.IHT)
             .comment("")
             .build();
@@ -102,21 +101,24 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         ScannedDocument scanNonWill = ScannedDocument.builder()
             .fileName("Scanned1")
             .type("other")
             .subtype("somethingelse")
-            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1").documentBinaryUrl("scanBinaryUrl1").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1")
+                .documentBinaryUrl("scanBinaryUrl1").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
         ScannedDocument scanNonOther = ScannedDocument.builder()
             .fileName("Scanned2")
             .type("NotOther")
             .subtype("somethingelse")
-            .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2").documentBinaryUrl("scanBinaryUrl2").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2")
+                .documentBinaryUrl("scanBinaryUrl2").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonOther = new CollectionMember(scanNonOther);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -149,8 +151,8 @@ public class FindWillsServiceTest {
     @Test
     public void testSuccessfulFindWillForAdmonWill() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
@@ -162,7 +164,8 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -189,22 +192,22 @@ public class FindWillsServiceTest {
     @Test
     public void testSuccessfulFindWillForNonWillUploadAndScansForAdmonWill() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
         CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
         UploadDocument email = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.EMAIL)
             .comment("")
             .build();
         CollectionMember<UploadDocument> collectionMemberEmaill = new CollectionMember(email);
         UploadDocument codicil = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.IHT)
             .comment("")
             .build();
@@ -218,21 +221,24 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         ScannedDocument scanNonWill = ScannedDocument.builder()
             .fileName("Scanned1")
             .type("other")
             .subtype("somethingelse")
-            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1").documentBinaryUrl("scanBinaryUrl1").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1")
+                .documentBinaryUrl("scanBinaryUrl1").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
         ScannedDocument scanNonOther = ScannedDocument.builder()
             .fileName("Scanned2")
             .type("NotOther")
             .subtype("somethingelse")
-            .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2").documentBinaryUrl("scanBinaryUrl2").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2")
+                .documentBinaryUrl("scanBinaryUrl2").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonOther = new CollectionMember(scanNonOther);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -265,8 +271,8 @@ public class FindWillsServiceTest {
     @Test
     public void testSuccessfulFindWillForIntestacy() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
@@ -278,7 +284,8 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -297,8 +304,8 @@ public class FindWillsServiceTest {
     @Test
     public void shouldFindSelectedWills() {
         UploadDocument will = UploadDocument.builder()
-            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl").documentBinaryUrl(
-                "uploadBinaryUrl").build())
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
             .documentType(DocumentType.WILL)
             .comment("")
             .build();
@@ -310,7 +317,8 @@ public class FindWillsServiceTest {
             .fileName("Scanned")
             .type("other")
             .subtype("will")
-            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl").documentBinaryUrl("scanBinaryUrl").build())
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -342,7 +350,8 @@ public class FindWillsServiceTest {
             .documentSelected(null)
             .documentDate("date4")
             .documentLabel("will4")
-            .documentLink(DocumentLink.builder().documentFilename("file4").documentBinaryUrl("scanBinaryUrlOther").build())
+            .documentLink(DocumentLink.builder().documentFilename("file4").documentBinaryUrl("scanBinaryUrlOther")
+                .build())
             .build();
         CollectionMember<WillDocument> will4 = new CollectionMember<WillDocument>(willDoc4);
 
@@ -359,8 +368,8 @@ public class FindWillsServiceTest {
 
         List<Document> selectedWills = findWillService.findSelectedWills(caseData);
         assertEquals(2, selectedWills.size());
-        assertEquals("file1", selectedWills.get(0).getDocumentFileName());
-        assertEquals("file2", selectedWills.get(2).getDocumentFileName());
+        assertEquals("uploadFileName", selectedWills.get(0).getDocumentFileName());
+        assertEquals("Scanned", selectedWills.get(1).getDocumentFileName());
 
     }
 

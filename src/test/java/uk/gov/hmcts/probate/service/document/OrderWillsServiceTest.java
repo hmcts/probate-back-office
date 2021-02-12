@@ -9,14 +9,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
-import uk.gov.hmcts.probate.service.document.OrderWillsService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OrderWillsServiceTest {
     @InjectMocks
@@ -57,7 +56,8 @@ public class OrderWillsServiceTest {
         assertWillDocument(willDocuments.get(6), "other", "2009-02-01", "binaryurl-other2");
     }
 
-    private void assertWillDocument(CollectionMember<WillDocument> willDocument, String label, String date, String binary) {
+    private void assertWillDocument(CollectionMember<WillDocument> willDocument, String label, String date, 
+                                    String binary) {
         assertEquals(label, willDocument.getValue().getDocumentLabel());
         assertEquals(date, willDocument.getValue().getDocumentDate());
         assertEquals(binary, willDocument.getValue().getDocumentLink().getDocumentBinaryUrl());
@@ -68,7 +68,7 @@ public class OrderWillsServiceTest {
             .documentFileName("will1")
             .documentDateAdded(dateAdded == null ? null : LocalDate.from(willDateFormatter.parse(dateAdded)))
             .documentType(docType)
-            .documentLink(DocumentLink.builder().documentBinaryUrl("binaryurl-"+fileName).build())
+            .documentLink(DocumentLink.builder().documentBinaryUrl("binaryurl-" + fileName).build())
             .build();
     }
 

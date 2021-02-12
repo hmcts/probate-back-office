@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class DocumentStoreClient {
 
-    private CloseableHttpClient closeableHttpClient = HttpClientBuilder.create().build();
+    protected CloseableHttpClient closeableHttpClient = HttpClientBuilder.create().build();
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String USER_ID = "user-id";
     private final SecurityUtils securityUtils;
@@ -30,10 +30,11 @@ public class DocumentStoreClient {
             String userId = document.getDocumentGeneratedBy();
             if (userId == null) {
                 userId = securityUtils.getSecurityDTO().getUserId();
-                log.info("get user id"+userId);
+                log.info("get user id" + userId);
             }
 
-            log.info("document.getDocumentLink().getDocumentBinaryUrl():"+document.getDocumentLink().getDocumentBinaryUrl());
+            log.info("document.getDocumentLink().getDocumentBinaryUrl():" 
+                + document.getDocumentLink().getDocumentBinaryUrl());
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
             request.setHeader(USER_ID, userId);

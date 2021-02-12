@@ -19,17 +19,13 @@ import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
 import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.anyShort;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +33,8 @@ import static org.mockito.Mockito.when;
 public class LegacyImportServiceImplTest {
     private static final String DO_IMPORT_YES = "Yes";
     private static final Long LEGACY_ID = 20001L;
-    private static final String LEGACY_CASE_URL = "http://localhost:3453/print/probateManTypes/STANDING_SEARCH/cases/20001";
+    private static final String LEGACY_CASE_URL =
+        "http://localhost:3453/print/probateManTypes/STANDING_SEARCH/cases/20001";
     private static final Long CCD_CASE_ID = 1111222233334444L;
 
     private LegacyImportService legacyImportService;
@@ -67,7 +64,7 @@ public class LegacyImportServiceImplTest {
         legacyRows.add(memberRow);
 
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
-                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+            Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
         when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
 
@@ -102,7 +99,7 @@ public class LegacyImportServiceImplTest {
         legacyRows.add(memberRow);
 
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
-                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+            Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
         when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
 
@@ -149,13 +146,13 @@ public class LegacyImportServiceImplTest {
         legacyRows.add(memberRow);
 
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
-                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+            Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
         RuntimeException ste = Mockito.mock(RuntimeException.class);
         when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenThrow(ste);
 
         when(probateManService.retrieveCCDCase(ProbateManType.GRANT_APPLICATION.getCcdCaseType().getName(), LEGACY_ID))
-                .thenReturn(Optional.of(caseDetailsSaved));
+            .thenReturn(Optional.of(caseDetailsSaved));
 
         GrantApplicationRepository grantApplicationRepositoryMock = Mockito.mock(GrantApplicationRepository.class);
         when(repositories.get(ProbateManType.GRANT_APPLICATION)).thenReturn(grantApplicationRepositoryMock);

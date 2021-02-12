@@ -28,7 +28,8 @@ public class FindWillsService {
         if (!caseData.getCaseType().equals(DocumentCaseType.INTESTACY.getCaseType())) {
             if (caseData.getBoDocumentsUploaded() != null) {
                 for (CollectionMember<UploadDocument> document : caseData.getBoDocumentsUploaded()) {
-                    if (document.getValue().getDocumentType() == DocumentType.WILL || document.getValue().getDocumentType() == DocumentType.OTHER
+                    if (document.getValue().getDocumentType() == DocumentType.WILL 
+                        || document.getValue().getDocumentType() == DocumentType.OTHER
                         || document.getValue().getDocumentType() == DocumentType.IHT) {
                         wills.add(buildUploadedDocument(document.getValue()));
                     }
@@ -36,7 +37,8 @@ public class FindWillsService {
             }
             if (caseData.getScannedDocuments() != null) {
                 for (CollectionMember<ScannedDocument> document : caseData.getScannedDocuments()) {
-                    if (DocumentType.OTHER.getTemplateName().equalsIgnoreCase(document.getValue().getType()) && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
+                    if (DocumentType.OTHER.getTemplateName().equalsIgnoreCase(document.getValue().getType()) 
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
                         wills.add(buildScannedDocument(document.getValue()));
                     }
                 }
@@ -51,7 +53,8 @@ public class FindWillsService {
         List<Document> documents = new ArrayList<>();
         for (CollectionMember<WillDocument> collectionMember : caseData.getWillSelection()) {
             if (YES.equals(collectionMember.getValue().getDocumentSelected())) {
-                Document doc = findDocumentByBinaryURL(caseData, collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl());
+                Document doc = findDocumentByBinaryURL(caseData, 
+                    collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl());
                 if (doc != null) {
                     documents.add(doc);
                 }
