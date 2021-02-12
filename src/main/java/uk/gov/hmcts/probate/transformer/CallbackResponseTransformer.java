@@ -8,11 +8,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -1022,24 +1018,13 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
-        solicitorExecutorTransformer.setExecutorApplyingListsWithSolicitorInfo(caseData, builder);
+        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
 
         builder
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
-
-//            solicitorExecutorTransformer.addSolicitorToSolsAdditionalExecList(caseData, builder);
             solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
-        }
-
-        if (caseData.getSolsAdditionalExecutorList() != null) {
-            if (!caseData.getSolsAdditionalExecutorList().isEmpty()) {
-                builder
-                        .additionalExecutorsApplying(EMPTY_LIST)
-                        .additionalExecutorsNotApplying(EMPTY_LIST);
-            }
         }
     }
 
@@ -1125,9 +1110,6 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
-        // Todo check if this is the most appropriate place for our mappings call.
-        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
-        solicitorExecutorTransformer.setPrimaryApplicantWithExecutorInfo(caseData, builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

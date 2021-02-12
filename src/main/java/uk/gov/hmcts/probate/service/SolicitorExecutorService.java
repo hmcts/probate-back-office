@@ -111,7 +111,7 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsAdditionalExecutorListToApplyingExecutors(CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
-                .filter(exec -> exec.getValue().getAdditionalApplying() == YES)
+                .filter(exec -> exec.getValue().getAdditionalApplying().equals(YES))
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
@@ -123,7 +123,7 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromSolsAdditionalExecutorListToNotApplyingExecutors(CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
-                .filter(exec -> exec.getValue().getAdditionalApplying() == NO)
+                .filter(exec -> exec.getValue().getAdditionalApplying().equals(NO))
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
                         .notApplyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
                         .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
