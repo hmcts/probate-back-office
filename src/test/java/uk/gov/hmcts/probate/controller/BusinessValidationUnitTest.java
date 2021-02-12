@@ -35,7 +35,6 @@ import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +55,7 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationUnitTest {
 
+    private static Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
     @Mock
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     @Mock
