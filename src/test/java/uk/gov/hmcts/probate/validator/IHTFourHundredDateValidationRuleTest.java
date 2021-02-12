@@ -36,7 +36,9 @@ public class IHTFourHundredDateValidationRuleTest {
         MockitoAnnotations.initMocks(this);
         underTest = new IHTFourHundredDateValidationRule(businessValidationMessageRetriever);
         caseDataWithValidDate = CaseData.builder().solsIHT400Date(validDate).build();
-        caseDataWithInvalidDate20DaysBeforeToday = CaseData.builder().solsIHT400Date(invalidDateAfter20DaysBeforeToday).build();
+        caseDataWithInvalidDate20DaysBeforeToday = CaseData.builder()
+                .solsIHT400Date(invalidDateAfter20DaysBeforeToday)
+                .build();
         caseDataWithInvalidDateInFuture = CaseData.builder().solsIHT400Date(invalidDateInFuture).build();
     }
 
