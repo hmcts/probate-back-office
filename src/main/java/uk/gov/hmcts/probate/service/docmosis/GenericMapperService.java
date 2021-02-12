@@ -25,6 +25,7 @@ public class GenericMapperService {
     private final FileSystemResourceService fileSystemResourceService;
 
     private static final String PERSONALISATION_REGISTRY = "registry";
+    private static final String PERSONALISATION_REGISTRY_WELSH = "registry_welsh";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
@@ -48,12 +49,23 @@ public class GenericMapperService {
 
     public Map<String, Object> addCaseDataWithRegistryProperties(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(
+        Registry registry = registriesProperties.getRegistryCountry().get(
                 caseData.getRegistryLocation().toLowerCase());
         Map<String, Object> placeholders = addCaseData(caseData);
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
+
+        //logic to fill out registry details as above but retrieving welsh addresses
+        /*
+        if(caseDetails.getLanguagePreferenceWelsh)
+        Registry registry = registriesProperties.getRegistryCountry().get(
+                caseData.getRegistryLocation().toLowerCase());
+        Map<String, Object> placeholders = addCaseData(caseData);
+        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+
+        placeholders.put(PERSONALISATION_REGISTRY_WELSH, registryPlaceholders);
+*/
         placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, caseDetails.getId().toString());
         return placeholders;
     }
