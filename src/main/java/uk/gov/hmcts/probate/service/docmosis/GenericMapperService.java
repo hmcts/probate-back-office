@@ -58,12 +58,11 @@ public class GenericMapperService {
 
         //logic to fill out registry details as above but retrieving welsh addresses
         if(caseDetails.getLanguagePreferenceWelsh) {
-            Registry registry = registriesProperties.getRegistryCountry().get('welsh').get(
+            Registry registry_welsh = registriesProperties.getRegistryCountry().get('welsh').get(
                     caseData.getRegistryLocation().toLowerCase());
-            Map<String, Object> placeholders = addCaseData(caseData);
-            Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+            Map<String, Object> registryPlaceholders_welsh = mapper.convertValue(registry_welsh, Map.class);
 
-            placeholders.put(PERSONALISATION_REGISTRY_WELSH, registryPlaceholders);
+            placeholders.put(PERSONALISATION_REGISTRY_WELSH, registryPlaceholders_welsh);
         }
         placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, caseDetails.getId().toString());
         return placeholders;
