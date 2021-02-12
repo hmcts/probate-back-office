@@ -4,12 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 
+import javax.validation.UnexpectedTypeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,15 +49,26 @@ public class OrderWillsServiceTest {
         documentList.add(will2);
         List<CollectionMember<WillDocument>> willDocuments = orderWillsService.orderWillDocuments(documentList);
 
-        assertWillDocument(willDocuments.get(0), "will", "2005-02-01", "binaryurl-will1");
-        assertWillDocument(willDocuments.get(1), "will", "2010-01-01", "binaryurl-will2");
-        assertWillDocument(willDocuments.get(2), "IHT", "2001-05-01", "binaryurl-codicil1");
-        assertWillDocument(willDocuments.get(3), "IHT", "2019-12-31", "binaryurl-codicil2");
-        assertWillDocument(willDocuments.get(4), "IHT", null, "binaryurl-codicil3");
-        assertWillDocument(willDocuments.get(5), "other", "2001-01-01", "binaryurl-other1");
-        assertWillDocument(willDocuments.get(6), "other", "2009-02-01", "binaryurl-other2");
+        assertWillDocument(willDocuments.get(0), "Will", "2005-02-01", "binaryurl-will1");
+        assertWillDocument(willDocuments.get(1), "Will", "2010-01-01", "binaryurl-will2");
+        assertWillDocument(willDocuments.get(2), "Codicil", "2001-05-01", "binaryurl-codicil1");
+        assertWillDocument(willDocuments.get(3), "Codicil", "2019-12-31", "binaryurl-codicil2");
+        assertWillDocument(willDocuments.get(4), "Codicil", null, "binaryurl-codicil3");
+        assertWillDocument(willDocuments.get(5), "Other", "2001-01-01", "binaryurl-other1");
+        assertWillDocument(willDocuments.get(6), "Other", "2009-02-01", "binaryurl-other2");
     }
 
+    @Test(expected = BadRequestException.class)
+    public void shouldNotRecogniseDocumentType() {
+        Document will1 = buildDocument("will1", "2005-02-01", DocumentType.WILL);
+        Document will2 = buildDocument("will2", "2010-01-01", DocumentType.DIGITAL_GRANT);
+
+        List<Document> documentList = new ArrayList<>();
+        documentList.add(will1);
+        documentList.add(will2);
+        orderWillsService.orderWillDocuments(documentList);
+    }
+    
     private void assertWillDocument(CollectionMember<WillDocument> willDocument, String label, String date, 
                                     String binary) {
         assertEquals(label, willDocument.getValue().getDocumentLabel());

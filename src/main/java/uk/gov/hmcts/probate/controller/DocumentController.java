@@ -176,7 +176,7 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
             DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
-        List<Document> willDocuments = Collections.emptyList();
+        List<Document> willDocuments;
         if (YES.equals(caseData.getHasMultipleWills())) {
             willDocuments = findWillService.findSelectedWills(caseData);
         } else {
