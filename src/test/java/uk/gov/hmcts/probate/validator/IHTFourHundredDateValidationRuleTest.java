@@ -55,7 +55,10 @@ public class IHTFourHundredDateValidationRuleTest {
             underTest.validate(caseDetails);
         })
                 .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("Case ID 12345678987654321: IHT400421 date ("+ invalidDateAfter20DaysBeforeToday +") needs to be before 20 days before current date ("+validDate+")");
+                .hasMessage(
+                        "Case ID 12345678987654321: IHT400421 date ("+ invalidDateAfter20DaysBeforeToday +")"
+                                + " needs to be before 20 days before current date ("+validDate+")"
+                );
     }
 
     @Test
@@ -65,6 +68,8 @@ public class IHTFourHundredDateValidationRuleTest {
             underTest.validate(caseDetails);
         })
                 .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("Case ID 12345678987654321: IHT400421 date ("+invalidDateInFuture+") needs to be in the past");
+                .hasMessage(
+                        "Case ID 12345678987654321: IHT400421 date ("+invalidDateInFuture+") needs to be in the past"
+                );
     }
 }
