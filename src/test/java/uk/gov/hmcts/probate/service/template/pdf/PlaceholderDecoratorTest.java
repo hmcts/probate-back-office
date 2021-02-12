@@ -50,6 +50,7 @@ public class PlaceholderDecoratorTest {
         placeholderDecorator.decorate(placeholders);
         assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_BIRTH_IN_WELSH));
     }
+
     @Test
     public void decorate_when_grant_issued_not_provided() {
         Map<String, Object> placeholders = new HashMap<>();

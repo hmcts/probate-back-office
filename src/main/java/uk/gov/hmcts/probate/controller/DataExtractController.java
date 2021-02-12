@@ -18,8 +18,6 @@ import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.springframework.http.HttpStatus.ACCEPTED;
-
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/data-extract")
@@ -68,7 +66,7 @@ public class DataExtractController {
     @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/exela")
     public ResponseEntity initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
-                                                @RequestParam("date") String date) {
+                                               @RequestParam("date") String date) {
 
         dataExtractDateValidator.dateValidator(date);
 

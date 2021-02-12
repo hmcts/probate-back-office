@@ -41,9 +41,18 @@ import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE
 @RunWith(SpringRunner.class)
 public class StateChangeServiceTest {
 
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
+    private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
+    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final Long CASE_ID = 12345678987654321L;
     @InjectMocks
     private StateChangeService underTest;
-
     @Mock
     private ApplicantSiblingsRule applicantSiblingsRule;
     @Mock
@@ -72,20 +81,8 @@ public class StateChangeServiceTest {
     private UpdateApplicationRule updateApplicationRule;
     @Mock
     private CallbackResponseTransformer callbackResponseTransformer;
-
     @Mock
     private CaseData caseDataMock;
-
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
-    private static final String WILL_TYPE_INTESTACY = "NoWill";
-    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
-    private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
-    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
-    private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
-    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
-    private static final Long ID = 1L;
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final Long CASE_ID = 12345678987654321L;
     private List<CollectionMember<ExecutorsApplyingNotification>> execList;
     private CollectionMember<ExecutorsApplyingNotification> execResponseReceived;
     private CollectionMember<ExecutorsApplyingNotification> execResponseNotReceived;
@@ -96,30 +93,32 @@ public class StateChangeServiceTest {
         initMocks(this);
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
-                entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
-                renouncingRule, residuaryRule, solsExecutorRule,spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
+            entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule,
+            noOriginalWillRule,
+            renouncingRule, residuaryRule, solsExecutorRule, spouseOrCivilRule, updateApplicationRule,
+            callbackResponseTransformer);
 
         execList = new ArrayList<>();
         execResponseReceived = new CollectionMember<>(
-                ExecutorsApplyingNotification.builder()
-                        .notification("Yes")
-                        .email("executor1@probate-test.com")
-                        .responseReceived("Yes")
-                        .build());
+            ExecutorsApplyingNotification.builder()
+                .notification("Yes")
+                .email("executor1@probate-test.com")
+                .responseReceived("Yes")
+                .build());
 
         execResponseNotReceived = new CollectionMember<>(
-                ExecutorsApplyingNotification.builder()
-                        .notification("Yes")
-                        .email("executor2@probate-test.com")
-                        .responseReceived("No")
-                        .build());
+            ExecutorsApplyingNotification.builder()
+                .notification("Yes")
+                .email("executor2@probate-test.com")
+                .responseReceived("No")
+                .build());
 
         execResponseNotificationNo = new CollectionMember<>(
-                ExecutorsApplyingNotification.builder()
-                        .notification("No")
-                        .email("executor3@probate-test.com")
-                        .responseReceived("No")
-                        .build());
+            ExecutorsApplyingNotification.builder()
+                .notification("No")
+                .email("executor3@probate-test.com")
+                .responseReceived("No")
+                .build());
     }
 
     @Test
@@ -229,7 +228,7 @@ public class StateChangeServiceTest {
     }
 
     @Test
-        public void shouldChangeStateForImmovableEstateRuleAdmonValid() {
+    public void shouldChangeStateForImmovableEstateRuleAdmonValid() {
         when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
         Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);

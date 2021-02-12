@@ -24,13 +24,21 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 @RequiredArgsConstructor
 public class FeeService {
 
+    private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
+    private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final FeatureToggleService featureToggleService;
 
-    private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
-    private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
+    private static <T> T nonNull(@Nullable T result) {
+        try {
+            Assert.state(result != null, "Entity should be non null in FeeService");
+        } catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
+        }
+        return result;
+    }
 
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
@@ -42,14 +50,13 @@ public class FeeService {
         }
 
         Fee body = responseEntity.getBody();
-        if( body == null){
+        if (body == null) {
             throw new ClientDataException("No Body in FeeService: getApplicationFee");
-        }
-        else{
+        } else {
             return body.getFeeAmount();
         }
 
-      }
+    }
 
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
@@ -65,10 +72,9 @@ public class FeeService {
         }
 
         Fee body = responseEntity.getBody();
-        if(body == null){
+        if (body == null) {
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
-        }
-        else{
+        } else {
             return body.getFeeAmount();
         }
     }
@@ -86,14 +92,15 @@ public class FeeService {
     }
 
     private URI buildUri(String event, String amount) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
-            .queryParam("service", feeServiceConfiguration.getService())
-            .queryParam("jurisdiction1", feeServiceConfiguration.getJurisdiction1())
-            .queryParam("jurisdiction2", feeServiceConfiguration.getJurisdiction2())
-            .queryParam("channel", feeServiceConfiguration.getChannel())
-            .queryParam("applicant_type", feeServiceConfiguration.getApplicantType())
-            .queryParam("event", event)
-            .queryParam("amount_or_volume", amount);
+        UriComponentsBuilder builder =
+            UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
+                .queryParam("service", feeServiceConfiguration.getService())
+                .queryParam("jurisdiction1", feeServiceConfiguration.getJurisdiction1())
+                .queryParam("jurisdiction2", feeServiceConfiguration.getJurisdiction2())
+                .queryParam("channel", feeServiceConfiguration.getChannel())
+                .queryParam("applicant_type", feeServiceConfiguration.getApplicantType())
+                .queryParam("event", event)
+                .queryParam("amount_or_volume", amount);
 
         if (FEE_API_EVENT_TYPE_ISSUE.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
             double amountDouble = Double.valueOf(amount);
@@ -113,14 +120,5 @@ public class FeeService {
         }
 
         return builder.build().encode().toUri();
-    }
-
-    private static <T> T nonNull(@Nullable T result) {
-        try {
-            Assert.state(result != null, "Entity should be non null in FeeService");
-        }catch (IllegalStateException e) {
-            throw new ClientDataException(e.getMessage());
-        }
-        return result;
     }
 }
