@@ -132,15 +132,5 @@ public class SolicitorExecutorService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
-
-    public boolean isSolicitorApplying(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsApplying()); }
-
-    public String getSolsSOTName(String firstNames, String surname) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(firstNames);
-        sb.append(" " + surname);
-        return sb.toString();
-    }
 }
 

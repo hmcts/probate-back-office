@@ -22,15 +22,15 @@ public class SolicitorExecutorTransformer {
     private final SolicitorExecutorService solicitorExecutorService;
 
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (solicitorExecutorService.isSolicitorExecutor(caseData)) {
-            if (solicitorExecutorService.isSolicitorApplying(caseData)) {
+        if (isSolicitorExecutor(caseData)) {
+            if (isSolicitorApplying(caseData)) {
 
                 // Solicitor is primary applicant
                 addSolicitorAsPrimaryApplicant(caseData, builder);
 
             } else {
 
-                if (solicitorExecutorService.getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
@@ -74,6 +74,8 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
+    // Todo does not follow single responsibilty principle
+    // consider moving this to service
     public List<CollectionMember<AdditionalExecutorApplying>> setPrimaryApplicantWithExecutorInfo(List<CollectionMember<AdditionalExecutorApplying>>  executorsApplying,
                                                     CaseData caseData,
                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -89,6 +91,8 @@ public class SolicitorExecutorTransformer {
                     .primaryApplicantForenames(tempExec.getApplyingExecutorFirstName())
                     .primaryApplicantSurname(tempExec.getApplyingExecutorLastName())
                     .primaryApplicantAddress(tempExec.getApplyingExecutorAddress())
+                    .primaryApplicantAlias(null)
+                    .primaryApplicantHasAlias(NO)
                     .primaryApplicantIsApplying(YES)
                     .solsPrimaryExecutorNotApplyingReason(null);
         }
@@ -96,14 +100,17 @@ public class SolicitorExecutorTransformer {
         return executorsApplying;
     }
 
+
+    // Todo consider moving this to service
     public List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo( List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (solicitorExecutorService.isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+
             // Add solicitor to not applying list
             execsNotApplying = solicitorExecutorService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
-        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || solicitorExecutorService.isSolicitorApplying(caseData)) {
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorApplying(caseData)) {
 
             // Remove solicitor from executor lists as they are primary applicant
             execsNotApplying = solicitorExecutorService.removeSolicitorFromNotApplyingList(execsNotApplying);
@@ -114,11 +121,12 @@ public class SolicitorExecutorTransformer {
     }
 
     public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (solicitorExecutorService.isSolicitorExecutor(caseData) && !solicitorExecutorService.isSolicitorApplying(caseData)) {
+        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
             builder.otherExecutorExists(YES);
         }
     }
 
+    // Todo refactor for single responsibility principle
     public void mapSolicitorExecutorListsToCaseworkerExecutorsLists(CaseData caseData,
                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
@@ -153,6 +161,17 @@ public class SolicitorExecutorTransformer {
         // Set builder with values
         builder.additionalExecutorsApplying(execsApplying);
         builder.additionalExecutorsNotApplying(execsNotApplying);
+    }
+
+    public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
+
+    public boolean isSolicitorApplying(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsApplying()); }
+
+    public String getSolsSOTName(String firstNames, String surname) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(firstNames);
+        sb.append(" " + surname);
+        return sb.toString();
     }
 
 }
