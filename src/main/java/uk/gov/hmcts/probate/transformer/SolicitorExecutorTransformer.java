@@ -74,35 +74,83 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    // Todo does not follow single responsibilty principle
-    // consider moving this to service
-    public List<CollectionMember<AdditionalExecutorApplying>> setPrimaryApplicantWithExecutorInfo(List<CollectionMember<AdditionalExecutorApplying>>  executorsApplying,
-                                                    CaseData caseData,
-                                                    ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (caseData.getPrimaryApplicantForenames() == null && !executorsApplying.isEmpty()) {
 
-            AdditionalExecutorApplying tempExec = executorsApplying.get(0).getValue();
-
-            // Remove executor from executorsApplying list
-            executorsApplying.remove(0);
-
-            // Add executor to primary applicant fields
-            builder
-                    .primaryApplicantForenames(tempExec.getApplyingExecutorFirstName())
-                    .primaryApplicantSurname(tempExec.getApplyingExecutorLastName())
-                    .primaryApplicantAddress(tempExec.getApplyingExecutorAddress())
-                    .primaryApplicantAlias(null)
-                    .primaryApplicantHasAlias(NO)
-                    .primaryApplicantIsApplying(YES)
-                    .solsPrimaryExecutorNotApplyingReason(null);
+    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
+            builder.otherExecutorExists(YES);
         }
-
-        return executorsApplying;
     }
 
+    /**
+     * Set caseworker executor fields with solicitor journey fields.
+     * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant fields
+     * Solicitor executor fields are: additionalExecutorsTrustCorpList, otherPartnersApplyingAsExecutors,
+     * powerReservedExecutorList, solsAdditionalExecutorList, and solicitor information fields
+     * @param caseData
+     * @param builder
+     */
+    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(CaseData caseData,
+                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
-    // Todo consider moving this to service
-    public List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo( List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
+        // Initialise executor lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
+
+        // Populate executor lists
+        execsApplying = mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
+        execsNotApplying = mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
+        execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
+
+        // Populate primary applicant fields
+        if (shouldSetPrimaryApplicantFields(execsApplying, caseData)) {
+            AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
+            execsApplying.remove(0);
+            mapExecutorToPrimaryApplicantFields(tempExec, builder);
+        }
+
+        // Set builder with values
+        builder.additionalExecutorsApplying(execsApplying);
+        builder.additionalExecutorsNotApplying(execsNotApplying);
+
+    }
+
+    private List<CollectionMember<AdditionalExecutorApplying>> mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
+
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
+            // Add trust corps executors
+            execsApplying.addAll(solicitorExecutorService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
+        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
+            // Add partner executors
+            execsApplying.addAll(solicitorExecutorService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
+        }
+
+        if (caseData.getSolsAdditionalExecutorList() != null) {
+            // Add main solicitor executor list
+            execsApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
+        }
+
+        return execsApplying;
+    }
+
+    private List<CollectionMember<AdditionalExecutorNotApplying>> mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(
+            List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
+
+        if (caseData.getPowerReservedExecutorList() != null) {
+            // Add power reserved executors
+            execsNotApplying.addAll(solicitorExecutorService.mapFromPowerReservedExecutorsToNotApplyingExecutors(caseData));
+        }
+
+        if (caseData.getSolsAdditionalExecutorList() != null) {
+            // Add main solicitor executor list
+            execsNotApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToNotApplyingExecutors(caseData));
+        }
+
+        return execsNotApplying;
+    }
+
+    private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo
+    (List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
         if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
@@ -120,47 +168,21 @@ public class SolicitorExecutorTransformer {
         return execsNotApplying;
     }
 
-    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
-            builder.otherExecutorExists(YES);
-        }
+    private boolean shouldSetPrimaryApplicantFields(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
+                                                    CaseData caseData) {
+        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();
     }
 
-    // Todo refactor for single responsibility principle
-    public void mapSolicitorExecutorListsToCaseworkerExecutorsLists(CaseData caseData,
-                                                                    ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-
-        // Initialise lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
-
-        execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
-
-        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
-            // Add trust corps executors
-            execsApplying.addAll(solicitorExecutorService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
-        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
-            // Add partner executors
-            execsApplying.addAll(solicitorExecutorService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
-        }
-
-        if (caseData.getPowerReservedExecutorList() != null) {
-            // Add power reserved executors
-            execsNotApplying.addAll(solicitorExecutorService.mapFromPowerReservedExecutorsToNotApplyingExecutors(caseData));
-        }
-
-        if (caseData.getSolsAdditionalExecutorList() != null) {
-            // Add main solicitor executor list
-            execsApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
-            execsNotApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToNotApplyingExecutors(caseData));
-        }
-
-        // Use executor lists to set primary applicant details
-        execsApplying = setPrimaryApplicantWithExecutorInfo(execsApplying, caseData, builder);
-
-        // Set builder with values
-        builder.additionalExecutorsApplying(execsApplying);
-        builder.additionalExecutorsNotApplying(execsNotApplying);
+    private void mapExecutorToPrimaryApplicantFields(AdditionalExecutorApplying exec,
+                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
+                .primaryApplicantSurname(exec.getApplyingExecutorLastName())
+                .primaryApplicantAddress(exec.getApplyingExecutorAddress())
+                .primaryApplicantAlias(null)
+                .primaryApplicantHasAlias(NO)
+                .primaryApplicantIsApplying(YES)
+                .solsPrimaryExecutorNotApplyingReason(null);
     }
 
     public boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }

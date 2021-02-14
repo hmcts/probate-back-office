@@ -1018,7 +1018,7 @@ public class CallbackResponseTransformer {
         }
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
-        solicitorExecutorTransformer.mapSolicitorExecutorListsToCaseworkerExecutorsLists(caseData, builder);
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
 
         builder
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
