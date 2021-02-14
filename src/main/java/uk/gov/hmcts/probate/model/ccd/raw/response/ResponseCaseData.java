@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +78,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsResiduary;
     private final String solsResiduaryType;
     private final String solsLifeInterest;
+    private final LocalDate solsIHT400Date;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
