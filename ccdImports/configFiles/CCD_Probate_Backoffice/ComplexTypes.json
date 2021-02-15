@@ -160,5 +160,5 @@
   {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLabel", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentDate", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentLink", "FieldType": "Document", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentSelected", "FieldType": "YesOrNo", "ElementLabel": " ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "WillDocument", "ListElementCode": "documentSelected", "FieldType": "MultiSelectList", "FieldTypeParameter": "WillDocumentSelected", "ElementLabel": " ", "SecurityClassification": "Public"}
 ]

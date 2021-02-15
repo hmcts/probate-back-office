@@ -52,7 +52,7 @@ public class FindWillsService {
     public List<Document> findSelectedWills(CaseData caseData) {
         List<Document> documents = new ArrayList<>();
         for (CollectionMember<WillDocument> collectionMember : caseData.getWillSelection()) {
-            if (YES.equals(collectionMember.getValue().getDocumentSelected())) {
+            if (isDocumentSelected(collectionMember.getValue())) {
                 Document doc = findDocumentByBinaryURL(caseData, 
                     collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl());
                 if (doc != null) {
@@ -62,6 +62,10 @@ public class FindWillsService {
         }
        
         return documents;
+    }
+
+    private boolean isDocumentSelected(WillDocument willDocument) {
+        return willDocument.getDocumentSelected().contains(YES);
     }
 
     private Document findDocumentByBinaryURL(CaseData caseData, String documentBinaryUrl) {

@@ -183,5 +183,5 @@
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentLabel", "EventElementLabel": "Document type", "FieldDisplayOrder": 1, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentDate", "EventElementLabel": "Document date", "FieldDisplayOrder": 2, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentLink", "EventElementLabel": "Document Url", "FieldDisplayOrder": 3, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentSelected", "EventElementLabel": "Include document with issued grant?", "FieldDisplayOrder": 4, "DisplayContext": "MANDATORY"}
+  {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentSelected", "EventElementLabel": "Include document with issued grant?", "FieldDisplayOrder": 4, "DisplayContext": "OPTIONAL"}
 ]

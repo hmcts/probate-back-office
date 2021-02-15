@@ -312,5 +312,6 @@
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "TextArea", "ListElement": "DO NOT SHOW - TextArea"},
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "List", "ListElement": "DO NOT SHOW - List"},
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Static", "ListElement": "DO NOT SHOW - Static"},
-  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Date", "ListElement": "DO NOT SHOW - Date"}
+  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Date", "ListElement": "DO NOT SHOW - Date"},
+  {"LiveFrom": "06/01/2017", "ID": "WillDocumentSelected", "ListElementCode": "Yes", "ListElement": "Yes"}
 ]

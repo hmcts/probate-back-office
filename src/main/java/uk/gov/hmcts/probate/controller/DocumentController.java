@@ -28,10 +28,10 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.document.FindWillsService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.document.FindWillsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -128,7 +128,7 @@ public class DocumentController {
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    letter, Collections.emptyList(), true);
+                letter, Collections.emptyList(), true);
         }
 
         CallbackResponse response =
@@ -182,14 +182,14 @@ public class DocumentController {
         } else {
             willDocuments = findWillService.findWills(caseData);
         }
-            
+
         log.info("number of willDocuments found on case: {}", willDocuments.size());
 
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             SendLetterResponse response =
-                bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet, 
+                bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet,
                     willDocuments);
             letterId = response != null
                 ? response.letterId.toString()
@@ -279,7 +279,7 @@ public class DocumentController {
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    grantDocument, Collections.emptyList(), true);
+                grantDocument, Collections.emptyList(), true);
         }
 
         String pdfSize = getPdfSize(caseData);

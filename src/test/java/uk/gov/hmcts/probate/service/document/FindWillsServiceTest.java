@@ -15,9 +15,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class FindWillsServiceTest {
     @InjectMocks
@@ -326,21 +329,21 @@ public class FindWillsServiceTest {
 
         List<CollectionMember<WillDocument>> willSelection = new ArrayList<>();
         WillDocument willDoc1 = WillDocument.builder()
-            .documentSelected("Yes")
+            .documentSelected(Arrays.asList(YES))
             .documentDate("date1")
             .documentLabel("will1")
             .documentLink(DocumentLink.builder().documentFilename("file1").documentBinaryUrl("uploadBinaryUrl").build())
             .build();
         CollectionMember<WillDocument> will1 = new CollectionMember<WillDocument>(willDoc1);
         WillDocument willDoc2 = WillDocument.builder()
-            .documentSelected("Yes")
+            .documentSelected(Arrays.asList(YES))
             .documentDate("date2")
             .documentLabel("will2")
             .documentLink(DocumentLink.builder().documentFilename("file2").documentBinaryUrl("scanBinaryUrl").build())
             .build();
         CollectionMember<WillDocument> will2 = new CollectionMember<WillDocument>(willDoc2);
         WillDocument willDoc3 = WillDocument.builder()
-            .documentSelected("No")
+            .documentSelected(Collections.emptyList())
             .documentDate("date3")
             .documentLabel("will3")
             .documentLink(DocumentLink.builder().documentFilename("file3").documentBinaryUrl("scanBinaryUrl").build())
@@ -350,6 +353,7 @@ public class FindWillsServiceTest {
             .documentSelected(null)
             .documentDate("date4")
             .documentLabel("will4")
+            .documentSelected(Collections.emptyList())
             .documentLink(DocumentLink.builder().documentFilename("file4").documentBinaryUrl("scanBinaryUrlOther")
                 .build())
             .build();

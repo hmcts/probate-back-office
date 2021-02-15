@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 
-import javax.validation.UnexpectedTypeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,6 +73,7 @@ public class OrderWillsServiceTest {
         assertEquals(label, willDocument.getValue().getDocumentLabel());
         assertEquals(date, willDocument.getValue().getDocumentDate());
         assertEquals(binary, willDocument.getValue().getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(null, willDocument.getValue().getDocumentSelected());
     }
 
     private Document buildDocument(String fileName, String dateAdded, DocumentType docType) {
