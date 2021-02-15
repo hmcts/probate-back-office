@@ -22,7 +22,8 @@ public class MarkdownSubstitutionService {
 
     private final FileSystemResourceService fileSystemResourceService;
 
-    public TemplateResponse generatePage(String templateDir, MarkdownTemplate markdownTemplate, Map<String, String> keyValue) {
+    public TemplateResponse generatePage(String templateDir, MarkdownTemplate markdownTemplate,
+                                         Map<String, String> keyValue) {
         return this.getTemplateFile(templateDir, markdownTemplate)
             .map(FileSystemResource::getFile)
             .map(file -> {

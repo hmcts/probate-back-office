@@ -26,13 +26,14 @@ class ExecutorsAddressPostcodeValidationRule implements SolExecutorDetailsValida
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         ccdData.getExecutors().stream()
-                .filter(Executor::isApplying)
-                .map(Executor::getAddress)
-                .forEach(address -> {
-                    if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
-                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
-                    }
-                });
+            .filter(Executor::isApplying)
+            .map(Executor::getAddress)
+            .forEach(address -> {
+                if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
+                    errors
+                        .add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
+                }
+            });
 
         return new ArrayList<>(errors);
     }
