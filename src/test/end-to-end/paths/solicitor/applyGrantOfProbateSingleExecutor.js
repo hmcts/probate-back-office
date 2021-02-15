@@ -76,6 +76,9 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     endState = 'Case created';
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
+    await I.completeApplicationPage2IHTForm();
+
+
     await I.completeApplicationPage2();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
