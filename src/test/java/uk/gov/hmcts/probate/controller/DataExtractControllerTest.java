@@ -117,7 +117,7 @@ public class DataExtractControllerTest {
 
     @Test
     public void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/exela?date=2019-02-13"))
+        mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Exela data extract finished"));
     }
