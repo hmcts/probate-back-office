@@ -40,5 +40,7 @@ public class CaseDataParent {
     protected String dispenseWithNoticeOverview;
     protected String dispenseWithNoticeSupportingDocs;
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> powerReservedExecutorList;
+    protected String soleTraderOrLimitedCompany;
+    protected String whoSharesInCompanyProfits;
 
 }

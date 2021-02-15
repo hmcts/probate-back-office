@@ -687,7 +687,9 @@ public class CallbackResponseTransformer {
                 .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
                 .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
                 .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
-                .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors());
+                .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
+                .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
+                .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
