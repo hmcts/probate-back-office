@@ -6,6 +6,9 @@
   "page3_sol_forename": "E2E solicitor first name",
   "page3_sol_surname": "E2E solicitor surname",
   "page3_sol_jobtitle": "E2E Solicitor Job title",
+  "page2_iht400_day": "25",
+  "page2_iht400_month": "01",
+  "page2_iht400_year": "2020",
 
   "page4_extraCopiesUK": "1",
   "page4_outsideUKGrantCopies":"2",
