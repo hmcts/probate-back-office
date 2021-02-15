@@ -19,7 +19,7 @@ public class FileExtractDateFormatter {
         return DATE_FORMAT.format(date).toUpperCase();
     }
 
-    public String getHMRCFormattedFileDate(String date, LocalDateTime now) {
+    public String getHmrcFormattedFileDate(String date, LocalDateTime now) {
         LocalDate dateUsed = LocalDate.from(DATE_FORMAT_REQUEST.parse(date));
         LocalDateTime dateUsedWithNowTime = dateUsed.atTime(now.getHour(), now.getMinute(), now.getSecond());
         return DATE_FORMAT_HMRC.format(dateUsedWithNowTime).toUpperCase();
