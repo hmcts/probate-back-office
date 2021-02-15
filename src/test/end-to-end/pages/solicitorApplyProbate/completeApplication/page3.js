@@ -5,7 +5,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#solsSOTForenames');
+    await I.waitForText('When did you send the IHT400 and IHT421 to HMRC?');
     await I.runAccessibilityTest();
     await I.fillField('#solsSOTForenames', completeApplicationConfig.page3_sol_forename);
     await I.fillField('#solsSOTSurname', completeApplicationConfig.page3_sol_surname);
