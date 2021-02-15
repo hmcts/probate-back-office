@@ -14,6 +14,8 @@
   "page5_payAccountNum": "1234",
 
   "page6_waitForText":"Save or Submit application",
+  "page6_orginalWillYes": "the original will",
+  "page6_iht_form_text_217": "the inheritance tax form IHT217",
 
   "page7_waitForText":"This probate application has now been submitted",
   "page7_applicationFee": "Application fee £155.00",

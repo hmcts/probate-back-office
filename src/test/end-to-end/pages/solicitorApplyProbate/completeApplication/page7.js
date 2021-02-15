@@ -12,6 +12,7 @@ module.exports = async function () {
     await I.see(completeApplicationConfig.page7_additionalCopiesFee);
     await I.see(completeApplicationConfig.page7_feeForCertifiedCopies);
     await I.see(completeApplicationConfig.page7_totalFeeAmount);
-
+    await I.see(completeApplicationConfig.page6_orginalWillYes);
+    await I.see(completeApplicationConfig.page6_iht_form_text_217);
     await I.waitForNavigationToComplete(commonConfig.goButton);
 };

@@ -97,6 +97,7 @@ services:
       OAUTH2_CLIENT_ID: ccd_gateway
       DM_URL: http://localhost:3453/documents
       DM_URL_REMOTE: http://dm-store:8080/documents
+      APPINSIGHTS_ENABLED: 'false'
     ports:
       - 3451:3451
     depends_on:

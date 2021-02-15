@@ -19,10 +19,19 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress_County', deceasedDetailsConfig.address_county);
     await I.fillField('#deceasedAddress_PostCode', deceasedDetailsConfig.address_postcode);
     await I.fillField('#deceasedAddress_Country', deceasedDetailsConfig.address_country);
+   // await I.waitForText(tabConfigFile.fields[i]);
+    await I.waitForText(deceasedDetailsConfig.inheritance_tax_selection_heading);
 
-    await I.selectOption('#ihtFormId', deceasedDetailsConfig.page2_solsIHTFormValue);
+    // pause();
+ //   await I.selectOption('#ihtFormId', deceasedDetailsConfig.page2_solsIHTFormValue);
+   // await I.click('#ihtFormId-IHT400421')
+
+    await I.click('#ihtFormId-IHT205')
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
+    await I.click('#iht217-Yes')
+   // await I.waitForText(deceasedDetailsConfig.iht_205-question);
+
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

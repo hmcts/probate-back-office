@@ -17,5 +17,8 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link"
+  "UKpostcodeLink": ".manual-link",
+
+  "ApplyForProbateHeading2": "If inheritance tax needs to be paid"
+
 }

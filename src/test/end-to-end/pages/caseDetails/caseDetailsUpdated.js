@@ -5,6 +5,7 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile) {
 
     const I = this;
+    pause();
 
     await I.see(caseRef);
     await I.clickTab(tabConfigFile.tabName);

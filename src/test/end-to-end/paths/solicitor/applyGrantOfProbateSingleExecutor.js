@@ -20,7 +20,6 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeft';
-
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
 
