@@ -13,7 +13,9 @@
   "page2_ihtNetValue": "100000",
   "page2_ihtGrossValue": "100001",
   "page2_solsIHTFormValue1": "IHT400 and IHT421 - there was inheritance tax to pay",
-  "page2_solsIHTFormValue" : "IHT205 - there was no inheritance tax to pay",
+  "page2_solsIHTFormValue2" : "IHT205 - there was no inheritance tax to pay",
+  "page2_solsIHTFormValue" : "IHT400 and IHT421 - there was inheritance tax to pay",
+
   "page2_ihtGrossValueDisplay": "£100,001.00",
   "page2_ihtNetValueDisplay": "£100,000.00",
   "page2_applicationGrounds": "Application grounds info",

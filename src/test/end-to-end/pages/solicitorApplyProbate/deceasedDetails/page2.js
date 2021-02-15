@@ -22,14 +22,17 @@ module.exports = async function () {
    // await I.waitForText(tabConfigFile.fields[i]);
     await I.waitForText(deceasedDetailsConfig.inheritance_tax_selection_heading);
 
-    // pause();
+     pause();
  //   await I.selectOption('#ihtFormId', deceasedDetailsConfig.page2_solsIHTFormValue);
    // await I.click('#ihtFormId-IHT400421')
 
-    await I.click('#ihtFormId-IHT205')
+   // await I.click('#ihtFormId-IHT205')
+    await I.click('#ihtFormId-IHT400421')
+
+
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
-    await I.click('#iht217-Yes')
+ //   await I.click('#iht217-Yes')
    // await I.waitForText(deceasedDetailsConfig.iht_205-question);
 
 
