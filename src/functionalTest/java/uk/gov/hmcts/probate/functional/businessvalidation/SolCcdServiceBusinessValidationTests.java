@@ -553,7 +553,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithPartnerAttributes(){
+    public void shouldTransformCaseWithPartnerAttributes() {
         String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
@@ -567,6 +567,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String additionalExecForename = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames");
         String additionalExecLastname = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname");
         String additionalExecAddressLine1 = jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1");
+        String soleTraderOrLimitedCompany = jsonPath.get("data.soleTraderOrLimitedCompany");
+        String whoSharesInCompanyProfits = jsonPath.get("data.whoSharesInCompanyProfits");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("No", dispenseWithNoticeLeaveGiven);
@@ -578,6 +580,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Exec forename", additionalExecForename);
         assertEquals("Exec lastname", additionalExecLastname);
         assertEquals("Address line 1", additionalExecAddressLine1);
+        assertEquals("No", soleTraderOrLimitedCompany);
+        assertEquals("Partners", whoSharesInCompanyProfits);
     }
 
     private String transformCase(String jsonFileName, String path) {
