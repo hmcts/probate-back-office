@@ -50,4 +50,7 @@ public class ResponseCaseDataParent {
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;
 
+
+    protected String solsReviewSOTConfirm;
+
 }
