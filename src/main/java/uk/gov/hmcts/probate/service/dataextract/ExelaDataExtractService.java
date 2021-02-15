@@ -37,7 +37,7 @@ public class ExelaDataExtractService {
         sendExelaEmail(cases);
     }
 
-    private void sendExelaEmail(List<ReturnedCaseDetails> cases){
+    private void sendExelaEmail(List<ReturnedCaseDetails> cases) {
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
 
         log.info("Sending email to Excela for {} filtered cases", filteredCases.size());
