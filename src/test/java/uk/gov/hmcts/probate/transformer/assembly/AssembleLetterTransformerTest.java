@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer.assembly;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,32 +29,16 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class AssembleLetterTransformerTest {
-    @Mock
-    private AssembleCaseworker assembleCaseworker;
-    @Mock
-    private AssembleFreeText assembleFreeText;
-    @Mock
-    private AssembleEntitlement assembleEntitlement;
-    @Mock
-    private AssembleIHT assembleIHT;
-    @Mock
-    private AssembleMissingInformation assembleMissingInformation;
-    @Mock
-    private AssembleForeignDomicile assembleForeignDomicile;
-    @Mock
-    private AssembleWill assembleWill;
     @Mock
     AssembleIncapacity assembleIncapacity;
     @Mock
@@ -72,7 +55,20 @@ public class AssembleLetterTransformerTest {
     AssembleSolicitorAffidavit assembleSolicitorAffidavit;
     @Mock
     AssembleSolicitorRedeclaration assembleSolicitorRedeclaration;
-
+    @Mock
+    private AssembleCaseworker assembleCaseworker;
+    @Mock
+    private AssembleFreeText assembleFreeText;
+    @Mock
+    private AssembleEntitlement assembleEntitlement;
+    @Mock
+    private AssembleIHT assembleIHT;
+    @Mock
+    private AssembleMissingInformation assembleMissingInformation;
+    @Mock
+    private AssembleForeignDomicile assembleForeignDomicile;
+    @Mock
+    private AssembleWill assembleWill;
     @Mock
     private CaseDetails caseDetailsMock;
     @Mock
@@ -83,10 +79,10 @@ public class AssembleLetterTransformerTest {
     @Before
     public void setUp() {
         assembleLetterTransformer = new AssembleLetterTransformer(assembleCaseworker,
-                assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,
-                assembleWill, assembleIncapacity, assembleLifeAndMinorityInterest, assembleSOTIncomplete,
-                assembleWitness, assembleSolicitorGeneral, assembleSolicitorCert, assembleSolicitorAffidavit,
-                assembleSolicitorRedeclaration);
+            assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,
+            assembleWill, assembleIncapacity, assembleLifeAndMinorityInterest, assembleSOTIncomplete,
+            assembleWitness, assembleSolicitorGeneral, assembleSolicitorCert, assembleSolicitorAffidavit,
+            assembleSolicitorRedeclaration);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }
@@ -110,11 +106,12 @@ public class AssembleLetterTransformerTest {
         when(caseDataMock.getCategories()).thenReturn(categories);
 
         List<ParagraphDetail> caseworkerTextList = Arrays.asList(ParagraphDetail.builder().code("someCode1").build());
-        when(assembleCaseworker.caseworker(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(caseworkerTextList);
+        when(assembleCaseworker
+            .caseworker(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(caseworkerTextList);
         List<ParagraphDetail> freeTextList = Arrays.asList(ParagraphDetail.builder().code("someCode2").build());
         when(assembleFreeText.freeText(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(freeTextList);
+            .thenReturn(freeTextList);
 
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
 
@@ -150,30 +147,32 @@ public class AssembleLetterTransformerTest {
         when(caseDataMock.getCategories()).thenReturn(categories);
 
         List<ParagraphDetail> caseworkerTextList = Arrays.asList(ParagraphDetail.builder().code("someCode1").build());
-        when(assembleCaseworker.caseworker(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(caseworkerTextList);
+        when(assembleCaseworker
+            .caseworker(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(caseworkerTextList);
 
         List<ParagraphDetail> freeTextList = Arrays.asList(ParagraphDetail.builder().code("someCode2").build());
         when(assembleFreeText.freeText(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(freeTextList);
+            .thenReturn(freeTextList);
 
         List<ParagraphDetail> entTextList = Arrays.asList(ParagraphDetail.builder().code("someCode3").build());
-        when(assembleEntitlement.executorNotAccountedFor(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(entTextList);
+        when(assembleEntitlement
+            .executorNotAccountedFor(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(entTextList);
 
         List<ParagraphDetail> ihtTextList = Arrays.asList(ParagraphDetail.builder().code("someCode4").build());
         when(assembleIHT.iht205Missing(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(ihtTextList);
+            .thenReturn(ihtTextList);
 
         List<ParagraphDetail> missTextList = Arrays.asList(ParagraphDetail.builder().code("someCode5").build());
         when(assembleMissingInformation.missingInfoChangeOfApplicant(ArgumentMatchers.any(ParagraphCode.class),
-                ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(missTextList);
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(missTextList);
 
         List<ParagraphDetail> forDomTextList = Arrays.asList(ParagraphDetail.builder().code("someCode6").build());
         when(assembleForeignDomicile.affidavitOfLaw(ArgumentMatchers.any(ParagraphCode.class),
-                ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(forDomTextList);
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(forDomTextList);
 
         List<ParagraphDetail> willTextList = Arrays.asList(ParagraphDetail.builder().code("someCode7").build());
         when(assembleWill.willAnyOther(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
@@ -204,7 +203,8 @@ public class AssembleLetterTransformerTest {
             ArgumentMatchers.any(CaseData.class)))
             .thenReturn(powAttTextList);
 
-        List<ParagraphDetail> solCertAliasTextList = Arrays.asList(ParagraphDetail.builder().code("someCode13").build());
+        List<ParagraphDetail> solCertAliasTextList =
+            Arrays.asList(ParagraphDetail.builder().code("someCode13").build());
         when(assembleSolicitorCert.solsCertAlias(ArgumentMatchers.any(ParagraphCode.class),
             ArgumentMatchers.any(CaseData.class)))
             .thenReturn(solCertAliasTextList);

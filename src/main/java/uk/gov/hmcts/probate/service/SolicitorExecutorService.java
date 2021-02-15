@@ -51,7 +51,9 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorFromApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
 
-        if (execsApplying.isEmpty()) return execsApplying;
+        if (execsApplying.isEmpty())  {
+            return execsApplying;
+        }
 
         return execsApplying.stream()
                 .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
@@ -61,7 +63,9 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorFromNotApplyingList(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
 
-        if (execsNotApplying.isEmpty()) return execsNotApplying;
+        if (execsNotApplying.isEmpty()) {
+            return execsNotApplying;
+        }
 
         return execsNotApplying.stream()
                 .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
@@ -92,11 +96,12 @@ public class SolicitorExecutorService {
 
         // Initialise list
         List<CollectionMember<AdditionalExecutor>> execsList = caseData.getSolsAdditionalExecutorList();
-        List<CollectionMember<AdditionalExecutor>> tempExecsList = execsList == null || execsList.isEmpty() ?
-                new ArrayList<>() : new ArrayList<>(execsList);
+        List<CollectionMember<AdditionalExecutor>> tempExecsList = execsList == null || execsList.isEmpty()
+                ? new ArrayList<>() : new ArrayList<>(execsList);
 
         // Add solicitor as executor to list
-        CollectionMember<AdditionalExecutor> solicitorExecutor = new CollectionMember<>(SOLICITOR_ID, AdditionalExecutor.builder()
+        CollectionMember<AdditionalExecutor> solicitorExecutor =
+                new CollectionMember<>(SOLICITOR_ID, AdditionalExecutor.builder()
                 .additionalExecForenames(caseData.getSolsSOTForenames())
                 .additionalExecLastname(caseData.getSolsSOTSurname())
                 .additionalExecNameOnWill(NO)
@@ -108,4 +113,3 @@ public class SolicitorExecutorService {
         return tempExecsList;
     }
 }
-
