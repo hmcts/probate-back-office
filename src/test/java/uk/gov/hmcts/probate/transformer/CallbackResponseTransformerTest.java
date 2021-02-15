@@ -740,6 +740,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSchemaVersionCorrectly() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
+    }
+
+    @Test
     public void shouldTestForNullDOB() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
                 .build();
@@ -1772,6 +1783,20 @@ public class CallbackResponseTransformerTest {
         assertSolsDetails(callbackResponse);
     }
 
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNotChosen() {
+        caseDataBuilder.ihtReferenceNumber("123456");
+        caseDataBuilder.ihtFormId(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertNull(callbackResponse.getData().getIhtFormId());
+        assertSolsDetails(callbackResponse);
+    }
+    
     @Test
     public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
         CaseData.CaseDataBuilder caseDataBuilder2;

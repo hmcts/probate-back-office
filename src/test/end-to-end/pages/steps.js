@@ -33,6 +33,7 @@ module.exports = function () {
         enterGrantOfProbatePage9: steps.createGrantOfProbate.page9,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
+        dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
         seeUpdatesOnCase: steps.caseDetails.caseDetailsUpdated,
         chooseNextStep: steps.nextStep.nextStep,
         printCase: steps.printCase.printCase,

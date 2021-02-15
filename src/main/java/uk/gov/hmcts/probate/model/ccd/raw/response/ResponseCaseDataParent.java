@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 public class ResponseCaseDataParent {
 
+    protected String schemaVersion;
     protected DynamicList reprintDocument;
     protected String reprintNumberOfCopies;
     protected DynamicList solsAmendLegalStatmentSelect;

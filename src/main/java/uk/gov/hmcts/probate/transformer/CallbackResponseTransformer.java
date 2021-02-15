@@ -99,6 +99,8 @@ public class CallbackResponseTransformer {
     public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
+    public static final String SCHEMA_VERSION = "2.0.0"; // Is set when Solicitor completes
+
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
@@ -363,6 +365,7 @@ public class CallbackResponseTransformer {
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+                .schemaVersion(SCHEMA_VERSION)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -472,15 +475,12 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
-            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
-                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
-            }
-        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformResponse(responseCaseDataBuilder
+                .schemaVersion(SCHEMA_VERSION)
+                .build());
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
@@ -549,7 +549,8 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline() == null && caseData.getIhtFormId() != null ? NO :
+                    caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
                 .boExecutorLimitation(caseData.getBoExecutorLimitation())
