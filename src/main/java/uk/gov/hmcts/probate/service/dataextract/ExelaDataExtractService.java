@@ -25,8 +25,7 @@ public class ExelaDataExtractService {
     public void performExelaExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             performExelaExtractForDate(fromDate);
-        }
-        else {
+        } else {
             log.info("Excela data extract initiated from date: {}", fromDate);
             List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
             log.info("Found {} cases with dated document for Excela", cases.size());
