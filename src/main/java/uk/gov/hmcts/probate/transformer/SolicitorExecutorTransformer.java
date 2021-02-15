@@ -97,8 +97,8 @@ public class SolicitorExecutorTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
 
         // Populate executor lists
-        execsApplying = mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
-        execsNotApplying = mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
+        mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
+        mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
         execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
 
         // Populate primary applicant fields
@@ -114,7 +114,7 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    private List<CollectionMember<AdditionalExecutorApplying>> mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
+    private void mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
 
         if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
@@ -130,10 +130,9 @@ public class SolicitorExecutorTransformer {
             execsApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
         }
 
-        return execsApplying;
     }
 
-    private List<CollectionMember<AdditionalExecutorNotApplying>> mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(
+    private void mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         if (caseData.getPowerReservedExecutorList() != null) {
@@ -146,7 +145,6 @@ public class SolicitorExecutorTransformer {
             execsNotApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToNotApplyingExecutors(caseData));
         }
 
-        return execsNotApplying;
     }
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo
