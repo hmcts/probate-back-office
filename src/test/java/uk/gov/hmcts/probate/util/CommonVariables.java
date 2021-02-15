@@ -35,6 +35,7 @@ public class CommonVariables {
     public static final String EXEC_NOTIFIED = YES;
     public static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
     public static final String EXEC_ID = "exec";
+    public static final String EXECUTOR_NOT_APPLYING_REASON = "Not applying";
 
     public static final String GOP = "WillLeft";
 
