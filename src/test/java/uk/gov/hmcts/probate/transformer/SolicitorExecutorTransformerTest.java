@@ -394,7 +394,6 @@ public class SolicitorExecutorTransformerTest {
                 .solsSolicitorIsExec(NO);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(solicitorExecutorServiceMock.removeSolicitorFromNotApplyingList(additionalExecutorNotApplying)).thenReturn(new ArrayList<>());
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData(), responseCaseDataBuilder);
 
@@ -410,7 +409,6 @@ public class SolicitorExecutorTransformerTest {
                 .solsSolicitorIsApplying(YES);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(solicitorExecutorServiceMock.removeSolicitorFromNotApplyingList(additionalExecutorNotApplying)).thenReturn(new ArrayList<>());
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData(), responseCaseDataBuilder);
 
