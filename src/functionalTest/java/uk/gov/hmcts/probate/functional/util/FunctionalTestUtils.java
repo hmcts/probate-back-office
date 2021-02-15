@@ -122,24 +122,25 @@ public class FunctionalTestUtils {
         return getHeadersWithUserId(serviceToken, userId);
     }
 
-    public Headers getSolicitorHeadersWithUserId() {
-        return getSolicitorHeadersWithUserId(serviceToken, userId);
-    }
-
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
-            new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization",
-                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-            new Header("user-id", userId));
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+                new Header("user-id", userId));
+    }
+
+    public Headers getSolicitorHeadersWithUserId() {
+        return getSolicitorHeadersWithUserId(serviceToken, userId);
     }
 
     private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
                 new Header("ServiceAuthorization", serviceToken),
                 new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
                 new Header("user-id", userId));
     }
 
