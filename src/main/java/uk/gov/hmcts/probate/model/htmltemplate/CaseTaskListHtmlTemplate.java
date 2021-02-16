@@ -13,7 +13,7 @@ public class CaseTaskListHtmlTemplate {
         + "\n"
         + "<h>1. Enter application details</h>\n"
         + "<gridRow><gridCol-two-thirds><p><secText>These steps are to be completed by "
-        + "the legal professional.</secText></p>"
+        + "the probate practitioner.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
@@ -38,7 +38,7 @@ public class CaseTaskListHtmlTemplate {
         + "<h>2. Sign legal statement and submit application</h>\n"
         + OPEN_ROW
         + "<p><secText>These steps are to be completed by the "
-        + "legal professional.</secText></p>"
+        + "probate practitioner.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
