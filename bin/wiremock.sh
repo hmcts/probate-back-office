@@ -158,6 +158,40 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
+#PBA NO accounts
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "url": "/refdata/external/v1/organisations/pbas?email=probatesolicitor2@gmail.com"
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationEntityResponse" : {
+                "organisationIdentifier": "0UFUG4Z",
+                "name": "ia-legal-rep-org",
+                "status": "ACTIVE",
+                "sraId": null,
+                "sraRegulated": false,
+                "companyNumber": null,
+                "companyUrl": null,
+                "superUser": {
+                  "firstName": "legalrep",
+                  "lastName": "orgcreator",
+                  "email": "superuser@probate-test.com"
+                },
+                "paymentAccount": [
+                ],
+                "contactInformation": null
+              }
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
 
 # make responses persistent in Docker volume
 curl -X POST http://localhost:8991/__admin/mappings/save

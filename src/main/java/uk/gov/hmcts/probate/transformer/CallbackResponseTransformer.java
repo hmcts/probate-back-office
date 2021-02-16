@@ -567,7 +567,8 @@ public class CallbackResponseTransformer {
 
             .solsPaymentMethods(caseData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .solsPBANumber(caseData.getSolsPBANumber())
+            .solsPBANumber(caseData.getSolsPBANumber())
+            .solsPBAPaymentReference(caseData.getSolsPBAPaymentReference())
 
             .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
             .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))

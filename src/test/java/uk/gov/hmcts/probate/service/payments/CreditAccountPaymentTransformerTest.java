@@ -67,6 +67,7 @@ public class CreditAccountPaymentTransformerTest {
         when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().build())
             .build());
         when(caseData.getSolsSolicitorAppReference()).thenReturn("solsAppRef");
+        when(caseData.getSolsPBAPaymentReference()).thenReturn("solsPayRef");
         when(caseData.getSolsSolicitorFirmName()).thenReturn("SolicitorFirmName");
         DynamicListItem item1 = DynamicListItem.builder().code("PBA1111").label("PBA1111Label").build();
         DynamicListItem item2 = DynamicListItem.builder().code("PBA2222").label("PBA2222Label").build();
@@ -147,7 +148,7 @@ public class CreditAccountPaymentTransformerTest {
         assertEquals("PBA1111", creditAccountPayment.getAccountNumber());
         assertEquals("solsAppRef", creditAccountPayment.getCaseReference());
         assertEquals("1234", creditAccountPayment.getCcdCaseNumber());
-        assertEquals("solsAppRef", creditAccountPayment.getCustomerReference());
+        assertEquals("solsPayRef", creditAccountPayment.getCustomerReference());
         assertEquals("Probate Solicitor payment", creditAccountPayment.getDescription());
         assertEquals("SolicitorFirmName", creditAccountPayment.getOrganisationName());
         assertEquals("GBP", creditAccountPayment.getCurrency());

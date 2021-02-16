@@ -43,7 +43,7 @@ public class CreditAccountPaymentTransformer {
             .organisationName(caseDetails.getData().getSolsSolicitorFirmName())
             .service(service)
             .siteId(siteId)
-            .customerReference(caseDetails.getData().getSolsSolicitorAppReference())
+            .customerReference(caseDetails.getData().getSolsPBAPaymentReference())
             .build();
     }
 
