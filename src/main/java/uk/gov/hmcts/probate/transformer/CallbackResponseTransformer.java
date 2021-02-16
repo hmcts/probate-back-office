@@ -85,7 +85,6 @@ public class CallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
-
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;

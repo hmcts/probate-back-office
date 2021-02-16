@@ -105,43 +105,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
-/*
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.core.Is.is;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
-*/
-
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
 
@@ -797,7 +760,7 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldSetSchemaVersionCorrectly() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
-                .build();
+            .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
