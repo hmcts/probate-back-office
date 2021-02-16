@@ -14,8 +14,10 @@ public class FeatureToggleService {
     private final LDUser.Builder ldUserBuilder;
 
     @Autowired
-    public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,  @Value("${ld.user.firstName}") String ldUserFirstName, @Value("${ld.user.lastName}") String ldUserLastName) {
-        this.ldClient =  ldClient;
+    public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
+                                @Value("${ld.user.firstName}") String ldUserFirstName,
+                                @Value("${ld.user.lastName}") String ldUserLastName) {
+        this.ldClient = ldClient;
 
         this.ldUserBuilder = new LDUser.Builder(ldUserKey)
             .firstName(ldUserFirstName)

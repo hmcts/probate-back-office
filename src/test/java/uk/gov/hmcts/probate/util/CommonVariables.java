@@ -16,7 +16,7 @@ public class CommonVariables {
     public static final String SOLICITOR_FIRM_PHONE = "0123456789";
     public static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
-    public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);;
+    public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);
     public static final String SOLICITOR_NOT_APPLYING_REASON = "Not applying";
     public static final String SOLICITOR_ID = "solicitor";
 
@@ -43,5 +43,9 @@ public class CommonVariables {
     public static final String SOLS_ALIAS_NAME = "AliasFN AliasSN";
 
     public static final String STOP_REASON = "Some reason";
+
+    // added to prevent having a public constructor
+    private CommonVariables() {
+    }
 
 }

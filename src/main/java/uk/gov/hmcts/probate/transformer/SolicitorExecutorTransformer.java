@@ -31,7 +31,8 @@ public class SolicitorExecutorTransformer {
 
     private final SolicitorExecutorService solicitorExecutorService;
 
-    public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
+                                                           ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData)) {
             if (isSolicitorApplying(caseData)) {
 
@@ -40,7 +41,8 @@ public class SolicitorExecutorTransformer {
 
             } else {
 
-                if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                if (getSolsSOTName(caseData.getSolsSOTForenames(),
+                        caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
@@ -57,7 +59,8 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    private void addSolicitorAsPrimaryApplicant(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    private void addSolicitorAsPrimaryApplicant(CaseData caseData,
+                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .primaryApplicantForenames(caseData.getSolsSOTForenames())
                 .primaryApplicantSurname(caseData.getSolsSOTSurname())
@@ -84,13 +87,15 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void setExecutorApplyingListsWithSolicitorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-
+    public void setExecutorApplyingListsWithSolicitorInfo(CaseData caseData,
+                                                          ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         // Initialise lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = caseData.getAdditionalExecutorsApplying() == null ?
-                new ArrayList<>() : mapApplyingAdditionalExecutors(caseData);
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = caseData.getAdditionalExecutorsNotApplying() == null ?
-                new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                caseData.getAdditionalExecutorsApplying() == null ? new ArrayList<>()
+                        : mapApplyingAdditionalExecutors(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                caseData.getAdditionalExecutorsNotApplying() == null ? new ArrayList<>()
+                        : caseData.getAdditionalExecutorsNotApplying();
 
         // Transform lists
         if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
@@ -112,14 +117,15 @@ public class SolicitorExecutorTransformer {
                 .additionalExecutorsNotApplying(execsNotApplying);
     }
 
-    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void otherExecutorExistsTransformation(CaseData caseData,
+                                                  ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
             builder.otherExecutorExists(YES);
         }
     }
 
-    public void solicitorExecutorTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-
+    public void solicitorExecutorTransformation(CaseData caseData,
+                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
 
             if (isSolicitorExecutor(caseData)) {
@@ -140,9 +146,11 @@ public class SolicitorExecutorTransformer {
             // Populate lists
             for (CollectionMember<AdditionalExecutor> additionalExec : caseData.getSolsAdditionalExecutorList()) {
                 if (ANSWER_YES.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-                    applyingExec.add( new CollectionMember<>(additionalExec.getId(), buildApplyingAdditionalExecutor(additionalExec.getValue())));
+                    applyingExec.add(new CollectionMember<>(additionalExec.getId(),
+                            buildApplyingAdditionalExecutor(additionalExec.getValue())));
                 } else if (ANSWER_NO.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
-                    notApplyingExec.add( new CollectionMember<>(additionalExec.getId(), buildNotApplyingAdditionalExecutor(additionalExec.getValue())));
+                    notApplyingExec.add(new CollectionMember<>(additionalExec.getId(),
+                            buildNotApplyingAdditionalExecutor(additionalExec.getValue())));
                 }
             }
 
@@ -153,12 +161,13 @@ public class SolicitorExecutorTransformer {
         }
     }
 
-    public void addSolicitorToSolsAdditionalExecList(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void addSolicitorToSolsAdditionalExecList(CaseData caseData,
+                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         // Initialise lists
         List<CollectionMember<AdditionalExecutor>> executorList = caseData.getSolsAdditionalExecutorList();
-        List<CollectionMember<AdditionalExecutor>> tempExecsList = executorList == null || executorList.isEmpty() ?
-                new ArrayList<>() : new ArrayList<>(executorList);
+        List<CollectionMember<AdditionalExecutor>> tempExecsList = executorList == null || executorList.isEmpty()
+                ? new ArrayList<>() : new ArrayList<>(executorList);
 
         // If list does NOT contain an solicitor, then update
         if (!listContainsSolicitor(tempExecsList) && isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
@@ -182,7 +191,8 @@ public class SolicitorExecutorTransformer {
                     .collect(Collectors.toList());
     }
 
-    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
+    private CollectionMember<AdditionalExecutorApplying> buildApplyingAdditionalExecutors(
+            CollectionMember<AdditionalExecutorApplying> additionalExecutorApplying) {
         AdditionalExecutorApplying tempExec = additionalExecutorApplying.getValue();
 
         if (tempExec.getApplyingExecutorName() == null) {
@@ -204,7 +214,8 @@ public class SolicitorExecutorTransformer {
                 .build();
     }
 
-    private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
+    private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(
+            AdditionalExecutor additionalExecutorNotApplying) {
         return AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
                         + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
@@ -213,9 +224,13 @@ public class SolicitorExecutorTransformer {
                 .build();
     }
 
-    protected boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
+    protected boolean isSolicitorExecutor(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsExec());
+    }
 
-    protected boolean isSolicitorApplying(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsApplying()); }
+    protected boolean isSolicitorApplying(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsApplying());
+    }
 
     private String getSolsSOTName(String firstNames, String surname) {
         StringBuilder sb = new StringBuilder();
