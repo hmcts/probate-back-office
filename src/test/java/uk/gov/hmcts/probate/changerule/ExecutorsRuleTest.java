@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -29,7 +30,11 @@ public class ExecutorsRuleTest {
     @Mock
     private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
+    private CollectionMember<AdditionalExecutorTrustCorps> additionalTrustCorpExecutors1Mock;
+    @Mock
     private AdditionalExecutor additionalExecutor1Mock;
+    @Mock
+    private AdditionalExecutorTrustCorps additionalTrustCorpExecutor1Mock;
 
     @Before
     public void setup() {
@@ -71,6 +76,25 @@ public class ExecutorsRuleTest {
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
         assertTrue(undertest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenMultipleExecutorListsAreNotEmpty() {
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
+
+        when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
+        when(additionalTrustCorpExecutors1Mock.getValue()).thenReturn(additionalTrustCorpExecutor1Mock);
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsTrustCorpList.add(additionalTrustCorpExecutors1Mock);
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutorsList);
+        when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(additionalExecutorsTrustCorpList);
+
+        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(YES);
+
+        assertFalse(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test
