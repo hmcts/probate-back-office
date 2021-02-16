@@ -54,7 +54,7 @@ public class CaveatDocmosisServiceTest {
         registry.setPhone("123456789");
         registries = mapper.convertValue(registry, Map.class);
 
-        when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(CAV_EXPIRY_DATE);
     }
 

@@ -125,7 +125,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
                 .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
-        when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
         when(addressFormatterService.formatAddress(any())).thenReturn(PERSONALISATION_CAVEATOR_ADDRESS);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));

@@ -135,7 +135,7 @@ public class NotificationService {
     public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor)
         throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType()
             , caseData.getRegistryLocation(), caseData.getLanguagePreference());
@@ -157,7 +157,7 @@ public class NotificationService {
         throws NotificationClientException {
 
         CaveatData caveatData = caveatDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
             , caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
@@ -215,7 +215,7 @@ public class NotificationService {
             .getProbateSotDocumentsGenerated()
             .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
 
-        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType()
             , caseDetails.getData().getRegistryLocation()
@@ -274,7 +274,7 @@ public class NotificationService {
 
     private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId) throws NotificationClientException {
  
-        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
@@ -286,7 +286,7 @@ public class NotificationService {
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
         String defaultRegistryLocation = (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getRegistries().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
+        return registriesProperties.getEnglish().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
