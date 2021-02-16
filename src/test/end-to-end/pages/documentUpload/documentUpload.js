@@ -1,6 +1,6 @@
 'use strict';
 
-var assert = require("assert")
+const assert = require('assert');
 
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
@@ -27,28 +27,28 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentUploadConfig.documentType);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '1');
-    let optText = "";
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
+    let optText = '';
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
     assert.equal('Will', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '2');
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(3)`});
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(3)`});
     assert.equal('Email', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '3');
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(4)`});
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(4)`});
     assert.equal('Correspondence', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '4');
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(5)`});
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(5)`});
     assert.equal('Codicil', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '5');
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(6)`});
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(6)`});
     assert.equal('Death Certificate', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '6');
-    optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
     assert.equal('Other', optText);
 
     await I.waitForVisible({css: `${documentUploadConfig.id}_1_DocumentLink`});
