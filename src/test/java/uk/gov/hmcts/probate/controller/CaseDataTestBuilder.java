@@ -141,6 +141,7 @@ public class CaseDataTestBuilder {
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code(SOLS_PBA_NUMBER).build()).build())
+                .solsPBAPaymentReference(SOLICITOR_APP_REFERENCE)
                 .applicationFee(APPLICATION_FEE)
                 .feeForUkCopies(FEE_FOR_UK_COPIES)
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)

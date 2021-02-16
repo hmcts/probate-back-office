@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.payments.pba.PBAValidationService;
 
@@ -21,6 +22,9 @@ public class SolicitorPBADefaulterTest {
 
     @Mock
     private PBAValidationService pbaValidationService;
+    
+    @Mock
+    private CaseData caseDataMock;
 
     private static final String AUTH_TOKEN = "AUTH";
 
@@ -31,13 +35,14 @@ public class SolicitorPBADefaulterTest {
         MockitoAnnotations.initMocks(this);
 
         when(pbaValidationService.getPBAs(AUTH_TOKEN)).thenReturn(allPBAs);
+        when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
     }
 
     @Test
     public void shouldReturnListOfPBAs() {
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
 
-        solicitorPBADefaulter.defaultFeeAccounts(responseCaseDataBuilder, AUTH_TOKEN);
+        solicitorPBADefaulter.defaultFeeAccounts(caseDataMock, responseCaseDataBuilder, AUTH_TOKEN);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(3, responseCaseData.getSolsPBANumber().getListItems().size());
@@ -46,6 +51,7 @@ public class SolicitorPBADefaulterTest {
         assertEquals("PBA3333", responseCaseData.getSolsPBANumber().getListItems().get(2).getCode());
         assertEquals(null, responseCaseData.getSolsPBANumber().getValue().getCode());
         assertEquals("Yes", responseCaseData.getSolsOrgHasPBAs());
+        assertEquals("SolAppRef", responseCaseData.getSolsPBAPaymentReference());
     }
 
     @Test
@@ -53,7 +59,7 @@ public class SolicitorPBADefaulterTest {
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
         when(pbaValidationService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
 
-        solicitorPBADefaulter.defaultFeeAccounts(responseCaseDataBuilder, AUTH_TOKEN);
+        solicitorPBADefaulter.defaultFeeAccounts(caseDataMock, responseCaseDataBuilder, AUTH_TOKEN);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(0, responseCaseData.getSolsPBANumber().getListItems().size());

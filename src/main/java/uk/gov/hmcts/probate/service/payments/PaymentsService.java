@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.service.payments;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -47,10 +49,19 @@ public class PaymentsService {
             paymentResponse = Objects.requireNonNull(responseEntity.getBody());
             log.info("paymentResponse : {}", paymentResponse);
         } catch (HttpClientErrorException e) {
-            String message = e.getMessage();
-            throw new BusinessValidationException("PBA payment failed: " + message, message);
+            throw new BusinessValidationException("PBA payment failed: " + getErrorMessage(e), e.getMessage());
         }
         return paymentResponse;
+    }
+
+    private String getErrorMessage(HttpClientErrorException e) {
+
+        String body = e.getResponseBodyAsString();
+        JSONObject json =  new JSONObject(body);
+        JSONArray jsonArray = json.getJSONArray("status_histories");
+        String statusHistory = jsonArray.get(0).toString();
+        json =  new JSONObject(statusHistory);
+        return json.getString("error_message");
     }
 
     private HttpEntity<CreditAccountPayment> buildRequest(String authToken, CreditAccountPayment creditAccountPayment) {
