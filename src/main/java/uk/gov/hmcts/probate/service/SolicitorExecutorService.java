@@ -33,28 +33,32 @@ public class SolicitorExecutorService {
     public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorFromApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
 
-        if (execsApplying.isEmpty()) return execsApplying;
+        if (execsApplying.isEmpty())  {
+            return execsApplying;
+        }
 
         return execsApplying.stream()
-                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
-                .collect(Collectors.toList());
+            .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
+            .collect(Collectors.toList());
     }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorFromNotApplyingList(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
 
-        if (execsNotApplying.isEmpty()) return execsNotApplying;
+        if (execsNotApplying.isEmpty()) {
+            return execsNotApplying;
+        }
 
         return execsNotApplying.stream()
-                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
-                .collect(Collectors.toList());
+            .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
+            .collect(Collectors.toList());
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> getSolicitorNotApplyingExecutor(CaseData caseData) {
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-                .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
-                .build();
+            .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+            .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
+            .build();
 
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
@@ -130,4 +134,3 @@ public class SolicitorExecutorService {
     }
 
 }
-

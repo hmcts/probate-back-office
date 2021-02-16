@@ -20,10 +20,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CaveatDocmosisService {
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
-    private final RegistriesProperties registriesProperties;
-    private final CcdReferenceFormatterService ccdReferenceFormatterService;
-    private final DateFormatterService dateFormatterService;
-
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
@@ -31,6 +27,9 @@ public class CaveatDocmosisService {
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
     private static final String PERSONALISATION_DECEASED_NAME = "deceasedName";
+    private final RegistriesProperties registriesProperties;
+    private final CcdReferenceFormatterService ccdReferenceFormatterService;
+    private final DateFormatterService dateFormatterService;
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
@@ -38,19 +37,21 @@ public class CaveatDocmosisService {
         Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
 
         Registry registry = registriesProperties.getRegistries().get(
-                caveatDetails.getData().getRegistryLocation().toLowerCase());
+            caveatDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        placeholders.put(PERSONALISATION_CASE_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(caveatDetails.getId().toString()));
+        placeholders.put(PERSONALISATION_CASE_REFERENCE,
+            ccdReferenceFormatterService.getFormattedCaseReference(caveatDetails.getId().toString()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
         placeholders.put(PERSONALISATION_PA8A_URL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatDetails.getData().getExpiryDate()));
+        placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+            dateFormatterService.formatCaveatExpiryDate(caveatDetails.getData().getExpiryDate()));
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatDetails.getData().getCaveatorFullName());
         placeholders.put(PERSONALISATION_DECEASED_NAME, caveatDetails.getData().getDeceasedFullName());
-        
+
         return placeholders;
     }
 

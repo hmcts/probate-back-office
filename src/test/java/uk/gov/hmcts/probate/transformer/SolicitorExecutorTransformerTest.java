@@ -19,9 +19,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static uk.gov.hmcts.probate.util.CommonVariables.*;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolicitorExecutorTransformerTest {
@@ -81,7 +82,8 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(SOLICITOR_SOT_FORENAME, responseCaseData.getPrimaryApplicantForenames());
@@ -105,7 +107,8 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
 
@@ -134,7 +137,8 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
 
@@ -164,7 +168,8 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         assertNull(responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
     }
@@ -184,7 +189,8 @@ public class SolicitorExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         assertNull(responseCaseDataBuilder.build().getSolsPrimaryExecutorNotApplyingReason());
     }
@@ -208,7 +214,8 @@ public class SolicitorExecutorTransformerTest {
                 .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(), responseCaseDataBuilder);
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
 

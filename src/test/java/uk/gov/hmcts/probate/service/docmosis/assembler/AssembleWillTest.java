@@ -16,7 +16,8 @@ public class AssembleWillTest {
 
     @Test
     public void shouldGetWillSeparatePages() {
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WillSepPages, caseData);
         assertEquals("WillSepPages", response.get(0).getCode());
@@ -57,7 +58,8 @@ public class AssembleWillTest {
     @Test
     public void shouldGetWillStaple() {
 
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());
@@ -72,7 +74,8 @@ public class AssembleWillTest {
     @Test
     public void shouldGetWillRevoked() {
 
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willRevoked(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());
@@ -87,7 +90,8 @@ public class AssembleWillTest {
     @Test
     public void shouldGetWillLost() {
 
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willLost(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());
@@ -102,7 +106,8 @@ public class AssembleWillTest {
     @Test
     public void shouldGetWillList() {
 
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willList(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());
@@ -117,7 +122,8 @@ public class AssembleWillTest {
     @Test
     public void shouldGetWillFiat() {
 
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData =
+            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willFiat(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());

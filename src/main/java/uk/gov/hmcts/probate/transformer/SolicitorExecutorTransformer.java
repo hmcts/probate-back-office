@@ -21,7 +21,8 @@ public class SolicitorExecutorTransformer {
 
     private final SolicitorExecutorService solicitorExecutorService;
 
-    public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
+                                                           ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData)) {
             if (isSolicitorApplying(caseData)) {
 
@@ -30,7 +31,8 @@ public class SolicitorExecutorTransformer {
 
             } else {
 
-                if (getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                if (getSolsSOTName(caseData.getSolsSOTForenames(),
+                        caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
@@ -47,7 +49,8 @@ public class SolicitorExecutorTransformer {
 
     }
 
-    private void addSolicitorAsPrimaryApplicant(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    private void addSolicitorAsPrimaryApplicant(CaseData caseData,
+                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .primaryApplicantForenames(caseData.getSolsSOTForenames())
                 .primaryApplicantSurname(caseData.getSolsSOTSurname())
