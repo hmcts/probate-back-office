@@ -34,6 +34,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REDECLARATION_SOT ="/case/redeclarationSot";
     private static final String SOL_APPLY_AS_EXECUTOR_URL ="/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -422,8 +423,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseSOLSAdditionalExec() {
-        String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
+    public void shouldTransformSolicitorExecutorFields() {
+        String response = transformCase("solicitorPayloadNotificationsExecutors.json", VALIDATE_PROBATE_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
         String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
@@ -431,7 +432,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
 
         String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
-        String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
         String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
         String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
         String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
@@ -450,13 +450,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
         String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
 
-
-        assertEquals("exfn2 exln2", notApplyingName);
+        assertEquals("exfn exln", notApplyingName);
         assertEquals("DiedBefore", notApplyingReason);
         assertEquals("alias name", notApplyingAlias);
 
         assertEquals("exfn1 exln1", applyingName);
-        assertEquals("Alias name exfn1", applyingAlias);
         assertEquals("addressline 1", addressLine1);
         assertEquals("addressline 2", addressLine2);
         assertEquals("addressline 3", addressLine3);
@@ -465,17 +463,42 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("country", country);
         assertEquals("county", county);
 
-
-        assertEquals("ex3fn ex3ln", applyingNameExec2);
-        assertEquals(null, applyingAliasExec2);
+        assertEquals("exfn2 exln2", applyingNameExec2);
+        assertEquals("Alias name exfn2", applyingAliasExec2);
         assertEquals("addressline 1", addressLine1Exec2);
-        assertEquals(null, addressLine2Exec2);
-        assertEquals(null, addressLine3Exec2);
-        assertEquals(null, postTownExec2);
+        assertEquals("addressline 2", addressLine2Exec2);
+        assertEquals("addressline 3", addressLine3Exec2);
+        assertEquals("posttown", postTownExec2);
         assertEquals("postcode", postCodeExec2);
-        assertEquals(null, countryExec2);
-        assertEquals(null, countyExec2);
+        assertEquals("country", countryExec2);
+        assertEquals("county", countyExec2);
+    }
 
+    @Test
+    public void shouldTransformPrimaryApplicantFieldsWithSolicitorInfo() {
+        String response = transformCase("solicitorPayloadNotificationsSolicitorAsPrimaryApplicant.json",
+                VALIDATE_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String forename = jsonPath.get("data.primaryApplicantForenames");
+        String surname = jsonPath.get("data.primaryApplicantSurname");
+        String email = jsonPath.get("data.primaryApplicantEmailAddress");
+        String address_line1 = jsonPath.get("data.primaryApplicantAddress.AddressLine1");
+        String alias = jsonPath.get("data.primaryApplicantAlias");
+        String hasAlias = jsonPath.get("data.primaryApplicantHasAlias");
+        String isApplying = jsonPath.get("data.primaryApplicantIsApplying");
+        String solsNotApplyingReason = jsonPath.get("data.solsSolicitorNotApplyingReason");
+        String notApplyingReason = jsonPath.get("data.solsPrimaryExecutorNotApplyingReason");
+
+        assertEquals("Solicitor_fn", forename);
+        assertEquals("Solicitor_ln", surname);
+        assertEquals("solicitor@probate-test.com", email);
+        assertEquals("SolAddLn1", address_line1);
+        assertNull(alias);
+        assertEquals("No", hasAlias);
+        assertEquals("Yes", isApplying);
+        assertNull(solsNotApplyingReason);
+        assertNull(notApplyingReason);
     }
 
     @Test

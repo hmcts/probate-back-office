@@ -102,7 +102,7 @@ public class SolicitorExecutorTransformer {
         execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
 
         // Populate primary applicant fields
-        if (shouldSetPrimaryApplicantFields(execsApplying, caseData)) {
+        if (shouldSetPrimaryApplicantFieldsWithExecInfo(execsApplying, caseData)) {
             AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
             execsApplying.remove(0);
             mapExecutorToPrimaryApplicantFields(tempExec, builder);
@@ -166,9 +166,10 @@ public class SolicitorExecutorTransformer {
         return execsNotApplying;
     }
 
-    private boolean shouldSetPrimaryApplicantFields(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
-                                                    CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();
+    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
+                                                                CaseData caseData) {
+        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
+                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
     }
 
     private void mapExecutorToPrimaryApplicantFields(AdditionalExecutorApplying exec,

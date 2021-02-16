@@ -111,6 +111,8 @@ public class SolicitorExecutorService {
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
     }

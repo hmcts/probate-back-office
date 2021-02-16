@@ -39,6 +39,7 @@ public class CommonVariables {
     public static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
     public static final String EXEC_ID = "exec";
     public static final String EXECUTOR_NOT_APPLYING_REASON = "Reason";
+    public static final String POWER_RESERVED = "PowerReserved";
 
     public static final String GOP = "WillLeft";
 
@@ -68,6 +69,7 @@ public class CommonVariables {
                     .additionalExecLastname(EXEC_SURNAME)
                     .additionalExecAddress(EXEC_ADDRESS)
                     .additionalApplying(YES)
+                    .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
                     .build());
 
     public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_NOT_APPLYING = new CollectionMember(EXEC_ID,
@@ -75,20 +77,25 @@ public class CommonVariables {
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
                     .additionalApplying(NO)
+                    .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
+                    .additionalExecReasonNotApplying(EXECUTOR_NOT_APPLYING_REASON)
                     .build());
 
     public static final CollectionMember<AdditionalExecutorTrustCorps> TRUST_CORP_EXEC = new CollectionMember(EXEC_ID,
             AdditionalExecutorTrustCorps.builder()
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
+                    .additionalExecAddress(EXEC_ADDRESS)
                     .build());
 
     public static final CollectionMember<AdditionalExecutorPartners> PARTNER_EXEC = new CollectionMember(EXEC_ID,
             AdditionalExecutorPartners.builder()
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
-                    .build());
+                    .additionalExecAddress(EXEC_ADDRESS)
+            .build());
 
     public static final CollectionMember<AdditionalExecutorNotApplyingPowerReserved> DISPENSE_WITH_NOTICE_EXEC = new CollectionMember(EXEC_ID,
-            AdditionalExecutorNotApplyingPowerReserved.builder().notApplyingExecutorName("name"));
+            AdditionalExecutorNotApplyingPowerReserved.builder()
+                    .notApplyingExecutorName(EXEC_NAME).build());
 }

@@ -26,18 +26,15 @@ import static uk.gov.hmcts.probate.util.CommonVariables.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SolicitorExecutorTransformerTest {
 
-    private CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
+    private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
-    private ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = ResponseCaseData.builder();
+    private final ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = ResponseCaseData.builder();
 
     @Mock
     private CaseDetails caseDetailsMock;
 
     @Mock
     private SolicitorExecutorService solicitorExecutorServiceMock;
-
-    @Mock
-    private List<CollectionMember<AdditionalExecutor>> solAdditionalExecutorsNotApplying;
 
     @InjectMocks
     private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
@@ -424,6 +421,79 @@ public class SolicitorExecutorTransformerTest {
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertTrue(responseCaseData.getAdditionalExecutorsApplying().isEmpty());
+        assertNull(responseCaseData.getPrimaryApplicantForenames());
+        assertNull(responseCaseData.getPrimaryApplicantSurname());
+        assertNull(responseCaseData.getPrimaryApplicantAddress());
+        assertNull(responseCaseData.getPrimaryApplicantAlias());
+        assertNull(responseCaseData.getPrimaryApplicantHasAlias());
+        assertNull(responseCaseData.getPrimaryApplicantIsApplying());
+        assertNull(responseCaseData.getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldNotSetPrimaryApplicantFields_SolicitorIsExecAndApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(YES)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(additionalExecutorApplying, responseCaseData.getAdditionalExecutorsApplying());
+        assertNull(responseCaseData.getPrimaryApplicantForenames());
+        assertNull(responseCaseData.getPrimaryApplicantSurname());
+        assertNull(responseCaseData.getPrimaryApplicantAddress());
+        assertNull(responseCaseData.getPrimaryApplicantAlias());
+        assertNull(responseCaseData.getPrimaryApplicantHasAlias());
+        assertNull(responseCaseData.getPrimaryApplicantIsApplying());
+        assertNull(responseCaseData.getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldNotSetPrimaryApplicantFields_SolicitorIsExecAndNotApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(additionalExecutorApplying, responseCaseData.getAdditionalExecutorsApplying());
+        assertNull(responseCaseData.getPrimaryApplicantForenames());
+        assertNull(responseCaseData.getPrimaryApplicantSurname());
+        assertNull(responseCaseData.getPrimaryApplicantAddress());
+        assertNull(responseCaseData.getPrimaryApplicantAlias());
+        assertNull(responseCaseData.getPrimaryApplicantHasAlias());
+        assertNull(responseCaseData.getPrimaryApplicantIsApplying());
+        assertNull(responseCaseData.getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+
+    @Test
+    public void shouldNotSetPrimaryApplicantFields_SolicitorIsNotExecAndApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(additionalExecutorApplying, responseCaseData.getAdditionalExecutorsApplying());
         assertNull(responseCaseData.getPrimaryApplicantForenames());
         assertNull(responseCaseData.getPrimaryApplicantSurname());
         assertNull(responseCaseData.getPrimaryApplicantAddress());

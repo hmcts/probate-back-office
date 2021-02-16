@@ -1022,8 +1022,8 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
+        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
 
         builder
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
@@ -1202,7 +1202,7 @@ public class CallbackResponseTransformer {
         return sb.toString();
     }
 
-    public CaseCreationDetails bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
+    public CaseCreationDetails<?> bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
 
         if (grantOfRepresentationData.getApplicationType() == null) {
             grantOfRepresentationData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
