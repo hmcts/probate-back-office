@@ -33,7 +33,8 @@ import static org.mockito.Mockito.when;
 public class FeesRegisterConsumerTest {
 
     @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("feeRegister_lookUp", "localhost", 4411, this);
+    public PactHttpsProviderRuleMk2 mockProvider =
+        new PactHttpsProviderRuleMk2("feeRegister_lookUp", "localhost", 4411, this);
 
     @Autowired
     FeeService feeService;
@@ -48,7 +49,7 @@ public class FeesRegisterConsumerTest {
     private static final String DOCUMENT_ID = "12345";
 
     @Before
-    public void setUpTest(){
+    public void setUpTest() {
         when(featureToggleServiceMock.isNewFeeRegisterCodeEnabled()).thenReturn(Boolean.TRUE);
     }
 

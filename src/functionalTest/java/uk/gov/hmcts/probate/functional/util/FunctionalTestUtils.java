@@ -100,6 +100,17 @@ public class FunctionalTestUtils {
             new Header("Content-Type", ContentType.JSON.toString()));
     }
 
+    public Headers getHeaders(String userName, String password, Integer id) {
+        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+
+        return Headers.headers(
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("user-id", id.toString()));
+    }
+
     public Headers getHeadersWithUserId() {
         return getHeadersWithUserId(serviceToken, userId);
     }
@@ -108,7 +119,8 @@ public class FunctionalTestUtils {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
             new Header("user-id", userId));
     }
 
@@ -163,17 +175,6 @@ public class FunctionalTestUtils {
         return parsedText;
     }
 
-    public Headers getHeaders(String userName, String password, Integer id) {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
-        String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
-
-        return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
-            new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken),
-            new Header("user-id", id.toString()));
-    }
-
     public String getCaseworkerUserId() {
         return getUserId(caseworkerEmail, caseworkerPassword);
     }
@@ -217,14 +218,16 @@ public class FunctionalTestUtils {
 
     public String createCaseAsCaseworker(String caseJson, String eventId) {
         String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventId + "/token";
+        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+            + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventId + "/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
         String token = startResponse.getBody().jsonPath().get("token");
         String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
-        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
+        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+            + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -235,7 +238,8 @@ public class FunctionalTestUtils {
 
     public String findCaseAsCaseworker(String caseId) {
         String user = getCaseworkerUserId();
-        String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId;
+        String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+            + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId;
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -251,7 +255,9 @@ public class FunctionalTestUtils {
 
     public String startUpdateCaseAsCaseworker(String caseId, String eventId) {
         String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/event-triggers/" + eventId + "/token";
+        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+            + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/event-triggers/" + eventId
+            + "/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -261,7 +267,8 @@ public class FunctionalTestUtils {
 
     public String continueUpdateCaseAsCaseworker(String caseJson, String caseId) {
         String user = getCaseworkerUserId();
-        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/events";
+        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+            + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/events";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
@@ -275,7 +282,8 @@ public class FunctionalTestUtils {
     }
 
     public String addAttribute(String json, String attributeKey, String attributeValue) {
-        return json.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
+        return json.replaceAll("\"applicationID\": \"603\",",
+            "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
 
 

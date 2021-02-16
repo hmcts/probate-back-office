@@ -31,35 +31,39 @@ public class StandingSearchCallbackResponseTransformer {
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
-    public StandingSearchCallbackResponse standingSearchCreated(StandingSearchCallbackRequest standingSearchCallbackRequest) {
+    public StandingSearchCallbackResponse standingSearchCreated(
+        StandingSearchCallbackRequest standingSearchCallbackRequest) {
         StandingSearchDetails standingSearchDetails = standingSearchCallbackRequest.getCaseDetails();
 
         ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchData(standingSearchDetails)
-                .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN)))
-                .build();
+            .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN)))
+            .build();
 
         return transformResponse(responseStandingSearchData);
     }
 
     public StandingSearchCallbackResponse transform(StandingSearchCallbackRequest callbackRequest) {
-        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchData(callbackRequest.getCaseDetails())
+        ResponseStandingSearchData responseStandingSearchData =
+            getResponseStandingSearchData(callbackRequest.getCaseDetails())
                 .build();
 
         return transformResponse(responseStandingSearchData);
     }
 
-    public StandingSearchCallbackResponse addMatches(StandingSearchCallbackRequest request, List<CaseMatch> newMatches) {
+    public StandingSearchCallbackResponse addMatches(StandingSearchCallbackRequest request,
+                                                     List<CaseMatch> newMatches) {
         List<CollectionMember<CaseMatch>> storedMatches = request.getCaseDetails().getData().getCaseMatches();
 
         // Removing case matches that have been already added
         storedMatches.stream()
-                .map(CollectionMember::getValue).forEach(newMatches::remove);
+            .map(CollectionMember::getValue).forEach(newMatches::remove);
 
         storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
 
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
-        ResponseStandingSearchDataBuilder responseCaseDataBuilder = getResponseStandingSearchData(request.getCaseDetails());
+        ResponseStandingSearchDataBuilder responseCaseDataBuilder =
+            getResponseStandingSearchData(request.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -68,51 +72,52 @@ public class StandingSearchCallbackResponseTransformer {
         return StandingSearchCallbackResponse.builder().responseStandingSearchData(responseStandingSearchData).build();
     }
 
-    private ResponseStandingSearchDataBuilder getResponseStandingSearchData(StandingSearchDetails standingSearchDetails) {
+    private ResponseStandingSearchDataBuilder getResponseStandingSearchData(
+        StandingSearchDetails standingSearchDetails) {
         StandingSearchData standingSearchData = standingSearchDetails.getData();
 
         return ResponseStandingSearchData.builder()
 
-                .applicationType(ofNullable(standingSearchData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .registryLocation(ofNullable(standingSearchData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+            .applicationType(ofNullable(standingSearchData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+            .registryLocation(ofNullable(standingSearchData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
 
-                .deceasedForenames(standingSearchData.getDeceasedForenames())
-                .deceasedSurname(standingSearchData.getDeceasedSurname())
-                .deceasedDateOfDeath(dateTimeFormatter.format(standingSearchData.getDeceasedDateOfDeath()))
-                .deceasedDateOfBirth(transformToString(standingSearchData.getDeceasedDateOfBirth()))
-                .deceasedAnyOtherNames(standingSearchData.getDeceasedAnyOtherNames())
-                .deceasedFullAliasNameList(standingSearchData.getDeceasedFullAliasNameList())
-                .deceasedAddress(standingSearchData.getDeceasedAddress())
+            .deceasedForenames(standingSearchData.getDeceasedForenames())
+            .deceasedSurname(standingSearchData.getDeceasedSurname())
+            .deceasedDateOfDeath(dateTimeFormatter.format(standingSearchData.getDeceasedDateOfDeath()))
+            .deceasedDateOfBirth(transformToString(standingSearchData.getDeceasedDateOfBirth()))
+            .deceasedAnyOtherNames(standingSearchData.getDeceasedAnyOtherNames())
+            .deceasedFullAliasNameList(standingSearchData.getDeceasedFullAliasNameList())
+            .deceasedAddress(standingSearchData.getDeceasedAddress())
 
-                .applicantForenames(standingSearchData.getApplicantForenames())
-                .applicantSurname(standingSearchData.getApplicantSurname())
-                .applicantEmailAddress(standingSearchData.getApplicantEmailAddress())
-                .applicantAddress(standingSearchData.getApplicantAddress())
+            .applicantForenames(standingSearchData.getApplicantForenames())
+            .applicantSurname(standingSearchData.getApplicantSurname())
+            .applicantEmailAddress(standingSearchData.getApplicantEmailAddress())
+            .applicantAddress(standingSearchData.getApplicantAddress())
 
-                .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()))
+            .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()))
 
-                .caseMatches(standingSearchData.getCaseMatches())
+            .caseMatches(standingSearchData.getCaseMatches())
 
-                .expiryDate(transformToString(standingSearchData.getExpiryDate()))
+            .expiryDate(transformToString(standingSearchData.getExpiryDate()))
 
-                .documentsUploaded(standingSearchData.getDocumentsUploaded())
+            .documentsUploaded(standingSearchData.getDocumentsUploaded())
 
-                .applicationSubmittedDate(standingSearchData.getApplicationSubmittedDate())
+            .applicationSubmittedDate(standingSearchData.getApplicationSubmittedDate())
 
-                .recordId(standingSearchData.getRecordId())
-                .legacyCaseViewUrl(standingSearchData.getLegacyCaseViewUrl())
-                .legacyType(standingSearchData.getLegacyType());
+            .recordId(standingSearchData.getRecordId())
+            .legacyCaseViewUrl(standingSearchData.getLegacyCaseViewUrl())
+            .legacyType(standingSearchData.getLegacyType());
     }
 
     private String transformToString(Long longValue) {
         return ofNullable(longValue)
-                .map(String::valueOf)
-                .orElse(null);
+            .map(String::valueOf)
+            .orElse(null);
     }
 
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
-                .map(String::valueOf)
-                .orElse(null);
+            .map(String::valueOf)
+            .orElse(null);
     }
 }

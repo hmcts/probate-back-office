@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
@@ -46,7 +45,7 @@ public class DocumentsReceivedNotificationServiceTest {
     private static final Long CASE_ID = 12345678987654321L;
     private static final String BULK_SCAN_CASE_REFERENCE = "9876654312345678";
     private static final String DOCUMENTS_RECEIVED_FILE_NAME = "documentReceived.pdf";
-
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private Document emailDocument;
     private CallbackRequest callbackRequest;
     private CallbackResponse callbackResponse;
@@ -62,8 +61,6 @@ public class DocumentsReceivedNotificationServiceTest {
     private List<Document> expectedNoDocuments = new ArrayList<Document>();
     private List<CollectionMember<Document>> documents = new ArrayList<>();
     private List<CollectionMember<Document>> noDocuments = new ArrayList<>();
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
-
     @InjectMocks
     private DocumentsReceivedNotificationService documentsReceivedNotificationService;
 
@@ -88,60 +85,66 @@ public class DocumentsReceivedNotificationServiceTest {
     @Before
     public void setup() throws IOException, NotificationClientException {
         personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
-                .applicationType(PERSONAL)
-                .registryLocation("Birmingham")
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
-                .bulkScanCaseReference("")
-                .build(), LAST_MODIFIED, CASE_ID);
+            .applicationType(PERSONAL)
+            .registryLocation("Birmingham")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .bulkScanCaseReference("")
+            .build(), LAST_MODIFIED, CASE_ID);
 
         solicitorCaseDataBirmingham = new CaseDetails(CaseData.builder()
-                .applicationType(SOLICITOR)
-                .registryLocation("Birmingham")
-                .solsSolicitorEmail("solicitor@probate-test.com")
-                .solsSolicitorAppReference("1234-5678-9012")
-                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
-                .bulkScanCaseReference(null)
-                .build(), LAST_MODIFIED, CASE_ID);
+            .applicationType(SOLICITOR)
+            .registryLocation("Birmingham")
+            .solsSolicitorEmail("solicitor@probate-test.com")
+            .solsSolicitorAppReference("1234-5678-9012")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .bulkScanCaseReference(null)
+            .build(), LAST_MODIFIED, CASE_ID);
 
         personalCaseDataBirminghamFromBulkScan = new CaseDetails(CaseData.builder()
-                .applicationType(PERSONAL)
-                .registryLocation("Birmingham")
-                .primaryApplicantEmailAddress("primary@probate-test.com")
-                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
-                .bulkScanCaseReference(BULK_SCAN_CASE_REFERENCE)
-                .build(), LAST_MODIFIED, CASE_ID);
+            .applicationType(PERSONAL)
+            .registryLocation("Birmingham")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .bulkScanCaseReference(BULK_SCAN_CASE_REFERENCE)
+            .build(), LAST_MODIFIED, CASE_ID);
 
         solicitorCaseDataBirminghamFromBulkScan = new CaseDetails(CaseData.builder()
-                .applicationType(SOLICITOR)
-                .registryLocation("Birmingham")
-                .solsSolicitorEmail("solicitor@probate-test.com")
-                .solsSolicitorAppReference("1234-5678-9012")
-                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
-                .bulkScanCaseReference(BULK_SCAN_CASE_REFERENCE)
-                .build(), LAST_MODIFIED, CASE_ID);
+            .applicationType(SOLICITOR)
+            .registryLocation("Birmingham")
+            .solsSolicitorEmail("solicitor@probate-test.com")
+            .solsSolicitorAppReference("1234-5678-9012")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .bulkScanCaseReference(BULK_SCAN_CASE_REFERENCE)
+            .build(), LAST_MODIFIED, CASE_ID);
 
         errors = new ArrayList<String>();
-        emailDocument = Document.builder().documentFileName(DOCUMENTS_RECEIVED_FILE_NAME).documentType(SENT_EMAIL).build();
+        emailDocument =
+            Document.builder().documentFileName(DOCUMENTS_RECEIVED_FILE_NAME).documentType(SENT_EMAIL).build();
         CollectionMember<Document> collectionOfDocuments = new CollectionMember(null, emailDocument);
         documents.add(collectionOfDocuments);
         expectedOneDocument.add(emailDocument);
 
         ResponseCaseData reponseCaseData = ResponseCaseData.builder().probateNotificationsGenerated(documents).build();
-        ResponseCaseData reponseCaseDataNoDocuments = ResponseCaseData.builder().probateNotificationsGenerated(noDocuments).build();
+        ResponseCaseData reponseCaseDataNoDocuments =
+            ResponseCaseData.builder().probateNotificationsGenerated(noDocuments).build();
         callbackResponse = CallbackResponse.builder().errors(errors).build();
         callbackResponseWithData = CallbackResponse.builder().data(reponseCaseData).errors(errors).build();
-        callbackResponseWithDataNoDocuments = CallbackResponse.builder().data(reponseCaseDataNoDocuments).errors(errors).build();
+        callbackResponseWithDataNoDocuments =
+            CallbackResponse.builder().data(reponseCaseDataNoDocuments).errors(errors).build();
     }
 
     @Test
     public void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
-        doReturn(callbackResponse).when(eventValidationService).validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
-        doReturn(callbackResponseWithData).when(callbackResponseTransformer).addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(callbackResponseWithData).when(callbackResponseTransformer)
+            .addDocuments(any(), eq(expectedOneDocument), any(), any());
 
-        CallbackResponse callbackResponse = documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -149,11 +152,14 @@ public class DocumentsReceivedNotificationServiceTest {
     @Test
     public void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirmingham);
-        doReturn(callbackResponse).when(eventValidationService).validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
-        doReturn(callbackResponseWithData).when(callbackResponseTransformer).addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(callbackResponseWithData).when(callbackResponseTransformer)
+            .addDocuments(any(), eq(expectedOneDocument), any(), any());
 
-        CallbackResponse callbackResponse = documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -161,10 +167,13 @@ public class DocumentsReceivedNotificationServiceTest {
     @Test
     public void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirminghamFromBulkScan);
-        doReturn(callbackResponse).when(eventValidationService).validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer).addDocuments(any(), eq(expectedNoDocuments), any(), any());
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
+            .addDocuments(any(), eq(expectedNoDocuments), any(), any());
 
-        CallbackResponse callbackResponse = documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -172,10 +181,13 @@ public class DocumentsReceivedNotificationServiceTest {
     @Test
     public void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirminghamFromBulkScan);
-        doReturn(callbackResponse).when(eventValidationService).validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer).addDocuments(any(), eq(expectedNoDocuments), any(), any());
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
+            .addDocuments(any(), eq(expectedNoDocuments), any(), any());
 
-        CallbackResponse callbackResponse = documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }

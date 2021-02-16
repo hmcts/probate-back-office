@@ -40,27 +40,6 @@ import static org.mockito.Mockito.when;
 
 public class GrantOfRepresentationDocmosisMapperServiceTest {
 
-    @InjectMocks
-    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
-
-    @Mock
-    private RegistriesProperties registriesPropertiesMock;
-
-    @Mock
-    private CaveatQueryService caveatQueryServiceMock;
-
-    @Mock
-    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
-
-    @Mock
-    private GenericMapperService genericMapperService;
-
-    @Mock
-    private AddressFormatterService addressFormatterService;
-
-    @Mock
-    private DateFormatterService dateFormatterService;
-
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -75,12 +54,25 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    private CaveatData caveatData;
-    private CaseDetails caseDetails;
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
     Map<String, Registry> registries = new HashMap<>();
+    @InjectMocks
+    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
+    @Mock
+    private RegistriesProperties registriesPropertiesMock;
+    @Mock
+    private CaveatQueryService caveatQueryServiceMock;
+    @Mock
+    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+    @Mock
+    private GenericMapperService genericMapperService;
+    @Mock
+    private AddressFormatterService addressFormatterService;
+    @Mock
+    private DateFormatterService dateFormatterService;
+    private CaveatData caveatData;
+    private CaseDetails caseDetails;
 
     @Before
     public void setUp() {
@@ -91,8 +83,8 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
         registries = mapper.convertValue(registry, Map.class);
 
         CaseData caseData = CaseData.builder()
-                .registryLocation("leeds")
-                .build();
+            .registryLocation("leeds")
+            .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         caseDetails.setRegistryTelephone("123456789");
 
@@ -112,23 +104,24 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
         documentsGenerated.add(documentMember);
 
         caveatData = CaveatData.builder()
-                .registryLocation("leeds")
-                .applicationSubmittedDate(LocalDate.now())
-                .caveatorForenames("fred")
-                .caveatorSurname("jones")
-                .caseMatches(caseMatch)
-                .notificationsGenerated(notificationGenerated)
-                .bulkPrintId(bulkPrintId)
-                .documentsGenerated(documentsGenerated)
-                .caveatorAddress(ProbateAddress.builder().proAddressLine1("addressLine1").build())
-                .expiryDate(CAVEAT_EXPIRY_DATE)
-                .build();
+            .registryLocation("leeds")
+            .applicationSubmittedDate(LocalDate.now())
+            .caveatorForenames("fred")
+            .caveatorSurname("jones")
+            .caseMatches(caseMatch)
+            .notificationsGenerated(notificationGenerated)
+            .bulkPrintId(bulkPrintId)
+            .documentsGenerated(documentsGenerated)
+            .caveatorAddress(ProbateAddress.builder().proAddressLine1("addressLine1").build())
+            .expiryDate(CAVEAT_EXPIRY_DATE)
+            .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
         when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
         when(addressFormatterService.formatAddress(any())).thenReturn(PERSONALISATION_CAVEATOR_ADDRESS);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
-        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails))
+            .thenReturn(mapper.convertValue(caseDetails, Map.class));
 
     }
 
@@ -136,25 +129,28 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     public void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        Map<String, Object> placeholders = grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
+        Map<String, Object> placeholders =
+            grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
 
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
-                placeholders.get(PERSONALISATION_CASE_REFERENCE));
+            placeholders.get(PERSONALISATION_CASE_REFERENCE));
         assertEquals(generatedDateFormat.format(new Date()), placeholders.get(PERSONALISATION_GENERATED_DATE));
         assertEquals(registries.get(
-                caseDetails.getData().getRegistryLocation().toLowerCase()),
-                placeholders.get(PERSONALISATION_REGISTRY));
-        assertEquals("https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will",
-                placeholders.get(PERSONALISATION_PA8AURL));
+            caseDetails.getData().getRegistryLocation().toLowerCase()),
+            placeholders.get(PERSONALISATION_REGISTRY));
+        assertEquals(
+            "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov"
+                + ".uk/inherits-someone-dies-without-will",
+            placeholders.get(PERSONALISATION_PA8AURL));
         assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
-                placeholders.get(PERSONALISATION_PA8BURL));
+            placeholders.get(PERSONALISATION_PA8BURL));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
         assertEquals("caveatorAddress",
-                placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
+            placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
         assertEquals(PERSONALISATION_CAVEAT_EXPIRY_DATE,
-                placeholders.get("caveatExpiryDate"));
+            placeholders.get("caveatExpiryDate"));
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
-                placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
+            placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
     }
 }
 

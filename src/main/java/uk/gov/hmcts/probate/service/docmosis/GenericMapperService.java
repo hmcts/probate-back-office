@@ -92,7 +92,7 @@ public class GenericMapperService {
         Map<String, Object> mappedImages = new HashMap<>();
         for (Map.Entry entry : files.entrySet()) {
             mappedImages.put(entry.getKey().toString(),
-                    "image:base64:" + fileSystemResourceService.getFileFromResourceAsString(entry.getValue().toString()));
+                "image:base64:" + fileSystemResourceService.getFileFromResourceAsString(entry.getValue().toString()));
 
         }
         return mappedImages;

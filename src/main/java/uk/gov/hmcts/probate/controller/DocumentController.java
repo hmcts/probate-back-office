@@ -48,7 +48,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -62,6 +61,8 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 @RestController
 public class DocumentController {
 
+    private static final String DRAFT = "preview";
+    private static final String FINAL = "final";
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
     private final RegistryDetailsService registryDetailsService;
@@ -77,9 +78,6 @@ public class DocumentController {
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final ReprintService reprintService;
-    private static final String DRAFT = "preview";
-    private static final String FINAL = "final";
-
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
             return GRANT_ISSUED_INTESTACY;
@@ -89,8 +87,8 @@ public class DocumentController {
 
     @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> assembleLetter(
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult) {
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult) {
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
 
@@ -100,18 +98,19 @@ public class DocumentController {
 
     @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> previewLetter(
-            @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) {
 
         Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
 
-        CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
+        CallbackResponse response =
+            callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> generateLetter(
-            @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String letterId = null;
 
@@ -124,10 +123,11 @@ public class DocumentController {
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    letter, true);
+                letter, true);
         }
 
-        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
+        CallbackResponse response =
+            callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
 
         return ResponseEntity.ok(response);
     }
@@ -136,17 +136,18 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
         registryDetailsService.getRegistryDetails(callbackRequest.getCaseDetails());
-        Document document = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
+        Document document =
+            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
-            @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
@@ -155,19 +156,20 @@ public class DocumentController {
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
-                DocumentIssueType.GRANT);
+            DocumentIssueType.GRANT);
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
-                DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+            DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
+            SendLetterResponse response =
+                bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
-                    ? response.letterId.toString()
-                    : null;
+                ? response.letterId.toString()
+                : null;
             callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
 
             pdfSize = getPdfSize(caseData);
@@ -181,11 +183,14 @@ public class DocumentController {
         documents.add(coverSheet);
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            callbackResponse =
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
-                Document grantIssuedSentEmail = notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);
+                Document grantIssuedSentEmail =
+                    notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);
                 documents.add(grantIssuedSentEmail);
-                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+                callbackResponse =
+                    callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
             }
         } else {
             callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
@@ -206,38 +211,40 @@ public class DocumentController {
 
 
     @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
+    public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(
+        @RequestBody WillLodgementCallbackRequest callbackRequest) {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
         Registry registry = registriesProperties.getEnglish().get(LONDON);
         callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
-                registry.getAddressLine1(), registry.getAddressLine2(),
-                registry.getTown(), registry.getPostcode()));
+            registry.getAddressLine1(), registry.getAddressLine2(),
+            registry.getTown(), registry.getPostcode()));
 
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
 
-        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
+        return ResponseEntity
+            .ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }
 
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
         Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
-                Optional.of(DocumentIssueType.REISSUE));
+            Optional.of(DocumentIssueType.REISSUE));
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null));
     }
 
     @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        throws NotificationClientException {
 
         List<Document> documents = new ArrayList<>();
 
         Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL,
-                Optional.of(DocumentIssueType.REISSUE));
+            Optional.of(DocumentIssueType.REISSUE));
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(grantDocument);
@@ -248,7 +255,7 @@ public class DocumentController {
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
-                    grantDocument, true);
+                grantDocument, true);
         }
 
         String pdfSize = getPdfSize(caseData);
@@ -258,7 +265,7 @@ public class DocumentController {
         }
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                documents, letterId, pdfSize));
+            documents, letterId, pdfSize));
     }
 
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -266,14 +273,14 @@ public class DocumentController {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("Initiating call for SoT");
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
-                documentGeneratorService.generateSoT(callbackRequest)));
+            documentGeneratorService.generateSoT(callbackRequest)));
     }
-    
+
     @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> defaultReprintValues(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }
-    
+
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
