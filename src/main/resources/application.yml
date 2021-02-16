@@ -125,7 +125,7 @@ docmosis:
     welshAdmonWillGrantReissue:
       templateName: FL-PRB-GRP-WEL-00226.doc
 
-fee.api:
+fee.api:  
   url: http://localhost:4411
   api: /fees-register/fees/lookup
   service: probate

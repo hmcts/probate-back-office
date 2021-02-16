@@ -50,7 +50,8 @@ public class CreditAccountPaymentTransformer {
 
     private List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
         ArrayList<PaymentFee> paymentFees = new ArrayList<>();
-        PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(), BigDecimal.ONE);
+        PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
+            BigDecimal.ONE);
         paymentFees.add(applicationFee);
 
         if (caseData.getExtraCopiesOfGrant() > 0) {
@@ -59,7 +60,8 @@ public class CreditAccountPaymentTransformer {
             paymentFees.add(ukCopiesFee);
         }
         if (caseData.getOutsideUKGrantCopies() > 0) {
-            PaymentFee overseasCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
+            PaymentFee overseasCopiesFee =
+                paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
                 BigDecimal.valueOf(caseData.getOutsideUKGrantCopies()));
             paymentFees.add(overseasCopiesFee);
         }

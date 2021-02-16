@@ -58,7 +58,8 @@ public class CCDDataTransformerTest {
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String SELECTED_PBA_NUMBER = "PBA1234";
-    private static final DynamicList PBA_NUMBERS = DynamicList.builder().listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
+    private static final DynamicList PBA_NUMBERS = DynamicList.builder()
+        .listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -113,7 +114,8 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
-        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code(SELECTED_PBA_NUMBER).build()).build());
+        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code(SELECTED_PBA_NUMBER).build()).build());
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
@@ -249,6 +251,7 @@ public class CCDDataTransformerTest {
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }
+    
     @Test
     public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);

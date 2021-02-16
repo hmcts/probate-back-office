@@ -30,7 +30,8 @@ public class PaymentFeeBuilderTest {
 
     @Test
     public void shouldBuildPaymentFeeFromFeeResponse() {
-        FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.TEN).code("feeCode").description("feeDescription").version(
+        FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.TEN).code("feeCode").description(
+            "feeDescription").version(
             "feeVersion").build();
         BigDecimal volume = BigDecimal.valueOf(2);
         PaymentFee paymentFee = paymentFeeBuilder.buildPaymentFee(feeResponse, volume);

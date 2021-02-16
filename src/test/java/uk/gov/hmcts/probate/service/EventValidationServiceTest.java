@@ -4,15 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
-import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
-import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
@@ -60,7 +57,8 @@ public class EventValidationServiceTest {
     @Test
     public void shouldGatherPaymentValidationErrors() {
 
-        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(), FieldErrorResponse.builder().build());
+        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(), 
+            FieldErrorResponse.builder().build());
         when(creditAccountPaymentValidationRuleMock.validate(caseDetailsMock, paymentResponseMock)).thenReturn(errors);
         CallbackResponse fieldErrorResponses = eventValidationService
             .validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRuleMock);

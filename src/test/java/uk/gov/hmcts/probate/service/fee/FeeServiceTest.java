@@ -26,6 +26,12 @@ import static org.mockito.Mockito.when;
 
 public class FeeServiceTest {
 
+    @Mock
+    AppInsights appInsights;
+
+    @Mock
+    FeatureToggleService featureToggleService;
+
     @InjectMocks
     private FeeService feeService;
 
@@ -40,12 +46,6 @@ public class FeeServiceTest {
 
     @Mock
     private FeeServiceConfiguration feeServiceConfiguration;
-
-    @Mock
-    AppInsights appInsights;
-
-    @Mock
-    FeatureToggleService featureToggleService;
 
     @Before
     public void setUp() {
@@ -144,7 +144,7 @@ public class FeeServiceTest {
     public void getApplicationFeeWithOldKeywordGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
-        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         BigDecimal expectedFee = BigDecimal.valueOf(5001);
         when(feeResponse.getFeeAmount()).thenReturn(expectedFee);
@@ -160,7 +160,7 @@ public class FeeServiceTest {
     public void getApplicationFeeWithOldKeywordNotGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
-        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         BigDecimal mockedFeeAmtForAllFees = BigDecimal.valueOf(5000);
         when(feeResponse.getFeeAmount()).thenReturn(mockedFeeAmtForAllFees);

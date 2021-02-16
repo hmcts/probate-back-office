@@ -36,7 +36,8 @@ public class PaymentsService {
     @Value("${payment.api}")
     private String payApi;
 
-    public PaymentResponse getCreditAccountPaymentResponse(String authToken, CreditAccountPayment creditAccountPayment) {
+    public PaymentResponse getCreditAccountPaymentResponse(String authToken,
+                                                           CreditAccountPayment creditAccountPayment) {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
@@ -57,10 +58,10 @@ public class PaymentsService {
     private String getErrorMessage(HttpClientErrorException e) {
 
         String body = e.getResponseBodyAsString();
-        JSONObject json =  new JSONObject(body);
+        JSONObject json = new JSONObject(body);
         JSONArray jsonArray = json.getJSONArray("status_histories");
         String statusHistory = jsonArray.get(0).toString();
-        json =  new JSONObject(statusHistory);
+        json = new JSONObject(statusHistory);
         return json.getString("error_message");
     }
 
@@ -73,7 +74,7 @@ public class PaymentsService {
         headers.add("Content-Type", "application/json");
         String sa = authTokenGenerator.generate();
         headers.add("ServiceAuthorization", sa);
-        
+
         return new HttpEntity<>(creditAccountPayment, headers);
     }
 

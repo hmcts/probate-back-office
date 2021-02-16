@@ -64,7 +64,8 @@ public class CreditAccountPaymentTransformerTest {
     public void setup() {
         when(caseDetails.getId()).thenReturn(1234L);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().build()).build());
+        when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().build())
+            .build());
         when(caseData.getSolsSolicitorAppReference()).thenReturn("solsAppRef");
         when(caseData.getSolsSolicitorFirmName()).thenReturn("SolicitorFirmName");
         DynamicListItem item1 = DynamicListItem.builder().code("PBA1111").label("PBA1111Label").build();
@@ -74,9 +75,11 @@ public class CreditAccountPaymentTransformerTest {
         when(feesResponse.getApplicationFeeResponse()).thenReturn(feeResponseApplication);
         when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeResponseUK);
         when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeResponseOverseas);
-        when(paymentFeeBuilder.buildPaymentFee(feeResponseApplication, BigDecimal.ONE)).thenReturn(paymentFeeApplication);
+        when(paymentFeeBuilder.buildPaymentFee(feeResponseApplication, BigDecimal.ONE))
+            .thenReturn(paymentFeeApplication);
         when(paymentFeeBuilder.buildPaymentFee(feeResponseUK, BigDecimal.valueOf(1L))).thenReturn(paymentFeeUK);
-        when(paymentFeeBuilder.buildPaymentFee(feeResponseOverseas, BigDecimal.valueOf(2L))).thenReturn(paymentFeeOverseas);
+        when(paymentFeeBuilder.buildPaymentFee(feeResponseOverseas, BigDecimal.valueOf(2L)))
+            .thenReturn(paymentFeeOverseas);
     }
 
 
@@ -86,7 +89,8 @@ public class CreditAccountPaymentTransformerTest {
         when(caseData.getOutsideUKGrantCopies()).thenReturn(2L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(216.20));
 
-        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails, feesResponse);
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
+            feesResponse);
         assertStandardCreditAccountPayment(creditAccountPayment);
         assertEquals(BigDecimal.valueOf(216.20), creditAccountPayment.getAmount());
         assertEquals(3, creditAccountPayment.getFees().size());
@@ -101,7 +105,8 @@ public class CreditAccountPaymentTransformerTest {
         when(caseData.getOutsideUKGrantCopies()).thenReturn(0L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
 
-        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails, feesResponse);
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
+            feesResponse);
         assertStandardCreditAccountPayment(creditAccountPayment);
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(1, creditAccountPayment.getFees().size());
@@ -114,7 +119,8 @@ public class CreditAccountPaymentTransformerTest {
         when(caseData.getOutsideUKGrantCopies()).thenReturn(0L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
 
-        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails, feesResponse);
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
+            feesResponse);
         assertStandardCreditAccountPayment(creditAccountPayment);
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(2, creditAccountPayment.getFees().size());
@@ -128,7 +134,8 @@ public class CreditAccountPaymentTransformerTest {
         when(caseData.getOutsideUKGrantCopies()).thenReturn(2L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
 
-        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails, feesResponse);
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
+            feesResponse);
         assertStandardCreditAccountPayment(creditAccountPayment);
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(2, creditAccountPayment.getFees().size());

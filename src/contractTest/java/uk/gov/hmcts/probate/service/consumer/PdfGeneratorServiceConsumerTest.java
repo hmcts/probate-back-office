@@ -39,27 +39,21 @@ import static org.mockito.Mockito.when;
 public class PdfGeneratorServiceConsumerTest {
 
     private static final String HTML = ".html";
-
+    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+    private final String someServiceAuthToken = "someServiceAuthToken";
+    @Rule
+    public PactHttpsProviderRuleMk2 mockProvider =
+        new PactHttpsProviderRuleMk2("rpePdfService_PDFGenerationEndpointV2", "localhost", 4411, this);
     @Autowired
     PDFGeneratorService pdfGenerationService;
-
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     private PDFServiceConfiguration pdfServiceConfiguration;
-
     @Autowired
     private FileSystemResourceService fileSystemResourceService;
-
     @MockBean
     private AuthTokenGenerator serviceTokenGenerator;
-
-    private final String someServiceAuthToken = "someServiceAuthToken";
-    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
-
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpePdfService_PDFGenerationEndpointV2", "localhost", 4411, this);
 
     // TBD consumer 'Name'
     @Pact(provider = "rpePdfService_PDFGenerationEndpointV2", consumer = "probate_backOffice")
@@ -70,7 +64,9 @@ public class PdfGeneratorServiceConsumerTest {
             .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
             .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
-            .body(createJsonObject(buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(), createJsonObjectAsString("willLodgementPayload.json"))),
+            .body(createJsonObject(
+                buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(),
+                    createJsonObjectAsString("willLodgementPayload.json"))),
                 "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
             .willRespondWith()

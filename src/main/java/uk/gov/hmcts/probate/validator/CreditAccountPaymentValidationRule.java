@@ -29,7 +29,8 @@ public class CreditAccountPaymentValidationRule {
         if (!CREDIT_ACCOUNT_PAYMENT_SUCCESS.equalsIgnoreCase(paymentResponse.getStatus())) {
             String selectedPBA = caseDetails.getData().getSolsPBANumber().getValue().getLabel();
             String[] args = {caseDetails.getId().toString(), selectedPBA, paymentResponse.getStatus()};
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, CREDIT_ACCOUNT_PAYMENT_ERROR_RESOURCE, args));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                CREDIT_ACCOUNT_PAYMENT_ERROR_RESOURCE, args));
         }
 
         return new ArrayList<>(errors);

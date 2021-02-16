@@ -19,7 +19,9 @@ public class SolicitorPBADefaulter {
     @Autowired
     PBAValidationService pbaValidationService;
 
-    public void defaultFeeAccounts(CaseData data, ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder, String authToken) {
+    public void defaultFeeAccounts(CaseData data,
+                                   ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                   String authToken) {
         DynamicList pbas = getPBAAccounts(authToken);
         responseCaseDataBuilder.solsPBANumber(pbas);
         responseCaseDataBuilder.solsOrgHasPBAs(!pbas.getListItems().isEmpty() ? YES : NO);

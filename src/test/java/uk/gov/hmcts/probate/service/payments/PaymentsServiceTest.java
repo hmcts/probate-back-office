@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +41,7 @@ public class PaymentsServiceTest {
 
     @Mock
     private PaymentResponse paymentResponse;
-    
+
     @Mock
     private HttpClientErrorException httpClientErrorExceptionMock;
 
@@ -53,7 +52,8 @@ public class PaymentsServiceTest {
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.of(paymentResponse)));
 
-        PaymentResponse returnedPaymentResponse = paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN, creditAccountPayment);
+        PaymentResponse returnedPaymentResponse = paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN,
+            creditAccountPayment);
 
         assertEquals(paymentResponse, returnedPaymentResponse);
     }
@@ -73,11 +73,11 @@ public class PaymentsServiceTest {
 
     @Test(expected = BusinessValidationException.class)
     public void shouldFailOnAccountDeleted() {
-        String body = "{\"reference\":\"RC-1599-4778-4711-5958\",\"date_created\":\"2020-09-07T11:24:07.160+0000\"," +
-            "\"status\":\"failed\",\"payment_group_reference\":\"2020-1599477846961\"," +
-            "\"status_histories\":[{\"status\":\"failed\",\"error_code\":\"CA-E0004\",\"error_message\":\"Your " +
-            "account is deleted\",\"date_created\":\"2020-09-07T11:24:07.169+0000\"," +
-            "\"date_updated\":\"2020-09-07T11:24:07.169+0000\"}]}";
+        String body = "{\"reference\":\"RC-1599-4778-4711-5958\",\"date_created\":\"2020-09-07T11:24:07.160+0000\"," 
+            + "\"status\":\"failed\",\"payment_group_reference\":\"2020-1599477846961\","
+            + "\"status_histories\":[{\"status\":\"failed\",\"error_code\":\"CA-E0004\",\"error_message\":\"Your "
+            + "account is deleted\",\"date_created\":\"2020-09-07T11:24:07.169+0000\","
+            + "\"date_updated\":\"2020-09-07T11:24:07.169+0000\"}]}";
         when(httpClientErrorExceptionMock.getResponseBodyAsString()).thenReturn(body);
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);

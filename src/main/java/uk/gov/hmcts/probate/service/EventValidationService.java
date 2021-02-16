@@ -115,8 +115,10 @@ public class EventValidationService {
                 .build();
     }
 
-    public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse, CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
-        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule.validate(caseDetails, paymentResponse);
+    public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse, 
+            CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
+            .validate(caseDetails, paymentResponse);
         return CallbackResponse.builder()
             .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
             .build();

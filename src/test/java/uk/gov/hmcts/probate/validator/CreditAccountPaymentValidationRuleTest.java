@@ -18,7 +18,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 public class CreditAccountPaymentValidationRuleTest {
 
@@ -51,9 +50,11 @@ public class CreditAccountPaymentValidationRuleTest {
     @Test
     public void shouldReturnErrors() {
         when(paymentResponse.getStatus()).thenReturn("Failure");
-        when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code("PBAError").build()).build());
+        when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code(
+            "PBAError").build()).build());
         FieldErrorResponse error = FieldErrorResponse.builder().code("PBAError").build();
-        when(businessValidationMessageService.generateError(any(String.class), any(String.class), any(String[].class))).thenReturn(error);
+        when(businessValidationMessageService.generateError(any(String.class), any(String.class),
+            any(String[].class))).thenReturn(error);
 
         List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(caseDetails, paymentResponse);
         assertEquals(1, errors.size());

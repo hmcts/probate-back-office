@@ -105,18 +105,21 @@ public class NextStepsUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock, confirmationResponseServiceMock,
-            callbackResponseTransformerMock, objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, 
-            creditAccountPaymentTransformer, creditAccountPaymentValidationRule);
+        underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock, 
+            confirmationResponseServiceMock, callbackResponseTransformerMock, objectMapperMock, feeServiceMock, 
+            stateChangeServiceMock, paymentsService, creditAccountPaymentTransformer, 
+            creditAccountPaymentValidationRule);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+            .thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
             .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
         
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
-        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock)).thenReturn(paymentResponseMock);
+        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
+            .thenReturn(paymentResponseMock);
     }
 
     @Test
@@ -125,15 +128,18 @@ public class NextStepsUnitTest {
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
-        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+            .thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock))
+            .thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
-        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, 
+            creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
-                bindingResultMock, httpServletRequestMock);
+            bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
@@ -145,10 +151,12 @@ public class NextStepsUnitTest {
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
-        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock)).thenReturn(creditAccountPaymentMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+            .thenReturn(creditAccountPaymentMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Arrays.asList("error"));
-        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, 
+            creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
 
         ResponseEntity responseEntity = underTest.validate(AUTH, callbackRequestMock,
             bindingResultMock, httpServletRequestMock);
@@ -162,7 +170,7 @@ public class NextStepsUnitTest {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
 
         underTest.validate(AUTH, callbackRequestMock,
-                bindingResultMock, httpServletRequestMock);
+            bindingResultMock, httpServletRequestMock);
     }
 
     @Test(expected = BadRequestException.class)
@@ -173,7 +181,7 @@ public class NextStepsUnitTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
 
         underTest.validate(AUTH, callbackRequestMock,
-                bindingResultMock, httpServletRequestMock);
+            bindingResultMock, httpServletRequestMock);
     }
 
     @Test
@@ -181,11 +189,11 @@ public class NextStepsUnitTest {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
         when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
-                .thenReturn(callbackResponseMock);
+            .thenReturn(callbackResponseMock);
 
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
-                bindingResultMock, httpServletRequestMock);
+            bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
