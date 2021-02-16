@@ -15,13 +15,13 @@ module.exports = async function (crud, unique_deceased_user) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.25);
-        }  
+        }
         await I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }  
+        }
 
         await I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user);
 
@@ -52,7 +52,7 @@ module.exports = async function (crud, unique_deceased_user) {
                     // only valid for local dev where we need it to run as fast as poss to minimise
                     // lost dev time
                     await I.wait(0.25);
-                }                
+                }
                 await I.waitForVisible(locator);
                 await I.fillField(locator, createWillLodgementConfig[propName]);
                 idx += 1;
@@ -83,20 +83,20 @@ module.exports = async function (crud, unique_deceased_user) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.25);
-        }  
+        }
         await I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }  
+        }
 
         await I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }        
+        }
         await I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
 
         await I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig.page2_dateOfDeath_day_update);

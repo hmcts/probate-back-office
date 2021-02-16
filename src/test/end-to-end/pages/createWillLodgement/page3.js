@@ -28,13 +28,13 @@ module.exports = async function (crud) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }        
+        }
         await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }  
+        }
         await I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
         await I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
 
@@ -64,7 +64,7 @@ module.exports = async function (crud) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }  
+        }
         await I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
         await I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
 
@@ -90,13 +90,13 @@ module.exports = async function (crud) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.5);
-        }  
+        }
         await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.25);
-        }  
+        }
         await I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
         await I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
     }
