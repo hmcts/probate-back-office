@@ -48,13 +48,16 @@ public class CaseQueryService {
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
-    private static final String[] STATES_MATCH_GRANT_DELAYED = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
-        "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
+    private static final String[] STATES_MATCH_GRANT_DELAYED =
+        {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
+            "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String[] STATES_MATCH_GRANT_AWAITING_DOCUMENTATION = {"CasePrinted"};
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "data.grantDelayedNotificationSent";
-    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE = "data.grantAwaitingDocumentationNotificationDate";
-    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT = "data.grantAwaitingDocumentatioNotificationSent";
+    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE =
+        "data.grantAwaitingDocumentationNotificationDate";
+    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT =
+        "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
     private final RestTemplate restTemplate;
@@ -63,6 +66,11 @@ public class CaseQueryService {
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
+
+    private static <T> T nonNull(@Nullable T result) {
+        Assert.state(result != null, "Entity should be non null in CaseQueryService");
+        return result;
+    }
 
     public List<ReturnedCaseDetails> findCasesWithDatedDocument(String queryDate) {
         BoolQueryBuilder query = boolQuery();
@@ -87,7 +95,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
-        
+
         BoolQueryBuilder query = boolQuery();
         BoolQueryBuilder oredStateChecks = boolQuery();
 
@@ -95,7 +103,7 @@ public class CaseQueryService {
             oredStateChecks.should(new MatchQueryBuilder(STATE, stateToMatch));
         }
         oredStateChecks.minimumShouldMatch(1);
-        
+
         query.must(oredStateChecks);
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
@@ -136,7 +144,7 @@ public class CaseQueryService {
         HttpEntity<String> entity;
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
-            
+
         } catch (Exception e) {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
@@ -153,10 +161,10 @@ public class CaseQueryService {
             returnedCases = nonNull(restTemplate.postForObject(uri, entity, ReturnedCases.class));
             log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
-            log.error("CaseMatchingException on CaseQueryService, message="+e.getMessage());
+            log.error("CaseMatchingException on CaseQueryService, message=" + e.getMessage());
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
@@ -164,10 +172,5 @@ public class CaseQueryService {
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
-    }
-
-    private static <T> T nonNull(@Nullable T result) {
-        Assert.state(result != null, "Entity should be non null in CaseQueryService");
-        return result;
     }
 }
