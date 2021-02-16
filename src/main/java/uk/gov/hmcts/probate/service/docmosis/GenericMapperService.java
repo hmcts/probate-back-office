@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.model.LanguagePreference;
+
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class GenericMapperService {
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
 
         //logic to fill out registry details as above but retrieving welsh addresses
-        if(caseDetails.getLanguagePreferenceWelsh) {
+        if(LanguagePreference.WELSH.equals(caseDetails.getLanguagePreferenceWelsh)) {
             Registry registry_welsh = registriesProperties.getRegistryCountry().get('welsh').get(
                     caseData.getRegistryLocation().toLowerCase());
             Map<String, Object> registryPlaceholders_welsh = mapper.convertValue(registry_welsh, Map.class);
