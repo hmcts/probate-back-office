@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.HashMap;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -438,54 +440,32 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String response = transformCase("solicitorPayloadNotificationsExecutors.json", VALIDATE_PROBATE_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
-        String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
-        String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
-        String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
 
-        String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
-        String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
-        String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
-        String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
-        String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
-        String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
+        HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
+        assertEquals("exfn exln", executorNotApplying.get("notApplyingExecutorName"));
+        assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
+        assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 
-        final String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
-        final String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
-        final String addressLine1Exec2 =
-            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
-        final String addressLine2Exec2 =
-            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
-        final String addressLine3Exec2 =
-            jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
-        final String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
-        final String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
-        final String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
-        final String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+        HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
+        assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
+        assertEquals("addressline 1", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine1"));
+        assertEquals("addressline 2", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine2"));
+        assertEquals("addressline 3", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine3"));
+        assertEquals("posttown", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("PostTown"));
+        assertEquals("postcode", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("PostCode"));
+        assertEquals("country", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("Country"));
+        assertEquals("county", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("County"));
 
-        assertEquals("exfn exln", notApplyingName);
-        assertEquals("DiedBefore", notApplyingReason);
-        assertEquals("alias name", notApplyingAlias);
-
-        assertEquals("exfn1 exln1", applyingName);
-        assertEquals("addressline 1", addressLine1);
-        assertEquals("addressline 2", addressLine2);
-        assertEquals("addressline 3", addressLine3);
-        assertEquals("posttown", postTown);
-        assertEquals("postcode", postCode);
-        assertEquals("country", country);
-        assertEquals("county", county);
-
-        assertEquals("exfn2 exln2", applyingNameExec2);
-        assertEquals("Alias name exfn2", applyingAliasExec2);
-        assertEquals("addressline 1", addressLine1Exec2);
-        assertEquals("addressline 2", addressLine2Exec2);
-        assertEquals("addressline 3", addressLine3Exec2);
-        assertEquals("posttown", postTownExec2);
-        assertEquals("postcode", postCodeExec2);
-        assertEquals("country", countryExec2);
-        assertEquals("county", countyExec2);
+        HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
+        assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
+        assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
+        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine1"));
+        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine2"));
+        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine3"));
+        assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
+        assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
+        assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
+        assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
     }
 
     @Test
@@ -494,25 +474,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 VALIDATE_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
-        String forename = jsonPath.get("data.primaryApplicantForenames");
-        String surname = jsonPath.get("data.primaryApplicantSurname");
-        String email = jsonPath.get("data.primaryApplicantEmailAddress");
-        String address_line1 = jsonPath.get("data.primaryApplicantAddress.AddressLine1");
-        String alias = jsonPath.get("data.primaryApplicantAlias");
-        String hasAlias = jsonPath.get("data.primaryApplicantHasAlias");
-        String isApplying = jsonPath.get("data.primaryApplicantIsApplying");
-        String solsNotApplyingReason = jsonPath.get("data.solsSolicitorNotApplyingReason");
-        String notApplyingReason = jsonPath.get("data.solsPrimaryExecutorNotApplyingReason");
-
-        assertEquals("Solicitor_fn", forename);
-        assertEquals("Solicitor_ln", surname);
-        assertEquals("solicitor@probate-test.com", email);
-        assertEquals("SolAddLn1", address_line1);
-        assertNull(alias);
-        assertEquals("No", hasAlias);
-        assertEquals("Yes", isApplying);
-        assertNull(solsNotApplyingReason);
-        assertNull(notApplyingReason);
+        assertEquals("Solicitor_fn", jsonPath.get("data.primaryApplicantForenames"));
+        assertEquals("Solicitor_ln", jsonPath.get("data.primaryApplicantSurname"));
+        assertEquals("solicitor@probate-test.com", jsonPath.get("data.primaryApplicantEmailAddress"));
+        assertEquals("SolAddLn1", jsonPath.get("data.primaryApplicantAddress.AddressLine1"));
+        assertNull(jsonPath.get("data.primaryApplicantAlias"));
+        assertEquals("No", jsonPath.get("data.primaryApplicantHasAlias"));
+        assertEquals("Yes", jsonPath.get("data.primaryApplicantIsApplying"));
+        assertNull(jsonPath.get("data.solsSolicitorNotApplyingReason"));
+        assertNull(jsonPath.get("data.solsPrimaryExecutorNotApplyingReason"));
     }
 
     @Test

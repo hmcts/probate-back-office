@@ -1,9 +1,13 @@
 package uk.gov.hmcts.probate.util;
 
-import uk.gov.hmcts.probate.model.ccd.raw.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import static org.mockito.Mockito.mock;
 
@@ -95,9 +99,10 @@ public class CommonVariables {
                     .additionalExecAddress(EXEC_ADDRESS)
             .build());
 
-    public static final CollectionMember<AdditionalExecutorNotApplyingPowerReserved> DISPENSE_WITH_NOTICE_EXEC = new CollectionMember(EXEC_ID,
-            AdditionalExecutorNotApplyingPowerReserved.builder()
+    public static final CollectionMember<AdditionalExecutorNotApplyingPowerReserved> DISPENSE_WITH_NOTICE_EXEC =
+            new CollectionMember(EXEC_ID, AdditionalExecutorNotApplyingPowerReserved.builder()
                     .notApplyingExecutorName(EXEC_NAME).build());
+
     // added to prevent having a public constructor
     private CommonVariables() {
     }

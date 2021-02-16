@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,31 +75,36 @@ public class SolicitorExecutorService {
         return caseData.getAdditionalExecutorsApplying();
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(
+            CaseData caseData) {
         return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
-                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
+                                + " " + exec.getValue().getAdditionalExecLastname())
                         .build()))
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(
+            CaseData caseData) {
         return caseData.getOtherPartnersApplyingAsExecutors()
                 .stream()
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
-                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
+                                + " " + exec.getValue().getAdditionalExecLastname())
                         .build()))
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromDispenseWithNoticeExecutorsToNotApplyingExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
+            CaseData caseData) {
         return caseData.getDispenseWithNoticeOtherExecsList()
                 .stream()
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
@@ -107,7 +114,8 @@ public class SolicitorExecutorService {
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsAdditionalExecutorListToApplyingExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsAdditionalExecutorListToApplyingExecutors(
+            CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> exec.getValue().getAdditionalApplying().equals(YES))
@@ -115,18 +123,21 @@ public class SolicitorExecutorService {
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
-                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
+                                + " " + exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromSolsAdditionalExecutorListToNotApplyingExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorNotApplying>> mapFromSolsAdditionalExecsToNotApplyingExecutors(
+            CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> exec.getValue().getAdditionalApplying().equals(NO))
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorName(exec.getValue().getAdditionalExecForenames() + " " + exec.getValue().getAdditionalExecLastname())
+                        .notApplyingExecutorName(exec.getValue().getAdditionalExecForenames()
+                                + " " + exec.getValue().getAdditionalExecLastname())
                         .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
                         .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))

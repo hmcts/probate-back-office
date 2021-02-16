@@ -3,7 +3,10 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
@@ -77,8 +80,8 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-
-    public void otherExecutorExistsTransformation(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void otherExecutorExistsTransformation(
+            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
             builder.otherExecutorExists(YES);
         }
@@ -86,14 +89,13 @@ public class SolicitorExecutorTransformer {
 
     /**
      * Set caseworker executor fields with solicitor journey fields.
-     * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant fields
+     * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant
+     * fields
      * Solicitor executor fields are: additionalExecutorsTrustCorpList, otherPartnersApplyingAsExecutors,
      * dispenseWithNoticeOtherExecsList, solsAdditionalExecutorList, and solicitor information fields
-     * @param caseData
-     * @param builder
      */
-    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(CaseData caseData,
-                                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
+            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         // Initialise executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
@@ -130,7 +132,8 @@ public class SolicitorExecutorTransformer {
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
             // Add main solicitor executor list
-            execsApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
+            execsApplying.addAll(solicitorExecutorService
+                    .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
         }
 
     }
@@ -140,18 +143,20 @@ public class SolicitorExecutorTransformer {
 
         if (caseData.getDispenseWithNoticeOtherExecsList() != null) {
             // Add power reserved executors
-            execsNotApplying.addAll(solicitorExecutorService.mapFromDispenseWithNoticeExecutorsToNotApplyingExecutors(caseData));
+            execsNotApplying.addAll(solicitorExecutorService
+                    .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(caseData));
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
             // Add main solicitor executor list
-            execsNotApplying.addAll(solicitorExecutorService.mapFromSolsAdditionalExecutorListToNotApplyingExecutors(caseData));
+            execsNotApplying.addAll(solicitorExecutorService
+                    .mapFromSolsAdditionalExecsToNotApplyingExecutors(caseData));
         }
 
     }
 
-    private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo
-            (List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
+    private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo(
+            List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
         if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
@@ -169,14 +174,14 @@ public class SolicitorExecutorTransformer {
         return execsNotApplying;
     }
 
-    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
-                                                                CaseData caseData) {
+    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
         return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
                 && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
     }
 
-    private void mapExecutorToPrimaryApplicantFields(AdditionalExecutorApplying exec,
-                                                     ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    private void mapExecutorToPrimaryApplicantFields(
+            AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
                 .primaryApplicantSurname(exec.getApplyingExecutorLastName())
@@ -187,9 +192,13 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    private boolean isSolicitorExecutor(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsExec()); }
+    private boolean isSolicitorExecutor(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsExec());
+    }
 
-    private boolean isSolicitorApplying(CaseData caseData) { return YES.equals(caseData.getSolsSolicitorIsApplying()); }
+    private boolean isSolicitorApplying(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsApplying());
+    }
 
     private String getSolsSOTName(String firstNames, String surname) {
         StringBuilder sb = new StringBuilder();

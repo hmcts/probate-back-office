@@ -1234,7 +1234,8 @@ public class CallbackResponseTransformer {
         return sb.toString();
     }
 
-    public CaseCreationDetails<?> bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
+    public CaseCreationDetails<?> bulkScanGrantOfRepresentationCaseTransform(
+            GrantOfRepresentationData grantOfRepresentationData) {
 
         if (grantOfRepresentationData.getApplicationType() == null) {
             grantOfRepresentationData
