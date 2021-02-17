@@ -3028,14 +3028,14 @@ public class CallbackResponseTransformerTest {
     public void shouldDetermineWillsOnCase() {
         when(findWillsService.findWills(any())).thenReturn(Arrays.asList(Document.builder().build(), 
             Document.builder().build()));
-        CallbackResponse callbackResponse = underTest.transformCaseWillList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCaseForWillSelection(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getHasMultipleWills());
     }
 
     @Test
     public void shouldDetermineNoWillsOnCase() {
         when(findWillsService.findWills(any())).thenReturn(Collections.emptyList());
-        CallbackResponse callbackResponse = underTest.transformCaseWillList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCaseForWillSelection(callbackRequestMock);
         assertEquals("No", callbackResponse.getData().getHasMultipleWills());
     }
 

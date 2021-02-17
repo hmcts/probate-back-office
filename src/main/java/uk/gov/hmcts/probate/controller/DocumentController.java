@@ -51,7 +51,6 @@ import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -153,7 +152,7 @@ public class DocumentController {
         @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
         @RequestBody CallbackRequest callbackRequest) {
 
-        CallbackResponse callbackResponse = callbackResponseTransformer.transformCaseWillList(callbackRequest);
+        CallbackResponse callbackResponse = callbackResponseTransformer.transformCaseForWillSelection(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -176,12 +175,7 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
             DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
-        List<Document> willDocuments;
-        if (YES.equals(caseData.getHasMultipleWills())) {
-            willDocuments = findWillService.findSelectedWills(caseData);
-        } else {
-            willDocuments = findWillService.findWills(caseData);
-        }
+        List<Document> willDocuments = findWillService.findDefaultOrSelectedWills(caseData);
 
         log.info("number of willDocuments found on case: {}", willDocuments.size());
 

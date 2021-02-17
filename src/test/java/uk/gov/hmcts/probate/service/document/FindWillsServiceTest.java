@@ -305,7 +305,34 @@ public class FindWillsServiceTest {
     }
 
     @Test
-    public void shouldFindSelectedWills() {
+    public void shouldFindSelectedOrDefaultWill() {
+        ScannedDocument scan = ScannedDocument.builder()
+            .fileName("Scanned")
+            .type("other")
+            .subtype("will")
+            .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
+                .documentBinaryUrl("scanBinaryUrl").build())
+            .build();
+        CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
+        List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
+        scannedDocumentsList.add(collectionMemberScan);
+
+        List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
+
+        CaseData caseData = CaseData.builder()
+            .boDocumentsUploaded(uploadDocumentsList)
+            .scannedDocuments(scannedDocumentsList)
+            .caseType(DocumentCaseType.GOP.getCaseType())
+            .build();
+
+        List<Document> selectedWills = findWillService.findDefaultOrSelectedWills(caseData);
+        assertEquals(1, selectedWills.size());
+        assertEquals("Scanned", selectedWills.get(0).getDocumentFileName());
+
+    }
+
+    @Test
+    public void shouldFindSelectedOrDefaultWills() {
         UploadDocument will = UploadDocument.builder()
             .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
                 .documentBinaryUrl("uploadBinaryUrl").build())
@@ -370,7 +397,7 @@ public class FindWillsServiceTest {
             .willSelection(willSelection)
             .build();
 
-        List<Document> selectedWills = findWillService.findSelectedWills(caseData);
+        List<Document> selectedWills = findWillService.findDefaultOrSelectedWills(caseData);
         assertEquals(2, selectedWills.size());
         assertEquals("uploadFileName", selectedWills.get(0).getDocumentFileName());
         assertEquals("Scanned", selectedWills.get(1).getDocumentFileName());

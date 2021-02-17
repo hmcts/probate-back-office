@@ -484,16 +484,17 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseWillList(CallbackRequest callbackRequest) {
+    public CallbackResponse transformCaseForWillSelection(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), 
             doTransform);
         List<Document> wills = findWillService.findWills(callbackRequest.getCaseDetails().getData());
-        boolean moreThan1Will = wills.size() > 1;
-        responseCaseDataBuilder.hasMultipleWills(moreThan1Will ? YES : NO);
-        if (moreThan1Will) {
+        if (wills.size() > 1) {
+            responseCaseDataBuilder.hasMultipleWills(YES);
             List<CollectionMember<WillDocument>> willsCollection = orderWillsService.orderWillDocuments(wills);
             responseCaseDataBuilder.willSelection(willsCollection);
+        } else {
+            responseCaseDataBuilder.hasMultipleWills(NO);
         }
         return transformResponse(responseCaseDataBuilder.build());
     }

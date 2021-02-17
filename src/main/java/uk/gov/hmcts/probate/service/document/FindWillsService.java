@@ -23,6 +23,16 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @AllArgsConstructor
 public class FindWillsService {
 
+    public List<Document> findDefaultOrSelectedWills(CaseData caseData) {
+        List<Document> willDocuments;
+        if (YES.equals(caseData.getHasMultipleWills())) {
+            willDocuments = findSelectedWills(caseData);
+        } else {
+            willDocuments = findWills(caseData);
+        }
+        return willDocuments;
+    }
+
     public List<Document> findWills(CaseData caseData) {
         List<Document> wills = new ArrayList<>();
         if (!caseData.getCaseType().equals(DocumentCaseType.INTESTACY.getCaseType())) {
@@ -49,7 +59,7 @@ public class FindWillsService {
         return wills;
     }
 
-    public List<Document> findSelectedWills(CaseData caseData) {
+    private List<Document> findSelectedWills(CaseData caseData) {
         List<Document> documents = new ArrayList<>();
         for (CollectionMember<WillDocument> collectionMember : caseData.getWillSelection()) {
             if (isDocumentSelected(collectionMember.getValue())) {
@@ -103,4 +113,5 @@ public class FindWillsService {
             .documentFileName(scannedDocument.getFileName())
             .build();
     }
+
 }
