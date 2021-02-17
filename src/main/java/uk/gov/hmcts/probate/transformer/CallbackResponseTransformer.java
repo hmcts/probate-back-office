@@ -1057,7 +1057,6 @@ public class CallbackResponseTransformer {
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
 
         builder
-            .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
@@ -1070,7 +1069,9 @@ public class CallbackResponseTransformer {
             .ihtReferenceNumber(caseData.getIhtReferenceNumber())
             .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-            .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+            .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
+            .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder
