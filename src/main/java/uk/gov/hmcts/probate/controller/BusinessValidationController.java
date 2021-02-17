@@ -35,7 +35,10 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.*;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -140,13 +143,14 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> solsValidateExecutors (
+    public ResponseEntity<CallbackResponse> solsValidateExecutors(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, numberOfApplyingExecutorsValidationRule);
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                numberOfApplyingExecutorsValidationRule);
 
         return ResponseEntity.ok(response);
     }

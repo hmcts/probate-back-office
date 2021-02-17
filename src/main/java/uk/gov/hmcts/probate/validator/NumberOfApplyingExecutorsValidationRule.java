@@ -17,7 +17,8 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
+public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule,
+        CaseworkerAmendValidationRule {
 
     private static final String TOO_MANY_EXECUTORS = "tooManyExecutors";
     private static final int MAX_EXECUTORS = 4;

@@ -126,7 +126,7 @@ public class CCDDataTransformer {
                 .collect(Collectors.toList()));
         }
 
-        if (caseData.getAdditionalExecutorsTrustCorpList() != null ) {
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
             executors.addAll(caseData.getAdditionalExecutorsTrustCorpList().stream()
                 .map(CollectionMember::getValue)
                 .map(executor -> Executor.builder()
@@ -139,7 +139,7 @@ public class CCDDataTransformer {
                 .collect(Collectors.toList()));
         }
 
-        if (caseData.getOtherPartnersApplyingAsExecutors() != null ) {
+        if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
             executors.addAll(caseData.getOtherPartnersApplyingAsExecutors().stream()
                 .map(CollectionMember::getValue)
                 .map(executor -> Executor.builder()
