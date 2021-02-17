@@ -29,7 +29,6 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '1');
     let optText = '';
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
-    //   assert.equal('Will', optText);
     assert.equal(caseType == 'gor' ? 'Will' : 'Email', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '2');
