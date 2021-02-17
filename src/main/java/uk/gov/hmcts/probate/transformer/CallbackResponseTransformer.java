@@ -383,12 +383,9 @@ public class CallbackResponseTransformer {
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-            // 2 versions of same property need due to ccd data model limitations for FieldShowCondition
-            // on different pages
-            // Applications are always bew schema but when application becomes a case we retain a mix of schemas for
+            // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(SCHEMA_VERSION)
-            .schemaVersionCcdCopy(SCHEMA_VERSION)
             // set these next 2 properties as these properties are still used for in-flight cases on old schema /
             // bulk scan created cases and ccd has limited logic facilities
             .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())

@@ -18,9 +18,6 @@ import java.util.List;
 public class ResponseCaseDataParent {
 
     protected String schemaVersion;
-    // A second version of the same property, required due to ccd data model limitations
-    // for show/hide (FieldShowCondition)
-    protected String schemaVersionCcdCopy;
     protected DynamicList reprintDocument;
     protected String reprintNumberOfCopies;
     protected DynamicList solsAmendLegalStatmentSelect;
