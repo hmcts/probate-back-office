@@ -70,10 +70,10 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
         .join('-');
 
     const caseType = 'caveat';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseType, caseRef, deceasedDetailsTabConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseType, caseRef, caveatorDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     await I.seeCaseDetails(caseType, caseRef, caveatDetailsTabConfig, createCaveatConfig);
@@ -91,10 +91,10 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
     await I.emailCaveator(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when emailing the caveator.
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseType, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+    await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat not matched';
     await I.chooseNextStep(nextStepName);
@@ -104,41 +104,41 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
 
     nextStepName = 'Upload document';
     await I.chooseNextStep(nextStepName);
-    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.uploadDocument(caseType, caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Await caveat resolution';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting caveat resolution';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Warning requested';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Warning validation';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Issue caveat warning';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting warning response';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Request appearance';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Review appearance';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend caveat details';
     await I.chooseNextStep(nextStepName);
@@ -148,11 +148,11 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
     await I.enterEventSummary(caseRef, nextStepName);
 
     // Note that End State does not change when amending the caveat details.
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseType, caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseType, caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseType, caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
 
     nextStepName = 'Withdraw caveat';
     await I.chooseNextStep(nextStepName);
@@ -160,7 +160,7 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
     await I.enterEventSummary(caseRef, nextStepName);
 
     endState = 'Caveat closed';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     await I.click('#sign-out');
 

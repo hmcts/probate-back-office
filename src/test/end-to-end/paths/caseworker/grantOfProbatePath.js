@@ -78,19 +78,19 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
         .match(/.{4}/g)
         .join('-');
 
-    const caseType = 'gor';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, deceasedTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseType, caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseType, caseRef, copiesTabConfig, createGrantOfProbateConfig);
+    const caseType = 'gop';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';
     await I.chooseNextStep(nextStepName);
     await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case created';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
@@ -118,39 +118,39 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.enterGrantOfProbatePage8('update');
     await I.checkMyAnswers(nextStepName);
 
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseType, caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseType, caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Print the case';
     await I.chooseNextStep(nextStepName);
     await I.printCase(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting documentation';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Add Comment';
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload Documents';
     await I.chooseNextStep(nextStepName);
-    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.uploadDocument(caseType, caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseType, caseRef, documentUploadTabConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
     await I.chooseNextStep(nextStepName, 10);
     await I.markForExamination(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready for examination';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
     markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseType, caseRef, docNotificationsTabConfig, markForExaminationConfig);
+    await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
@@ -163,31 +163,31 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // case matching amended to remove all case matches to make test re-runnable
-    await I.seeCaseDetails(caseType, caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Examine case';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Examining';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Mark as ready to issue';
     await I.chooseNextStep(nextStepName);
     await I.markForIssue(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // case matching amended to remove all case matches to make test re-runnable
-    await I.seeCaseDetails(caseType, caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Issue grant';
     await I.chooseNextStep(nextStepName);
@@ -200,10 +200,10 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     // 
     //
 
-    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseType, caseRef, grantNotificationsTabConfig, issueGrantConfig);
-    await I.seeCaseDetails(caseType, caseRef, examChecklistTabConfig, markForIssueConfig);
+    await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
+    await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
 }).retry(testConfig.TestRetryScenarios);
