@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
+module.exports = async function (caseType, caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
 
     const I = this;
 

@@ -67,24 +67,25 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
         .match(/.{4}/g)
         .join('-');
 
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createWillLodgementConfig);
-    await I.seeCaseDetails(caseRef, testatorTabConfig, createWillLodgementConfig);
-    await I.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig);
+    const caseType = 'willLodgement';
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabConfig, createWillLodgementConfig);
+    await I.seeCaseDetails(caseType, caseRef, testatorTabConfig, createWillLodgementConfig);
+    await I.seeCaseDetails(caseType, caseRef, executorTabConfig, createWillLodgementConfig);
 
     nextStepName = 'Upload document';
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend will lodgement';
     await I.chooseNextStep(nextStepName);
@@ -93,19 +94,19 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.enterWillLodgementPage3('update');
     await I.checkMyAnswers(nextStepName);
     // Note that End State does not change when amending a Will Lodgement.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createWillLodgementConfig);
-    await I.seeCaseDetails(caseRef, testatorTabUpdateConfig, createWillLodgementConfig);
-    await I.seeCaseDetails(caseRef, executorTabUpdateConfig, createWillLodgementConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabUpdateConfig, createWillLodgementConfig);
+    await I.seeCaseDetails(caseType, caseRef, testatorTabUpdateConfig, createWillLodgementConfig);
+    await I.seeCaseDetails(caseType, caseRef, executorTabUpdateConfig, createWillLodgementConfig);
 
     nextStepName = 'Generate deposit receipt';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when generating a deposit receipt.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
     generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
+    await I.seeCaseDetails(caseType, caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend will lodgement';
@@ -118,16 +119,16 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Will lodged';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Withdraw will';
     await I.chooseNextStep(nextStepName);
     await I.selectWithdrawalReason(caseRef, withdrawWillConfig);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Will withdrawn';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
 
     await I.click('#sign-out');
 

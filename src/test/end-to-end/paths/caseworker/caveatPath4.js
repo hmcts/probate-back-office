@@ -66,66 +66,67 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
         .match(/.{4}/g)
         .join('-');
 
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
-    await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
+    const caseType = 'caveat';
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caseDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseType, caseRef, deceasedDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseType, caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
-    await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
+    await I.seeCaseDetails(caseType, caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, true, true);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat not matched';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload document';
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Withdraw caveat';
     await I.chooseNextStep(nextStepName);
     await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat closed';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat closed'
     await I.chooseNextStep(nextStepName);
     await I.emailCaveator(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when emailing the caveator.
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
-    await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+    await I.seeCaseDetails(caseType, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
     await I.chooseNextStep(nextStepName);
     await I.reopenCaveat(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat raised';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
+    await I.seeCaseDetails(caseType, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseType, caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
     await I.click('#sign-out');
 
