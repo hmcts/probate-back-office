@@ -25,7 +25,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.fillField(`${documentUploadConfig.id}_1_Comment`, documentUploadConfig.comment);
     await I.waitForVisible({css: `${documentUploadConfig.id}_1_DocumentType`});
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentUploadConfig.documentType);
-
+    
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '1');
     let optText = "";
     optText = await I.grabTextFrom ({ css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
