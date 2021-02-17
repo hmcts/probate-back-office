@@ -323,6 +323,7 @@ public class FindWillsServiceTest {
             .boDocumentsUploaded(uploadDocumentsList)
             .scannedDocuments(scannedDocumentsList)
             .caseType(DocumentCaseType.GOP.getCaseType())
+            .hasMultipleWills("No")
             .build();
 
         List<Document> selectedWills = findWillService.findDefaultOrSelectedWills(caseData);
@@ -395,6 +396,7 @@ public class FindWillsServiceTest {
             .scannedDocuments(scannedDocumentsList)
             .caseType(DocumentCaseType.GOP.getCaseType())
             .willSelection(willSelection)
+            .hasMultipleWills("Yes")
             .build();
 
         List<Document> selectedWills = findWillService.findDefaultOrSelectedWills(caseData);
