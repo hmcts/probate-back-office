@@ -339,7 +339,7 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistQ2;
     private final String boExaminationChecklistRequestQA;
     private final String applicationSubmittedDate;
-    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
     private final String caseType;
     private final String paperForm;
