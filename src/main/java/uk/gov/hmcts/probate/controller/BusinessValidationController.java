@@ -29,7 +29,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -269,7 +268,8 @@ public class BusinessValidationController {
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
 
-        CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("23452345234523456",
+        CollectionMember<ScannedDocument> scannedDocument =
+                new CollectionMember<>(new ScannedDocument("23452345234523456",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
