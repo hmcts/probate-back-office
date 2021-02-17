@@ -39,14 +39,14 @@ public class FindWillsService {
         List<Document> wills = new ArrayList<>();
         if (!caseData.getCaseType().equals(INTESTACY.getCaseType())) {
             Optional<List<CollectionMember<UploadDocument>>> optionalUploaded =
-                Optional.of(caseData.getBoDocumentsUploaded());
+                Optional.ofNullable(caseData.getBoDocumentsUploaded());
             for (CollectionMember<UploadDocument> document : optionalUploaded.orElse(emptyList())) {
                 if (isUploadedDocTypePermissible(document)) {
                     wills.add(buildUploadedDocument(document.getValue()));
                 }
             }
             Optional<List<CollectionMember<ScannedDocument>>> optionalScanned =
-                Optional.of(caseData.getScannedDocuments());
+                Optional.ofNullable(caseData.getScannedDocuments());
             for (CollectionMember<ScannedDocument> document : optionalScanned.orElse(emptyList())) {
                 if (isScannedDocTypePermissible(document)) {
                     wills.add(buildScannedDocument(document.getValue()));
