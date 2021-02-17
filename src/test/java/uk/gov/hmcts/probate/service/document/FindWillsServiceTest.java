@@ -88,6 +88,13 @@ public class FindWillsServiceTest {
             .comment("")
             .build();
         CollectionMember<UploadDocument> collectionMemberEmaill = new CollectionMember(email);
+        UploadDocument other = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadOtherFileName").documentUrl("uploadOtherUrl")
+                .documentBinaryUrl("uploadOtherBinaryUrl").build())
+            .documentType(DocumentType.OTHER)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberOther = new CollectionMember(other);
         UploadDocument codicil = UploadDocument.builder()
             .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
                 .documentBinaryUrl("uploadBinaryUrl").build())
@@ -98,6 +105,7 @@ public class FindWillsServiceTest {
         List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
         uploadDocumentsList.add(collectionMemberWill);
         uploadDocumentsList.add(collectionMemberEmaill);
+        uploadDocumentsList.add(collectionMemberOther);
         uploadDocumentsList.add(collectionMemberCodicil);
 
         ScannedDocument scan = ScannedDocument.builder()
@@ -136,6 +144,70 @@ public class FindWillsServiceTest {
             .build();
 
         List<Document> wills = findWillService.findWills(caseData);
+        assertEquals(4, wills.size());
+        assertEquals("uploadFileName", wills.get(0).getDocumentFileName());
+        assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("will", wills.get(0).getDocumentType().getTemplateName());
+        assertEquals("uploadOtherFileName", wills.get(1).getDocumentFileName());
+        assertEquals("uploadOtherUrl", wills.get(1).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadOtherBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("other", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals("uploadFileName", wills.get(2).getDocumentFileName());
+        assertEquals("uploadUrl", wills.get(2).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadBinaryUrl", wills.get(2).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("IHT", wills.get(2).getDocumentType().getTemplateName());
+        assertEquals("Scanned", wills.get(3).getDocumentFileName());
+        assertEquals("scanUrl", wills.get(3).getDocumentLink().getDocumentUrl());
+        assertEquals("scanBinaryUrl", wills.get(3).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("will", wills.get(3).getDocumentType().getTemplateName());
+    }
+
+    @Test
+    public void testSuccessfulFindWillForNonWillUploadAndNoScansForGOP() {
+        UploadDocument will = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
+            .documentType(DocumentType.WILL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberWill = new CollectionMember(will);
+        UploadDocument email = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
+            .documentType(DocumentType.EMAIL)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberEmaill = new CollectionMember(email);
+        UploadDocument other = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
+            .documentType(DocumentType.OTHER)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberOther = new CollectionMember(other);
+        UploadDocument codicil = UploadDocument.builder()
+            .documentLink(DocumentLink.builder().documentFilename("uploadFileName").documentUrl("uploadUrl")
+                .documentBinaryUrl("uploadBinaryUrl").build())
+            .documentType(DocumentType.IHT)
+            .comment("")
+            .build();
+        CollectionMember<UploadDocument> collectionMemberCodicil = new CollectionMember(codicil);
+        List<CollectionMember<UploadDocument>> uploadDocumentsList = new ArrayList<>();
+        uploadDocumentsList.add(collectionMemberWill);
+        uploadDocumentsList.add(collectionMemberEmaill);
+        uploadDocumentsList.add(collectionMemberOther);
+        uploadDocumentsList.add(collectionMemberCodicil);
+
+        List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
+
+        CaseData caseData = CaseData.builder()
+            .boDocumentsUploaded(uploadDocumentsList)
+            .scannedDocuments(scannedDocumentsList)
+            .caseType(DocumentCaseType.GOP.getCaseType())
+            .build();
+
+        List<Document> wills = findWillService.findWills(caseData);
         assertEquals(3, wills.size());
         assertEquals("uploadFileName", wills.get(0).getDocumentFileName());
         assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
@@ -144,11 +216,11 @@ public class FindWillsServiceTest {
         assertEquals("uploadFileName", wills.get(1).getDocumentFileName());
         assertEquals("uploadUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
-        assertEquals("IHT", wills.get(1).getDocumentType().getTemplateName());
-        assertEquals("Scanned", wills.get(2).getDocumentFileName());
-        assertEquals("scanUrl", wills.get(2).getDocumentLink().getDocumentUrl());
-        assertEquals("scanBinaryUrl", wills.get(2).getDocumentLink().getDocumentBinaryUrl());
-        assertEquals("will", wills.get(2).getDocumentType().getTemplateName());
+        assertEquals("other", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals("uploadFileName", wills.get(2).getDocumentFileName());
+        assertEquals("uploadUrl", wills.get(2).getDocumentLink().getDocumentUrl());
+        assertEquals("uploadBinaryUrl", wills.get(2).getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("IHT", wills.get(2).getDocumentType().getTemplateName());
     }
 
     @Test

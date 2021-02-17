@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.document;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -14,9 +13,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 
 @Service
 @Slf4j
@@ -35,22 +37,19 @@ public class FindWillsService {
 
     public List<Document> findWills(CaseData caseData) {
         List<Document> wills = new ArrayList<>();
-        if (!caseData.getCaseType().equals(DocumentCaseType.INTESTACY.getCaseType())) {
-            if (caseData.getBoDocumentsUploaded() != null) {
-                for (CollectionMember<UploadDocument> document : caseData.getBoDocumentsUploaded()) {
-                    if (document.getValue().getDocumentType() == DocumentType.WILL 
-                        || document.getValue().getDocumentType() == DocumentType.OTHER
-                        || document.getValue().getDocumentType() == DocumentType.IHT) {
-                        wills.add(buildUploadedDocument(document.getValue()));
-                    }
+        if (!caseData.getCaseType().equals(INTESTACY.getCaseType())) {
+            Optional<List<CollectionMember<UploadDocument>>> optionalUploaded =
+                Optional.of(caseData.getBoDocumentsUploaded());
+            for (CollectionMember<UploadDocument> document : optionalUploaded.orElse(emptyList())) {
+                if (isUploadedDocTypePermissible(document)) {
+                    wills.add(buildUploadedDocument(document.getValue()));
                 }
             }
-            if (caseData.getScannedDocuments() != null) {
-                for (CollectionMember<ScannedDocument> document : caseData.getScannedDocuments()) {
-                    if (DocumentType.OTHER.getTemplateName().equalsIgnoreCase(document.getValue().getType()) 
-                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
-                        wills.add(buildScannedDocument(document.getValue()));
-                    }
+            Optional<List<CollectionMember<ScannedDocument>>> optionalScanned =
+                Optional.of(caseData.getScannedDocuments());
+            for (CollectionMember<ScannedDocument> document : optionalScanned.orElse(emptyList())) {
+                if (isScannedDocTypePermissible(document)) {
+                    wills.add(buildScannedDocument(document.getValue()));
                 }
             }
 
@@ -59,18 +58,27 @@ public class FindWillsService {
         return wills;
     }
 
+    private boolean isUploadedDocTypePermissible(CollectionMember<UploadDocument> document) {
+        return (document.getValue().getDocumentType() == DocumentType.WILL
+            || document.getValue().getDocumentType() == DocumentType.OTHER
+            || document.getValue().getDocumentType() == DocumentType.IHT);
+
+    }
+
+    private boolean isScannedDocTypePermissible(CollectionMember<ScannedDocument> document) {
+        return (DocumentType.OTHER.getTemplateName().equalsIgnoreCase(document.getValue().getType())
+            && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype()));
+    }
+
     private List<Document> findSelectedWills(CaseData caseData) {
         List<Document> documents = new ArrayList<>();
         for (CollectionMember<WillDocument> collectionMember : caseData.getWillSelection()) {
             if (isDocumentSelected(collectionMember.getValue())) {
-                Document doc = findDocumentByBinaryURL(caseData, 
-                    collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl());
-                if (doc != null) {
-                    documents.add(doc);
-                }
+                documents.add(findDocumentByBinaryURL(caseData,
+                    collectionMember.getValue().getDocumentLink().getDocumentBinaryUrl()));
             }
         }
-       
+
         return documents;
     }
 
