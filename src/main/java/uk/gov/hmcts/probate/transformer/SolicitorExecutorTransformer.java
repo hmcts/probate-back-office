@@ -99,14 +99,14 @@ public class SolicitorExecutorTransformer {
 
         // Initialise executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
-                caseData.getAdditionalExecutorsApplying() == null ||
-                        caseData.getAdditionalExecutorsApplying().isEmpty() ?
-                        new ArrayList<>() : caseData.getAdditionalExecutorsApplying();
+                caseData.getAdditionalExecutorsApplying() == null
+                        || caseData.getAdditionalExecutorsApplying().isEmpty()
+                        ? new ArrayList<>() : caseData.getAdditionalExecutorsApplying();
 
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
-                caseData.getAdditionalExecutorsNotApplying() == null ||
-                        caseData.getAdditionalExecutorsNotApplying().isEmpty() ?
-                        new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
+                caseData.getAdditionalExecutorsNotApplying() == null
+                        || caseData.getAdditionalExecutorsNotApplying().isEmpty()
+                        ? new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
 
         // Populate executor lists
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);

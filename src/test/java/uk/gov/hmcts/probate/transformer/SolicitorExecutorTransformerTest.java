@@ -254,6 +254,24 @@ public class SolicitorExecutorTransformerTest {
     }
 
     @Test
+    public void shouldDefaultCaseworkerExecutorListsToExistingValues() {
+        caseDataBuilder
+                .additionalExecutorsApplying(additionalExecutorApplying)
+                .additionalExecutorsNotApplying(additionalExecutorNotApplying)
+                .primaryApplicantForenames(EXEC_FIRST_NAME);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
+                caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(additionalExecutorApplying,responseCaseData.getAdditionalExecutorsApplying());
+        assertEquals(additionalExecutorNotApplying,responseCaseData.getAdditionalExecutorsNotApplying());
+
+    }
+
+    @Test
     public void shouldSetCaseworkerExecutorListsAsEmpty() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(null)

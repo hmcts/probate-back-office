@@ -437,7 +437,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformSolicitorExecutorFields() {
-        String response = transformCase("solicitorPayloadNotificationsExecutors.json", VALIDATE_PROBATE_URL);
+        String response = transformCase("solicitorPayloadNotificationsExecutors.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
 
