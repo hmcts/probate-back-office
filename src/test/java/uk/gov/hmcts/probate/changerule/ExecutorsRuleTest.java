@@ -80,18 +80,16 @@ public class ExecutorsRuleTest {
 
     @Test
     public void shouldReturnFalseWhenMultipleExecutorListsAreNotEmpty() {
-        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
-        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
-
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors1Mock);
         when(additionalTrustCorpExecutors1Mock.getValue()).thenReturn(additionalTrustCorpExecutor1Mock);
-        additionalExecutorsList.add(additionalExecutors1Mock);
-        additionalExecutorsList.add(additionalExecutors1Mock);
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalTrustCorpExecutors1Mock);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutorsList);
         when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(additionalExecutorsTrustCorpList);
-
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(YES);
 
         assertFalse(undertest.isChangeNeeded(caseDataMock));
