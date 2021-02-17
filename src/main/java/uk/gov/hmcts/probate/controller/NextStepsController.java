@@ -86,18 +86,23 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
-            CreditAccountPayment creditAccountPayment =
-                creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
-            PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
-                creditAccountPayment);
-            CallbackResponse creditPaymentResponse =
-                eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
-                paymentResponse, creditAccountPaymentValidationRule);
-            if (creditPaymentResponse.getErrors().isEmpty()) {
+            if (feesResponse.getTotalAmount().doubleValue() > 0) {
+                CreditAccountPayment creditAccountPayment =
+                    creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
+                PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
+                    creditAccountPayment);
+                CallbackResponse creditPaymentResponse =
+                    eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
+                        paymentResponse, creditAccountPaymentValidationRule);
+                if (creditPaymentResponse.getErrors().isEmpty()) {
+                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                        feesResponse);
+                } else {
+                    callbackResponse = creditPaymentResponse;
+                }
+            } else {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                     feesResponse);
-            } else {
-                callbackResponse = creditPaymentResponse;
             }
         }
 

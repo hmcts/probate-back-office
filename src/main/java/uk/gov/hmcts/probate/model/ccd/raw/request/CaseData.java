@@ -287,7 +287,6 @@ public class CaseData extends CaseDataParent {
 
     private final Long outsideUKGrantCopies;
 
-    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
     private final String solsPaymentMethods;
 
     private final String solsFeeAccountNumber;

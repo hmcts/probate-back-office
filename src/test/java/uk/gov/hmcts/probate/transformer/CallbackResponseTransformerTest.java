@@ -412,6 +412,8 @@ public class CallbackResponseTransformerTest {
     @Mock
     private SolicitorPBADefaulter solicitorPBADefaulter;
     @Mock
+    private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    @Mock
     private PaymentResponse paymentResponseMock;
 
     @Before
@@ -2726,6 +2728,13 @@ public class CallbackResponseTransformerTest {
         verify(solicitorPBADefaulter).defaultFeeAccounts(any(CaseData.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class),
             any(String.class));
+    }
+
+    @Test
+    public void shouldCallSolsPBAPaymentsTransformer() {
+        underTest.transformCaseForSolicitorPBATotalPayment(callbackRequestMock);
+        verify(solicitorPBAPaymentDefaulter).defaultPageFlowForPayments(any(CaseData.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test

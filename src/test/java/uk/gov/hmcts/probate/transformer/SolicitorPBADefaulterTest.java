@@ -22,7 +22,7 @@ public class SolicitorPBADefaulterTest {
 
     @Mock
     private PBAValidationService pbaValidationService;
-    
+
     @Mock
     private CaseData caseDataMock;
 

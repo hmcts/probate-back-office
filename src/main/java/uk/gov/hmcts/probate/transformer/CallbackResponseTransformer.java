@@ -107,6 +107,7 @@ public class CallbackResponseTransformer {
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState) {
@@ -496,6 +497,16 @@ public class CallbackResponseTransformer {
             doTransform);
         solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
             authToken);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForSolicitorPBATotalPayment(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            doTransform);
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

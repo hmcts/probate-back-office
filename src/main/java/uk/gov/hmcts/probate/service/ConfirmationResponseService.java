@@ -55,6 +55,7 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
+    public static final String NO_PAYMENT_NEEDED = "No payment needed";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
@@ -235,12 +236,17 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
-        keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
+        if (ccdData.getFee().getPaymentMethod() != null) {
+            keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
+            keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
+        } else {
+            keyValue.put("{{paymentMethod}}", NO_PAYMENT_NEEDED);
+            keyValue.put("{{paymentReferenceNumber}}", NO_PAYMENT_NEEDED);
+        }
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
 
         String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";

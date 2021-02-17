@@ -527,6 +527,7 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -562,6 +563,7 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -598,6 +600,7 @@ public class ConfirmationResponseServiceTest {
         assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -620,6 +623,34 @@ public class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationWithNoPayment() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getFee().getPaymentMethod()).thenReturn(null);
+
+        when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(null);
+        when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getAmount()).thenReturn(BigDecimal.valueOf(0));
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
+        assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("No payment needed", nextStepsValues.get("{{paymentMethod}}"));
+        assertEquals("0.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {
@@ -631,11 +662,14 @@ public class ConfirmationResponseServiceTest {
         assertEquals("Lastname", nextStepsValues.get("{{deceasedLastname}}"));
         assertEquals("31/12/2000", nextStepsValues.get("{{deceasedDateOfDeath}}"));
         assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
-        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
-        assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
+    }
+
+    private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
+        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
+        assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {

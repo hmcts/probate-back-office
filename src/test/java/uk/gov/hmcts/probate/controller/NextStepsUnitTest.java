@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -130,6 +131,7 @@ public class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
             .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
             .transformForSolicitorComplete(callbackRequestMock, feesResponseMock))
             .thenReturn(callbackResponseMock);
@@ -146,6 +148,21 @@ public class NextStepsUnitTest {
     }
 
     @Test
+    public void shouldValidateWithNoFeeValueNoErrors() {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+            bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(callbackResponseMock));
+    }
+
+    @Test
     public void shouldValidateWithPaymentError() {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
@@ -153,6 +170,7 @@ public class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
             .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Arrays.asList("error"));
         when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock, 

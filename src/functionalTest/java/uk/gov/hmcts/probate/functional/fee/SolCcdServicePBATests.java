@@ -51,8 +51,14 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
 
     @Test
     public void shouldValidateDefaultPBAs() {
-        validatePostRequestSuccessForDefaultingPBAs("solicitorPDFPayloadProbate.json",
+        validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0022222\",\"label\":\"PBA0022222\"},{\"code\":\"PBA0011111\",\"label\":\"PBA0011111\"}");
+    }
+
+    @Test
+    public void shouldValidateDefaultPBAPayments() {
+        validatePostRequestSuccessForPBAs("/case/default-sols-payment", "solicitorPDFPayloadProbate.json",
+            "\"solsNeedsPBAPayment\": \"Yes\"");
     }
 
     private static void stubCreditAccountPayment(String response) {
@@ -63,13 +69,13 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
                 .withBody(response)));
     }
 
-    private void validatePostRequestSuccessForDefaultingPBAs(String fileName, String expectedValue) {
+    private void validatePostRequestSuccessForPBAs(String path, String fileName, String expectedValue) {
 
         String body = given().headers(utils.getHeadersWithSolicitorUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
-            .when().post("/case/default-sols-pba").getBody().asString();
+            .when().post(path).getBody().asString();
         assertThat(body, containsString(expectedValue));
     }
 }
