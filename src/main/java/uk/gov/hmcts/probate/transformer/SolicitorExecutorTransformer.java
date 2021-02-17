@@ -166,12 +166,12 @@ public class SolicitorExecutorTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (NO.equals(caseData.getSolsSolicitorIsExec()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
 
             // Add solicitor to not applying list
             execsNotApplying = solicitorExecutorService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
-        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorApplying(caseData)) {
+        } else if (isSolicitorApplying(caseData)) {
 
             // Remove solicitor from executor lists as they are primary applicant
             execsNotApplying = solicitorExecutorService.removeSolicitorFromNotApplyingList(execsNotApplying);

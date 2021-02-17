@@ -407,19 +407,21 @@ public class SolicitorExecutorTransformerTest {
     }
 
     @Test
-    public void shouldRemoveSolicitorInfoFromCaseworkerNotApplying_NotExec() {
+    public void shouldSetCaseworkerNotApplyingWithSolicitorInfo_NotExec() {
         caseDataBuilder
                 .solsSolicitorIsExec(NO);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorServiceMock.addSolicitorToNotApplyingList(
+                caseDetailsMock.getData(), new ArrayList<>())).thenReturn(additionalExecutorNotApplying);
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
                 caseDetailsMock.getData(), responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        assertTrue(responseCaseData.getAdditionalExecutorsNotApplying().isEmpty());
+        assertEquals(additionalExecutorNotApplying, responseCaseData.getAdditionalExecutorsNotApplying());
         verify(solicitorExecutorServiceMock, times(1))
-                .removeSolicitorFromNotApplyingList(any());
+                .addSolicitorToNotApplyingList(any(), any());
     }
 
 
