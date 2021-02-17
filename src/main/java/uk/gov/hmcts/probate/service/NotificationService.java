@@ -220,7 +220,8 @@ public class NotificationService {
             .getProbateSotDocumentsGenerated()
             .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
 
-        Registry registry = registriesProperties.getEnglish().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish()
+                .get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
             caseDetails.getData().getRegistryLocation(),
@@ -279,21 +280,28 @@ public class NotificationService {
         return sendGrantNotificationEmail(caseDetails, templateId);
     }
 
-    private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId) throws NotificationClientException {
+    private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId)
+            throws NotificationClientException {
  
-        Registry registry = registriesProperties.getEnglish().get(caseDetails.getData().getRegistryLocation().toLowerCase());
-        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        Registry registry = registriesProperties.getEnglish()
+                .get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
-        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        SendEmailResponse response =
+                notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
-        String defaultRegistryLocation = (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getEnglish().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
+        String defaultRegistryLocation =
+                (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ?
+                        RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+        return registriesProperties.getEnglish()
+                .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,

@@ -17,5 +17,5 @@ import java.util.Map;
 public class RegistriesProperties {
 
     private Map<String, Registry> english = new HashMap();
-    private Map<String, Registry> welsh = new HashMap(); //call registry properties with key being either english or welsh
+    private Map<String, Registry> welsh = new HashMap(); //call registry properties with key being english or welsh
 }
