@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -29,10 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.service.BulkPrintService;
-import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
-import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.*;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -101,6 +99,9 @@ public class DocumentControllerTest {
 
     @Mock
     private SendLetterResponse sendLetterResponseMock;
+
+    @MockBean
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
