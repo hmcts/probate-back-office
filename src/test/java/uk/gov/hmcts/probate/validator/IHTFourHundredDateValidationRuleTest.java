@@ -17,19 +17,18 @@ import java.time.LocalDate;
 @RunWith(MockitoJUnitRunner.class)
 public class IHTFourHundredDateValidationRuleTest {
 
+    private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
+    private static final Long CASE_ID = 12345678987654321L;
+    private final LocalDate validDate = IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 20);
+    private final LocalDate invalidDateAfter20DaysBeforeToday =
+        IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 10);
+    private final LocalDate invalidDateInFuture = LocalDate.now().plusDays(5);
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
-
     private CaseData caseDataWithValidDate;
     private CaseData caseDataWithInvalidDate20DaysBeforeToday;
     private CaseData caseDataWithInvalidDateInFuture;
     private IHTFourHundredDateValidationRule underTest;
-    private final LocalDate validDate = LocalDate.now().minusDays(20);
-    private final LocalDate invalidDateAfter20DaysBeforeToday = LocalDate.now().minusDays(10);
-    private final LocalDate invalidDateInFuture = LocalDate.now().plusDays(5);
-
-    private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
-    private static final Long CASE_ID = 12345678987654321L;
 
     @Before
     public void setUp() {
@@ -37,8 +36,8 @@ public class IHTFourHundredDateValidationRuleTest {
         underTest = new IHTFourHundredDateValidationRule(businessValidationMessageRetriever);
         caseDataWithValidDate = CaseData.builder().solsIHT400Date(validDate).build();
         caseDataWithInvalidDate20DaysBeforeToday = CaseData.builder()
-                .solsIHT400Date(invalidDateAfter20DaysBeforeToday)
-                .build();
+            .solsIHT400Date(invalidDateAfter20DaysBeforeToday)
+            .build();
         caseDataWithInvalidDateInFuture = CaseData.builder().solsIHT400Date(invalidDateInFuture).build();
     }
 
@@ -54,9 +53,9 @@ public class IHTFourHundredDateValidationRuleTest {
         Assertions.assertThatThrownBy(() -> {
             underTest.validate(caseDetails);
         })
-                .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("Case ID 12345678987654321: IHT400421 date (" + invalidDateAfter20DaysBeforeToday
-                        + ") needs to be before 20 days before current date (" + validDate + ")");
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("Case ID 12345678987654321: IHT400421 date (" + invalidDateAfter20DaysBeforeToday
+                + ") needs to be before 20 working days before current date");
     }
 
     @Test
@@ -65,8 +64,8 @@ public class IHTFourHundredDateValidationRuleTest {
         Assertions.assertThatThrownBy(() -> {
             underTest.validate(caseDetails);
         })
-                .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("Case ID 12345678987654321: IHT400421 date ("
-                        + invalidDateInFuture + ") needs to be in the past");
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("Case ID 12345678987654321: IHT400421 date ("
+                + invalidDateInFuture + ") needs to be in the past");
     }
 }
