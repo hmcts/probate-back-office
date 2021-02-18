@@ -123,7 +123,8 @@ public class PreviewLetterServiceTest {
         caseDetails.setRegistryTelephone("123456789");
 
         when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
-        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails))
+                .thenReturn(mapper.convertValue(caseDetails, Map.class));
 
 
     }
