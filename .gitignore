@@ -34,4 +34,3 @@ node_modules/\.bin/
 node_modules/
 
 src/test/end-to-end/functional-output/
-/src/main/generated/

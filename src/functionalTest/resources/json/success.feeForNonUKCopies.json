@@ -18,17 +18,21 @@
       "solsPaymentMethods": "fee account",
       "solsPBANumber": {
         "value": {
-          "code": "PBA0082848",
-          "label": "PBA0082848"
+          "code": "PBA0082126",
+          "label": "PBA0082126"
         },
         "list_items": [
           {
-            "code": "PBA0082848",
-            "label": "PBA0082848"
+            "code": "PBA0082126",
+            "label": "PBA0082126"
           },
           {
-            "code": "PBA0087535999",
-            "label": "PBA0087535999"
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          },
+          {
+            "code": "PBA0083374",
+            "label": "PBA0083374"
           }
         ]
       },
