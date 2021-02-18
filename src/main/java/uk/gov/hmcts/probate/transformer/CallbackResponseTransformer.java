@@ -512,9 +512,13 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        
+
+        final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
+
         return transformResponse(responseCaseDataBuilder
-                .build());
+            .schemaVersion(paperForm.equals("Yes") ? null : SCHEMA_VERSION)
+            .build()
+        );
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {

@@ -201,8 +201,22 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersion() {
+    public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormYes() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormNo() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
