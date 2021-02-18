@@ -55,5 +55,7 @@ public class ResponseCaseDataParent {
     protected final String solsSolicitorWillSignSOT;
     protected final String soleTraderOrLimitedCompany;
     protected final String whoSharesInCompanyProfits;
+    protected final String solsIdentifiedApplyingExecs;
+    protected final String solsIdentifiedNotApplyingExecs;
 
 }

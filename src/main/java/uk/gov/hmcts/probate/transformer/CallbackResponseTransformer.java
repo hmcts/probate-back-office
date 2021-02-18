@@ -199,7 +199,6 @@ public class CallbackResponseTransformer {
 
     }
 
-
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
                                          String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -392,6 +391,16 @@ public class CallbackResponseTransformer {
             .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {

@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,6 +75,23 @@ public class SolicitorExecutorService {
         // Return list
         return caseData.getAdditionalExecutorsApplying();
     }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutorName(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
+                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
+                .build());
+    }
+
+//    public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutorName(
+//            CaseData caseData) {
+//        // Create not applying executor collection member containing primary applicant names
+//        return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
+//                .notApplyingExecutorName(caseData.getPrimaryApplicantFullName())
+//                .build());
+//    }
 
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(
             CaseData caseData) {
