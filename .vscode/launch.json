@@ -99,12 +99,24 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },
+        },            
         {
-            "name": "Mocha test end-end Solicitor applyCaveat",
+            "name": "Mocha test end-end Solicitor create GOP, Caseworker amend",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-applyCaveat",
+                "test-e2e-gop-sol-create-cw-amend",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },                
+        {
+            "name": "Mocha test end-end Solicitor grantOfProbate",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbate",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -113,10 +125,10 @@
             "type": "pwa-node"
         }, 
         {
-            "name": "Mocha test end-end Solicitor grantOfProbate",
+            "name": "Mocha test end-end Solicitor applyCaveat",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-grantOfProbate",
+                "test-e2e-sol-applyCaveat",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

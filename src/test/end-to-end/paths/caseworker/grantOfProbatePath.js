@@ -82,7 +82,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
-    await I.dontSeeCaseDetails('caseDetailsTab', caseDetailsTabConfig.fieldsNotPresent);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
 
@@ -122,7 +122,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
-    await I.dontSeeCaseDetails('caseDetailsTab', caseDetailsUpdateTabConfig.fieldsNotPresent);
+    await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Print the case';

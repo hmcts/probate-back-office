@@ -49,5 +49,9 @@
     "dataKeys": [
       "page2_maritalstatus_display"
     ]
-  }
+  },
+  "fieldsNotPresent": [
+    "Please state the grounds for making this application and any information in support:",
+    "Version of schema applicable for this case"
+  ]  
 }

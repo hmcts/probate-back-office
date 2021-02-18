@@ -1,5 +1,8 @@
 'use strict';
 
+// As per ExUi Solicitor test applyGrantOfProbateSingleExecutor.js but runs in ccd as needs
+// to sign out then log back in as a caseworker to amend details
+
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -65,7 +68,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2(true);
+    await I.grantOfProbatePage2();
     await I.grantOfProbatePage3();
     await I.grantOfProbatePage4(isSolicitorApplyingExecutor);
     await I.grantOfProbatePage5();

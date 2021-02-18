@@ -4,12 +4,14 @@ const grantOfProbateConfig = require('./grantOfProbate');
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function () {
+module.exports = async function (verifyTrustCorpOpts) {
     const I = this;
     await I.waitForClickable({css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`});
     await I.runAccessibilityTest();
     await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
-    await I.verifyTitleAndClearingTypeOptions();
+    if (verifyTrustCorpOpts) {
+        await I.verifyTitleAndClearingTypeOptions();
+    }
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
