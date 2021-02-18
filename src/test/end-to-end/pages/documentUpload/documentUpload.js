@@ -32,28 +32,31 @@ module.exports = async function (caseType, caseRef, documentUploadConfig) {
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentType);
 
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
-    assert.strictEqual(caseType === 'gop' ? 'Will' : 'Email', optText);
+    assert.equal(caseType === 'gop' ? 'Will' : 'Email', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '3');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(3)`});
-    assert.strictEqual(caseType === 'gop' ? 'Email' : 'Correspondence', optText);
+    assert.equal(caseType === 'gop' ? 'Email' : 'Correspondence', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '4');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(4)`});
-    assert.strictEqual(caseType === 'gop' ? 'Correspondence' : 'Codicil', optText);
+    assert.equal(caseType === 'gop' ? 'Correspondence' : 'Codicil', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '5');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(5)`});
-    assert.strictEqual(caseType === 'gop' ? 'Codicil' : 'Death Certificate', optText);
+    assert.equal(caseType === 'gop' ? 'Codicil' : 'Death Certificate', optText);
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '6');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(6)`});
-    assert.strictEqual(caseType === 'gop' ? 'Death Certificate' : 'Other', optText);
-
     if (caseType === 'gop') {
+        assert.equal('Death Certificate', optText);
+    }
+    assert.equal(caseType === 'willLodgement' ? 'Other' : 'Warning', optText);//change
+
+    if (caseType === 'gop' || caseType === 'caveat') {
         await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '7');
         optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
-        assert.strictEqual('Other', optText);
+        assert.equal('Other', optText);
     }
 
     await I.waitForVisible({css: `${documentUploadConfig.id}_1_DocumentLink`});
