@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -23,26 +22,6 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    @Override
-    public void validate(CaseDetails caseDetails) {
-        LocalDate iht400Date = caseDetails.getData().getSolsIHT400Date();
-        String[] args = {caseDetails.getData().convertDate(addBusinessDays(iht400Date, 20))};
-        String userMessage;
-
-        if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 0) {
-            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
-        }
-
-        if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 20) {
-            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
-                    + " needs to be before 20 working days before current date");
-        }
-    }
-
     public static long countBusinessDaysBetween(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Invalid method argument(s) to countBusinessDaysBetween(" + startDate
@@ -62,10 +41,9 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
     }
 
     public static LocalDate addBusinessDays(LocalDate localDate, int days) {
-        if(localDate == null || days <= 0)
-        {
+        if (localDate == null || days <= 0) {
             throw new IllegalArgumentException("Invalid method argument(s) "
-                + "to addBusinessDays("+localDate+","+days+")");
+                + "to addBusinessDays(" + localDate + "," + days + ")");
         }
         Predicate<LocalDate> isWeekend = date
             -> date.getDayOfWeek() == DayOfWeek.SATURDAY
@@ -82,10 +60,9 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
     }
 
     public static LocalDate minusBusinessDays(LocalDate localDate, int days) {
-        if(localDate == null || days <= 0)
-        {
+        if (localDate == null || days <= 0) {
             throw new IllegalArgumentException("Invalid method argument(s) "
-                + "to addBusinessDays("+localDate+","+days+")");
+                + "to addBusinessDays(" + localDate + "," + days + ")");
         }
         Predicate<LocalDate> isWeekend = date
             -> date.getDayOfWeek() == DayOfWeek.SATURDAY
@@ -99,5 +76,25 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
             }
         }
         return result;
+    }
+
+    @Override
+    public void validate(CaseDetails caseDetails) {
+        LocalDate iht400Date = caseDetails.getData().getSolsIHT400Date();
+        String[] args = {caseDetails.getData().convertDate(addBusinessDays(iht400Date, 20))};
+        String userMessage;
+
+        if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 0) {
+            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
+        }
+
+        if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 20) {
+            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
+                    + " needs to be before 20 working days before current date");
+        }
     }
 }
