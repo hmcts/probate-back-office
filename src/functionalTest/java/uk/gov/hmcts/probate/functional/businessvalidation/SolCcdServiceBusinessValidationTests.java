@@ -584,6 +584,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname");
         final String additionalExecAddressLine1 =
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1");
+        String soleTraderOrLimitedCompany = jsonPath.get("data.soleTraderOrLimitedCompany");
+        String whoSharesInCompanyProfits = jsonPath.get("data.whoSharesInCompanyProfits");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("No", dispenseWithNoticeLeaveGiven);
@@ -595,6 +597,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Exec forename", additionalExecForename);
         assertEquals("Exec lastname", additionalExecLastname);
         assertEquals("Address line 1", additionalExecAddressLine1);
+        assertEquals("No", soleTraderOrLimitedCompany);
+        assertEquals("Partners", whoSharesInCompanyProfits);
     }
 
     private String transformCase(String jsonFileName, String path) {
