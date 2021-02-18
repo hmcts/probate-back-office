@@ -22,6 +22,7 @@
           }
         ]
       },
+      "solsPBAPaymentReference": "appref-PAY1",
       "solsSolicitorFirmName": "Firm Name",
       "solsSolicitorAddress": {
         "AddressLine1": "Test Road",

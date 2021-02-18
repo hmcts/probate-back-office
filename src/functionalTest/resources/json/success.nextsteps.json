@@ -111,6 +111,7 @@
           }
         ]
       },
+      "solsPBAPaymentReference": "appref-PAY1",
       "extraCopiesOfGrant":1,
       "ihtNetValue": "90009",
       "deceasedSurname": "deceasedLastName",

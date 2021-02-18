@@ -407,10 +407,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertNull(errors);
         assertNotNull(solsPBANumbers);
         List<HashMap> listItems = ((List<HashMap>)solsPBANumbers.get("list_items"));
-        assertEquals(2, ((List)solsPBANumbers.get("list_items")).size());
-        String allPBAs = listItems.get(0).get("code") + "," + listItems.get(1).get("code");
-        assertThat(allPBAs, containsString("PBA0022222"));
-        assertThat(allPBAs, containsString("PBA0011111"));
+        assertEquals(3, ((List)solsPBANumbers.get("list_items")).size());
+        String allPBAs = listItems.get(0).get("code") + "," + listItems.get(1).get("code")
+            + "," + listItems.get(2).get("code");
+        assertThat(allPBAs, containsString("PBA0082126"));
+        assertThat(allPBAs, containsString("PBA0083372"));
+        assertThat(allPBAs, containsString("PBA0083374"));
     }
 
     @Test
