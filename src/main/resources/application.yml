@@ -137,6 +137,7 @@ fee.api:
   newCopiesFeeKeyword: GrantWill
   newIssuesFee5kKeyword: SAL5K
   newIssuesFeeKeyword: SA
+  newCaveat: Caveat
   ihtMinAmt: 5000.00
 
 markdown.templatesDirectory: templates/markdown/

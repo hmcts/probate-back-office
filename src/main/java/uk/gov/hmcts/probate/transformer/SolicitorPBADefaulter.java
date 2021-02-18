@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -22,6 +24,15 @@ public class SolicitorPBADefaulter {
     public void defaultFeeAccounts(CaseData data,
                                    ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                    String authToken) {
+        DynamicList pbas = getPBAAccounts(authToken);
+        responseCaseDataBuilder.solsPBANumber(pbas);
+        responseCaseDataBuilder.solsOrgHasPBAs(!pbas.getListItems().isEmpty() ? YES : NO);
+        responseCaseDataBuilder.solsPBAPaymentReference(data.getSolsSolicitorAppReference());
+    }
+
+    public void defaultCaveatFeeAccounts(CaveatData data,
+                                         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder,
+                                         String authToken) {
         DynamicList pbas = getPBAAccounts(authToken);
         responseCaseDataBuilder.solsPBANumber(pbas);
         responseCaseDataBuilder.solsOrgHasPBAs(!pbas.getListItems().isEmpty() ? YES : NO);

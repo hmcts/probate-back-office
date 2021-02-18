@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -84,6 +85,11 @@ public class CaveatData {
     private String solsFeeAccountNumber;
     @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
     private String solsPaymentMethods;
+    private DynamicList solsPBANumber;
+    private String solsPBAPaymentReference;
+    private String solsOrgHasPBAs;
+    private String solsNeedsPBAPayment;
+    
     private String caveatRaisedEmailNotificationRequested;
     private String sendToBulkPrintRequested;
 

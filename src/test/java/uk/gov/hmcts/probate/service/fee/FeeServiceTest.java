@@ -200,4 +200,16 @@ public class FeeServiceTest {
         when(responseEntity.getBody()).thenReturn(null);
         feeService.getCopiesFeeResponse(1L);
     }
+
+    @Test
+    public void caveatFeeShouldReturnPositiveValue() {
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+
+        FeeResponse issueFee = feeService.getCaveatFeesData();
+
+        assertEquals(BigDecimal.ONE, issueFee.getFeeAmount());
+    }
+
+
 }

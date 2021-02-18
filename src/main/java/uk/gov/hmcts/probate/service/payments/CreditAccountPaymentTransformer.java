@@ -3,8 +3,11 @@ package uk.gov.hmcts.probate.service.payments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentFee;
@@ -16,6 +19,7 @@ import java.util.List;
 @Component
 public class CreditAccountPaymentTransformer {
     private static final String PROBATE_SOLICITOR_PAYMENT_DESCRIPTION = "Probate Solicitor payment";
+    private static final String PROBATE_SOLICITOR_CAVEAT_PAYMENT_DESCRIPTION = "Probate Caveat Solicitor payment";
 
     @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
@@ -48,6 +52,25 @@ public class CreditAccountPaymentTransformer {
     }
 
 
+    public CreditAccountPayment transform(CaveatDetails caveatDetails, FeeResponse feeResponse) {
+        List<PaymentFee> paymentFees = buildCaveatFees(feeResponse);
+        CaveatData caveatData = caveatDetails.getData();
+        return CreditAccountPayment.builder()
+            .accountNumber(caveatData.getSolsPBANumber().getValue().getCode())
+            .fees(paymentFees)
+            .caseReference(caveatData.getSolsSolicitorAppReference())
+            .amount(feeResponse.getFeeAmount())
+            .ccdCaseNumber(caveatDetails.getId().toString())
+            .currency(currency)
+            .description(PROBATE_SOLICITOR_CAVEAT_PAYMENT_DESCRIPTION)
+            .organisationName(caveatData.getSolsSolicitorFirmName())
+            .service(service)
+            .siteId(siteId)
+            .customerReference(caveatData.getSolsPBAPaymentReference())
+            .build();
+    }
+
+
     private List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
         ArrayList<PaymentFee> paymentFees = new ArrayList<>();
         PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
@@ -65,6 +88,14 @@ public class CreditAccountPaymentTransformer {
                 BigDecimal.valueOf(caseData.getOutsideUKGrantCopies()));
             paymentFees.add(overseasCopiesFee);
         }
+
+        return paymentFees;
+    }
+
+    private List<PaymentFee> buildCaveatFees(FeeResponse feeResponse) {
+        ArrayList<PaymentFee> paymentFees = new ArrayList<>();
+        PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feeResponse, BigDecimal.ONE);
+        paymentFees.add(applicationFee);
 
         return paymentFees;
     }

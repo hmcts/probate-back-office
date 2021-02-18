@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.fee;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,14 @@ import java.net.URI;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FeeService {
 
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
+    private static final String FEE_API_EVENT_TYPE_CAVEAT = "miscellaneous";
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -66,7 +69,6 @@ public class FeeService {
         } else {
             return body;
         }
-
     }
 
     public FeeResponse getCopiesFeeResponse(Long copies) {
@@ -85,6 +87,23 @@ public class FeeService {
         FeeResponse body = responseEntity.getBody();
         if (body == null) {
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
+        } else {
+            return body;
+        }
+    }
+
+    public FeeResponse getCaveatFeesData() {
+        URI uri = buildUri(FEE_API_EVENT_TYPE_CAVEAT, "0");
+        log.info("uri.toString()" + uri.toString());
+        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
+        if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+            return buildZeroValueFee();
+        }
+
+        FeeResponse body = responseEntity.getBody();
+        if (body == null) {
+            throw new ClientDataException("No Body in FeeService: getApplicationFee");
         } else {
             return body;
         }
@@ -116,6 +135,10 @@ public class FeeService {
             } else {
                 builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
             }
+        }
+
+        if (FEE_API_EVENT_TYPE_CAVEAT.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+            builder.queryParam("keyword", feeServiceConfiguration.getNewCaveat());
         }
 
         return builder.build().encode().toUri();

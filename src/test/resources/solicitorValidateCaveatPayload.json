@@ -49,8 +49,21 @@
         "Country": ""
       },
       "solsPaymentMethods": "fee account",
-      "solsFeeAccountNumber": "12345"
+      "solsFeeAccountNumber": "12345",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA1111",
+          "label": "PBA1111"
+        },
+        "list_items": [
+          {
+            "code": "PBA1111",
+            "label": "PBA1111"
+          }
+        ]
+      }
     },
+    "solsPBAPaymentReference": "appref-PAY1",
     "data_classification": {
       "applicationType": "PUBLIC",
       "registryLocation": "PUBLIC",

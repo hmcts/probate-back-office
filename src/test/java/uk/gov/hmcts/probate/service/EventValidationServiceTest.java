@@ -7,6 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -31,6 +34,8 @@ public class EventValidationServiceTest {
     private CreditAccountPaymentValidationRule creditAccountPaymentValidationRuleMock;
     @Mock
     private CaseDetails caseDetailsMock;
+    @Mock
+    private CaseData caseDataMock;
     @Mock
     private PaymentResponse paymentResponseMock;
 
@@ -59,7 +64,13 @@ public class EventValidationServiceTest {
 
         List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(), 
             FieldErrorResponse.builder().build());
-        when(creditAccountPaymentValidationRuleMock.validate(caseDetailsMock, paymentResponseMock)).thenReturn(errors);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code("PBACode").label("PBALabel").build())
+            .build());
+        when(caseDetailsMock.getId()).thenReturn(1234L);
+        when(creditAccountPaymentValidationRuleMock.validate("PBALabel", "1234", paymentResponseMock))
+            .thenReturn(errors);
         CallbackResponse fieldErrorResponses = eventValidationService
             .validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRuleMock);
 

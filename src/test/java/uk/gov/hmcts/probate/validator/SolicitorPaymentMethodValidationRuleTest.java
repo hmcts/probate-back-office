@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
@@ -26,6 +28,10 @@ public class SolicitorPaymentMethodValidationRuleTest {
     private CaseDetails caseDetailsMock;
     @Mock
     private CaseData caseDataMock;
+    @Mock
+    private CaveatDetails caveatDetailsMock;
+    @Mock
+    private CaveatData caveatDataMock;
 
 
     private SolicitorPaymentMethodValidationRule underTest;
@@ -36,6 +42,8 @@ public class SolicitorPaymentMethodValidationRuleTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
             .thenReturn("The solicitor payment method selected is not 'fee account'");
     }
@@ -51,6 +59,21 @@ public class SolicitorPaymentMethodValidationRuleTest {
     public void shouldNotThrowExceptionForFeeAccountPaymentMethodChosen() {
         when(caseDataMock.getSolsPaymentMethods()).thenReturn("fee account");
         underTest.validate(caseDetailsMock);
+
+        verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
+    }
+
+    @Test(expected = BusinessValidationException.class)
+    public void shouldThrowExceptionForChequePaymentMethodChosenCaveat() {
+        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("cheque");
+
+        underTest.validate(caveatDetailsMock);
+    }
+
+    @Test()
+    public void shouldNotThrowExceptionForFeeAccountPaymentMethodChosenCaveat() {
+        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
+        underTest.validate(caveatDetailsMock);
 
         verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
     }

@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -117,10 +118,22 @@ public class EventValidationService {
 
     public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse, 
             CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        String selectedPBA = caseDetails.getData().getSolsPBANumber().getValue().getLabel();
         List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
-            .validate(caseDetails, paymentResponse);
+            .validate(selectedPBA, caseDetails.getId().toString(), paymentResponse);
         return CallbackResponse.builder()
             .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
             .build();
     }
+
+    public CaveatCallbackResponse validateCaveatPaymentResponse(CaveatDetails caveatDetails, 
+            PaymentResponse paymentResponse, CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        String selectedPBA = caveatDetails.getData().getSolsPBANumber().getValue().getLabel();
+        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
+            .validate(selectedPBA, caveatDetails.getId().toString(), paymentResponse);
+        return CaveatCallbackResponse.builder()
+            .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+            .build();
+    }
+
 }

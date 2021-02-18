@@ -45,6 +45,7 @@ public class CaveatCallbackResponseTransformer {
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents,
                                                String letterId) {
@@ -255,6 +256,16 @@ public class CaveatCallbackResponseTransformer {
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+    }
+
+    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest, 
+                                                                      String authToken) {
+        ResponseCaveatDataBuilder responseCaseDataBuilder = 
+            getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(), 
+            responseCaseDataBuilder, authToken);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private String transformToString(LocalDate dateValue) {

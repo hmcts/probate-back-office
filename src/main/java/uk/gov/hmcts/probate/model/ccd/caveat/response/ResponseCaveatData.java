@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -37,6 +38,10 @@ public class ResponseCaveatData {
 
     private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
+    private final DynamicList solsPBANumber;
+    private final String solsPBAPaymentReference;
+    private final String solsOrgHasPBAs;
+    private final String solsNeedsPBAPayment;
 
     private final String caveatorForenames;
     private final String caveatorSurname;

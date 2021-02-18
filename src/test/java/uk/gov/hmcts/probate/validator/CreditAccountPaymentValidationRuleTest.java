@@ -33,17 +33,26 @@ public class CreditAccountPaymentValidationRuleTest {
     @Mock
     private PaymentResponse paymentResponse;
 
+    private static final Long CASE_ID = 1234L;
+    private static final String PBA_CODE = "PBACode";
+    private static final String PBA_LABEL = "PBALabel";
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(CASE_ID);
+        when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code(PBA_CODE).label(PBA_LABEL).build())
+            .build());
     }
 
     @Test
     public void shouldReturnNoErrors() {
         when(paymentResponse.getStatus()).thenReturn("Success");
-        List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(caseDetails, paymentResponse);
+        List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(PBA_CODE,
+            CASE_ID.toString(), paymentResponse);
         assertEquals(true, errors.isEmpty());
     }
 
@@ -56,7 +65,8 @@ public class CreditAccountPaymentValidationRuleTest {
         when(businessValidationMessageService.generateError(any(String.class), any(String.class),
             any(String[].class))).thenReturn(error);
 
-        List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(caseDetails, paymentResponse);
+        List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(PBA_CODE,
+            CASE_ID.toString(), paymentResponse);
         assertEquals(1, errors.size());
         assertEquals("PBAError", errors.get(0).getCode());
     }
