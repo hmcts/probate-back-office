@@ -58,6 +58,7 @@ public class PaymentsService {
     private String getErrorMessage(HttpClientErrorException e) {
 
         String body = e.getResponseBodyAsString();
+        log.info("getErrorMessage.body:" + body);
         JSONObject json = new JSONObject(body);
         JSONArray jsonArray = json.getJSONArray("status_histories");
         String statusHistory = jsonArray.get(0).toString();

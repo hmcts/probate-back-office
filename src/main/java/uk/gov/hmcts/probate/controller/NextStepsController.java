@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -55,6 +56,7 @@ public class NextStepsController {
     private final PaymentsService paymentsService;
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
+    private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -79,6 +81,8 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
+            
+            solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
 
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 

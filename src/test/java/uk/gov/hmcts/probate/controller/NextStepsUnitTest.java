@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -34,6 +35,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -43,6 +45,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -91,6 +94,8 @@ public class NextStepsUnitTest {
     private EventValidationService eventValidationService;
     @Mock
     private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
+    @Mock
+    private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     
     @Mock
     private CreditAccountPayment creditAccountPaymentMock;
@@ -109,7 +114,7 @@ public class NextStepsUnitTest {
         underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock, 
             confirmationResponseServiceMock, callbackResponseTransformerMock, objectMapperMock, feeServiceMock, 
             stateChangeServiceMock, paymentsService, creditAccountPaymentTransformer, 
-            creditAccountPaymentValidationRule);
+            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRule);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -181,6 +186,17 @@ public class NextStepsUnitTest {
         assertThat(responseEntity.getBody(), is(creditPaymentResponseError));
     }
 
+    @Test(expected =  BusinessValidationException.class)
+    public void shouldValidateWithPaymentChequeError() {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+
+        doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRule)
+            .validate(caseDetailsMock);
+
+        underTest.validate(AUTH, callbackRequestMock,
+            bindingResultMock, httpServletRequestMock);
+    }
+    
     @Test(expected = BadRequestException.class)
     public void shouldValidateWithError() {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

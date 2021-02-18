@@ -23,6 +23,7 @@ public class CaseDataTestBuilder {
     public static final String FORNAME = "Andy";
     public static final String SURANME = "Michael";
     public static final String SOLICITOR_APP_REFERENCE = "Reff";
+    public static final String SOLICITOR_PAY_REFERENCE = "PayRef";
     public static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     public static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
