@@ -525,6 +525,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
+            .schemaVersion(caseData.getSchemaVersion())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())
