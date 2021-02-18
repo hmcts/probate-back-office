@@ -3,7 +3,11 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 
 
 import java.util.List;

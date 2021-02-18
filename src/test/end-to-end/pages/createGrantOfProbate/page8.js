@@ -29,5 +29,9 @@ module.exports = async function (crud) {
         await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);
     }
 
+    if (!testConfig.TestAutoDelayEnabled) {
+        await I.wait(0.25);
+    }
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

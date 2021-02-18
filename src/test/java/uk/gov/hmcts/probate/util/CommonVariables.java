@@ -1,5 +1,12 @@
 package uk.gov.hmcts.probate.util;
 
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import static org.mockito.Mockito.mock;
@@ -16,7 +23,7 @@ public class CommonVariables {
     public static final String SOLICITOR_FIRM_PHONE = "0123456789";
     public static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
-    public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);;
+    public static final SolsAddress SOLICITOR_ADDRESS =  mock(SolsAddress.class);
     public static final String SOLICITOR_NOT_APPLYING_REASON = "Not applying";
     public static final String SOLICITOR_ID = "solicitor";
 
@@ -35,6 +42,8 @@ public class CommonVariables {
     public static final String EXEC_NOTIFIED = YES;
     public static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
     public static final String EXEC_ID = "exec";
+    public static final String EXECUTOR_NOT_APPLYING_REASON = "Reason";
+    public static final String POWER_RESERVED = "PowerReserved";
 
     public static final String GOP = "WillLeft";
 
@@ -43,5 +52,59 @@ public class CommonVariables {
     public static final String SOLS_ALIAS_NAME = "AliasFN AliasSN";
 
     public static final String STOP_REASON = "Some reason";
+
+    public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(EXEC_NAME)
+            .applyingExecutorFirstName(EXEC_FIRST_NAME)
+            .applyingExecutorLastName(EXEC_SURNAME)
+            .applyingExecutorPhoneNumber(EXEC_PHONE)
+            .applyingExecutorEmail(EXEC_EMAIL)
+            .applyingExecutorAddress(EXEC_ADDRESS)
+            .build();
+
+    public static final AdditionalExecutorNotApplying EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorName(EXEC_NAME)
+            .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
+            .build();
+
+    public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_APPLYING = new CollectionMember(EXEC_ID,
+            AdditionalExecutor.builder()
+                    .additionalExecForenames(EXEC_FIRST_NAME)
+                    .additionalExecLastname(EXEC_SURNAME)
+                    .additionalExecAddress(EXEC_ADDRESS)
+                    .additionalApplying(YES)
+                    .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
+                    .build());
+
+    public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_NOT_APPLYING = new CollectionMember(EXEC_ID,
+            AdditionalExecutor.builder()
+                    .additionalExecForenames(EXEC_FIRST_NAME)
+                    .additionalExecLastname(EXEC_SURNAME)
+                    .additionalApplying(NO)
+                    .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
+                    .additionalExecReasonNotApplying(EXECUTOR_NOT_APPLYING_REASON)
+                    .build());
+
+    public static final CollectionMember<AdditionalExecutorTrustCorps> TRUST_CORP_EXEC = new CollectionMember(EXEC_ID,
+            AdditionalExecutorTrustCorps.builder()
+                    .additionalExecForenames(EXEC_FIRST_NAME)
+                    .additionalExecLastname(EXEC_SURNAME)
+                    .additionalExecAddress(EXEC_ADDRESS)
+                    .build());
+
+    public static final CollectionMember<AdditionalExecutorPartners> PARTNER_EXEC = new CollectionMember(EXEC_ID,
+            AdditionalExecutorPartners.builder()
+                    .additionalExecForenames(EXEC_FIRST_NAME)
+                    .additionalExecLastname(EXEC_SURNAME)
+                    .additionalExecAddress(EXEC_ADDRESS)
+            .build());
+
+    public static final CollectionMember<AdditionalExecutorNotApplyingPowerReserved> DISPENSE_WITH_NOTICE_EXEC =
+            new CollectionMember(EXEC_ID, AdditionalExecutorNotApplyingPowerReserved.builder()
+                    .notApplyingExecutorName(EXEC_NAME).build());
+
+    // added to prevent having a public constructor
+    private CommonVariables() {
+    }
 
 }

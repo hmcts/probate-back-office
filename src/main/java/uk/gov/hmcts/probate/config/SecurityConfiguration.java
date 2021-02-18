@@ -27,7 +27,8 @@ public class SecurityConfiguration {
         public AuthCheckerServiceAndUSerFilterConfigurerAdapter(UserRequestAuthorizer<User> userRequestAuthorizer,
                                                                 ServiceRequestAuthorizer serviceRequestAuthorizer,
                                                                 AuthenticationManager authenticationManager) {
-            authCheckerServiceAndUserFilter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
+            authCheckerServiceAndUserFilter =
+                new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
             authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);
         }
 
