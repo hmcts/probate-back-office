@@ -53,8 +53,8 @@ public class ResponseCaseDataParent {
     protected String solsForenames;
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;
-
-
     protected String solsReviewSOTConfirm;
+    protected String solsReviewSOTConfirmCheckbox1Names;
+    protected String solsReviewSOTConfirmCheckbox2Names;
 
 }

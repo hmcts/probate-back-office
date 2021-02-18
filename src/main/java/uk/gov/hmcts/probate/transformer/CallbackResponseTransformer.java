@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,6 +39,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.list;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -485,18 +488,23 @@ public class CallbackResponseTransformer {
         solicitorLegalStatementNextStepsDefaulter
             .transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
-        transformCaseForSolicitorConfirmText(responseCaseDataBuilder, callbackRequest);
+        transformCaseForSolicitorConfirmText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public void transformCaseForSolicitorConfirmText(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder, CallbackRequest callbackRequest){
+    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder){
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+                solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
+
         String plural = "";
-        if(!callbackRequest.getCaseDetails().getData().getAdditionalExecutorsApplying().isEmpty()){
+        String executorNames = "I, ";
+        if(!listOfApplyingExecs.isEmpty()){
             plural = "s";
+            executorNames = "We, ";
         }
 
-        String professionalName = callbackRequest.getCaseDetails().getData().getSolsSOTName();
+        String professionalName = caseDetails.getData().getSolsSOTName();
 
         String confirmSOT = "By signing the Statement of Truth by ticking the boxes below, I, " + professionalName + " confirm the following:\n\n" +
                 "I, " + professionalName + ", have provided a copy of this application to the Executor" + plural + " named below.\n\n" +
@@ -505,7 +513,13 @@ public class CallbackResponseTransformer {
                 "I, " + professionalName + ", have been authorised but the Executor"  + plural + " to sign the Statement of Truth.\n\n" +
                 "I, " + professionalName + ", understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.\n";
 
-        responseCaseDataBuilder.solsReviewSOTConfirm(confirmSOT);
+        for(CollectionMember<AdditionalExecutorApplying> applyingExec : listOfApplyingExecs){
+            executorNames = executorNames + applyingExec.getValue().getApplyingExecutorName() + ", ";
+        }
+
+        builder.solsReviewSOTConfirm(confirmSOT);
+        builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
+        builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
 
     private boolean doTransform(CallbackRequest callbackRequest) {

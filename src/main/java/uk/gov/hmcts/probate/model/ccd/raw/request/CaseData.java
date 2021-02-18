@@ -282,7 +282,11 @@ public class CaseData extends CaseDataParent {
 
     private final String solsSOTJobTitle;
 
-    private String solsReviewSOTConfirm;
+    private final String solsReviewSOTConfirm;
+
+    private final String solsReviewSOTConfirmCheckbox1Names;
+
+    private final String solsReviewSOTConfirmCheckbox2Names;
 
     private final Long extraCopiesOfGrant;
 
