@@ -46,10 +46,12 @@ module.exports = async function (caseType, caseRef, documentUploadConfig) {
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(5)`});
     assert.equal(caseType === 'gop' ? 'Codicil' : 'Death Certificate', optText);
 
-
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '6');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(6)`});
-    assert.equal(caseType === 'gop' ? 'Death Certificate' : caseType === 'willLodgement' ? 'Other' : 'Warning', optText);//change
+    if (caseType === 'gop') {
+        assert.equal('Death Certificate', optText);
+    }
+    assert.equal(caseType === 'willLodgement' ? 'Other' : 'Warning', optText);//change
 
     if (caseType === 'gop' || caseType === 'caveat') {
         await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '7');
