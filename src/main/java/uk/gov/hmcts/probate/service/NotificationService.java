@@ -298,8 +298,8 @@ public class NotificationService {
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
         String defaultRegistryLocation =
-                (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ?
-                        RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+                (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference))
+                        ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
         return registriesProperties.getEnglish()
                 .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
