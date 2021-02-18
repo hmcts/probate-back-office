@@ -1142,7 +1142,8 @@ public class CallbackResponseTransformerTest {
     public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
     }
 
     @Test
@@ -1155,8 +1156,10 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-        verify(solicitorExecutorTransformer, times(1)).mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
     }
 
     @Test
@@ -1171,7 +1174,8 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(additionalExecutorsApplyingMock, callbackResponse.getData().getAdditionalExecutorsApplying());
-        assertEquals(additionalExecutorsNotApplyingMock, callbackResponse.getData().getAdditionalExecutorsNotApplying());
+        assertEquals(additionalExecutorsNotApplyingMock,
+                callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
 
     @Test
