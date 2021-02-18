@@ -16,29 +16,31 @@ import java.util.List;
 @Data
 public class CaseDataParent {
 
-    protected String schemaVersion;
-    protected String registrySequenceNumber;
+    protected final String schemaVersion;
+    protected final String registrySequenceNumber;
     protected final String deceasedDeathCertificate;
     protected final String deceasedDiedEngOrWales;
     protected final String deceasedForeignDeathCertInEnglish;
     protected final String deceasedForeignDeathCertTranslation;
-    protected String solsForenames;
-    protected String solsSurname;
-    protected String solsSolicitorWillSignSOT;
-    protected String dispenseWithNotice;
-    protected String titleAndClearingType;
-    protected String titleAndClearingTypeNoT;
-    protected String trustCorpName;
-    protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
-    protected String lodgementAddress;
-    protected LocalDate lodgementDate;
-    protected String nameOfFirmNamedInWill;
-    protected String nameOfSucceededFirm;
-    protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
-    protected String dispenseWithNoticeLeaveGiven;
-    protected String dispenseWithNoticeLeaveGivenDate;
-    protected String dispenseWithNoticeOverview;
-    protected String dispenseWithNoticeSupportingDocs;
-    protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
+    protected final String solsForenames;
+    protected final String solsSurname;
+    protected final String solsSolicitorWillSignSOT;
+    protected final String dispenseWithNotice;
+    protected final String titleAndClearingType;
+    protected final String titleAndClearingTypeNoT;
+    protected final String trustCorpName;
+    protected final List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
+    protected final String lodgementAddress;
+    protected final LocalDate lodgementDate;
+    protected final String nameOfFirmNamedInWill;
+    protected final String nameOfSucceededFirm;
+    protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
+    protected final String dispenseWithNoticeLeaveGiven;
+    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final String dispenseWithNoticeOverview;
+    protected final String dispenseWithNoticeSupportingDocs;
+    protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
+    protected final String soleTraderOrLimitedCompany;
+    protected final String whoSharesInCompanyProfits;
 
 }
