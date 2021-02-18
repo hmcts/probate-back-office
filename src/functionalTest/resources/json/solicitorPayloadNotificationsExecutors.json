@@ -52,7 +52,6 @@
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
       "solsSolicitorIsExec": "No",
-      "solsSolicitorIsMainApplicant": null,
       "solsSolicitorIsApplying": null,
       "solsSolicitorNotApplyingReason": null,
       "solsSolicitorFirmName": "Solicitor Firm Name",
@@ -94,40 +93,57 @@
               "AddressLine2": "addressline 2",
               "AddressLine3": "addressline 3"
             },
-            "additionalExecLastname": "exln1",
-            "additionalExecForenames": "exfn1",
+            "additionalExecLastname": "exln2",
+            "additionalExecForenames": "exfn2",
             "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "Alias name exfn1"
+            "additionalExecAliasNameOnWill": "Alias name exfn2"
           }
         },
         {
           "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
           "value": {
             "additionalApplying": "No",
-            "additionalExecLastname": "exln2",
-            "additionalExecForenames": "exfn2",
+            "additionalExecLastname": "exln",
+            "additionalExecForenames": "exfn",
             "additionalExecNameOnWill": "Yes",
             "additionalExecAliasNameOnWill": "alias name",
             "additionalExecReasonNotApplying": "DiedBefore"
           }
-        },
-
+        }
+      ],
+      "additionalExecutorsTrustCorpList": [
         {
-          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+          "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
           "value": {
-            "additionalApplying": "Yes",
-            "additionalExecLastname": "ex3ln",
-            "additionalExecForenames": "ex3fn",
-            "additionalExecNameOnWill": "No",
-            "additionalExecReasonNotApplying": "DiedBefore",
+            "additionalExecForenames": "exfn1",
+            "additionalExecLastname": "exln1",
+            "additionalExecutorTrustCorpPosition": "Solicitor",
             "additionalExecAddress": {
-              "County": null,
-              "Country": null,
+              "County": "county",
+              "Country": "country",
               "PostCode": "postcode",
-              "PostTown": null,
+              "PostTown": "posttown",
               "AddressLine1": "addressline 1",
-              "AddressLine2": null,
-              "AddressLine3": null
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
+            }
+          }
+        }
+      ],
+      "otherPartnersApplyingAsExecutors": [
+        {
+          "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
+          "value": {
+            "additionalExecForenames": "exfn3",
+            "additionalExecLastname": "exln3",
+            "additionalExecAddress": {
+              "County": "county",
+              "Country": "country",
+              "PostCode": "postcode",
+              "PostTown": "posttown",
+              "AddressLine1": "addressline 1",
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
             }
           }
         }
@@ -179,7 +195,6 @@
       "solsSOTForenames": "PUBLIC",
       "solsSOTSurname": "PUBLIC",
       "solsSolicitorIsExec": "PUBLIC",
-      "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
       "solsSOTNeedToUpdate": "PUBLIC",
@@ -252,7 +267,6 @@
       "solsSOTForenames": "PUBLIC",
       "solsSOTSurname": "PUBLIC",
       "solsSolicitorIsExec": "PUBLIC",
-      "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
       "deceasedDateOfDeath": "PUBLIC",
@@ -343,7 +357,6 @@
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
       "solsSolicitorIsExec": "No",
-      "solsSolicitorIsMainApplicant": null,
       "solsSolicitorIsApplying": null,
       "solsSolicitorNotApplyingReason": null,
       "deceasedDateOfDeath": "2000-01-01",
@@ -407,7 +420,6 @@
       "solsSOTForenames": "PUBLIC",
       "solsSOTSurname": "PUBLIC",
       "solsSolicitorIsExec": "PUBLIC",
-      "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
       "solsSolicitorFirmName": "PUBLIC",

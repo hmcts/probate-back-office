@@ -1132,10 +1132,50 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void verifySolicitorExecutorTranformerIsCalled() {
+    public void verifyPrimaryApplicantFieldsAre() {
         underTest.transformCase(callbackRequestMock);
 
         verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+    }
+
+    @Test
+    public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
+        underTest.transformCase(callbackRequestMock);
+
+        verify(solicitorExecutorTransformer, times(1))
+                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+    }
+
+    @Test
+    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        underTest.transformCase(callbackRequestMock);
+
+        verify(solicitorExecutorTransformer, times(1))
+                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
+    }
+
+    @Test
+    public void verifyExecutorListsAreSet() {
+        caseDataBuilder
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(additionalExecutorsApplyingMock, callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(additionalExecutorsNotApplyingMock,
+                callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
 
     @Test
