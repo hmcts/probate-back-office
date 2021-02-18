@@ -38,6 +38,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
@@ -187,6 +188,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
+        validatePostFailure("failure.moreThanFourExecutors.json",
+            "The total number executors applying cannot exceed 4", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
