@@ -5,7 +5,9 @@ import com.launchdarkly.sdk.server.LDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class FeatureToggleService {
 
@@ -24,10 +26,12 @@ public class FeatureToggleService {
             .lastName(ldUserLastName)
             .custom("timestamp", String.valueOf(System.currentTimeMillis()));
         this.ldUser = this.ldUserBuilder.build();
+        log.info("========================================= FeatureToggleService: LD USERKEY " + ldUserKey);
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false);
+        log.info("========================================= FeatureToggleService: original toggle =  " + this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false));
+        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
     }
 
 }
