@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.config.properties.registries.RegistryCountry;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
@@ -28,8 +27,6 @@ public class RegistryDetailsServiceTest {
     private Map<String, Registry> registryMap;
 
     private RegistriesProperties registriesProperties = new RegistriesProperties();
-
-    private RegistryCountry registryCountry = new RegistryCountry();
 
 
     @InjectMocks
