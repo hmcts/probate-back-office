@@ -16,10 +16,10 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: guava-28.0-jre.jar
+   file name: launchdarkly-java-server-sdk-5.2.0.jar (shaded: com.google.guava:guava:28.2-jre)
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-        <cpe>cpe:/a:google:guava</cpe>
+        <cve>CVE-2020-8908</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -28,12 +28,19 @@
         <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
         <cve>CVE-2020-25638</cve>
     </suppress>
-    <suppress>
+     <suppress>
         <notes><![CDATA[
    file name: fluent-hc-4.5.12.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/fluent-hc@.*$</packageUrl>
         <cve>CVE-2020-13956</cve>
+    </suppress>
+  <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jsr310-2.9.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
+        <cve>CVE-2018-1000873</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -41,14 +48,7 @@
    ]]></notes>
         <cve>CVE-2020-15250</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: launchdarkly-java-server-sdk-5.2.0.jar (shaded: com.google.guava:guava:28.2-jre)
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-        <cve>CVE-2020-8908</cve>
-    </suppress>
-    <suppress>
+      <suppress>
         <notes><![CDATA[
    file name: postgresql-42.2.5.jar
    ]]></notes>
@@ -65,6 +65,13 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: httpclient-4.5.7.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
+        <cve>CVE-2020-13956</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: tomcat-embed-core-9.0.38.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-(websocket|core):.*$</gav>
@@ -73,16 +80,10 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-datatype-jsr310-2.9.4.jar
+   file name: tomcat-embed-core-9.0.38.jar
    ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
-        <cve>CVE-2018-1000873</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: httpclient-4.5.7.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
-        <cve>CVE-2020-13956</cve>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-(websocket|core):.*$</gav>
+        <cve>CVE-2020-17527</cve>
+        <cve>CVE-2021-24122</cve>
     </suppress>
 </suppressions>
