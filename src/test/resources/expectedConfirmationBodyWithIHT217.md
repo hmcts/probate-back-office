@@ -40,7 +40,7 @@ You now need to send us:
 
 *   the original will
 *   the printed version of this page which will be used as your cover letter to us
-*   the inheritance tax form IHT217
+*   the inheritance tax form IHT205 and IHT217
 *   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
