@@ -31,7 +31,7 @@ public class FeatureToggleService {
 
     public boolean isNewFeeRegisterCodeEnabled() {
         log.info("========================================= FeatureToggleService: original toggle =  " 
-        + this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false));
+            + this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false));
         return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
     }
 
