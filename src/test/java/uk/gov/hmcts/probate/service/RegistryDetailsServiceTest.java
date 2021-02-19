@@ -31,8 +31,6 @@ public class RegistryDetailsServiceTest {
 
     private RegistryCountry registryCountry = new RegistryCountry();
 
- //   private Map<String, RegistryCountry> registryCountryMap = new HashMap<>();
-
 
     @InjectMocks
     private final RegistryDetailsService registryDetailsService = new RegistryDetailsService(registriesProperties);
@@ -53,14 +51,9 @@ public class RegistryDetailsServiceTest {
         registryMap = new HashMap<>();
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
-        registryCountry.setEnglish(registryMap);
-
-//
-//        registryCountryMap.put("english", registryMap);
-//        registriesProperties.setRegistries(registryCountryMap);
 
 
-        registriesProperties.getRegistries().put("english", registryCountry);
+        registriesProperties.setEnglish(registryMap);
 
         caseDetails = new CaseDetails(CaseData.builder().registryLocation("bristol").build(), LAST_MODIFIED, CASE_ID);
     }

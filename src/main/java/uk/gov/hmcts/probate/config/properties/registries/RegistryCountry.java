@@ -8,6 +8,5 @@ import java.util.Map;
 @Data
 public class RegistryCountry {
 
-    private Map<String, Registry> english = new HashMap<>();
-    private Map<String, Registry> welsh = new HashMap<>();
+
 }

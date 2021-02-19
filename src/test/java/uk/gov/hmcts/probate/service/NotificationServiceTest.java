@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.config.properties.registries.RegistryCountry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
