@@ -338,7 +338,7 @@ registry:
       addressline1: York House
       addressline2: York Place
       town: Leeds
-      postcode: LS1
+      postcode: LS1 2BA
     liverpool:
       name: Liverpool Probate Registry
       phone: 0300 303 0648
