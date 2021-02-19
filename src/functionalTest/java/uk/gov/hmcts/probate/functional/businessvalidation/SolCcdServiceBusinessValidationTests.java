@@ -10,6 +10,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -27,6 +31,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
     private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_IHT_400_DATE = "/case/sols-validate-iht400";
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
@@ -111,6 +116,39 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithNegativeIhtGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsNegative.json",
             "Gross IHT cannot be negative", 400);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsValid() {
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 20) + "\",");
+        validatePostSuccessForPayload(payload, VALIDATE_IHT_400_DATE);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsInFutureReturnsError() {
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + LocalDate.now().plusDays(10) + "\",");
+        validatePostFailureWithPayload(payload,
+            "The date you sent the IHT400 and IHT421 to HMRC must be in the past",
+            200, VALIDATE_IHT_400_DATE);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsAfter20DaysBeforeCurrentDateReturnsError() {
+        CaseData caseData = CaseData.builder().build();
+        LocalDate solsIHT400Date = IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 5);
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
+        validatePostFailureWithPayload(
+            payload, "You cannot submit this application until "
+                + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
+                + " (20 working days after sending the IHT400 and IHT421 forms to HMRC)."
+                + " Submit this application on or after this date",
+            200, VALIDATE_IHT_400_DATE);
     }
 
     @Test
@@ -580,6 +618,28 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(url)
+            .thenReturn();
+
+        if (statusCode == 200) {
+            response.then().assertThat().statusCode(statusCode)
+                .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("errors", hasItem(containsString(errorMessage)));
+        } else if (statusCode == 400) {
+            response.then().assertThat().statusCode(statusCode)
+                .and().body("error", equalTo("Invalid Request"))
+                .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("fieldErrors[0].message", equalTo(errorMessage));
+        } else {
+            assert false;
+        }
+    }
+
+    private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String url) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(payload)
             .when().post(url)
             .thenReturn();
 
