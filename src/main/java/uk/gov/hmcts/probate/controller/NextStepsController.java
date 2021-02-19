@@ -82,8 +82,6 @@ public class NextStepsController {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
             
-            solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
-
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -91,6 +89,9 @@ public class NextStepsController {
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
             if (feesResponse.getTotalAmount().doubleValue() > 0) {
+
+                solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
+
                 CreditAccountPayment creditAccountPayment =
                     creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
                 PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,

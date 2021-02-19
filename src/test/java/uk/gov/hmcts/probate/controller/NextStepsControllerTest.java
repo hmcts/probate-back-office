@@ -247,24 +247,4 @@ public class NextStepsControllerTest {
                 .andExpect(content().string("{\"confirmation_header\":null,\"confirmation_body\":null}"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
-
-    @Test
-    public void shouldErrorOnChequePaymentMethodChosen() throws Exception {
-        caseDataBuilder.solsPaymentMethods("cheque");
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "auth");
-        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).headers(headers)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("{\"data\":null,\"errors\":"
-                + "[\"The solicitor payment method selected is not "
-                + "fee account\"],\"warnings\":null}"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
 }

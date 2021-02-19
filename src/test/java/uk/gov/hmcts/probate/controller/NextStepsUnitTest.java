@@ -188,7 +188,11 @@ public class NextStepsUnitTest {
 
     @Test(expected =  BusinessValidationException.class)
     public void shouldValidateWithPaymentChequeError() {
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
 
         doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRule)
             .validate(caseDetailsMock);
