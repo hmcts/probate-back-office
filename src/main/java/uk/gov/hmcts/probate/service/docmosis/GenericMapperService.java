@@ -26,7 +26,7 @@ public class GenericMapperService {
     private final FileSystemResourceService fileSystemResourceService;
 
     private static final String PERSONALISATION_REGISTRY = "registry";
-    private static final String PERSONALISATION_REGISTRY_WELSH = "registry_welsh";
+    private static final String PERSONALISATION_REGISTRY_WELSH = "registryWelsh";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
