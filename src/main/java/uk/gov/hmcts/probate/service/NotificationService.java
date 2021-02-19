@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.config.properties.registries.RegistryCountry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -46,6 +47,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -136,7 +138,7 @@ public class NotificationService {
     public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor)
         throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getEnglish().get(caseData.getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getRegistries().get("english").getEnglish().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference());
@@ -159,7 +161,7 @@ public class NotificationService {
         throws NotificationClientException {
 
         CaveatData caveatData = caveatDetails.getData();
-        Registry registry = registriesProperties.getEnglish().get(caveatData.getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getRegistries().get("english").getEnglish().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(),
             caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
@@ -220,7 +222,7 @@ public class NotificationService {
             .getProbateSotDocumentsGenerated()
             .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
 
-        Registry registry = registriesProperties.getEnglish()
+        Registry registry = registriesProperties.getRegistries().get("english").getEnglish()
                 .get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
@@ -283,7 +285,7 @@ public class NotificationService {
     private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId)
             throws NotificationClientException {
  
-        Registry registry = registriesProperties.getEnglish()
+        Registry registry = registriesProperties.getRegistries().get("english").getEnglish()
                 .get(caseDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
@@ -300,7 +302,7 @@ public class NotificationService {
         String defaultRegistryLocation =
                 (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference))
                         ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getEnglish()
+        return registriesProperties.getRegistries().get("english").getEnglish()
                 .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
 

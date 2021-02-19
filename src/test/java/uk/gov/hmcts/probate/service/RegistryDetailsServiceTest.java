@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.config.properties.registries.RegistryCountry;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
@@ -28,6 +29,11 @@ public class RegistryDetailsServiceTest {
 
     private RegistriesProperties registriesProperties = new RegistriesProperties();
 
+    private RegistryCountry registryCountry = new RegistryCountry();
+
+ //   private Map<String, RegistryCountry> registryCountryMap = new HashMap<>();
+
+
     @InjectMocks
     private final RegistryDetailsService registryDetailsService = new RegistryDetailsService(registriesProperties);
 
@@ -47,8 +53,14 @@ public class RegistryDetailsServiceTest {
         registryMap = new HashMap<>();
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
+        registryCountry.setEnglish(registryMap);
 
-        registriesProperties.setEnglish(registryMap);
+//
+//        registryCountryMap.put("english", registryMap);
+//        registriesProperties.setRegistries(registryCountryMap);
+
+
+        registriesProperties.getRegistries().put("english", registryCountry);
 
         caseDetails = new CaseDetails(CaseData.builder().registryLocation("bristol").build(), LAST_MODIFIED, CASE_ID);
     }

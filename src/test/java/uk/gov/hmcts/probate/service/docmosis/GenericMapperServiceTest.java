@@ -121,7 +121,7 @@ public class GenericMapperServiceTest {
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
 
-        when(registriesProperties.getEnglish()).thenReturn(registryMap);
+        when(registriesProperties.getRegistries().get("english").getEnglish()).thenReturn(registryMap);
 
         CaseData caseData = CaseData.builder()
             .deceasedForenames("Nigel")

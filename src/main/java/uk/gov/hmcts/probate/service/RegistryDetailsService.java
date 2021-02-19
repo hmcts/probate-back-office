@@ -15,7 +15,7 @@ public class RegistryDetailsService {
     private final RegistriesProperties registriesProperties;
 
     public CaseDetails getRegistryDetails(CaseDetails caseDetails) {
-        Registry registry = registriesProperties.getEnglish().get(
+        Registry registry = registriesProperties.getRegistries().get("english").getEnglish().get(
                 caseDetails.getData().getRegistryLocation().toLowerCase());
         caseDetails.setRegistryTelephone(registry.getPhone());
         caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
@@ -25,7 +25,7 @@ public class RegistryDetailsService {
         caseDetails.setRegistryPostcode(registry.getPostcode());
         caseDetails.setRegistryTown(registry.getTown());
 
-        Registry ctscRegistry = registriesProperties.getEnglish().get(CTSC);
+        Registry ctscRegistry = registriesProperties.getRegistries().get("english").getEnglish().get(CTSC);
         caseDetails.setCtscTelephone(ctscRegistry.getPhone());
 
         return caseDetails;
