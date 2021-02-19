@@ -18,6 +18,9 @@ import java.util.List;
 public class ResponseCaseDataParent {
 
     protected String schemaVersion;
+    // A second copy of schemaVersion, holding exactly the same value.
+    // Needed tdue to ccd quirks/RI to allow its use in FieldShowCondition for multiple pages for same event
+    protected String schemaVersionCcdCopy;
     protected DynamicList reprintDocument;
     protected String reprintNumberOfCopies;
     protected DynamicList solsAmendLegalStatmentSelect;

@@ -17,6 +17,8 @@ import java.util.List;
 public class CaseDataParent {
 
     protected String schemaVersion;
+    // A second copy of schemaVersion, holding exactly the same value.
+    // Needed tdue to ccd quirks/RI to allow its use in FieldShowCondition for multiple pages for same event
     protected String registrySequenceNumber;
     protected final String deceasedDeathCertificate;
     protected final String deceasedDiedEngOrWales;

@@ -74,10 +74,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);

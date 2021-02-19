@@ -386,6 +386,9 @@ public class CallbackResponseTransformer {
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(SCHEMA_VERSION)
+            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
+            .schemaVersionCcdCopy(SCHEMA_VERSION)
+
             // set these next 2 properties as these properties are still used for in-flight cases on old schema /
             // bulk scan created cases and ccd has limited logic facilities
             .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
@@ -514,9 +517,12 @@ public class CallbackResponseTransformer {
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
+        final String ccdVersion = paperForm.equals("Yes") ? null : SCHEMA_VERSION;
 
         return transformResponse(responseCaseDataBuilder
-            .schemaVersion(paperForm.equals("Yes") ? null : SCHEMA_VERSION)
+            .schemaVersion(ccdVersion)
+            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
+            .schemaVersionCcdCopy(ccdVersion)
             .build()
         );
     }
@@ -530,6 +536,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
+            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())

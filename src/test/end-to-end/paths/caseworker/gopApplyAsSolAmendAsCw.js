@@ -18,14 +18,17 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-
+ 
+/* eslint-disable no-console */
 Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';
 
-    // IdAM
+    // IdAM - Solicitor
     await I.authenticateWithIdamIfAvailable(true);
+
+    console.info('Initial application details');
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
@@ -37,18 +40,14 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
     endState = 'Grant of probate created';
+
+    console.info('Deceased details');
 
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
@@ -64,11 +63,14 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);    
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
+
+    console.info('Grant of probate details');
+
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2();
+    await I.grantOfProbatePage2(false);
     await I.grantOfProbatePage3();
     await I.grantOfProbatePage4(isSolicitorApplyingExecutor);
     await I.grantOfProbatePage5();
@@ -78,6 +80,8 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
+
+    console.info('Complete application');
 
     nextStepName = 'Complete application';
     endState = 'Case created';
@@ -94,4 +98,22 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
 
+    console.info('Sign out and login as case worker');
+
+    await I.waitForNavigationToComplete('#sign-out');
+
+    // IdAM - Caseworker
+    await I.authenticateWithIdamIfAvailable(false, true);
+    await I.navigateToCaseCaseworker(caseRef);
+    console.info('Amend details');
+    nextStepName = 'Amend case details';
+    await I.chooseNextStep(nextStepName);
+    await I.enterGrantOfProbatePage1('update', true);
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.checkAmendSolicitorDetailsForSolCreatedApp();
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.checkAmendDomAndAssetsForSolCreatedApp();
+    await I.checkMyAnswers(nextStepName);
 }).retry(testConfig.TestRetryScenarios);
