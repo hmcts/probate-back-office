@@ -69,7 +69,7 @@ public class PaymentsService {
     private HttpEntity<CreditAccountPayment> buildRequest(String authToken, CreditAccountPayment creditAccountPayment) {
         HttpHeaders headers = new HttpHeaders();
         if (!authToken.matches("^Bearer .+")) {
-            throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
+            throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token:" + authToken);
         }
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
