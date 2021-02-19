@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -34,6 +36,12 @@ public class CreditAccountPaymentTransformerTest {
     private CaseData caseData;
 
     @Mock
+    private CaveatDetails caveatDetails;
+
+    @Mock
+    private CaveatData caveatData;
+
+    @Mock
     private FeesResponse feesResponse;
 
     @Mock
@@ -43,10 +51,16 @@ public class CreditAccountPaymentTransformerTest {
     private FeeResponse feeResponseUK;
 
     @Mock
+    private FeeResponse feeResponseCaveat;
+
+    @Mock
     private FeeResponse feeResponseOverseas;
 
     @Mock
     private PaymentFee paymentFeeApplication;
+
+    @Mock
+    private PaymentFee paymentFeeCaveat;
 
     @Mock
     private PaymentFee paymentFeeUK;
@@ -73,6 +87,7 @@ public class CreditAccountPaymentTransformerTest {
         DynamicListItem item2 = DynamicListItem.builder().code("PBA2222").label("PBA2222Label").build();
         DynamicList pbaList = DynamicList.builder().listItems(Arrays.asList(item1, item2)).value(item1).build();
         when(caseData.getSolsPBANumber()).thenReturn(pbaList);
+
         when(feesResponse.getApplicationFeeResponse()).thenReturn(feeResponseApplication);
         when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeResponseUK);
         when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeResponseOverseas);
@@ -81,6 +96,18 @@ public class CreditAccountPaymentTransformerTest {
         when(paymentFeeBuilder.buildPaymentFee(feeResponseUK, BigDecimal.valueOf(1L))).thenReturn(paymentFeeUK);
         when(paymentFeeBuilder.buildPaymentFee(feeResponseOverseas, BigDecimal.valueOf(2L)))
             .thenReturn(paymentFeeOverseas);
+
+        when(caveatDetails.getId()).thenReturn(1234L);
+        when(caveatDetails.getData()).thenReturn(caveatData);
+        when(caveatData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().build())
+            .build());
+        when(caveatData.getSolsSolicitorAppReference()).thenReturn("solsAppRef");
+        when(caveatData.getSolsPBAPaymentReference()).thenReturn("solsPayRef");
+        when(caveatData.getSolsSolicitorFirmName()).thenReturn("SolicitorFirmName");
+        when(caveatData.getSolsPBANumber()).thenReturn(pbaList);
+        when(feeResponseCaveat.getFeeAmount()).thenReturn(BigDecimal.valueOf(3));
+        when(paymentFeeBuilder.buildPaymentFee(feeResponseCaveat, BigDecimal.ONE))
+            .thenReturn(paymentFeeCaveat);
     }
 
 
@@ -92,7 +119,7 @@ public class CreditAccountPaymentTransformerTest {
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
             feesResponse);
-        assertStandardCreditAccountPayment(creditAccountPayment);
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Solicitor payment");
         assertEquals(BigDecimal.valueOf(216.20), creditAccountPayment.getAmount());
         assertEquals(3, creditAccountPayment.getFees().size());
         assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
@@ -108,7 +135,7 @@ public class CreditAccountPaymentTransformerTest {
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
             feesResponse);
-        assertStandardCreditAccountPayment(creditAccountPayment);
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Solicitor payment");
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(1, creditAccountPayment.getFees().size());
         assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
@@ -122,7 +149,7 @@ public class CreditAccountPaymentTransformerTest {
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
             feesResponse);
-        assertStandardCreditAccountPayment(creditAccountPayment);
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Solicitor payment");
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(2, creditAccountPayment.getFees().size());
         assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
@@ -137,19 +164,30 @@ public class CreditAccountPaymentTransformerTest {
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
             feesResponse);
-        assertStandardCreditAccountPayment(creditAccountPayment);
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Solicitor payment");
         assertEquals(BigDecimal.valueOf(215.00), creditAccountPayment.getAmount());
         assertEquals(2, creditAccountPayment.getFees().size());
         assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
         assertEquals(paymentFeeOverseas, creditAccountPayment.getFees().get(1));
     }
 
-    private void assertStandardCreditAccountPayment(CreditAccountPayment creditAccountPayment) {
+    @Test
+    public void shouldTransformAllForCaveats() {
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caveatDetails,
+            feeResponseCaveat);
+
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Caveat Solicitor payment");
+        assertEquals(BigDecimal.valueOf(3), creditAccountPayment.getAmount());
+        assertEquals(1, creditAccountPayment.getFees().size());
+        assertEquals(paymentFeeCaveat, creditAccountPayment.getFees().get(0));
+    }
+
+    private void assertStandardCreditAccountPayment(CreditAccountPayment creditAccountPayment, String description) {
         assertEquals("PBA1111", creditAccountPayment.getAccountNumber());
         assertEquals("solsAppRef", creditAccountPayment.getCaseReference());
         assertEquals("1234", creditAccountPayment.getCcdCaseNumber());
         assertEquals("solsPayRef", creditAccountPayment.getCustomerReference());
-        assertEquals("Probate Solicitor payment", creditAccountPayment.getDescription());
+        assertEquals(description, creditAccountPayment.getDescription());
         assertEquals("SolicitorFirmName", creditAccountPayment.getOrganisationName());
         assertEquals("GBP", creditAccountPayment.getCurrency());
         assertEquals("PROBATE", creditAccountPayment.getService());
