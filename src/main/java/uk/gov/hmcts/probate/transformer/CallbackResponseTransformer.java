@@ -498,6 +498,9 @@ public class CallbackResponseTransformer {
         solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
             authToken);
 
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
+
         return transformResponse(responseCaseDataBuilder.build());
     }
 

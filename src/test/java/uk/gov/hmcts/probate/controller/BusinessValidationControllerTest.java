@@ -749,21 +749,5 @@ public class BusinessValidationControllerTest {
             .andReturn();
     }
 
-    @Test
-    public void shouldDefaultSolicitorPBAs() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
-        when(pbaValidationService.getPBAs("Auth")).thenReturn(Arrays.asList("PBA1234", "PBA3456"));
-        mockMvc.perform(post(DEFAULT_SOLS_PBA)
-            .header("Authorization", "Auth")
-            .content(solicitorPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsPBANumber.list_items[0].code", is("PBA1234")))
-            .andExpect(jsonPath("$.data.solsPBANumber.list_items[0].label", is("PBA1234")))
-            .andExpect(jsonPath("$.data.solsPBANumber.list_items[1].code", is("PBA3456")))
-            .andExpect(jsonPath("$.data.solsPBANumber.list_items[1].label", is("PBA3456")))
-            .andReturn();
-    }
-
 }
 

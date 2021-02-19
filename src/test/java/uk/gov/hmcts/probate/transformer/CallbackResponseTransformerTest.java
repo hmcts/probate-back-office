@@ -2728,6 +2728,8 @@ public class CallbackResponseTransformerTest {
         verify(solicitorPBADefaulter).defaultFeeAccounts(any(CaseData.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class),
             any(String.class));
+        verify(solicitorPBAPaymentDefaulter).defaultPageFlowForPayments(any(CaseData.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test

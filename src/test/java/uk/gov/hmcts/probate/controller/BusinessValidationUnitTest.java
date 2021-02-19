@@ -550,18 +550,10 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldDefaultPBAs() {
         ResponseEntity<CallbackResponse> response = 
-            underTest.defaulsSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+            underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
             .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
-    @Test
-    public void shouldDefaultSolicitorPayment() throws Exception {
-        ResponseEntity<CallbackResponse> response =
-            underTest.defaulsSolicitorPBAFlowForTotalPayment(callbackRequestMock);
-        verify(callbackResponseTransformerMock, times(1))
-            .transformCaseForSolicitorPBATotalPayment(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
 }

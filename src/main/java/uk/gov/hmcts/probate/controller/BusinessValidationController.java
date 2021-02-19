@@ -298,21 +298,12 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForPBANumbers(
+    public ResponseEntity<CallbackResponse> defaultSolicitorNextStepsForPBANumbers(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest) {
 
         return ResponseEntity.ok(callbackResponseTransformer
             .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
-    }
-
-    @PostMapping(path = "/default-sols-payment", consumes = APPLICATION_JSON_VALUE, 
-        produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> defaulsSolicitorPBAFlowForTotalPayment(
-        @RequestBody CallbackRequest callbackRequest) {
-
-        return ResponseEntity.ok(callbackResponseTransformer
-            .transformCaseForSolicitorPBATotalPayment(callbackRequest));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

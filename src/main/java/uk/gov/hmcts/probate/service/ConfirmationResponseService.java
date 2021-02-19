@@ -55,6 +55,8 @@ public class ConfirmationResponseService {
     private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
+    public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
+    public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
@@ -203,8 +205,8 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
+        keyValue.put(PARM_PAYMENT_METHOD, caveatData.getSolsPaymentMethods());
+        keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(caveatData));
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -236,11 +238,11 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
         if (ccdData.getFee().getPaymentMethod() != null) {
-            keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
-            keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
+            keyValue.put(PARM_PAYMENT_METHOD, ccdData.getFee().getPaymentMethod());
+            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(ccdData));
         } else {
-            keyValue.put("{{paymentMethod}}", NO_PAYMENT_NEEDED);
-            keyValue.put("{{paymentReferenceNumber}}", NO_PAYMENT_NEEDED);
+            keyValue.put(PARM_PAYMENT_METHOD, NO_PAYMENT_NEEDED);
+            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, NO_PAYMENT_NEEDED);
         }
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));

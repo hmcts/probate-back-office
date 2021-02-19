@@ -57,7 +57,7 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
 
     @Test
     public void shouldValidateDefaultPBAPayments() {
-        validatePostRequestSuccessForPBAs("/case/default-sols-payment", "solicitorPDFPayloadProbate.json",
+        validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
             "\"solsNeedsPBAPayment\":\"Yes\"");
     }
 
