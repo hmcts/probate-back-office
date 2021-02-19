@@ -48,7 +48,6 @@ import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 public class ConfirmationResponseService {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account ";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
@@ -333,7 +332,7 @@ public class ConfirmationResponseService {
 
     private String getPaymentReference(CCDData ccdData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + ccdData.getFee().getSolsPBANumber();
+            return ccdData.getFee().getSolsPBAPaymentReference();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }
@@ -341,7 +340,7 @@ public class ConfirmationResponseService {
 
     private String getPaymentReference(CaveatData caveatData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethods())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + caveatData.getSolsFeeAccountNumber();
+            return caveatData.getSolsPBAPaymentReference();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }

@@ -137,7 +137,7 @@ public class FeeService {
             }
         }
 
-        if (FEE_API_EVENT_TYPE_CAVEAT.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+        if (FEE_API_EVENT_TYPE_CAVEAT.equals(event)) {
             builder.queryParam("keyword", feeServiceConfiguration.getNewCaveat());
         }
 

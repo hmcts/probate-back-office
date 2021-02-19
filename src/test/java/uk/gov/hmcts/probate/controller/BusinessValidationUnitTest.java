@@ -555,4 +555,13 @@ public class BusinessValidationUnitTest {
             .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    public void shouldDefaultSolicitorPayment() throws Exception {
+        ResponseEntity<CallbackResponse> response =
+            underTest.defaulsSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }

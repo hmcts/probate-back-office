@@ -17,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolicitorPaymentMethodValidationRuleTest {
@@ -72,6 +73,15 @@ public class SolicitorPaymentMethodValidationRuleTest {
 
     @Test()
     public void shouldNotThrowExceptionForFeeAccountPaymentMethodChosenCaveat() {
+        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
+        underTest.validate(caveatDetailsMock);
+
+        verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
+    }
+
+    @Test()
+    public void shouldNotThrowExceptionForNotSolicitor() {
+        when(caveatDataMock.getApplicationType()).thenReturn(PERSONAL);
         when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
         underTest.validate(caveatDetailsMock);
 

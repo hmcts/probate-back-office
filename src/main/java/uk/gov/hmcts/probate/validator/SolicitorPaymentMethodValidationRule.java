@@ -27,7 +27,7 @@ public class SolicitorPaymentMethodValidationRule implements CaseDetailsValidati
 
         String payMethod = caseData.getSolsPaymentMethods();
         ApplicationType applicationType = caseData.getApplicationType();
-        String caseId  = caseDetails.getId().toString();
+        String caseId = caseDetails.getId().toString();
         validatePaymentMethod(payMethod, applicationType, caseId);
     }
 
@@ -36,19 +36,17 @@ public class SolicitorPaymentMethodValidationRule implements CaseDetailsValidati
         CaveatData caveatData = caveatDetails.getData();
         String payMethod = caveatData.getSolsPaymentMethods();
         ApplicationType applicationType = caveatData.getApplicationType();
-        String caseId  = caveatDetails.getId().toString();
+        String caseId = caveatDetails.getId().toString();
         validatePaymentMethod(payMethod, applicationType, caseId);
     }
 
     private void validatePaymentMethod(String payMethod, ApplicationType applicationType, String caseId) {
-        if (applicationType == ApplicationType.SOLICITOR) {
-            if (!PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(payMethod)) {
-                String[] args = {caseId};
-                String userMessage = businessValidationMessageRetriever.getMessage(SOLS_PAY_METHOD_NOT_FEE_ACCOUNT, 
-                    args, Locale.UK);
-                throw new BusinessValidationException(userMessage,
-                    "Fee Account payment method has not been selected: " + caseId);
-            }
+        if (applicationType == ApplicationType.SOLICITOR && !PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(payMethod)) {
+            String[] args = {caseId};
+            String userMessage = businessValidationMessageRetriever.getMessage(SOLS_PAY_METHOD_NOT_FEE_ACCOUNT,
+                args, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                "Fee Account payment method has not been selected: " + caseId);
         }
     }
 }

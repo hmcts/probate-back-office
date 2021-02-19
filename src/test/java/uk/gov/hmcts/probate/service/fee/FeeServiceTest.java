@@ -211,5 +211,23 @@ public class FeeServiceTest {
         assertEquals(BigDecimal.ONE, issueFee.getFeeAmount());
     }
 
+    @Test
+    public void caveatFeeShouldReturnZeroValue() {
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+
+        FeeResponse issueFee = feeService.getCaveatFeesData();
+
+        assertEquals(BigDecimal.ZERO, issueFee.getFeeAmount());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionIfCaveatResponseEntityGetBodyReturnsNull() {
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(responseEntity.getBody()).thenReturn(null);
+        
+        feeService.getCaveatFeesData();
+    }
+
 
 }

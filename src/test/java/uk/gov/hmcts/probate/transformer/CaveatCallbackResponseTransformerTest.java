@@ -34,6 +34,8 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
@@ -110,6 +112,9 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private CaveatDetails caveatDetailsMock;
+    
+    @Mock
+    private SolicitorPBADefaulter solicitorPBADefaulterMock;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -370,6 +375,15 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(0, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
     }
 
+    @Test
+    public void shouldCovertSolsPBANumbers() {
+        CaveatCallbackResponse caveatCallbackResponse =
+            underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
+
+        assertCommon(caveatCallbackResponse);
+        verify(solicitorPBADefaulterMock).defaultCaveatFeeAccounts(any(), any(), any());
+    }
+    
     @Test
     public void shouldExtendCaveatExpiry() {
         CaveatCallbackResponse caveatCallbackResponse =

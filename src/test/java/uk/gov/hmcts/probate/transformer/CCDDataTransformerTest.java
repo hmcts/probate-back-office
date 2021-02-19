@@ -8,8 +8,8 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -58,8 +57,7 @@ public class CCDDataTransformerTest {
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String SELECTED_PBA_NUMBER = "PBA1234";
-    private static final DynamicList PBA_NUMBERS = DynamicList.builder()
-        .listItems(Arrays.asList(DynamicListItem.builder().code("1234").label("2345").build())).build();
+    private static final String PBA_PAYMENT_REFERENCE = "PBA1234-PayRef";
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -116,6 +114,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
             .value(DynamicListItem.builder().code(SELECTED_PBA_NUMBER).build()).build());
+        when(caseDataMock.getSolsPBAPaymentReference()).thenReturn(PBA_PAYMENT_REFERENCE);
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
@@ -357,6 +356,7 @@ public class CCDDataTransformerTest {
 
     private void assertPBAs(CCDData ccdData) {
         assertEquals(SELECTED_PBA_NUMBER, ccdData.getFee().getSolsPBANumber());
+        assertEquals(PBA_PAYMENT_REFERENCE, ccdData.getFee().getSolsPBAPaymentReference());
     }
 
 

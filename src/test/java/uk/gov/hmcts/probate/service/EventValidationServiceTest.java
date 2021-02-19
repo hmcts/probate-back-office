@@ -7,6 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -37,6 +40,10 @@ public class EventValidationServiceTest {
     @Mock
     private CaseData caseDataMock;
     @Mock
+    private CaveatDetails caveatDetailsMock;
+    @Mock
+    private CaveatData caveatDataMock;
+    @Mock
     private PaymentResponse paymentResponseMock;
 
     private SimpleValidationRule validationRule;
@@ -62,7 +69,7 @@ public class EventValidationServiceTest {
     @Test
     public void shouldGatherPaymentValidationErrors() {
 
-        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(), 
+        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
             FieldErrorResponse.builder().build());
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
@@ -77,12 +84,32 @@ public class EventValidationServiceTest {
         assertEquals(2, fieldErrorResponses.getErrors().size());
 
     }
-    
+
+    @Test
+    public void shouldGatherCaveatPaymentValidationErrors() {
+
+        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
+            FieldErrorResponse.builder().build());
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code("PBACode").label("PBALabel").build())
+            .build());
+        when(caveatDetailsMock.getId()).thenReturn(1234L);
+        when(creditAccountPaymentValidationRuleMock.validate("PBALabel", "1234", paymentResponseMock))
+            .thenReturn(errors);
+        CaveatCallbackResponse fieldErrorResponses = eventValidationService
+            .validateCaveatPaymentResponse(caveatDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRuleMock);
+
+        assertEquals(2, fieldErrorResponses.getErrors().size());
+
+    }
+
     private class SimpleValidationRule implements ValidationRule {
         private FieldErrorResponse fieldErrorResponse1Mock;
-        
+
         private FieldErrorResponse fieldErrorResponse2Mock;
-        
+
         @Override
         public List<FieldErrorResponse> validate(CCDData form) {
             return Arrays.asList(fieldErrorResponse1Mock, fieldErrorResponse2Mock);

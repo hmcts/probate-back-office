@@ -143,4 +143,15 @@ public class CaveatControllerUnitTest {
         assertThat(response.getBody(), is(caveatCallbackResponse));
         assertThat(response.getBody().getErrors().size(), is(1));
     }
+
+    @Test
+    public void shouldDefaultSolsPBA() {
+        when(caveatCallbackResponseTransformer.transformCaseForSolicitorPBANumbers(caveatCallbackRequest, AUTH))
+            .thenReturn(caveatCallbackResponse);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers(AUTH,
+            caveatCallbackRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(caveatCallbackResponse));
+    }
 }
