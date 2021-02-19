@@ -309,7 +309,6 @@ public class BusinessValidationController {
     @PostMapping(path = "/default-sols-payment", consumes = APPLICATION_JSON_VALUE, 
         produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaulsSolicitorPBAFlowForTotalPayment(
-        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest) {
 
         return ResponseEntity.ok(callbackResponseTransformer

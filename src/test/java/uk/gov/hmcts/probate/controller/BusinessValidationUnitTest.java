@@ -559,9 +559,9 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldDefaultSolicitorPayment() throws Exception {
         ResponseEntity<CallbackResponse> response =
-            underTest.defaulsSolicitorPBAFlowForTotalPayment("Auth", callbackRequestMock);
+            underTest.defaulsSolicitorPBAFlowForTotalPayment(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
-            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+            .transformCaseForSolicitorPBATotalPayment(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
