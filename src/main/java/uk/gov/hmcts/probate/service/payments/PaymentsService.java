@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.payments;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -68,9 +66,6 @@ public class PaymentsService {
 
     private HttpEntity<CreditAccountPayment> buildRequest(String authToken, CreditAccountPayment creditAccountPayment) {
         HttpHeaders headers = new HttpHeaders();
-        if (!authToken.matches("^Bearer .+")) {
-            throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token:" + authToken);
-        }
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         String sa = authTokenGenerator.generate();

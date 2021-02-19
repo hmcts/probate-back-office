@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -64,11 +63,6 @@ public class PaymentsServiceTest {
             any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.empty()));
 
         paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN, creditAccountPayment);
-    }
-
-    @Test(expected = ClientException.class)
-    public void shouldFailOnAuthTokenMatch() {
-        paymentsService.getCreditAccountPaymentResponse("FORBIDDEN_AUTH", creditAccountPayment);
     }
 
     @Test(expected = BusinessValidationException.class)
