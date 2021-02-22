@@ -41,7 +41,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
@@ -356,7 +356,7 @@ public class CallbackResponseTransformerTest {
     private StateChangeService stateChangeServiceMock;
 
     @Mock
-    private SolicitorExecutorService solicitorExecutorService;
+    private ExecutorListMapperService executorListMapperService;
 
     @Mock
     private CallbackRequest callbackRequestMock;
