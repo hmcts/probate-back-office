@@ -18,7 +18,7 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
- 
+
 /* eslint-disable no-console */
 Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
     const isSolicitorNamedExecutor = true;
@@ -60,9 +60,8 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
-    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);    
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
-
 
     console.info('Grant of probate details');
 

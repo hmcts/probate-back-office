@@ -1816,7 +1816,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefualtSolicitorsInfoToNull() {
+    public void shouldDefaultSolicitorsInfoToNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

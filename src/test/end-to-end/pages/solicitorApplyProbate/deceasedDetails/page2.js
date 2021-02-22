@@ -13,7 +13,7 @@ module.exports = async function () {
     await I.click(`#deceasedAnyOtherNames-${deceasedDetailsConfig.optionNo}`);
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
-        
+
     await I.fillField('#deceasedAddress_AddressLine1', deceasedDetailsConfig.address_line1);
     await I.fillField('#deceasedAddress_AddressLine2', deceasedDetailsConfig.address_line2);
     await I.fillField('#deceasedAddress_AddressLine3', deceasedDetailsConfig.address_line3);
@@ -26,6 +26,6 @@ module.exports = async function () {
 
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
-    
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

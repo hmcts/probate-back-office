@@ -517,7 +517,7 @@ public class CallbackResponseTransformer {
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
-        final String ccdVersion = paperForm.equals("Yes") ? null : SCHEMA_VERSION;
+        final String ccdVersion = paperForm == null || paperForm.equals("Yes") ? null : SCHEMA_VERSION;
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)
@@ -787,6 +787,8 @@ public class CallbackResponseTransformer {
                                                                             ResponseCaseDataBuilder<?, ?> builder) {
 
         builder
+            .schemaVersion(caseData.getSchemaVersion())
+            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
             .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
             .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())

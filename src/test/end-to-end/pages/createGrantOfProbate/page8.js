@@ -15,7 +15,7 @@ module.exports = async function (crud) {
         await I.click('#ukEstate > div > button:nth-child(2)');
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.25);
-        }        
+        }
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
         await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page8_ukEstate_0_value);
         await I.click(`#domicilityIHTCert-${createGrantOfProbateConfig.page8_domicilityIHTCertYes}`);

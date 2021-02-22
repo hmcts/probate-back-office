@@ -214,7 +214,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
             new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-            new ArrayList<String> (Arrays.asList("2.0.0", "2.0.0")));
+            new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
     }
 
     @Test
@@ -223,7 +223,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
                 new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String> (Arrays.asList(null, null)));
+                new ArrayList<String>(Arrays.asList(null, null)));
     }
 
     @Test
@@ -232,7 +232,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
                 new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String> (Arrays.asList("2.0.0", "2.0.0")));
+                new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
     }
 
     @Test
@@ -654,10 +654,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .thenReturn();
 
         response.then().assertThat().statusCode(200);
-        for(int i = 0; i < caseDataAttributes.size(); i++) {
+        for (int i = 0; i < caseDataAttributes.size(); i++) {
             response.then().body("data." + caseDataAttributes.get(i), equalTo(caseDataValues.get(i)));
         }
     }
+
     private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage,
                                                                    Integer statusCode) {
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);

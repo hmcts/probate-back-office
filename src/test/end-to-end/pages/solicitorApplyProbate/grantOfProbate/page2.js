@@ -31,7 +31,7 @@ module.exports = async function (verifyTrustCorpOpts) {
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(0.25);
     }
-    
+
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
     await I.click(grantOfProbateConfig.UKpostcodeLink);
