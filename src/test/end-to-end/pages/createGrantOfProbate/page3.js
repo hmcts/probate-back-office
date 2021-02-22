@@ -70,6 +70,11 @@ module.exports = async function (crud) {
         }
         await I.waitForVisible('#adoptiveRelatives_0_name');
         await I.fillField('#adoptiveRelatives_0_name', createGrantOfProbateConfig.page3_adoptive_relative_name);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
         await I.fillField('#adoptiveRelatives_0_relationship', createGrantOfProbateConfig.page3_adoptive_relative_relationship);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise

@@ -3,7 +3,7 @@
 const assert = require('assert');
 
 // pre-condition - caseDetails.js already invoked to switch to this tab
-module.exports = async function (tabName, fieldLabelsNotToBeShown) {
+module.exports = async function (fieldLabelsNotToBeShown) {
 
     const I = this;
 

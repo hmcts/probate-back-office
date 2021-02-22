@@ -107,6 +107,8 @@ public class CaseData extends CaseDataParent {
 
     private final String immovableEstate;
 
+    // This is an old schema (prior to 2.0.0) attribute so it should be not blank for
+    // an amend of these, but for new trust corp this field is no longer needed & not part of the schema
     // @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 
