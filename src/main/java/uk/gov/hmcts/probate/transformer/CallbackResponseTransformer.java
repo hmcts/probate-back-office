@@ -383,7 +383,16 @@ public class CallbackResponseTransformer {
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+            // Applications are always new schema but when application becomes a case we retain a mix of schemas for
+            // in-flight submitted cases, and bulk scan
             .schemaVersion(SCHEMA_VERSION)
+            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
+            .schemaVersionCcdCopy(SCHEMA_VERSION)
+
+            // set these next 2 properties as these properties are still used for in-flight cases on old schema /
+            // bulk scan created cases and ccd has limited logic facilities
+            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
+            .solicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
@@ -506,10 +515,16 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
-        
+
+        final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
+        final String ccdVersion = paperForm == null || paperForm.equals("No") ? SCHEMA_VERSION : null;
+
         return transformResponse(responseCaseDataBuilder
-                .schemaVersion(SCHEMA_VERSION)
-                .build());
+            .schemaVersion(ccdVersion)
+            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
+            .schemaVersionCcdCopy(ccdVersion)
+            .build()
+        );
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
@@ -520,6 +535,8 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
+            .schemaVersion(caseData.getSchemaVersion())
+            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())
@@ -770,6 +787,8 @@ public class CallbackResponseTransformer {
                                                                             ResponseCaseDataBuilder<?, ?> builder) {
 
         builder
+            .schemaVersion(caseData.getSchemaVersion())
+            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
             .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
             .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())

@@ -1,5 +1,6 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "schemaVersion", "Label": "Version of schema applicable for this case", "FieldType": "Text", "SecurityClassification": "Public", "Hidden": "true"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "schemaVersion", "Label": "Version of schema applicable for this case", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "schemaVersionCcdCopy", "Label": "Version of schema applicable for this case. 2nd copy for FieldShowCondition holding same value as schemaVersion, created due to CCD RI issues", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationID", "Label": "Application ID", "FieldType": "Number", "SecurityClassification": "Public"},

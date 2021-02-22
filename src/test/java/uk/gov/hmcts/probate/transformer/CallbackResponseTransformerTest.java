@@ -1790,7 +1790,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransoformCaseWithScannedDocuments() {
+    public void shouldTransformCaseWithScannedDocuments() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
@@ -1803,7 +1803,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefualtYesToBulkPrint() {
+    public void shouldDefaultYesToBulkPrint() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -1816,7 +1816,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefualtSolicitorsInfoToNull() {
+    public void shouldDefaultSolicitorsInfoToNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

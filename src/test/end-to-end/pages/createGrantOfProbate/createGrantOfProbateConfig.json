@@ -170,5 +170,9 @@
     "address_country": "United Kingdom",
     "address_postcode": "SW1A 1AA",
 
-    "UKpostcodeLink": ".manual-link"
+    "UKpostcodeLink": ".manual-link",
+
+    "amendCaseDetails_waitForText": "Amend case details",
+    "amendSolicitorDetails_update_option": "Solicitor Details",
+    "domAndAssets_update_option": "Domicility and Assets"
 }
