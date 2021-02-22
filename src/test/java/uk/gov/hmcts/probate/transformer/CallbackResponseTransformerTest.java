@@ -1803,7 +1803,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefualtYesToBulkPrint() {
+    public void shouldDefaultYesToBulkPrint() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
