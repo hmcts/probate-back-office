@@ -13,10 +13,6 @@ module.exports = async function () {
     await I.click(`#deceasedAnyOtherNames-${deceasedDetailsConfig.optionNo}`);
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
-
-    if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
-    }
         
     await I.fillField('#deceasedAddress_AddressLine1', deceasedDetailsConfig.address_line1);
     await I.fillField('#deceasedAddress_AddressLine2', deceasedDetailsConfig.address_line2);
@@ -26,17 +22,10 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress_PostCode', deceasedDetailsConfig.address_postcode);
     await I.fillField('#deceasedAddress_Country', deceasedDetailsConfig.address_country);
 
-    if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
-    }
-    
     await I.selectOption('#ihtFormId', deceasedDetailsConfig.page2_solsIHTFormValue);
+
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
-
-    if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
-    }
     
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
