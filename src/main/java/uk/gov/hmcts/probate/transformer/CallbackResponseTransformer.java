@@ -723,6 +723,7 @@ public class CallbackResponseTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
             .trustCorpName(caseData.getTrustCorpName())
+            .trustCorpName(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))

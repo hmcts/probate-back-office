@@ -32,6 +32,7 @@ public class CaseDataParent {
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
+    protected String trustCorpAddress;
     protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected String lodgementAddress;
     protected LocalDate lodgementDate;
