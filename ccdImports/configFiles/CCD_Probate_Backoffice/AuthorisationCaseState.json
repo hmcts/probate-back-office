@@ -105,7 +105,6 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BORedecNotificationSent", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolAppCreated", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolAppUpdated", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Archived", "UserRole": "caseworker-probate-solicitor", "CRUD": ""},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolProbateCreated", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolIntestacyCreated", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolAdmonCreated", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
