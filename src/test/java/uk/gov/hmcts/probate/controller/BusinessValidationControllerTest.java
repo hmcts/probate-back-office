@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -36,6 +37,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +122,7 @@ public class BusinessValidationControllerTest {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_EXEC_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
@@ -296,6 +299,56 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
     }
 
+    @Test
+    public void shouldValidateWithCorrectNumberOfExecutors() throws Exception {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor",
+                        PRIMARY_ADDRESS));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldNotValidateWithTooManyExecutors() throws Exception {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor",
+                        PRIMARY_ADDRESS));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]").value("The total number executors applying cannot exceed 4"));
+    }
 
     @Test
     public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {

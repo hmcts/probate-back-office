@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -100,6 +101,9 @@ public class BusinessValidationUnitTest {
     private StateChangeService stateChangeServiceMock;
     @Mock
     private RedeclarationSoTValidationRule redeclarationSoTValidationRuleMock;
+    @Mock
+    private List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRuleMock;
+
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
@@ -122,6 +126,7 @@ public class BusinessValidationUnitTest {
             stateChangeServiceMock,
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
+            numberOfApplyingExecutorsValidationRuleMock,
             caseStoppedServiceMock,
             emailAddressNotifyApplicantValidationRule);
 
