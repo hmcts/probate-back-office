@@ -517,7 +517,7 @@ public class CallbackResponseTransformer {
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
-        final String ccdVersion = paperForm == null || paperForm.equals("Yes") ? null : SCHEMA_VERSION;
+        final String ccdVersion = paperForm == null || paperForm.equals("No") ? SCHEMA_VERSION : null;
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)

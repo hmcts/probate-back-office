@@ -1790,7 +1790,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransoformCaseWithScannedDocuments() {
+    public void shouldTransformCaseWithScannedDocuments() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
