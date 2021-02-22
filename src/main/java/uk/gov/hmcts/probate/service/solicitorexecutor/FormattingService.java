@@ -14,9 +14,14 @@ import java.util.stream.Collectors;
 @Component
 public class FormattingService {
 
+    private FormattingService() {
+    }
+
     // Create a formatted string including all applying execs
     public static String createExecsApplyingNames(List<CollectionMember<AdditionalExecutorApplying>> execs) {
-        if (execs.isEmpty()) return "";
+        if (execs.isEmpty()) {
+            return "";
+        }
 
         StringBuilder names = new StringBuilder();
         String finalName = execs.get(execs.size() - 1).getValue().getApplyingExecutorName();
@@ -29,7 +34,9 @@ public class FormattingService {
 
     // Create a formatted string including all not applying execs
     public static String createExecsNotApplyingNames(List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
-        if (execs.isEmpty()) return "";
+        if (execs.isEmpty()) {
+            return "";
+        }
 
         StringBuilder names = new StringBuilder();
         String finalName = execs.get(execs.size() - 1).getValue().getNotApplyingExecutorName();
