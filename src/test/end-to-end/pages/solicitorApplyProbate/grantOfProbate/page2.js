@@ -4,12 +4,16 @@ const grantOfProbateConfig = require('./grantOfProbate');
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function () {
+module.exports = async function (verifyTrustCorpOpts) {
     const I = this;
     await I.waitForClickable({css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`});
     await I.runAccessibilityTest();
     await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
-    await I.verifyTitleAndClearingTypeOptions();
+    if (verifyTrustCorpOpts) {
+        await I.verifyTitleAndClearingTypeOptions();
+    } else {
+        await I.scrollTo('#titleAndClearingType-TCTNoT');
+    }
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
@@ -24,6 +28,10 @@ module.exports = async function () {
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
     await I.click('#additionalExecutorsTrustCorpList > div > button');
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
+    if (!testConfig.TestAutoDelayEnabled) {
+        await I.wait(0.25);
+    }
+
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
     await I.click(grantOfProbateConfig.UKpostcodeLink);
@@ -35,7 +43,6 @@ module.exports = async function () {
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_PostCode', grantOfProbateConfig.address_postcode);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_Country', grantOfProbateConfig.address_country);
 
-    await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);
     await I.fillField('#lodgementDate-month', grantOfProbateConfig.page2_lodgementDate_month);

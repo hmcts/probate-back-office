@@ -11,6 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.HashMap;
 
 import static org.hamcrest.Matchers.containsString;
@@ -207,9 +210,29 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersion() {
+    public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+            new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+            new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormYes() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormNo() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
     }
 
     @Test
@@ -619,6 +642,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
+    }
+
+    private void validatePostSuccessAndCheckValues(String jsonPayload, String url, List<String> caseDataAttributes,
+                                                  List<String> caseDataValues) {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonPayload)
+                .when().post(url)
+                .thenReturn();
+
+        response.then().assertThat().statusCode(200);
+        for (int i = 0; i < caseDataAttributes.size(); i++) {
+            response.then().body("data." + caseDataAttributes.get(i), equalTo(caseDataValues.get(i)));
+        }
     }
 
     private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage,

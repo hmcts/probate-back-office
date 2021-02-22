@@ -34,13 +34,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
@@ -58,13 +52,14 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2();
+    await I.grantOfProbatePage2(true);
     await I.grantOfProbatePage3();
     await I.grantOfProbatePage4(isSolicitorApplyingExecutor);
     await I.grantOfProbatePage5();
