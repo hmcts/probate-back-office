@@ -166,8 +166,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_CONFIRMATION);
         JsonPath jsonPath = JsonPath.from(response.asString());
         String confirmationText = jsonPath.get("confirmation_body");
-
         assertThat(confirmationText, containsString("This caveat application has now been submitted"));
+        assertThat(confirmationText, containsString("appref-PAY1"));
     }
 
     @Test
