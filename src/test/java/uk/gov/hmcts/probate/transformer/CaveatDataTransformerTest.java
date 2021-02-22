@@ -36,6 +36,7 @@ public class CaveatDataTransformerTest {
     private static final String REGISTRY_LOCATION = "registryLocation";
     private static final String SOL_APP_REF = "solsSolicitorAppReference";
     private static final String SOL_PAY_METHODS = "solsPaymentMethods";
+    private static final String SOL_PAY_REF = "solsPayRef";
     private static final String SOL_PAY_FEE_ACCT_NUMBER = "solsFeeAccountNumber";
 
     @Before
@@ -75,6 +76,7 @@ public class CaveatDataTransformerTest {
         when(caveatDeatilsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
         when(caveatDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS);
         when(caveatDataMock.getSolsFeeAccountNumber()).thenReturn(SOL_PAY_FEE_ACCT_NUMBER);
+        when(caveatDataMock.getSolsPBAPaymentReference()).thenReturn(SOL_PAY_REF);
 
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
 
@@ -84,6 +86,7 @@ public class CaveatDataTransformerTest {
         assertEquals(APP_SUBMITTED_DATE, caveatData.getApplicationSubmittedDate());
         assertEquals(SOL_PAY_METHODS, caveatData.getSolsPaymentMethods());
         assertEquals(SOL_PAY_FEE_ACCT_NUMBER, caveatData.getSolsFeeAccountNumber());
+        assertEquals(SOL_PAY_REF, caveatData.getSolsPBAPaymentReference());
     }
 
     @Test

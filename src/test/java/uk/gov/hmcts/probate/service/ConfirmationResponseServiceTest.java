@@ -675,7 +675,7 @@ public class ConfirmationResponseServiceTest {
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
         assertEquals("3.00", nextStepsValues.get("{{applicationFee}}"));
-        assertEquals("Cheque (payable to 'HM Courts & Tribunals Service')",
+        assertEquals("Sol Pay Ref",
             nextStepsValues.get("{{paymentReferenceNumber}}"));
     }
 
@@ -738,6 +738,8 @@ public class ConfirmationResponseServiceTest {
         when(caveatDataMock.getDeceasedDateOfBirth()).thenReturn(date);
         when(caveatDataMock.getDeceasedAddress()).thenReturn(probateAddressMock);
         when(caveatDataMock.getDeceasedAnyOtherNames()).thenReturn("No");
+        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
+        when(caveatDataMock.getSolsPBAPaymentReference()).thenReturn("Sol Pay Ref");
 
         return caveatDataMock;
     }
