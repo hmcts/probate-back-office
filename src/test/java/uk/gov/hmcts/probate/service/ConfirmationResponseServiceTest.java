@@ -27,6 +27,8 @@ import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -675,8 +677,8 @@ public class ConfirmationResponseServiceTest {
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
         assertEquals("3.00", nextStepsValues.get("{{applicationFee}}"));
-        assertEquals("Sol Pay Ref",
-            nextStepsValues.get("{{paymentReferenceNumber}}"));
+        assertEquals("Sol Pay Ref", nextStepsValues.get("{{paymentReferenceNumber}}"));
+        assertEquals("SelectePBA", nextStepsValues.get("{{selectedPBA}}"));
     }
 
     private CCDData getCcdDataForConfirmation() {
@@ -708,6 +710,7 @@ public class ConfirmationResponseServiceTest {
         when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(3L);
         when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
         when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
+        when(ccdDataMock.getFee().getSolsPBANumber()).thenReturn("SelectePBA");
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
         when(ccdDataMock.getSolsWillType()).thenReturn("NoWill");
         executorsList.add(executorMock);
@@ -739,6 +742,9 @@ public class ConfirmationResponseServiceTest {
         when(caveatDataMock.getDeceasedAddress()).thenReturn(probateAddressMock);
         when(caveatDataMock.getDeceasedAnyOtherNames()).thenReturn("No");
         when(caveatDataMock.getSolsPaymentMethods()).thenReturn("fee account");
+        when(caveatDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code("SelectePBA").label("SelectePBA").build())
+            .build());
         when(caveatDataMock.getSolsPBAPaymentReference()).thenReturn("Sol Pay Ref");
 
         return caveatDataMock;

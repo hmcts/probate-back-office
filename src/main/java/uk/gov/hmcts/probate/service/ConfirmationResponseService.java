@@ -56,6 +56,7 @@ public class ConfirmationResponseService {
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
+    public static final String PARM_SELECTED_PBA = "{{selectedPBA}}";
     public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
@@ -206,6 +207,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
         keyValue.put(PARM_PAYMENT_METHOD, caveatData.getSolsPaymentMethods());
+        keyValue.put(PARM_SELECTED_PBA, caveatData.getSolsPBANumber().getValue().getCode());
         keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(caveatData));
 
         return markdownSubstitutionService
@@ -239,9 +241,11 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
         if (ccdData.getFee().getPaymentMethod() != null) {
             keyValue.put(PARM_PAYMENT_METHOD, ccdData.getFee().getPaymentMethod());
+            keyValue.put(PARM_SELECTED_PBA, ccdData.getFee().getSolsPBANumber());
             keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(ccdData));
         } else {
             keyValue.put(PARM_PAYMENT_METHOD, NO_PAYMENT_NEEDED);
+            keyValue.put(PARM_SELECTED_PBA, NO_PAYMENT_NEEDED);
             keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, NO_PAYMENT_NEEDED);
         }
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));

@@ -24,6 +24,8 @@ Payment summary
 
 **Payment method** {{paymentMethod}}
 
+**Selected PBA account** {{selectedPBA}}
+
 **Payment reference number** {{paymentReferenceNumber}}
 
 Notes for this application

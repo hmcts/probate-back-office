@@ -20,6 +20,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -95,6 +97,8 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String SOLS_PAYMENT_METHOD = "fee account";
     private static final String SOLS_FEE_ACC = "1234";
+    private static final String SOLS_SELECTED_PBA = "PBA1234";
+    private static final String SOLS_PBA_PAY_REF = "PBA1234-AAA";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
 
@@ -151,6 +155,10 @@ public class CaveatCallbackResponseTransformerTest {
             .legacyType(CAV_LEGACY_CASE_TYPE)
             .solsPaymentMethods(SOLS_PAYMENT_METHOD)
             .solsFeeAccountNumber(SOLS_FEE_ACC)
+            .solsPBANumber(DynamicList.builder()
+                .value(DynamicListItem.builder().code(SOLS_SELECTED_PBA).label(SOLS_SELECTED_PBA).build())
+                .build())
+            .solsPBAPaymentReference(SOLS_PBA_PAY_REF)
             .pcqId(CAV_SOLICITOR_APP_REFERENCE);
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
@@ -464,6 +472,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods());
         assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
+        assertEquals(SOLS_SELECTED_PBA, caveatCallbackResponse.getCaveatData().getSolsPBANumber().getValue().getCode());
 
         assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
         assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());

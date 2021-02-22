@@ -44,6 +44,7 @@ public class CaveatDataTransformer {
             .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
             .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
             .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
+            .solsPBANumber(caveatData.getSolsPBANumber())
             .solsPBAPaymentReference(notNullWrapper(caveatData.getSolsPBAPaymentReference()))
             .build();
     }

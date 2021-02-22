@@ -196,6 +196,8 @@ public class CaveatCallbackResponseTransformer {
 
             .solsPaymentMethods(caveatData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caveatData.getSolsFeeAccountNumber())
+            .solsPBANumber(caveatData.getSolsPBANumber())
+            .solsPBAPaymentReference(caveatData.getSolsPBAPaymentReference())
 
             .caveatorForenames(caveatData.getCaveatorForenames())
             .caveatorSurname(caveatData.getCaveatorSurname())

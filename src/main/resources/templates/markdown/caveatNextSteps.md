@@ -10,6 +10,8 @@ Payment summary
 
 **Payment method** {{paymentMethod}}
 
+**Selected PBA account** {{selectedPBA}}
+
 **Payment reference number** {{paymentReferenceNumber}}
 
 What happens next
