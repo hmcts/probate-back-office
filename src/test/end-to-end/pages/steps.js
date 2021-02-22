@@ -82,6 +82,10 @@ module.exports = function () {
         caveatApplicationDetailsPage2: steps.solicitorApplyCaveat.applicationDetails.page2,
         completeCaveatApplicationPage1: steps.solicitorApplyCaveat.completeApplication.page1,
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
-        completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3
+        completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
+        getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
+        navigateToCaseCaseworker: steps.utility.navigateToCaseCaseworker,
+        checkAmendSolicitorDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendSolicitorDetailsForSolCreatedApp,
+        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
     });
 };

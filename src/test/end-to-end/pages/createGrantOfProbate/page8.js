@@ -13,6 +13,9 @@ module.exports = async function (crud) {
         await I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
         await I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
         await I.click('#ukEstate > div > button:nth-child(2)');
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.25);
+        }
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
         await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page8_ukEstate_0_value);
         await I.click(`#domicilityIHTCert-${createGrantOfProbateConfig.page8_domicilityIHTCertYes}`);
@@ -30,7 +33,7 @@ module.exports = async function (crud) {
     }
 
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(0.5);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
