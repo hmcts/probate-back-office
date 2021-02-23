@@ -63,8 +63,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyNegativeOverseasCopiesFeeReturns400() {
-        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be " +
-            "negative");
+        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be " 
+            + "negative");
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
