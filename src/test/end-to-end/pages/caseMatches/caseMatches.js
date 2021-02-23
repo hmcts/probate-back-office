@@ -15,7 +15,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     // just a small delay - occasionally we get issues.
     // Only necessary where we have no auto delay (local dev).
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(0.5);
     }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
@@ -62,8 +62,8 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.click({css: 'input[id$="doImport-No"]'});
     }
 
-    await I.scrollTo({css: commonConfig.continueButton});
     await I.waitForElement(commonConfig.continueButton);
+    await I.scrollTo({css: commonConfig.continueButton});
     await I.waitForClickable(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
