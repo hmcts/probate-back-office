@@ -695,6 +695,17 @@ public class DocumentControllerTest {
             .andReturn();
     }
 
+    @Test
+    public void shouldValidateNoWillsSelected() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithNoWillsSelectedForBulkPrint.json");
+
+        mockMvc.perform(post("/document/validate-will-selection")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

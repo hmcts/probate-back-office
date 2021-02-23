@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.BulkPrintWillSelectionValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -81,6 +82,7 @@ public class DocumentController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final ReprintService reprintService;
     private final FindWillsService findWillService;
+    private final BulkPrintWillSelectionValidationRule bulkPrintWillSelectionValidationRule;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -156,6 +158,17 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponse);
     }
 
+    @PostMapping(path = "/validate-will-selection", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateWillSelection(
+        @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest) {
+        
+        bulkPrintWillSelectionValidationRule.validate(callbackRequest.getCaseDetails());
+        
+        CallbackResponse callbackResponse = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(callbackResponse);
+    }
+    
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
         @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
@@ -182,6 +195,9 @@ public class DocumentController {
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
+            
+            bulkPrintWillSelectionValidationRule.validate(caseDetails);
+            
             SendLetterResponse response =
                 bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet,
                     willDocuments);
