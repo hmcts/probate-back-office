@@ -2693,7 +2693,7 @@ public class CallbackResponseTransformerTest {
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
-            .registrySequenceNumber("registrySequenceNumber");
+            .registrySequenceNumber("registrySequenceNumber").iht217("Yes");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2712,6 +2712,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("registryAddress", callbackResponse.getData().getRegistryAddress());
         assertEquals("registryEmailAddress", callbackResponse.getData().getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", callbackResponse.getData().getRegistrySequenceNumber());
+        assertEquals("Yes", callbackResponse.getData().getIht217());
     }
 
     @Test
