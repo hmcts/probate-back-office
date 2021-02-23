@@ -1024,6 +1024,7 @@ public class CaseDataTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
+                .morePartnersHoldingPowerReserved("No")
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
@@ -1034,6 +1035,7 @@ public class CaseDataTest {
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
+        assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
     }
 
     @Test

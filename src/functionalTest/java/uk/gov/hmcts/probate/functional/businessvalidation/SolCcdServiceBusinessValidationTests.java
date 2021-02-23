@@ -601,6 +601,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         final String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
         final String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
+        final String morePartnersHoldingPowerReserved = jsonPath.get("data.morePartnersHoldingPowerReserved");
         final String additionalExecForename =
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames");
         final String additionalExecLastname =
@@ -615,6 +616,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
         assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
         assertEquals("New Firm Ltd", nameOfSucceededFirm);
+        assertEquals("No", morePartnersHoldingPowerReserved);
         assertEquals("Exec forename", additionalExecForename);
         assertEquals("Exec lastname", additionalExecLastname);
         assertEquals("Address line 1", additionalExecAddressLine1);
