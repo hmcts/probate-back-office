@@ -89,7 +89,19 @@
             "type": "pwa-node"
         },        
         {
-            "name": "Mocha test end-end Caseworker grantOfProbate",
+            "name": "Mocha test end-end Caseworker grantOfProbate (Solicitor)",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbate-sol",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },            
+        {
+            "name": "Mocha test end-end Caseworker grantOfProbate (Personal)",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-grantOfProbate",
