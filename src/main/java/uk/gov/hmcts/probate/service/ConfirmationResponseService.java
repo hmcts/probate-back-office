@@ -262,16 +262,10 @@ public class ConfirmationResponseService {
             ihtForm = ccdData.getIht().getFormName();
         }
 
-        String iht400 = "";
-        if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
-        }
-
         String legalPhotocopy = "*   a photocopy of the signed legal statement and declaration";
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
-        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
