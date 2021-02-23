@@ -195,6 +195,26 @@ public class ConfirmationResponseServiceFeatureTest {
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
 
+    @Test
+    public void shouldGenerateCorrectCordicilsConfirmationBody() throws Exception {
+        CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).willHasCodicils("Yes").build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithWillCordicils.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectIHT217ConfirmationBody() throws Exception {
+        CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).iht217("Yes").build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT217.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
     private CCDData.CCDDataBuilder createCCDataBuilder() {
         return CCDData.builder()
             .solicitorReference(SOLICITOR_REFERENCE)

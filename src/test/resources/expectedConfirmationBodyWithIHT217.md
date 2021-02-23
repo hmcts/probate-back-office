@@ -24,9 +24,7 @@ Payment summary
 
 **Payment method** fee account
 
-**Selected PBA account** PBA-12345
-
-**Customer reference** Fee account PBA-12345
+**Payment reference number** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
@@ -42,9 +40,7 @@ You now need to send us:
 
 *   the original will
 *   the printed version of this page which will be used as your cover letter to us
-*   the inheritance tax form IHT207
-*   death certificate for Bob Martin
-*   death certificate for John Martin
+*   the inheritance tax form IHT205 and IHT217
 *   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
