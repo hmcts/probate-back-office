@@ -129,8 +129,8 @@ public class SolicitorExecutorTransformer {
                 createCaseworkerNotApplyingList(caseData);
 
         // Add primary applicant to list
-        if (isPrimaryApplicantSet(caseData) && caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutorName(caseData));
+        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         }
 
         // Format exec lists into strings
@@ -243,10 +243,6 @@ public class SolicitorExecutorTransformer {
 
     private boolean isSolicitorApplying(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
-    }
-
-    private boolean isPrimaryApplicantSet(CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() != null;
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(

@@ -64,12 +64,13 @@ public class ExecutorListMapperService {
         return caseData.getAdditionalExecutorsApplying();
     }
 
-    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutorName(
+    public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
         // Create applying executor collection member containing primary applicant names
         return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
-                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
+                .applyingExecutorFirstName(caseData.getSolsSOTForenames())
+                .applyingExecutorLastName(caseData.getSolsSOTSurname())
+                .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
                 .build());
     }
 

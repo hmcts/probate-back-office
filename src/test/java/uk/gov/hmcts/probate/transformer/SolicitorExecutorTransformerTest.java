@@ -33,6 +33,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
@@ -587,5 +588,75 @@ public class SolicitorExecutorTransformerTest {
         assertNull(responseCaseData.getPrimaryApplicantHasAlias());
         assertNull(responseCaseData.getPrimaryApplicantIsApplying());
         assertNull(responseCaseData.getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldSetExecutorNamesList_SolicitorIsApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.mapFromSolicitorToApplyingExecutor(
+                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
+        when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.removeSolicitorFromNotApplyingList(additionalExecutorNotApplying))
+                .thenReturn(additionalExecutorNotApplying);
+
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(EXEC_NAME + ", " + EXEC_NAME, responseCaseData.getSolsIdentifiedApplyingExecs());
+        assertEquals(EXEC_NAME, responseCaseData.getSolsIdentifiedNotApplyingExecs());
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromTrustCorpExecutorsToApplyingExecutors(any());
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromSolicitorToApplyingExecutor(any());
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(any());
+        verify(executorListMapperServiceMock, times(1))
+                .removeSolicitorFromNotApplyingList(any());
+    }
+
+    @Test
+    public void shouldSetExecutorNamesList_SolicitorNotApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(caseDetailsMock.getData(),
+                additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
+
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals(EXEC_NAME, responseCaseData.getSolsIdentifiedApplyingExecs());
+        assertEquals(EXEC_NAME, responseCaseData.getSolsIdentifiedNotApplyingExecs());
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromTrustCorpExecutorsToApplyingExecutors(any());
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(any());
+        verify(executorListMapperServiceMock, times(1))
+                .addSolicitorToNotApplyingList(any(), any());
     }
 }
