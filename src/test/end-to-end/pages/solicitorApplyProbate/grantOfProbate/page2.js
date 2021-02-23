@@ -24,6 +24,14 @@ module.exports = async function (verifyTrustCorpOpts) {
 
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
+    await I.click(grantOfProbateConfig.UKpostcodeLink);
+    await I.fillField('#trustCorpAddress_AddressLine1', grantOfProbateConfig.address_line1);
+    await I.fillField('#trustCorpAddress_AddressLine2', grantOfProbateConfig.address_line2);
+    await I.fillField('#trustCorpAddress_AddressLine3', grantOfProbateConfig.address_line3);
+    await I.fillField('#trustCorpAddress_PostTown', grantOfProbateConfig.address_town);
+    await I.fillField('#trustCorpAddress_County', grantOfProbateConfig.address_county);
+    await I.fillField('#trustCorpAddress_PostCode', grantOfProbateConfig.address_postcode);
+    await I.fillField('#trustCorpAddress_Country', grantOfProbateConfig.address_country);
 
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
     await I.click('#additionalExecutorsTrustCorpList > div > button');
@@ -34,14 +42,6 @@ module.exports = async function (verifyTrustCorpOpts) {
 
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
-    await I.click(grantOfProbateConfig.UKpostcodeLink);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_AddressLine1', grantOfProbateConfig.address_line1);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_AddressLine2', grantOfProbateConfig.address_line2);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_AddressLine3', grantOfProbateConfig.address_line3);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_PostTown', grantOfProbateConfig.address_town);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_County', grantOfProbateConfig.address_county);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_PostCode', grantOfProbateConfig.address_postcode);
-    await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecAddress_Country', grantOfProbateConfig.address_country);
 
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);

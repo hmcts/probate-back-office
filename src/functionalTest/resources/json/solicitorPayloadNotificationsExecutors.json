@@ -117,16 +117,7 @@
           "value": {
             "additionalExecForenames": "exfn1",
             "additionalExecLastname": "exln1",
-            "additionalExecutorTrustCorpPosition": "Solicitor",
-            "additionalExecAddress": {
-              "County": "county",
-              "Country": "country",
-              "PostCode": "postcode",
-              "PostTown": "posttown",
-              "AddressLine1": "addressline 1",
-              "AddressLine2": "addressline 2",
-              "AddressLine3": "addressline 3"
-            }
+            "additionalExecutorTrustCorpPosition": "Solicitor"
           }
         }
       ],

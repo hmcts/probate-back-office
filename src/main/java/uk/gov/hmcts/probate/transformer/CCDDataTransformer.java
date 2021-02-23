@@ -131,7 +131,6 @@ public class CCDDataTransformer {
                 .map(CollectionMember::getValue)
                 .map(executor -> Executor.builder()
                     .applying(true)
-                    //.address(executor.getAdditionalExecAddress())
                     .reasonNotApplying(null)
                     .forename(executor.getAdditionalExecForenames())
                     .lastname(executor.getAdditionalExecLastname())
