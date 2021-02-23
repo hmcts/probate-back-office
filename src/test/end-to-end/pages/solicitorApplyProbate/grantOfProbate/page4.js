@@ -4,32 +4,18 @@ const grantOfProbateConfig = require('./grantOfProbate');
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (isSolcitorMainApplicant = false) {
+module.exports = async function (isSolicitorApplying = false) {
     const I = this;
     await I.waitForElement('#otherExecutorExists');
     await I.runAccessibilityTest();
 
-    if (isSolcitorMainApplicant) {
-        await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionNo}`);
-    } else {
-        await I.fillField('#primaryApplicantForenames', grantOfProbateConfig.page2_primaryApplicantFirstName);
-        await I.fillField('#primaryApplicantSurname', grantOfProbateConfig.page2_primaryApplicantSurname);
-        await I.click(`#primaryApplicantHasAlias-${grantOfProbateConfig.optionYes}`);
-        await I.fillField('#solsExecutorAliasNames', grantOfProbateConfig.page2_primaryApplicantWillName);
-        await I.click(`#primaryApplicantIsApplying-${grantOfProbateConfig.optionYes}`);
-
-        await I.click(grantOfProbateConfig.UKpostcodeLink);
-        await I.fillField('#primaryApplicantAddress_AddressLine1', grantOfProbateConfig.address_line1);
-        await I.fillField('#primaryApplicantAddress_AddressLine2', grantOfProbateConfig.address_line2);
-        await I.fillField('#primaryApplicantAddress_AddressLine3', grantOfProbateConfig.address_line3);
-        await I.fillField('#primaryApplicantAddress_PostTown', grantOfProbateConfig.address_town);
-        await I.fillField('#primaryApplicantAddress_County', grantOfProbateConfig.address_county);
-        await I.fillField('#primaryApplicantAddress_PostCode', grantOfProbateConfig.address_postcode);
-        await I.fillField('#primaryApplicantAddress_Country', grantOfProbateConfig.address_country);
-
+    if (isSolicitorApplying) {
         await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionYes}`);
 
         await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.TestTimeToWaitForText);
+
+        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedApplyingExecutors, testConfig.TestTimeToWaitForText);
+        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors, testConfig.TestTimeToWaitForText);
 
         await I.click('#solsAdditionalExecutorList > div > button');
 
@@ -68,6 +54,12 @@ module.exports = async function (isSolcitorMainApplicant = false) {
         } else {
             await I.retry(10).selectOption('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', grantOfProbateConfig.page2_executorAddress);
         }
+
+    } else {
+
+        await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionNo}`);
+
+
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

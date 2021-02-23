@@ -594,30 +594,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
-        final String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
-        final String dispenseWithNoticeLeaveGiven = jsonPath.get("data.dispenseWithNoticeLeaveGiven");
-        final String dispenseWithNoticeOverview = jsonPath.get("data.dispenseWithNoticeOverview");
-        final String dispenseWithNoticeSupportingDocs = jsonPath.get("data.dispenseWithNoticeSupportingDocs");
-        final String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
-        final String nameOfFirmNamedInWill = jsonPath.get("data.nameOfFirmNamedInWill");
-        final String nameOfSucceededFirm = jsonPath.get("data.nameOfSucceededFirm");
-        final String additionalExecForename =
-                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames");
-        final String additionalExecLastname =
-                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname");
-        final String additionalExecAddressLine1 =
-                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1");
-
-        assertEquals("Yes", dispenseWithNotice);
-        assertEquals("No", dispenseWithNoticeLeaveGiven);
-        assertEquals("Overview", dispenseWithNoticeOverview);
-        assertEquals("Supporting docs", dispenseWithNoticeSupportingDocs);
-        assertEquals("TCTPartSuccPowerRes", titleAndClearingType);
-        assertEquals("Test Solicitor Ltd", nameOfFirmNamedInWill);
-        assertEquals("New Firm Ltd", nameOfSucceededFirm);
-        assertEquals("Exec forename", additionalExecForename);
-        assertEquals("Exec lastname", additionalExecLastname);
-        assertEquals("Address line 1", additionalExecAddressLine1);
+        assertEquals("Yes", jsonPath.get("data.dispenseWithNotice"));
+        assertEquals("No", jsonPath.get("data.dispenseWithNoticeLeaveGiven"));
+        assertEquals("Overview", jsonPath.get("data.dispenseWithNoticeOverview"));
+        assertEquals("Supporting docs", jsonPath.get("data.dispenseWithNoticeSupportingDocs"));
+        assertEquals("TCTPartSuccPowerRes", jsonPath.get("data.titleAndClearingType"));
+        assertEquals("Test Solicitor Ltd", jsonPath.get("data.nameOfFirmNamedInWill"));
+        assertEquals("New Firm Ltd", jsonPath.get("data.nameOfSucceededFirm"));
+        assertEquals("Exec forename",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames"));
+        assertEquals("Exec lastname",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname"));
+        assertEquals("Address line 1",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
+        assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
+        assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits"));
     }
 
     private String transformCase(String jsonFileName, String path) {
