@@ -143,7 +143,6 @@ public class SolicitorExecutorServiceTest {
         List<CollectionMember<AdditionalExecutorApplying>> result =
                 underTest.mapFromTrustCorpExecutorsToApplyingExecutors(caseData);
         AdditionalExecutorApplying expected = AdditionalExecutorApplying.builder()
-                .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)

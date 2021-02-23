@@ -976,10 +976,19 @@ public class CaseDataTest {
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
                         "Executor surname",
-                        "Solicitor",
-                        mock(SolsAddress.class)));
+                        "Solicitor"
+                ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        SolsAddress trustCorpAddress = new SolsAddress(
+                "Address Line 1",
+                "",
+                "",
+                "",
+                "",
+                "POSTCODE",
+                "");
 
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
@@ -988,6 +997,7 @@ public class CaseDataTest {
                 .dispenseWithNoticeSupportingDocs("Supporting docs")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
+                .trustCorpAddress(trustCorpAddress)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LOCAL_DATE)
@@ -999,6 +1009,7 @@ public class CaseDataTest {
         assertEquals("Supporting docs", caseData.getDispenseWithNoticeSupportingDocs());
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
+        assertEquals(trustCorpAddress, caseData.getTrustCorpAddress());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
@@ -1042,8 +1053,8 @@ public class CaseDataTest {
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
                         "Executor surname",
-                        "Solicitor",
-                        mock(SolsAddress.class)));
+                        "Solicitor"
+                ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
 

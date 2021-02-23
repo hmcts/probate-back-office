@@ -89,7 +89,7 @@ public class CommonVariables {
             AdditionalExecutorTrustCorps.builder()
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
-                    .additionalExecAddress(EXEC_ADDRESS)
+                    //.additionalExecAddress(EXEC_ADDRESS)
                     .build());
 
     public static final CollectionMember<AdditionalExecutorPartners> PARTNER_EXEC = new CollectionMember(EXEC_ID,

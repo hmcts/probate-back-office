@@ -564,6 +564,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String dispenseWithNoticeSupportingDocs = jsonPath.get("data.dispenseWithNoticeSupportingDocs");
         final String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
         final String trustCorpName = jsonPath.get("data.trustCorpName");
+        final String trustCorpAddressLine1 = jsonPath.get("data.trustCorpAddress.AddressLine1");
         final String lodgementAddress = jsonPath.get("data.lodgementAddress");
         final String lodgementDate = jsonPath.get("data.lodgementDate");
         final String additionalExecForename =
@@ -572,8 +573,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecLastname");
         final String additionalExecPosition =
                 jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
-        final String additionalExecAddressLine1 =
-                jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("No", dispenseWithNoticeLeaveGiven);
@@ -586,7 +585,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Exec forename", additionalExecForename);
         assertEquals("Exec lastname", additionalExecLastname);
         assertEquals("Solicitor", additionalExecPosition);
-        assertEquals("Address line 1", additionalExecAddressLine1);
+        assertEquals("Trust Address line 1", trustCorpAddressLine1);
     }
 
     @Test

@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 
 import java.util.List;
@@ -47,14 +48,13 @@ public class ResponseCaseDataParent {
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
-    protected String trustCorpAddress;
+    protected SolsAddress trustCorpAddress;
     protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected String lodgementAddress;
     protected String lodgementDate;
     protected String nameOfFirmNamedInWill;
     protected String nameOfSucceededFirm;
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
-    protected String morePartnersHoldingPowerReserved;
     protected String solsForenames;
     protected String solsSurname;
     protected String solsSolicitorWillSignSOT;

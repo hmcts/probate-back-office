@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerRese
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,14 +33,13 @@ public class CaseDataParent {
     protected String titleAndClearingType;
     protected String titleAndClearingTypeNoT;
     protected String trustCorpName;
-    protected String trustCorpAddress;
+    protected SolsAddress trustCorpAddress;
     protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected String lodgementAddress;
     protected LocalDate lodgementDate;
     protected String nameOfFirmNamedInWill;
     protected String nameOfSucceededFirm;
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
-    protected String morePartnersHoldingPowerReserved;
     protected String dispenseWithNoticeLeaveGiven;
     protected String dispenseWithNoticeLeaveGivenDate;
     protected String dispenseWithNoticeOverview;

@@ -723,7 +723,7 @@ public class CallbackResponseTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
             .trustCorpName(caseData.getTrustCorpName())
-            .trustCorpName(caseData.getTrustCorpAddress())
+            .trustCorpAddress(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
@@ -732,8 +732,7 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
-            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
-            .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved());
+            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
