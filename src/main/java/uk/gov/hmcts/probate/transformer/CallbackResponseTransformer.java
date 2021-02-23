@@ -507,21 +507,30 @@ public class CallbackResponseTransformer {
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
         String plural = "";
-        String executorNames = "I, ";
         if(!listOfApplyingExecs.isEmpty()){
             plural = "s";
-            executorNames = "We, ";
         }
 
         String professionalName = caseDetails.getData().getSolsSOTName();
 
-        String confirmSOT = "By signing the Statement of Truth by ticking the boxes below, I, " + professionalName + " confirm the following:\n\n" +
-                "I, " + professionalName + ", have provided a copy of this application to the Executor" + plural + " named below.\n\n" +
-                "I, " + professionalName + ", have informed the Executor"  + plural + " that in signing the Statement of Truth I am confirming that the Executor "  + plural + " believe "  + plural + " the facts set out in this legal statement are true.\n\n" +
-                "I, " + professionalName + ", have informed the Executor"   + plural +  " of the consequences if it should subsequently appear that the Executor "  + plural + " did not have an honest belief in the facts set out in the legal statement.\n\n" +
-                "I, " + professionalName + ", have been authorised but the Executor"  + plural + " to sign the Statement of Truth.\n\n" +
-                "I, " + professionalName + ", understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.\n";
+        String confirmSOT = "By signing the Statement of Truth by ticking the boxes below, I, " + professionalName +
+                " confirm the following:\n\n" +
+                "I, " + professionalName + ", have provided a copy of this application to the Executor" + plural +
+                " named below.\n\n" +
+                "I, " + professionalName + ", have informed the Executor"  + plural +
+                " that in signing the Statement of Truth I am confirming that the Executor "  + plural +
+                " believe "  + plural + " the facts set out in this legal statement are true.\n\n" +
+                "I, " + professionalName + ", have informed the Executor"   + plural +
+                " of the consequences if it should subsequently appear that the Executor "  + plural +
+                " did not have an honest belief in the facts set out in the legal statement.\n\n" +
+                "I, " + professionalName + ", have been authorised but the Executor"  + plural +
+                " to sign the Statement of Truth.\n\n" +
+                "I, " + professionalName + ", understand that proceedings for contempt of court may be brought " +
+                "against anyone who makes, or causes to be made, a false statement in a document verified by a " +
+                "statement of truth without an honest belief in its truth.\n";
 
+        String executorNames = "The Executor" + plural;
+        // + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
         for(CollectionMember<AdditionalExecutorApplying> applyingExec : listOfApplyingExecs){
             executorNames = executorNames + applyingExec.getValue().getApplyingExecutorName() + ", ";
         }
