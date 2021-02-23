@@ -306,7 +306,6 @@ public class BusinessValidationControllerTest {
                         "Executor forename",
                         "Executor surname",
                         "Solicitor"
-                        //PRIMARY_ADDRESS
                 ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
