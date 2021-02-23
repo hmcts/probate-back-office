@@ -171,7 +171,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(confirmationText, containsString("**Application fee** &pound;3.00"));
         assertThat(confirmationText, containsString("**Payment method** fee account"));
         assertThat(confirmationText, containsString("**Selected PBA account** PBA0082126"));
-        assertThat(confirmationText, containsString("**Payment reference number** appref-PAY1"));
+        assertThat(confirmationText, containsString("**Customer reference** appref-PAY1"));
     }
 
     @Test
