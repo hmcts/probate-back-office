@@ -75,8 +75,8 @@
         <notes><![CDATA[
    file name: elasticsearch-7.9.2.jar
    ]]></notes>
-        <gav regex="true">^org\.elasticsearch/elasticsearch@.*$</gav>
+        <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch\@.*$</packageUrl>
         <cve>CVE-2020-7021</cve>
-        <cve>CVE-2020-22132</cve>
+        <cve>CVE-2021-22132</cve>
     </suppress>
 </suppressions>
