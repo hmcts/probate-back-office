@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -39,7 +40,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.list;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -516,10 +516,10 @@ public class CallbackResponseTransformer {
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
         String plural = "";
-        if(!listOfApplyingExecs.isEmpty()){
+        if(listOfApplyingExecs.size() > 1){
             plural = "s";
         }
-
+        String executorNames = "The Executor" + plural + " ";
         String professionalName = caseDetails.getData().getSolsSOTName();
 
         String confirmSOT = "By signing the Statement of Truth by ticking the boxes below, I, " + professionalName +
@@ -538,10 +538,9 @@ public class CallbackResponseTransformer {
                 "against anyone who makes, or causes to be made, a false statement in a document verified by a " +
                 "statement of truth without an honest belief in its truth.\n";
 
-        String executorNames = "The Executor" + plural + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
-//        for(CollectionMember<AdditionalExecutorApplying> applyingExec : listOfApplyingExecs){
-//            executorNames = executorNames + applyingExec.getValue().getApplyingExecutorName() + ", ";
-//        }
+        // if there are no executors then fill the space in with the professional users name (primary applicant)
+        executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
 
         builder.solsReviewSOTConfirm(confirmSOT);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
