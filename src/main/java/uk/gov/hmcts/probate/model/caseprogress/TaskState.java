@@ -25,7 +25,7 @@ public enum TaskState {
         public static final String  NOT_AVAILABLE_DESC = "";
     }
 
-    public static final String CODE_BRANCH = "DTSPB-715-case-progress-tab";
+    public static final String CODE_BRANCH = "master";
     public static final String IMG_URL_TEMPLATE = "https://raw.githubusercontent.com/hmcts/probate-back-office/" + CODE_BRANCH + "/src/main/resources/statusImages/%s";
 
     public static class TaskStateImageUrls {

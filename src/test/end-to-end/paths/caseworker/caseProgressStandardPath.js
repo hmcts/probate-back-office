@@ -10,9 +10,9 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 Scenario('03 BO Case Progress E2E - standard path', async function (I) {
-    // IDAM
     /* eslint-disable no-console */
     try {
+        // IDAM
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
@@ -59,9 +59,9 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
-        await I.caseProgressConfirmApplication();
 
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
+        await I.caseProgressConfirmApplication();
         await I.caseProgressCompleteApplication();
 
         console.info('Payment');
