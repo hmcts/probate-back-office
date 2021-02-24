@@ -6,9 +6,9 @@
       "How do you want to pay?"
     ],
     "dataKeys": [
-      "page4_extraCopiesUK",
-      "page4_outsideUKGrantCopies",
-      "page5_paymentType"
+      "page3_extraCopiesUK",
+      "page3_outsideUKGrantCopies",
+      "page4_paymentType"
     ]
   }
   

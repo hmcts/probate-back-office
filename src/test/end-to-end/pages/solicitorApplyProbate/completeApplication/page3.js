@@ -5,11 +5,10 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#solsSOTForenames');
+    await I.waitForElement('#extraCopiesOfGrant');
     await I.runAccessibilityTest();
-    await I.fillField('#solsSOTForenames', completeApplicationConfig.page3_sol_forename);
-    await I.fillField('#solsSOTSurname', completeApplicationConfig.page3_sol_surname);
-    await I.fillField('#solsSOTJobTitle', completeApplicationConfig.page3_sol_jobtitle);
+    await I.fillField('#extraCopiesOfGrant', completeApplicationConfig.page3_extraCopiesUK);
+    await I.fillField('#outsideUKGrantCopies', completeApplicationConfig.page3_outsideUKGrantCopies);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
