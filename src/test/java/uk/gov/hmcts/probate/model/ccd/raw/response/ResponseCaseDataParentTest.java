@@ -135,6 +135,8 @@ public class ResponseCaseDataParentTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
+                .soleTraderOrLimitedCompany("No")
+                .whoSharesInCompanyProfits("Partners")
                 .build();
 
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
@@ -142,6 +144,8 @@ public class ResponseCaseDataParentTest {
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
+        assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
+        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits());
     }
 
     @Test

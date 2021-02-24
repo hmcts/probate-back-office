@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +47,10 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SolicitorExecutorServiceTest {
+public class ExecutorListMapperServiceTest {
 
     @InjectMocks
-    private SolicitorExecutorService underTest;
+    private ExecutorListMapperService underTest;
 
     @Mock
     private CaseDetails caseDetailsMock;
@@ -88,8 +89,8 @@ public class SolicitorExecutorServiceTest {
     public void shouldUpdateSolNotApplyingExec() {
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
         newExecsNotApplying = underTest
-            .addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(),
-                additionalExecutorsNotApplyingMock);
+                .addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(),
+                        additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_SOT_FULLNAME + " UPDATED",
@@ -105,22 +106,11 @@ public class SolicitorExecutorServiceTest {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
         newExecsNotApplying = underTest
-            .addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(),
-                additionalExecutorsNotApplyingMock);
+                .addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(),
+                        additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
-    }
-
-    @Test
-    public void shouldRemoveSolApplyingExec() {
-        additionalExecutorsApplyingMock.remove(1);
-        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
-        newExecsApplying = underTest.removeSolicitorFromApplyingList(additionalExecutorsApplyingMock);
-
-        assertEquals(1, newExecsApplying.size());
-        assertEquals(EXEC_NAME, newExecsApplying.get(0).getValue().getApplyingExecutorName());
-        assertEquals(EXEC_ID, newExecsApplying.get(0).getId());
     }
 
     @Test

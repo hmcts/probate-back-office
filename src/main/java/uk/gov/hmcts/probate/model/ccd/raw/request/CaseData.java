@@ -187,21 +187,19 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
     private final String solsLifeInterest;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-        ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -538,7 +536,7 @@ public class CaseData extends CaseDataParent {
 
     private List<CollectionMember<AdditionalExecutor>> getAllExecutors(boolean applying) {
         List<CollectionMember<AdditionalExecutor>> totalExecutors = new ArrayList<>();
-        if ((applying && isPrimaryApplicantApplying())
+        if (getPrimaryApplicantForenames() != null && (applying && isPrimaryApplicantApplying())
             || (!applying && isPrimaryApplicantNotApplying())) {
             AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
                 .additionalExecForenames(getPrimaryApplicantForenames())

@@ -122,18 +122,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"",
-            "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
-    public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"",
-            "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
     public void verifyMissingDeceasedDodReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"",
             "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath", VALIDATE_URL);
