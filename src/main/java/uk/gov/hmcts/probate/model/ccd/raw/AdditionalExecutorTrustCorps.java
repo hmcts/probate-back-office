@@ -12,5 +12,6 @@ public class AdditionalExecutorTrustCorps {
     private final String additionalExecForenames;
     private final String additionalExecLastname;
     private final String additionalExecutorTrustCorpPosition;
+    private final SolsAddress additionalExecAddress;
 
 }

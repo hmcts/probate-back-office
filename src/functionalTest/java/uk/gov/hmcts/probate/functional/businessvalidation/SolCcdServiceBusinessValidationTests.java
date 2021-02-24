@@ -474,6 +474,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
         assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
+        assertEquals("addressline 1", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine1"));
+        assertEquals("addressline 2", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine2"));
+        assertEquals("addressline 3", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("AddressLine3"));
+        assertEquals("posttown", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("PostTown"));
+        assertEquals("postcode", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("PostCode"));
+        assertEquals("country", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("Country"));
+        assertEquals("county", ((HashMap)executorApplying1.get("applyingExecutorAddress")).get("County"));
 
         HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
         assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
@@ -493,6 +500,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 VALIDATE_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
+
         assertEquals("Solicitor_fn", jsonPath.get("data.primaryApplicantForenames"));
         assertEquals("Solicitor_ln", jsonPath.get("data.primaryApplicantSurname"));
         assertEquals("solicitor@probate-test.com", jsonPath.get("data.primaryApplicantEmailAddress"));
@@ -566,6 +574,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecLastname");
         final String additionalExecPosition =
                 jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
+        final String additionalTrustCorpExecAddressLine1 =
+                jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecAddress.AddressLine1");
 
         assertEquals("Yes", dispenseWithNotice);
         assertEquals("No", dispenseWithNoticeLeaveGiven);
@@ -579,6 +589,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Exec lastname", additionalExecLastname);
         assertEquals("Solicitor", additionalExecPosition);
         assertEquals("Trust Address line 1", trustCorpAddressLine1);
+        assertEquals("Trust Address line 1", additionalTrustCorpExecAddressLine1);
     }
 
     @Test
