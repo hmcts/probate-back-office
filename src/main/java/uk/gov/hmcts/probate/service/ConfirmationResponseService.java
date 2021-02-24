@@ -246,9 +246,12 @@ public class ConfirmationResponseService {
         String originalWill = "\n*   the original will";
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
+        } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
+            originalWill = "\n*   the original will and any codicils";
         }
+        
         keyValue.put("{{originalWill}}", originalWill);
-
+        
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -258,8 +261,12 @@ public class ConfirmationResponseService {
         String ihtText = "";
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "\n*   completed inheritance tax form ";
-            ihtForm = ccdData.getIht().getFormName();
+            ihtText = "\n*   the inheritance tax form ";
+            if ("Yes".equals(ccdData.getIht217())) {
+                ihtForm = "IHT205 and IHT217";
+            } else {
+                ihtForm = ccdData.getIht().getFormName();
+            }
         }
 
         String iht400 = "";
