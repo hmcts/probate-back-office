@@ -91,6 +91,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
     private static final String GENERATE_GRANT = "/document/generate-grant";
+    private static final String DETERMINE_WILLS_AVAILABLE = "/document/determine-wills-available";
+    private static final String DETERMINE_WILL_SELECTION = "/document/validate-will-selection";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
@@ -109,6 +111,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
+    private static final String DEFAULT_PA_PAYLOAD_WITH_WILLS = "personalPayloadNotificationsWithWills.json";
+    private static final String DEFAULT_PA_PAYLOAD_WITH_WILL_SELECTION = 
+        "personalPayloadNotificationsWithWillSelection.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
     private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
@@ -162,6 +167,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
+    }
+
+    @Test
+    public void verifyPersonalApplicantWillsAvailableShouldReturnOkResponseCode() {
+        validatePostSuccess(DEFAULT_PA_PAYLOAD_WITH_WILLS, DETERMINE_WILLS_AVAILABLE);
+    }
+
+    @Test
+    public void verifyPersonalApplicantWillSelectionShouldReturnOkResponseCode() {
+        validatePostSuccess(DEFAULT_PA_PAYLOAD_WITH_WILL_SELECTION, DETERMINE_WILL_SELECTION);
     }
 
     @Test

@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +42,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -429,7 +429,7 @@ public class DocumentControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.probateDocumentsGenerated", Matchers.empty()))
+            .andExpect(jsonPath("$.data.probateDocumentsGenerated", empty()))
             .andReturn();
 
         verify(documentGeneratorService)
@@ -696,6 +696,21 @@ public class DocumentControllerTest {
     }
 
     @Test
+    public void shouldValidateWillsSelected() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithWillsSelectedForBulkPrint.json");
+
+        mockMvc.perform(post("/document/validate-will-selection")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.willSelection[0].value.documentSelected[0]", containsString("Yes")))
+            .andExpect(jsonPath("$.data.willSelection[1].value.documentSelected", empty()))
+            .andExpect(jsonPath("$.data.willSelection[2].value.documentSelected[0]", containsString("Yes")))
+            .andExpect(jsonPath("$.data.willSelection[3].value.documentSelected", empty()))
+            .andReturn();
+    }
+
+    @Test
     public void shouldValidateNoWillsSelected() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithNoWillsSelectedForBulkPrint.json");
 
@@ -703,6 +718,8 @@ public class DocumentControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors[0]")
+                .value("No will has been selected for Grant Issue"))
             .andReturn();
     }
 

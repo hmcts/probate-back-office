@@ -624,6 +624,7 @@ public class CallbackResponseTransformer {
 
             .scannedDocuments(caseData.getScannedDocuments())
             .evidenceHandled(caseData.getEvidenceHandled())
+            .willSelection(caseData.getWillSelection())
 
             .paperForm(caseData.getPaperForm())
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
