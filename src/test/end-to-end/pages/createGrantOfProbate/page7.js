@@ -13,10 +13,21 @@ module.exports = async function (crud) {
         await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page7_applyingAsAttorneyYes}`);
         await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);
