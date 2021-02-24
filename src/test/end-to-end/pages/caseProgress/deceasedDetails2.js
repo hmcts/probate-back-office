@@ -19,6 +19,6 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField({css: '#ihtGrossValue'}, caseProgressConfig.IHTGross);
     await I.fillField({css: '#ihtNetValue'}, caseProgressConfig.IHTNet);
     await I.click({css: '#iht217-No'});
-    
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

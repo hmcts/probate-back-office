@@ -9,7 +9,7 @@ module.exports = async function () {
     await I.fillField('#solsIHT400Date-day', '10');
     await I.fillField('#solsIHT400Date-month', '10');
     await I.fillField('#solsIHT400Date-year', '2020');
-    await I.waitForNavigationToComplete(commonConfig.continueButton);    
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     await I.waitForElement('#solsSOTForenames');
     await I.runAccessibilityTest();
