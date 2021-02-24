@@ -11,7 +11,7 @@
     "Postcode/Zipcode",
     "Country",
     "Contact email address",
-    "Is the probate professional named in the will as an executor?",
+    "Is the probate practitioner named in the will as an executor?",
     "Contact phone number"
   ],
   "dataKeys": [
@@ -64,7 +64,7 @@
   },
   "SolicitorMainApplicantAndExecutor" : {
     "fields": [
-      "Is the probate professional acting as an executor?",
+      "Is the probate practitioner acting as an executor?",
       "First name(s)",
       "Last name(s)",
       "Applicant phone number",
