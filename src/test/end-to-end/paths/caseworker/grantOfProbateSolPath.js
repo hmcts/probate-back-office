@@ -46,15 +46,15 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     let nextStepName = 'PA1P/PA1A/Solicitors';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    await I.cwCreateSolsGoPPage1('create');
-    await I.cwCreateSolsGoPPage2('create');
-    await I.cwCreateSolsGoPPage3('create');
-    await I.cwCreateSolsGoPPage4('create', unique_deceased_user);
-    await I.cwCreateSolsGoPPage5('create');
-    await I.cwCreateSolsGoPPage6('create');
-    await I.cwCreateSolsGoPPage7('create');
-    await I.cwCreateSolsGoPPage8('create');
-    await I.cwCreateSolsGoPPage9();
+    await I.cwEnterSolsGoPPage1('create');
+    await I.cwEnterSolsGoPPage2('create');
+    await I.cwEnterSolsGoPPage3('create');
+    await I.cwEnterSolsGoPPage4('create', unique_deceased_user);
+    await I.cwEnterSolsGoPPage5('create');
+    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage7('create');
+    await I.cwEnterSolsGoPPage8('create');
+    await I.cwEnterSolsGoPPage9();
     await I.checkMyAnswers(nextStepName);
     let endState;
 
@@ -62,15 +62,15 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    await I.cwCreateSolsGoPPage1('create');
-    await I.cwCreateSolsGoPPage2('create');
-    await I.cwCreateSolsGoPPage3('create');
-    await I.cwCreateSolsGoPPage4('create', unique_deceased_user);
-    await I.cwCreateSolsGoPPage5('create');
-    await I.cwCreateSolsGoPPage6('create');
-    await I.cwCreateSolsGoPPage7('create');
-    await I.cwCreateSolsGoPPage8('create');
-    await I.cwCreateSolsGoPPage9();
+    await I.cwEnterSolsGoPPage1('create');
+    await I.cwEnterSolsGoPPage2('create');
+    await I.cwEnterSolsGoPPage3('create');
+    await I.cwEnterSolsGoPPage4('create', unique_deceased_user);
+    await I.cwEnterSolsGoPPage5('create');
+    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage7('create');
+    await I.cwEnterSolsGoPPage8('create');
+    await I.cwEnterSolsGoPPage9();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
@@ -92,28 +92,25 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage1('update');
+    await I.cwEnterSolsGoPPage1('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage2('update');
+    await I.cwEnterSolsGoPPage3('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage3('update');
+    await I.cwEnterSolsGoPPage4('update', unique_deceased_user);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage4('update', unique_deceased_user);
+    await I.cwEnterSolsGoPPage5('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage5('update');
+    await I.cwEnterSolsGoPPage6('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage6('update');
+    await I.cwEnterSolsGoPPage7('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage7('update');
-    await I.checkMyAnswers(nextStepName);
-    await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage8('update');
+    await I.cwEnterSolsGoPPage8('update');
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -154,7 +151,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
-    await I.cwCreateSolsGoPPage4('update2orig');
+    await I.cwEnterSolsGoPPage4('update2orig');
     await I.checkMyAnswers(nextStepName);
 
     nextStepName = 'Find matches (Examining)';

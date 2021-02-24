@@ -17,6 +17,12 @@ module.exports = async function (crud) {
         await I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames);
         await I.fillField('#primaryApplicantSurname', createGrantOfProbateConfig.page2_lastnames);    
 
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+                
         await I.fillField('#primaryApplicantPhoneNumber', createGrantOfProbateConfig.page2_phoneNumber);
         await I.fillField('#primaryApplicantSecondPhoneNumber', createGrantOfProbateConfig.page2_secondPhoneNumber);
         await I.fillField('#primaryApplicantEmailAddress', createGrantOfProbateConfig.page2_email);
