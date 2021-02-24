@@ -510,12 +510,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder){
+    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder) {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
         String plural = "";
-        if(listOfApplyingExecs.size() > 1){
+        if (listOfApplyingExecs.size() > 1) {
             plural = "s";
         }
         String executorNames = "The Executor" + plural + " ";
