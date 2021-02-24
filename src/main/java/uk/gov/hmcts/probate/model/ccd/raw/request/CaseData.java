@@ -275,6 +275,8 @@ public class CaseData extends CaseDataParent {
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
 
+    private final LocalDate solsIHT400Date;
+
     private final String solsSOTName;
 
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTForenamesIsNull}")

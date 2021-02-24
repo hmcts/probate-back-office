@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +79,7 @@ public class BusinessValidationController {
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -164,6 +166,12 @@ public class BusinessValidationController {
                 ADMON_WILL_NAME);
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
+        validateIHT400Date(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -358,5 +366,9 @@ public class BusinessValidationController {
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         return emailErrors.isEmpty();
+    }
+
+    private void validateIHT400Date(CallbackRequest callbackRequest) {
+        ihtFourHundredDateValidationRule.validate(callbackRequest.getCaseDetails());
     }
 }

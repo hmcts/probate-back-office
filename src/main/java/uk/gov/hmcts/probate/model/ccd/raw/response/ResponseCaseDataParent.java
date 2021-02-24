@@ -33,4 +33,5 @@ public class ResponseCaseDataParent {
     protected String taskList;
     protected String escalatedDate;
     protected String authenticatedDate;
+    protected String iht217;
 }
