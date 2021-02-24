@@ -115,7 +115,149 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title"
+      "solsSOTJobTitle": "job title",
+      "boDocumentsUploaded": [
+        {
+          "id": "f9f5ae71-5fa8-4db8-ac07-8b5380cb2d28",
+          "value": {
+            "Comment": "qwerwerwer",
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/9c55a4b5-f668-4e83-89f4-cdfa9bbc9019",
+              "document_filename": "Firefox_Screenshot_2021-02-03T15-55-49.344Z.png",
+              "document_binary_url": "http://dm-store:8080/documents/9c55a4b5-f668-4e83-89f4-cdfa9bbc9019/binary"
+            },
+            "DocumentType": "will"
+          }
+        },
+        {
+          "id": "be440788-04da-4a60-8fec-a04f2bf5db84",
+          "value": {
+            "Comment": "safgsfd",
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/294e1794-a8a0-4d37-a298-ec59829d2bc6",
+              "document_filename": "Firefox_Screenshot_2021-02-03T15-55-49.344Z.png",
+              "document_binary_url": "http://dm-store:8080/documents/294e1794-a8a0-4d37-a298-ec59829d2bc6/binary"
+            },
+            "DocumentType": "will"
+          }
+        },
+        {
+          "id": "97a2c115-25b6-49fe-aed8-3cf0e72eed29",
+          "value": {
+            "Comment": "Codicil",
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/c3938c49-7b42-4d9e-8230-368c96b121c0",
+              "document_filename": "cover-sheet 26.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/c3938c49-7b42-4d9e-8230-368c96b121c0/binary"
+            },
+            "DocumentType": "IHT"
+          }
+        },
+        {
+          "id": "23a0e32d-c976-4a53-8be4-567b4ee99673",
+          "value": {
+            "Comment": "Other",
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f2",
+              "document_filename": "DTS Probate Team D-o-R D-o-D.docx",
+              "document_binary_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f2/binary"
+            },
+            "DocumentType": "other"
+          }
+        }
+      ],
+      "scannedDocuments": [
+        {
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668",
+          "value": {
+            "controlNumber": "1234",
+            "fileName": "scanneddocument.pdf",
+            "type": "other",
+            "subtype": "will",
+            "scannedDate": "2018-01-01T12:34:56.123",
+            "url": {
+              "document_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f3",
+              "document_binary_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f3/binary",
+              "document_filename": "somedoc.pdf"
+            },
+            "exceptionRecordReference": "EX-REF-REC-001"
+          }
+        },
+        {
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec496689",
+          "value": {
+            "controlNumber": "5678",
+            "fileName": "scanneddocumentOther.pdf",
+            "type": "other",
+            "scannedDate": "2018-01-01T12:34:56.123",
+            "url": {
+              "document_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f4",
+              "document_binary_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f4/binary",
+              "document_filename": "somedocOther2.pdf"
+            },
+            "exceptionRecordReference": "EX-REF-REC-002"
+          }
+        }
+      ],
+      "willSelection": [
+        {
+          "id": "dc20b8f9-f5d9-4d4c-9b8a-5001640ec71c",
+          "value": {
+            "documentSelected": [
+              "Yes"
+            ],
+            "documentLabel": "Will",
+            "documentDate": null,
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f3",
+              "document_binary_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f3/binary",
+              "document_filename": "OtherWill.pdf"
+            }
+          }
+        },
+        {
+          "id": "1f6eb2f0-dc22-4a9b-ae8b-df9c2ee73696",
+          "value": {
+            "documentSelected": [],
+            "documentLabel": "Will",
+            "documentDate": null,
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/294e1794-a8a0-4d37-a298-ec59829d2bc6",
+              "document_binary_url": "http://dm-store:8080/documents/294e1794-a8a0-4d37-a298-ec59829d2bc6/binary",
+              "document_filename": "Will.png"
+            }
+          }
+        },
+        {
+          "id": "d40e7730-b3f8-4a17-9de6-595e7173922b",
+          "value": {
+            "documentSelected": [
+              "Yes"
+            ],
+            "documentLabel": "Codicil",
+            "documentDate": null,
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/c3938c49-7b42-4d9e-8230-368c96b121c0",
+              "document_binary_url": "http://dm-store:8080/documents/c3938c49-7b42-4d9e-8230-368c96b121c0/binary",
+              "document_filename": "Codicil.pdf"
+            }
+          }
+        },
+        {
+          "id": "25337325-1227-442c-9c67-ee4a7a082b5d",
+          "value": {
+            "documentSelected": [],
+            "documentLabel": "Other",
+            "documentDate": null,
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f2",
+              "document_binary_url": "http://dm-store:8080/documents/934febe1-c8ba-4d11-8341-4bbc800d52f2/binary",
+              "document_filename": "Other.docx"
+            }
+          }
+        }
+      ]
+
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
