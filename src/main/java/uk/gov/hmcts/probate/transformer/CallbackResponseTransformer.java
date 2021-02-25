@@ -784,7 +784,8 @@ public class CallbackResponseTransformer {
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
-            .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation());
+            .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
+            .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

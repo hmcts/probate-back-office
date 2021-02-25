@@ -149,6 +149,7 @@ public class ResponseCaseDataParentTest {
                 .nameOfSucceededFirm("New Firm Ltd")
                 .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits("Partners")
+                .morePartnersHoldingPowerReserved("No")
                 .build();
 
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
@@ -158,6 +159,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
         assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
         assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits());
+        assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
     }
 
     @Test
