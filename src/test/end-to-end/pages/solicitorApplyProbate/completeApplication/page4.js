@@ -5,10 +5,10 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#extraCopiesOfGrant');
+    await I.waitForElement('#solsPaymentMethods');
     await I.runAccessibilityTest();
-    await I.fillField('#extraCopiesOfGrant', completeApplicationConfig.page4_extraCopiesUK);
-    await I.fillField('#outsideUKGrantCopies', completeApplicationConfig.page4_outsideUKGrantCopies);
+    await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page4_paymentType);
+    await I.fillField('#solsFeeAccountNumber', completeApplicationConfig.page4_payAccountNum);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
