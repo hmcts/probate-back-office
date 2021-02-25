@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
@@ -37,6 +38,9 @@ public class PaymentsServiceTest {
 
     @MockBean
     private CreditAccountPayment creditAccountPayment;
+
+    @MockBean
+    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     @Mock
     private PaymentResponse paymentResponse;
@@ -65,18 +69,25 @@ public class PaymentsServiceTest {
         paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN, creditAccountPayment);
     }
 
-    @Test(expected = BusinessValidationException.class)
+    @Test
     public void shouldFailOnAccountDeleted() {
-        String body = "{\"reference\":\"RC-1599-4778-4711-5958\",\"date_created\":\"2020-09-07T11:24:07.160+0000\"," 
-            + "\"status\":\"failed\",\"payment_group_reference\":\"2020-1599477846961\","
-            + "\"status_histories\":[{\"status\":\"failed\",\"error_code\":\"CA-E0004\",\"error_message\":\"Your "
-            + "account is deleted\",\"date_created\":\"2020-09-07T11:24:07.169+0000\","
-            + "\"date_updated\":\"2020-09-07T11:24:07.169+0000\"}]}";
-        when(httpClientErrorExceptionMock.getResponseBodyAsString()).thenReturn(body);
-        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
-            any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
+        try {
+            String body = "{\"reference\":\"RC-1599-4778-4711-5958\",\"date_created\":\"2020-09-07T11:24:07.160+0000\","
+                + "\"status\":\"failed\",\"payment_group_reference\":\"2020-1599477846961\","
+                + "\"status_histories\":[{\"status\":\"failed\",\"error_code\":\"CA-E0004\",\"error_message\":\"Your "
+                + "account is deleted\",\"date_created\":\"2020-09-07T11:24:07.169+0000\","
+                + "\"date_updated\":\"2020-09-07T11:24:07.169+0000\"}]}";
+            when(httpClientErrorExceptionMock.getResponseBodyAsString()).thenReturn(body);
+            when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
+            when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn("Failed with some error");
 
-        paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
+            paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
+        } catch (BusinessValidationException e) {
+            assertEquals("Failed with some error", e.getUserMessage());
+        }
+        
     }
 
 }

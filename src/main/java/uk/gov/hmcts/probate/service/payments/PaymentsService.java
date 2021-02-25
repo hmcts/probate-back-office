@@ -14,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
+import java.util.Locale;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.POST;
@@ -29,6 +31,8 @@ public class PaymentsService {
 
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+
     @Value("${payment.url}")
     private String payUri;
     @Value("${payment.api}")
@@ -48,9 +52,26 @@ public class PaymentsService {
             paymentResponse = Objects.requireNonNull(responseEntity.getBody());
             log.info("paymentResponse : {}", paymentResponse);
         } catch (HttpClientErrorException e) {
-            throw new BusinessValidationException("PBA payment failed: " + getErrorMessage(e), e.getMessage());
+            throw getNewBusinessValidationException(e);
         }
         return paymentResponse;
+    }
+
+    private BusinessValidationException getNewBusinessValidationException(HttpClientErrorException e) {
+        String[] payError = {getErrorMessage(e)};
+        String error1 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage", payError,
+            Locale.UK);
+        String[] empty = {};
+        String error2 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage2",
+            empty, Locale.UK);
+        String error3 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage3",
+            empty, Locale.UK);
+        String error4 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage4",
+            empty, Locale.UK);
+        String error5 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage5",
+            empty, Locale.UK);
+        return new BusinessValidationException(error1, e.getMessage(), error2, error3,
+            error4, error5);
     }
 
     private String getErrorMessage(HttpClientErrorException e) {

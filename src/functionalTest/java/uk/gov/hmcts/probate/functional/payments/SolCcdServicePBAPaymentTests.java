@@ -1,22 +1,14 @@
-package uk.gov.hmcts.probate.functional.fee;
+package uk.gov.hmcts.probate.functional.payments;
 
 
-import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -24,35 +16,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
-public class SolCcdServicePBATests extends IntegrationTestBase {
-
-    private static WireMockServer wireMockServer;
+public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Autowired
     protected FunctionalTestUtils utils;
 
 
-    @BeforeClass
-    public static void setup() {
-        wireMockServer = new WireMockServer(options().port(8991));
-        wireMockServer.start();
-        wireMockServer.resetRequests();
-    }
-
-    @AfterClass
-    public static void cleanup() {
-        wireMockServer.stop();
-    }
-
-    @Before
-    public void setupPerTest() {
-        stubCreditAccountPayment(utils.getJsonFromFile("pbaWiremockResponses.json"));
-    }
-
     @Test
     public void shouldValidateDefaultPBAs() {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
-            "{\"code\":\"PBA0022222\",\"label\":\"PBA0022222\"},{\"code\":\"PBA0011111\",\"label\":\"PBA0011111\"}");
+            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"},{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}," 
+                + "{\"code\":\"PBA0083374\",\"label\":\"PBA0083374\"}");
     }
 
     @Test
@@ -61,12 +35,25 @@ public class SolCcdServicePBATests extends IntegrationTestBase {
             "\"solsNeedsPBAPayment\":\"Yes\"");
     }
 
-    private static void stubCreditAccountPayment(String response) {
-        wireMockServer.stubFor(get(urlMatching("\\/(refdata\\/external\\/v1\\/organisations\\/pbas\\?email=.+)"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(response)));
+    @Test
+    public void shouldValidatePaymentAountOnHold() {
+        validatePostRequestSuccessForPBAs("/nextsteps/validate",
+            "solicitorPDFPayloadProbateAccountOnHold.json",
+            "Your account has insufficient funds");
+    }
+
+    @Test
+    public void shouldValidatePaymentAccountDeleted() {
+        validatePostRequestSuccessForPBAs("/nextsteps/validate",
+            "solicitorPDFPayloadProbateAccountDeleted.json",
+            "Your account has insufficient funds");
+    }
+
+    @Test
+    public void shouldValidatePaymentInsufficientFunds() {
+        validatePostRequestSuccessForPBAs("/nextsteps/validate",
+            "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
+            "Your account has insufficient funds");
     }
 
     private void validatePostRequestSuccessForPBAs(String path, String fileName, String expectedValue) {
