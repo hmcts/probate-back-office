@@ -90,7 +90,8 @@ public class DataExtractTests extends IntegrationTestBase {
     @Test
     public void verifyValidDateRequestReturnsAcceptedStatusForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
-            password, id)).queryParam("date", "2019-02-03")
+            password, id)).queryParam("fromDate", "2019-02-03")
+            .queryParam("toDate", "2019-02-03")
             .when()
             .post(EXCELA_URL)
             .then().assertThat().statusCode(202);
