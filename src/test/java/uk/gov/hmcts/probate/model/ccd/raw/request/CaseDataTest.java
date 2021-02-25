@@ -956,7 +956,7 @@ public class CaseDataTest {
         assertEquals("registryAddress", caseData.getRegistryAddress());
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
-
+        assertEquals("Yes", caseData.getIht217());
     }
 
     @Test
@@ -970,7 +970,6 @@ public class CaseDataTest {
         assertEquals("Solicitor Forename", caseData.getSolsForenames());
         assertEquals("Solicitor Surname", caseData.getSolsSurname());
         assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
-        assertEquals("Yes", caseData.getIht217());
     }
 
     @Test

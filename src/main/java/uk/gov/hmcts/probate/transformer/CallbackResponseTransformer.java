@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
-import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -108,7 +107,6 @@ public class CallbackResponseTransformer {
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final SolicitorExecutorTransformer solicitorExecutorTransformer;    
-    private final SolicitorExecutorService solicitorExecutorService;
     private final TaskListUpdateService taskListUpdateService;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {

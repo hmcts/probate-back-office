@@ -53,6 +53,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("registryAddress", responseCaseDataParent.getRegistryAddress());
         assertEquals("registryEmailAddress", responseCaseDataParent.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", responseCaseDataParent.getRegistrySequenceNumber());
+        assertEquals("Yes", responseCaseDataParent.getIht217());
     }
 
     @Test
@@ -69,7 +70,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDeceasedDiedEngOrWales());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertInEnglish());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertTranslation());
-        assertEquals("Yes", responseCaseDataParent.getIht217());
     }
 
     @Test
