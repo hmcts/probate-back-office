@@ -96,12 +96,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptySolicitorSOTJobTitleameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTJobTitle\": \"TestSOTJobTitle\"",
-            "\"solsSOTJobTitle\": \"\"", "caseDetails.data.solsSOTJobTitle");
-    }
-
-    @Test
     public void verifyEmptySolicitorFirmAddressLine1ReturnsError() {
         verifyAll("/nextsteps/validate", "failure.missingSolicitorAddressLine1.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.addressLine1");
