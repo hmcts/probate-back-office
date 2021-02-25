@@ -49,7 +49,9 @@
           }
         }
       ],
-      "nameOfSucceededFirm": "New Firm Ltd"
+      "nameOfSucceededFirm": "New Firm Ltd",
+      "soleTraderOrLimitedCompany": "No",
+      "whoSharesInCompanyProfits": "Partners"
     },
     "data_classification": {},
     "case_details_before": {

@@ -199,7 +199,6 @@ public class CallbackResponseTransformer {
 
     }
 
-
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
                                          String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -401,6 +400,16 @@ public class CallbackResponseTransformer {
             .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
@@ -726,12 +735,15 @@ public class CallbackResponseTransformer {
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
+            .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
+            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
+            .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
+            .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
-            .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
-            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
             .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved());
 
         if (transform) {
