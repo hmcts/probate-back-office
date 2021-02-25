@@ -38,6 +38,7 @@ public class CaseDataParent {
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
+    protected final String morePartnersHoldingPowerReserved;
     protected final String dispenseWithNoticeLeaveGiven;
     protected final String dispenseWithNoticeLeaveGivenDate;
     protected final String dispenseWithNoticeOverview;

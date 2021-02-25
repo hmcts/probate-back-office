@@ -19,9 +19,11 @@ module.exports = async function (optName) {
 
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
+    const morePartnersHoldingPowerReservedVisible = (await I.grabNumberOfVisibleElements ({css: '#morePartnersHoldingPowerReserved'})) > 0;
 
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
+    assert (isNa || isTrustOption ? !morePartnersHoldingPowerReservedVisible : morePartnersHoldingPowerReservedVisible);
 
     if (!isNa && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');

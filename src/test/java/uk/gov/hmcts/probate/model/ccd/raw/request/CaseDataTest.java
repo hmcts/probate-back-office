@@ -1026,6 +1026,7 @@ public class CaseDataTest {
                 .nameOfSucceededFirm("New Firm Ltd")
                 .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits("Partners")
+                .morePartnersHoldingPowerReserved("No")
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
@@ -1038,6 +1039,7 @@ public class CaseDataTest {
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
         assertEquals("No", caseData.getSoleTraderOrLimitedCompany());
         assertEquals("Partners", caseData.getWhoSharesInCompanyProfits());
+        assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
     }
 
     @Test
