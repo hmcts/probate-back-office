@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
@@ -77,8 +78,14 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final CaseStoppedService caseStoppedService;
+    private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+
+    @PostMapping(path = "/update-task-list")
+    public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
 
     @PostMapping(path = "/sols-apply-as-exec")
     public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
@@ -221,6 +228,23 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> caseEscalated(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+
+        log.info("case-escalated started");
+
+        caseEscalatedService.caseEscalated(callbackRequest.getCaseDetails());
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,

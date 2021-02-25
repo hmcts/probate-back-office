@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -79,7 +80,7 @@ public class FunctionalTestUtils {
     public String getJsonFromFile(String fileName) {
         try {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            return new String(Files.readAllBytes(file.toPath()));
+            return new String(Files.readString(file.toPath(), Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -123,11 +124,24 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
-            new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization",
-                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-            new Header("user-id", userId));
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+                new Header("user-id", userId));
+    }
+
+    public Headers getSolicitorHeadersWithUserId() {
+        return getSolicitorHeadersWithUserId(serviceToken, userId);
+    }
+
+    private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
+        return Headers.headers(
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+                new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -299,6 +313,4 @@ public class FunctionalTestUtils {
         return json.replaceAll("\"applicationID\": \"603\",",
             "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
-
-
 }
