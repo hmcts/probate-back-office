@@ -280,8 +280,13 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTSurnameIsNull}")
     private final String solsSOTSurname;
 
-    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
     private final String solsSOTJobTitle;
+
+    private final String solsReviewSOTConfirm;
+
+    private final String solsReviewSOTConfirmCheckbox1Names;
+
+    private final String solsReviewSOTConfirmCheckbox2Names;
 
     private final Long extraCopiesOfGrant;
 
