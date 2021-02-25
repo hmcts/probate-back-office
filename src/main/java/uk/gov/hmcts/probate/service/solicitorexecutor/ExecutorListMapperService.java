@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
@@ -84,6 +86,21 @@ public class ExecutorListMapperService {
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .build()))
+                .collect(Collectors.toList());
+    }
+
+    public List<CollectionMember<AdditionalExecutorTrustCorps>> mapTrustCorpAddressToTrustCorpExecutors(
+            CaseData caseData) {
+        SolsAddress trustCorpAddress = caseData.getTrustCorpAddress();
+        return caseData.getAdditionalExecutorsTrustCorpList()
+                .stream()
+                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorTrustCorps.builder()
+                        .additionalExecAddress(trustCorpAddress == null ?
+                                exec.getValue().getAdditionalExecAddress() : trustCorpAddress)
+                        .additionalExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
+                        .additionalExecForenames(exec.getValue().getAdditionalExecForenames())
+                        .additionalExecLastname(exec.getValue().getAdditionalExecLastname())
                         .build()))
                 .collect(Collectors.toList());
     }

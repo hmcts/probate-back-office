@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
@@ -86,6 +87,15 @@ public class SolicitorExecutorTransformer {
         if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
             builder.otherExecutorExists(YES);
         }
+    }
+
+    public void mapTrustCorpAddressToTrustCorpExecutors(
+            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+
+        List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpExecutors =
+                executorListMapperService.mapTrustCorpAddressToTrustCorpExecutors(caseData);
+
+        builder.additionalExecutorsTrustCorpList(trustCorpExecutors);
     }
 
     /**
