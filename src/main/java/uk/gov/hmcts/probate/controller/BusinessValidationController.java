@@ -152,6 +152,10 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 numberOfApplyingExecutorsValidationRule);
 
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+        }
+
         return ResponseEntity.ok(response);
     }
 

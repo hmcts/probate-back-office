@@ -9,7 +9,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @AllArgsConstructor
 public class SolicitorExecutorTransformer {
 
-    private final SolicitorExecutorService solicitorExecutorService;
+    private final ExecutorListMapperService executorListMapperService;
 
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -34,7 +35,7 @@ public class SolicitorExecutorTransformer {
 
             } else {
 
-                if (getSolsSOTName(caseData.getSolsSOTForenames(),
+                if (FormattingService.getSolsSOTName(caseData.getSolsSOTForenames(),
                         caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
@@ -97,21 +98,10 @@ public class SolicitorExecutorTransformer {
     public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
             CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
-        // Initialise executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
-                caseData.getAdditionalExecutorsApplying() == null
-                        || caseData.getAdditionalExecutorsApplying().isEmpty()
-                        ? new ArrayList<>() : caseData.getAdditionalExecutorsApplying();
-
+        // Get executor lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
-                caseData.getAdditionalExecutorsNotApplying() == null
-                        || caseData.getAdditionalExecutorsNotApplying().isEmpty()
-                        ? new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
-
-        // Populate executor lists
-        mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
-        mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
-        execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
+                createCaseworkerNotApplyingList(caseData);
 
         // Populate primary applicant fields
         if (shouldSetPrimaryApplicantFieldsWithExecInfo(execsApplying, caseData)) {
@@ -120,10 +110,63 @@ public class SolicitorExecutorTransformer {
             mapExecutorToPrimaryApplicantFields(tempExec, builder);
         }
 
-        // Set builder with values
+        // Set builder with lists
         builder.additionalExecutorsApplying(execsApplying);
         builder.additionalExecutorsNotApplying(execsNotApplying);
+    }
 
+    /**
+     * Set solsIdentifiedApplyingExecs and solsIdentifiedNotApplyingExecs with names of executors.
+     * Get executor names from solicitor executor lists.
+     * These names will be displayed in solicitor journey.
+     */
+    public void mapSolicitorExecutorFieldsToExecutorNamesLists(
+            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+
+        // Create executor lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                createCaseworkerNotApplyingList(caseData);
+
+        // Add primary applicant to list
+        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
+        }
+
+        // Format exec lists into strings
+        String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
+        String execsNotApplyingNames = FormattingService.createExecsNotApplyingNames(execsNotApplying);
+
+        // Set builder with exec strings
+        builder.solsIdentifiedApplyingExecs(execsApplyingNames);
+        builder.solsIdentifiedNotApplyingExecs(execsNotApplyingNames);
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
+
+        // Initialise executor lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                caseData.getAdditionalExecutorsApplying() == null
+                        || caseData.getAdditionalExecutorsApplying().isEmpty()
+                        ? new ArrayList<>() : caseData.getAdditionalExecutorsApplying();
+
+        mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
+
+        return execsApplying;
+    }
+
+    public List<CollectionMember<AdditionalExecutorNotApplying>> createCaseworkerNotApplyingList(CaseData caseData) {
+
+        // Initialise executor lists
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                caseData.getAdditionalExecutorsNotApplying() == null
+                        || caseData.getAdditionalExecutorsNotApplying().isEmpty()
+                        ? new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
+
+        mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
+        execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
+
+        return execsNotApplying;
     }
 
     private void mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
@@ -131,15 +174,15 @@ public class SolicitorExecutorTransformer {
 
         if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
             // Add trust corps executors
-            execsApplying.addAll(solicitorExecutorService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
+            execsApplying.addAll(executorListMapperService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
         } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
             // Add partner executors
-            execsApplying.addAll(solicitorExecutorService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
+            execsApplying.addAll(executorListMapperService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
             // Add main solicitor executor list
-            execsApplying.addAll(solicitorExecutorService
+            execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
         }
 
@@ -150,42 +193,37 @@ public class SolicitorExecutorTransformer {
 
         if (caseData.getDispenseWithNoticeOtherExecsList() != null) {
             // Add power reserved executors
-            execsNotApplying.addAll(solicitorExecutorService
+            execsNotApplying.addAll(executorListMapperService
                     .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(caseData));
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
             // Add main solicitor executor list
-            execsNotApplying.addAll(solicitorExecutorService
+            execsNotApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecsToNotApplyingExecutors(caseData));
         }
 
     }
 
-    private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo(
+    private  List<CollectionMember<AdditionalExecutorNotApplying>>  setExecutorNotApplyingListWithSolicitorInfo(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
         if (NO.equals(caseData.getSolsSolicitorIsExec()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
 
             // Add solicitor to not applying list
-            execsNotApplying = solicitorExecutorService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
+            execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
         } else if (isSolicitorApplying(caseData)) {
 
             // Remove solicitor from executor lists as they are primary applicant
-            execsNotApplying = solicitorExecutorService.removeSolicitorFromNotApplyingList(execsNotApplying);
+            execsNotApplying = executorListMapperService.removeSolicitorFromNotApplyingList(execsNotApplying);
 
         }
 
         return execsNotApplying;
     }
 
-    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
-            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
-                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
-    }
 
     private void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -207,11 +245,10 @@ public class SolicitorExecutorTransformer {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
-    private String getSolsSOTName(String firstNames, String surname) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(firstNames);
-        sb.append(" " + surname);
-        return sb.toString();
+    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
+        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
+                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
     }
 
 }

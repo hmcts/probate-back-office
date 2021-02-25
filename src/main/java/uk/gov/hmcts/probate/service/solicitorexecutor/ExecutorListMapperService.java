@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
-public class SolicitorExecutorService {
+public class ExecutorListMapperService {
 
     private static final String SOLICITOR_ID = "solicitor";
 
@@ -27,21 +28,9 @@ public class SolicitorExecutorService {
         if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorFromNotApplyingList(execs);
         }
-        updatedExecs.add(getSolicitorNotApplyingExecutor(caseData));
+        updatedExecs.add(mapFromSolicitorToNotApplyingExecutor(caseData));
 
         return updatedExecs;
-    }
-
-    public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorFromApplyingList(
-            List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
-
-        if (execsApplying.isEmpty())  {
-            return execsApplying;
-        }
-
-        return execsApplying.stream()
-            .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
-            .collect(Collectors.toList());
     }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorFromNotApplyingList(
@@ -52,11 +41,11 @@ public class SolicitorExecutorService {
         }
 
         return execsNotApplying.stream()
-            .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
-            .collect(Collectors.toList());
+                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
+                .collect(Collectors.toList());
     }
 
-    private CollectionMember<AdditionalExecutorNotApplying> getSolicitorNotApplyingExecutor(CaseData caseData) {
+    private CollectionMember<AdditionalExecutorNotApplying> mapFromSolicitorToNotApplyingExecutor(CaseData caseData) {
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
             .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
@@ -65,7 +54,7 @@ public class SolicitorExecutorService {
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
         // Update list
         caseData.getAdditionalExecutorsApplying()
                 .forEach(exec -> exec.getValue().setApplyingExecutorName(exec.getValue().getApplyingExecutorFirstName()
@@ -73,6 +62,16 @@ public class SolicitorExecutorService {
 
         // Return list
         return caseData.getAdditionalExecutorsApplying();
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(caseData.getSolsSOTForenames())
+                .applyingExecutorLastName(caseData.getSolsSOTSurname())
+                .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .build());
     }
 
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(
