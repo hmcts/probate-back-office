@@ -80,7 +80,7 @@ public class GenericMapperServiceTest {
         SolsAddress.builder().addressLine1("678").addressLine2("the street").addressLine3("Lane").country(
             "England").county("County").postTown("town").postCode("AB1").build();
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final String REGISTRY_LOCATION = "Oxford";
+    private static final String REGISTRY_LOCATION = "oxford";
     private static final Long CASE_ID = 12345678987654321L;
     private static final String CREST_IMAGE = "GrantOfProbateCrest";
     private static final String SEAL_IMAGE = "GrantOfProbateSeal";
