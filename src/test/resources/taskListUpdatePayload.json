@@ -1,0 +1,153 @@
+{
+  "case_details": {
+    "id": 1544096696107175,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "GrantOfRepresentation",
+    "state": "CaseCreated",
+    "created_date": "2018-11-20T11:44:56.118",
+    "last_modified": [
+      2018,
+      11,
+      30,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "deceasedDateOfDeath": "2017-11-11",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantSurname": "cl name 2",
+      "applicantAddress": {
+        "AddressLine1": "22",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantForenames": "cf name 2",
+      "applicantEmailAddress": "rabab.rabab@hmcts.net",
+      "deceasedDateOfBirth": "1990-11-11",
+      "deceasedForenames": "df name 2",
+      "numberOfCopies": "2",
+      "deceasedSurname": "dl name 2",
+      "deceasedFullAliasNameList": [
+        {
+          "value": {
+            "FullAliasName": "d alais name 2"
+          },
+          "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+        }
+      ]
+    },
+    "data_classification": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "County": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "applicantSurname": "PUBLIC",
+      "applicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "County": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "applicantForenames": "PUBLIC",
+      "applicantEmailAddress": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "numberOfCopies": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedFullAliasNameList": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "value": {
+              "FullAliasName": "PUBLIC"
+            },
+            "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+          }
+        ]
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "County": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "applicantSurname": "PUBLIC",
+      "applicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "County": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "applicantForenames": "PUBLIC",
+      "applicantEmailAddress": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "numberOfCopies": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedFullAliasNameList": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "value": {
+              "FullAliasName": "PUBLIC"
+            },
+            "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+          }
+        ]
+      }
+    }
+  }
+}

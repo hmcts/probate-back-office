@@ -14,12 +14,12 @@
         <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
         <cve>CVE-2019-10086</cve>
     </suppress>
-    <suppress>
+     <suppress>
         <notes><![CDATA[
    file name: guava-28.0-jre.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-        <cpe>cpe:/a:google:guava</cpe>
+        <cve>CVE-2020-8908</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -30,25 +30,25 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: fluent-hc-4.5.12.jar
+   file name: httpclient-4.5.7.jar
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/fluent-hc@.*$</packageUrl>
+        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
         <cve>CVE-2020-13956</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jsr310-2.9.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
+        <cve>CVE-2018-1000873</cve>
+    </suppress>
+       <suppress>
         <notes><![CDATA[
    file name: junit-4.13.jar
    ]]></notes>
         <cve>CVE-2020-15250</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: launchdarkly-java-server-sdk-5.2.0.jar (shaded: com.google.guava:guava:28.2-jre)
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-        <cve>CVE-2020-8908</cve>
-    </suppress>
-    <suppress>
+     <suppress>
         <notes><![CDATA[
    file name: postgresql-42.2.5.jar
    ]]></notes>
@@ -63,7 +63,7 @@
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
-    <suppress>
+       <suppress>
         <notes><![CDATA[
    file name: tomcat-embed-core-9.0.38.jar
    ]]></notes>
@@ -73,16 +73,10 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-datatype-jsr310-2.9.4.jar
+   file name: elasticsearch-7.9.2.jar
    ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
-        <cve>CVE-2018-1000873</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: httpclient-4.5.7.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
-        <cve>CVE-2020-13956</cve>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cve>CVE-2020-7021</cve>
+        <cve>CVE-2021-22132</cve>
     </suppress>
 </suppressions>
