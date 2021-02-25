@@ -499,7 +499,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
         final String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
 
-
         assertEquals("exfn2 exln2", notApplyingName);
         assertEquals("DiedBefore", notApplyingReason);
         assertEquals("alias name", notApplyingAlias);
@@ -514,7 +513,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("country", country);
         assertEquals("county", county);
 
-
         assertEquals("ex3fn ex3ln", applyingNameExec2);
         assertEquals(null, applyingAliasExec2);
         assertEquals("addressline 1", addressLine1Exec2);
@@ -524,6 +522,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("postcode", postCodeExec2);
         assertEquals(null, countryExec2);
         assertEquals(null, countyExec2);
+
 
     }
 

@@ -71,6 +71,9 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Data
 public class CaseData extends CaseDataParent {
 
+    // Tasklist update
+    private final String taskList;
+
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
@@ -507,6 +510,7 @@ public class CaseData extends CaseDataParent {
     private String bulkScanCaseReference;
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
+    private LocalDate escalatedDate;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;

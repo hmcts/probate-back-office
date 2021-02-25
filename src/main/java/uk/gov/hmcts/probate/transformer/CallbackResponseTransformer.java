@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.document.FindWillsService;
 import uk.gov.hmcts.probate.service.document.OrderWillsService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -107,16 +108,27 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
+    private final TaskListUpdateService taskListUpdateService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final FindWillsService findWillService;
     private final OrderWillsService orderWillsService;
 
-    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
+    public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, 
                                                                 Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-            .state(newState.orElse(null))
-            .build();
+        final CaseDetails cd = callbackRequest.getCaseDetails();
+        // set here to ensure tasklist html is correctly generated
+        cd.setState(newState.orElse(null));
+
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, false)
+                // set here again to make life easier mocking
+                .state(newState.orElse(null))
+                .build();
 
         return transformResponse(responseCaseData);
     }
@@ -212,6 +224,8 @@ public class CallbackResponseTransformer {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        caseData.setAuthenticatedDate(LocalDate.now());
+
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -539,6 +553,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
+            .state(caseDetails.getState())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())
@@ -716,6 +731,11 @@ public class CallbackResponseTransformer {
             .registryAddress(caseData.getRegistryAddress())
             .registryEmailAddress(caseData.getRegistryEmailAddress())
             .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+            .taskList(caseData.getTaskList())
+            .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
+                .map(dateTimeFormatter::format).orElse(null))            
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
@@ -731,6 +751,8 @@ public class CallbackResponseTransformer {
         }
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
 
         return builder;
