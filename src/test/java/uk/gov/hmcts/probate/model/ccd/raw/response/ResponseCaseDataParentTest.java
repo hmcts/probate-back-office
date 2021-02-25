@@ -36,6 +36,7 @@ public class ResponseCaseDataParentTest {
             .deceasedDiedEngOrWales("Yes")
             .deceasedForeignDeathCertInEnglish("Yes")
             .deceasedForeignDeathCertTranslation("Yes")
+            .iht217("Yes")
             .build();
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
@@ -68,7 +69,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDeceasedDiedEngOrWales());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertInEnglish());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertTranslation());
-
+        assertEquals("Yes", responseCaseDataParent.getIht217());
     }
 
     @Test

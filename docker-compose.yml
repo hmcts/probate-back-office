@@ -529,51 +529,94 @@ services:
         }
     ports:
       - 8081:8081
-      
+
   send-letter-service:
-      image: hmctspublic.azurecr.io/rpe/send-letter-service
-      environment:
-        - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
-        - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
-        - SERVER_PORT=8485
-        - FTP_FINGERPRINT=fingerprint
-        - FTP_HOSTNAME=hostname
-        - FTP_PORT=22
-        - FTP_PRIVATE_KEY=private
-        - FTP_PUBLIC_KEY=public
-        - FTP_REPORTS_FOLDER=/reports/
-        - FTP_TARGET_FOLDER=/target/
-        - FTP_USER=user
-        - LETTER_TRACKING_DB_PASSWORD=${DB_PASSWORD}
-        - LETTER_TRACKING_DB_USER_NAME=${DB_USERNAME}
-        - S2S_URL=http://service-auth-provider-api:8080
-        - FLYWAY_URL=jdbc:postgresql://shared-database:5432/send_letter?sslmode=require
-        - FLYWAY_NOOP_STRATEGY=false
-        - SCHEDULING_ENABLED
-        - ENCRYPTION_ENABLED
-        - ENCRYPTION_PUBLIC_KEY=DUMMY
-        # these environment variables are used by java-logging library
-        - ROOT_APPENDER
-        - JSON_CONSOLE_PRETTY_PRINT
-        - ROOT_LOGGING_LEVEL
-        - REFORM_SERVICE_NAME
-        - REFORM_TEAM
-        - REFORM_ENVIRONMENT
-        - LETTER_TRACKING_DB_HOST=shared-database
-        - LETTER_TRACKING_DB_NAME=letter_tracking
-        - LETTER_TRACKING_DB_PORT=5432
-        - SMTP_HOST=false
-        - SMTP_USERNAME=username
-        - SMTP_PASSWORD=password
-      ports:
-        - 8485:8485
-      depends_on:
-        - shared-database
-        - service-auth-provider-api
-      links:
-        - shared-database
-        - service-auth-provider-api      
-        
+    image: hmctspublic.azurecr.io/rpe/send-letter-service
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+      - SERVER_PORT=8485
+      - FTP_FINGERPRINT=fingerprint
+      - FTP_HOSTNAME=hostname
+      - FTP_PORT=22
+      - FTP_PRIVATE_KEY=private
+      - FTP_PUBLIC_KEY=public
+      - FTP_REPORTS_FOLDER=/reports/
+      - FTP_TARGET_FOLDER=/target/
+      - FTP_USER=user
+      - LETTER_TRACKING_DB_PASSWORD=${DB_PASSWORD}
+      - LETTER_TRACKING_DB_USER_NAME=${DB_USERNAME}
+      - S2S_URL=http://service-auth-provider-api:8080
+      - FLYWAY_URL=jdbc:postgresql://shared-database:5432/send_letter?sslmode=require
+      - FLYWAY_NOOP_STRATEGY=false
+      - SCHEDULING_ENABLED
+      - ENCRYPTION_ENABLED
+      - ENCRYPTION_PUBLIC_KEY=DUMMY
+      # these environment variables are used by java-logging library
+      - ROOT_APPENDER
+      - JSON_CONSOLE_PRETTY_PRINT
+      - ROOT_LOGGING_LEVEL
+      - REFORM_SERVICE_NAME
+      - REFORM_TEAM
+      - REFORM_ENVIRONMENT
+      - LETTER_TRACKING_DB_HOST=shared-database
+      - LETTER_TRACKING_DB_NAME=letter_tracking
+      - LETTER_TRACKING_DB_PORT=5432
+      - SMTP_HOST=false
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+    ports:
+      - 8485:8485
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+    links:
+      - shared-database
+      - service-auth-provider-api
+
+ # complete the XUI setup for probate-back-office - this has just been added as a starting point    
+  xui:
+    image: "hmctspublic.azurecr.io/xui/webapp:latest"
+    environment:
+      MICROSERVICE: xui_webapp
+      PROTOCOL: http
+      XUI_ENV: local
+
+      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_DATA_STORE_API: http://localhost:4452
+      SERVICES_DOCUMENTS_API: http://dm-store:8080
+      SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
+      SERVICES_IDAM_API_URL: http://idam-api:5000
+      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
+      SERVICES_IDAM_CLIENT_ID: xui_webapp
+      SERVICES_PAYMENTS_URL: http://wiremock:8080
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://wiremock:8080
+      SERVICES_PRD_API: http://wiremock:8080
+
+      SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
+      REDISCLOUD_URL: http://dummyrediscloudurl
+
+      #real LAUNCH_DARKLY_CLIENT_ID must be set to enable share a case functionality
+      #LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_CLIENT_ID:-dummy}"
+
+      FEATURE_REDIS_ENABLED: "false"
+      FEATURE_APP_INSIGHTS_ENABLED: "false"
+      FEATURE_SECURE_COOKIE_ENABLED: "false"
+      APPINSIGHTS_INSTRUMENTATIONKEY: fake
+
+      #S2S_SECRET:  "${IDAM_KEY_XUI_WEBAPP}"
+      #IDAM_SECRET: "${OAUTH2_CLIENT_XUI}"
+
+      #JURISDICTIONS: PUBLICLAW
+
+    ports:
+      - 3333:3000
+    depends_on:
+      - idam-web-public
+      - ccd-data-store-api
+      - ccd-api-gateway    
+      
 volumes:
   ccd-docker-azure-blob-data:
   esdata1:

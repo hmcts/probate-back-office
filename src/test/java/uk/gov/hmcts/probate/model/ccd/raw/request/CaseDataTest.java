@@ -938,6 +938,8 @@ public class CaseDataTest {
             .registrySequenceNumber("registrySequenceNumber")
             .dispenseWithNotice("Yes")
             .titleAndClearingType("TCTTrustCorpResWithApp")
+            .registrySequenceNumber("registrySequenceNumber")
+            .iht217("Yes")
             .build();
 
         assertEquals("PAFN", caseData.getPrimaryApplicantForenames());
@@ -968,6 +970,7 @@ public class CaseDataTest {
         assertEquals("Solicitor Forename", caseData.getSolsForenames());
         assertEquals("Solicitor Surname", caseData.getSolsSurname());
         assertEquals("Yes", caseData.getSolsSolicitorWillSignSOT());
+        assertEquals("Yes", caseData.getIht217());
     }
 
     @Test
