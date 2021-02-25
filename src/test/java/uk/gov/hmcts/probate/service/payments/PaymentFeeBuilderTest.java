@@ -30,7 +30,7 @@ public class PaymentFeeBuilderTest {
 
     @Test
     public void shouldBuildPaymentFeeFromFeeResponse() {
-        FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.TEN).code("feeCode").description(
+        FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.valueOf(1.50)).code("feeCode").description(
             "feeDescription").version(
             "feeVersion").build();
         BigDecimal volume = BigDecimal.valueOf(2);
@@ -40,9 +40,9 @@ public class PaymentFeeBuilderTest {
         assertEquals("feeJurisdiction1", paymentFee.getJurisdiction1());
         assertEquals("feeJurisdiction2", paymentFee.getJurisdiction2());
         assertEquals("feeVersion", paymentFee.getVersion());
-        assertEquals(20, paymentFee.getCalculatedAmount().longValue());
-        assertEquals(10, paymentFee.getFeeAmount().longValue());
-        assertEquals(2, paymentFee.getVolume().longValue());
+        assertEquals("3.00", "" + paymentFee.getCalculatedAmount());
+        assertEquals("1.50", "" + paymentFee.getFeeAmount());
+        assertEquals("2", "" + paymentFee.getVolume());
 
     }
 

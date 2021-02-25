@@ -22,6 +22,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
@@ -70,9 +71,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> userMessages = new ArrayList();
         userMessages.add(exception.getUserMessage());
         if (exception.getAdditionalMessages() != null) {
-            for (String error : exception.getAdditionalMessages()) {
-                userMessages.add(error);
-            }
+            Collections.addAll(userMessages, Arrays.copyOf(exception.getAdditionalMessages(),
+                exception.getAdditionalMessages().length));
         }
         CallbackResponse callbackResponse = CallbackResponse.builder()
             .errors(userMessages)
