@@ -666,7 +666,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<div class=\"govuk-details__text\">\n    "
             + "You now need to send us<br/><ul><li>your reference number 1528365719153338 written on a "
             + "piece of paper</li>"
-            + "<li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal "
+            + "<li>a photocopy of the signed legal "
             + "statement "
             + "and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
