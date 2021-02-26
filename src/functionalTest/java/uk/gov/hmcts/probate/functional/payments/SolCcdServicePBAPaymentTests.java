@@ -21,11 +21,10 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     @Autowired
     protected FunctionalTestUtils utils;
 
-
     @Test
     public void shouldValidateDefaultPBAs() {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
-            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"},{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}," 
+            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"},{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"},"
                 + "{\"code\":\"PBA0083374\",\"label\":\"PBA0083374\"}");
     }
 
@@ -39,14 +38,14 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     public void shouldValidatePaymentAountOnHold() {
         validatePostRequestSuccessForPBAs("/nextsteps/validate",
             "solicitorPDFPayloadProbateAccountOnHold.json",
-            "Your account has insufficient funds");
+            "Your account is on hold");
     }
 
     @Test
     public void shouldValidatePaymentAccountDeleted() {
         validatePostRequestSuccessForPBAs("/nextsteps/validate",
             "solicitorPDFPayloadProbateAccountDeleted.json",
-            "Your account has insufficient funds");
+            "Your account is deleted");
     }
 
     @Test
