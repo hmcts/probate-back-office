@@ -98,6 +98,7 @@ public class NextStepsController {
                     ObjectMapper objectMapper = new ObjectMapper();
                     log.info("creditAccountPayment:" + objectMapper.writeValueAsString(creditAccountPayment));
                 } catch (JsonProcessingException e) {
+                    log.info(e.getMessage());
                 }
                 PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
                     creditAccountPayment);
