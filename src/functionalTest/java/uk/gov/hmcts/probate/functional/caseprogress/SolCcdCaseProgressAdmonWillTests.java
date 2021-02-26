@@ -1580,7 +1580,7 @@ public class SolCcdCaseProgressAdmonWillTests extends IntegrationTestBase  {
 
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getSolicitorHeadersWithUserId())
+                .headers(utils.getHeadersWithSolicitorUser())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path)
                 .andReturn();
