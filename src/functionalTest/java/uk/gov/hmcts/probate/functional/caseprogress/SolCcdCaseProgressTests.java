@@ -8,8 +8,8 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
+import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +19,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-public class SolCcdCaseProgressTests extends IntegrationTestBase  {
+public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
     private static final String TASKLIST_UPDATE_URL = "/tasklist/update";
     private static final String CASE_PRINTED_URL = "/case/casePrinted";
@@ -37,7 +37,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
         final String response = postSolJson("caseprogress/01-appCreated.json",
-                TASKLIST_UPDATE_URL);
+            TASKLIST_UPDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -142,7 +142,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppUpdatedStateCorrectly() {
         final String response = postSolJson("caseprogress/02-appUpdated.json",
-                SOLS_VALIDATE_PROBATE_URL);
+            SOLS_VALIDATE_PROBATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\">"
@@ -256,7 +256,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppCreatedStateReenterDetailsCorrectly() {
         final String response = postSolJson("caseprogress/02a-appCreated-update-app.json",
-                TASKLIST_UPDATE_URL);
+            TASKLIST_UPDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -386,7 +386,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppUpdatedStateReenterDetailsCorrectly() {
         final String response = postSolJson("caseprogress/02b-appUpdated-update-app.json",
-                SOLS_VALIDATE_PROBATE_URL);
+            SOLS_VALIDATE_PROBATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -502,7 +502,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
         final String response = postCwJson("caseprogress/03-probateCreated.json",
-                SOLS_VALIDATE_URL);
+            SOLS_VALIDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 
@@ -725,7 +725,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         final String response = postCwJson("caseprogress/05-caseMarkAsReadyForExam.json",
-                CASE_DOCS_RECEIVED_URL);
+            CASE_DOCS_RECEIVED_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -890,7 +890,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenEscalated() {
         final String response = postCwJson("caseprogress/07-caseEscalated.json",
-                CASE_ESCALATED_URL);
+            CASE_ESCALATED_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 
@@ -927,7 +927,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         final String response = postCwJson("caseprogress/08-caseMatchingExamining.json",
-                CASE_MATCHING_EXAMINING_URL);
+            CASE_MATCHING_EXAMINING_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -987,7 +987,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>"
-            + "your reference number 1528365719153338 written on a piece of paper</li><li>a photocopy of the signed legal statement and "
+            + "your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<li>a photocopy of the signed legal statement and "
             + "declaration</li></ul>\n  </div>\n</details>"
             + "</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height"
             + "=\"31px\" "
@@ -1179,7 +1180,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         final String response = postCwJson("caseprogress/10-caseMatchingReadyToIssue.json",
-                CASE_MATCHING_READY_TO_ISSUE_URL);
+            CASE_MATCHING_READY_TO_ISSUE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-"
@@ -1303,7 +1304,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         final String response = postCwJson("caseprogress/11-markReadyToIssue.json",
-                CASE_MATCHING_EXAMINING_URL);
+            CASE_MATCHING_EXAMINING_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-"
@@ -1365,7 +1366,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul>"
-            + "<li>your reference number 1528365719153338 written on a piece of paper</li><li>a photocopy of the signed legal statement "
+            + "<li>your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<li>a photocopy of the signed legal statement "
             + "and declaration</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1561,11 +1563,11 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private String postCwJson(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path)
+            .andReturn();
 
         return jsonResponse.getBody().asString();
     }
@@ -1573,21 +1575,21 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private String postSolJson(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getSolicitorHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getSolicitorHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path)
+            .andReturn();
 
         return jsonResponse.getBody().asString();
     }
 
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         Response response = given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
-                .when().post("/nextsteps/validate");
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
+            .when().post("/nextsteps/validate");
 
         TestCase.assertEquals(200, response.getStatusCode());
     }
