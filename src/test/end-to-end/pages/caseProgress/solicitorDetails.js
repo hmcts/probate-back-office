@@ -6,7 +6,7 @@ module.exports = async function (caseProgressConfig) {
     const I = this;
     await I.waitForElement('#solsSolicitorFirmName');
     await I.fillField('#solsSolicitorFirmName', caseProgressConfig.solFirmName);
-    await I.click('#solsSolicitorWillSignSOT-Yes');    
+    await I.click('#solsSolicitorWillSignSOT-Yes');
     await I.fillField('#solsSOTForenames', caseProgressConfig.solFirstname);
     await I.fillField('#solsSOTSurname', caseProgressConfig.solSurname);
     await I.click('#solsSolicitorIsExec-Yes');
@@ -16,7 +16,7 @@ module.exports = async function (caseProgressConfig) {
     await I.click(locator);
     if (!caseProgressConfig.solIsApplying) {
         await I.waitForVisible('#solsSolicitorNotApplyingReason-PowerReserved');
-        await I.click('#solsSolicitorNotApplyingReason-PowerReserved');        
+        await I.click('#solsSolicitorNotApplyingReason-PowerReserved');
     }
 
     await I.click('#solsSolicitorAddress_solsSolicitorAddress a');

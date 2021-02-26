@@ -48,10 +48,10 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}}, 
+            {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
             {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
-        ]);  
+        ]);
 
         console.info('Remaining application details');
         await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}, {css: '#soleTraderOrLimitedCompany-Yes'}]);
@@ -96,6 +96,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressContinueWithoutChangingAnything();
+        await I.caseProgressContinueWithoutChangingAnything();
 
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 3,
@@ -108,6 +109,9 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
 
+        // extra copies
+        await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
+                
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);
         await I.caseProgressCompleteApplication();

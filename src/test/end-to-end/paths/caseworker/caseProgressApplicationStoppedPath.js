@@ -48,10 +48,10 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
 
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}}, 
+            {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
             {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
-        ]);  
+        ]);
 
         console.info('Remaining application details');
 
@@ -61,7 +61,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-No'}},
             {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '6: MentallyIncapable'},
-            {locator: {css: '#otherExecutorExists-No'}}, 
+            {locator: {css: '#otherExecutorExists-No'}},
             {locator: {css: '#soleTraderOrLimitedCompany-Yes'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');

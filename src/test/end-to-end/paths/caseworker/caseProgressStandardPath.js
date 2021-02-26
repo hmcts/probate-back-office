@@ -45,14 +45,14 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-        
+
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}}, 
+            {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
             {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
-        ]);        
-        
+        ]);
+
         console.info('Remaining application details');
         await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}, {css: '#soleTraderOrLimitedCompany-Yes'}]);
 

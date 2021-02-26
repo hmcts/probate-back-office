@@ -49,10 +49,10 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}}, 
+            {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
             {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
-        ]);  
+        ]);
 
         console.info('Remaining application details');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
@@ -60,6 +60,11 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-Yes'}},
+            {locator: {css: createCaseConfig.UKpostcodeLink}},
+            {locator: {css: '#primaryApplicantAddress_AddressLine1'}, text: caseProgressConfig.solAddr1},
+            {locator: {css: '#primaryApplicantAddress_PostTown'}, text: caseProgressConfig.solAddrTown},
+            {locator: {css: '#primaryApplicantAddress_PostCode'}, text: caseProgressConfig.solAddrPostcode},
+            {locator: {css: '#primaryApplicantAddress_Country'}, text: caseProgressConfig.solAddrCountry},
             {locator: {css: '#otherExecutorExists-No'}},
             {locator: {css: '#soleTraderOrLimitedCompany-Yes'}}]);
 
@@ -75,6 +80,9 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+
+        // extra copies
+        await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);
