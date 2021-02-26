@@ -47,7 +47,22 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
 
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+        console.info('Dispense with notice and clearing type');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#dispenseWithNotice-No'}}, 
+            {locator: {css: '#titleAndClearingType-TCTNoT'}},
+            {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
+        ]);  
+
+        console.info('Remaining application details');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
+            {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
+            {locator: {css: '#primaryApplicantHasAlias-No'}},
+            {locator: {css: '#primaryApplicantIsApplying-Yes'}},
+            {locator: {css: '#otherExecutorExists-No'}},
+            {locator: {css: '#soleTraderOrLimitedCompany-Yes'}}]);
+
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         await I.caseProgressCheckYourAnswers(solCheckAnswersHtmlCheck.htmlCheck);
         await I.caseProgressCheckCaseProgressTab({
@@ -60,10 +75,6 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
-
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
-        await I.caseProgressConfirmApplication();
-        await I.caseProgressCompleteApplication();
 
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);
