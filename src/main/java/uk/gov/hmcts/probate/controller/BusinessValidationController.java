@@ -295,6 +295,7 @@ public class BusinessValidationController {
             document = notificationService
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
+
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
 
         return ResponseEntity.ok(response);
