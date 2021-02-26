@@ -94,6 +94,12 @@ public class NextStepsController {
 
                 CreditAccountPayment creditAccountPayment =
                     creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    log.info("creditAccountPayment:" + objectMapper.writeValueAsString(creditAccountPayment));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
                     creditAccountPayment);
                 CallbackResponse creditPaymentResponse =

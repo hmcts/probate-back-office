@@ -22,6 +22,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 @Service
@@ -29,6 +33,10 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 @Slf4j
 public class PaymentsService {
 
+    private static final String PAYMENT_ERROR_404 = "Account information could not be found";
+    private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
+    private static final String PAYMENT_ERROR_400 = "Payment Failed";
+    private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -45,14 +53,23 @@ public class PaymentsService {
 
         log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
         PaymentResponse paymentResponse = null;
-        ResponseEntity<PaymentResponse> responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange(uri, POST,
+            ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
                 request, PaymentResponse.class);
             paymentResponse = Objects.requireNonNull(responseEntity.getBody());
             log.info("paymentResponse : {}", paymentResponse);
         } catch (HttpClientErrorException e) {
-            throw getNewBusinessValidationException(e);
+            if (e.getStatusCode().value() == FORBIDDEN.value()) {
+                throw getNewBusinessValidationException(e);
+            } else if (e.getStatusCode().value() == NOT_FOUND.value()) {
+                throw new BusinessValidationException(PAYMENT_ERROR_404, e.getMessage());
+            } else if (e.getStatusCode().value() == UNPROCESSABLE_ENTITY.value()) {
+                throw new BusinessValidationException(PAYMENT_ERROR_422, e.getMessage());
+            } else if (e.getStatusCode().value() == BAD_REQUEST.value()) {
+                throw new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
+            } else if (e.getStatusCode().is5xxServerError()) {
+                throw new BusinessValidationException(PAYMENT_ERROR_5XX, e.getMessage());
+            }
         }
         return paymentResponse;
     }
