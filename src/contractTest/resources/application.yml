@@ -88,17 +88,17 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226-test.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
 
 fee.api:
   url: http://localhost:4411
