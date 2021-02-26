@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -36,6 +37,7 @@ import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -104,7 +106,13 @@ public class BusinessValidationUnitTest {
     @Mock
     private PDFManagementService pdfManagementServiceMock;
     @Mock
-    private CaseStoppedService caseStoppedServiceMock;
+    private CaseStoppedService  caseStoppedServiceMock;
+    @Mock
+    private CaseEscalatedService caseEscalatedServiceMock;
+    @Mock
+    private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+
+
     private BusinessValidationController underTest;
 
     @Before
@@ -123,7 +131,9 @@ public class BusinessValidationUnitTest {
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
             caseStoppedServiceMock,
-            emailAddressNotifyApplicantValidationRule);
+            caseEscalatedServiceMock,
+            emailAddressNotifyApplicantValidationRule,
+            ihtFourHundredDateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -545,5 +555,11 @@ public class BusinessValidationUnitTest {
             .sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldValidateIHT400Date() {
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

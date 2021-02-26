@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
+import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -246,7 +248,10 @@ public class ConfirmationResponseService {
         String originalWill = "\n*   the original will";
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
+        } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
+            originalWill = "\n*   the original will and any codicils";
         }
+
         keyValue.put("{{originalWill}}", originalWill);
 
         String additionalInfo = ccdData.getSolsAdditionalInfo();
@@ -258,11 +263,15 @@ public class ConfirmationResponseService {
         String ihtText = "";
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "\n*   completed inheritance tax form ";
-            ihtForm = ccdData.getIht().getFormName();
+            ihtText = "\n*   the inheritance tax form ";
+            if ("Yes".equals(ccdData.getIht217())) {
+                ihtForm = "IHT205 and IHT217";
+            } else {
+                ihtForm = ccdData.getIht().getFormName();
+            }
         }
-
-        String legalPhotocopy = "*   a photocopy of the signed legal statement and declaration";
+        
+        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
