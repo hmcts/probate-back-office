@@ -13,8 +13,9 @@
       "email": "superuser@probate-test.com"
     },
     "paymentAccount": [
-      "PBA0022222",
-      "PBA0011111"
+      "PBA0082126",
+      "PBA0083372",
+      "PBA0083374"
     ],
     "contactInformation": null
   }
