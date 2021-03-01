@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true.</p>
+            <p>The {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
             <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
             <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
@@ -151,11 +151,21 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>
-                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
-                {{ case_details.case_data.applicationGrounds }}
-                {% endif %}
+            {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" or case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" %}
+            <p>The executor named in the Will has by a resolution,
+                {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} which has been filed with the Senior District Judge or Registry, {% else %} certified copy of which is lodged with this application, {% endif %}
+                in which I am identified by the position I hold and which is still in force, appointed me for the purpose of applying for probate of the will or for grants of probate on its behalf.
             </p>
+            <p>The executor is a trust corporation as defined by rule 2(1) of the NCPR 1987 and has power to accept the grant now applied for.</p>
+            <p>The person{% if (case_details.case_data.additionalExecutorsTrustCorpList|length > 1) %}s{% endif %}
+                acting on behalf of {{ case_details.case_data.trustCorpName }} trust corporation
+                {% if (case_details.case_data.additionalExecutorsTrustCorpList|length > 1) %}are {% else %}is {% endif %}
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.additionalExecutorsTrustCorpList %}
+                {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}{% if countApplying == (case_details.case_data.additionalExecutorsTrustCorpList|length) %}.{% elseif countApplying == (case_details.case_data.additionalExecutorsTrustCorpList|length - 1) %} and {% else %}, {% endif %} {% set countApplying = countApplying + 1 %}
+                {% endfor %}
+            </p>
+            {% endif %}
+
             {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
             <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},
