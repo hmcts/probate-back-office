@@ -12,8 +12,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import java.time.LocalDate;
 import java.util.List;
 
-import java.time.LocalDate;
-
 @Jacksonized
 @SuperBuilder
 @Data
