@@ -497,8 +497,8 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
-    @Getter(lazy = true)
-    private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
+    private List<CollectionMember<AdditionalExecutorApplying>> executorsApplyingLegalStatement;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement =
         getAllExecutors(false);
@@ -564,9 +564,6 @@ public class CaseData extends CaseDataParent {
         }
 
         if (!isSolicitorCreatedGrant(getSolsWillType())) {
-            if (additionalExecutorsApplying != null) {
-                totalExecutors.addAll(mapAdditionalExecutorsApplying(getAdditionalExecutorsApplying()));
-            }
 
             if (additionalExecutorsNotApplying != null) {
                 totalExecutors.addAll(mapAdditionalExecutorsNotApplying(getAdditionalExecutorsNotApplying()));
@@ -578,53 +575,6 @@ public class CaseData extends CaseDataParent {
 
     private boolean isSolicitorCreatedGrant(String solsWillType) {
         return (solsWillType != null && solsFeeAccountNumber == null);
-    }
-
-    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(
-        List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
-        AdditionalExecutorApplying exec;
-        AdditionalExecutor newExec;
-        CollectionMember<AdditionalExecutor> newAdditionalExecutor;
-        List<CollectionMember<AdditionalExecutor>> newAdditionalExecutors = new ArrayList<>();
-
-        for (CollectionMember<AdditionalExecutorApplying> e : additionalExecutors) {
-            exec = e.getValue();
-
-            if (exec == null) {
-                continue;
-            }
-
-            String forenames = exec.getApplyingExecutorFirstName();
-            String surname = exec.getApplyingExecutorLastName();
-
-            if (exec.getApplyingExecutorFirstName() == null || exec.getApplyingExecutorLastName() == null) {
-                List<String> names = splitFullname(exec.getApplyingExecutorName());
-
-                if (names.size() > 2) {
-                    surname = names.remove(names.size() - 1);
-                    forenames = String.join(" ", names);
-                } else if (names.size() == 1) {
-                    forenames = names.get(0);
-                } else {
-                    surname = names.get(1);
-                    forenames = names.get(0);
-                }
-            }
-
-            newExec = AdditionalExecutor.builder()
-                .additionalExecForenames(forenames)
-                .additionalExecLastname(surname)
-                .additionalApplying(YES)
-                .additionalExecAddress(exec.getApplyingExecutorAddress())
-                .additionalExecNameOnWill(exec.getApplyingExecutorOtherNames() == null ? NO : YES)
-                .additionalExecAliasNameOnWill(exec.getApplyingExecutorOtherNames())
-                .additionalExecReasonNotApplying(null)
-                .build();
-            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
-            newAdditionalExecutors.add(newAdditionalExecutor);
-        }
-
-        return newAdditionalExecutors;
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsNotApplying(

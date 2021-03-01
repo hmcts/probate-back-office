@@ -71,6 +71,18 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getSolsSOTForenames())
                 .applyingExecutorLastName(caseData.getSolsSOTSurname())
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
+                .build());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
+                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
+                .applyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .build());
     }
 

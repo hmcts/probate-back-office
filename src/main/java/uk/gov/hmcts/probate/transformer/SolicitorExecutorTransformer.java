@@ -143,6 +143,26 @@ public class SolicitorExecutorTransformer {
         builder.solsIdentifiedNotApplyingExecs(execsNotApplyingNames);
     }
 
+    /**
+     * Todo check if this is a good place for this
+     */
+    public List<CollectionMember<AdditionalExecutorApplying>> mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+            CaseData caseData) {
+
+        // Create executor lists
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
+
+        // Add primary applicant to list
+        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
+        } else if (caseData.isPrimaryApplicantApplying()) {
+            execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+        }
+
+        return execsApplying;
+    }
+
+
     public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
