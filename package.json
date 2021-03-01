@@ -44,7 +44,7 @@
     "chai-http": "^4.0.0",
     "chai-string": "^1.5.0",
     "moment": "^2.29.1",
-    "codeceptjs": "^3.0.5",
+    "codeceptjs": "2.6.11",
     "date-fns": "^2.17.0",
     "eslint": "^7.20.0",
     "eslint-plugin-mocha": "^8.0.0",
