@@ -83,7 +83,8 @@ public class SolicitorExecutorTransformer {
 
     public void otherExecutorExistsTransformation(
             CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)) {
+        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)
+                && !otherExecutorExistsIsSetNo(caseData)) {
             builder.otherExecutorExists(YES);
         }
     }
@@ -243,6 +244,10 @@ public class SolicitorExecutorTransformer {
 
     private boolean isSolicitorApplying(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
+    }
+
+    private boolean otherExecutorExistsIsSetNo(CaseData caseData) {
+        return NO.equals(caseData.getOtherExecutorExists());
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(

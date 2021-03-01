@@ -59,7 +59,6 @@ module.exports = async function (isSolicitorApplying = false) {
 
         await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionNo}`);
 
-
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
