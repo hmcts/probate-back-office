@@ -46,9 +46,10 @@ public class PBAValidationService {
         URI uri = buildUri(emailId);
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
-        log.info("Getting org details");
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
+        log.info("Got org details, orgId:" + responseEntity.getBody().getOrganisationEntityResponse()
+            .getOrganisationIdentifier());
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
 
         return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
