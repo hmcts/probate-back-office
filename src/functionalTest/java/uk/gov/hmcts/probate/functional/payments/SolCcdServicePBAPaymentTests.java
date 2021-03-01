@@ -25,7 +25,8 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     @Test
     public void shouldValidateDefaultPBAs() {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
-            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"},{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}");
+            "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}", 
+            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}");
     }
 
     @Test
@@ -56,13 +57,15 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
             "Your account has insufficient funds");
     }
 
-    private void validatePostRequestSuccessForPBAs(String path, String fileName, String expectedValue) {
+    private void validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
 
         String body = given().headers(utils.getHeadersWithSolicitorUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
             .when().post(path).getBody().asString();
-        assertThat(body, containsString(expectedValue));
+        for (String expectedValue : expectedValues) {
+            assertThat(body, containsString(expectedValue));
+        }
     }
 }

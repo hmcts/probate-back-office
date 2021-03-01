@@ -17,7 +17,7 @@ public class PaymentFeeBuilder {
 
     public PaymentFee buildPaymentFee(FeeResponse feeResponse, BigDecimal volume) {
         return PaymentFee.builder()
-            .calculatedAmount(feeResponse.getFeeAmount().multiply(volume).setScale(2))
+            .calculatedAmount(feeResponse.getFeeAmount().setScale(2))
             .code(feeResponse.getCode())
             .description(feeResponse.getDescription())
             .feeAmount(feeResponse.getFeeAmount().setScale(2))

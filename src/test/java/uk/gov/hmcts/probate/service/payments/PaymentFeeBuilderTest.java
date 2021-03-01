@@ -33,16 +33,16 @@ public class PaymentFeeBuilderTest {
         FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.valueOf(1.50)).code("feeCode").description(
             "feeDescription").version(
             "feeVersion").build();
-        BigDecimal volume = BigDecimal.valueOf(2);
+        BigDecimal volume = BigDecimal.valueOf(1);
         PaymentFee paymentFee = paymentFeeBuilder.buildPaymentFee(feeResponse, volume);
         assertEquals("feeCode", paymentFee.getCode());
         assertEquals("feeDescription", paymentFee.getDescription());
         assertEquals("feeJurisdiction1", paymentFee.getJurisdiction1());
         assertEquals("feeJurisdiction2", paymentFee.getJurisdiction2());
         assertEquals("feeVersion", paymentFee.getVersion());
-        assertEquals("3.00", "" + paymentFee.getCalculatedAmount());
+        assertEquals("1.50", "" + paymentFee.getCalculatedAmount());
         assertEquals("1.50", "" + paymentFee.getFeeAmount());
-        assertEquals("2", "" + paymentFee.getVolume());
+        assertEquals("1", "" + paymentFee.getVolume());
 
     }
 
