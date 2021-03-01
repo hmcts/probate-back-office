@@ -5,8 +5,7 @@ const dateFns = require('date-fns');
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
-// caseMatches check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
-// const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
+const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateSolicitor/createGrantOfProbateConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
@@ -16,8 +15,7 @@ const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markF
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig');
 const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGoPSol/caseDetailsTabConfig');
-// caseMatches check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
-// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
@@ -160,10 +158,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // case matching amended to remove all case matches to make test re-runnable
-
-    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
-    // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Examine case';
     await I.chooseNextStep(nextStepName);
@@ -184,9 +179,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // case matching amended to remove all case matches to make test re-runnable
-    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
-    // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Issue grant';
     await I.chooseNextStep(nextStepName);
