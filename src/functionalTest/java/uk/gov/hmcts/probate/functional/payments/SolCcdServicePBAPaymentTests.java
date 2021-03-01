@@ -54,7 +54,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     public void shouldValidatePaymentInsufficientFunds() {
         validatePostRequestSuccessForPBAs("/nextsteps/validate",
             "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
-            "Your account has insufficient funds");
+            "have insufficient funds available");
     }
 
     private void validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
