@@ -238,7 +238,7 @@ public class BulkPrintService {
             uk.gov.hmcts.reform.sendletter.api.model.v3.Document willDocument 
                 = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
             documents.add(willDocument);
-            log.info("willDocument");
+            log.info("Will Document added");
         }
         
         documents.add(coversheetDocument);

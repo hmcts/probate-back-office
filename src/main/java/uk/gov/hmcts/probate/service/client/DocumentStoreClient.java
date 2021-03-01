@@ -30,11 +30,8 @@ public class DocumentStoreClient {
             String userId = document.getDocumentGeneratedBy();
             if (userId == null) {
                 userId = securityUtils.getSecurityDTO().getUserId();
-                log.info("get user id" + userId);
             }
 
-            log.info("document.getDocumentLink().getDocumentBinaryUrl():" 
-                + document.getDocumentLink().getDocumentBinaryUrl());
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
             request.setHeader(USER_ID, userId);

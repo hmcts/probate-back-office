@@ -190,7 +190,8 @@ public class DocumentController {
 
         List<Document> willDocuments = findWillService.findDefaultOrSelectedWills(caseData);
 
-        log.info("number of willDocuments found on case: {}", willDocuments.size());
+        log.info("Number of willDocuments selected on case: {} for the caseId {}", willDocuments.size(), 
+            callbackRequest.getCaseDetails().getId().toString());
 
         String letterId = null;
         String pdfSize = null;
