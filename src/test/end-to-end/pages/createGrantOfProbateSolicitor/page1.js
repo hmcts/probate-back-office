@@ -23,18 +23,18 @@ module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
         await I.click({css: `#solsSolicitorIsApplying-${createGrantOfProbateConfig.page1_solsSolicitorIsApplying}`});
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        
+
         await I.fillField('#solsSolicitorAddress_AddressLine1', createGrantOfProbateConfig.page1_sols_address_line1);
         await I.fillField('#solsSolicitorAddress_AddressLine2', createGrantOfProbateConfig.page1_sols_address_line2);
         await I.fillField('#solsSolicitorAddress_PostTown', createGrantOfProbateConfig.page1_sols_address_town);
         await I.fillField('#solsSolicitorAddress_County', createGrantOfProbateConfig.page1_sols_address_county);
         await I.fillField('#solsSolicitorAddress_PostCode', createGrantOfProbateConfig.page1_sols_address_postcode);
         await I.fillField('#solsSolicitorAddress_Country', createGrantOfProbateConfig.page1_sols_address_country);
-        
+
         await I.fillField('#solsSolicitorAppReference', createGrantOfProbateConfig.page1_solsSolicitorAppReference);
         await I.fillField('#solsSolicitorEmail', createGrantOfProbateConfig.page1_solsSolicitorEmail);
         await I.fillField('#solsSolicitorPhoneNumber', createGrantOfProbateConfig.page1_solsSolicitorPhoneNumber);
-        await I.fillField('#solsSOTJobTitle', createGrantOfProbateConfig.page1_solsSOTJobTitle);        
+        await I.fillField('#solsSOTJobTitle', createGrantOfProbateConfig.page1_solsSOTJobTitle);
 
         await I.selectOption('#caseType', createGrantOfProbateConfig.page1_list3_case_type);
         await I.click({css: `#paperForm-${createGrantOfProbateConfig.page1_optionNo}`});
