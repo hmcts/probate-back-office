@@ -118,6 +118,7 @@ public class FindWillsService {
         return Document.builder()
             .documentType(documentType)
             .documentLink(scannedDocument.getUrl())
+            .documentDateAdded(scannedDocument.getScannedDate().toLocalDate())
             .documentFileName(scannedDocument.getFileName())
             .build();
     }

@@ -14,6 +14,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.WillDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,6 +51,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -66,10 +69,12 @@ public class FindWillsServiceTest {
         assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(0).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(0).getDocumentDateAdded());
         assertEquals("Scanned", wills.get(1).getDocumentFileName());
         assertEquals("scanUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("scanBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals(LocalDate.now(), wills.get(1).getDocumentDateAdded());
     }
 
     @Test
@@ -114,6 +119,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         ScannedDocument scanNonWill = ScannedDocument.builder()
@@ -122,6 +128,7 @@ public class FindWillsServiceTest {
             .subtype("somethingelse")
             .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1")
                 .documentBinaryUrl("scanBinaryUrl1").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
         ScannedDocument scanNonOther = ScannedDocument.builder()
@@ -130,6 +137,7 @@ public class FindWillsServiceTest {
             .subtype("somethingelse")
             .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2")
                 .documentBinaryUrl("scanBinaryUrl2").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonOther = new CollectionMember(scanNonOther);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -149,18 +157,22 @@ public class FindWillsServiceTest {
         assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(0).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(0).getDocumentDateAdded());
         assertEquals("uploadOtherFileName", wills.get(1).getDocumentFileName());
         assertEquals("uploadOtherUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("uploadOtherBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("other", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(1).getDocumentDateAdded());
         assertEquals("uploadFileName", wills.get(2).getDocumentFileName());
         assertEquals("uploadUrl", wills.get(2).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(2).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("IHT", wills.get(2).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(2).getDocumentDateAdded());
         assertEquals("Scanned", wills.get(3).getDocumentFileName());
         assertEquals("scanUrl", wills.get(3).getDocumentLink().getDocumentUrl());
         assertEquals("scanBinaryUrl", wills.get(3).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(3).getDocumentType().getTemplateName());
+        assertEquals(LocalDate.now(), wills.get(3).getDocumentDateAdded());
     }
 
     @Test
@@ -241,6 +253,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -258,10 +271,12 @@ public class FindWillsServiceTest {
         assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(0).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(0).getDocumentDateAdded());
         assertEquals("Scanned", wills.get(1).getDocumentFileName());
         assertEquals("scanUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("scanBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals(LocalDate.now(), wills.get(1).getDocumentDateAdded());
     }
 
     @Test
@@ -298,6 +313,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         ScannedDocument scanNonWill = ScannedDocument.builder()
@@ -306,6 +322,7 @@ public class FindWillsServiceTest {
             .subtype("somethingelse")
             .url(DocumentLink.builder().documentFilename("scanFileName1").documentUrl("scanUrl1")
                 .documentBinaryUrl("scanBinaryUrl1").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonWill = new CollectionMember(scanNonWill);
         ScannedDocument scanNonOther = ScannedDocument.builder()
@@ -314,6 +331,7 @@ public class FindWillsServiceTest {
             .subtype("somethingelse")
             .url(DocumentLink.builder().documentFilename("scanFileName2").documentUrl("scanUrl2")
                 .documentBinaryUrl("scanBinaryUrl2").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScanNonOther = new CollectionMember(scanNonOther);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -333,14 +351,17 @@ public class FindWillsServiceTest {
         assertEquals("uploadUrl", wills.get(0).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(0).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(0).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(0).getDocumentDateAdded());
         assertEquals("uploadFileName", wills.get(1).getDocumentFileName());
         assertEquals("uploadUrl", wills.get(1).getDocumentLink().getDocumentUrl());
         assertEquals("uploadBinaryUrl", wills.get(1).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("IHT", wills.get(1).getDocumentType().getTemplateName());
+        assertEquals(null, wills.get(1).getDocumentDateAdded());
         assertEquals("Scanned", wills.get(2).getDocumentFileName());
         assertEquals("scanUrl", wills.get(2).getDocumentLink().getDocumentUrl());
         assertEquals("scanBinaryUrl", wills.get(2).getDocumentLink().getDocumentBinaryUrl());
         assertEquals("will", wills.get(2).getDocumentType().getTemplateName());
+        assertEquals(LocalDate.now(), wills.get(2).getDocumentDateAdded());
     }
 
     @Test
@@ -384,6 +405,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
@@ -401,7 +423,7 @@ public class FindWillsServiceTest {
         List<Document> selectedWills = findWillService.findDefaultOrSelectedWills(caseData);
         assertEquals(1, selectedWills.size());
         assertEquals("Scanned", selectedWills.get(0).getDocumentFileName());
-
+        assertEquals(LocalDate.now(), selectedWills.get(0).getDocumentDateAdded());
     }
 
     @Test
@@ -422,6 +444,7 @@ public class FindWillsServiceTest {
             .subtype("will")
             .url(DocumentLink.builder().documentFilename("scanFileName").documentUrl("scanUrl")
                 .documentBinaryUrl("scanBinaryUrl").build())
+            .scannedDate(LocalDateTime.now())
             .build();
         CollectionMember<ScannedDocument> collectionMemberScan = new CollectionMember(scan);
         List<CollectionMember<ScannedDocument>> scannedDocumentsList = new ArrayList<>();
