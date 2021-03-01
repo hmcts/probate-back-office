@@ -1,3 +1,5 @@
+/*eslint max-lines: ["error", {"max":350}]*/
+
 module.exports = {
     'env': {
         'browser': true,
