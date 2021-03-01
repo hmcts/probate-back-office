@@ -111,7 +111,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         // extra copies
         await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
-                
+
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);
         await I.caseProgressCompleteApplication();
