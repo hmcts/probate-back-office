@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
@@ -48,13 +49,9 @@ public class PBAValidationService {
 
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
-        try {
-            log.info("Got org details, orgId:" + responseEntity.getBody().getOrganisationEntityResponse()
-                .getOrganisationIdentifier());
-        } catch (NullPointerException npe) {
-            log.error(npe.getMessage());            
-        }
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
+        log.info("Got org details, orgId:" + pbaOrganisationResponse.getOrganisationEntityResponse()
+            .getOrganisationIdentifier());
 
         return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
     }
