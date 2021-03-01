@@ -151,6 +151,20 @@
     </tr>
     <tr>
         <td colspan="2">
+            {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTPartPowerRes" %}
+            <p>The executor{% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}s{% endif %}
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}
+                {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}{% if countApplying == (case_details.case_data.otherPartnersApplyingAsExecutors|length - 1) %} and {% else %}, {% endif %} {% set countApplying = countApplying + 1 %}
+                {% endfor %}
+                {% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}are {% else %}is {% endif %} the profit sharing
+                INSERT
+                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}{% endif %},
+                at the date of death of the deceased and that power is reserved to the other profit sharing
+                INSERT
+                in the {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}successor {% endif %} firm.
+            </p>
+            {% endif %}
+
             {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" or case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" %}
             <p>The executor named in the Will has by a resolution,
                 {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} which has been filed with the Senior District Judge or Registry, {% else %} certified copy of which is lodged with this application, {% endif %}
@@ -165,14 +179,6 @@
                 {% endfor %}
             </p>
             {% endif %}
-
-            {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
-            <p>
-                {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},
-                {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
-                is applying for probate.
-            </p>
-            {% endfor %}
         </td>
     </tr>
     <tr>
