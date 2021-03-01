@@ -17,10 +17,10 @@ const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApp
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
-Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
+Feature('Back office').retry(testConfig.TestRetryFeatures);
 
 /* eslint-disable no-console */
-Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
+Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async function (I) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';

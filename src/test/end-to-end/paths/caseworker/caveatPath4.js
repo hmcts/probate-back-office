@@ -27,7 +27,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
+Scenario('08 BO Caveat E2E - Withdraw caveat', async function (I) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Withdraw caveat
 

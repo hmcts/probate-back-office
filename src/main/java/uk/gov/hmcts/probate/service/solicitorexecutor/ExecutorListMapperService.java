@@ -84,6 +84,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -109,6 +110,7 @@ public class ExecutorListMapperService {
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
                         .notApplyingExecutorName(exec.getValue().getNotApplyingExecutorName())
                         .notApplyingExecutorReason("PowerReserved")
+                        .notApplyingExecutorDispenseWithNotice()
                         .build()))
                 .collect(Collectors.toList());
     }

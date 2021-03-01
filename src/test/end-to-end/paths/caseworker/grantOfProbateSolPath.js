@@ -30,7 +30,7 @@ const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/g
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) {
+Scenario('11 BO Grant of Representation E2E (Solicitor) - Grant issued', async function (I) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
