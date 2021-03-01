@@ -49,8 +49,6 @@ public class PBAValidationService {
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
-        log.info("Got org details, orgId:" + pbaOrganisationResponse.getOrganisationEntityResponse()
-            .getOrganisationIdentifier());
 
         return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
     }
