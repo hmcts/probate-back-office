@@ -361,7 +361,7 @@ public class BusinessValidationController {
         if (newState.isPresent()) {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
-            Document document = pdsolsSolicitorIsMainApplicantfManagementService.generateAndUpload(callbackRequest, documentType);
+            Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
             response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
         }
         return response;
