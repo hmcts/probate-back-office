@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -22,6 +23,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -103,13 +106,24 @@ public class CallbackResponseTransformer {
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
-    private final SolicitorExecutorTransformer solicitorExecutorTransformer;
-    
-    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
+    private final SolicitorExecutorTransformer solicitorExecutorTransformer;    
+    private final TaskListUpdateService taskListUpdateService;
+
+    public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, 
                                                                 Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-            .state(newState.orElse(null))
-            .build();
+        final CaseDetails cd = callbackRequest.getCaseDetails();
+        // set here to ensure tasklist html is correctly generated
+        cd.setState(newState.orElse(null));
+
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, false)
+                // set here again to make life easier mocking
+                .state(newState.orElse(null))
+                .build();
 
         return transformResponse(responseCaseData);
     }
@@ -199,12 +213,13 @@ public class CallbackResponseTransformer {
 
     }
 
-
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
                                          String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        caseData.setAuthenticatedDate(LocalDate.now());
+
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -403,6 +418,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
@@ -494,7 +519,45 @@ public class CallbackResponseTransformer {
         solicitorLegalStatementNextStepsDefaulter
             .transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
+        transformCaseForSolicitorConfirmText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder) {
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+                solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
+
+        String plural = "";
+        if (listOfApplyingExecs.size() > 1) {
+            plural = "s";
+        }
+        String executorNames = "The Executor" + plural + " ";
+        String professionalName = caseDetails.getData().getSolsSOTName();
+
+        String confirmSOT = "By signing the Statement of Truth by ticking the boxes below, I, " + professionalName
+                + " confirm the following:\n\n"
+                + "I, " + professionalName + ", have provided a copy of this application to the Executor" + plural
+                + " named below.\n\n"
+                + "I, " + professionalName + ", have informed the Executor"  + plural
+                + " that in signing the Statement of Truth I am confirming that the Executor "  + plural
+                + " believe "  + plural + " the facts set out in this legal statement are true.\n\n"
+                + "I, " + professionalName + ", have informed the Executor"   + plural
+                + " of the consequences if it should subsequently appear that the Executor "  + plural
+                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
+                + "I, " + professionalName + ", have been authorised but the Executor"  + plural
+                + " to sign the Statement of Truth.\n\n"
+                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
+                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
+                + "statement of truth without an honest belief in its truth.\n";
+
+        // if there are no executors then fill the space in with the professional users name (primary applicant)
+        executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
+
+        builder.solsReviewSOTConfirm(confirmSOT);
+        builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
+        builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
 
     private boolean doTransform(CallbackRequest callbackRequest) {
@@ -537,6 +600,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
             .schemaVersionCcdCopy(caseData.getSchemaVersion())
+            .state(caseDetails.getState())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())
@@ -726,12 +790,22 @@ public class CallbackResponseTransformer {
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
+            .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
+            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
+            .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
+            .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
+            .taskList(caseData.getTaskList())
+            .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
+                .map(dateTimeFormatter::format).orElse(null))            
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
-            .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
-            .nameOfSucceededFirm(caseData.getNameOfSucceededFirm());
+            .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved())
+            .iht217(caseData.getIht217());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -740,6 +814,8 @@ public class CallbackResponseTransformer {
         }
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
 
         return builder;

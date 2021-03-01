@@ -36,6 +36,7 @@ public class ResponseCaseDataParentTest {
             .deceasedDiedEngOrWales("Yes")
             .deceasedForeignDeathCertInEnglish("Yes")
             .deceasedForeignDeathCertTranslation("Yes")
+            .iht217("Yes")
             .build();
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
@@ -52,6 +53,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("registryAddress", responseCaseDataParent.getRegistryAddress());
         assertEquals("registryEmailAddress", responseCaseDataParent.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", responseCaseDataParent.getRegistrySequenceNumber());
+        assertEquals("Yes", responseCaseDataParent.getIht217());
     }
 
     @Test
@@ -68,7 +70,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDeceasedDiedEngOrWales());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertInEnglish());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertTranslation());
-
     }
 
     @Test
@@ -135,6 +136,9 @@ public class ResponseCaseDataParentTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
+                .soleTraderOrLimitedCompany("No")
+                .whoSharesInCompanyProfits("Partners")
+                .morePartnersHoldingPowerReserved("No")
                 .build();
 
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
@@ -142,6 +146,9 @@ public class ResponseCaseDataParentTest {
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
+        assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
+        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits());
+        assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
     }
 
     @Test

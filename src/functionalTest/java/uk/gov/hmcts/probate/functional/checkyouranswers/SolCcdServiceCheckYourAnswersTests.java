@@ -18,6 +18,7 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -119,18 +120,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
-    }
-
-    @Test
-    public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"",
-            "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
-    public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"",
-            "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -277,6 +266,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             textContent = textContent.replaceAll(Pattern.quote("\r"), "");
             final String valMinusCr = validationString.replaceAll(Pattern.quote("\r"), "");
             assertTrue(textContent.contains(valMinusCr));
+            
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {

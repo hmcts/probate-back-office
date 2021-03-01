@@ -52,6 +52,8 @@ public class CCDDataTransformer {
             .executors(getAllExecutors(caseData))
             .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
+            .willHasCodicils(caseData.getWillHasCodicils())
+            .iht217(caseData.getIht217())
             .build();
     }
 
@@ -152,16 +154,15 @@ public class CCDDataTransformer {
                 .collect(Collectors.toList()));
         }
 
-
-        Executor primaryExecutor = Executor.builder()
-            .applying(caseData.isPrimaryApplicantApplying())
-            .address(caseData.getPrimaryApplicantAddress())
-            .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
-            .forename(caseData.getPrimaryApplicantForenames())
-            .lastname(caseData.getPrimaryApplicantSurname())
-            .build();
-
-        executors.add(primaryExecutor);
+        if (caseData.getPrimaryApplicantForenames() != null) {
+            executors.add(Executor.builder()
+                    .applying(caseData.isPrimaryApplicantApplying())
+                    .address(caseData.getPrimaryApplicantAddress())
+                    .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
+                    .forename(caseData.getPrimaryApplicantForenames())
+                    .lastname(caseData.getPrimaryApplicantSurname())
+                    .build());
+        }
 
         return executors;
     }

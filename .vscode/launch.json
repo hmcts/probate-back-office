@@ -17,7 +17,19 @@
             "type": "pwa-node"
         },
         {
-            "name": "e2e all",
+            "name": "e2e CW all",
+            "request": "launch",
+            "runtimeArgs": [
+                "test:fullfunctional-cw",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },        
+        {
+            "name": "Mocha test end-end",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e",
@@ -28,6 +40,54 @@
             ],
             "type": "pwa-node"
         },
+        {
+            "name": "caseProgressStandard e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStandard",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "caseProgressStopEscalateIssue e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStopEscalateIssue",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },     
+        {
+            "name": "caseProgressReenterDeceasedDetails e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressReenterDeceasedDetails",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },             
+        {
+            "name": "caseProgressAppStopped e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressAppStopped",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },             
         {
             "name": "caveat e2e",
             "request": "launch",
@@ -195,6 +255,6 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }      
+        }
     ]
 }

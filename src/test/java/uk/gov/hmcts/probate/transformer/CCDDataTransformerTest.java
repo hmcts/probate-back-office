@@ -47,6 +47,8 @@ public class CCDDataTransformerTest {
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
 
+    private static final String EXEC_FIRSTNAME = "Forename";
+
     private static final String IHT_FORM_ID = "IHT207";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
@@ -124,8 +126,8 @@ public class CCDDataTransformerTest {
         additionalExecutors.add(additionalExecutors1);
         additionalExecutors.add(additionalExecutors2);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
+        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(EXEC_FIRSTNAME);
         when(caseDataMock.isPrimaryApplicantApplying()).thenReturn(true);
-
 
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorp = new ArrayList<>();
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorsTrustCorp1 = mock(CollectionMember.class);

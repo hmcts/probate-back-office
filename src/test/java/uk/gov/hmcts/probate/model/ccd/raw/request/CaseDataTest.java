@@ -938,6 +938,8 @@ public class CaseDataTest {
             .registrySequenceNumber("registrySequenceNumber")
             .dispenseWithNotice("Yes")
             .titleAndClearingType("TCTTrustCorpResWithApp")
+            .registrySequenceNumber("registrySequenceNumber")
+            .iht217("Yes")
             .build();
 
         assertEquals("PAFN", caseData.getPrimaryApplicantForenames());
@@ -954,7 +956,7 @@ public class CaseDataTest {
         assertEquals("registryAddress", caseData.getRegistryAddress());
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
-
+        assertEquals("Yes", caseData.getIht217());
     }
 
     @Test
@@ -1024,6 +1026,9 @@ public class CaseDataTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
+                .soleTraderOrLimitedCompany("No")
+                .whoSharesInCompanyProfits("Partners")
+                .morePartnersHoldingPowerReserved("No")
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
@@ -1034,6 +1039,9 @@ public class CaseDataTest {
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
+        assertEquals("No", caseData.getSoleTraderOrLimitedCompany());
+        assertEquals("Partners", caseData.getWhoSharesInCompanyProfits());
+        assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
     }
 
     @Test

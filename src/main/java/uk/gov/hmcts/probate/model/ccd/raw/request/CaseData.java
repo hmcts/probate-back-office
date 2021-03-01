@@ -70,6 +70,9 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Data
 public class CaseData extends CaseDataParent {
 
+    // Tasklist update
+    private final String taskList;
+
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
@@ -187,21 +190,19 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
     private final String solsLifeInterest;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-        ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -274,6 +275,8 @@ public class CaseData extends CaseDataParent {
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
 
+    private final LocalDate solsIHT400Date;
+
     private final String solsSOTName;
 
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTForenamesIsNull}")
@@ -282,8 +285,13 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTSurnameIsNull}")
     private final String solsSOTSurname;
 
-    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
     private final String solsSOTJobTitle;
+
+    private final String solsReviewSOTConfirm;
+
+    private final String solsReviewSOTConfirmCheckbox1Names;
+
+    private final String solsReviewSOTConfirmCheckbox2Names;
 
     private final Long extraCopiesOfGrant;
 
@@ -501,6 +509,7 @@ public class CaseData extends CaseDataParent {
     private String bulkScanCaseReference;
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
+    private LocalDate escalatedDate;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;
@@ -533,7 +542,7 @@ public class CaseData extends CaseDataParent {
 
     private List<CollectionMember<AdditionalExecutor>> getAllExecutors(boolean applying) {
         List<CollectionMember<AdditionalExecutor>> totalExecutors = new ArrayList<>();
-        if ((applying && isPrimaryApplicantApplying())
+        if (getPrimaryApplicantForenames() != null && (applying && isPrimaryApplicantApplying())
             || (!applying && isPrimaryApplicantNotApplying())) {
             AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
                 .additionalExecForenames(getPrimaryApplicantForenames())
