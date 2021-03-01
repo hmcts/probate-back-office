@@ -165,6 +165,32 @@
             </p>
             {% endif %}
 
+            {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
+            <p>The executor{% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}s{% endif %}
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}
+                {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}{% if countApplying == (case_details.case_data.otherPartnersApplyingAsExecutors|length - 1) %} and {% else %}, {% endif %} {% set countApplying = countApplying + 1 %}
+                {% endfor %}
+                {% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}are {% else %}is {% endif %} the ONLY profit sharing
+                INSERT
+                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}{% endif %},
+                at the date of death of the deceased.
+            </p>
+            {% endif %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+            <p>The executor{% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}s{% endif %}
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}
+                {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}{% if countApplying == (case_details.case_data.otherPartnersApplyingAsExecutors|length - 1) %} and {% else %}, {% endif %} {% set countApplying = countApplying + 1 %}
+                {% endfor %}
+                {% if (case_details.case_data.otherPartnersApplyingAsExecutors|length > 1) %}are {% else %}is {% endif %} the profit sharing
+                INSERT
+                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}{% endif %},
+                at the date of death of the deceased and the remaining profit sharing
+                INSERT
+                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.
+            </p>
+            {% endif %}
+
             {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" or case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" %}
             <p>The executor named in the Will has by a resolution,
                 {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} which has been filed with the Senior District Judge or Registry, {% else %} certified copy of which is lodged with this application, {% endif %}
