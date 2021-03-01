@@ -10,36 +10,26 @@ module.exports = async function (crud) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page7_applyingAsAttorneyYes}`);
-        await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
-        if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25); // needed in order to be able to switch off auto delay for local dev
-        }
+        await I.click(`#spouseOrPartner-${createGrantOfProbateConfig.page7_spouseOrPartnerNo}`);
+        await I.click(`#childrenSurvived-${createGrantOfProbateConfig.page7_childrenSurvivedYes}`);
+        await I.fillField('#childrenOverEighteenSurvived', createGrantOfProbateConfig.page7_childrenOverEighteenSurvived);
+        await I.fillField('#childrenUnderEighteenSurvived', createGrantOfProbateConfig.page7_childrenUnderEighteenSurvived);
+        await I.click(`#childrenDied-${createGrantOfProbateConfig.page7_childrenDiedYes}`);
+        await I.fillField('#childrenDiedOverEighteen', createGrantOfProbateConfig.page7_childrenDiedOverEighteen);
+        await I.fillField('#childrenDiedUnderEighteen', createGrantOfProbateConfig.page7_childrenDiedUnderEighteen);
+        await I.click(`#grandChildrenSurvived-${createGrantOfProbateConfig.page7_grandChildrenSurvivedYes}`);
+        await I.fillField('#grandChildrenSurvivedOverEighteen', createGrantOfProbateConfig.page7_grandChildrenSurvivedOverEighteen);
+        await I.fillField('#grandChildrenSurvivedUnderEighteen', createGrantOfProbateConfig.page7_grandChildrenSurvivedUnderEighteen);
 
-        await I.waitForVisible({css: '#attorneyOnBehalfOfNameAndAddress_0_name'}, createGrantOfProbateConfig.page7_representativeOfName);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName);
-
-        await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1'});
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_Country', createGrantOfProbateConfig.address_country);
-
-        await I.click(`#mentalCapacity-${createGrantOfProbateConfig.page7_mentalCapacityYes}`);
-        await I.click(`#courtOfProtection-${createGrantOfProbateConfig.page7_courtOfProtectionYes}`);
-        await I.click(`#epaOrLpa-${createGrantOfProbateConfig.page7_epaOrLpaYes}`);
-        await I.click(`#epaRegistered-${createGrantOfProbateConfig.page7_epaRegisteredYes}`);
     }
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page7_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page7_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName_update);
+        await I.click(commonConfig.continueButton);
+        await I.waitForElement('#childrenDied-No');
+        await I.seeElement('#childrenDied-Yes');
+        await I.click(`#childrenDied-${createGrantOfProbateConfig.page7_childrenDiedNo}`);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
