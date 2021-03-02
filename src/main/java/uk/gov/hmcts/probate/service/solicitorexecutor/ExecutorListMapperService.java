@@ -76,17 +76,6 @@ public class ExecutorListMapperService {
                 .build());
     }
 
-    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
-            CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
-                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
-                .applyingExecutorName(caseData.getPrimaryApplicantFullName())
-                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
-                .build());
-    }
-
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(
             CaseData caseData) {
         return caseData.getAdditionalExecutorsTrustCorpList()
@@ -154,6 +143,29 @@ public class ExecutorListMapperService {
                         .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
+                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
+                .applyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
+                .applyingExecutorOtherNames(caseData.getPrimaryApplicantAlias())
+                .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
+                .build());
+    }
+
+    public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
+                .notApplyingExecutorNameOnWill(caseData.getPrimaryApplicantAlias())
+                .build());
     }
 
 }

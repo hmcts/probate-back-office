@@ -159,7 +159,7 @@
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
             <p>
                 {{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }},
-                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
+                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endfor %}
@@ -179,13 +179,13 @@
     </tr>
     <tr>
         <td colspan="2">
-            {% if case_details.case_data.executorsNotApplyingForLegalStatement|length>0 %}
-            {% for executor in case_details.case_data.executorsNotApplyingForLegalStatement %}
-            <p><span>{{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }}, another executor named in the will{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif%},
-                    {% if executor.value.additionalExecReasonNotApplying == "DiedBefore" %}is not making this application because they died before {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}
-                    {% if executor.value.additionalExecReasonNotApplying == "DiedAfter" %} is not making this application because they died after {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}
-                    {% if executor.value.additionalExecReasonNotApplying == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
-                    {% if executor.value.additionalExecReasonNotApplying == "Renunciation" %}is not making this application and gives up the right to do so in the future.{% endif %}
+            {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
+            {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                    {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}is not making this application because they died before {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}
+                    {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} is not making this application because they died after {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}
+                    {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
+                    {% if executor.value.notApplyingExecutorReason == "Renunciation" %}is not making this application and gives up the right to do so in the future.{% endif %}
                   </span></p>
             {% endfor %}
             {% else %}

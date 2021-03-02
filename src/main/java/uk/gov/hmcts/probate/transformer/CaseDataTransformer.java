@@ -20,10 +20,8 @@ public class CaseDataTransformer {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = legalStatementExecutorTransformer.
-                mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+        legalStatementExecutorTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
 
-        caseData.setExecutorsApplyingLegalStatement(execsApplying);
     }
 
 }
