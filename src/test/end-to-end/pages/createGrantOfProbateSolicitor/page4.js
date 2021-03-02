@@ -4,87 +4,92 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud, unique_deceased_user) {
+module.exports = async function (crud) {
 
     const I = this;
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
-        await I.waitForElement({css: '#boDeceasedTitle'});
-        await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page4_bo_deceasedTitle);
+        await I.seeElement('#otherExecutorExists-Yes');
+        await I.seeElement('#otherExecutorExists-No');
+        await I.click(`#otherExecutorExists-${createGrantOfProbateConfig.page4_otherExecutorExistsYes}`);
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText2, testConfig.TestTimeToWaitForText);
+        await I.click({type: 'button'}, '#executorsApplying>div');
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.5);
+        }
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.TestTimeToWaitForText);
+        await I.fillField({css: '#executorsApplying_0_applyingExecutorName'}, createGrantOfProbateConfig.page4_executor0_name);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.5);
+        }
+        await I.fillField({css: '#executorsApplying_0_applyingExecutorPhoneNumber'}, createGrantOfProbateConfig.page4_phone_number);
+        await I.fillField('#executorsApplying_0_applyingExecutorEmail', createGrantOfProbateConfig.page4_applying_executor_email);
+        await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page4_executor0_alias);
+        await I.selectOption('#executorsApplying_0_applyingExecutorOtherNamesReason', createGrantOfProbateConfig.page4_executor0_alias_reason);
 
-        await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user);
-        await I.fillField({css: '#deceasedSurname'}, createGrantOfProbateConfig.page4_deceasedSurname + '_' + unique_deceased_user);
-        await I.fillField('#boDeceasedHonours', createGrantOfProbateConfig.page4_bo_deceasedHonours);
+        await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_PostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_County', createGrantOfProbateConfig.address_county);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_PostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
 
-        const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};
-        await I.waitForVisible(pcLocator);
-        await I.click(pcLocator);
+        await I.click({type: 'button'}, '#executorsNotApplying>div');
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
 
-        await I.waitForVisible({css: '#deceasedAddress_AddressLine1'});
-        await I.fillField('#deceasedAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#deceasedAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#deceasedAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#deceasedAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#deceasedAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#deceasedAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#deceasedAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorName');
+        await I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page4_executor1_name);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+        await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page4_executor1_alias);
+        await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page4_name_difference);
+        await I.selectOption('#executorsNotApplying_0_notApplyingExecutorReason', createGrantOfProbateConfig.page4_not_applying_reason);
+        await I.click(`#executorsNotApplying_0_notApplyingExecutorNotified-${createGrantOfProbateConfig.page4_notifiedYes}`);
 
-        await I.selectOption({css: '#dateOfDeathType'}, createGrantOfProbateConfig.page4_dateOfDeathType);
-        await I.fillField({css: '#deceasedDateOfBirth-day'}, createGrantOfProbateConfig.page4_deceasedDob_day);
-        await I.fillField({css: '#deceasedDateOfBirth-month'}, createGrantOfProbateConfig.page4_deceasedDob_month);
-        await I.fillField({css: '#deceasedDateOfBirth-year'}, createGrantOfProbateConfig.page4_deceasedDob_year);
-        await I.fillField({css: '#deceasedDateOfDeath-day'}, createGrantOfProbateConfig.page4_deceasedDod_day);
-        await I.fillField({css: '#deceasedDateOfDeath-month'}, createGrantOfProbateConfig.page4_deceasedDod_month);
-        await I.fillField({css: '#deceasedDateOfDeath-year'}, createGrantOfProbateConfig.page4_deceasedDod_year);
-
-        await I.click(`#deceasedAnyOtherNames-${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
-        await I.click('#solsDeceasedAliasNamesList > div > button');
-        await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
-        await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);
-
-        await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatus}`);
-        await I.click(`#foreignAsset-${createGrantOfProbateConfig.page4_foreignAssetYes}`);
-        await I.waitForVisible('#foreignAssetEstateValue');
-        await I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page4_foreignAssetEstateValue);
+        await I.click(`#notifiedApplicants-${createGrantOfProbateConfig.page4_notifiedApplicantsYes}`);
+        await I.click(`#adopted-${createGrantOfProbateConfig.page4_adoptedYes}`);
+        await I.click({type: 'button'}, '#adoptiveRelatives>div');
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+        await I.waitForVisible('#adoptiveRelatives_0_name');
+        await I.fillField('#adoptiveRelatives_0_name', createGrantOfProbateConfig.page4_adoptive_relative_name);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+        await I.fillField('#adoptiveRelatives_0_relationship', createGrantOfProbateConfig.page4_adoptive_relative_relationship);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+        await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
     }
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
-
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-
-        await I.waitForVisible('#deceasedForenames');
-        await I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-        await I.fillField('#deceasedSurname', createGrantOfProbateConfig.page4_deceasedSurname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-        await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-
-        await I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day_update);
-        await I.fillField('#deceasedDateOfDeath-month', createGrantOfProbateConfig.page4_deceasedDod_month_update);
-        await I.fillField('#deceasedDateOfDeath-year', createGrantOfProbateConfig.page4_deceasedDod_year_update);
-        await I.fillField('#deceasedDateOfBirth-day', createGrantOfProbateConfig.page4_deceasedDob_day_update);
-        await I.fillField('#deceasedDateOfBirth-month', createGrantOfProbateConfig.page4_deceasedDob_month_update);
-        await I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year_update);
-
-        await I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page9_ihtReferenceNumber_update);
-    }
-
-    if (crud === 'update2orig') {
-
-        // "reverting" update back to defaults - to enable case-match with matching case
-        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
-
-        await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
-
-        await I.waitForVisible('#deceasedDateOfDeath-day');
-        await I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day);
-        await I.fillField('#deceasedDateOfDeath-month', createGrantOfProbateConfig.page4_deceasedDod_month);
-        await I.fillField('#deceasedDateOfDeath-year', createGrantOfProbateConfig.page4_deceasedDod_year);
-        await I.fillField('#deceasedDateOfBirth-day', createGrantOfProbateConfig.page4_deceasedDob_day);
-        await I.fillField('#deceasedDateOfBirth-month', createGrantOfProbateConfig.page4_deceasedDob_month);
-        await I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year);
+        await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
+        await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page4_executor0_alias_update);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

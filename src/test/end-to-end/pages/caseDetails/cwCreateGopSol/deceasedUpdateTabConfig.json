@@ -1,0 +1,39 @@
+{
+    "tabName": "Deceased",
+    "fields": [
+      "Was the deceased domiciled in England or Wales at the time of their death?",
+      "What was the country where the deceased was domiciled at the date of death?",
+      "What type of date of death is?",
+      "Date of death",
+      "Date of birth",
+      "Title",
+      "First name(s)",
+      "Last name(s)",
+      "Honours",
+      "Building and Street",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country",
+      "Alias name"
+    ],
+    "dataKeys": [
+      "page5_bo_deceasedTitle",
+      "page5_deceasedForenames",
+      "page5_deceasedSurname",
+      "page5_bo_deceasedHonours",
+      "page5_deceasedDob_long_update",
+      "page5_deceasedDod_long_update",
+      "page5_dateOfDeathType",
+      "page5_deceasedAlias",
+      "page9_deceasedDomicileInEngWalesNo",
+      "page9_domicilityCountry",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode"
+    ]
+  }

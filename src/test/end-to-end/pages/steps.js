@@ -40,6 +40,7 @@ module.exports = function () {
         cwEnterSolsGoPPage7: steps.createGrantOfProbateSolicitor.page7,
         cwEnterSolsGoPPage8: steps.createGrantOfProbateSolicitor.page8,
         cwEnterSolsGoPPage9: steps.createGrantOfProbateSolicitor.page9,
+        cwEnterSolsGoPPage10: steps.createGrantOfProbateSolicitor.page10,
 
         caseProgressSolicitorDetails: steps.caseProgress.solicitorDetails,
         caseProgressSolicitorDetailsCheckAnswers: steps.caseProgress.solicitorDetailsCheckAnswers,
