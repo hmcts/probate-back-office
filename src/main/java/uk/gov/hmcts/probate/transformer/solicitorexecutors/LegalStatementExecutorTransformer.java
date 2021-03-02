@@ -21,7 +21,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     }
 
     /**
-     * Todo check if this is a good place for this
+     * Map all executors into executors applying and executors not applying lists for the solicitor legal statement.
      */
     public void mapSolicitorExecutorFieldsToLegalStatementExecutorFields(CaseData caseData) {
 

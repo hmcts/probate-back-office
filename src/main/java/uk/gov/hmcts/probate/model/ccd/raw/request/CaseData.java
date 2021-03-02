@@ -54,11 +54,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -530,7 +528,7 @@ public class CaseData extends CaseDataParent {
     }
 
     public boolean isPrimaryApplicantApplying() {
-        return primaryApplicantIsApplying != null &&YES.equals(primaryApplicantIsApplying);
+        return YES.equals(primaryApplicantIsApplying);
     }
 
     private boolean isPrimaryApplicantNotApplying() {
