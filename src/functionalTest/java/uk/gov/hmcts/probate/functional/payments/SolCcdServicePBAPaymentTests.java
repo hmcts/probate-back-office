@@ -35,10 +35,9 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
             "\"solsNeedsPBAPayment\":\"Yes\"");
     }
 
-    @Pending
     @Test
     public void shouldValidatePaymentAountOnHold() {
-        validatePostRequestSuccessForPBAs("/nextsteps/validate",
+        validatePostRequestSuccessForPBAsForSolicitor2("/nextsteps/validate",
             "solicitorPDFPayloadProbateAccountOnHold.json",
             "Your account is on hold");
     }
@@ -60,6 +59,19 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     private void validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
 
         String body = given().headers(utils.getHeadersWithSolicitorUser())
+            .relaxedHTTPSValidation()
+            .body(utils.getJsonFromFile(fileName))
+            .contentType(JSON)
+            .when().post(path).getBody().asString();
+        for (String expectedValue : expectedValues) {
+            assertThat(body, containsString(expectedValue));
+        }
+    }
+    
+    private void validatePostRequestSuccessForPBAsForSolicitor2(String path, String fileName,
+                                                                String... expectedValues) {
+
+        String body = given().headers(utils.getHeadersWithSolicitor2User())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
