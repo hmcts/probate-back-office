@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CaseDataTransformer {
 
-    private final SolicitorExecutorTransformer solicitorExecutorTransformer;
+    private final ExecutorsTransformer solicitorExecutorTransformer;
 
     public void transformCaseData(CallbackRequest callbackRequest) {
 

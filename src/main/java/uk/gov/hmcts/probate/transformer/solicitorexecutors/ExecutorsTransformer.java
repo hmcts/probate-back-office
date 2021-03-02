@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.transformer;
+package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class SolicitorExecutorTransformer {
+public class ExecutorsTransformer {
 
     private final ExecutorListMapperService executorListMapperService;
 
