@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class SolicitorExecutorTransformerTest {
     private ExecutorListMapperService executorListMapperServiceMock;
 
     @InjectMocks
-    private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
+    private ExecutorsTransformer solicitorExecutorTransformerMock;
     
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;

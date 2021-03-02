@@ -153,7 +153,7 @@ public class CaseDataTest {
             .additionalExecutorsApplying(additionalExecutorsApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> applying = caseData.getExecutorsApplyingLegalStatement();
 
         assertEquals(4, applying.size());
     }
@@ -171,7 +171,7 @@ public class CaseDataTest {
             .additionalExecutorsApplying(null)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> applying = caseData.getExecutorsApplyingLegalStatement();
 
         assertEquals(1, applying.size());
     }
@@ -193,7 +193,8 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying =
+                caseData.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(4, notApplying.size());
     }
@@ -211,7 +212,8 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(null)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying =
+                caseData.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(1, notApplying.size());
     }
@@ -230,7 +232,8 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> execs =
+                caseData.getExecutorsApplyingLegalStatement();
 
         assertEquals(1, execs.size());
     }
@@ -249,7 +252,8 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> execs =
+                caseData.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(1, execs.size());
     }
@@ -261,7 +265,8 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> applying =
+                underTest.getExecutorsApplyingLegalStatement();
 
         assertEquals(3, applying.size());
     }
@@ -275,7 +280,8 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying
+                = underTest.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(2, notApplying.size());
     }
@@ -287,7 +293,8 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying =
+                underTest.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(1, notApplying.size());
     }
@@ -300,7 +307,7 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsApplyingForLegalStatement(), hasSize(2));
+        assertThat(caseData.getExecutorsApplyingLegalStatement(), hasSize(2));
     }
 
     @Test
@@ -311,7 +318,7 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsNotApplyingForLegalStatement(), hasSize(2));
+        assertThat(caseData.getExecutorsNotApplyingLegalStatement(), hasSize(2));
     }
 
     private CaseData getCaseDataWhenPrimaryExecutorNotApplying() {
@@ -369,15 +376,15 @@ public class CaseDataTest {
             .additionalExecutorsApplying(additionalExecutorsApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> applying = caseData.getExecutorsApplyingLegalStatement();
 
         assertEquals(4, applying.size());
-        assertEquals("Appl-ying", applying.get(1).getValue().getAdditionalExecForenames());
-        assertEquals("Name", applying.get(1).getValue().getAdditionalExecLastname());
-        assertEquals("Applying", applying.get(2).getValue().getAdditionalExecForenames());
-        assertEquals("Na-me", applying.get(2).getValue().getAdditionalExecLastname());
-        assertEquals("Appl-ying", applying.get(3).getValue().getAdditionalExecForenames());
-        assertEquals("Na-me", applying.get(3).getValue().getAdditionalExecLastname());
+        assertEquals("Appl-ying", applying.get(1).getValue().getApplyingExecutorFirstName());
+        assertEquals("Name", applying.get(1).getValue().getApplyingExecutorLastName());
+        assertEquals("Applying", applying.get(2).getValue().getApplyingExecutorFirstName());
+        assertEquals("Na-me", applying.get(2).getValue().getApplyingExecutorLastName());
+        assertEquals("Appl-ying", applying.get(3).getValue().getApplyingExecutorFirstName());
+        assertEquals("Na-me", applying.get(3).getValue().getApplyingExecutorLastName());
     }
 
     @Test
@@ -397,11 +404,11 @@ public class CaseDataTest {
             .additionalExecutorsApplying(additionalExecutorsApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorApplying>> applying = caseData.getExecutorsApplyingLegalStatement();
 
         assertEquals(2, applying.size());
-        assertEquals("ApplyingName", applying.get(1).getValue().getAdditionalExecForenames());
-        assertEquals(null, applying.get(1).getValue().getAdditionalExecLastname());
+        assertEquals("ApplyingName", applying.get(1).getValue().getApplyingExecutorFirstName());
+        assertEquals(null, applying.get(1).getValue().getApplyingExecutorLastName());
     }
 
     @Test
@@ -421,15 +428,13 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying =
+                caseData.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(4, notApplying.size());
-        assertEquals("NotAppl-ying", notApplying.get(1).getValue().getAdditionalExecForenames());
-        assertEquals("Name", notApplying.get(1).getValue().getAdditionalExecLastname());
-        assertEquals("NotApplying", notApplying.get(2).getValue().getAdditionalExecForenames());
-        assertEquals("Na-me", notApplying.get(2).getValue().getAdditionalExecLastname());
-        assertEquals("NotAppl-ying", notApplying.get(3).getValue().getAdditionalExecForenames());
-        assertEquals("Na-me", notApplying.get(3).getValue().getAdditionalExecLastname());
+        assertEquals("NotAppl-ying Name", notApplying.get(1).getValue().getNotApplyingExecutorName());
+        assertEquals("NotApplying Na-me", notApplying.get(2).getValue().getNotApplyingExecutorName());
+        assertEquals("NotAppl-ying Na-me", notApplying.get(3).getValue().getNotApplyingExecutorName());
     }
 
     @Test
@@ -449,11 +454,11 @@ public class CaseDataTest {
             .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .build();
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying =
+                caseData.getExecutorsNotApplyingLegalStatement();
 
         assertEquals(2, notApplying.size());
-        assertEquals("NotApplyingName", notApplying.get(1).getValue().getAdditionalExecForenames());
-        assertEquals(null, notApplying.get(1).getValue().getAdditionalExecLastname());
+        assertEquals("NotApplyingName", notApplying.get(1).getValue().getNotApplyingExecutorName());
     }
 
     @Test

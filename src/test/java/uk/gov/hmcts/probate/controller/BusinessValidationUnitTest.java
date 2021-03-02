@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -96,6 +97,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private CallbackResponse callbackResponseMock;
     @Mock
+    private CaseDataTransformer caseDataTransformerMock;
+    @Mock
     private ConfirmationResponseService confirmationResponseServiceMock;
     @Mock
     private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
@@ -130,6 +133,7 @@ public class BusinessValidationUnitTest {
             caseworkerAmendValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
+            caseDataTransformerMock,
             confirmationResponseServiceMock,
             stateChangeServiceMock,
             pdfManagementServiceMock,
