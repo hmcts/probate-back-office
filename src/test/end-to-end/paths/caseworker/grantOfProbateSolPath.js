@@ -16,7 +16,7 @@ const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markF
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig');
 const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGoPSol/caseDetailsTabConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
-const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
+const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
 const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/examChecklistTabConfig');
@@ -26,7 +26,7 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfPr
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsUpdateTabConfig');
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsUpdateTabConfig');
-const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
+const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedUpdateTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
@@ -47,12 +47,13 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.cwEnterSolsGoPPage1('create');
     await I.cwEnterSolsGoPPage2('create');
     await I.cwEnterSolsGoPPage3('create');
-    await I.cwEnterSolsGoPPage4('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage5('create');
+    await I.cwEnterSolsGoPPage4('create');
+    await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
     await I.cwEnterSolsGoPPage6('create');
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
-    await I.cwEnterSolsGoPPage9();
+    await I.cwEnterSolsGoPPage9('create');
+    await I.cwEnterSolsGoPPage10();
     await I.checkMyAnswers(nextStepName);
     let endState;
 
@@ -63,12 +64,13 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.cwEnterSolsGoPPage1('create');
     await I.cwEnterSolsGoPPage2('create');
     await I.cwEnterSolsGoPPage3('create');
-    await I.cwEnterSolsGoPPage4('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage5('create');
+    await I.cwEnterSolsGoPPage4('create');
+    await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
     await I.cwEnterSolsGoPPage6('create');
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
-    await I.cwEnterSolsGoPPage9();
+    await I.cwEnterSolsGoPPage9('create');
+    await I.cwEnterSolsGoPPage10();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
@@ -93,13 +95,10 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.cwEnterSolsGoPPage1('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage3('update');
+    await I.cwEnterSolsGoPPage4('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage4('update', unique_deceased_user);
-    await I.checkMyAnswers(nextStepName);
-    await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage5('update');
+    await I.cwEnterSolsGoPPage5('update', unique_deceased_user);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage6('update');
@@ -109,6 +108,9 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage8('update');
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.cwEnterSolsGoPPage9('update');
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

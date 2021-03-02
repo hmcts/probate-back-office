@@ -37,7 +37,7 @@
     ],
     "dataKeys": [
       "page1_list2_application_type",
-      "page3_notifiedApplicantsYes",
+      "page4_notifiedApplicantsYes",
       "address_line1",
       "address_line2",
       "address_line3",
@@ -45,16 +45,16 @@
       "address_county",
       "address_country",
       "address_postcode",
-      "page3_executor0_name",
-      "page3_phone_number",
-      "page3_applying_executor_email",
+      "page4_executor0_name",
+      "page4_phone_number",
+      "page4_applying_executor_email",
       "page1_solsSolicitorFirmName",
       "page1_solsSolicitorAppReference",
       "page1_solsSOTName",
       "page1_solsSOTJobTitle",
 
-      "page3_executor0_alias",
-      "page3_executor0_alias_update",
+      "page4_executor0_alias",
+      "page4_executor0_alias_update",
       "address_line1",
       "address_line2",
       "address_line3",
@@ -62,10 +62,10 @@
       "address_county",
       "address_country",
       "address_postcode",
-      "page3_executor1_name",
-      "page3_executor1_alias",
-      "page3_name_difference",
-      "page3_notifiedYes"
+      "page4_executor1_name",
+      "page4_executor1_alias",
+      "page4_name_difference",
+      "page4_notifiedYes"
     ]
   }
   
