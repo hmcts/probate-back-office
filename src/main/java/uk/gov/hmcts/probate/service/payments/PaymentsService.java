@@ -37,6 +37,7 @@ public class PaymentsService {
     private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
     private static final String PAYMENT_ERROR_400 = "Payment Failed";
     private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
+    private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -69,6 +70,8 @@ public class PaymentsService {
                 throw new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
             } else if (e.getStatusCode().is5xxServerError()) {
                 throw new BusinessValidationException(PAYMENT_ERROR_5XX, e.getMessage());
+            } else {
+                throw new BusinessValidationException(PAYMENT_ERROR_OTHER, e.getMessage());
             }
         }
         return paymentResponse;

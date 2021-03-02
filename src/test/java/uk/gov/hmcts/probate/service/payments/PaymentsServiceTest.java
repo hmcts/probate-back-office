@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @RunWith(SpringRunner.class)
@@ -153,6 +154,21 @@ public class PaymentsServiceTest {
 
         } catch (BusinessValidationException e) {
             assertEquals("Unable to retrieve account information, please try again later", e.getUserMessage());
+            verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
+        }
+    }
+    
+    @Test
+    public void shouldFailWithOtherError() {
+        try {
+            when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
+            when(httpClientErrorExceptionMock.getStatusCode()).thenReturn(UNAUTHORIZED);
+
+            paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
+
+        } catch (BusinessValidationException e) {
+            assertEquals("Unexpected Exception", e.getUserMessage());
             verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
         }
     }
