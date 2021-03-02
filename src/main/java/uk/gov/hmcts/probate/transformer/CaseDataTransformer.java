@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 
 import java.util.List;
 
@@ -14,14 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CaseDataTransformer {
 
-    private final ExecutorsTransformer solicitorExecutorTransformer;
+    private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
 
     public void transformCaseData(CallbackRequest callbackRequest) {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = solicitorExecutorTransformer.
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = legalStatementExecutorTransformer.
                 mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
     }
 

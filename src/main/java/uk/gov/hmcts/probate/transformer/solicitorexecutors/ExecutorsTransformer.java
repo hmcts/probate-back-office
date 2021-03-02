@@ -1,7 +1,12 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -18,12 +23,13 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-@Service
+@Component
 @Slf4j
 @AllArgsConstructor
+@Primary
 public class ExecutorsTransformer {
 
-    private final ExecutorListMapperService executorListMapperService;
+    protected final ExecutorListMapperService executorListMapperService;
 
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -143,26 +149,6 @@ public class ExecutorsTransformer {
         builder.solsIdentifiedNotApplyingExecs(execsNotApplyingNames);
     }
 
-    /**
-     * Todo check if this is a good place for this
-     */
-    public List<CollectionMember<AdditionalExecutorApplying>> mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-            CaseData caseData) {
-
-        // Create executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
-
-        // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
-            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
-        } else if (caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-        }
-
-        return execsApplying;
-    }
-
-
     public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
@@ -258,11 +244,11 @@ public class ExecutorsTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    private boolean isSolicitorExecutor(CaseData caseData) {
+    protected boolean isSolicitorExecutor(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 
-    private boolean isSolicitorApplying(CaseData caseData) {
+    protected boolean isSolicitorApplying(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
