@@ -110,7 +110,6 @@ public class ExecutorListMapperService {
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
                         .notApplyingExecutorName(exec.getValue().getNotApplyingExecutorName())
                         .notApplyingExecutorReason("PowerReserved")
-                        .notApplyingExecutorDispenseWithNotice()
                         .build()))
                 .collect(Collectors.toList());
     }
