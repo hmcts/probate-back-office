@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.transformer;
+package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SolicitorExecutorTransformerTest {
+public class ExecutorsTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 

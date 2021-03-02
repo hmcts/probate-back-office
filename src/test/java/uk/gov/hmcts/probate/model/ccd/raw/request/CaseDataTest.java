@@ -868,4 +868,15 @@ public class CaseDataTest {
 
     }
 
+    @Test
+    public void shouldApplySolicitorLegalStatementAttributes() {
+        final CaseData caseData = CaseData.builder()
+                .executorsApplyingLegalStatement(additionalExecutorsApplyingList)
+                .executorsNotApplyingLegalStatement(additionalExecutorsNotApplyingList)
+                .build();
+
+        assertEquals(additionalExecutorsApplyingList, caseData.getExecutorsApplyingLegalStatement());
+        assertEquals(additionalExecutorsNotApplyingList, caseData.getExecutorsNotApplyingLegalStatement());
+    }
+
 }

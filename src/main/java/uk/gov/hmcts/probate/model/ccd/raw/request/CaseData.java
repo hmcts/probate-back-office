@@ -530,7 +530,7 @@ public class CaseData extends CaseDataParent {
     }
 
     public boolean isPrimaryApplicantApplying() {
-        return YES.equals(primaryApplicantIsApplying);
+        return primaryApplicantIsApplying != null &&YES.equals(primaryApplicantIsApplying);
     }
 
     private boolean isPrimaryApplicantNotApplying() {

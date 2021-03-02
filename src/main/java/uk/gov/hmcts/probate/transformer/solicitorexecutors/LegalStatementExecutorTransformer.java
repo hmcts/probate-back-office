@@ -35,7 +35,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-        } else if (caseData.getPrimaryApplicantIsApplying().equals(NO)) {
+        } else if (caseData.getPrimaryApplicantIsApplying() != null
+                && caseData.getPrimaryApplicantIsApplying().equals(NO)) {
             execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
 
