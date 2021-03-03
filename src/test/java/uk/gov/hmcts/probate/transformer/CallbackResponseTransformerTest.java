@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
@@ -82,7 +83,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -415,7 +415,7 @@ public class CallbackResponseTransformerTest {
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
 
     @Mock
-    private SolicitorExecutorTransformer solicitorExecutorTransformer;
+    private ExecutorsTransformer solicitorExecutorTransformer;
 
     @Before
     public void setup() {
@@ -1177,6 +1177,8 @@ public class CallbackResponseTransformerTest {
                 .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
         verify(solicitorExecutorTransformer, times(1))
                 .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .nullSolicitorExecutorLists(any());
     }
 
     @Test

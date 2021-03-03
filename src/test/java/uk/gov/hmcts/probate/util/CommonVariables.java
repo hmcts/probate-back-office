@@ -37,6 +37,7 @@ public class CommonVariables {
     public static final String EXEC_NAME_DIFF = "Ex name difference comment";
     public static final String EXEC_WILL_NAME = "Ex will name";
     public static final String EXEC_OTHER_NAMES = EXEC_WILL_NAME;
+    public static final String EXEC_OTHER_NAMES_REASON = "Marriage";
     public static final String EXEC_PHONE = "010101010101";
     public static final String EXEC_EMAIL = "executor1@probate-test.com";
     public static final String EXEC_NOTIFIED = YES;

@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -73,6 +74,7 @@ public class BusinessValidationController {
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
@@ -124,6 +126,9 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
+
+            caseDataTransformer.transformCaseData(callbackRequest);
+
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE,
