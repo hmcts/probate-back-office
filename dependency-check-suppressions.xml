@@ -79,22 +79,4 @@
         <cve>CVE-2020-7021</cve>
         <cve>CVE-2021-22132</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-security-config-5.3.4.RELEASE.jar
-   ]]></notes>
-        <cve>CVE-2021-22112</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-security-crypto-5.3.4.RELEASE.jar
-   ]]></notes>
-        <cve>CVE-2021-22112</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-security-web-5.3.4.RELEASE.jar
-   ]]></notes>
-        <cve>CVE-2021-22112</cve>
-    </suppress>
 </suppressions>
