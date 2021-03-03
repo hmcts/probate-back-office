@@ -50,10 +50,10 @@
             "responseReceived": "No",
             "address": {
               "County": "",
-              "Country": "",
-              "PostCode": "2",
-              "PostTown": "",
-              "AddressLine1": "1",
+              "Country": "United Kingdom",
+              "PostCode": "HP5 2PN",
+              "PostTown": "Chesham",
+              "AddressLine1": "151 Hivings Hill",
               "AddressLine2": "",
               "AddressLine3": ""
             }
@@ -68,10 +68,10 @@
             "applyingExecutorEmail": "executor1@probate-test.com",
             "applyingExecutorAddress": {
               "County": "",
-              "Country": "",
-              "PostCode": "2",
-              "PostTown": "",
-              "AddressLine1": "1",
+              "Country": "United Kingdom",
+              "PostCode": "HP5 2PN",
+              "PostTown": "Chesham",
+              "AddressLine1": "151 Hivings Hill",
               "AddressLine2": "",
               "AddressLine3": ""
             }
@@ -93,10 +93,10 @@
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
-        "Country": "",
-        "PostCode": "2",
-        "PostTown": "",
-        "AddressLine1": "1",
+        "Country": "United Kingdom",
+        "PostCode": "HP5 2PN",
+        "PostTown": "Chesham",
+        "AddressLine1": "151 Hivings Hill",
         "AddressLine2": "",
         "AddressLine3": ""
       },
@@ -138,8 +138,8 @@
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
       "solsSolicitorIsExec": "No",
-      "solsSolicitorIsMainApplicant": null,
-      "solsSolicitorIsApplying": null,
+      "solsSolicitorIsMainApplicant": "No",
+      "solsSolicitorIsApplying": "No",
       "solsSolicitorNotApplyingReason": null,
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
