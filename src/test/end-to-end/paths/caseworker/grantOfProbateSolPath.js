@@ -151,7 +151,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage4('update2orig');
+    await I.cwEnterSolsGoPPage5('update2orig');
     await I.checkMyAnswers(nextStepName);
 
     nextStepName = 'Find matches (Examining)';
