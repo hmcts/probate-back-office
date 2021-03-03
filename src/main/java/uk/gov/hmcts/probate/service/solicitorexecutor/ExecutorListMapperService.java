@@ -152,7 +152,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
                 .applyingExecutorName(caseData.getPrimaryApplicantFullName())
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
-                .applyingExecutorOtherNames(caseData.getPrimaryApplicantAlias())
+                .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
                 .build());
     }
