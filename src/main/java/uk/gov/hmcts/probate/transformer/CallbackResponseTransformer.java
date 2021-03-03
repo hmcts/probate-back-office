@@ -391,18 +391,20 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
                                                           FeeServiceResponse feeServiceResponse) {
-        String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
-        String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
-        String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
-        String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
+        final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
+        final String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
+        final String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
+        final String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final String schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
+
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
-            .schemaVersion(SCHEMA_VERSION)
+            .schemaVersion(schemaVersion)
             // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(SCHEMA_VERSION)
+            .schemaVersionCcdCopy(schemaVersion)
 
             // set these next 2 properties as these properties are still used for in-flight cases on old schema /
             // bulk scan created cases and ccd has limited logic facilities
@@ -579,8 +581,7 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.probateNotificationsGenerated(
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
-        final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
-        final String ccdVersion = paperForm == null || paperForm.equals("No") ? SCHEMA_VERSION : null;
+        final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)
@@ -588,6 +589,13 @@ public class CallbackResponseTransformer {
             .schemaVersionCcdCopy(ccdVersion)
             .build()
         );
+    }
+
+    private String getSchemaVersion(CaseData cd) {
+        final String paperForm = cd.getPaperForm();
+        // not applicable to intestacy or admon will yet
+        return (GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
+                && paperForm == null || paperForm.equals(NO) ? SCHEMA_VERSION : null;
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
