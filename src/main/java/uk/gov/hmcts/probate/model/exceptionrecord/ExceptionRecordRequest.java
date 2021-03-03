@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.json.JSONArray;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.time.LocalDateTime;

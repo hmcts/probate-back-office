@@ -108,7 +108,7 @@ public class ExceptionRecordController {
     }
 
     @ApiOperation(value = "Transforms OCR data to case data", notes = "Will return "
-       + "errors if the transformation is unsuccessful.")
+        + "errors if the transformation is unsuccessful.")
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
@@ -162,7 +162,8 @@ public class ExceptionRecordController {
             default: {
                 log.error("This Exception Record form currently has no case mapping");
                 throw new OCRMappingException(
-                    "This Exception Record form currently has no case mapping for case: "+erRequest.getExceptionRecordId());
+                    "This Exception Record form currently has no case mapping for case: "
+                        + erRequest.getExceptionRecordId());
             }
         }
 
