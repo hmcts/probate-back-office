@@ -74,16 +74,26 @@ public class ExceptionRecordControllerTest {
     @Before
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        exceptionRecordPayloadCitizenPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
-        exceptionRecordPayloadSolicitorPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA8A.json");
-        exceptionRecordPayloadCitizenSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
-        exceptionRecordPayloadSolicitorSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
-        exceptionRecordPayloadCitizenPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
-        exceptionRecordPayloadCitizenMultipleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenMultipleExecutorPA1P.json");
-        exceptionRecordPayloadSolicitorMultipleExecutorPA1P =testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorMultipleExecutorPA1P.json");
-        exceptionRecordPayloadSolicitorPA1A =testUtils.getStringFromFile("exceptionRecordPayloadSolicitorPA1A.json");
-        exceptionRecordInvalidJsonPayloadPA1P = testUtils.getStringFromFile("invalidExceptionRecordDataPA1P.json");
-        exceptionRecordInvalidJsonPayloadPA8A = testUtils.getStringFromFile("invalidExceptionRecordDataPA8A.json");
+        exceptionRecordPayloadCitizenPA8A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
+        exceptionRecordPayloadSolicitorPA8A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA8A.json");
+        exceptionRecordPayloadCitizenSingleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorSingleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
+        exceptionRecordPayloadCitizenPA1A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
+        exceptionRecordPayloadCitizenMultipleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenMultipleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorMultipleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorMultipleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorPA1A =
+                testUtils.getStringFromFile("exceptionRecordPayloadSolicitorPA1A.json");
+        exceptionRecordInvalidJsonPayloadPA1P =
+                testUtils.getStringFromFile("invalidExceptionRecordDataPA1P.json");
+        exceptionRecordInvalidJsonPayloadPA8A =
+                testUtils.getStringFromFile("invalidExceptionRecordDataPA8A.json");
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
@@ -97,7 +107,8 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+                .andExpect(content().string(containsString(
+                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
@@ -155,7 +166,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1P() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1P()
+            throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -229,7 +241,8 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+                .andExpect(content().string(containsString(
+                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
@@ -246,7 +259,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8APreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8APreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -259,7 +273,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1PPreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1PPreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -273,7 +288,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1PPreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1PPreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -287,7 +303,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1PPreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1PPreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -301,7 +318,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1APreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1APreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -315,7 +333,8 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1PPreviousEndPoint() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1PPreviousEndPoint()
+            throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -347,10 +366,10 @@ public class ExceptionRecordControllerTest {
         JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
         mockMvc.perform(post("/transform-exception-record")
-                .content(modifiedExceptionRecordPayload.toString())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString("Form type 'null' not found")));
+            .content(modifiedExceptionRecordPayload.toString())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().string(containsString("Form type 'null' not found")));
     }
 
     @Test
@@ -362,8 +381,9 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
-                .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
 
     @Test
@@ -375,8 +395,9 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
-                .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
 
     @Test
@@ -384,12 +405,14 @@ public class ExceptionRecordControllerTest {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P.replace(
+                    deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
-                .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
 
     @Test
@@ -399,7 +422,8 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case: 1001\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                        + "This Exception Record can not be created as a case: 1001\"]")));
     }
 
     @Ignore
@@ -409,7 +433,8 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                        + "This Exception Record form currently has no case mapping\"]")));
     }
 
     @Test
@@ -443,17 +468,21 @@ public class ExceptionRecordControllerTest {
             .content(updateCasePayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
+            .andExpect(content().string(
+                containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
     }
 
     @Test
     public void shouldNotUpdateCaseForIncorrectJourneyClassification() throws Exception {
 
         mockMvc.perform(post("/update-case")
-            .content(updateCasePayload.replace("SUPPLEMENTARY_EVIDENCE_WITH_OCR", JourneyClassification.SUPPLEMENTARY_EVIDENCE.name()))
+            .content(updateCasePayload
+                .replace("SUPPLEMENTARY_EVIDENCE_WITH_OCR", JourneyClassification.SUPPLEMENTARY_EVIDENCE.name()))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("{\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case update for case:1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(content().string(containsString(
+                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case update "
+                    + "for case:1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
@@ -463,6 +492,8 @@ public class ExceptionRecordControllerTest {
             .content(updateCasePayload.replace("\"form_type\": \"PA8A\"", "\"form_type\": \"PA1A\""))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("{\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping for case: 1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(content().string(containsString(
+                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping "
+                    + "for case: 1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 }

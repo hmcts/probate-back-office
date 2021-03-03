@@ -26,18 +26,20 @@ public class RaiseGrantOfRepresentationNotificationService {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
-    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest) throws NotificationClientException {
+    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest)
+        throws NotificationClientException {
 
         log.info("Preparing to send notifications for raising a grant application.");
         CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         boolean useEmailNotification =
-                callbackRequest.getCaseDetails().getData().getDefaultValueForEmailNotifications().equals(YES);
+            callbackRequest.getCaseDetails().getData().getDefaultValueForEmailNotifications().equals(YES);
 
         if (useEmailNotification) {
             log.info("Email address available, sending email to applicant.");
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            response =
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document document = notificationService.sendEmail(GRANT_RAISED, callbackRequest.getCaseDetails());
                 documents.add(document);

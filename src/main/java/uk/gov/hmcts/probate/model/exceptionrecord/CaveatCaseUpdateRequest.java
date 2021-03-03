@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
 
 @Data

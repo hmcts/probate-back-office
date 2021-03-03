@@ -41,10 +41,11 @@ public class ExecutorsApplyingNotificationService {
 
     private void addAdditionalExecutors(CaseData caseData) {
         if (caseData.getAdditionalExecutorsApplying() != null) {
-            for (CollectionMember<AdditionalExecutorApplying> executorApplying : caseData.getAdditionalExecutorsApplying()) {
+            for (CollectionMember<AdditionalExecutorApplying> executorApplying : caseData
+                .getAdditionalExecutorsApplying()) {
                 executorList.add(buildExecutorList(executorApplying.getValue().getApplyingExecutorName(),
-                        executorApplying.getValue().getApplyingExecutorEmail(),
-                        executorApplying.getValue().getApplyingExecutorAddress()));
+                    executorApplying.getValue().getApplyingExecutorEmail(),
+                    executorApplying.getValue().getApplyingExecutorAddress()));
 
             }
         }
@@ -53,21 +54,22 @@ public class ExecutorsApplyingNotificationService {
     private void addPrimaryApplicant(CaseData caseData) {
         if (YES.equals(caseData.getPrimaryApplicantIsApplying()) || caseData.getPrimaryApplicantIsApplying() == null) {
             executorList.add(buildExecutorList(caseData.getPrimaryApplicantFullName(),
-                    caseData.getPrimaryApplicantEmailAddress(), caseData.getPrimaryApplicantAddress()));
+                caseData.getPrimaryApplicantEmailAddress(), caseData.getPrimaryApplicantAddress()));
         }
     }
 
     private void addSolicitor(CaseData caseData) {
         executorList.add(buildExecutorList(caseData.getSolsSOTName(),
-                caseData.getSolsSolicitorEmail(), caseData.getSolsSolicitorAddress()));
+            caseData.getSolsSolicitorEmail(), caseData.getSolsSolicitorAddress()));
 
     }
 
-    private CollectionMember<ExecutorsApplyingNotification> buildExecutorList(String name, String email, SolsAddress address) {
+    private CollectionMember<ExecutorsApplyingNotification> buildExecutorList(String name, String email,
+                                                                              SolsAddress address) {
         return new CollectionMember<>(String.valueOf(executorList.size() + 1), ExecutorsApplyingNotification.builder()
-                .name(name)
-                .email(email)
-                .address(address)
-                .build());
+            .name(name)
+            .email(email)
+            .address(address)
+            .build());
     }
 }

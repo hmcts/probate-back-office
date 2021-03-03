@@ -29,5 +29,11 @@ module.exports = async function (crud) {
         await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);
     }
 
+    // occasionally the last input is not recorded when auto delay off
+    if (!testConfig.TestAutoDelayEnabled) {
+        await I.wait(0.25);
+    }
+
+    await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

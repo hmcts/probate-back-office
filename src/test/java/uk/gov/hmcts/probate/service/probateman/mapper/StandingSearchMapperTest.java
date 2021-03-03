@@ -66,7 +66,8 @@ public class StandingSearchMapperTest {
         standingSearch.setId(Long.valueOf(ID));
         standingSearch.setSsDateOfEntry(DATE_OF_ENTRY);
 
-        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.STANDING_SEARCH, ID);
+        String legacyCaseViewUrl =
+            String.format(printServiceHost + printServiceLegacyPath, ProbateManType.STANDING_SEARCH, ID);
 
         StandingSearchData expectedStandingSearchData = StandingSearchData.builder()
                 .deceasedForenames(DECEASED_FORENAMES)
