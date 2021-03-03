@@ -6,7 +6,7 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
-const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateSolicitor/createGrantOfProbateConfig');
+const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateSolicitor/createGrantOfProbateConfig-NonTrust');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');

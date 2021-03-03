@@ -159,7 +159,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },            
+        },
+        {
+            "name": "Caseworker GoP (Solicitor Non Trust) e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbate-sol-non-trust",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },                    
         {
             "name": "Caseworker GoP (Personal) e2e",
             "request": "launch",
