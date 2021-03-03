@@ -107,9 +107,11 @@ public class ExceptionRecordServiceTest {
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
+        exceptionRecordPayloadPA8A =
+            testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
 
-        exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
+        exceptionRecordPayloadPA1P =
+            testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
 
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 
@@ -152,13 +154,13 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void testRequestForPA8A(){
+    public void testRequestForPA8A() {
         assertEquals("qwertyuio", erRequestCaveat.getEnvelopeId());
         assertEquals(false, erRequestCaveat.getIsAutomatedProcess());
     }
 
     @Test
-    public void testRequestForPA1P(){
+    public void testRequestForPA1P() {
         assertEquals("qwertyuio", erRequestGrantOfProbate.getEnvelopeId());
         assertEquals(false, erRequestGrantOfProbate.getIsAutomatedProcess());
     }
@@ -175,7 +177,8 @@ public class ExceptionRecordServiceTest {
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
-        when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(new CollectionMember(null, null)));
+        when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
+            new CollectionMember(null, null)));
         when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
         SuccessfulCaveatUpdateResponse response =
@@ -188,7 +191,8 @@ public class ExceptionRecordServiceTest {
     @Test
     public void shouldUpdateCaveatCaseFromExceptionRecordWithUnmatchedCaveatNumbersWarning()
         throws IOException, NotificationClientException {
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8ADiffCaseNumbers.json");
+        exceptionRecordPayloadPA8A =
+            testUtils.getStringFromFile("updateExceptionRecordDataPA8ADiffCaseNumbers.json");
         caveatCaseUpdateRequest =
             getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
         CaveatCallbackResponse caveatCallbackResponse = Mockito.mock(CaveatCallbackResponse.class);
@@ -200,7 +204,8 @@ public class ExceptionRecordServiceTest {
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
-        when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(new CollectionMember(null, null)));
+        when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
+            new CollectionMember(null, null)));
         when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
         SuccessfulCaveatUpdateResponse response =
@@ -236,7 +241,8 @@ public class ExceptionRecordServiceTest {
     @Test(expected = OCRMappingException.class)
     public void shouldNotUpdateCaveatCaseFromExceptionRecordNoDocuments()
         throws IOException, NotificationClientException {
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoDocuments.json");
+        exceptionRecordPayloadPA8A =
+            testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoDocuments.json");
         caveatCaseUpdateRequest =
             getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
         CaveatCallbackResponse caveatCallbackResponse = Mockito.mock(CaveatCallbackResponse.class);

@@ -96,7 +96,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String SOLS_FEE_ACC = "1234";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
-    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>> BULK_SCAN_ENVELOPES = new ArrayList<>();
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
