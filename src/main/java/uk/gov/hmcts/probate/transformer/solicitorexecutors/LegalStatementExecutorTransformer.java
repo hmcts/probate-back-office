@@ -10,8 +10,6 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-
 @Component
 @Slf4j
 public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
@@ -35,8 +33,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-        } else if (caseData.getPrimaryApplicantIsApplying() != null
-                && caseData.getPrimaryApplicantIsApplying().equals(NO)) {
+        } else if (caseData.isPrimaryApplicantNotApplying()) {
             execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
 
