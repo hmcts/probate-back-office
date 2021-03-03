@@ -1177,6 +1177,8 @@ public class CallbackResponseTransformerTest {
                 .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
         verify(solicitorExecutorTransformer, times(1))
                 .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .nullSolicitorExecutorLists(any());
     }
 
     @Test

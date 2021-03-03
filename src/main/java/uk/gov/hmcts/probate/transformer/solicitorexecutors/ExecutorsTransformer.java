@@ -227,6 +227,14 @@ public class ExecutorsTransformer {
         return execsNotApplying;
     }
 
+    // Remove the solicitor executor lists from the response data.
+    public void nullSolicitorExecutorLists(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .solsAdditionalExecutorList(null)
+                .additionalExecutorsTrustCorpList(null)
+                .otherPartnersApplyingAsExecutors(null)
+                .dispenseWithNoticeOtherExecsList(null);
+    }
 
     private void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {

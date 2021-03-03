@@ -163,7 +163,7 @@ public class ExecutorListMapperService {
         return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(caseData.getPrimaryApplicantFullName())
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
-                .notApplyingExecutorNameOnWill(caseData.getPrimaryApplicantAlias())
+                .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())
                 .build());
     }
 

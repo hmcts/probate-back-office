@@ -1244,6 +1244,8 @@ public class CallbackResponseTransformer {
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
+        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
+        solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

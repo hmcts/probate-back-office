@@ -659,4 +659,23 @@ public class ExecutorsTransformerTest {
         verify(executorListMapperServiceMock, times(1))
                 .addSolicitorToNotApplyingList(any(), any());
     }
+
+    @Test
+    public void shouldSetSolicitorExecutorListsToNull() {
+        responseCaseDataBuilder
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .otherPartnersApplyingAsExecutors(partnerExecutorList)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList)
+                .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);
+
+        solicitorExecutorTransformerMock.nullSolicitorExecutorLists(responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertNull(responseCaseData.getAdditionalExecutorsTrustCorpList());
+        assertNull(responseCaseData.getOtherPartnersApplyingAsExecutors());
+        assertNull(responseCaseData.getSolsAdditionalExecutorList());
+        assertNull(responseCaseData.getDispenseWithNoticeOtherExecsList());
+    }
+
+
 }
