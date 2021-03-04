@@ -408,22 +408,21 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerNotApplyingWithSolicitorInfo_NotExec() {
+    public void caseworkerNotApplyingListShouldBeEmpty_NotExec() {
         caseDataBuilder
                 .solsSolicitorIsExec(NO);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), new ArrayList<>())).thenReturn(additionalExecutorNotApplying);
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
                 caseDetailsMock.getData(), responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        assertEquals(additionalExecutorNotApplying, responseCaseData.getAdditionalExecutorsNotApplying());
-        verify(executorListMapperServiceMock, times(1))
+        assertTrue(responseCaseData.getAdditionalExecutorsNotApplying().isEmpty());
+        verify(executorListMapperServiceMock, times(0))
                 .addSolicitorToNotApplyingList(any(), any());
     }
+    
 
     @Test
     public void shouldRemoveSolicitorInfoFromCaseworkerNotApplying_IsApplying() {
@@ -630,7 +629,7 @@ public class ExecutorsTransformerTest {
     @Test
     public void shouldSetExecutorNamesList_SolicitorNotApplying() {
         caseDataBuilder
-                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
