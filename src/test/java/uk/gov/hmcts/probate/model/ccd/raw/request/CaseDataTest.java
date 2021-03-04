@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -21,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -830,7 +830,7 @@ public class CaseDataTest {
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
                 .soleTraderOrLimitedCompany("No")
-                .whoSharesInCompanyProfits("Partners")
+                .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
 
@@ -843,7 +843,8 @@ public class CaseDataTest {
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
         assertEquals("No", caseData.getSoleTraderOrLimitedCompany());
-        assertEquals("Partners", caseData.getWhoSharesInCompanyProfits());
+        assertEquals("Partners", caseData.getWhoSharesInCompanyProfits().get(0));
+        assertEquals("Members", caseData.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
     }
 

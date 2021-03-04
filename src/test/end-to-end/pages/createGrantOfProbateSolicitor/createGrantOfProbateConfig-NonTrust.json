@@ -58,10 +58,11 @@
     "page2_list1_update_option": "Applicant Details",
 
     "page3_dispenseWithNotice": "Yes",
-    "page3_titleAndClearingTypeValue": "TCTTrustCorpResWithApp",
-    "page3_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
-    "page3_nameOfTrustCorp": "Trust Corporation Name",
-    "page3_positionInTrustCorp": "Solicitor",
+    "page3_titleAndClearingTypeValue": "TCTPartSuccPowerRes",
+    "page3_titleAndClearingType": "Partners in a successor firm (power reserved to others)",
+    "page3_nameOfFirmNamedInWill": "MySolicitors Ltd",
+    "page3_nameOfSucceededFirm" : "New Solicitors",
+
     "page3_waitForAdditionPerson": "Add all people acting on behalf of trust corporation",
     "page3_lodgementAddress": "London",
     "page3_lodgementDate_day": "01",

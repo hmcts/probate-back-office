@@ -27,7 +27,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
+Scenario('07 BO Caveat E2E - Caveat expired', async function (I) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
 

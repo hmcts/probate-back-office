@@ -30,7 +30,7 @@ const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/c
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) {
+Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant issued', async function (I) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
@@ -46,8 +46,8 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.cwEnterSolsGoPPage1('create');
     await I.cwEnterSolsGoPPage2('create');
-    await I.cwEnterSolsGoPPage3('create');
-    await I.cwEnterSolsGoPPage4('create');
+    await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
+    await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
     await I.cwEnterSolsGoPPage6('create');
     await I.cwEnterSolsGoPPage7('create');
@@ -63,8 +63,8 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.cwEnterSolsGoPPage1('create');
     await I.cwEnterSolsGoPPage2('create');
-    await I.cwEnterSolsGoPPage3('create');
-    await I.cwEnterSolsGoPPage4('create');
+    await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
+    await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
     await I.cwEnterSolsGoPPage6('create');
     await I.cwEnterSolsGoPPage7('create');
@@ -95,7 +95,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.cwEnterSolsGoPPage1('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage4('update');
+    await I.cwEnterSolsGoPPage4('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage5('update', unique_deceased_user);

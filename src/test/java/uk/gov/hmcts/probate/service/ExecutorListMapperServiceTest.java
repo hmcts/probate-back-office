@@ -41,6 +41,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.POWER_RESERVED;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_NAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_WILL_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
@@ -143,6 +144,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
                 .build();
 
         assertEquals(expected, result.get(0).getValue());

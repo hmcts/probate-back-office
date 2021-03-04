@@ -16,7 +16,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
+Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async function (I) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';

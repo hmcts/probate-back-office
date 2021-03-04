@@ -30,7 +30,7 @@ const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDe
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
+Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
 
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 

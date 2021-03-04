@@ -85,6 +85,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
                         .build()))
                 .collect(Collectors.toList());
     }

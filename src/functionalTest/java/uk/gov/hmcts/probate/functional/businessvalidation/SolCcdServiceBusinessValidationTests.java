@@ -236,20 +236,40 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifySuccessPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "Yes");
     }
 
     @Test
     public void verifySuccessPaperFormNo() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+    }
+
+    @Test
+    public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
+    }
+
+    @Test
+    public void verifySchemaVersionNullWhenPaperFormNoForAdmonWill() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
     }
 
     @Test
     public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
             new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
             new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
@@ -258,7 +278,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifySchemaVersionPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
                 new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
                 new ArrayList<String>(Arrays.asList(null, null)));
@@ -267,7 +288,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifySchemaVersionPaperFormNo() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
         validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
                 new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
                 new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
@@ -355,6 +377,26 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_NotTrustCorp() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_TrustCorps() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
+        "\"titleAndClearingType\": \"TCTPartSuccPowerRes\","
+                + "\n\"soleTraderOrLimitedCompany\" : \"No\","
+                + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
     }
 
     @Test
@@ -658,7 +700,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Address line 1",
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
         assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
-        assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits"));
+        assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 
     private String transformCase(String jsonFileName, String path) {
