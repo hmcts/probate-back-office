@@ -86,13 +86,16 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
+        await I.click(`#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-No`);
+
+        
         await I.click(`#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes`);
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
 
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day', createGrantOfProbateConfig.page4_dispense_notice_leave_day);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-month', createGrantOfProbateConfig.page4_dispense_notice_leave_month);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-year', createGrantOfProbateConfig.page4_dispense_notice_leave_year);
-
+        
         await I.click(`#executorsNotApplying_0_notApplyingExecutorNotified-${createGrantOfProbateConfig.page4_notifiedYes}`);        
         
         await I.click(`#notifiedApplicants-${createGrantOfProbateConfig.page4_notifiedApplicantsYes}`);
@@ -118,7 +121,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         }
         await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
 
-        if (createGrantOfProbateConfig.page3_titleAndClearingTypeValue === 'TCTPartSuccPowerRes') {
+        if (createGrantOfProbateConfig.page3_titleAndClearingTypeValue === 'TCTPartSuccPowerRes') {            
             await I.waitForVisible('#soleTraderOrLimitedCompany-No');            
             await I.scrollTo('#soleTraderOrLimitedCompany-No');            
             await I.click('#soleTraderOrLimitedCompany-No');          
@@ -126,7 +129,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible('#whoSharesInCompanyProfits-Partners');            
             await I.scrollTo('#whoSharesInCompanyProfits-Partners');
             await I.click('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Members');
+            await I.click('#whoSharesInCompanyProfits-Members');            
         }
     }
 

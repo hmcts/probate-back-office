@@ -95,7 +95,7 @@ Scenario('11 BO Grant of Representation E2E (Solicitor) - Grant issued', async f
     await I.cwEnterSolsGoPPage1('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage4('update');
+    await I.cwEnterSolsGoPPage4('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage5('update', unique_deceased_user);

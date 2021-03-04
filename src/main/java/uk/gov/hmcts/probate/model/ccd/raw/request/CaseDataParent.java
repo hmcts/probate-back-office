@@ -46,7 +46,7 @@ public class CaseDataParent {
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected final String soleTraderOrLimitedCompany;
-    protected final String whoSharesInCompanyProfits;
+    protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
     protected final String iht217;
