@@ -120,31 +120,6 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.wait(0.25);
         }
         await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
-
-        const tct = createGrantOfProbateConfig.page3_titleAndClearingTypeValue;
-
-        if (tct === 'TCTPartSuccPowerRes' || tct === 'TCTPartPowerRes' || tct === 'TCTSolePrinSucc' || tct === 'TCTSolePrin'
-            || tct === 'TCTPartSuccAllRenouncing' || tct === 'TCTPartAllRenouncing' || tct === 'TCTPartSuccOthersRenouncing'
-            || tct === 'TCTPartOthersRenouncing' || tct === 'TCTNoT') {            
-            //make sure both immediately visible
-            await I.waitForVisible('#soleTraderOrLimitedCompany-No');            
-            await I.waitForVisible('#whoSharesInCompanyProfits-Partners');            
-
-            await I.scrollTo('#soleTraderOrLimitedCompany-No');            
-            await I.click('#soleTraderOrLimitedCompany-No');          
-            
-            await I.scrollTo('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Members');            
-        } else {
-            // make sure fields are hidden
-            numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-Yes'});
-            assert (numEls === 0);    
-            numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-No'});
-            assert (numEls === 0);    
-            numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
-            assert (numEls === 0);    
-        }
     }
 
     if (crud === 'update') {
