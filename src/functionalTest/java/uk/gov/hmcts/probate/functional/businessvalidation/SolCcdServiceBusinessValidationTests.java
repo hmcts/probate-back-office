@@ -358,6 +358,26 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_NotTrustCorp() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_TrustCorps() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
+        "\"titleAndClearingType\": \"TCTPartSuccPowerRes\","
+                + "\n\"soleTraderOrLimitedCompany\" : \"No\","
+                + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
     }

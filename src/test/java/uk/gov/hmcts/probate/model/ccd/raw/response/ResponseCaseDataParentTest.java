@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -137,7 +138,7 @@ public class ResponseCaseDataParentTest {
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
                 .soleTraderOrLimitedCompany("No")
-                .whoSharesInCompanyProfits("Partners")
+                .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
 
@@ -147,7 +148,8 @@ public class ResponseCaseDataParentTest {
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
         assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
-        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits());
+        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits().get(0));
+        assertEquals("Members", responseCaseDataParent.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
     }
 

@@ -121,7 +121,11 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         }
         await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
 
-        if (createGrantOfProbateConfig.page3_titleAndClearingTypeValue === 'TCTPartSuccPowerRes') {            
+        const tct = createGrantOfProbateConfig.page3_titleAndClearingTypeValue;
+
+        if (tct === 'TCTPartSuccPowerRes' || tct === 'TCTPartPowerRes' || tct === 'TCTSolePrinSucc' || tct === 'TCTSolePrin'
+            || tct === 'TCTPartSuccAllRenouncing' || tct === 'TCTPartAllRenouncing' || tct === 'TCTPartSuccOthersRenouncing'
+            || tct === 'TCTPartOthersRenouncing' || tct === 'TCTNoT') {            
             //make sure both immediately visible
             await I.waitForVisible('#soleTraderOrLimitedCompany-No');            
             await I.waitForVisible('#whoSharesInCompanyProfits-Partners');            
