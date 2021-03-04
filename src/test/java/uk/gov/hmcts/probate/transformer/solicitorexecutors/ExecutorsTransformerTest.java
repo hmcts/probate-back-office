@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.transformer;
+package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SolicitorExecutorTransformerTest {
+public class ExecutorsTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -66,7 +66,7 @@ public class SolicitorExecutorTransformerTest {
     private ExecutorListMapperService executorListMapperServiceMock;
 
     @InjectMocks
-    private SolicitorExecutorTransformer solicitorExecutorTransformerMock;
+    private ExecutorsTransformer solicitorExecutorTransformerMock;
     
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
@@ -659,4 +659,23 @@ public class SolicitorExecutorTransformerTest {
         verify(executorListMapperServiceMock, times(1))
                 .addSolicitorToNotApplyingList(any(), any());
     }
+
+    @Test
+    public void shouldSetSolicitorExecutorListsToNull() {
+        responseCaseDataBuilder
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .otherPartnersApplyingAsExecutors(partnerExecutorList)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList)
+                .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);
+
+        solicitorExecutorTransformerMock.nullSolicitorExecutorLists(responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertNull(responseCaseData.getAdditionalExecutorsTrustCorpList());
+        assertNull(responseCaseData.getOtherPartnersApplyingAsExecutors());
+        assertNull(responseCaseData.getSolsAdditionalExecutorList());
+        assertNull(responseCaseData.getDispenseWithNoticeOtherExecsList());
+    }
+
+
 }

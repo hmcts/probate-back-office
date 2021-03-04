@@ -24,6 +24,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES_REASON;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
@@ -80,9 +82,14 @@ public class ExecutorListMapperServiceTest {
 
         CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
-                .solsSOTSurname(SOLICITOR_SOT_SURNAME + " UPDATED")
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
                 .solsSolicitorAddress(SOLICITOR_ADDRESS)
-                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
     }
 
@@ -94,8 +101,7 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_FULLNAME + " UPDATED",
-                newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
         assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
     }
 
@@ -222,6 +228,51 @@ public class ExecutorListMapperServiceTest {
         assertEquals(expected, result.get(0).getValue());
         assertEquals(EXEC_ID, result.get(0).getId());
         assertEquals(1, result.size());
+    }
+
+    @Test
+    public void shouldMapFromFromSolicitorToApplyingExecutor() {
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromSolicitorToApplyingExecutor(caseDetailsMock.getData());
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+                .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+                .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
+                .applyingExecutorAddress(SOLICITOR_ADDRESS)
+                .build());
+
+        assertEquals(result, expected);
+    }
+
+    @Test
+    public void shouldMapFromPrimaryApplicantToApplyingExecutor() {
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromPrimaryApplicantToApplyingExecutor(caseDetailsMock.getData());
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
+                .build());
+
+        assertEquals(result, expected);
+    }
+
+    @Test
+    public void shouldMapFromPrimaryApplicantToNotApplyingExecutor() {
+        CollectionMember<AdditionalExecutorNotApplying> result =
+                underTest.mapFromPrimaryApplicantToNotApplyingExecutor(caseDetailsMock.getData());
+        CollectionMember<AdditionalExecutorNotApplying> expected = new CollectionMember(
+                null, AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(EXEC_NAME)
+                .notApplyingExecutorNameOnWill(EXEC_OTHER_NAMES)
+                .build());
+
+        assertEquals(result, expected);
     }
 
 

@@ -77,7 +77,6 @@
         "Country": ""
       },
       "otherExecutorExists": "No",
-      "solsAdditionalExecutorList": [ ],
       "willExists": "Yes",
       "executorsApplying": [
         {
@@ -225,29 +224,6 @@
       "boEmailRequestInfoNotification": "PUBLIC",
       "boRequestInfoSendToBulkPrint": "PUBLIC",
       "boAssembleLetterSendToBulkPrint": "PUBLIC",
-      "executorsApplyingForLegalStatement": [
-        {
-          "id": null,
-          "value": {
-            "additionalExecForenames": "PUBLIC",
-            "additionalExecLastname": "PUBLIC",
-            "additionalExecNameOnWill": "PUBLIC",
-            "additionalExecAliasNameOnWill": "PUBLIC",
-            "additionalApplying": "PUBLIC",
-            "additionalExecAddress": {
-              "AddressLine1": "PUBLIC",
-              "AddressLine2": "PUBLIC",
-              "AddressLine3": "PUBLIC",
-              "County": "PUBLIC",
-              "PostTown": "PUBLIC",
-              "PostCode": "PUBLIC",
-              "Country": "PUBLIC"
-            },
-            "additionalExecReasonNotApplying": "PUBLIC"
-          }
-        }
-      ],
-      "executorsNotApplyingForLegalStatement": "PUBLIC",
       "primaryApplicantApplying": "PUBLIC",
       "primaryApplicantFullName": "PUBLIC",
       "languagePreference": "PUBLIC",
@@ -349,29 +325,6 @@
       "boEmailRequestInfoNotification": "PUBLIC",
       "boRequestInfoSendToBulkPrint": "PUBLIC",
       "boAssembleLetterSendToBulkPrint": "PUBLIC",
-      "executorsApplyingForLegalStatement": [
-        {
-          "id": null,
-          "value": {
-            "additionalExecForenames": "PUBLIC",
-            "additionalExecLastname": "PUBLIC",
-            "additionalExecNameOnWill": "PUBLIC",
-            "additionalExecAliasNameOnWill": "PUBLIC",
-            "additionalApplying": "PUBLIC",
-            "additionalExecAddress": {
-              "AddressLine1": "PUBLIC",
-              "AddressLine2": "PUBLIC",
-              "AddressLine3": "PUBLIC",
-              "County": "PUBLIC",
-              "PostTown": "PUBLIC",
-              "PostCode": "PUBLIC",
-              "Country": "PUBLIC"
-            },
-            "additionalExecReasonNotApplying": "PUBLIC"
-          }
-        }
-      ],
-      "executorsNotApplyingForLegalStatement": "PUBLIC",
       "primaryApplicantApplying": "PUBLIC",
       "primaryApplicantFullName": "PUBLIC",
       "languagePreference": "PUBLIC",

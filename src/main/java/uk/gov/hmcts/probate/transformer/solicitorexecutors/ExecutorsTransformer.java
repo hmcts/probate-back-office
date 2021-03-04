@@ -1,8 +1,9 @@
-package uk.gov.hmcts.probate.transformer;
+package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -18,12 +19,13 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-@Service
+@Component
 @Slf4j
 @AllArgsConstructor
-public class SolicitorExecutorTransformer {
+@Primary
+public class ExecutorsTransformer {
 
-    private final ExecutorListMapperService executorListMapperService;
+    protected final ExecutorListMapperService executorListMapperService;
 
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -225,6 +227,14 @@ public class SolicitorExecutorTransformer {
         return execsNotApplying;
     }
 
+    // Remove the solicitor executor lists from the response data.
+    public void nullSolicitorExecutorLists(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .solsAdditionalExecutorList(null)
+                .additionalExecutorsTrustCorpList(null)
+                .otherPartnersApplyingAsExecutors(null)
+                .dispenseWithNoticeOtherExecsList(null);
+    }
 
     private void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -238,11 +248,11 @@ public class SolicitorExecutorTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    private boolean isSolicitorExecutor(CaseData caseData) {
+    protected boolean isSolicitorExecutor(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 
-    private boolean isSolicitorApplying(CaseData caseData) {
+    protected boolean isSolicitorApplying(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 

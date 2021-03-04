@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
-@Component
+@Service
 public class ExecutorListMapperService {
 
     private static final String SOLICITOR_ID = "solicitor";
@@ -71,6 +71,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getSolsSOTForenames())
                 .applyingExecutorLastName(caseData.getSolsSOTSurname())
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .build());
     }
 
@@ -142,6 +143,29 @@ public class ExecutorListMapperService {
                         .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
+                .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
+                .applyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
+                .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
+                .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
+                .build());
+    }
+
+    public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing primary applicant names
+        return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
+                .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())
+                .build());
     }
 
 }

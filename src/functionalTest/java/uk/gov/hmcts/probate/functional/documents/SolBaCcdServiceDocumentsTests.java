@@ -86,6 +86,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
         "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
+    private static final String APPLYING_EXECUTOR_STATEMENT =
+            "We, LastName LastName of 123 Street, Town, Postcode, UK and FirstName LastName of 123 Street, Town, "
+                    + "Postcode, make the following statement:";
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
@@ -105,7 +108,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String RE_PRINT = "/document/reprint";
 
     private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbate.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
+    private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
+            "solicitorPDFPayloadProbateMultipleExecutors.json";
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
@@ -426,6 +431,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
+        String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
