@@ -12,7 +12,7 @@ const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgress
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({ I }) {
+Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
     try {
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);

@@ -1,6 +1,9 @@
 node_modules/*
 govuk/*
 public/*
+target/*
+build/*
+functional-output/*
 app/assets/javascripts/*.js
 coverage
 *.min.js

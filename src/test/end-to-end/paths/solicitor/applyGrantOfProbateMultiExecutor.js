@@ -17,7 +17,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({ I }) {
+Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I}) {
 
     const willType = 'WillLeft';
     // IdAM

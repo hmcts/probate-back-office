@@ -9,7 +9,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('03 BO Case Progress E2E - standard path', async function ({ I }) {
+Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
     /* eslint-disable no-console */
     try {
         // IDAM

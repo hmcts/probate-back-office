@@ -19,7 +19,7 @@ const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/s
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Caveat', async function ({ I }) {
+Scenario('Solicitor - Apply Caveat', async function ({I}) {
 
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
