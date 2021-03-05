@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
@@ -68,6 +69,7 @@ public class DocumentController {
     private final RegistryDetailsService registryDetailsService;
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
@@ -271,7 +273,9 @@ public class DocumentController {
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
+
         log.info("Initiating call for SoT");
+        caseDataTransformer.transformCaseData(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
             documentGeneratorService.generateSoT(callbackRequest)));
     }

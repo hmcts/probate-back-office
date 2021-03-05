@@ -1,7 +1,7 @@
 'use strict';
 
-const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const completeApplicationConfig = require('./completeApplication');
 
 module.exports = async function () {
     const I = this;

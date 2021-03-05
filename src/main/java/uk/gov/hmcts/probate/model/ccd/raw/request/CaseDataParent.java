@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
@@ -47,8 +48,11 @@ public class CaseDataParent {
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected final String soleTraderOrLimitedCompany;
-    protected final String whoSharesInCompanyProfits;
+    protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
+    protected final String iht217;
 
+    @Getter
+    protected LocalDate authenticatedDate;
 }

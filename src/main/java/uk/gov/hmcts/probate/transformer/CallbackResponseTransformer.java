@@ -24,7 +24,9 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
@@ -105,13 +107,24 @@ public class CallbackResponseTransformer {
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
-    private final SolicitorExecutorTransformer solicitorExecutorTransformer;
-    
-    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
+    private final ExecutorsTransformer solicitorExecutorTransformer;
+    private final TaskListUpdateService taskListUpdateService;
+
+    public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, 
                                                                 Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-            .state(newState.orElse(null))
-            .build();
+        final CaseDetails cd = callbackRequest.getCaseDetails();
+        // set here to ensure tasklist html is correctly generated
+        cd.setState(newState.orElse(null));
+
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, false)
+                // set here again to make life easier mocking
+                .state(newState.orElse(null))
+                .build();
 
         return transformResponse(responseCaseData);
     }
@@ -206,6 +219,8 @@ public class CallbackResponseTransformer {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        caseData.setAuthenticatedDate(LocalDate.now());
+
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -377,18 +392,20 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
                                                           FeeServiceResponse feeServiceResponse) {
-        String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
-        String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
-        String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
-        String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
+        final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
+        final String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
+        final String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
+        final String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final String schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
+
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
-            .schemaVersion(SCHEMA_VERSION)
+            .schemaVersion(schemaVersion)
             // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(SCHEMA_VERSION)
+            .schemaVersionCcdCopy(schemaVersion)
 
             // set these next 2 properties as these properties are still used for in-flight cases on old schema /
             // bulk scan created cases and ccd has limited logic facilities
@@ -565,8 +582,7 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.probateNotificationsGenerated(
             callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
-        final String paperForm = callbackRequest.getCaseDetails().getData().getPaperForm();
-        final String ccdVersion = paperForm == null || paperForm.equals("No") ? SCHEMA_VERSION : null;
+        final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)
@@ -574,6 +590,13 @@ public class CallbackResponseTransformer {
             .schemaVersionCcdCopy(ccdVersion)
             .build()
         );
+    }
+
+    private String getSchemaVersion(CaseData cd) {
+        final String paperForm = cd.getPaperForm();
+        // not applicable to intestacy or admon will yet
+        return (GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
+                && (paperForm == null || paperForm.equals(NO)) ? SCHEMA_VERSION : null;
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
@@ -586,6 +609,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
             .schemaVersionCcdCopy(caseData.getSchemaVersion())
+            .state(caseDetails.getState())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
             .deceasedForenames(caseData.getDeceasedForenames())
@@ -781,11 +805,17 @@ public class CallbackResponseTransformer {
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
+            .taskList(caseData.getTaskList())
+            .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
+                .map(dateTimeFormatter::format).orElse(null))            
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
-            .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved());
+            .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved())
+            .iht217(caseData.getIht217());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -794,6 +824,8 @@ public class CallbackResponseTransformer {
         }
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
 
         return builder;
@@ -1225,6 +1257,8 @@ public class CallbackResponseTransformer {
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
+        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
+        solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

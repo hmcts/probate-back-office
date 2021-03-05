@@ -52,6 +52,8 @@ public class CCDDataTransformer {
             .executors(getAllExecutors(caseData))
             .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
+            .willHasCodicils(caseData.getWillHasCodicils())
+            .iht217(caseData.getIht217())
             .build();
     }
 

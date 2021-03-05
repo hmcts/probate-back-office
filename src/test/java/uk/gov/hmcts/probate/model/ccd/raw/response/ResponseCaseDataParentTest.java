@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,6 +37,7 @@ public class ResponseCaseDataParentTest {
             .deceasedDiedEngOrWales("Yes")
             .deceasedForeignDeathCertInEnglish("Yes")
             .deceasedForeignDeathCertTranslation("Yes")
+            .iht217("Yes")
             .build();
 
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
@@ -52,6 +54,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("registryAddress", responseCaseDataParent.getRegistryAddress());
         assertEquals("registryEmailAddress", responseCaseDataParent.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", responseCaseDataParent.getRegistrySequenceNumber());
+        assertEquals("Yes", responseCaseDataParent.getIht217());
     }
 
     @Test
@@ -68,7 +71,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Yes", responseCaseDataParent.getDeceasedDiedEngOrWales());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertInEnglish());
         assertEquals("Yes", responseCaseDataParent.getDeceasedForeignDeathCertTranslation());
-
     }
 
     @Test
@@ -148,7 +150,7 @@ public class ResponseCaseDataParentTest {
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
                 .soleTraderOrLimitedCompany("No")
-                .whoSharesInCompanyProfits("Partners")
+                .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
 
@@ -158,7 +160,8 @@ public class ResponseCaseDataParentTest {
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
         assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
-        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits());
+        assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits().get(0));
+        assertEquals("Members", responseCaseDataParent.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
     }
 

@@ -6,7 +6,9 @@
 /target/
 /jsonToXLS/
 /node_modules/**
+/src/test/end-to-end/output/**
 /src/test/end-to-end/functional-output/**
+output/
 /src/test/end-to-end/output/**
 /output/**
 functional-output/
