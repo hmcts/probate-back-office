@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.payments.pba.PBAValidationService;
+import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Service
 public class SolicitorPBADefaulter {
     @Autowired
-    PBAValidationService pbaValidationService;
+    PBARetrievalService pbaRetrievalService;
 
     public void defaultFeeAccounts(CaseData data,
                                    ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
@@ -40,7 +40,7 @@ public class SolicitorPBADefaulter {
     }
 
     private DynamicList getPBAAccounts(String authToken) {
-        List<String> pbas = pbaValidationService.getPBAs(authToken);
+        List<String> pbas = pbaRetrievalService.getPBAs(authToken);
         List<DynamicListItem> items = new ArrayList<>();
         for (String pba : pbas) {
             items.add(DynamicListItem.builder()

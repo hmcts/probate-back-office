@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.payments.pba.PBAValidationService;
+import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +23,7 @@ public class SolicitorPBADefaulterTest {
     private SolicitorPBADefaulter solicitorPBADefaulter;
 
     @Mock
-    private PBAValidationService pbaValidationService;
+    private PBARetrievalService pbaRetrievalService;
 
     @Mock
     private CaseData caseDataMock;
@@ -38,7 +38,7 @@ public class SolicitorPBADefaulterTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(pbaValidationService.getPBAs(AUTH_TOKEN)).thenReturn(allPBAs);
+        when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(allPBAs);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
         when(caveatDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
     }
@@ -62,7 +62,7 @@ public class SolicitorPBADefaulterTest {
     @Test
     public void shouldReturnNoPBAs() {
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
-        when(pbaValidationService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
+        when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
 
         solicitorPBADefaulter.defaultFeeAccounts(caseDataMock, responseCaseDataBuilder, AUTH_TOKEN);
 
@@ -90,7 +90,7 @@ public class SolicitorPBADefaulterTest {
     @Test
     public void shouldReturnNoPBAsForCaveats() {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = ResponseCaveatData.builder();
-        when(pbaValidationService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
+        when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
 
         solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatDataMock, responseCaseDataBuilder, AUTH_TOKEN);
 

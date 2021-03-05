@@ -31,7 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.payments.pba.PBAValidationService;
+import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -184,7 +184,7 @@ public class BusinessValidationControllerTest {
     private NotificationService notificationService;
 
     @MockBean
-    private PBAValidationService pbaValidationService;
+    private PBARetrievalService pbaRetrievalService;
 
     @Before
     public void setup() {

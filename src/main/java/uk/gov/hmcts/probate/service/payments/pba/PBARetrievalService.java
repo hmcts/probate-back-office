@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
-import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -28,21 +27,19 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 @RequiredArgsConstructor
 @Slf4j
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
-public class PBAValidationService {
+public class PBARetrievalService {
 
-    private final IdamApi idamService;
+    private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
-    @Value("${pba.validation.url}")
+    @Value("${pba.retrieval.url}")
     protected String pbaUri;
-    @Value("${pba.validation.api}")
+    @Value("${pba.retrieval.api}")
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
         log.info("Getting user details");
-        ResponseEntity<Map<String, Object>> userResponse = idamService.getUserDetails(authToken);
-        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
-        String emailId = result.get("email").toString().toLowerCase();
+        String emailId = idamAuthenticateUserService.getEmail(authToken);
         URI uri = buildUri(emailId);
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
