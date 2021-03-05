@@ -25,7 +25,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.fillField({css: '#executorsApplying_0_applyingExecutorFirstName'}, createGrantOfProbateConfig.page4_executor0_firstName);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorLastName'}, createGrantOfProbateConfig.page4_executor0_lastName);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'}, createGrantOfProbateConfig.page4_executor0_trustCorpPos);
-        
+
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
@@ -80,24 +80,23 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.click(`#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes`);        
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes');
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes'});
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.click(`#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-No`);
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-No');
 
-        
-        await I.click(`#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes`);
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes');
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
 
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day', createGrantOfProbateConfig.page4_dispense_notice_leave_day);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-month', createGrantOfProbateConfig.page4_dispense_notice_leave_month);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-year', createGrantOfProbateConfig.page4_dispense_notice_leave_year);
-        
-        await I.click(`#executorsNotApplying_0_notApplyingExecutorNotified-${createGrantOfProbateConfig.page4_notifiedYes}`);        
-        
+
+        await I.click(`#executorsNotApplying_0_notApplyingExecutorNotified-${createGrantOfProbateConfig.page4_notifiedYes}`);
+
         await I.click(`#notifiedApplicants-${createGrantOfProbateConfig.page4_notifiedApplicantsYes}`);
         await I.click(`#adopted-${createGrantOfProbateConfig.page4_adoptedYes}`);
         await I.click({type: 'button'}, '#adoptiveRelatives>div');

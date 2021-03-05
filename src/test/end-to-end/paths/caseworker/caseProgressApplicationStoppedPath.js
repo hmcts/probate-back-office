@@ -55,14 +55,15 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
 
         console.info('Remaining application details');
 
+        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '6: MentallyIncapable'},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
             {locator: {css: '#otherExecutorExists-No'}},
-            {locator: {css: '#soleTraderOrLimitedCompany-Yes'}}]);
+            /* {locator: {css: '#soleTraderOrLimitedCompany-Yes'}} */]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 

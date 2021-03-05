@@ -55,6 +55,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         ]);
 
         console.info('Remaining application details');
+        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
@@ -66,7 +67,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             {locator: {css: '#primaryApplicantAddress_PostCode'}, text: caseProgressConfig.solAddrPostcode},
             {locator: {css: '#primaryApplicantAddress_Country'}, text: caseProgressConfig.solAddrCountry},
             {locator: {css: '#otherExecutorExists-No'}},
-            {locator: {css: '#soleTraderOrLimitedCompany-Yes'}}]);
+            /* {locator: {css: '#soleTraderOrLimitedCompany-Yes'}} */]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         await I.caseProgressCheckYourAnswers(solCheckAnswersHtmlCheck.htmlCheck);
