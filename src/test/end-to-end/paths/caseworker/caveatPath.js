@@ -30,7 +30,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Caveat E2E - Order summons', async function (I) {
+Scenario('01 BO Caveat E2E - Order summons', async function ({ I }) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 

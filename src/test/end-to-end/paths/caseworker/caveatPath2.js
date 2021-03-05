@@ -29,7 +29,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
+Scenario('02 BO Caveat E2E - Request appearance', async function ({ I }) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Request appearance
 
