@@ -68,8 +68,8 @@ public class SidamAuthenticateUserConsumerTest {
     @Test
     @PactVerification(fragment = "generatePactFragmentGetOAuth2Token")
     public void verifyIdamAuthoriseUserPact() {
-        AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(AUTH_TOKEN, RESPONSE_TYPE, CLIENT_ID,
-            REDIRECT_URL);
+        AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(AUTH_TOKEN, RESPONSE_TYPE, 
+            CLIENT_ID, REDIRECT_URL);
         assertEquals("User is not Authorised", "123432", authenticateUserResponse.getCode());
     }
 

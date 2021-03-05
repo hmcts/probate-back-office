@@ -77,12 +77,12 @@ public class CreditAccountPaymentTransformer {
             BigDecimal.ONE);
         paymentFees.add(applicationFee);
 
-        if (caseData.getExtraCopiesOfGrant() > 0) {
+        if (caseData.getExtraCopiesOfGrant() !=null && caseData.getExtraCopiesOfGrant() > 0) {
             PaymentFee ukCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getUkCopiesFeeResponse(),
                 BigDecimal.valueOf(caseData.getExtraCopiesOfGrant()));
             paymentFees.add(ukCopiesFee);
         }
-        if (caseData.getOutsideUKGrantCopies() > 0) {
+        if (caseData.getOutsideUKGrantCopies() != null && caseData.getOutsideUKGrantCopies() > 0) {
             PaymentFee overseasCopiesFee =
                 paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
                 BigDecimal.valueOf(caseData.getOutsideUKGrantCopies()));

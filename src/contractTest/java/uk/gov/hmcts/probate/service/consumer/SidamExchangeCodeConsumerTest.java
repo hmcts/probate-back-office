@@ -76,7 +76,7 @@ public class SidamExchangeCodeConsumerTest {
 
     private DslPart buildIdamAuthenticateResponseDsl() {
         return newJsonBody((o) -> {
-            o.stringType("accessToken",
+            o.stringType("access_token",
                 "accessToken");
 
 
