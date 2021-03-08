@@ -74,6 +74,7 @@
     "page4_amend_waitForText": "Amend case details",
     "page4_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage3",
     "page4_otherExecutorExistsYes": "Yes",
+    "page4_executor0_executorType": "Trust corporation",
     "page4_executor0_name": "executor0_name",
     "page4_executor0_firstName": "executor0_firstname",
     "page4_executor0_lastName": "executor0_surname",

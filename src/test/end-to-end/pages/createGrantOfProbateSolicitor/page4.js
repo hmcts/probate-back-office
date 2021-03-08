@@ -21,7 +21,15 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.wait(0.5);
         }
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.TestTimeToWaitForText);
-        await I.fillField({css: '#executorsApplying_0_applyingExecutorName'}, createGrantOfProbateConfig.page4_executor0_name);
+        
+        await I.selectOption('#executorsApplying_0_applyingExecutorType', createGrantOfProbateConfig.page4_executor0_executorType);
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.5);
+        }
+
+        await I.fillField({css: '#executorsApplying_0_applyingExecutorName'}, createGrantOfProbateConfig.page4_executor0_name);        
         await I.fillField({css: '#executorsApplying_0_applyingExecutorFirstName'}, createGrantOfProbateConfig.page4_executor0_firstName);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorLastName'}, createGrantOfProbateConfig.page4_executor0_lastName);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'}, createGrantOfProbateConfig.page4_executor0_trustCorpPos);
