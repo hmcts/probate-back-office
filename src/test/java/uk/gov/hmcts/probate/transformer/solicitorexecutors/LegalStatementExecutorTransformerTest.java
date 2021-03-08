@@ -35,7 +35,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -136,7 +135,8 @@ public class LegalStatementExecutorTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
-        assertEquals(EXEC_ADDRESS, caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecAddress());
+        assertEquals(EXEC_ADDRESS, caseData.getAdditionalExecutorsTrustCorpList().get(0)
+                .getValue().getAdditionalExecAddress());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 
