@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.BusinessRulesValidationApplication;
 import uk.gov.hmcts.probate.service.IdamApi;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
@@ -47,8 +47,7 @@ public class SidamConsumerTest {
     }
 
     @Pact(provider = "idamApi_users", consumer = "probate_backOffice")
-    public RequestResponsePact generatePactFragmentGetUserDetails(PactDslWithProvider builder) throws JSONException,
-        IOException {
+    public RequestResponsePact generatePactFragmentGetUserDetails(PactDslWithProvider builder) throws JSONException {
 
         return builder
             .given("a valid user exists")
@@ -57,6 +56,7 @@ public class SidamConsumerTest {
             .method("GET")
             .matchHeader("Authorization", AUTH_TOKEN)
             .willRespondWith()
+            .headers(getHeadersMap())
             .status(200)
             .body(buildIdamDetailsResponseDsl())
             .toPact();
@@ -83,5 +83,11 @@ public class SidamConsumerTest {
 
 
         }).build();
+    }
+
+    private Map<String, String> getHeadersMap() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        return headers;
     }
 }
