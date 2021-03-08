@@ -73,7 +73,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
 
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
             {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
-        
+
         // extra copies
         await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 

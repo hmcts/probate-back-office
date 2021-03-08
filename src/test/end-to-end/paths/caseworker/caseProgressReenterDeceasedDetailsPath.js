@@ -69,7 +69,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         console.info('Reenter deceased details');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-Yes'}]);
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
-            {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);        
+            {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsAmendLegalStatmentSelect'}, option: '1: SolAppCreated'}]);
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressCheckCaseProgressTab({
