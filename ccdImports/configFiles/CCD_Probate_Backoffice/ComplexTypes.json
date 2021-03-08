@@ -24,7 +24,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ExecutorNotApplying", "ListElementCode": "notApplyingExecutorNotified", "FieldType": "YesOrNo", "ElementLabel": "Executor Notified", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorNotApplying", "ListElementCode": "notApplyingExecutorIsDead", "FieldType": "YesOrNo", "ElementLabel": "Executor is dead?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorNotApplying", "ListElementCode": "notApplyingExecutorDiedBefore", "FieldType": "YesOrNo", "ElementLabel": "Executor died before deceased?", "SecurityClassification": "Public"},
-  {"LiveFrom": "02/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorType", "FieldType": "FixedList", "FieldTypeParameter": "executorTypeFixedList", "ElementLabel": "Executor type", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorType", "FieldType": "FixedList", "FieldTypeParameter": "executorTypeList", "ElementLabel": "Executor type", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorName", "FieldType": "Text", "ElementLabel": "Executor name", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorFirstName", "FieldType": "Text", "ElementLabel": "First name(s) of executor", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorLastName", "FieldType": "Text", "ElementLabel": "Last name(s) of executor", "SecurityClassification": "Public"},
