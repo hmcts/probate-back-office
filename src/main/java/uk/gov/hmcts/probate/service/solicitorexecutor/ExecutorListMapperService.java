@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -73,6 +76,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getSolsSOTForenames())
                 .applyingExecutorLastName(caseData.getSolsSOTSurname())
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .build());
     }
@@ -87,6 +91,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                         .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
                         .build()))
                 .collect(Collectors.toList());
@@ -100,6 +105,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
                         .build()))
@@ -128,6 +134,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorType(EXECUTOR_TYPE_LAY)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
@@ -154,6 +161,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
                 .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
                 .applyingExecutorName(caseData.getPrimaryApplicantFullName())
+                .applyingExecutorType(EXECUTOR_TYPE_LAY)
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
