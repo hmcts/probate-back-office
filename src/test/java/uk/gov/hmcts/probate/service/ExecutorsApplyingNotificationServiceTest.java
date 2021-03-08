@@ -281,7 +281,8 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     @Test
     public void testSolicitorIsAddedToExecutorsApplyingNotificationList() {
-        additionalExecutorApplyingList.add(buildExecApplying("Timmy Tom", "executor1@probate-test.com", "Professional"));
+        additionalExecutorApplyingList.add(buildExecApplying("Timmy Tom", "executor1@probate-test.com",
+                "Professional"));
 
         CollectionMember<ExecutorsApplyingNotification> solApplying =
             buildExecNotification("Timmy Tom", "solicitor@probate-test.com", "1");
