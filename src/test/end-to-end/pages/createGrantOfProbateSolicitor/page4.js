@@ -141,12 +141,12 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
         await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page4_executor0_alias_update);
-        
-        let numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
+
+        const numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
         if (createGrantOfProbateConfig.page4_executor0_executorType === 'Trust corporation') {
             assert (numEls === 1);
         } else {
-            assert (numEls === 0);            
+            assert (numEls === 0);
         }
     }
 
