@@ -77,7 +77,7 @@ public class CreditAccountPaymentTransformer {
             BigDecimal.ONE);
         paymentFees.add(applicationFee);
 
-        if (caseData.getExtraCopiesOfGrant() !=null && caseData.getExtraCopiesOfGrant() > 0) {
+        if (caseData.getExtraCopiesOfGrant() != null && caseData.getExtraCopiesOfGrant() > 0) {
             PaymentFee ukCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getUkCopiesFeeResponse(),
                 BigDecimal.valueOf(caseData.getExtraCopiesOfGrant()));
             paymentFees.add(ukCopiesFee);
