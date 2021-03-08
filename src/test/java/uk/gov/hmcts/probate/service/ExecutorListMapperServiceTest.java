@@ -6,12 +6,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -24,30 +24,33 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES_REASON;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_NOT_APPLYING_REASON;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
+import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.POWER_RESERVED;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_NAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_OTHER_NAMES_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_WILL_NAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
-import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
+import static uk.gov.hmcts.probate.util.CommonVariables.POWER_RESERVED;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExecutorListMapperServiceTest {
@@ -144,6 +147,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                 .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
                 .build();
 
@@ -164,6 +168,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                 .applyingExecutorName(EXEC_NAME)
                 .build();
 
@@ -203,6 +208,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_LAY)
                 .applyingExecutorOtherNames(EXEC_WILL_NAME)
                 .build();
 
@@ -239,6 +245,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
                 .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
+                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
                 .build());
 
@@ -254,6 +261,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_LAY)
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
