@@ -1019,7 +1019,6 @@ public class CallbackResponseTransformer {
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
         builder
             .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
             .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
             .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
@@ -1162,7 +1161,8 @@ public class CallbackResponseTransformer {
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
 
-        if(caseData.getAdditionalExecutorsTrustCorpList() != null && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
+        if(caseData.getAdditionalExecutorsTrustCorpList() != null
+                && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
             solicitorExecutorTransformer.mapTrustCorpAddressToTrustCorpExecutors(caseData, builder);
         }
 

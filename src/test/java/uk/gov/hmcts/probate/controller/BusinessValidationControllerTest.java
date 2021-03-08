@@ -307,7 +307,7 @@ public class BusinessValidationControllerTest {
                         "Executor forename",
                         "Executor surname",
                         "Solicitor",
-                        mock(SolsAddress.class)
+                        null
                 ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
@@ -332,7 +332,7 @@ public class BusinessValidationControllerTest {
                         "Executor forename",
                         "Executor surname",
                         "Solicitor",
-                        mock(SolsAddress.class)
+                        null
                 ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
