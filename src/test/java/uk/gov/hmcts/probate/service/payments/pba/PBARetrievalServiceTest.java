@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class PBAValidationServiceTest {
+public class PBARetrievalServiceTest {
 
     @InjectMocks
     private PBARetrievalService pbaRetrievalService;

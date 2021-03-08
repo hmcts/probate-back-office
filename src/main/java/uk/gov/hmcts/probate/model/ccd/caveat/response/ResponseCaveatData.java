@@ -41,7 +41,6 @@ public class ResponseCaveatData {
     private final DynamicList solsPBANumber;
     private final String solsPBAPaymentReference;
     private final String solsOrgHasPBAs;
-    private final String solsNeedsPBAPayment;
 
     private final String caveatorForenames;
     private final String caveatorSurname;

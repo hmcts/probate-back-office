@@ -529,7 +529,6 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
-        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -546,7 +545,6 @@ public class ConfirmationResponseServiceTest {
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
-        assertConfirmationValuesCaveats(nextStepsValues);
     }
 
     @Test
@@ -565,7 +563,6 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
-        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -602,7 +599,6 @@ public class ConfirmationResponseServiceTest {
         assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
-        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -625,7 +621,6 @@ public class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
-        assertFeeConfirmationValues(nextStepsValues);
     }
 
     @Test
@@ -667,11 +662,6 @@ public class ConfirmationResponseServiceTest {
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
-    }
-
-    private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
-        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
-        assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {

@@ -450,7 +450,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             + "," + listItems.get(2).get("code");
         assertThat(allPBAs, containsString("PBA0082126"));
         assertThat(allPBAs, containsString("PBA0083372"));
-        assertThat(allPBAs, containsString("PBA0083374"));
     }
 
     @Test
