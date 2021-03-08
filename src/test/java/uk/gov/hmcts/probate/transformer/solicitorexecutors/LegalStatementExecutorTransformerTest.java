@@ -29,6 +29,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
@@ -71,7 +72,13 @@ public class LegalStatementExecutorTransformerTest {
         solsAdditionalExecutorList.add(SOLS_EXEC_NOT_APPLYING);
 
         trustCorpsExecutorList = new ArrayList<>();
-        trustCorpsExecutorList.add(TRUST_CORP_EXEC);
+        trustCorpsExecutorList.add(new CollectionMember(EXEC_ID,
+                AdditionalExecutorTrustCorps.builder()
+                        .additionalExecForenames(EXEC_FIRST_NAME)
+                        .additionalExecLastname(EXEC_SURNAME)
+                        .additionalExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+                        .additionalExecAddress(EXEC_ADDRESS)
+                        .build()));
 
         partnerExecutorList = new ArrayList<>();
         partnerExecutorList.add(PARTNER_EXEC);
@@ -102,6 +109,34 @@ public class LegalStatementExecutorTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
+        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
+    }
+
+
+    @Test
+    public void shouldSetTrustCorpAddressForLegalStatement() {
+
+        caseDataBuilder
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .solsAdditionalExecutorList(solsAdditionalExecutorList)
+                .trustCorpAddress(EXEC_ADDRESS);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+
+        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+                caseDetailsMock.getData());
+
+        List<CollectionMember<AdditionalExecutorApplying>> legalStatementExecutors = new ArrayList<>();
+        legalStatementExecutors.addAll(additionalExecutorApplying);
+        legalStatementExecutors.addAll(additionalExecutorApplying);
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
+        assertEquals(EXEC_ADDRESS, caseData.getAdditionalExecutorsTrustCorpList().get(0).getValue().getAdditionalExecAddress());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 

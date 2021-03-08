@@ -138,7 +138,10 @@ public class ExecutorListMapperServiceTest {
     public void shouldMapFromTrustCorpExecsToApplyingExecs() {
         List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsExecutorList = new ArrayList<>();
         trustCorpsExecutorList.add(TRUST_CORP_EXEC);
-        CaseData caseData = CaseData.builder().additionalExecutorsTrustCorpList(trustCorpsExecutorList).build();
+        CaseData caseData = CaseData.builder()
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .trustCorpAddress(EXEC_ADDRESS)
+                .build();
 
         List<CollectionMember<AdditionalExecutorApplying>> result =
                 underTest.mapFromTrustCorpExecutorsToApplyingExecutors(caseData);
@@ -148,6 +151,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorName(EXEC_NAME)
                 .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                 .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+                .applyingExecutorAddress(EXEC_ADDRESS)
                 .build();
 
         assertEquals(expected, result.get(0).getValue());
