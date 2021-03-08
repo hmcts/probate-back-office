@@ -92,15 +92,6 @@ public class ExecutorsTransformer {
         }
     }
 
-    public void mapTrustCorpAddressToTrustCorpExecutors(
-            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-
-        List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpExecutors =
-                executorListMapperService.mapTrustCorpAddressToTrustCorpExecutors(caseData);
-
-        builder.additionalExecutorsTrustCorpList(trustCorpExecutors);
-    }
-
     /**
      * Set caseworker executor fields with solicitor journey fields.
      * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant

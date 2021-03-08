@@ -1161,11 +1161,6 @@ public class CallbackResponseTransformer {
 
         solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
 
-        if(caseData.getAdditionalExecutorsTrustCorpList() != null
-                && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
-            solicitorExecutorTransformer.mapTrustCorpAddressToTrustCorpExecutors(caseData, builder);
-        }
-
         builder
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 

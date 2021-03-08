@@ -92,21 +92,6 @@ public class ExecutorListMapperService {
                 .collect(Collectors.toList());
     }
 
-    public List<CollectionMember<AdditionalExecutorTrustCorps>> mapTrustCorpAddressToTrustCorpExecutors(
-            CaseData caseData) {
-        SolsAddress trustCorpAddress = caseData.getTrustCorpAddress();
-        return caseData.getAdditionalExecutorsTrustCorpList()
-                .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorTrustCorps.builder()
-                        .additionalExecAddress(trustCorpAddress == null
-                                ? exec.getValue().getAdditionalExecAddress() : trustCorpAddress)
-                        .additionalExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
-                        .additionalExecForenames(exec.getValue().getAdditionalExecForenames())
-                        .additionalExecLastname(exec.getValue().getAdditionalExecLastname())
-                        .build()))
-                .collect(Collectors.toList());
-    }
-
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromPartnerExecutorsToApplyingExecutors(
             CaseData caseData) {
         return caseData.getOtherPartnersApplyingAsExecutors()
