@@ -22,7 +22,14 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         }
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.TestTimeToWaitForText);
 
-        await I.selectOption('#executorsApplying_0_applyingExecutorType', createGrantOfProbateConfig.page4_executor0_executorType);
+        let numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
+        assert (numEls === 0);
+        await I.selectOption({css: '#executorsApplying_0_applyingExecutorType'}, createGrantOfProbateConfig.page4_executor0_executorType);
+        if (createGrantOfProbateConfig.page4_executor0_executorType === 'Trust corporation') {
+            await I.waitForVisible({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
+            await I.fillField({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'}, createGrantOfProbateConfig.page4_executor0_trustCorpPos);
+        }
+
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
@@ -32,7 +39,6 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.fillField({css: '#executorsApplying_0_applyingExecutorName'}, createGrantOfProbateConfig.page4_executor0_name);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorFirstName'}, createGrantOfProbateConfig.page4_executor0_firstName);
         await I.fillField({css: '#executorsApplying_0_applyingExecutorLastName'}, createGrantOfProbateConfig.page4_executor0_lastName);
-        await I.fillField({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'}, createGrantOfProbateConfig.page4_executor0_trustCorpPos);
 
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
@@ -70,7 +76,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page4_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page4_name_difference);
 
-        let numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes'});
+        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes'});
         assert (numEls === 0);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes'});
@@ -135,6 +141,13 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
         await I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page4_executor0_alias_update);
+
+        const numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
+        if (createGrantOfProbateConfig.page4_executor0_executorType === 'Trust corporation') {
+            assert (numEls === 1);
+        } else {
+            assert (numEls === 0);
+        }
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
