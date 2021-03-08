@@ -24,8 +24,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,19 +53,15 @@ public class PBAPaymentConsumerSuccessTest extends BasePBAPaymentTest {
     public RequestResponsePact generatePactFragmentSuccess(PactDslWithProvider builder) throws JSONException,
         IOException {
 
-        Map<String, Object> paymentMap = new HashMap<>();
-        paymentMap.put("accountNumber", "test.account");
-        paymentMap.put("availableBalance", "1000.00");
-        paymentMap.put("accountName", "test.account.name");
-
         return builder
-            .given("An active account has sufficient funds for a payment", paymentMap)
+            .given("An active account has sufficient funds for a payment", getPaymentMap("1000.00"))
             .uponReceiving("A request for a payment")
             .path("/credit-account-payments")
             .method("POST")
             .headers(HttpHeaders.AUTHORIZATION, AUTH_TOKEN)
             .body(objectMapper.writeValueAsString(getPaymentRequest(BigDecimal.TEN)))
             .willRespondWith()
+            .headers(getHeadersMap())
             .status(201)
             .body(buildPBAPaymentResponseDsl("Success", "success", null, "Insufficient funds available"))
             .toPact();

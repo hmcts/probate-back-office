@@ -6,6 +6,8 @@ import uk.gov.hmcts.probate.model.payments.PaymentFee;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 
@@ -14,7 +16,7 @@ public abstract class BasePBAPaymentTest {
 
 
     DslPart buildPBAPaymentResponseDsl(String status, String paymentStatus, String errorCode,
-                                               String errorMessage) {
+                                       String errorMessage) {
         return getDslPart(status, paymentStatus, errorCode, errorMessage);
     }
 
@@ -62,6 +64,20 @@ public abstract class BasePBAPaymentTest {
 
 
         return expectedRequest;
+    }
+
+    protected Map<String, String> getHeadersMap() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        return headers;
+    }
+
+    protected Map<String, Object> getPaymentMap(String balance) {
+        Map<String, Object> paymentMap = new HashMap<>();
+        paymentMap.put("accountNumber", "PBA0082126");
+        paymentMap.put("availableBalance", balance);
+        paymentMap.put("accountName", "test.account.name");
+        return paymentMap;
     }
 
 }

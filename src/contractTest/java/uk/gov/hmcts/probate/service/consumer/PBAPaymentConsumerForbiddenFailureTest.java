@@ -22,8 +22,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -51,20 +49,15 @@ public class PBAPaymentConsumerForbiddenFailureTest extends BasePBAPaymentTest {
 
     @Pact(provider = "payment_creditAccountPayment", consumer = "probate_backOffice")
     public RequestResponsePact generatePactFragmentFail(PactDslWithProvider builder) throws IOException {
-
-        Map<String, Object> paymentMap = new HashMap<>();
-        paymentMap.put("accountNumber", "test.account");
-        paymentMap.put("availableBalance", "1000.00");
-        paymentMap.put("accountName", "test.account.name");
-
         return builder
-            .given("An active account has insufficient funds for a payment", paymentMap)
+            .given("An active account has insufficient funds for a payment", getPaymentMap("1000.00"))
             .uponReceiving("A request for a payment")
             .path("/credit-account-payments")
             .method("POST")
             .headers(HttpHeaders.AUTHORIZATION, AUTH_TOKEN)
             .body(objectMapper.writeValueAsString(getPaymentRequest(BigDecimal.valueOf(1500))))
             .willRespondWith()
+            .headers(getHeadersMap())
             .status(403)
             .body(buildPBAPaymentResponseDsl("Fail", "failed", "CA-E0001", "Insufficient funds available"))
             .toPact();

@@ -20,7 +20,9 @@ import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -63,6 +65,7 @@ public class PBARetrievalConsumerTest {
                 SOME_SERVICE_AUTHORIZATION_TOKEN)
             .willRespondWith()
             .status(200)
+            .headers(getHeadersMap())
             .body(buildOrganisationalResponsePactDsl())
             .toPact();
     }
@@ -96,5 +99,11 @@ public class PBARetrievalConsumerTest {
                     .stringType("email", "emailAddress"))
             );
         }).build();
+    }
+
+    private Map<String, String> getHeadersMap() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        return headers;
     }
 }
