@@ -50,11 +50,12 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
-            {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
+            {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'}
         ]);
 
         console.info('Remaining application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}, {css: '#soleTraderOrLimitedCompany-Yes'}]);
+        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
+        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
@@ -73,7 +74,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
 
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
             {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
-        
+
         // extra copies
         await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
