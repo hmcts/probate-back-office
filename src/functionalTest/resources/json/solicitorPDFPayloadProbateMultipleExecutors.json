@@ -63,27 +63,14 @@
       "solsWillType": "WillLeft",
       "willAccessOriginal": "Yes",
       "willHasCodicils": "No",
-      "primaryApplicantForenames": "FirstName",
-      "primaryApplicantSurname": "LastName",
-      "primaryApplicantHasAlias": "No",
-      "primaryApplicantIsApplying": "Yes",
-      "primaryApplicantAddress": {
-        "AddressLine1": "123 Street",
-        "AddressLine2": "",
-        "AddressLine3": "",
-        "County": "",
-        "PostTown": "Town",
-        "PostCode": "Postcode",
-        "Country": ""
-      },
       "otherExecutorExists": "No",
       "willExists": "Yes",
       "executorsApplying": [
         {
-          "id": null,
+          "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9d",
           "value": {
             "applyingExecutorName": "FirstName",
-            "applyingExecutorFirstName": "LastName",
+            "applyingExecutorFirstName": "FirstName",
             "applyingExecutorLastName": "LastName",
             "applyingExecutorPhoneNumber": "234567",
             "applyingExecutorEmail": "asetrdyfguhkilj",
@@ -103,7 +90,92 @@
           }
         }
       ],
-      "executorsNotApplying": [ ],
+      "executorsNotApplying": [
+        {
+          "id": "SOLICITOR",
+          "value": {
+            "notApplyingExecutorName": "FirstName Lastname",
+            "notApplyingExecutorReason": "DiedBefore"
+          }
+        }
+      ],
+      "solsAdditionalExecutorList": [
+        {
+          "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+          "value": {
+            "additionalApplying": "Yes",
+            "additionalExecAddress": {
+              "County": "county",
+              "Country": "country",
+              "PostCode": "postcode",
+              "PostTown": "posttown",
+              "AddressLine1": "addressline 1",
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
+            },
+            "additionalExecLastname": "LastName3",
+            "additionalExecForenames": "FirstName3",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "Alias name exfn2"
+          }
+        },
+        {
+          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+          "value": {
+            "additionalApplying": "No",
+            "additionalExecLastname": "exln",
+            "additionalExecForenames": "exfn",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "alias name",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          }
+        }
+      ],
+      "additionalExecutorsTrustCorpList": [
+        {
+          "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
+          "value": {
+            "additionalExecForenames": "FirstName2",
+            "additionalExecLastname": "LastName2",
+            "additionalExecutorTrustCorpPosition": "Solicitor",
+            "additionalExecAddress": {
+              "County": "county",
+              "Country": "country",
+              "PostCode": "postcode",
+              "PostTown": "posttown",
+              "AddressLine1": "addressline 1",
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
+            }
+          }
+        }
+      ],
+      "otherPartnersApplyingAsExecutors": [
+        {
+          "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
+          "value": {
+            "additionalExecForenames": "exfn3",
+            "additionalExecLastname": "exln3",
+            "additionalExecAddress": {
+              "County": "county",
+              "Country": "country",
+              "PostCode": "postcode",
+              "PostTown": "posttown",
+              "AddressLine1": "addressline 1",
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
+            }
+          }
+        }
+      ],
+      "dispenseWithNoticeOtherExecsList": [
+        {
+          "id": "4322cd66-3704-498e-bb30-5ae3bccadf53",
+          "value": {
+            "notApplyingExecutorName": "Executor not applying"
+          }
+        }
+      ],
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
       "caseType": "gop",
@@ -126,8 +198,6 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "primaryApplicantApplying": true,
-      "primaryApplicantFullName": "Ex Ecutor",
       "languagePreference": "ENGLISH",
       "defaultValueForCaveatStopEmailNotification": "No",
       "sendForBulkPrintingRequestedGrantReIssued": true,

@@ -151,7 +151,7 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
                 caseData.getAdditionalExecutorsApplying() == null
                         || caseData.getAdditionalExecutorsApplying().isEmpty()
-                        ? new ArrayList<>() : caseData.getAdditionalExecutorsApplying();
+                        ? new ArrayList<>() : new ArrayList<>(caseData.getAdditionalExecutorsApplying());
 
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
 
@@ -164,7 +164,7 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 caseData.getAdditionalExecutorsNotApplying() == null
                         || caseData.getAdditionalExecutorsNotApplying().isEmpty()
-                        ? new ArrayList<>() : caseData.getAdditionalExecutorsNotApplying();
+                        ? new ArrayList<>() : new ArrayList<>(caseData.getAdditionalExecutorsNotApplying());
 
         mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
         execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
