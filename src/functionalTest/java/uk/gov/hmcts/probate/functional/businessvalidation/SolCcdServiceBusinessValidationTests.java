@@ -495,10 +495,23 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestProbateSuccessForDefaultNext() {
+    public void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() {
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbateSingleExecutor.json",
                 DEFAULT_SOLS_NEXT_STEP);
         JsonPath jsonPath = JsonPath.from(body.asString());
+        String willExist = jsonPath.get("data.willExists");
+        String errors = jsonPath.get("data.errors");
+
+        assertEquals(willExist, "Yes");
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifySuccessForDefaultNextStepsWithProbateMultipleExecutorPayload() {
+        ResponseBody response = validatePostSuccess("solicitorPDFPayloadProbateMultipleExecutors.json",
+                DEFAULT_SOLS_NEXT_STEP);
+
+        JsonPath jsonPath = JsonPath.from(response.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
 
