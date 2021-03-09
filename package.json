@@ -35,6 +35,7 @@
     "test-e2e-caseProgressAppStopped": "E2E_TEST_PATH=./paths/caseworker/caseProgressApplicationStoppedPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
   },
   "dependencies": {
+    "@date-fns/upgrade": "^1.0.3",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
@@ -42,7 +43,6 @@
     "chai": "^4.1.0",
     "chai-http": "^4.0.0",
     "chai-string": "^1.5.0",
-    "moment": "^2.29.1",
     "codeceptjs": "^3.0.5",
     "date-fns": "^2.17.0",
     "eslint": "^7.20.0",
@@ -53,6 +53,7 @@
     "mocha-junit-reporter": "^2.0.0",
     "mocha-multi": "^1.1.3",
     "mochawesome": "^6.2.2",
+    "moment": "^2.29.1",
     "nock": "^13.0.7",
     "nodemon": "^2.0.7",
     "nsp": "^3.2.1",

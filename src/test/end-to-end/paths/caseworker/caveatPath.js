@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict';;
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -27,6 +26,11 @@ const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDeta
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
+
+const {
+    legacyParse,
+    convertTokens
+} = require("@date-fns/upgrade/v2");
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
@@ -74,7 +78,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat raised'
@@ -84,7 +88,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     // Note that End State does not change when emailing the caveator.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat match';
