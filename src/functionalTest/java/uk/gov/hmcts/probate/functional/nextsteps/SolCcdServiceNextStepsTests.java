@@ -50,11 +50,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorSOTJobTitleInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTJobTitle");
-    }
-
-    @Test
     public void verifySolicitorSolicitorFirmPostcodeInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement("firmpc");
     }
