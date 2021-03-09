@@ -76,7 +76,6 @@ public class LegalStatementExecutorTransformerTest {
                         .additionalExecForenames(EXEC_FIRST_NAME)
                         .additionalExecLastname(EXEC_SURNAME)
                         .additionalExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
-                        .additionalExecAddress(EXEC_ADDRESS)
                         .build()));
 
         partnerExecutorList = new ArrayList<>();
@@ -108,35 +107,6 @@ public class LegalStatementExecutorTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
-        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
-    }
-
-
-    @Test
-    public void shouldSetTrustCorpAddressForLegalStatement() {
-
-        caseDataBuilder
-                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
-                .solsAdditionalExecutorList(solsAdditionalExecutorList)
-                .trustCorpAddress(EXEC_ADDRESS);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
-        when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
-
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
-
-        List<CollectionMember<AdditionalExecutorApplying>> legalStatementExecutors = new ArrayList<>();
-        legalStatementExecutors.addAll(additionalExecutorApplying);
-        legalStatementExecutors.addAll(additionalExecutorApplying);
-
-        CaseData caseData = caseDetailsMock.getData();
-        assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
-        assertEquals(EXEC_ADDRESS, caseData.getAdditionalExecutorsTrustCorpList().get(0)
-                .getValue().getAdditionalExecAddress());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 

@@ -2252,8 +2252,7 @@ public class CallbackResponseTransformerTest {
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
                         "Executor surname",
-                        "Solicitor",
-                        mock(SolsAddress.class)
+                        "Solicitor"
                 ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
