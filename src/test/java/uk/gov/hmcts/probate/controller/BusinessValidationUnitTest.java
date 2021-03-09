@@ -562,4 +562,10 @@ public class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    public void shouldSetGrantStoppedDateAfterCaseFailQa() {
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }

@@ -25,7 +25,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -101,11 +100,9 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
-    private static final String STOPPED = "BOCaseStopped";
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
-    private final CaseStoppedService caseStoppedService;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
     private final TaskListUpdateService taskListUpdateService;
@@ -113,9 +110,6 @@ public class CallbackResponseTransformer {
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
-        if (callbackRequest.getCaseDetails().getState().equals(STOPPED)) {
-            caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
-        }
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
     }
