@@ -65,7 +65,7 @@
           }
         ]
       },
-      "solsPBAPaymentReference`": "appref-PAY1"
+      "solsPBAPaymentReference": "appref-PAY1"
     },
     "data_classification": {
       "applicationType": "Solicitor",
