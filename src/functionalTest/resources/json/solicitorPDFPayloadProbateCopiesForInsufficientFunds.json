@@ -29,10 +29,6 @@
           {
             "code": "PBA0083372",
             "label": "PBA0083372"
-          },
-          {
-            "code": "PBA0083374",
-            "label": "PBA0083374"
           }
         ]
       },
@@ -93,7 +89,7 @@
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "100000",
       "extraCopiesOfGrant": 1000000,
-      "outsideUKGrantCopies": 2000000,
+      "outsideUKGrantCopies": 1000000,
       "deceasedSurname": "decln",
       "solsAdditionalExecutorList": [
         {

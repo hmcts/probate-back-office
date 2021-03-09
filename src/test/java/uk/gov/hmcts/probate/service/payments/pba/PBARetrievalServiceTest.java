@@ -12,27 +12,25 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
-import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class PBAValidationServiceTest {
+public class PBARetrievalServiceTest {
 
     @InjectMocks
-    private PBAValidationService pbaValidationService;
+    private PBARetrievalService pbaRetrievalService;
 
     @Mock
-    private IdamApi idamService;
+    private IdamAuthenticateUserService idamAuthenticateUserService;
     @Mock(name = "restTemplate")
     private RestTemplate restTemplate;
     @Mock
@@ -49,16 +47,13 @@ public class PBAValidationServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        pbaValidationService.pbaApi = "/pbaUri";
-        pbaValidationService.pbaUri = "http://pbaApi";
+        pbaRetrievalService.pbaApi = "/pbaUri";
+        pbaRetrievalService.pbaUri = "http://pbaApi";
     }
 
     @Test
     public void shouldReturnPBAs() {
-        HashMap map = new HashMap<>();
-        map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
-        when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
+        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -69,41 +64,34 @@ public class PBAValidationServiceTest {
         List<String> pbas = Arrays.asList("PBA1111", "PBA2222");
         when(organisationEntityResponse.getPaymentAccount()).thenReturn(pbas);
 
-        List<String> returnedPBAs = pbaValidationService.getPBAs(AUTH_TOKEN);
+        List<String> returnedPBAs = pbaRetrievalService.getPBAs(AUTH_TOKEN);
 
         assertEquals(2, returnedPBAs.size());
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldErrorOnGetIdamUserDetails() {
-        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.empty());
-        when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
+        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
 
-        pbaValidationService.getPBAs(AUTH_TOKEN);
+        pbaRetrievalService.getPBAs(AUTH_TOKEN);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldErrorOnGetPBAOrganisation() {
-        HashMap map = new HashMap<>();
-        map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
-        when(idamService.getUserDetails(AUTH_TOKEN)).thenReturn(userResponse);
+        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.empty());
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenReturn(pbaOrganisationResponseResponseEntity);
 
-        pbaValidationService.getPBAs(AUTH_TOKEN);
+        pbaRetrievalService.getPBAs(AUTH_TOKEN);
     }
 
     @Test(expected = ClientException.class)
     public void shouldFailOnAuthTokenMatch() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map<String, Object>> userResponse = ResponseEntity.of(Optional.of(map));
-        when(idamService.getUserDetails("ForbiddenToken")).thenReturn(userResponse);
+        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
-        pbaValidationService.getPBAs("ForbiddenToken");
+        pbaRetrievalService.getPBAs("ForbiddenToken");
     }
 }

@@ -88,7 +88,6 @@ public class CaveatData {
     private DynamicList solsPBANumber;
     private String solsPBAPaymentReference;
     private String solsOrgHasPBAs;
-    private String solsNeedsPBAPayment;
     
     private String caveatRaisedEmailNotificationRequested;
     private String sendToBulkPrintRequested;

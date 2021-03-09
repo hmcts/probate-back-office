@@ -42,9 +42,9 @@ payment:
   service: PROBATE
 
 pba:
-  validation:
+  retrieval:
     url: ${PRD_API_URL:http://localhost:8991}
-    health.url: ${pba.validation.url}/health
+    health.url: ${pba.retrieval.url}/health
     api: /refdata/external/v1/organisations/pbas
 
 

@@ -670,7 +670,6 @@ public class ConfirmationResponseServiceTest {
     }
 
     private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
-        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 

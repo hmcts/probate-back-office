@@ -52,6 +52,12 @@ public class FunctionalTestUtils {
     @Value("${probate.solicitor.password}")
     private String solicitorPassword;
 
+    @Value("${probate.solicitor2.email}")
+    private String solicitor2Email;
+
+    @Value("${probate.solicitor2.password}")
+    private String solicitor2Password;
+
     @Value("${evidence.management.url}")
     private String dmStoreUrl;
 
@@ -215,6 +221,14 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithSolicitorUser() {
         String authorizationToken = serviceAuthTokenGenerator.generateClientToken(solicitorEmail, solicitorPassword);
+        return Headers.headers(
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", "Bearer " + authorizationToken));
+    }
+
+    public Headers getHeadersWithSolicitor2User() {
+        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(solicitor2Email, solicitor2Password);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),

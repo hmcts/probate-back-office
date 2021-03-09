@@ -172,6 +172,18 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
+    public void shouldTransformAllWithNullCopies() {
+        when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(216.20));
+
+        CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
+            feesResponse);
+        assertStandardCreditAccountPayment(creditAccountPayment, "Probate Solicitor payment");
+        assertEquals(BigDecimal.valueOf(216.20), creditAccountPayment.getAmount());
+        assertEquals(1, creditAccountPayment.getFees().size());
+        assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
+    }
+    
+    @Test
     public void shouldTransformAllForCaveats() {
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caveatDetails,
             feeResponseCaveat);

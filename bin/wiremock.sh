@@ -150,7 +150,7 @@ curl -X POST \
                   {
                     "status": "failed",
                     "error_code": "CA-E0004",
-                    "error_message": "Your account has insufficient funds",
+                    "error_message": "PBA account THE J M PRACTICE LTD have insufficient funds available",
                     "date_created": "2020-05-28T15:10:10.700+0000",
                     "date_updated": "2020-05-28T15:10:10.700+0000"
                   }
