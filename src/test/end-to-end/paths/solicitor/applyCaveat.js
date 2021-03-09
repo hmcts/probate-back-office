@@ -1,4 +1,4 @@
-'use strict';;
+'use strict';
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -19,7 +19,7 @@ const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/s
 const {
     legacyParse,
     convertTokens
-} = require("@date-fns/upgrade/v2");
+} = require('@date-fns/upgrade/v2');
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
