@@ -11,7 +11,8 @@
   "page4_outsideUKGrantCopies":"2",
 
   "page5_paymentType": "Fee account",
-  "page5_payAccountNum": "1234",
+  "page5_pBAANumber": "PBA0082126",
+  "page5_paymentReference": "E2E PBA Payment Reference",
 
   "page6_waitForText":"Save or Submit application",
 
@@ -20,6 +21,9 @@
   "page7_additionalCopiesFee": "Fee for additional UK copies £1.50",
   "page7_feeForCertifiedCopies": "Fee for certified copies £3.00",
   "page7_totalFeeAmount": "Fee amount £159.50",
+  "page7_paymentMethod": "Payment method fee account",
+  "page7_pBAAccount": "Selected PBA account PBA008226",
+  "page7_customerReference": "Customer reference E2E PBA Payment Reference",
 
   "optionYes": "Yes",
   "optionNo": "No"

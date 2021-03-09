@@ -21,8 +21,8 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress_Country', deceasedDetailsConfig.address_country);
 
     await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
-    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
+    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
