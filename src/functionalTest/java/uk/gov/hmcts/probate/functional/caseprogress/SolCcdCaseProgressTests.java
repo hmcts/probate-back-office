@@ -28,7 +28,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
-    private static final String CASE_FAIL_QA_URL = "/case/failQA";
+    private static final String CASE_FAIL_QA_URL = "/case/fail-qa";
     private static final String CASE_ESCALATED_URL = "/case/case-escalated";
     private static final String CASE_MATCHING_EXAMINING_URL = "/case-matching/import-legacy-from-grant-flow";
     private static final String CASE_MATCHING_READY_TO_ISSUE_URL = "/case/validateCheckListDetails";
