@@ -84,7 +84,7 @@ public class ExecutorListMapperService {
         return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                        .applyingExecutorAddress(caseData.getTrustCorpAddress())
                         .applyingExecutorFirstName(exec.getValue().getAdditionalExecForenames())
                         .applyingExecutorLastName(exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()

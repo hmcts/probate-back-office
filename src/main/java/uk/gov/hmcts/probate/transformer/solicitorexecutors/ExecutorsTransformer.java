@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 
 import java.util.ArrayList;
 import java.util.List;

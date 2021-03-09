@@ -97,7 +97,6 @@ public class CommonVariables {
             AdditionalExecutorTrustCorps.builder()
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
-                    .additionalExecAddress(EXEC_ADDRESS)
                     .additionalExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
                     .build());
 

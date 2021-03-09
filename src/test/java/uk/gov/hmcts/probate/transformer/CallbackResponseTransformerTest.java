@@ -2252,15 +2252,25 @@ public class CallbackResponseTransformerTest {
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
                         "Executor surname",
-                        "Solicitor",
-                        mock(SolsAddress.class)));
+                        "Solicitor"
+                ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        SolsAddress trustCorpAddress = new SolsAddress(
+                "Address Line 1",
+                "",
+                "",
+                "",
+                "",
+                "POSTCODE",
+                "");
 
         caseDataBuilder
                 .dispenseWithNotice(YES)
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
+                .trustCorpAddress(trustCorpAddress)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
@@ -2272,6 +2282,8 @@ public class CallbackResponseTransformerTest {
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", callbackResponse.getData().getTitleAndClearingType());
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
+        assertEquals("Trust corp name", callbackResponse.getData().getTrustCorpName());
+        assertEquals(trustCorpAddress, callbackResponse.getData().getTrustCorpAddress());
         assertEquals(additionalExecutorsTrustCorpList, callbackResponse.getData()
                 .getAdditionalExecutorsTrustCorpList());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());

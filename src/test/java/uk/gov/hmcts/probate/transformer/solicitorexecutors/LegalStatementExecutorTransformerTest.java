@@ -29,12 +29,12 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -71,7 +71,12 @@ public class LegalStatementExecutorTransformerTest {
         solsAdditionalExecutorList.add(SOLS_EXEC_NOT_APPLYING);
 
         trustCorpsExecutorList = new ArrayList<>();
-        trustCorpsExecutorList.add(TRUST_CORP_EXEC);
+        trustCorpsExecutorList.add(new CollectionMember(EXEC_ID,
+                AdditionalExecutorTrustCorps.builder()
+                        .additionalExecForenames(EXEC_FIRST_NAME)
+                        .additionalExecLastname(EXEC_SURNAME)
+                        .additionalExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+                        .build()));
 
         partnerExecutorList = new ArrayList<>();
         partnerExecutorList.add(PARTNER_EXEC);

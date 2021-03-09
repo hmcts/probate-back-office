@@ -796,6 +796,7 @@ public class CallbackResponseTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
             .trustCorpName(caseData.getTrustCorpName())
+            .trustCorpAddress(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
@@ -1018,7 +1019,6 @@ public class CallbackResponseTransformer {
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
         builder
             .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
             .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
             .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())

@@ -93,10 +93,19 @@ public class ResponseCaseDataParentTest {
                 new AdditionalExecutorTrustCorps(
                         "Executor forename", 
                         "Executor surname", 
-                        "Solicitor", 
-                        mock(SolsAddress.class)));
+                        "Solicitor"
+                ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        SolsAddress trustCorpAddress = new SolsAddress(
+                "Address Line 1",
+                "",
+                "",
+                "",
+                "",
+                "POSTCODE",
+                "");
 
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .dispenseWithNotice("Yes")
@@ -105,6 +114,7 @@ public class ResponseCaseDataParentTest {
                 .dispenseWithNoticeSupportingDocs("Supporting docs")
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
+                .trustCorpAddress(trustCorpAddress)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate("02-02-2020")
@@ -116,6 +126,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("Supporting docs", responseCaseDataParent.getDispenseWithNoticeSupportingDocs());
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
+        assertEquals(trustCorpAddress, responseCaseDataParent.getTrustCorpAddress());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
