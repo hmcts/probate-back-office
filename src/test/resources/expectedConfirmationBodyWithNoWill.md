@@ -3,7 +3,7 @@ This probate application has now been submitted
 
 Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
-Peter Crouch, Lawyer
+Peter Crouch
 
 **Probate registry reference:**
 Michael, Andy, died 04/04/2017
