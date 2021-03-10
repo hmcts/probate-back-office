@@ -25,15 +25,12 @@ public class SolicitorPBAPaymentDefaulter {
 
         BigDecimal amountInPounds = InheritanceTax.builder().netValue(data.getIhtNetValue())
             .build().getNetValueInPounds();
-        log.info("SolicitorPBAPaymentDefaulter.amountInPounds:{}", amountInPounds.doubleValue());
 
         FeesResponse feesResponse = feeService.getAllFeesData(
             amountInPounds,
             data.getExtraCopiesOfGrant(),
             data.getOutsideUKGrantCopies());
 
-        log.info("SolicitorPBAPaymentDefaulter.feeTotal:{}", feesResponse.getTotalAmount().doubleValue());
-        log.info("SolicitorPBAPaymentDefaulter.feeTotal==0:{}", feesResponse.getTotalAmount().doubleValue() == 0);
         responseCaseDataBuilder.solsNeedsPBAPayment(feesResponse.getTotalAmount().doubleValue() == 0 
             ? NO : YES);
     }
