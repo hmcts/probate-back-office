@@ -25,7 +25,8 @@ public class SolicitorPBAPaymentDefaulter {
             data.getExtraCopiesOfGrant(),
             data.getOutsideUKGrantCopies());
 
-        log.info("SolicitorPBAPaymentDefaulter.feeTotal:" + feesResponse.getTotalAmount().doubleValue());
+        log.info("SolicitorPBAPaymentDefaulter.feeTotal:{}", feesResponse.getTotalAmount().doubleValue());
+        log.info("SolicitorPBAPaymentDefaulter.feeTotal==0:{}", feesResponse.getTotalAmount().doubleValue() == 0);
         responseCaseDataBuilder.solsNeedsPBAPayment(feesResponse.getTotalAmount().doubleValue() == 0 
             ? NO : YES);
     }
