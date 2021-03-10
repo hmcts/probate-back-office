@@ -13,9 +13,13 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
     // IDAM
     /* eslint-disable no-console */
     try {
+        console.log('start');
         await I.authenticateWithIdamIfAvailable(true);
+        console.log('1');
         await I.selectNewCase();
+        console.log('12');
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
+        console.log('13');
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         console.info('Initial application entry');
