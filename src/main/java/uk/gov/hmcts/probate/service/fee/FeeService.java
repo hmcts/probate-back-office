@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.fee;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.net.URI;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FeeService {
@@ -56,7 +54,6 @@ public class FeeService {
     }
 
     public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
-        log.info("getApplicationFeeResponse.amountInPound:{}", amountInPound);
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
@@ -73,7 +70,6 @@ public class FeeService {
     }
 
     public FeeResponse getCopiesFeeResponse(Long copies) {
-        log.info("getApplicationFeeResponse.copies:{}", copies);
         if (copies == null) {
             return buildZeroValueFee();
         }
@@ -96,7 +92,6 @@ public class FeeService {
 
     public FeeResponse getCaveatFeesData() {
         URI uri = buildUri(FEE_API_EVENT_TYPE_CAVEAT, "0");
-        log.info("uri.toString()" + uri.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {

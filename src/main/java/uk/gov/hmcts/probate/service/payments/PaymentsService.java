@@ -52,13 +52,11 @@ public class PaymentsService {
         URI uri = fromHttpUrl(payUri + payApi).build().toUri();
         HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
 
-        log.info("PaymentService.getCreditAccountPaymentResponse uri:" + uri);
         PaymentResponse paymentResponse = null;
         try {
             ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
                 request, PaymentResponse.class);
             paymentResponse = Objects.requireNonNull(responseEntity.getBody());
-            log.info("paymentResponse : {}", paymentResponse);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == FORBIDDEN.value()) {
                 throw getNewBusinessValidationException(e);
