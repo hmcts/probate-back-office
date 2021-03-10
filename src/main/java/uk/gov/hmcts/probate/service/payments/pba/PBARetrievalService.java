@@ -40,9 +40,12 @@ public class PBARetrievalService {
     public List<String> getPBAs(String authToken) {
         log.info("Getting user details");
         String emailId = idamAuthenticateUserService.getEmail(authToken);
+        log.info("emailId:" + emailId);
         URI uri = buildUri(emailId);
+        log.info("uri:" + uri.toString());
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
+        log.info("request:" + request.toString());
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
         PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
