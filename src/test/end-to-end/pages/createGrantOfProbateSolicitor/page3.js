@@ -7,6 +7,10 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     const I = this;
 
+    if (createGrantOfProbateConfig.page1_paperForm === 'Yes') {
+        return;
+    }
+
     if (crud === 'create') {
 
         const tct = createGrantOfProbateConfig.page3_titleAndClearingTypeValue;
