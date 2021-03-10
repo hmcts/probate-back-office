@@ -17,7 +17,6 @@ public class InheritanceTax implements Serializable {
     private final BigDecimal grossValue;
 
     public BigDecimal getNetValueInPounds() {
-        log.info("netValue:{}", netValue.toString());
         return netValue.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
     }
 }
