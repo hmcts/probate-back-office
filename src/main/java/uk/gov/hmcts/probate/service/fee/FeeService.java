@@ -56,6 +56,7 @@ public class FeeService {
     }
 
     public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
+        log.info("getApplicationFeeResponse.amountInPound:{}", amountInPound);
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
@@ -72,6 +73,7 @@ public class FeeService {
     }
 
     public FeeResponse getCopiesFeeResponse(Long copies) {
+        log.info("getApplicationFeeResponse.copies:{}", copies);
         if (copies == null) {
             return buildZeroValueFee();
         }
