@@ -1449,7 +1449,6 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase  {
         expectedHtml = expectedHtml
             .replaceAll(Pattern.quote("<today/>"), this.todaysDate)
             .replaceAll("\\\\n", System.lineSeparator());
-        expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
         assertEquals(expectedHtml, taskList);
     }
