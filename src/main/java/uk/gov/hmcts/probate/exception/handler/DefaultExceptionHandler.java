@@ -69,7 +69,9 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
         log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
+        log.info("DefaultExceptionHandler.exception.getUserMessage()" + exception.getUserMessage());
         userMessages.add(exception.getUserMessage());
+        log.info("DefaultExceptionHandler.exception.getAdditionalMessages()" + exception.getAdditionalMessages());
         if (exception.getAdditionalMessages() != null) {
             Collections.addAll(userMessages, Arrays.copyOf(exception.getAdditionalMessages(),
                 exception.getAdditionalMessages().length));
@@ -77,6 +79,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         CallbackResponse callbackResponse = CallbackResponse.builder()
             .errors(userMessages)
             .build();
+        log.info("DefaultExceptionHandler.callbackResponse.errors.size" + callbackResponse.getErrors().size());
         return ResponseEntity.ok(callbackResponse);
     }
 
