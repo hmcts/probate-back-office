@@ -35,6 +35,7 @@ public class SolicitorPBAPaymentDefaulterTest {
 
     @Test
     public void shouldSkipPBAPageForNoTotalFee() {
+        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.ZERO);
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
@@ -46,9 +47,10 @@ public class SolicitorPBAPaymentDefaulterTest {
 
     @Test
     public void shouldUsePBAPageForTotalFee() {
+        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(500100));
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
-        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.TEN);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(5001));
         ResponseCaseData.ResponseCaseDataBuilder builder = ResponseCaseData.builder();
 
         solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(caseDataMock, builder);

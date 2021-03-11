@@ -27,7 +27,7 @@ import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "auth.provider.client.user=http://localhost:8861")
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamAuthenticateUserConsumerTest {
 
@@ -41,7 +41,7 @@ public class SidamAuthenticateUserConsumerTest {
 
     @Rule
     public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("idamApi_users", "localhost", 8887, this);
+        new PactHttpsProviderRuleMk2("idamApi_users", "localhost", 8861, this);
 
     @After
     public void teardown() {

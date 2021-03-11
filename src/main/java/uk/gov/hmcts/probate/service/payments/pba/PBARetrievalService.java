@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.payments.pba;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -25,7 +24,6 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class PBARetrievalService {
 
@@ -38,7 +36,6 @@ public class PBARetrievalService {
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
-        log.info("Getting user details");
         String emailId = idamAuthenticateUserService.getEmail(authToken);
         URI uri = buildUri(emailId);
         HttpEntity<HttpHeaders> request = buildRequest(authToken);

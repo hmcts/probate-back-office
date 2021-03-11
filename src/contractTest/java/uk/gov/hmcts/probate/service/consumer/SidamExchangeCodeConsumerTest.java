@@ -30,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "auth.provider.client.user=http://localhost:8863")
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamExchangeCodeConsumerTest {
 
@@ -44,7 +44,7 @@ public class SidamExchangeCodeConsumerTest {
 
     @Rule
     public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("idamApi_authorization", "localhost", 8887, this);
+        new PactHttpsProviderRuleMk2("idamApi_authorization", "localhost", 8863, this);
 
     @After
     public void teardown() {
