@@ -20,6 +20,14 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible({css: '#trustCorpName'});
             await I.fillField('#trustCorpName', createGrantOfProbateConfig.page3_nameOfTrustCorp);
 
+            await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+
+            await I.fillField('#trustCorpAddress_AddressLine1', createGrantOfProbateConfig.page3_trustAddress_line1);
+            await I.fillField('#trustCorpAddress_AddressLine2', createGrantOfProbateConfig.page3_trustAddress_line2);
+            await I.fillField('#trustCorpAddress_PostTown', createGrantOfProbateConfig.page3_trustAddress_town);
+            await I.fillField('#trustCorpAddress_PostCode', createGrantOfProbateConfig.page3_trustAddress_postcode);
+            await I.fillField('#trustCorpAddress_Country', createGrantOfProbateConfig.page3_trustAddress_country);
+
             await I.fillField('#lodgementAddress', createGrantOfProbateConfig.page3_lodgementAddress);
             await I.fillField('#lodgementDate-day', createGrantOfProbateConfig.page3_lodgementDate_day);
             await I.fillField('#lodgementDate-month', createGrantOfProbateConfig.page3_lodgementDate_month);
