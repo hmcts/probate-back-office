@@ -210,10 +210,6 @@ dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
     // CVE-2018-10237 - Unbounded memory allocation
-    // CVE-2020-8908 - Temp directory creation vulnerability
-    dependencySet(group: 'com.google.guava', version: '28.2-jre') {
-      entry 'guava'
-    }
   }
 }
 
@@ -231,6 +227,8 @@ dependencies {
     force = true
   }
 
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.0'
+  compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
@@ -256,7 +254,7 @@ dependencies {
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.9.2'
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.9.2'
   compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.9.2'
-  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
+  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
 
