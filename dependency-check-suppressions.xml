@@ -14,7 +14,7 @@
         <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
         <cve>CVE-2019-10086</cve>
     </suppress>
-     <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: guava-28.0-jre.jar
    ]]></notes>
@@ -42,18 +42,11 @@
         <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
         <cve>CVE-2018-1000873</cve>
     </suppress>
-       <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: junit-4.13.jar
    ]]></notes>
         <cve>CVE-2020-15250</cve>
-    </suppress>
-     <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.5.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
-        <cve>CVE-2020-13692</cve>
     </suppress>
     <suppress until="2030-01-01">
         <notes><![CDATA[
@@ -63,7 +56,7 @@
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
-       <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: tomcat-embed-core-9.0.38.jar
    ]]></notes>

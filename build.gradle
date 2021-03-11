@@ -256,7 +256,7 @@ dependencies {
 
   compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   compile ('org.springframework.boot:spring-boot-starter-data-jpa')
-  compile ('org.postgresql:postgresql:42.2.5') {
+  compile ('org.postgresql:postgresql:42.2.18') {
     exclude module: 'slf4j-simple'
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
