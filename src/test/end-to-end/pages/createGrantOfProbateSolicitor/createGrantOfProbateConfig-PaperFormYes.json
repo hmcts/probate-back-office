@@ -27,7 +27,7 @@
     "page1_solsSolicitorEmail": "test-sol@probate-test.com",
     "page1_solsSolicitorPhoneNumber": "01793 987654",
     "page1_solsSOTJobTitle": "Solicitor",
-    "page1_paperForm": "No",
+    "page1_paperForm": "Yes",
     
     "page1_list3_case_type": "Grant of Probate",
     "page1_extraCopiesOfGrant": "1",
@@ -74,7 +74,7 @@
     "page4_amend_waitForText": "Amend case details",
     "page4_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage3",
     "page4_otherExecutorExistsYes": "Yes",
-    "page4_executor0_executorType": "Trust corporation",
+    "page4_executor0_executorType": "Lay executor",
     "page4_executor0_name": "executor0_name",
     "page4_executor0_firstName": "executor0_firstname",
     "page4_executor0_lastName": "executor0_surname",
