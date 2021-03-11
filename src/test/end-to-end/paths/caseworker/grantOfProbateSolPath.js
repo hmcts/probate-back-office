@@ -44,7 +44,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     let nextStepName = 'PA1P/PA1A/Solicitors';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    await I.cwEnterSolsGoPPage1('create');
+    await I.cwEnterSolsGoPPage1('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage2('create');
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
@@ -61,7 +61,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
 
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
-    await I.cwEnterSolsGoPPage1('create');
+    await I.cwEnterSolsGoPPage1('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage2('create');
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
@@ -92,7 +92,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
 
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage1('update');
+    await I.cwEnterSolsGoPPage1('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage4('update', createGrantOfProbateConfig);

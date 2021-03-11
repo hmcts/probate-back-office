@@ -25,6 +25,7 @@
     "test-e2e-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate-sol": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbateSolPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate-sol-non-trust": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbateSolPath-NonTrust.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-grantOfProbate-sol-paper-form-yes": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbateSolPath-PaperFormYes.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-gop-sol-create-cw-amend": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/gopApplyAsSolAmendAsCw.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-willLodgement": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-sol-applyCaveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyCaveat.js -c ./src/test/end-to-end/ --steps",

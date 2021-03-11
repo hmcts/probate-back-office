@@ -1,10 +1,9 @@
 'use strict';
 
 const testConfig = require('src/test/config');
-const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
+module.exports = async function (crud, createGrantOfProbateConfig) {
 
     const I = this;
 
@@ -37,7 +36,7 @@ module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
         await I.fillField('#solsSOTJobTitle', createGrantOfProbateConfig.page1_solsSOTJobTitle);
 
         await I.selectOption('#caseType', createGrantOfProbateConfig.page1_list3_case_type);
-        await I.click({css: `#paperForm-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#paperForm-${createGrantOfProbateConfig.page1_paperForm}`});
 
         await I.fillField('#extraCopiesOfGrant', createGrantOfProbateConfig.page1_extraCopiesOfGrant);
         await I.fillField('#outsideUKGrantCopies', createGrantOfProbateConfig.page1_outsideUKGrantCopies);
@@ -53,9 +52,6 @@ module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
-        if (forAmendOfSolicitorCreatedCase) {
-            await I.click({css: `#languagePreferenceWelsh-${createGrantOfProbateConfig.page1_optionNo}`});
-        }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
     }
