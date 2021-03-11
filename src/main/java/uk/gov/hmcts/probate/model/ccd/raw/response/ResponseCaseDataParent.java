@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Jacksonized
@@ -41,7 +42,7 @@ public class ResponseCaseDataParent {
     protected final String registrySequenceNumber;
     protected final String dispenseWithNotice;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;

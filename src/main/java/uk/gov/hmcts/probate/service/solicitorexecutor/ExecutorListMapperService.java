@@ -91,6 +91,7 @@ public class ExecutorListMapperService {
                                 + " " + exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                         .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
+                        .applyingExecutorType("TrustCorporation")
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -106,6 +107,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorType("Professional")
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -117,6 +119,10 @@ public class ExecutorListMapperService {
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
                         .notApplyingExecutorName(exec.getValue().getNotApplyingExecutorName())
                         .notApplyingExecutorReason("PowerReserved")
+                        .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
+                        .notApplyingExecutorDispenseWithNoticeLeaveGiven(caseData.getDispenseWithNoticeLeaveGiven())
+                        .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
+                                caseData.getDispenseWithNoticeLeaveGivenDate())
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -134,6 +140,7 @@ public class ExecutorListMapperService {
                                 + " " + exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorType(EXECUTOR_TYPE_LAY)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
+                        .applyingExecutorType("Lay")
                         .build()))
                 .collect(Collectors.toList());
     }

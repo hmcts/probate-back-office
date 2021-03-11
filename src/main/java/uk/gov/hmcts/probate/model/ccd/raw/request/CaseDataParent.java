@@ -43,7 +43,7 @@ public class CaseDataParent {
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
