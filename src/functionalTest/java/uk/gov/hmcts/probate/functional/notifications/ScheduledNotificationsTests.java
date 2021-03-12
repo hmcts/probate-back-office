@@ -93,6 +93,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
         String updateGrantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(updateGrantDocCaseJson, EVENT_PRINT_CASE, caseId);
+        log.info("printCaseUpdateResponse:" + printCaseUpdateResponse);
 
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
