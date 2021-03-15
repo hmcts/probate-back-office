@@ -9,7 +9,7 @@ module.exports = async function (jurisdiction, caseType, event) {
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
     //In saucelabs this page is not able to load so waiting for more time
     if (testConfig.TestForXUI) {
-        await I.wait(60);
+        await I.wait(120);
 
     }
     if (testConfig.TestForCrossBrowser) {
