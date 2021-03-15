@@ -76,6 +76,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
                 .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
+                .applyingExecutorType("Lay")
                 .build());
     }
 
@@ -163,6 +164,7 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         // Create applying executor collection member containing primary applicant names
         return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+                .applyingExecutorType("Lay")
                 .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
                 .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
                 .applyingExecutorName(caseData.getPrimaryApplicantFullName())
