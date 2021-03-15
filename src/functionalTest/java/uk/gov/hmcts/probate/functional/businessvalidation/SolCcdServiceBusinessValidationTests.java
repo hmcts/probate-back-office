@@ -10,30 +10,44 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
-import static org.hamcrest.Matchers.contains;
+import java.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.HashMap;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
+    public static final String NOTIFICATION_DOCUMENT_BINARY_URL =
+        "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
     private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_IHT_400_DATE = "/case/sols-validate-iht400";
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
-    public static final String NOTIFICATION_DOCUMENT_BINARY_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
-    private static final String REDECLARATION_SOT ="/case/redeclarationSot";
-    private static final String SOL_APPLY_AS_EXECUTOR_URL ="/case/sols-apply-as-exec";
+    private static final String REDECLARATION_SOT = "/case/redeclarationSot";
+    private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -43,37 +57,37 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithDobNullReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
-                "Date of birth cannot be empty", 400);
+            "Date of birth cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodNullReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsNull.json",
-                "Date of death cannot be empty", 400);
+            "Date of death cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodBeforeDobReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
-                "Date of death cannot be before date of birth", 200);
+            "Date of death cannot be before date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDodSameAsDobReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsSameAsDob.json",
-                "Date of death cannot be the same as date of birth", 200);
+            "Date of death cannot be the same as date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDobInFutureReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsInTheFuture.json",
-                "Date of birth cannot be in the future", 200);
+            "Date of birth cannot be in the future", 200);
     }
 
     @Test
     public void verifyRequestWithDodInFutureReturnsError() {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsInTheFuture.json",
-                "Date of death cannot be in the future", 200);
+            "Date of death cannot be in the future", 200);
     }
 
     @Test
@@ -84,57 +98,90 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithEmptyIhtGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsEmpty.json",
-                "Gross IHT value cannot be empty", 400);
+            "Gross IHT value cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithEmptyIhtNetReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsEmpty.json",
-                "Net IHT value cannot be empty", 400);
+            "Net IHT value cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsGreaterThanGross.json",
-                "Net IHT value cannot be greater than the Gross value", 200);
+            "Net IHT value cannot be greater than the Gross value", 200);
     }
 
     @Test
     public void verifyRequestWithNegativeIhtNetReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsNegative.json",
-                "Net IHT cannot be negative", 400);
+            "Net IHT cannot be negative", 400);
     }
 
     @Test
     public void verifyRequestWithNegativeIhtGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsNegative.json",
-                "Gross IHT cannot be negative", 400);
+            "Gross IHT cannot be negative", 400);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsValid() {
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 20) + "\",");
+        validatePostSuccessForPayload(payload, VALIDATE_IHT_400_DATE);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsInFutureReturnsError() {
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + LocalDate.now().plusDays(10) + "\",");
+        validatePostFailureWithPayload(payload,
+            "The date you sent the IHT400 and IHT421 to HMRC must be in the past",
+            200, VALIDATE_IHT_400_DATE);
+    }
+
+    @Test
+    public void verifyRequestWithIhtDateIsAfter20DaysBeforeCurrentDateReturnsError() {
+        CaseData caseData = CaseData.builder().build();
+        LocalDate solsIHT400Date = IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 5);
+        String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
+        payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
+            "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
+        validatePostFailureWithPayload(
+            payload, "You cannot submit this application until "
+                + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
+                + " (20 working days after sending the IHT400 and IHT421 forms to HMRC)."
+                + " Submit this application on or after this date",
+            200, VALIDATE_IHT_400_DATE);
     }
 
     @Test
     public void verifyRequestWithoutDeceasedAddressReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedAddress.json",
-                "The deceased address line 1 cannot be empty", 200);
+            "The deceased address line 1 cannot be empty", 200);
     }
 
     @Test
     public void verifyRequestWithoutDeceasedPostcodeReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedPostcode.json",
-                "The deceased postcode cannot be empty", 200);
+            "The deceased postcode cannot be empty", 200);
     }
 
     @Test
     public void verifyRequestWithoutExecutorAddressReturnsError() {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorAddress.json",
-                "The executor address line 1 cannot be empty");
+            "The executor address line 1 cannot be empty");
         validatePostFailureForCaseAmend("failure.missingExecutorAddress.json",
-                "The executor address line 1 cannot be empty");
+            "The executor address line 1 cannot be empty");
     }
 
     @Test
     public void verifyRequestWithoutExecutorPostcodeReturnsError() {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorPostcode.json",
-                "The executor postcode cannot be empty");
+            "The executor postcode cannot be empty");
     }
 
     @Test
@@ -145,7 +192,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestCheckListAnswerEqualsNo() {
         validatePostFailureForCheckList("failure.checkList.json",
-                "Ensure all checks have been completed, cancel to return to the examining state");
+            "Ensure all checks have been completed, cancel to return to the examining state");
     }
 
     @Test
@@ -157,10 +204,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyEmptyRequestReturnsError() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders())
-                .contentType(ContentType.JSON)
-                .body("")
-                .when().post(VALIDATE_URL)
-                .then().assertThat().statusCode(400);
+            .contentType(ContentType.JSON)
+            .body("")
+            .when().post(VALIDATE_URL)
+            .then().assertThat().statusCode(400);
     }
 
     @Test
@@ -179,29 +226,80 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyNoOfApplyingExecutorsMoreThanFour() {
         validatePostFailure("failure.moreThanFourExecutors.json",
-                "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
+            "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
-                "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
+            "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
+        validatePostFailure("failure.moreThanFourExecutors.json",
+            "The total number executors applying cannot exceed 4", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     public void verifySuccessPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "Yes");
     }
 
     @Test
     public void verifySuccessPaperFormNo() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
+    }
+
+    @Test
+    public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
+    }
+
+    @Test
+    public void verifySchemaVersionNullWhenPaperFormNoForAdmonWill() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormNull() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+            new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+            new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormYes() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList(null, null)));
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormNo() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
+                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
+                new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
     }
 
     @Test
     public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithoutEmail() {
         String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",", "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
+            "\"primaryApplicantEmailAddress\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -211,7 +309,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() {
         String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",", "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
+            "\"primaryApplicantEmailAddress\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -224,7 +323,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt",
+            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -233,13 +333,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt",
+            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithoutEmail() {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",",
+            "\"solsSolicitorEmail\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -249,7 +351,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithoutEmail() {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",", "\"solsSolicitorEmail\": null,");
+        payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",",
+            "\"solsSolicitorEmail\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -262,7 +365,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
+            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
     @Test
@@ -271,7 +375,28 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt", NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
+            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_NotTrustCorp() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_TrustCorps() {
+        String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
+        "\"titleAndClearingType\": \"TCTPartSuccPowerRes\","
+                + "\n\"soleTraderOrLimitedCompany\" : \"No\","
+                + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
+
+        validatePostSuccessForPayload(payload, PAPER_FORM_URL);
     }
 
     @Test
@@ -320,12 +445,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestSuccessForRedeclarationSOTForDigitalCase() {
-        ResponseBody responseBody =  validatePostSuccess("successRedeclarationnSOT.json", REDECLARATION_SOT);
+        ResponseBody responseBody = validatePostSuccess("successRedeclarationnSOT.json", REDECLARATION_SOT);
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String errors = jsonPath.get("data.errors");
         String paperForm = jsonPath.get("data.paperForm");
         assertNull(errors);
-        assertEquals(paperForm,"No");
+        assertEquals(paperForm, "No");
     }
 
     @Test
@@ -336,46 +461,61 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestSuccessSolicitorAsExecutor() {
-        ResponseBody responsebody = validatePostSuccess("solicitorPayloadNotificationsMultipleExecutors.json", SOL_APPLY_AS_EXECUTOR_URL);
+        ResponseBody responsebody =
+            validatePostSuccess("solicitorPayloadNotificationsMultipleExecutors.json", SOL_APPLY_AS_EXECUTOR_URL);
         JsonPath jsonPath = JsonPath.from(responsebody.asString());
         responsebody.prettyPrint();
         String errors = jsonPath.get("data.errors");
         String solicitoryLegalDoument = jsonPath.get("data.solsLegalStatementDocument.document_filename");
-        assertEquals(solicitoryLegalDoument,"legal_statement.pdf");
+        assertEquals(solicitoryLegalDoument, "legal_statement.pdf");
         assertNull(errors);
     }
 
-     @Test
+    @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
-         ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
-         body.prettyPrint();
-         JsonPath jsonPath = JsonPath.from(body.asString());
+        ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
+        body.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(body.asString());
 
 
-         assertNull(jsonPath.get("data.errors"));
-         assertEquals(jsonPath.get("data.solsSOTNeedToUpdate"),"No");
+        assertNull(jsonPath.get("data.errors"));
+        assertEquals(jsonPath.get("data.solsSOTNeedToUpdate"), "No");
     }
 
     @Test
-    public void verifyRequestInTestacySuccessForDefaultNext(){
+    public void verifyRequestInTestacySuccessForDefaultNext() {
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadIntestacy.json", DEFAULT_SOLS_NEXT_STEP);
 
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
 
-        assertEquals(willExist,"No");
+        assertEquals(willExist, "No");
         assertNull(errors);
     }
 
     @Test
-    public void verifyRequestProbateSuccessForDefaultNext(){
-        ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbate.json", DEFAULT_SOLS_NEXT_STEP);
+    public void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() {
+        ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbateSingleExecutor.json",
+                DEFAULT_SOLS_NEXT_STEP);
         JsonPath jsonPath = JsonPath.from(body.asString());
         String willExist = jsonPath.get("data.willExists");
         String errors = jsonPath.get("data.errors");
 
-        assertEquals(willExist,"Yes");
+        assertEquals(willExist, "Yes");
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifySuccessForDefaultNextStepsWithProbateMultipleExecutorPayload() {
+        ResponseBody response = validatePostSuccess("solicitorPDFPayloadProbateMultipleExecutors.json",
+                DEFAULT_SOLS_NEXT_STEP);
+
+        JsonPath jsonPath = JsonPath.from(response.asString());
+        String willExist = jsonPath.get("data.willExists");
+        String errors = jsonPath.get("data.errors");
+
+        assertEquals(willExist, "Yes");
         assertNull(errors);
     }
 
@@ -398,11 +538,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String controlNumber = jsonPath.get("data.scannedDocuments[0].value.controlNumber");
         String fileName = jsonPath.get("data.scannedDocuments[0].value.fileName");
         String type = jsonPath.get("data.scannedDocuments[0].value.type");
-        String subtype = jsonPath.get("data.scannedDocuments[0].value.subtype");
-        String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
-        String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
-        String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
-        String exceptionRecordReference = jsonPath.get("data.scannedDocuments[0].value.exceptionRecordReference");
+        final String subtype = jsonPath.get("data.scannedDocuments[0].value.subtype");
+        final String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
+        final String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
+        final String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
+        final String exceptionRecordReference = jsonPath.get("data.scannedDocuments[0].value.exceptionRecordReference");
 
         assertEquals("1234", controlNumber);
         assertEquals("scanneddocument.pdf", fileName);
@@ -416,60 +556,57 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseSOLSAdditionalExec() {
-        String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
+    public void shouldTransformSolicitorExecutorFields() {
+        String response = transformCase("solicitorPayloadNotificationsExecutors.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
-        String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
-        String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
-        String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
 
-        String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
-        String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
-        String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
-        String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
-        String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
-        String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
-        String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
+        HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
+        assertEquals("exfn exln", executorNotApplying.get("notApplyingExecutorName"));
+        assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
+        assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 
-        String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
-        String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
-        String addressLine1Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
-        String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
-        String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
-        String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
-        String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+        HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
+        assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
 
+        HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
+        assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
+        assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
+        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine1"));
+        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine2"));
+        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine3"));
+        assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
+        assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
+        assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
+        assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
+    }
 
-        assertEquals("exfn2 exln2", notApplyingName);
-        assertEquals("DiedBefore", notApplyingReason);
-        assertEquals("alias name", notApplyingAlias);
+    @Test
+    public void shouldTransformCaseWithIht217Attributes() {
+        String response = transformCase("success.iht217Saved.json", TRANSFORM_URL);
 
-        assertEquals("exfn1 exln1", applyingName);
-        assertEquals("Alias name exfn1", applyingAlias);
-        assertEquals("addressline 1", addressLine1);
-        assertEquals("addressline 2", addressLine2);
-        assertEquals("addressline 3", addressLine3);
-        assertEquals("posttown", postTown);
-        assertEquals("postcode", postCode);
-        assertEquals("country", country);
-        assertEquals("county", county);
+        JsonPath jsonPath = JsonPath.from(response);
+        String iht217 = jsonPath.get("data.iht217");
 
+        assertEquals("Yes", iht217);
+    }
+    
+    @Test
+    public void shouldTransformPrimaryApplicantFieldsWithSolicitorInfo() {
+        String response = transformCase("solicitorPayloadNotificationsSolicitorAsPrimaryApplicant.json",
+                VALIDATE_URL);
 
-        assertEquals("ex3fn ex3ln", applyingNameExec2);
-        assertEquals(null, applyingAliasExec2);
-        assertEquals("addressline 1", addressLine1Exec2);
-        assertEquals(null, addressLine2Exec2);
-        assertEquals(null, addressLine3Exec2);
-        assertEquals(null, postTownExec2);
-        assertEquals("postcode", postCodeExec2);
-        assertEquals(null, countryExec2);
-        assertEquals(null, countyExec2);
+        JsonPath jsonPath = JsonPath.from(response);
 
+        assertEquals("Solicitor_fn", jsonPath.get("data.primaryApplicantForenames"));
+        assertEquals("Solicitor_ln", jsonPath.get("data.primaryApplicantSurname"));
+        assertEquals("solicitor@probate-test.com", jsonPath.get("data.primaryApplicantEmailAddress"));
+        assertEquals("SolAddLn1", jsonPath.get("data.primaryApplicantAddress.AddressLine1"));
+        assertNull(jsonPath.get("data.primaryApplicantAlias"));
+        assertEquals("No", jsonPath.get("data.primaryApplicantHasAlias"));
+        assertEquals("Yes", jsonPath.get("data.primaryApplicantIsApplying"));
+        assertNull(jsonPath.get("data.solsSolicitorNotApplyingReason"));
+        assertNull(jsonPath.get("data.solsPrimaryExecutorNotApplyingReason"));
     }
 
     @Test
@@ -480,13 +617,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String declarationCheckbox = jsonPath.get("data.declarationCheckbox");
         String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
         String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
-        int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
-        int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
-        String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
-        String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
-        String registryAddress = jsonPath.get("data.registryAddress");
-        String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
-        String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
+        final int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
+        final int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
+        final String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
+        final String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
+        final String registryAddress = jsonPath.get("data.registryAddress");
+        final String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
+        final String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
 
         assertEquals("Yes", declarationCheckbox);
         assertEquals("100001.0", ihtGrossValueField);
@@ -500,36 +637,125 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("1", registrySequenceNumber);
     }
 
+    @Test
+    public void shouldTransformSolicitorInfoAttributes() {
+        String response = transformCase("success.SolicitorInfoAttributes.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String solsForenames = jsonPath.get("data.solsForenames");
+        String solsSurname = jsonPath.get("data.solsSurname");
+        String solsSolicitorWillSignSOT = jsonPath.get("data.solsSolicitorWillSignSOT");
+
+        assertEquals("Solicitor Forenames", solsForenames);
+        assertEquals("Solicitor Surname", solsSurname);
+        assertEquals("Yes", solsSolicitorWillSignSOT);
+    }
+
+    @Test
+    public void shouldTransformCaseWithTrustCorpAttributes() {
+        String response = transformCase("success.trustCorpAttributesSaved.json", TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String dispenseWithNotice = jsonPath.get("data.dispenseWithNotice");
+        final String dispenseWithNoticeLeaveGiven = jsonPath.get("data.dispenseWithNoticeLeaveGiven");
+        final String dispenseWithNoticeOverview = jsonPath.get("data.dispenseWithNoticeOverview");
+        final String dispenseWithNoticeSupportingDocs = jsonPath.get("data.dispenseWithNoticeSupportingDocs");
+        final String titleAndClearingType = jsonPath.get("data.titleAndClearingType");
+        final String trustCorpName = jsonPath.get("data.trustCorpName");
+        final String trustCorpAddressLine1 = jsonPath.get("data.trustCorpAddress.AddressLine1");
+        final String lodgementAddress = jsonPath.get("data.lodgementAddress");
+        final String lodgementDate = jsonPath.get("data.lodgementDate");
+        final String additionalExecForename =
+                jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecForenames");
+        final String additionalExecLastname =
+                jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecLastname");
+        final String additionalExecPosition =
+                jsonPath.get("data.additionalExecutorsTrustCorpList[0].value.additionalExecutorTrustCorpPosition");
+
+        assertEquals("Yes", dispenseWithNotice);
+        assertEquals("No", dispenseWithNoticeLeaveGiven);
+        assertEquals("Overview", dispenseWithNoticeOverview);
+        assertEquals("Supporting docs", dispenseWithNoticeSupportingDocs);
+        assertEquals("TCTTrustCorpResWithApp", titleAndClearingType);
+        assertEquals("Trust Corporation Name", trustCorpName);
+        assertEquals("London", lodgementAddress);
+        assertEquals("2020-01-01", lodgementDate);
+        assertEquals("Exec forename", additionalExecForename);
+        assertEquals("Exec lastname", additionalExecLastname);
+        assertEquals("Solicitor", additionalExecPosition);
+        assertEquals("Trust Address line 1", trustCorpAddressLine1);
+    }
+
+    @Test
+    public void shouldTransformCaseWithPartnerAttributes() {
+        final String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        assertEquals("Yes", jsonPath.get("data.dispenseWithNotice"));
+        assertEquals("No", jsonPath.get("data.dispenseWithNoticeLeaveGiven"));
+        assertEquals("Overview", jsonPath.get("data.dispenseWithNoticeOverview"));
+        assertEquals("Supporting docs", jsonPath.get("data.dispenseWithNoticeSupportingDocs"));
+        assertEquals("TCTPartSuccPowerRes", jsonPath.get("data.titleAndClearingType"));
+        assertEquals("Test Solicitor Ltd", jsonPath.get("data.nameOfFirmNamedInWill"));
+        assertEquals("New Firm Ltd", jsonPath.get("data.nameOfSucceededFirm"));
+        assertEquals("No", jsonPath.get("data.morePartnersHoldingPowerReserved"));
+        assertEquals("Exec forename",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames"));
+        assertEquals("Exec lastname",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname"));
+        assertEquals("Address line 1",
+                jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
+        assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
+        assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
+    }
 
     private String transformCase(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         return jsonResponse.getBody().asString();
     }
 
-    private void validatePostSuccessAndCheckValue(String jsonPayload, String URL, String caseDataAttribute, String caseDataValue) {
+    private void validatePostSuccessAndCheckValue(String jsonPayload, String url, String caseDataAttribute,
+                                                  String caseDataValue) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonPayload)
-            .when().post(URL)
+            .when().post(url)
             .thenReturn();
 
-            response.then().assertThat().statusCode(200)
-                .and().body("data."+caseDataAttribute, equalTo(caseDataValue));
+        response.then().assertThat().statusCode(200)
+            .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
     }
-    
-    private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage, Integer statusCode) {
+
+    private void validatePostSuccessAndCheckValues(String jsonPayload, String url, List<String> caseDataAttributes,
+                                                  List<String> caseDataValues) {
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonPayload)
+                .when().post(url)
+                .thenReturn();
+
+        response.then().assertThat().statusCode(200);
+        for (int i = 0; i < caseDataAttributes.size(); i++) {
+            response.then().body("data." + caseDataAttributes.get(i), equalTo(caseDataValues.get(i)));
+        }
+    }
+
+    private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage,
+                                                                   Integer statusCode) {
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_CASE_AMEND_URL);
     }
 
-    private void validatePostFailureForSolicitorAddDeceasedEstateDetails(String jsonFileName, String errorMessage, Integer statusCode) {
+    private void validatePostFailureForSolicitorAddDeceasedEstateDetails(String jsonFileName, String errorMessage,
+                                                                         Integer statusCode) {
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
     }
 
@@ -540,27 +766,50 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_CASE_AMEND_URL);
     }
+
     private void validatePostFailureForCheckList(String jsonFileName, String errorMessage) {
         validatePostFailure(jsonFileName, errorMessage, 200, CHECKLIST_URL);
     }
 
-    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
+    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url) {
         Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(URL)
-                .thenReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(url)
+            .thenReturn();
 
         if (statusCode == 200) {
             response.then().assertThat().statusCode(statusCode)
-                    .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
-                    .and().body("errors", hasItem(containsString(errorMessage)));
+                .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("errors", hasItem(containsString(errorMessage)));
         } else if (statusCode == 400) {
             response.then().assertThat().statusCode(statusCode)
-                    .and().body("error", equalTo("Invalid Request"))
-                    .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
-                    .and().body("fieldErrors[0].message", equalTo(errorMessage));
+                .and().body("error", equalTo("Invalid Request"))
+                .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("fieldErrors[0].message", equalTo(errorMessage));
+        } else {
+            assert false;
+        }
+    }
+
+    private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String url) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(payload)
+            .when().post(url)
+            .thenReturn();
+
+        if (statusCode == 200) {
+            response.then().assertThat().statusCode(statusCode)
+                .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("errors", hasItem(containsString(errorMessage)));
+        } else if (statusCode == 400) {
+            response.then().assertThat().statusCode(statusCode)
+                .and().body("error", equalTo("Invalid Request"))
+                .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
+                .and().body("fieldErrors[0].message", equalTo(errorMessage));
         } else {
             assert false;
         }

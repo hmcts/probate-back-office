@@ -9,6 +9,8 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
+
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
@@ -24,12 +26,11 @@ const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDe
 const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Caveat E2E - Order summons', async function (I) {
+Scenario('05 BO Caveat E2E - Order summons', async function (I) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
@@ -49,11 +50,9 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     await I.enterCaveatPage3('create');
     await I.enterCaveatPage4('create');
     await I.checkMyAnswers(nextStepName);
-    let endState = 'Caveat raised';
 
     // SECOND case - the main test case
 
-    nextStepName = 'Raise a caveat';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -61,7 +60,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
     await I.enterCaveatPage3('create');
     await I.enterCaveatPage4('create');
     await I.checkMyAnswers(nextStepName);
-    endState = 'Caveat raised';
+    let endState = 'Caveat raised';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
@@ -90,7 +89,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, true, true);
+    await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

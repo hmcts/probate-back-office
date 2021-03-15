@@ -17,29 +17,23 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I) {
+Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async function (I) {
 
     const willType = 'WillLeft';
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2();
     await I.cyaPage();
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
@@ -64,6 +58,8 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2();
     await I.grantOfProbatePage3();
+    await I.grantOfProbatePage4();
+    await I.grantOfProbatePage5();
     await I.cyaPage();
 
     await I.seeEndState(endState);
@@ -80,10 +76,10 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function (I)
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
     await I.completeApplicationPage6();
-    await I.completeApplicationPage7();
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
 
-}).retry(testConfig.TestRetryScenarios);
+}).tag('@crossbrowser')
+    .retry(testConfig.TestRetryScenarios);

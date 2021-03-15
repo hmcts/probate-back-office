@@ -12,6 +12,9 @@ public enum DocumentType {
     LEGAL_STATEMENT_PROBATE("legalStatementProbate"),
 
     @JsonProperty("legalStatement")
+    LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementProbateTrustCorps"),
+
+    @JsonProperty("legalStatement")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
 
     @JsonProperty("digitalGrant")
@@ -61,6 +64,9 @@ public enum DocumentType {
 
     @JsonProperty("correspondence")
     CORRESPONDENCE("correspondence"),
+
+    @JsonProperty("will")
+    WILL("will"),
 
     @JsonProperty("caveatCoversheet")
     CAVEAT_COVERSHEET("caveatCoversheet"),

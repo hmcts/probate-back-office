@@ -1,6 +1,27 @@
 {
   "page1_waitForText": "Is the solicitor the main applicant?",
 
+  "page2_firm_name": "Solicitor Rob Firm",
+  "page2_optionYes": "Yes",
+  "page2_optionNo": "No",
+  "page2_sol_forename":"Jason",
+  "page2_sol_surname":"Rob",
+  "page2_sol_name":"Jason Rob",
+  "page2_app_ref": "SOL-123-456",
+  "page2_sol_email": "solicitor@probate-test.com",
+  "page2_phone_num" : "0129898989",
+
+  "page2_dispenseWithNotice": "Yes",
+  "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
+  "page2_titleAndClearingTypeNoT": "Reason for None of These",
+  "page2_nameOfTrustCorp": "Trust Corporation Name",
+  "page2_positionInTrustCorp": "Solicitor",
+  "page2_waitForAdditionPerson": "Add all people acting on behalf of trust corporation",
+  "page2_lodgementAddress": "London",
+  "page2_lodgementDate_day": "01",
+  "page2_lodgementDate_month": "01",
+  "page2_lodgementDate_year": "2020",
+
   "page2_waitForText": "About the executors",
   "page2_primaryApplicantFirstName": "E2E Primary Applicant Firstname",
   "page2_primaryApplicantSurname": "E2E Primary Applicant Surname",
@@ -19,10 +40,16 @@
   "page2_executorAddress_town": "Slough",
   "page2_executorAddress_country": "United Kingdom",
 
-  "page3_waitForText":"Notes for this application",
-  "page3_applicationNotes": "Application notes in grant of probate details",
+  "page3_dispenseWithNoticeName": "Name",
+  "page3_dispenseWithNoticeOverview": "Overview",
+  "page3_dispenseWithNoticeSupportingDocs": "Supporting docs",
 
-  "page4_waitForText": "",
+  "page4_waitForText": "Notes for this application",
+  "page4_previouslyIdentifiedApplyingExecutors": "E2E Executor Firstname E2E Executor Surname, Jason Rob",
+  "page4_previouslyIdentifiedNotApplyingExecutors": "Name",
+
+  "page5_applicationNotes": "Application notes in grant of probate details",
+  "page5_waitForText": "",
 
   "optionYes": "Yes",
   "optionNo": "No",
@@ -35,5 +62,6 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link"
+  "UKpostcodeLink": ".manual-link",
+  "noAddressFound": "No address found"
 }

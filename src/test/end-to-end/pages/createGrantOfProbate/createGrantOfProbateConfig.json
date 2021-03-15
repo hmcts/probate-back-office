@@ -86,8 +86,7 @@
     "page4_deceasedDod_long_update": "1 Jan 2019",
     "page4_deceasedAnyOtherNamesYes": "Yes",
     "page4_deceasedAlias": "deceased_alias",
-    "page4_deceasedMaritalStatusCode": "neverMarried",
-    "page4_deceasedMaritalStatus": "Never married",
+    "page4_deceasedMaritalStatus": "neverMarried",
     "page4_foreignAssetYes": "Yes",
     "page4_foreignAssetEstateValue": "500",
     "page4_list1_update_option": "Deceased, IHT and Estate Details",
@@ -171,5 +170,9 @@
     "address_country": "United Kingdom",
     "address_postcode": "SW1A 1AA",
 
-    "UKpostcodeLink": ".manual-link"
+    "UKpostcodeLink": ".manual-link",
+
+    "amendCaseDetails_waitForText": "Amend case details",
+    "amendApplicantDetails_update_option": "Applicant Details",
+    "domAndAssets_update_option": "Domicility and Assets"
 }

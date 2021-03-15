@@ -4,7 +4,7 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud) {
+module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
 
     const I = this;
 
@@ -34,9 +34,11 @@ module.exports = async function (crud) {
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
+        if (forAmendOfSolicitorCreatedCase) {
+            await I.click({css: `#languagePreferenceWelsh-${createGrantOfProbateConfig.page1_optionNo}`});
+        }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
-
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

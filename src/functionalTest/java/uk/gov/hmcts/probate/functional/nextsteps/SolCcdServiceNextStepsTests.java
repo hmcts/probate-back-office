@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static io.restassured.RestAssured.given;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -50,48 +50,44 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorSOTJobTitleInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTJobTitle");
-    }
-
-    @Test
     public void verifySolicitorSolicitorFirmPostcodeInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement("firmpc");
     }
 
     @Test
     public void verifyEmptyDeceasedFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"", "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");
+        validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"",
+            "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");
     }
 
     @Test
     public void verifyEmptyDeceasedSurNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedSurname\": \"deceasedLastName\"", "\"deceasedSurname\": \"\"", "caseDetails.data.deceasedSurname");
+        validatePostRequestFailureForLegalStatement("\"deceasedSurname\": \"deceasedLastName\"",
+            "\"deceasedSurname\": \"\"", "caseDetails.data.deceasedSurname");
     }
 
     @Test
     public void verifyEmptySolicitorFirmNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSolicitorFirmName\": \"SolicitorFirmName\"", "\"solsSolicitorFirmName\": \"\"", "caseDetails.data.solsSolicitorFirmName");
+        validatePostRequestFailureForLegalStatement("\"solsSolicitorFirmName\": \"SolicitorFirmName\"",
+            "\"solsSolicitorFirmName\": \"\"", "caseDetails.data.solsSolicitorFirmName");
     }
 
     @Test
     public void verifyEmptySolicitorIHTFormIdReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"ihtFormId\": \"IHT205\"", "\"ihtFormId\": \"\"", "caseDetails.data.ihtFormId");
+        validatePostRequestFailureForLegalStatement("\"ihtFormId\": \"IHT205\"", "\"ihtFormId\": \"\"",
+            "caseDetails.data.ihtFormId");
     }
 
     @Test
     public void verifyEmptySolicitorSOTForenamesReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"", "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
+        validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"",
+            "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
     }
 
     @Test
     public void verifyEmptySolicitorSOTSurnameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTSurname\": \"Solicitor_ln\"", "\"solsSOTSurname\": \"\"", "caseDetails.data.solsSOTSurname");
-    }
-
-    @Test
-    public void verifyEmptySolicitorSOTJobTitleameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTJobTitle\": \"TestSOTJobTitle\"", "\"solsSOTJobTitle\": \"\"", "caseDetails.data.solsSOTJobTitle");
+        validatePostRequestFailureForLegalStatement("\"solsSOTSurname\": \"Solicitor_ln\"", "\"solsSOTSurname\": \"\"",
+            "caseDetails.data.solsSOTSurname");
     }
 
     @Test
@@ -108,17 +104,18 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("success.nextsteps.json"))
-                .post("/nextsteps/confirmation");
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeaders())
+            .body(utils.getJsonFromFile("success.nextsteps.json"))
+            .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().asString().contains(validationString));
 
     }
 
-    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
+    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
+                                                             String errorMsg) {
         Response response = given().relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(replaceString(oldString, replacingString))

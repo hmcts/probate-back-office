@@ -1,0 +1,510 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "adopted": "Yes",
+      "caseType": "gop",
+      "epaOrLpa": "Yes",
+      "taskList": "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on 11 Feb 2021</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>your reference number 1614853932887472 written on a piece of paper</li><li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+      "ukEstate": [
+        {
+          "id": "a11ef974-1757-4263-8551-7a2b19af5bcf",
+          "value": {
+            "item": "Item",
+            "value": "99900"
+          }
+        }
+      ],
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "ihtNetValue": "40000",
+      "solsSOTName": "Fred Jones",
+      "childrenDied": "Yes",
+      "foreignAsset": "Yes",
+      "courtOfDecree": "The Court",
+      "epaRegistered": "Yes",
+      "ihtGrossValue": "50000",
+      "lodgementDate": "2020-01-01",
+      "schemaVersion": "2.0.0",
+      "trustCorpName": "Trust Corporation Name",
+      "mentalCapacity": "Yes",
+      "solsSOTSurname": "Jones",
+      "applicationType": "Solicitor",
+      "boDeceasedTitle": "Mr",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1A 1AA",
+        "PostTown": "London",
+        "AddressLine1": "1",
+        "AddressLine2": "Buckingham Palace",
+        "AddressLine3": "The place to be"
+      },
+      "deceasedSurname": "deceased_sn_1614853874303",
+      "solsSOTJobTitle": "Solicitor",
+      "spouseOrPartner": "No",
+      "willHasCodicils": "Yes",
+      "childrenSurvived": "Yes",
+      "lodgementAddress": "London",
+      "paragraphDetails": [],
+      "registryLocation": "Oxford",
+      "solsSOTForenames": "Fred",
+      "willsOutsideOfUK": "Yes",
+      "adoptiveRelatives": [
+        {
+          "id": "e446adec-b59f-45fc-9807-5940e5acfa4f",
+          "value": {
+            "name": "adoptive0_name",
+            "relationship": "Friend",
+            "adoptedInOrOut": "in"
+          }
+        }
+      ],
+      "boDeceasedHonours": "deceased_honour",
+      "boSendToBulkPrint": "Yes",
+      "courtOfProtection": "Yes",
+      "deceasedForenames": "deceased_fn_1614853874303",
+      "domicilityIHTCert": "Yes",
+      "executorsApplying": [
+        {
+          "id": "fba8d386-9032-4216-bb4e-29243d7f8cd8",
+          "value": {
+            "applyingExecutorName": "executor0_name",
+            "applyingExecutorEmail": "executor1@probate-test.com",
+            "applyingExecutorAddress": {
+              "County": "London",
+              "Country": "United Kingdom",
+              "PostCode": "SW1A 1AA",
+              "PostTown": "London",
+              "AddressLine1": "1",
+              "AddressLine2": "Buckingham Palace",
+              "AddressLine3": "The place to be"
+            },
+            "applyingExecutorLastName": "executor0_surname",
+            "applyingExecutorFirstName": "executor0_firstname",
+            "applyingExecutorOtherNames": "executor0_alias",
+            "applyingExecutorOtherReason": null,
+            "applyingExecutorPhoneNumber": "07070707077",
+            "applyingExecutorOtherNamesReason": "Marriage",
+            "applyingExecutorTrustCorpPosition": "Director"
+          }
+        }
+      ],
+      "totalFeePaperForm": "21600",
+      "dateOfMarriageOrCP": "2009-01-01",
+      "extraCopiesOfGrant": "1",
+      "ihtReferenceNumber": "AAAAA1000",
+      "notifiedApplicants": "Yes",
+      "solsSolicitorEmail": "test-sol@probate-test.com",
+      "willAccessOriginal": "Yes",
+      "deceasedDateOfBirth": "1970-03-03",
+      "deceasedDateOfDeath": "2018-03-03",
+      "otherExecutorExists": "Yes",
+      "solsSolicitorIsExec": "Yes",
+      "applyingAsAnAttorney": "Yes",
+      "executorsNotApplying": [
+        {
+          "id": "ac04f534-768a-461b-b5a1-2160c56f7424",
+          "value": {
+            "notApplyingExecutorName": "executor1_name",
+            "notApplyingExecutorReason": "PowerReserved",
+            "notApplyingExecutorNotified": "Yes",
+            "notApplyingExecutorNameOnWill": "executor1_alias",
+            "notApplyingExecutorDispenseWithNotice": "Yes",
+            "notApplyingExecutorNameDifferenceComment": "why not",
+            "notApplyingExecutorDispenseWithNoticeLeaveGiven": "Yes",
+            "notApplyingExecutorDispenseWithNoticeLeaveGivenDate": "2020-10-10"
+          }
+        }
+      ],
+      "outsideUKGrantCopies": "1",
+      "schemaVersionCcdCopy": "2.0.0",
+      "solsSolicitorAddress": {
+        "County": "Wilts",
+        "Country": "United Kingdom",
+        "PostCode": "SN1 5JU",
+        "PostTown": "Swindon",
+        "AddressLine1": "1",
+        "AddressLine2": "High St",
+        "AddressLine3": ""
+      },
+      "titleAndClearingType": "TCTTrustCorpResWithApp",
+      "willDatedBeforeApril": "Yes",
+      "willNumberOfCodicils": "3",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedMaritalStatus": "neverMarried",
+      "feeForCopiesPaperForm": "100",
+      "grandChildrenSurvived": "Yes",
+      "solsSolicitorFirmName": "Test Solicitors Ltd",
+      "willGiftUnderEighteen": "Yes",
+      "ihtFormCompletedOnline": "Yes",
+      "applicationFeePaperForm": "21500",
+      "foreignAssetEstateValue": "50000",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": "Wilts",
+        "Country": "United Kingdom",
+        "PostCode": "SN1 5JU",
+        "PostTown": "Swindon",
+        "AddressLine1": "1",
+        "AddressLine2": "High St",
+        "AddressLine3": ""
+      },
+      "primaryApplicantSurname": "Jones",
+      "solsSolicitorIsApplying": "Yes",
+      "applicationSubmittedDate": "2021-02-11",
+      "childrenDiedOverEighteen": "1",
+      "primaryApplicantHasAlias": "No",
+      "solsSolicitorPhoneNumber": "01793 987654",
+      "childrenDiedUnderEighteen": "1",
+      "deceasedEnterMarriageOrCP": "Yes",
+      "primaryApplicantForenames": "Fred",
+      "probateDocumentsGenerated": [],
+      "solsSolicitorAppReference": "XYZ-123",
+      "dateOfDivorcedCPJudicially": "2010-01-01",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsDeceasedAliasNamesList": [
+        {
+          "id": "802f8e01-97b5-4444-aac2-f7e7613fdfda",
+          "value": {
+            "SolsAliasname": "deceased_alias_1614853874303"
+          }
+        }
+      ],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "primaryApplicantPhoneNumber": "01793 987654",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "childrenOverEighteenSurvived": "1",
+      "primaryApplicantEmailAddress": "test-sol@probate-test.com",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "No",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "childrenUnderEighteenSurvived": "1",
+      "probateNotificationsGenerated": [
+        {
+          "id": "bda21997-7cc4-45f5-8271-eff5a3da3c25",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/2836a84c-60fb-460b-b32c-eb55eb0ec3d4",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/2836a84c-60fb-460b-b32c-eb55eb0ec3d4/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "c4313a57-8c01-4b41-af41-56f35e23352a.pdf",
+            "DocumentDateAdded": "2021-03-04",
+            "DocumentGeneratedBy": "a6862027-d6a2-4873-a2d6-d9a6b6977865"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "attorneyOnBehalfOfNameAndAddress": [
+        {
+          "id": "015dcf20-6aca-41c8-9025-b2f8b24d0414",
+          "value": {
+            "name": "Represented Name1",
+            "address": {
+              "County": "London",
+              "Country": "United Kingdom",
+              "PostCode": "SW1A 1AA",
+              "PostTown": "London",
+              "AddressLine1": "",
+              "AddressLine2": "Buckingham Palace",
+              "AddressLine3": "The place to be"
+            }
+          }
+        }
+      ],
+      "boEmailGrantReissuedNotification": "No",
+      "grandChildrenSurvivedOverEighteen": "1",
+      "grandChildrenSurvivedUnderEighteen": "1"
+    }
+  },
+  "case_details_before": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "SolAppUpdated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      7,
+      44,
+      391000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "otherExecutorExists": "No",
+      "applicationType": "Solicitor",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedAnyOtherNames": "No",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "willExists": "Yes",
+      "solsSOTName": "Solicitor_fn Solicitor_ln",
+      "solsSOTForenames": "Solicitor_fn",
+      "solsSOTSurname": "Solicitor_ln",
+      "solsSolicitorIsExec": "No",
+      "solsSolicitorIsMainApplicant": null,
+      "solsSolicitorIsApplying": null,
+      "solsSolicitorNotApplyingReason": null,
+      "solsSolicitorFirmName": "Solicitor Firm Name",
+      "deceasedDateOfDeath": "2000-01-01",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "boStopDetails": "PA stop details",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
+      "deceasedForenames": "Deceased First Name",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "ihtGrossValue": "1000000",
+      "ihtFormId": "IHT205",
+      "registryLocation": "Bristol",
+      "primaryApplicantSurname": "Executor Last Name 1",
+      "solsSolicitorAppReference": "1231-3984-3949-0300"
+    },
+    "data_classification": {
+      "otherExecutorExists": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSOTName": "PUBLIC",
+      "solsSOTForenames": "PUBLIC",
+      "solsSOTSurname": "PUBLIC",
+      "solsSolicitorIsExec": "PUBLIC",
+      "solsSolicitorIsMainApplicant": "PUBLIC",
+      "solsSolicitorIsApplying": "PUBLIC",
+      "solsSolicitorNotApplyingReason": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "Bristol",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "otherExecutorExists": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSOTName": "PUBLIC",
+      "solsSOTForenames": "PUBLIC",
+      "solsSOTSurname": "PUBLIC",
+      "solsSolicitorIsExec": "PUBLIC",
+      "solsSolicitorIsMainApplicant": "PUBLIC",
+      "solsSolicitorIsApplying": "PUBLIC",
+      "solsSolicitorNotApplyingReason": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "Bristol",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC"
+    }
+  },
+  "event_id": "solicitorReviewAndConfirm"
+}

@@ -17,7 +17,8 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
+public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule,
+        CaseworkerAmendValidationRule {
 
     private static final String TOO_MANY_EXECUTORS = "tooManyExecutors";
     private static final int MAX_EXECUTORS = 4;
@@ -27,11 +28,11 @@ class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValid
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData)
-                .map(this::getErrorCodeForInvalidNumberOfApplyingExecutors)
-                .map(List::stream)
-                .orElse(Stream.empty())
-                .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
-                .collect(Collectors.toList());
+            .map(this::getErrorCodeForInvalidNumberOfApplyingExecutors)
+            .map(List::stream)
+            .orElse(Stream.empty())
+            .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
+            .collect(Collectors.toList());
     }
 
     private List<String> getErrorCodeForInvalidNumberOfApplyingExecutors(CCDData ccdData) {

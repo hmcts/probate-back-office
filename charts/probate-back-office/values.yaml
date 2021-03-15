@@ -1,3 +1,15 @@
+tags:
+  probate-ccd-stack: false
+
+idam-pr:
+  enabled: false
+
+xui-webapp:
+  enabled: false
+
+postgresql:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
@@ -18,6 +30,8 @@ java:
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PRD_API_URL : http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PAYMENT_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
     PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-{{ .Values.global.environment }}
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com
@@ -44,3 +58,4 @@ java:
         - idamRedirectUrl
         - launchdarkly-key
         - launchdarklyUserkeyBackend
+        - probate-site-id

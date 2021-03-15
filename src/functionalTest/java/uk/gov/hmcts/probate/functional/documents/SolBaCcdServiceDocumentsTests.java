@@ -14,7 +14,9 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -23,12 +25,21 @@ import static org.junit.Assert.assertTrue;
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     // Grant fields
-    private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
+    private static final String SOLICITOR_INFO1 =
+        "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
-    private static final String SOLICITOR_INFO3 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, SolAddCo";
-    private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0300 303 0648";
-    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High HolbornLondonWC1V 6NP0300 303 0648 ";
-    private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box 12625HarlowCM20 9QE0300 303 0648";
+    private static final String SOLICITOR_INFO3 =
+        "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, "
+            + "SolAddCo";
+    private static final String REGISTRY_ADDRESS =
+        "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull "
+            + "StreetBirminghamB4 6DU0300 303 0648";
+    private static final String LONDON_REGISTRY_ADDRESS =
+        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
+            + " HolbornLondonWC1V 6NP0300 303 0648 ";
+    private static final String CTSC_REGISTRY_ADDRESS =
+        "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box "
+            + "12625HarlowCM20 9QE0300 303 0648";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
     private static final String WILL_MESSAGE = "with a codicil";
@@ -62,39 +73,54 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
     private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
-    private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
-    private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC = "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest";
+    private static final String DECLARATION_CIVIL_WORDING =
+        "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
+            + "provided is deliberately untruthful or dishonest, as well as revocation of the grant";
+    private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC =
+        "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful "
+            + "or dishonest";
     private static final String LEGAL_STATEMENT = "Legal statement";
-    private static final String AUTHORISED_SOLICITOR = "They have authorised Firm Name to sign a statement of truth on their behalf.";
+    private static final String AUTHORISED_SOLICITOR =
+        "They have authorised Firm Name to sign a statement of truth on their behalf.";
     private static final String LEGAL_STATEMENT_DIED_ON = "died on";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
-    private static final String PRIMARY_APPLICANT_STATEMENT = "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
+    private static final String PRIMARY_APPLICANT_STATEMENT =
+        "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
+    private static final String APPLYING_EXECUTOR_STATEMENT =
+            "We, FirstName LastName of 123 Street, Town, Postcode, UK "
+                    + "and FirstName2 LastName2 of addressline 1, addressline 2, addressline 3, posttown, county, "
+                    + "postcode, country and FirstName3 LastName3 of addressline 1, addressline 2, addressline 3, "
+                    + "posttown, county, postcode,";
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
-    private static final String LEGAL_STATEMENT_ADMON_WILL = "Administrators Applying for Letters of Administration (with will annexed)";
-    private static final String HMCTS_VALUE ="HMCTS";
+    private static final String LEGAL_STATEMENT_ADMON_WILL =
+        "Administrators Applying for Letters of Administration (with will annexed)";
+    private static final String HMCTS_VALUE = "HMCTS";
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
-    private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
-    private static final String GENERATE_GRANT_DRAFT_REISSUE= "/document/generate-grant-draft-reissue";
+    private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
+    private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
 
-    private static final String GENERATE_LEGAL_STATEMENT= "/document/generate-sot";
+    private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
     private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
     private static final String GENERATE_LETTER = "/document/generateLetter";
-    private static final String PREVIEW_LETTER ="/document/previewLetter";
+    private static final String PREVIEW_LETTER = "/document/previewLetter";
     private static final String RE_PRINT = "/document/reprint";
 
-    private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD= "solicitorPDFPayloadProbate.json";
+    private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
+    private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
+            "solicitorPDFPayloadProbateMultipleExecutors.json";
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
-    private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
-    private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
+    private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
+    private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
     private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
-    private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsIntestacyCardiff.json";
+    private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD =
+        "solicitorPayloadNotificationsIntestacyCardiff.json";
     private static final String DEFAULT_GOP_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsGopCardiff.json";
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
     private static final String OXFORD_GOP_PAYLOAD = "solicitorPayloadNotificationsGopOxford.json";
@@ -154,13 +180,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
+
     private String generateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
@@ -172,10 +199,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateNonProbateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
@@ -187,14 +214,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generatePdfDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-        String documentUrl = jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+        String documentUrl =
+            jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
@@ -405,6 +433,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
+        String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
@@ -636,7 +678,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", GENERATE_GRANT_DRAFT);
+        String response =
+            generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -762,7 +805,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT_DRAFT);
+        String response =
+            generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -777,7 +821,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
+        String response =
+            generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -791,7 +836,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", GENERATE_GRANT_DRAFT);
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
+            GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -807,7 +853,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", GENERATE_GRANT);
+        String response =
+            generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -823,7 +870,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple() {
-        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", GENERATE_GRANT_DRAFT);
+        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
+            GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -839,7 +887,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() {
-        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", GENERATE_GRANT);
+        String response =
+            generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -929,7 +978,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
-    
+
     //Commented out due to Docmosis not allowing screen readers as images overlay all text
     @Test
     public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
@@ -943,7 +992,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyAssembleLetterShouldReturnOkResponseCode(){
+    public void verifyAssembleLetterShouldReturnOkResponseCode() {
         ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json", ASSEMBLE_LETTER);
         JsonPath jsonPath = JsonPath.from(response.asString());
         List paragraphDetails = jsonPath.get("data.paragraphDetails");
@@ -951,30 +1000,31 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         response.prettyPrint();
 
         assertThat(paragraphDetails.size(), is(3));
-        assertThat(templateName,is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
+        assertThat(templateName, is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
     }
 
     @Test
-    public void verifyAssembleLetterShouldReturnIHTReferenceNumber(){
+    public void verifyAssembleLetterShouldReturnIHTReferenceNumber() {
         String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonAsString)
-                .when().post(ASSEMBLE_LETTER)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(jsonAsString)
+            .when().post(ASSEMBLE_LETTER)
+            .andReturn();
 
         JsonPath jsonPath = JsonPath.from(response.asString());
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        assertThat(jsonPath.get("data.ihtReferenceNumber"),is(equalTo("ONLINE-123434")));
+        assertThat(jsonPath.get("data.ihtReferenceNumber"), is(equalTo("ONLINE-123434")));
     }
 
     @Test
     public void verifyDefaultRePrintValuesReturnsOkResponseCode() {
         String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
 
-        ResponseBody response = validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
+        ResponseBody response =
+            validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
 
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
@@ -985,28 +1035,29 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() {
         String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
-        jsonAsString =  jsonAsString.replaceFirst("\"paperForm\": \"Yes\",","\"paperForm\": \"No\",");
+        jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
         Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonAsString)
-                .when().post(DEFAULT_PRINT_VALUES)
-                .andReturn();
-        assertThat(response.getStatusCode(),is(equalTo(200)));
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(jsonAsString)
+            .when().post(DEFAULT_PRINT_VALUES)
+            .andReturn();
+        assertThat(response.getStatusCode(), is(equalTo(200)));
         JsonPath jsonPath = JsonPath.from(response.asString());
-        assertThat(jsonPath.get("data.ihtReferenceNumber"),is(equalTo("ONLINE-123434")));
+        assertThat(jsonPath.get("data.ihtReferenceNumber"), is(equalTo("ONLINE-123434")));
     }
 
     @Test
     public void verifySolicitorGenerateLetterReturnOkResponseCode() {
         String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
-        assertThat(getJsonFromFile("/document/assembledLetter.txt"),is(equalTo(response)));
+        assertThat(getJsonFromFile("/document/assembledLetter.txt"), is(equalTo(response)));
     }
 
     @Test
     public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
-        ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
+        ResponseBody responseBody =
+            validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         responseBody.prettyPrint();
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
@@ -1016,10 +1067,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("/document/generateLetter.json"))
-                .when().post(PREVIEW_LETTER).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile("/document/generateLetter.json"))
+            .when().post(PREVIEW_LETTER).andReturn();
         jsonResponse.prettyPrint();
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
@@ -1027,7 +1078,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
 
-        assertThat(response,is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
+        assertThat(response, is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
     }
 
     @Test
@@ -1042,12 +1093,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorRePrintReturnBadResponseCode() {
         Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId("serviceToken","userId"))
-                .body(getJsonFromFile("/document/rePrint.json"))
-                .when().post(RE_PRINT)
-                .andReturn();
-        assertThat(response.statusCode(),is(equalTo(403)));
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
+            .body(getJsonFromFile("/document/rePrint.json"))
+            .when().post(RE_PRINT)
+            .andReturn();
+        assertThat(response.statusCode(), is(equalTo(403)));
         assertTrue(response.getBody().asString().contains("Forbidden"));
 
     }

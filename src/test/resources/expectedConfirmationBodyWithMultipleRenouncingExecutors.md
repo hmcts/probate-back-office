@@ -3,7 +3,7 @@ This probate application has now been submitted
 
 Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
-Peter Crouch, Lawyer
+Peter Crouch
 
 **Probate registry reference:**
 Michael, Andy, died 04/04/2017
@@ -39,9 +39,8 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   fee payment: your fee account for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form IHT207
+*   the inheritance tax form IHT207
 *   renunciation form for Tim Smith
 *   renunciation form for John Smith
 *   a photocopy of the signed legal statement and declaration

@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
-import com.launchdarkly.sdk.EvaluationDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class FeatureToggleService {
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false);
+        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
     }
 
 }

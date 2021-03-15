@@ -3,7 +3,7 @@ This probate application has now been submitted
 
 {{solsSolicitorFirmName}}, {{solsSolicitorAddress}}
 
-{{solicitorName}}, {{solicitorJobRole}}
+{{solicitorName}}
 
 **Probate registry reference:**
 {{deceasedLastname}}, {{deceasedFirstname}}, died {{deceasedDateOfDeath}}
@@ -38,7 +38,6 @@ Print a copy of this page for your records.
  
 You now need to send us:
 {{originalWill}}
-*   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
 {{iht400}}{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}
 
