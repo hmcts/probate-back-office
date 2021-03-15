@@ -296,7 +296,8 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
             .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Solicitor IHT Form cannot be empty"));
     }
 
     @Test
@@ -347,7 +348,8 @@ public class BusinessValidationControllerTest {
 
         mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]").value("The total number executors applying cannot exceed 4"));
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The total number executors applying cannot exceed 4"));
     }
 
     @Test
@@ -365,7 +367,8 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementProbate.pdf"));
     }
 
     @Test
@@ -390,7 +393,8 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementIntestacy.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementIntestacy.pdf"));
     }
 
     @Test
@@ -416,7 +420,8 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementAdmon.pdf"));
     }
 
     @Test
@@ -431,9 +436,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsExec"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.solsSolicitorIsExec"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor named as an exec must be chosen"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Solicitor named as an exec must be chosen"));
     }
 
     @Test
@@ -466,9 +473,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfDeath"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedDateOfDeath"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of death cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Date of death cannot be empty"));
     }
 
     private void validateDobIsNullError(String url) throws Exception {
@@ -481,9 +490,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfBirth"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedDateOfBirth"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of birth cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Date of birth cannot be empty"));
     }
 
     private void validateForenameIsNullError(String url) throws Exception {
@@ -496,9 +507,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedForenames"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedForenames"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased forename cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Deceased forename cannot be empty"));
     }
 
     private void validateSurnameIsNullError(String url) throws Exception {
@@ -512,9 +525,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedSurname"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Deceased surname cannot be empty"));
     }
 
     private void validateAddressIsNullError(String url) throws Exception {
@@ -527,9 +542,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.primaryApplicantAddress"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.primaryApplicantAddress"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("The executor address cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("The executor address cannot be empty"));
     }
 
     @Test
@@ -689,7 +706,8 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+        String solicitorPayload =
+                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -730,7 +748,8 @@ public class BusinessValidationControllerTest {
             .thenReturn(document);
         mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+            .andExpect(jsonPath("$.errors[0]")
+                    .value("You can only use this event for digital cases."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -751,10 +770,17 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeft")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Solicitor Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
+                    is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("WillLeft")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Grant of probate where the deceased left a will")))
             .andReturn();
     }
@@ -767,10 +793,17 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("NoWill")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Solicitor Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
+                    is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("NoWill")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration where the deceased left no will")))
             .andReturn();
     }
@@ -783,10 +816,17 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeftAnnexed")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Solicitor Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
+                    is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("WillLeftAnnexed")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration with will annexed where the deceased left a will but none of the "
                     + "executors can apply")))
             .andReturn();

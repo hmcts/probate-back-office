@@ -70,7 +70,7 @@ Scenario('07 BO Caveat E2E - Caveat expired', async function (I) {
     await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'd MMM yyyy');
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
@@ -115,7 +115,7 @@ Scenario('07 BO Caveat E2E - Caveat expired', async function (I) {
     // Note that End State does not change when emailing the caveator.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'd MMM yyyy');
     await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'

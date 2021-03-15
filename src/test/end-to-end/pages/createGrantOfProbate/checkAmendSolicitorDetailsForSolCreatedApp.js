@@ -13,7 +13,6 @@ module.exports = async function () {
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     // check visibility (schemaVersion makes visible)
-    await I.waitForVisible({css: '#dispenseWithNotice-Yes'});
     await I.waitForVisible({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.waitForVisible({css: '#lodgementAddress'});
     await I.waitForVisible({css: '#lodgementDate-day'});
@@ -21,7 +20,6 @@ module.exports = async function () {
     await I.waitForVisible({css: '#lodgementDate-year'});
 
     // check values set correctly
-    await I.seeCheckboxIsChecked({css: '#dispenseWithNotice-Yes'});
     await I.seeCheckboxIsChecked({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.seeInField({css: '#lodgementAddress'}, solGrantOfProbateConfig.page2_lodgementAddress);
     await I.seeInField({css: '#lodgementDate-day'}, solGrantOfProbateConfig.page2_lodgementDate_day);

@@ -47,7 +47,7 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
-    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreatedDeceasedDtls";
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -412,8 +412,8 @@ public class StateChangeServiceTest {
     @Test
     public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsDeceasedDetails() {
         when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        DynamicListItem item = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
-        DynamicListItem value = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
+        DynamicListItem item = DynamicListItem.builder().code("SolAppCreatedDeceasedDtls").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("SolAppCreatedDeceasedDtls").label("label1").build();
 
         DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
         when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);

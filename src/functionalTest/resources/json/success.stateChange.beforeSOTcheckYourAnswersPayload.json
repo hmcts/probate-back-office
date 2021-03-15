@@ -73,7 +73,7 @@
             "ihtNetValue": "90009",
             "deceasedSurname": "deceasedLastName",
             "solsSOTNeedToUpdate":"Yes",
-            "solsSOTStateTransition":"SolAppCreated",
+            "solsSOTStateTransition":"SolAppCreatedDeceasedDtls",
             "solsAdditionalExecutorList": [
                 {
                     "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
