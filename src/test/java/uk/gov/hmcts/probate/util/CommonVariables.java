@@ -18,9 +18,9 @@ public class CommonVariables {
     public static final String YES = "Yes";
     public static final String NO = "No";
 
-    public static final String SOLICITOR_SOT_FULLNAME = "Solicitor forename Solicitor surname";
-    public static final String SOLICITOR_SOT_FORENAME = "Solicitor forename";
-    public static final String SOLICITOR_SOT_SURNAME = "Solicitor surname";
+    public static final String SOLICITOR_SOT_FULLNAME = "Solicitor Forename Solicitor Surname";
+    public static final String SOLICITOR_SOT_FORENAME = "Solicitor Forename";
+    public static final String SOLICITOR_SOT_SURNAME = "Solicitor Surname";
     public static final String SOLICITOR_FIRM_EMAIL = "solicitor@probate-test.com";
     public static final String SOLICITOR_FIRM_PHONE = "0123456789";
     public static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
@@ -33,9 +33,9 @@ public class CommonVariables {
     public static final String PRIMARY_APPLICANT_SURNAME = "Primary app surname";
     public static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
 
-    public static final String EXEC_FIRST_NAME = "ExFName";
-    public static final String EXEC_SURNAME = "EXSName";
-    public static final String EXEC_NAME = "ExFName EXSName";
+    public static final String EXEC_FIRST_NAME = "Exfname";
+    public static final String EXEC_SURNAME = "Exsname";
+    public static final String EXEC_NAME = "Exfname Exsname";
     public static final String EXEC_TRUST_CORP_POS = "Trustcorp Position";
     public static final String EXEC_NAME_DIFF = "Ex name difference comment";
     public static final String EXEC_WILL_NAME = "Ex will name";
