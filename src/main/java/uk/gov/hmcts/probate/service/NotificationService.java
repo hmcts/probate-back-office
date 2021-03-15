@@ -340,8 +340,6 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate =
             LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
-        log.info("Attempting set grantAwaitingDocumentationNotificationDate for case {}",
-            caseDetails.getId());
         if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)
             && (caseData.getScannedDocuments() == null || caseData.getScannedDocuments().isEmpty())) {
             LocalDate notificationDate = LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays);
