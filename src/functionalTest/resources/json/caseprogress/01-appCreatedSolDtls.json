@@ -2,7 +2,7 @@
   "case_details": {
     "id": 1528365719153338,
     "jurisdiction": "PROBATE",
-    "state": "SolAppCreatedDeceasedDtls",
+    "state": "SolAppCreatedSolicitorDtls",
     "case_type_id": "GrantOfRepresentation",
     "created_date": [
       2018,
@@ -45,7 +45,7 @@
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
-      "solsWillType": "NoWill",
+      "solsWillType": "WillLeft",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
@@ -58,7 +58,7 @@
       "solsLifeInterest": null,
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
-      "solsSOTNeedToUpdate": "Yes",
+      "solsSOTNeedToUpdate": "No",
       "primaryApplicantEmailAddress": "personal@hmcts-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {

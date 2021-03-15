@@ -197,7 +197,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     @Test
@@ -207,7 +207,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     private String replaceString(String oldJson, String newJson) {

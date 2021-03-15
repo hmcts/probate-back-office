@@ -65,10 +65,10 @@
             "type": "pwa-node"
         },     
         {
-            "name": "caseProgressReenterDeceasedDetails e2e",
+            "name": "caseProgressReenter e2e",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-caseProgressReenterDeceasedDetails",
+                "test-e2e-caseProgressReenter",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

@@ -29,7 +29,8 @@ public final class Constants {
     public static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     public static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     public static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
-    public static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
+    public static final String STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS = "SolAppCreatedSolicitorDtls";
+    public static final String STATE_GRANT_TYPE_CREATED_DECEASED_DTLS = "SolAppCreatedDeceasedDtls";
 
     public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";

@@ -27,7 +27,8 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_ADMON;
-import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED;
+import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED_DECEASED_DTLS;
+import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS;
 import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.STATE_STOPPED;
@@ -127,13 +128,14 @@ public class StateChangeService {
         if (updateApplicationRule.isChangeNeeded(caseData)) {
             if (hasSelectedEventToReturnTo(caseData)) {
                 String chosenStateOrWillType = caseData.getSolsAmendLegalStatmentSelect().getValue().getCode();
-                if (STATE_GRANT_TYPE_CREATED.equals(chosenStateOrWillType)) {
+                if (STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS.equals(chosenStateOrWillType)
+                    || STATE_GRANT_TYPE_CREATED_DECEASED_DTLS.equals(chosenStateOrWillType)) {
                     return Optional.of(chosenStateOrWillType);
                 } else {
                     return getChangedStateForChosen(chosenStateOrWillType);
                 }
             }
-            return Optional.of(STATE_GRANT_TYPE_CREATED);
+            return Optional.of(STATE_GRANT_TYPE_CREATED_DECEASED_DTLS);
         }
         return Optional.empty();
     }
@@ -148,15 +150,6 @@ public class StateChangeService {
         return getChangedStateForChosen(caseData.getSolsWillType());
     }
 
-    public Optional<String> getChangedStateForChosen(String stateChosen) {
-        if (stateChosen.equals(GRANT_TYPE_PROBATE)) {
-            return Optional.of(STATE_GRANT_TYPE_PROBATE);
-        } else if (stateChosen.equals(GRANT_TYPE_INTESTACY)) {
-            return Optional.of(STATE_GRANT_TYPE_INTESTACY);
-        }
-        return Optional.of(STATE_GRANT_TYPE_ADMON);
-    }
-
     public Optional<String> getRedeclarationComplete(CaseData caseData) {
         Optional<String> state = Optional.empty();
         for (CollectionMember<ExecutorsApplyingNotification> executorsApplyingNotification :
@@ -168,5 +161,14 @@ public class StateChangeService {
             }
         }
         return state;
+    }
+
+    private Optional<String> getChangedStateForChosen(String stateChosen) {
+        if (stateChosen.equals(GRANT_TYPE_PROBATE)) {
+            return Optional.of(STATE_GRANT_TYPE_PROBATE);
+        } else if (stateChosen.equals(GRANT_TYPE_INTESTACY)) {
+            return Optional.of(STATE_GRANT_TYPE_INTESTACY);
+        }
+        return Optional.of(STATE_GRANT_TYPE_ADMON);
     }
 }
