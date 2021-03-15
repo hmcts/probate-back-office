@@ -190,7 +190,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     //
     // This is as far as we can currently get locally due to bulk printing issue
     await I.enterEventSummary(caseRef, nextStepName);
-    // 
+    //
     //
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
