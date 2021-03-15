@@ -1782,7 +1782,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate());
+        assertEquals(LocalDate.now().plusDays(49), caseDetails.getData().getGrantDelayedNotificationDate());
 
     }
 
@@ -1849,7 +1849,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1),
+        assertEquals(LocalDate.now().plusDays(35),
             caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
 
     }
@@ -1868,7 +1868,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1),
+        assertEquals(LocalDate.now().plusDays(35),
             caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
 
     }
