@@ -273,11 +273,15 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> casePrinted(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) {
+        log.info("in /casePrinted");
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        log.info("validated /casePrinted");
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+        log.info("notificationService.startAwaitingDocumentationNotificationPeriod done");
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        log.info("response done");
 
         return ResponseEntity.ok(response);
     }
