@@ -9,7 +9,7 @@ module.exports = async function () {
     const I = this;
 
     await I.waitForText(grantOfProbateConfig.amendCaseDetails_waitForText);
-    await I.selectOption('#selectionList', grantOfProbateConfig.amendSolicitorDetails_update_option);
+    await I.selectOption('#selectionList', grantOfProbateConfig.amendApplicantDetails_update_option);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     // check visibility (schemaVersion makes visible)
