@@ -24,7 +24,7 @@ const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDe
 const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-// this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
+// this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
 // const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
@@ -85,7 +85,7 @@ Scenario('06 BO Caveat E2E - Request appearance', async function (I) {
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug 
+    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
     // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat matching'

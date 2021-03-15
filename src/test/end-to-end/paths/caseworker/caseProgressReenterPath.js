@@ -67,7 +67,6 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
             linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
             goToNextStep: true});
 
-
         console.info('Reenter solicitor details');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-Yes'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsAmendLegalStatmentSelect'}, option: '1: SolAppCreatedSolicitorDtls'}]);
@@ -79,31 +78,19 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
             linkText: 'Add solicitor details',
             linkUrl: '/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1',
             goToNextStep: true});
-    
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        
-        await I.caseProgressClickGoButton();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
 
-        await I.caseProgressClickGoButton();        
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
+        await I.caseProgressContinueWithoutChangingAnything(3);
 
         await I.caseProgressClickGoButton();
-        
+        await I.caseProgressContinueWithoutChangingAnything(5);
+
+        await I.caseProgressClickGoButton();
+        await I.caseProgressContinueWithoutChangingAnything(5);
+
+        await I.caseProgressClickGoButton();
+
         console.info('Reenter deceased details');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-Yes'}]);
-        // await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
-           // {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsAmendLegalStatmentSelect'}, option: '2: SolAppCreatedDeceasedDtls'}]);
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressCheckCaseProgressTab({
@@ -114,11 +101,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
             goToNextStep: true});
 
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
+        await I.caseProgressContinueWithoutChangingAnything(5);
 
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -128,11 +111,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
             goToNextStep: true});
 
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
-        await I.caseProgressContinueWithoutChangingAnything();
+        await I.caseProgressContinueWithoutChangingAnything(5);
 
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 3,
