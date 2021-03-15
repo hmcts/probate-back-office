@@ -49,7 +49,8 @@ public class TaskStateRendererTest {
                 + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
+                + "/src/main/resources/statusImages/"
+                + "not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
                 + "</p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"

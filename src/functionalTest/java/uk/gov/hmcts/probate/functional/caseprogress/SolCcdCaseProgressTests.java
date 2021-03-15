@@ -48,7 +48,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-"
                 + "body-s\"><a href=\""
-                + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338")
+                + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
+                    .replaceFirst("<CASE_ID>", "1528365719153338")
                 + "\" class=\"govuk-link\">Add solicitor details</a>"
                 + "</p></div><div class=\"govuk-grid-column-one-third\">"
                 + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
@@ -68,7 +69,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
                 + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-                + "<font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div>"
+                + "<font color=\"#505a5f\">These steps are to be completed by the probate "
+                + "practitioner.</font></p></div>"
                 + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m "
                 + "govuk-section-break--visible\">\n\n"
@@ -91,7 +93,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
                 + "</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "<hr class=\"govuk-section-break "
                 + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div>"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p "
+                + "class=\"govuk-body-s\">Authenticate documents</p></div>"
                 + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
                 + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
                 + "<font color=\"#505a5f\">We will authenticate your documents and match "
