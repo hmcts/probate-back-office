@@ -22,7 +22,7 @@ public class FeatureToggleService {
         @Value("${ld.user.lastName}") String ldUserLastName) {
         this.ldClient =  ldClient;
         log.info("ld.user.key: {} ld.user.firstName: {} ld.user.lastName: {}", 
-        ldUserKey, ldUserFirstName, ldUserLastName);
+            ldUserKey, ldUserFirstName, ldUserLastName);
         this.ldUserBuilder = new LDUser.Builder(ldUserKey)
             .firstName(ldUserFirstName)
             .lastName(ldUserLastName)
