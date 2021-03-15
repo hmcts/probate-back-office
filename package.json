@@ -17,18 +17,19 @@
     "test:fullfunctional-cw": "./bin/run-e2e-tests-cw.sh",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "dev-scripts-comment": "Developer scripts for running/debugging a single test locally are specified below.",
-    "test-e2e-caveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-caveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat2": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath2.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat3": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath3.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat4": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath4.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-willLodgement": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-applyCaveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyCaveat.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateSingleExecutor.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbateMulti": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateMultiExecutor.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbateNoWill": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateNoWill.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbateWillAnnexed": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexed.js -c ./src/test/end-to-end/ --steps",
-    "test-e2e-sol-grantOfProbateWillAnnexedFailure": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexedFailure.js -c ./src/test/end-to-end/ --steps"
+    "test-e2e-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-willLodgement": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-applyCaveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyCaveat.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateSingleExecutor.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-grantOfProbateMulti": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateMultiExecutor.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-grantOfProbateNoWill": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateNoWill.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-grantOfProbateWillAnnexed": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexed.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-sol-grantOfProbateWillAnnexedFailure": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/applyGrantOfProbateWillLeftAnnexedFailure.js -c ./src/test/end-to-end/ --steps"
+
   },
   "dependencies": {
     "html_codesniffer": "^2.5.1",
@@ -36,13 +37,15 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "chai-string": "^1.5.0",
     "chai-http": "^4.0.0",
+    "chai-string": "^1.5.0",
+    "date-fns": "^1.30.1",
     "codeceptjs": "^2.6.11",
     "eslint": "4.1.1 ",
     "eslint-plugin-mocha": "^4.8.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "moment": "^2.29.1",
     "mocha-jenkins-reporter": "^0.4.5",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi": "^1.1.3",
@@ -66,7 +69,6 @@
     "uuid": "^3.1.0",
     "watch": "^1.0.1",
     "webdriverio": "^6.11.3",
-    "when": "^3.7.7",
-    "date-fns": "^1.30.1"
+    "when": "^3.7.7"
   }
 }
