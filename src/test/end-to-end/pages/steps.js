@@ -124,7 +124,7 @@ module.exports = function () {
         completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
         getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
         navigateToCaseCaseworker: steps.utility.navigateToCaseCaseworker,
-        checkAmendSolicitorDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendSolicitorDetailsForSolCreatedApp,
+        checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
         checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
     });
 };

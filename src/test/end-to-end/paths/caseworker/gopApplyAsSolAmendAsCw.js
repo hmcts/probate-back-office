@@ -109,7 +109,7 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.enterGrantOfProbatePage1('update', true);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.checkAmendSolicitorDetailsForSolCreatedApp();
+    await I.checkAmendApplicantDetailsForSolCreatedApp();
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.checkAmendDomAndAssetsForSolCreatedApp();
