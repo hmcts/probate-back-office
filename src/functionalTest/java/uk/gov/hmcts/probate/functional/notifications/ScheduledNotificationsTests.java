@@ -81,9 +81,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     @Test
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
-        String docDate = DATE_FORMAT
-            .format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
-
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson, EVENT_APPLY);
@@ -92,10 +89,12 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String caseId = jsonPathApply.get("id").toString();
         log.info("caseId:" + caseId);
 
-        String updateGrantDocCaseJson = utils.replaceAttribute(applyforGrantPaperApplicationManResponse, EVENT_APPLY, EVENT_PRINT_CASE);
+        String updateGrantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(updateGrantDocCaseJson, EVENT_PRINT_CASE, caseId);
         log.info("printCaseUpdateResponse:" + printCaseUpdateResponse);
 
+        String docDate = DATE_FORMAT
+            .format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
         String expectedText =
