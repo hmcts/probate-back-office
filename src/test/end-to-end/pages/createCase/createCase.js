@@ -14,13 +14,13 @@ module.exports = async function (jurisdiction, caseType, event) {
     if (testConfig.TestForCrossBrowser) {
         await I.wait(5);
     }
-    await I.waitForEnabled({css: '#cc-jurisdiction'}, 120);
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, 180);
     await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
-    await I.waitForEnabled({css: '#cc-case-type'}, 120);
+    await I.waitForEnabled({css: '#cc-case-type'}, 180);
     await I.retry(5).selectOption('#cc-case-type', caseType);
-    await I.waitForEnabled({css: '#cc-event'}, 120);
+    await I.waitForEnabled({css: '#cc-event'}, 180);
     await I.retry(5).selectOption('#cc-event', event);
 
-    await I.waitForEnabled(createCaseConfig.startButton, 120);
+    await I.waitForEnabled(createCaseConfig.startButton, 180);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
 };
