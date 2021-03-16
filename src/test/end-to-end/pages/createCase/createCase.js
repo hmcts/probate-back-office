@@ -11,16 +11,16 @@ module.exports = async function (jurisdiction, caseType, event) {
     if (testConfig.TestForCrossBrowser) {
         await I.wait(5);
     }
-    await I.waitForVisible({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
     /* eslint-disable no-console */
     console.log(jurisdiction);
     /* eslint-disable no-console */
     await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
-    await I.waitForVisible({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-case-type', caseType);
-    await I.waitForVisible({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 160);
     await I.retry(5).selectOption('#cc-event', event);
 
-    await I.waitForVisible(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 160);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
 };
