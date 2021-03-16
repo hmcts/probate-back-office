@@ -11,7 +11,7 @@ module.exports = async function (jurisdiction, caseType, event) {
     if (testConfig.TestForCrossBrowser) {
         await I.wait(5);
     }
-    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 160);
     /* eslint-disable no-console */
     console.log(jurisdiction);
     /* eslint-disable no-console */
