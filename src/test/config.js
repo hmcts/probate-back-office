@@ -7,7 +7,7 @@ module.exports = {
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestFrontendUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
-    TestTimeToWaitForText: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 60),
+    TestTimeToWaitForText: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 180),
     TestActionWaitTime: parseInt(process.env.BO_E2E_TEST_ACTION_WAIT_TIME || '1500'),
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvUser: process.env.TEST_USER_EMAIL || 'ProbateSolCW1@gmail.com',
