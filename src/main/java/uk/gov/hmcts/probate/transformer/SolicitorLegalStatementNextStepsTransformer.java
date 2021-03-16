@@ -24,9 +24,9 @@ import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED_SOLI
 @Slf4j
 @AllArgsConstructor
 public class SolicitorLegalStatementNextStepsTransformer {
-    public static final String STATE_SOLS_APP_CREATED_SOLICITOR_DTLS_LABEL = "Solicitor Details";
-    public static final String STATE_SOLS_APP_CREATED_LABEL = "Deceased Details";
-    public static final String GRANT_TYPE_PROBATE_LABEL = "Grant of probate where the deceased left a will";
+    public static final String STATE_SOLS_APP_CREATED_SOLICITOR_DTLS_LABEL = "Probate practitioner details";
+    public static final String STATE_SOLS_APP_CREATED_LABEL = "Deceased details";
+    public static final String GRANT_TYPE_PROBATE_LABEL = "Probate details";
     public static final String GRANT_TYPE_INTESTACY_LABEL = "Letters of administration where the deceased left no will";
     public static final String GRANT_TYPE_ADMON_LABEL =
         "Letters of administration with will annexed where the deceased left a will but none of the executors can "

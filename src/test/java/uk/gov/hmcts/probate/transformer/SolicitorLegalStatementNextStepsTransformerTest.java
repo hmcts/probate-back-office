@@ -41,11 +41,11 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
         assertListCode(0, "SolAppCreatedSolicitorDtls");
-        assertListValue(0, "Solicitor Details");
+        assertListValue(0, "Probate practitioner details");
         assertListCode(1, "SolAppCreatedDeceasedDtls");
-        assertListValue(1, "Deceased Details");
+        assertListValue(1, "Deceased details");
         assertListCode(2, "WillLeft");
-        assertListValue(2, "Grant of probate where the deceased left a will");
+        assertListValue(2, "Probate details");
     }
 
     @Test
@@ -57,9 +57,9 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
         assertListCode(0, "SolAppCreatedSolicitorDtls");
-        assertListValue(0, "Solicitor Details");
+        assertListValue(0, "Probate practitioner details");
         assertListCode(1, "SolAppCreatedDeceasedDtls");
-        assertListValue(1, "Deceased Details");
+        assertListValue(1, "Deceased details");
         assertListCode(2, "NoWill");
         assertListValue(2, "Letters of administration where the deceased left no will");
     }
@@ -73,9 +73,9 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
 
         assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
         assertListCode(0, "SolAppCreatedSolicitorDtls");
-        assertListValue(0, "Solicitor Details");
+        assertListValue(0, "Probate practitioner details");
         assertListCode(1, "SolAppCreatedDeceasedDtls");
-        assertListValue(1, "Deceased Details");
+        assertListValue(1, "Deceased details");
         assertListCode(2, "WillLeftAnnexed");
         assertListValue(2,
             "Letters of administration with will annexed where the deceased left a will but none of the executors can"

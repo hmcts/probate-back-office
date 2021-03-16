@@ -773,15 +773,15 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
                     is("SolAppCreatedSolicitorDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
-                    is("Solicitor Details")))
+                    is("Probate practitioner details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
                     is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
-                    is("Deceased Details")))
+                    is("Deceased details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
                     is("WillLeft")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
-                is("Grant of probate where the deceased left a will")))
+                is("Probate details")))
             .andReturn();
     }
 
@@ -796,11 +796,11 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
                     is("SolAppCreatedSolicitorDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
-                    is("Solicitor Details")))
+                    is("Probate practitioner details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
                     is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
-                    is("Deceased Details")))
+                    is("Deceased details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
                     is("NoWill")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
@@ -819,11 +819,11 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
                     is("SolAppCreatedSolicitorDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
-                    is("Solicitor Details")))
+                    is("Probate practitioner details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
                     is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
-                    is("Deceased Details")))
+                    is("Deceased details")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
                     is("WillLeftAnnexed")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
