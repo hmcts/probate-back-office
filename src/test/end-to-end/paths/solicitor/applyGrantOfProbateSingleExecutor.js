@@ -17,10 +17,12 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
 Scenario('Solicitor - Apply Grant of probate Single Executor', async function (I) {
+    /* eslint-disable no-console */
     console.log('testConfig.TestBackOfficeUrl'+ testConfig.TestBackOfficeUrl);
     console.log('testConfig.TestEnvProfUser'+ testConfig.TestEnvProfUser);
     console.log('testConfig.PROF_USER_PASSWORD'+ testConfig.TestEnvProfPassword);
     console.log('testConfig.TestForXUI'+ testConfig.TestForXUI);
+    /* eslint-disable no-console */
 
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;

@@ -9,10 +9,13 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
         await I.amOnLoadedPage('/');
     }
 
-    let userName = useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser;
-    let password = useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword;
+    const userName = useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser;
+    const password = useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword;
+    /* eslint-disable no-console */
+
     console.log(userName);
     console.log(password);
+    /* eslint-disable no-console */
 
     await I.waitForText('Sign in');
     await I.fillField('#username', userName);
