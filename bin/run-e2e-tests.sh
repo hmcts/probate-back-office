@@ -2,7 +2,7 @@
 set -ex
 
 export TEST_E2E_URL=${TEST_XUI_E2E_URL}
-export E2E_TEST_PATH="./paths/solicitor/**/*.js"
+export E2E_TEST_PATH="./paths/solicitor/**/applyGrantOfProbateSingleExecutor.js"
 export TEST_USER_EMAIL=${SOL_USER_EMAIL}
 export TEST_USER_PASSWORD=${SOL_USER_PASSWORD}
 export PROF_USER_EMAIL=${SOL_USER_EMAIL}
@@ -24,5 +24,4 @@ export TESTS_FOR_XUI_SERVICE='false'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 
-yarn test:functional
 

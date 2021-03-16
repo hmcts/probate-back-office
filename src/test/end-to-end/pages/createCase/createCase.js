@@ -8,19 +8,17 @@ module.exports = async function (jurisdiction, caseType, event) {
     const I = this;
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
     //In saucelabs this page is not able to load so waiting for more time
-    if (testConfig.TestForXUI) {
-        await I.wait(180);
-    }
+
     if (testConfig.TestForCrossBrowser) {
         await I.wait(5);
     }
-    await I.waitForEnabled({css: '#cc-jurisdiction'}, 180);
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, 60);
     await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
-    await I.waitForEnabled({css: '#cc-case-type'}, 180);
+    await I.waitForEnabled({css: '#cc-case-type'}, 60);
     await I.retry(5).selectOption('#cc-case-type', caseType);
-    await I.waitForEnabled({css: '#cc-event'}, 180);
+    await I.waitForEnabled({css: '#cc-event'}, 60);
     await I.retry(5).selectOption('#cc-event', event);
 
-    await I.waitForEnabled(createCaseConfig.startButton, 180);
+    await I.waitForEnabled(createCaseConfig.startButton, 60);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
 };
