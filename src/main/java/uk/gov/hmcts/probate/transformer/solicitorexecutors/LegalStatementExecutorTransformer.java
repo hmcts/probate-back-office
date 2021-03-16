@@ -29,7 +29,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
                 createCaseworkerNotApplyingList(caseData);
 
         // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+        if (isSolicitorApplying(caseData)) {
             execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));

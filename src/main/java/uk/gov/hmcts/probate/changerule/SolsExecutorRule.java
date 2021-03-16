@@ -12,7 +12,9 @@ public class SolsExecutorRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return !GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && YES.equals(caseData.getSolsSolicitorIsExec());
+        return !GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())
+                && (YES.equals(caseData.getSolsSolicitorIsExec())
+                || YES.equals(caseData.getSolsSolicitorIsApplying()));
     }
 
     @Override
