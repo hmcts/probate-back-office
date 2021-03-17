@@ -48,6 +48,8 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
+    private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
+    private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
     Registry registry = new Registry();
     HashMap<String, Object> personalisation = new HashMap<>();
     @Autowired
@@ -133,32 +135,6 @@ public class CaveatPersonalisationServiceTest {
                 .deceasedDateOfBirth(null)
             .build();
 
-        CaveatData solsCaveatData = CaveatData.builder()
-            .applicationType(ApplicationType.SOLICITOR)
-            .caveatorForenames("first name")
-            .caveatorSurname("surname")
-            .deceasedForenames("deceased forenames")
-            .deceasedSurname("deceased surname")
-            .solsSolicitorAppReference("app reference")
-            .deceasedDateOfDeath(LocalDate.now())
-            .expiryDate(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
-                .build();
-
-        CaveatData solsCaveatDataDobNull = CaveatData.builder()
-                .applicationType(ApplicationType.SOLICITOR)
-                .caveatorForenames("first name")
-                .caveatorSurname("surname")
-                .deceasedForenames("deceased forenames")
-                .deceasedSurname("deceased surname")
-                .solsSolicitorAppReference("app reference")
-                .deceasedDateOfDeath(LocalDate.now())
-                .expiryDate(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfBirth(null)
-            .build();
-
         returnedCaveatData = CaveatData.builder()
             .applicationSubmittedDate(LocalDate.parse("2000-10-10"))
             .caveatorForenames("cav first name")
@@ -171,8 +147,20 @@ public class CaveatPersonalisationServiceTest {
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatDetailsDobNull = new CaveatDetails(caveatDataDobNull, LAST_MODIFIED, ID);
+        
+        CaveatData solsCaveatData = CaveatData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .caveatorForenames("first name")
+            .caveatorSurname("surname")
+            .deceasedForenames("deceased forenames")
+            .deceasedSurname("deceased surname")
+            .solsSolicitorAppReference("app reference")
+            .deceasedDateOfDeath(LocalDate.now())
+            .expiryDate(LocalDate.parse("2000-10-10"))
+            .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
+            .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
+            .build();
         solsCaveatDetails = new CaveatDetails(solsCaveatData, LAST_MODIFIED, ID);
-        solsCaveatDetailsDobNull = new CaveatDetails(solsCaveatDataDobNull, LAST_MODIFIED, ID);
 
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
 
@@ -190,24 +178,6 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
-    }
-
-    @Test
-    public void getPersonalisationContentIsOkDobNull() {
-        Map<String, String> response = caveatPersonalisationService.getCaveatPersonalisation(caveatDetailsDobNull, registry);
-
-        assertEquals("cav first name cav surname", response.get(PERSONALISATION_APPLICANT_NAME));
-        assertEquals("forename surname", response.get(PERSONALISATION_DECEASED_NAME));
-        assertEquals(caveatDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
-        assertEquals("message content", response.get(PERSONALISATION_MESSAGE_CONTENT));
-        assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
-        assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
-        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
     @Test
@@ -222,23 +192,6 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
-    }
-
-    @Test
-    public void getSolsCaveatsPersonalisationIsOkDobNull() {
-        Map<String, String> response = caveatPersonalisationService.getSolsCaveatPersonalisation(solsCaveatDetailsDobNull, registry);
-
-        assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
-        assertEquals(caveatDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
-        assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
-        assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
-        assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
-        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
 

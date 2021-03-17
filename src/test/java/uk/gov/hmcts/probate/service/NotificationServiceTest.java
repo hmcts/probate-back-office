@@ -1094,11 +1094,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1132,11 +1132,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1167,11 +1167,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }  else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1205,11 +1205,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }  else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1242,11 +1242,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        }  else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1726,11 +1726,11 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        if(caveatData.getDeceasedDateOfBirth() != null){
+        if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService.formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }
-        else {
+                    "The deceased's date of birth: " + dateFormatterService
+                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
