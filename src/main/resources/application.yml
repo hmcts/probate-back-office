@@ -173,6 +173,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+# http://dm-store:8080
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
@@ -196,7 +197,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
-  grantAwaitingDocumentationNotificationPeriodDays: 21
+  grantAwaitingDocumentationNotificationPeriodDays: 35
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -473,6 +474,6 @@ welsh:
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:
-    key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
+    key: ${LD_USER_KEY:35222af3-7867-44ea-a2a0-f8e533ad12df}
     firstName: Probate
     lastName: Backend

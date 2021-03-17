@@ -79,7 +79,7 @@ Scenario('02 BO Caveat E2E - Request appearance', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, true, true);
+    await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

@@ -18,7 +18,8 @@ public class AssembleCaseworkerTest {
     @Test
     public void testCaseworker() {
 
-        List<ParagraphDetail> response = assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());
+        List<ParagraphDetail> response =
+            assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());
         assertEquals("Caseworker", response.get(0).getCode());
         assertEquals(null, response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
