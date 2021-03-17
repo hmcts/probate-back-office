@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Jacksonized
@@ -70,4 +71,7 @@ public class ResponseCaseDataParent {
     protected final String escalatedDate;
     protected final String authenticatedDate;
     protected final String iht217;
+    protected final String noOriginalWillAccessReason;
+    protected final LocalDate originalWillSignedDate;
+    protected final List<LocalDate> codicilAddedDateList;
 }

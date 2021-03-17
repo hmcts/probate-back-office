@@ -709,6 +709,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 
+    @Test
+    public void shouldPassValidateProbatePage1WithValidDates() {
+
+        // solsValidateProbatePage1
+    }
+
+
     private String transformCase(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()

@@ -54,6 +54,8 @@ public class CCDDataTransformer {
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
             .iht217(caseData.getIht217())
+            .originalWillSignedDate(caseData.getOriginalWillSignedDate())
+            .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .build();
     }
 
@@ -111,6 +113,19 @@ public class CCDDataTransformer {
             .feeForUkCopies(caseData.getFeeForUkCopies())
             .feeForNonUkCopies(caseData.getFeeForNonUkCopies())
             .build();
+    }
+
+    private List<LocalDate> getCodicilAddedDates(CaseData caseData) {
+        final List<LocalDate> caseDataCodicilDates = caseData.getCodicilAddedDateList();
+
+        if (caseDataCodicilDates == null) {
+            return null;
+        }
+        List<LocalDate> codicilDates = new ArrayList<>();
+        for (int i = 0; i < caseDataCodicilDates.size(); i++) {
+            codicilDates.add(caseDataCodicilDates.get(i));
+        }
+        return codicilDates;
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {
