@@ -48,7 +48,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -216,7 +216,7 @@ public class DocumentController {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
-        Registry registry = registriesProperties.getRegistries().get(LONDON);
+        Registry registry = registriesProperties.getRegistries().get(NEWCASTLE);
         callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
             registry.getAddressLine1(), registry.getAddressLine2(),
             registry.getTown(), registry.getPostcode()));

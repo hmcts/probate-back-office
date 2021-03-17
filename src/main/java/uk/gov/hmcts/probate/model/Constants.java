@@ -9,6 +9,7 @@ public final class Constants {
     public static final int STANDING_SEARCH_LIFESPAN = 6;
     public static final String BUSINESS_ERROR = "businessError";
     public static final String LONDON = "london";
+    public static final String NEWCASTLE = "newcastle";
     public static final String CTSC = "ctsc";
     public static final String EXTRACT_PROBATE = "PROBATE";
     public static final String EXTRACT_ADMINISTRATION = "ADMINISTRATION";
