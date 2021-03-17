@@ -115,7 +115,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
 
     nextStepName = 'Match application';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForWillLodgement(caseRef, nextStepName);
+    await I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Will lodged';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

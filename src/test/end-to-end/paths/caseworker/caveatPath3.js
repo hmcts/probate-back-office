@@ -46,9 +46,11 @@ Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
     await I.enterCaveatPage3('create');
     await I.enterCaveatPage4('create');
     await I.checkMyAnswers(nextStepName);
+    let endState = 'Caveat raised';
 
     // SECOND case - the main test case
 
+    nextStepName = 'Raise a caveat';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -56,7 +58,7 @@ Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
     await I.enterCaveatPage3('create');
     await I.enterCaveatPage4('create');
     await I.checkMyAnswers(nextStepName);
-    let endState = 'Caveat raised';
+    endState = 'Caveat raised';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
@@ -74,7 +76,7 @@ Scenario('03 BO Caveat E2E - Caveat expired', async function (I) {
 
     nextStepName = 'Caveat match';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
+    await I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName, true, true);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

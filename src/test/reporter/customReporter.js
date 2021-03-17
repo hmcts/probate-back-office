@@ -2,7 +2,7 @@ const fs = require('fs');
 const testConfig = require('src/test/config.js');
 
 function generateAccessibilityReport(reportJson) {
-    //consoleReport(reportJson);
+    consoleReport(reportJson);
 
     const result = 'var replacejsoncontent = ' + JSON.stringify(reportJson);
 
@@ -33,7 +33,6 @@ function copyResources() {
     fs.copyFileSync(__dirname + '/resources/webfonts/fa-solid-900.woff2', webfontsDir + 'fa-solid-900.woff2');
 }
 
-/* eslint-disable no-unused-vars */
 function consoleReport(reportjson) {
     /* eslint-disable no-console */
     console.log('\t Total tests : ' + reportjson.tests.length);
@@ -61,6 +60,5 @@ function consoleReport(reportjson) {
         console.log('\t');
     }
 }
-/* eslint-enable no-unused-vars */
 
 module.exports = {generateAccessibilityReport};

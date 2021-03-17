@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCall
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/standing-search", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -20,11 +21,9 @@ public class StandingSearchController {
     private final StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<StandingSearchCallbackResponse> createStandingSearch(
-        @RequestBody StandingSearchCallbackRequest callbackRequest) {
+    public ResponseEntity<StandingSearchCallbackResponse> createStandingSearch(@RequestBody StandingSearchCallbackRequest callbackRequest) {
 
-        StandingSearchCallbackResponse callbackResponse =
-            standingSearchCallbackResponseTransformer.standingSearchCreated(callbackRequest);
+        StandingSearchCallbackResponse callbackResponse = standingSearchCallbackResponseTransformer.standingSearchCreated(callbackRequest);
 
         return ResponseEntity.ok(callbackResponse);
     }

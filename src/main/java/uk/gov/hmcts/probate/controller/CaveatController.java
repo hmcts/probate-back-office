@@ -64,11 +64,9 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/defaultValues")
-    public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues(
-        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.defaultCaveatValues(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.defaultCaveatValues(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -80,8 +78,7 @@ public class CaveatController {
         throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        CaveatCallbackResponse response =
-            eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+        CaveatCallbackResponse response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
         if (response.getErrors().isEmpty()) {
             Document document = notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, caveatDetails);
             response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
@@ -95,8 +92,7 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -106,8 +102,7 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -124,8 +119,7 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -150,14 +144,11 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/validate-extend")
-    public ResponseEntity<CaveatCallbackResponse> validateExtend(
-        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> validateExtend(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-            eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
+        CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse =
-                caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
+            caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
         }
 
         return ResponseEntity.ok(caveatCallbackResponse);

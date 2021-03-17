@@ -34,7 +34,7 @@ public class PreviewLetterService {
         CaseData caseData = caseDetails.getData();
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
         ParagraphField.getAll().stream().filter(field -> field.getFieldPlaceholderName() != null)
-            .forEach(field -> addPlaceholderIfPresent(placeholders, field, caseData));
+                .forEach(field -> addPlaceholderIfPresent(placeholders, field, caseData));
         placeholders.put("templateList", addTemplateList(caseDetails));
         return placeholders;
     }
@@ -52,12 +52,11 @@ public class PreviewLetterService {
         return templateList;
     }
 
-    private void addPlaceholderIfPresent(Map<String, Object> placeholders, ParagraphField paragraphField,
-                                         CaseData caseData) {
+    private void addPlaceholderIfPresent(Map<String, Object> placeholders, ParagraphField paragraphField, CaseData caseData) {
         if (paragraphField.getFieldPlaceholderName() != null) {
             Optional<CollectionMember<ParagraphDetail>> matchedDetailOptional = caseData.getParagraphDetails()
-                .stream().filter(para -> para.getValue().getCode().equals(paragraphField.getFieldCode()))
-                .findFirst();
+                    .stream().filter(para -> para.getValue().getCode().equals(paragraphField.getFieldCode()))
+                    .findFirst();
             if (matchedDetailOptional.isPresent()) {
                 ParagraphDetail matchedDetail = matchedDetailOptional.get().getValue();
                 if (Text.equals(matchedDetail.getEnableType())) {
@@ -66,10 +65,10 @@ public class PreviewLetterService {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextAreaValue());
                 } else if (List.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
-                        matchedDetail.getDynamicList().getValue().getLabel());
+                            matchedDetail.getDynamicList().getValue().getLabel());
                 } else if (Date.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
-                        dateFormatterService.formatDate(matchedDetail.getDateValue()));
+                            dateFormatterService.formatDate(matchedDetail.getDateValue()));
                 }
             }
         }

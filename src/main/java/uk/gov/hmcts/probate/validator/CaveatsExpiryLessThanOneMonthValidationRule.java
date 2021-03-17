@@ -25,8 +25,7 @@ class CaveatsExpiryLessThanOneMonthValidationRule implements CaveatsExpiryValida
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         if (ccdData.getExpiryDate().isAfter(LocalDate.now().plusMonths(1))) {
-            errors
-                .add(businessValidationMessageService.generateError(BUSINESS_ERROR, "caveatExpiryMoreThan1MonthAway"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "caveatExpiryMoreThan1MonthAway"));
         }
         return new ArrayList<>(errors);
     }

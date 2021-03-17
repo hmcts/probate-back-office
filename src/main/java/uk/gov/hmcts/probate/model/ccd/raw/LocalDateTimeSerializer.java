@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
@@ -18,8 +18,7 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
     }
 
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializerProvider serializers)
-        throws IOException {
-        jsonGenerator.writeString(value.format(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
+    public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
+        jsonGenerator.writeString(value.format(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING))); 
     }
 }

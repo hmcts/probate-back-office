@@ -6,7 +6,7 @@ const testConfig = require('src/test/config.js');
 class WebDriverHelper extends Helper {
 
     async clickBrowserBackButton() {
-        const browser = this.helpers.WebDriver.browser;
+        const browser = this.helpers.WebDriverIO.browser;
 
         await browser.back();
     }
@@ -19,7 +19,7 @@ class WebDriverHelper extends Helper {
      * @returns {object} - Promise
      */
     async waitForNavigationToComplete(locator, webDriverWait=3) {
-        const helper = this.helpers.WebDriver;
+        const helper = this.helpers.WebDriverIO;
 
         if (locator) {
             // must be a button to click
@@ -33,8 +33,8 @@ class WebDriverHelper extends Helper {
     }
 
     async downloadPdfIfNotIE11(pdfLink) {
-        const browserName = this.helpers.WebDriver.config.browser;
-        const helper = this.helpers.WebDriver;
+        const browserName = this.helpers.WebDriverIO.config.browser;
+        const helper = this.helpers.WebDriverIO;
 
         if (browserName !== 'internet explorer') {
             await helper.click(pdfLink);
@@ -42,8 +42,8 @@ class WebDriverHelper extends Helper {
     }
 
     async uploadDocumentIfNotMicrosoftEdge() {
-        const browserName = this.helpers.WebDriver.config.browser;
-        const helper = this.helpers.WebDriver;
+        const browserName = this.helpers.WebDriverIO.config.browser;
+        const helper = this.helpers.WebDriverIO;
 
         if (browserName !== 'MicrosoftEdge') {
             await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
@@ -51,32 +51,5 @@ class WebDriverHelper extends Helper {
             await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
         }
     }
-
-    async runAccessibilityTest() {
-        //Ignore this for web driver
-        await Promise.resolve();
-    }
-
-    async clickTab(tabTitle) {
-        const helper = this.helpers.WebDriver;
-        const tabXPath = `//div[text()='${tabTitle}']`;
-        const elements = await helper._locateClickable(tabXPath);
-        const selector = elements[0].selector;
-
-        helper.executeScript(function (el) {
-            (
-                function(expression, parentElement) {
-                    const r = [];
-                    const x = document.evaluate(expression, parentElement ||
-                      document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                    for (let i = 0, l = x.snapshotLength; i < l; i++) {
-                        r.push(x.snapshotItem(i));
-                    }
-                    return r;
-                }
-            )(el)[0].click();
-        }, selector);
-    }
 }
-
 module.exports = WebDriverHelper;

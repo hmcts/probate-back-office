@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -98,7 +99,7 @@ public class ProbateManServiceImplTest {
         verify(grantApplicationRepository, times(1)).findById(ID);
         verify(grantApplicationMapper, times(1)).toCcdData(grantApplication);
         verify(coreCaseDataService, times(1)).createCase(grantOfRepresentationData,
-            GRANT_OF_REPRESENTATION, IMPORT_GOR_CASE, securityDTO);
+                GRANT_OF_REPRESENTATION, IMPORT_GOR_CASE, securityDTO);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -138,7 +139,7 @@ public class ProbateManServiceImplTest {
         Long legacyId = 1L;
         Optional<CaseDetails> caseDetails = Optional.empty();
         when(coreCaseDataService.retrieveCaseByLegacyId(caseType, legacyId, securityUtils.getSecurityDTO()))
-            .thenReturn(caseDetails);
+                .thenReturn(caseDetails);
         assertThat(caseDetails, equalTo(probateManService.retrieveCCDCase(caseType, legacyId)));
 
     }

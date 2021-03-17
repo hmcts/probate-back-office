@@ -11,17 +11,16 @@ import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToLegacyCaseVie
 import uk.gov.hmcts.reform.probate.model.cases.standingsearch.StandingSearchData;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
-    uses = {FullAliasNameMapper.class, LegacyCaseViewUrlMapper.class},
-    imports = {LegacyCaseType.class},
-    nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+        uses = {FullAliasNameMapper.class, LegacyCaseViewUrlMapper.class},
+        imports = {LegacyCaseType.class},
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface StandingSearchMapper extends ProbateManMapper<StandingSearch, StandingSearchData> {
 
     @Mapping(target = "deceasedForenames", source = "deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
     @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth")
     @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1")
-    @Mapping(target = "deceasedAnyOtherNames", expression = "java(standingSearch.getAliasNames() == null ? false : "
-        + "true )")
+    @Mapping(target = "deceasedAnyOtherNames", expression = "java(standingSearch.getAliasNames() == null ? false : true )")
     @Mapping(target = "deceasedFullAliasNameList", source = "aliasNames", qualifiedBy = {ToFullAliasNameMember.class})
     @Mapping(target = "deceasedAddress.addressLine1", source = "deceasedAddress")
     @Mapping(target = "applicantForenames", source = "ssApplicantForename")

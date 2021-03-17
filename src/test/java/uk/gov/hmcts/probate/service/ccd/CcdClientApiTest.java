@@ -105,21 +105,20 @@ public class CcdClientApiTest {
         CaseDetails caseDetails = CaseDetails.builder().build();
 
         when(coreCaseDataApi.searchForCaseworker(
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails));
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails));
 
         SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation(AUTHORISATION)
-            .serviceAuthorisation(SERVICE_AUTHORISATION)
-            .userId(USER_ID)
-            .build();
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
 
-        Optional<CaseDetails> actualCaseDetails =
-            ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
 
         assertThat(actualCaseDetails.get(), equalTo(caseDetails));
 
@@ -132,21 +131,20 @@ public class CcdClientApiTest {
         Long legacyId = 1L;
 
         when(coreCaseDataApi.searchForCaseworker(
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(ImmutableMap.class))).thenReturn(Collections.EMPTY_LIST);
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Collections.EMPTY_LIST);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation(AUTHORISATION)
-            .serviceAuthorisation(SERVICE_AUTHORISATION)
-            .userId(USER_ID)
-            .build();
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
 
-        Optional<CaseDetails> actualCaseDetails =
-            ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
 
         assertThat(actualCaseDetails.isPresent(), equalTo(false));
 
@@ -161,24 +159,23 @@ public class CcdClientApiTest {
         CaseDetails caseDetails2 = CaseDetails.builder().build();
 
         when(coreCaseDataApi.searchForCaseworker(
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
 
         SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation(AUTHORISATION)
-            .serviceAuthorisation(SERVICE_AUTHORISATION)
-            .userId(USER_ID)
-            .build();
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
 
-        Optional<CaseDetails> actualCaseDetails =
-            ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
 
     }
-
+    
     @Test
     public void shouldReadCaseDetails() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;

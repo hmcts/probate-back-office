@@ -37,19 +37,21 @@ public class SendLetterServiceConsumerTest {
 
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
-    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+
     private final String someServiceAuthToken = "someServiceAuthToken";
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController", "localhost", 8486, this);
-    @Autowired
-    ObjectMapper objectMapper;
+    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+
     @Autowired
     private SendLetterApi sendLetterApi;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Rule
+    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController", "localhost", 8486, this);
+
     @Pact(provider = "rpeSendLetterService_SendLetterController", consumer = "probate_backOffice")
-    public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder)
-        throws IOException, URISyntaxException {
+    public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder) throws IOException, URISyntaxException {
         return builder
             .given("A valid send letter request is received")
             .uponReceiving("a request to send that letter")

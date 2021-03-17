@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -37,9 +38,8 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -94,8 +94,7 @@ public class NotificationControllerUnitTest {
     @Test
     public void shouldSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        ResponseEntity<ProbateDocument> stringResponseEntity =
-            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -104,8 +103,7 @@ public class NotificationControllerUnitTest {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<ProbateDocument> stringResponseEntity =
-            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(stringResponseEntity.getBody(), equalTo(null));
         verify(eventValidationService, times(0)).validateEmailRequest(any(), any());
@@ -116,8 +114,7 @@ public class NotificationControllerUnitTest {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm(null).build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<ProbateDocument> stringResponseEntity =
-            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(stringResponseEntity.getBody(), equalTo(null));
         verify(eventValidationService, times(0)).validateEmailRequest(any(), any());
@@ -126,12 +123,9 @@ public class NotificationControllerUnitTest {
     @Test
     public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        CaseDetails caseDetails =
-            new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED,
-                ID);
+        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        ResponseEntity<ProbateDocument> stringResponseEntity =
-            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
         verifyNoMoreInteractions(notificationService);
     }
@@ -140,8 +134,7 @@ public class NotificationControllerUnitTest {
     public void shouldHandleErrorsFromSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
 
-        ResponseEntity<ProbateDocument> stringResponseEntity =
-            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
         verifyNoMoreInteractions(callbackResponseTransformer);
     }
@@ -154,15 +147,14 @@ public class NotificationControllerUnitTest {
     }
 
 
-    private void setUpMocks(State state, String... errors) throws NotificationClientException {
+    private void setUpMocks(State state, String ...errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()
             .documentDateAdded(LocalDate.now())
             .documentFileName("fileName")
             .documentGeneratedBy("generatedBy")
-            .documentLink(
-                DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
+            .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();

@@ -33,10 +33,10 @@ public class AssemblerBaseTest {
 
         List<ParagraphDetail> response = assemblerBase.getStaticParagraphDetails(ParagraphCode.Caseworker);
         assertEquals(ParagraphField.valueOf(ParagraphField.CASEWORKER.toString()).getFieldCode(),
-            response.get(0).getCode());
+                response.get(0).getCode());
         assertEquals("Static", response.get(0).getEnableType().name());
         assertEquals(ParagraphField.valueOf(ParagraphField.CASEWORKER.toString()).getFieldCode(),
-            response.get(0).getLabel());
+                response.get(0).getLabel());
         assertEquals(null, response.get(0).getTemplateName());
     }
 
@@ -74,8 +74,7 @@ public class AssemblerBaseTest {
     public void testGetTextParagraphDetailWithDefaultValue() {
         ParagraphField paragraphField = ParagraphField.MISS_INFO_DECEASED_COUNTRY;
         List<String> textValues = new ArrayList<>();
-        ParagraphDetail response =
-            assemblerBase.getSingleTextParagraphDetailWithDefaultValue(paragraphField, "textValues", "templateName");
+        ParagraphDetail response = assemblerBase.getSingleTextParagraphDetailWithDefaultValue(paragraphField, "textValues", "templateName");
         assertEquals("Text", response.getEnableType().name());
         assertEquals("Deceased was resident in country of executed will - country", response.getLabel());
         assertEquals("textValues", response.getTextValue());
@@ -88,8 +87,7 @@ public class AssemblerBaseTest {
 
         List<String> textValues = new ArrayList<>();
         textValues.add("test value one");
-        List<ParagraphDetail> response =
-            assemblerBase.getTextParagraphDetailWithDefaultValue(ParagraphCode.IHT421Await, textValues);
+        List<ParagraphDetail> response = assemblerBase.getTextParagraphDetailWithDefaultValue(ParagraphCode.IHT421Await, textValues);
         assertEquals("Text", response.get(0).getEnableType().name());
         assertEquals("Awaiting IHT421", response.get(0).getLabel());
         assertEquals("test value one", response.get(0).getTextValue());
@@ -99,8 +97,7 @@ public class AssemblerBaseTest {
 
     @Test
     public void testCreateDynamicListParagraphDetail() {
-        DynamicListItem dynamicListItem =
-            DynamicListItem.builder().code("IHT421Await").label("Awaiting IHT421").build();
+        DynamicListItem dynamicListItem = DynamicListItem.builder().code("IHT421Await").label("Awaiting IHT421").build();
 
         List<DynamicListItem> dynamicList = new ArrayList<DynamicListItem>();
         dynamicList.add(dynamicListItem);
@@ -108,11 +105,9 @@ public class AssemblerBaseTest {
         List<List<DynamicListItem>> listItems = new ArrayList<List<DynamicListItem>>();
         listItems.add(dynamicList);
 
-        DynamicList dynamicList1 =
-            DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
+        DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
 
-        List<ParagraphDetail> response =
-            assemblerBase.createDynamicListParagraphDetail(ParagraphCode.IHT421Await, listItems);
+        List<ParagraphDetail> response = assemblerBase.createDynamicListParagraphDetail(ParagraphCode.IHT421Await, listItems);
         assertEquals("List", response.get(0).getEnableType().name());
         assertEquals(dynamicList1, response.get(0).getDynamicList());
         assertEquals("Awaiting IHT421", response.get(0).getLabel());

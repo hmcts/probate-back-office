@@ -21,12 +21,12 @@ import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-    imports = {StringUtils.class, ApplicationType.class},
-    uses = {ApplicationTypeMapper.class,
-        OCRFieldAddressMapper.class,
-        OCRFieldDefaultLocalDateFieldMapper.class,
-        OCRFieldYesOrNoMapper.class},
-    unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+        imports = {StringUtils.class, ApplicationType.class},
+        uses = {ApplicationTypeMapper.class,
+                OCRFieldAddressMapper.class,
+                OCRFieldDefaultLocalDateFieldMapper.class,
+                OCRFieldYesOrNoMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "caveatorForenames", source = "caveatorForenames")
     @Mapping(target = "caveatorSurname", source = "caveatorSurnames")
@@ -51,33 +51,33 @@ public interface ExceptionRecordCaveatMapper {
 
     @AfterMapping
     default void setSolsPaymentMethod(
-        @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
+            @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
             caseData.setSolsPaymentMethods(SolsPaymentMethods.FEE_ACCOUNT);
         }
     }
 
     @AfterMapping
     default void setSolsSolicitorEmail(
-        @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
+            @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
             caseData.setCaveatorEmailAddress(ocrField.getSolsSolicitorEmail());
         }
     }
 
     @AfterMapping
     default void setSolsSolicitorRepresentativeName(
-        @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
+            @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
             String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
-                caseData.setCaveatorSurname(names.get(names.size() - 1));
-                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size() - 1)));
-            } else if (names.size() == 1) {
+                caseData.setCaveatorSurname(names.get(names.size()-1));
+                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size()-1)));
+            } else if(names.size() == 1) {
                 caseData.setCaveatorSurname("");
                 caseData.setCaveatorForenames(names.get(0));
             } else {

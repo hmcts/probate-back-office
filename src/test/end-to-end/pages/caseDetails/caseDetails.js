@@ -3,20 +3,15 @@
 const testConfig = require('src/test/config.js');
 
 module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
+
     const I = this;
 
     if (tabConfigFile.tabName) {
-        let tabXPath;
-        if (testConfig.TestForXUI) {
-            tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
-        } else {
-            tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
-        }
-        //Tabs are hidden when there are more tabs
-        await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
+        await I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForText(tabConfigFile.tabName, testConfig.TestTimeToWaitForText || 60);
 
     await I.clickTab(tabConfigFile.tabName);
     await I.runAccessibilityTest();
@@ -25,11 +20,9 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
     }
 
-    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
-        if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-            await I.waitForText(tabConfigFile.fields[i]);
-        }
+        // eslint-disable-next-line
+        await I.waitForText(tabConfigFile.fields[i]);
         // await I.see(tabConfigFile.fields[i]);
     }
 
@@ -53,6 +46,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     } else if (dataConfigKeys) {
         for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
+            // eslint-disable-next-line
             await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
         }
     }

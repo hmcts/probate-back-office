@@ -25,16 +25,17 @@ public class SolsAliasNameMapperTest {
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
     private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "|" + DECEASED_ALIAS_NAME2;
-    @MockBean
-    AppInsights appInsights;
+
     @Autowired
     private SolsAliasNameMapper aliasNameMapper;
+
+    @MockBean
+    AppInsights appInsights;
 
     @Test
     public void shouldMapToCollection() {
 
-        List<CollectionMember<SolsAliasName>> aliasCollection =
-            aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAMES);
+        List<CollectionMember<SolsAliasName>> aliasCollection = aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAMES);
         List<CollectionMember<SolsAliasName>> expectedAliasNames = buildAliasNames();
 
         aliasCollection.forEach(alias -> assertThat(expectedAliasNames).contains(alias));
@@ -54,8 +55,7 @@ public class SolsAliasNameMapperTest {
     @Test
     public void shouldMapToCollectionOneAliasOnly() {
 
-        List<CollectionMember<SolsAliasName>> aliasCollection =
-            aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAME1);
+        List<CollectionMember<SolsAliasName>> aliasCollection = aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAME1);
 
         assertEquals(DECEASED_ALIAS_NAME1, aliasCollection.get(0).getValue().getSolsAliasname());
         assertEquals(1, aliasCollection.size());
@@ -63,11 +63,11 @@ public class SolsAliasNameMapperTest {
 
     private List<CollectionMember<SolsAliasName>> buildAliasNames() {
         SolsAliasName aliasName1 = SolsAliasName.builder()
-            .solsAliasname(DECEASED_ALIAS_NAME1)
-            .build();
+                .solsAliasname(DECEASED_ALIAS_NAME1)
+                .build();
         SolsAliasName aliasName2 = SolsAliasName.builder()
-            .solsAliasname(DECEASED_ALIAS_NAME2)
-            .build();
+                .solsAliasname(DECEASED_ALIAS_NAME2)
+                .build();
         List<CollectionMember<SolsAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<SolsAliasName>>();
         CollectionMember<SolsAliasName> aliasNamesCollection1 = new CollectionMember(null, aliasName1);
         aliasNamesCollections.add(aliasNamesCollection1);

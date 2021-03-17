@@ -54,9 +54,8 @@ public class LegacySearchServiceImplTest {
         expectedCollection.add(collectionMember);
 
         when(caseSearchService.findCases(ArgumentMatchers.any(CaseType.class),
-            ArgumentMatchers.any(CaseMatchingCriteria.class))).thenReturn(expectedCaseMatches);
-        List<CollectionMember<CaseMatch>> legacyCaseMatches =
-            legacySearchService.findLegacyCaseMatches(caseDetailsMock);
+                ArgumentMatchers.any(CaseMatchingCriteria.class))).thenReturn(expectedCaseMatches);
+        List<CollectionMember<CaseMatch>> legacyCaseMatches = legacySearchService.findLegacyCaseMatches(caseDetailsMock);
 
         assertThat(legacyCaseMatches, equalTo(expectedCollection));
     }

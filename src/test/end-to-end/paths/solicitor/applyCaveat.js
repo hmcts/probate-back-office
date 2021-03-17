@@ -22,7 +22,7 @@ Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 Scenario('Solicitor - Apply Caveat', async function (I) {
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable(true);
+    await I.authenticateWithIdamIfAvailable();
 
     let nextStepName = 'Application details';
     let endState = 'Caveat created';
@@ -34,7 +34,13 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
 
     await I.seeEndState(endState);
 
-    const caseRef = await I.getCaseRefFromUrl();
+    const url = await I.grabCurrentUrl();
+    const caseRef = url.split('/').pop()
+        .match(/.{4}/g)
+        .join('-');
+
+    // eslint-disable-next-line no-console
+    console.log('url is...', url);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, applyCaveatConfig);
@@ -70,5 +76,4 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
-}).tag('@crossbrowser')
-    .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);

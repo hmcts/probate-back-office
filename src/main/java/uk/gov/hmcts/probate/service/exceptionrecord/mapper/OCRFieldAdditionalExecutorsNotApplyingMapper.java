@@ -18,36 +18,35 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToAdditionalExecutorsNotApplying
-    public List<CollectionMember<ExecutorNotApplying>> toAdditionalCollectionMember(
-        ExceptionRecordOCRFields ocrFields) {
+    public List<CollectionMember<ExecutorNotApplying>> toAdditionalCollectionMember(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Additional Executor Not Applying collection");
 
         List<CollectionMember<ExecutorNotApplying>> collectionMemberList = new ArrayList<>();
 
         if (ocrFields.getExecutorsNotApplying0notApplyingExecutorName() != null
-            && !ocrFields.getExecutorsNotApplying0notApplyingExecutorName().isEmpty()) {
+                && !ocrFields.getExecutorsNotApplying0notApplyingExecutorName().isEmpty()) {
             log.info("Adding Executor 1");
             collectionMemberList.add(buildExecutorNotApplying(
-                ocrFields.getExecutorsNotApplying0notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying0notApplyingExecutorReason()
+                    ocrFields.getExecutorsNotApplying0notApplyingExecutorName(),
+                    ocrFields.getExecutorsNotApplying0notApplyingExecutorReason()
             ));
         }
 
         if (ocrFields.getExecutorsNotApplying1notApplyingExecutorName() != null
-            && !ocrFields.getExecutorsNotApplying1notApplyingExecutorName().isEmpty()) {
+                && !ocrFields.getExecutorsNotApplying1notApplyingExecutorName().isEmpty()) {
             log.info("Adding Executor 2");
             collectionMemberList.add(buildExecutorNotApplying(
-                ocrFields.getExecutorsNotApplying1notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying1notApplyingExecutorReason()
+                    ocrFields.getExecutorsNotApplying1notApplyingExecutorName(),
+                    ocrFields.getExecutorsNotApplying1notApplyingExecutorReason()
             ));
         }
 
         if (ocrFields.getExecutorsNotApplying2notApplyingExecutorName() != null
-            && !ocrFields.getExecutorsNotApplying2notApplyingExecutorName().isEmpty()) {
+                && !ocrFields.getExecutorsNotApplying2notApplyingExecutorName().isEmpty()) {
             log.info("Adding Executor 3");
             collectionMemberList.add(buildExecutorNotApplying(
-                ocrFields.getExecutorsNotApplying2notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying2notApplyingExecutorReason()
+                    ocrFields.getExecutorsNotApplying2notApplyingExecutorName(),
+                    ocrFields.getExecutorsNotApplying2notApplyingExecutorReason()
             ));
         }
 
@@ -55,14 +54,14 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
     }
 
     private CollectionMember<ExecutorNotApplying> buildExecutorNotApplying(
-        String executorNotApplyingName,
-        String executorNotApplyingReason
+            String executorNotApplyingName,
+            String executorNotApplyingReason
     ) {
         ExecutorNotApplyingReason notApplyingReason = identifyReason(executorNotApplyingReason);
         ExecutorNotApplying notApplying = ExecutorNotApplying.builder()
-            .notApplyingExecutorName(executorNotApplyingName)
-            .notApplyingExecutorReason(notApplyingReason)
-            .build();
+                .notApplyingExecutorName(executorNotApplyingName)
+                .notApplyingExecutorReason(notApplyingReason)
+                .build();
 
         if (notApplying.getNotApplyingExecutorReason() == ExecutorNotApplyingReason.DIED_BEFORE) {
             notApplying.setNotApplyingExecutorDiedBefore(Boolean.TRUE);
@@ -98,8 +97,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             case "F":
                 return ExecutorNotApplyingReason.MENTALLY_INCAPABLE;
             default:
-                String errorMessage =
-                    "Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
+                String errorMessage = "Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
         }

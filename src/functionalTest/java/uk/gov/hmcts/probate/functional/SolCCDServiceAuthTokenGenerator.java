@@ -64,71 +64,15 @@ public class SolCCDServiceAuthTokenGenerator {
         return claims.get("id", String.class);
     }
 
-    private String generateClientCode() {
-        String code = "";
-        String jsonResponse = given()
-            .relaxedHTTPSValidation()
-            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-            .post(idamUrl + "/oauth2/authorize?response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri)
-            .asString();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            code = mapper.readValue(jsonResponse, ClientAuthorizationCodeResponse.class).code;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return code;
-    }
-
-    private String generateClientCode(String userName, String password) {
-        final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
-        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
-            .header("Authorization", "Basic " + encoded)
-            .post("/oauth2/authorize?response_type=code&client_id="
-                + probateClientId + "&redirect_uri=" + redirectUri)
-            .body();
-
-        log.info("authorization:" + authorization.prettyPrint());
-        return authorization.jsonPath().get("code");
-    }
-
-    public void createNewUser() {
-        given().headers("Content-type", "application/json")
-            .relaxedHTTPSValidation()
-            .body(
-                "{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\","
-                    + "\"password\":\"123\",\"continue-url\":\"test\"}")
-            .post(idamUrl + "/testing-support/accounts");
-    }
-
-    public String generateClientToken(String userName, String password) {
-        String code = generateClientCode(userName, password);
-        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
-            + "code=" + code
-            + "&client_secret=" + probateClientSecret
-            + "&client_id=" + probateClientId
-            + "&redirect_uri=" + redirectUri
-            + "&grant_type=authorization_code")
-            .body().jsonPath();
-        String token = jp.get("access_token");
-
-        return token;
-    }
-
     public String generateClientToken() {
         String code = generateClientCode();
         String token = "";
 
-        String jsonResponse = post(idamUrl + "/oauth2/token?code=" + code
-            + "&client_secret=" + clientSecret
-            + "&client_id=" + clientId
-            + "&redirect_uri=" + redirectUri
-            + "&grant_type=authorization_code")
+        String jsonResponse = post(idamUrl + "/oauth2/token?code=" + code +
+            "&client_secret=" + clientSecret +
+            "&client_id=" + clientId +
+            "&redirect_uri=" + redirectUri +
+            "&grant_type=authorization_code")
             .body().asString();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -142,8 +86,62 @@ public class SolCCDServiceAuthTokenGenerator {
         return token;
     }
 
+    private String generateClientCode() {
+        String code = "";
+        String jsonResponse = given()
+            .relaxedHTTPSValidation()
+            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
+            .post(idamUrl + "/oauth2/authorize?response_type=code" +
+                "&client_id=" + clientId +
+                "&redirect_uri=" + redirectUri)
+            .asString();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            code = mapper.readValue(jsonResponse, ClientAuthorizationCodeResponse.class).code;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return code;
+    }
+
+    public void createNewUser() {
+        given().headers("Content-type", "application/json")
+            .relaxedHTTPSValidation()
+            .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
+            .post(idamUrl + "/testing-support/accounts");
+    }
+
+    public String generateClientToken(String userName, String password) {
+        String code = generateClientCode(userName, password);
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?" +
+            "code=" + code +
+            "&client_secret=" + probateClientSecret +
+            "&client_id=" + probateClientId +
+            "&redirect_uri=" + redirectUri +
+            "&grant_type=authorization_code")
+            .body().jsonPath();
+        String token = jp.get("access_token");
+
+        return token;
+    }
+
     public String generateAuthorisation(String userName, String password) {
         return generateClientToken(userName, password);
+    }
+
+
+    private String generateClientCode(String userName, String password) {
+        final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
+        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
+            .header("Authorization", "Basic " + encoded)
+            .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
+            .body();
+        
+        log.info("authorization:"+authorization.prettyPrint());
+        return authorization.jsonPath().get("code");
     }
 
 }

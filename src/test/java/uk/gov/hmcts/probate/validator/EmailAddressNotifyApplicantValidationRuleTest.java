@@ -38,14 +38,12 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
         fieldErrorResponsePrimary = FieldErrorResponse.builder()
             .message("primary missing")
             .build();
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA"))
-            .thenReturn(fieldErrorResponsePrimary);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA")).thenReturn(fieldErrorResponsePrimary);
 
         fieldErrorResponseSolicitor = FieldErrorResponse.builder()
             .message("solicitor missing")
             .build();
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"))
-            .thenReturn(fieldErrorResponseSolicitor);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS")).thenReturn(fieldErrorResponseSolicitor);
     }
 
     @Test

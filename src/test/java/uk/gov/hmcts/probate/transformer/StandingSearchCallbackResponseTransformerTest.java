@@ -77,22 +77,22 @@ public class StandingSearchCallbackResponseTransformerTest {
     public void setup() {
 
         standingSearchDataBuilder = StandingSearchData.builder()
-            .deceasedForenames(SS_DECEASED_FORENAMES)
-            .deceasedSurname(SS_DECEASED_SURNAME)
-            .deceasedDateOfDeath(SS_DECEASED_DOD)
-            .deceasedDateOfBirth(SS_DECEASED_DOB)
-            .deceasedAnyOtherNames(SS_DECEASED_HAS_ALIAS)
-            .deceasedFullAliasNameList(SS_DECEASED_FULL_ALIAS_NAME_LIST)
-            .deceasedAddress(SS_DECEASED_ADDRESS)
-            .applicantForenames(SS_APPLICANT_FORENAMES)
-            .applicantSurname(SS_APPLICANT_SURNAME)
-            .applicantEmailAddress(SS_APPLICANT_EMAIL_ADDRESS)
-            .applicantAddress(SS_APPLICANT_ADDRESS)
-            .expiryDate(SS_EXPIRY_DATE)
-            .recordId(SS_RECORD_ID)
-            .legacyCaseViewUrl(SS_LEGACY_CASE_URL)
-            .applicationSubmittedDate(DATE_SUBMITTED)
-            .legacyType(SS_LEGACY_CASE_TYPE);
+                .deceasedForenames(SS_DECEASED_FORENAMES)
+                .deceasedSurname(SS_DECEASED_SURNAME)
+                .deceasedDateOfDeath(SS_DECEASED_DOD)
+                .deceasedDateOfBirth(SS_DECEASED_DOB)
+                .deceasedAnyOtherNames(SS_DECEASED_HAS_ALIAS)
+                .deceasedFullAliasNameList(SS_DECEASED_FULL_ALIAS_NAME_LIST)
+                .deceasedAddress(SS_DECEASED_ADDRESS)
+                .applicantForenames(SS_APPLICANT_FORENAMES)
+                .applicantSurname(SS_APPLICANT_SURNAME)
+                .applicantEmailAddress(SS_APPLICANT_EMAIL_ADDRESS)
+                .applicantAddress(SS_APPLICANT_ADDRESS)
+                .expiryDate(SS_EXPIRY_DATE)
+                .recordId(SS_RECORD_ID)
+                .legacyCaseViewUrl(SS_LEGACY_CASE_URL)
+                .applicationSubmittedDate(DATE_SUBMITTED)
+                .legacyType(SS_LEGACY_CASE_TYPE);
         ;
 
         when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
@@ -101,8 +101,7 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformStandingSearchCallbackRequestToStandingSearchCallbackResponse() {
-        StandingSearchCallbackResponse standingSearchCallbackResponse =
-            underTest.transform(standingSearchCallbackRequestMock);
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
         assertCommon(standingSearchCallbackResponse);
     }
@@ -119,12 +118,10 @@ public class StandingSearchCallbackResponseTransformerTest {
         when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
         when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
-        StandingSearchCallbackResponse standingSearchCallbackResponse =
-            underTest.transform(standingSearchCallbackRequestMock);
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
         assertCommonDetails(standingSearchCallbackResponse);
-        assertEquals(1,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedFullAliasNameList().size());
+        assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedFullAliasNameList().size());
     }
 
     @Test
@@ -136,8 +133,7 @@ public class StandingSearchCallbackResponseTransformerTest {
         when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
         when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
-        StandingSearchCallbackResponse standingSearchCallbackResponse =
-            underTest.transform(standingSearchCallbackRequestMock);
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
         assertCommonDetails(standingSearchCallbackResponse);
         assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDocumentsUploaded().size());
@@ -145,13 +141,11 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
-        StandingSearchCallbackResponse standingSearchCallbackResponse =
-            underTest.standingSearchCreated(standingSearchCallbackRequestMock);
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.standingSearchCreated(standingSearchCallbackRequestMock);
 
         assertCommon(standingSearchCallbackResponse);
 
-        assertEquals(SS_FORMATTED_EXPIRY_DATE,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
     }
 
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {
@@ -160,61 +154,44 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     private void assertCommonDetails(StandingSearchCallbackResponse standingSearchCallbackResponse) {
-        assertEquals(SS_REGISTRY_LOCATION,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getRegistryLocation());
+        assertEquals(SS_REGISTRY_LOCATION, standingSearchCallbackResponse.getResponseStandingSearchData().getRegistryLocation());
 
-        assertEquals(SS_DECEASED_FORENAMES,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedForenames());
-        assertEquals(SS_DECEASED_SURNAME,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedSurname());
-        assertEquals("2017-12-31",
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedDateOfDeath());
-        assertEquals("2016-12-31",
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedDateOfBirth());
-        assertEquals(SS_DECEASED_HAS_ALIAS,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedAnyOtherNames());
-        assertEquals(SS_DECEASED_ADDRESS,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedAddress());
+        assertEquals(SS_DECEASED_FORENAMES, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedForenames());
+        assertEquals(SS_DECEASED_SURNAME, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedSurname());
+        assertEquals("2017-12-31", standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedDateOfDeath());
+        assertEquals("2016-12-31", standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedDateOfBirth());
+        assertEquals(SS_DECEASED_HAS_ALIAS, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedAnyOtherNames());
+        assertEquals(SS_DECEASED_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedAddress());
 
-        assertEquals(SS_APPLICANT_FORENAMES,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantForenames());
-        assertEquals(SS_APPLICANT_SURNAME,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantSurname());
-        assertEquals(SS_APPLICANT_EMAIL_ADDRESS,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantEmailAddress());
-        assertEquals(SS_APPLICANT_ADDRESS,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
+        assertEquals(SS_APPLICANT_FORENAMES, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantForenames());
+        assertEquals(SS_APPLICANT_SURNAME, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantSurname());
+        assertEquals(SS_APPLICANT_EMAIL_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantEmailAddress());
+        assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
 
-        assertEquals(SS_FORMATTED_EXPIRY_DATE,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
-        assertEquals(DATE_SUBMITTED,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationSubmittedDate());
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+        assertEquals(DATE_SUBMITTED, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationSubmittedDate());
 
         assertEquals(SS_RECORD_ID, standingSearchCallbackResponse.getResponseStandingSearchData().getRecordId());
-        assertEquals(SS_LEGACY_CASE_TYPE,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyType());
-        assertEquals(SS_LEGACY_CASE_URL,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyCaseViewUrl());
+        assertEquals(SS_LEGACY_CASE_TYPE, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyType());
+        assertEquals(SS_LEGACY_CASE_URL, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyCaseViewUrl());
 
     }
 
-    private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse,
-                                       ApplicationType ssApplicationType) {
-        assertEquals(ssApplicationType,
-            standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationType());
+    private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {
+        assertEquals(ssApplicationType, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationType());
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {
         DocumentLink docLink = DocumentLink.builder()
-            .documentBinaryUrl("")
-            .documentFilename("")
-            .documentUrl("")
-            .build();
+                .documentBinaryUrl("")
+                .documentFilename("")
+                .documentUrl("")
+                .build();
 
         UploadDocument doc = UploadDocument.builder()
-            .comment("comment")
-            .documentLink(docLink)
-            .documentType(DocumentType.OTHER).build();
+                .comment("comment")
+                .documentLink(docLink)
+                .documentType(DocumentType.OTHER).build();
         return new CollectionMember<>(id, doc);
     }
 

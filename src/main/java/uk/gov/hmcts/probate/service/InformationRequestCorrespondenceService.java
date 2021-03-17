@@ -37,12 +37,11 @@ public class InformationRequestCorrespondenceService {
         caseDetails.getData().getExecutorsApplyingNotifications().forEach(executor -> {
             if (executor.getValue().getNotification().equals(YES)) {
                 log.info("Initiate call to send request for information email for case id {} and executor: {} ",
-                    caseDetails.getId(), executor.getId());
+                        caseDetails.getId(), executor.getId());
                 try {
-                    documents.add(notificationService
-                        .sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor.getValue()));
+                    documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor.getValue()));
                     log.info("Successful response for request for information email for case id {} ",
-                        caseDetails.getId());
+                            caseDetails.getId());
                 } catch (NotificationClientException e) {
                     log.error(e.getMessage());
                 }
@@ -58,20 +57,19 @@ public class InformationRequestCorrespondenceService {
         addressExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
 
         log.info("Initiate call to send request for information letter for case id {}",
-            callbackRequest.getCaseDetails().getId());
+                callbackRequest.getCaseDetails().getId());
 
         documents.add(documentGeneratorService.generateCoversheet(callbackRequest, executor.getName(),
-            executor.getAddress()));
+                executor.getAddress()));
         documents.add(documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails(),
-            executor));
+                executor));
 
         return documents;
     }
 
     public List<String> getLetterId(List<Document> documents, CallbackRequest callbackRequest) {
         List<String> letterIds = new ArrayList<>();
-        String letterId =
-            bulkPrintService.optionallySendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
+        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
                 callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested());
 
         letterIds.add(letterId);

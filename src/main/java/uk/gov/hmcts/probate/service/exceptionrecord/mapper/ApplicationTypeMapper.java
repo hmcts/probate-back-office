@@ -17,8 +17,8 @@ public class ApplicationTypeMapper {
     @ToApplicationTypeGrantOfRepresentation
     public ApplicationType toApplicationTypeGrantOfRepresentation(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Application Type (Grant of Representation)");
-        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorIsApplying())
-            && BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorIsApplying() )
+                && BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
             log.info("Found solicitor details returning ApplicationType.SOLICITORS");
             return ApplicationType.SOLICITORS;
         }
@@ -31,8 +31,8 @@ public class ApplicationTypeMapper {
     @ToApplicationTypeCaveat
     public ApplicationType toApplicationTypeCaveat(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Application Type (Caveat)");
-        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorFirmName())
-            || StringUtils.isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorFirmName() )
+                || StringUtils.isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
             log.info("Found solicitor details returning ApplicationType.SOLICITORS");
             return ApplicationType.SOLICITORS;
         }

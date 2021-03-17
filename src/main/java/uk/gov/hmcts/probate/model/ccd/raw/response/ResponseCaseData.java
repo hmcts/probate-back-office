@@ -34,14 +34,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper=true)
 @Data
 public class ResponseCaseData extends ResponseCaseDataParent {
 
@@ -78,7 +77,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsResiduary;
     private final String solsResiduaryType;
     private final String solsLifeInterest;
-    private final LocalDate solsIHT400Date;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
@@ -312,15 +310,17 @@ public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final Categories categories;
     private final DocumentLink previewLink;
+
+    @Builder.Default
+    private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+    private String bulkScanCaseReference;
+
     private final String grantDelayedNotificationDate;
     private final String grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
     private final String grantDelayedNotificationSent;
     private final String grantAwaitingDocumentationNotificationDate;
     private final String grantAwaitingDocumentatioNotificationSent;
     private final String pcqId;
-    @Builder.Default
-    private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-    private String bulkScanCaseReference;
-    private String grantDelayedNotificationIdentified;
 
 }

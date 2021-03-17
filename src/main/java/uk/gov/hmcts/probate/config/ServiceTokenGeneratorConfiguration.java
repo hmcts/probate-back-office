@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.config;
 
-import feign.Feign;
+import feign.Feign;	
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
@@ -18,9 +18,9 @@ public class ServiceTokenGeneratorConfiguration {
         @Value("${idam.s2s-auth.microservice}") String microservice) {
 
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
-            .encoder(new JacksonEncoder())
-            .contract(new SpringMvcContract())
-            .target(ServiceAuthorisationApi.class, s2sUrl);
+                                .encoder(new JacksonEncoder())	
+                                .contract(new SpringMvcContract())	
+                                .target(ServiceAuthorisationApi.class, s2sUrl);
 
         return new ServiceAuthTokenGenerator(secret, microservice, serviceAuthorisationApi);
     }

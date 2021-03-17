@@ -180,8 +180,7 @@ public class ReprintTransformerTest {
 
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(1));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(),
-            is(genFileName));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(), is(genFileName));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is(genLabel));
     }
 
@@ -196,8 +195,7 @@ public class ReprintTransformerTest {
 
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(1));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(),
-            is(scFileName));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(), is(scFileName));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is(scLabel));
     }
 }

@@ -17,18 +17,6 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test CW end-end full functional",
-            "request": "launch",
-            "runtimeArgs": [
-                "test:fullfunctional-cw",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },        
-        {
             "name": "Mocha test end-end",
             "request": "launch",
             "runtimeArgs": [
@@ -40,54 +28,6 @@
             ],
             "type": "pwa-node"
         },
-        {
-            "name": "Mocha test end-end caseProgressStandard",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-caseProgressStandard",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Mocha test end-end caseProgressStopEscalateIssue",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-caseProgressStopEscalateIssue",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },     
-        {
-            "name": "Mocha test end-end caseProgressReenterDeceasedDetails",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-caseProgressReenterDeceasedDetails",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },             
-        {
-            "name": "Mocha test end-end caseProgressAppStopped",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-caseProgressAppStopped",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },             
         {
             "name": "Mocha test end-end caveat",
             "request": "launch",
@@ -137,19 +77,7 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end Caseworker will lodgement",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-willLodgement",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },        
-        {
-            "name": "Mocha test end-end Caseworker grantOfProbate",
+            "name": "Mocha test end-end grantOfProbate",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-grantOfProbate",
@@ -161,70 +89,10 @@
             "type": "pwa-node"
         },
         {
-            "name": "Mocha test end-end Solicitor applyCaveat",
+            "name": "Mocha test end-end will lodgement",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-applyCaveat",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        }, 
-        {
-            "name": "Mocha test end-end Solicitor grantOfProbate",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-sol-grantOfProbate",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        }, 
-        {
-            "name": "Mocha test end-end Solicitor multi grantOfProbate",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateMulti",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Mocha test end-end Solicitor no will grantOfProbate",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateNoWill",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Mocha test end-end Solicitor will annexed grantOfProbate",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateWillAnnexed",
-            ],
-            "runtimeExecutable": "yarn",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Mocha test end-end Solicitor will annexed failure grantOfProbate",
-            "request": "launch",
-            "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateWillAnnexedFailure",
+                "test-e2e-willLodgement",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

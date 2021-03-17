@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
-import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -39,7 +38,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -49,16 +47,23 @@ import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 @RequiredArgsConstructor
 public class ConfirmationResponseService {
 
-    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
-    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
+
+    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
+    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
+    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
+
+
+    @Value("${markdown.templatesDirectory}")
+    private String templatesDirectory;
+
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
+
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
     private final EntitledMinorityRule entitledMinorityRule;
@@ -71,20 +76,34 @@ public class ConfirmationResponseService {
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
-    @Value("${markdown.templatesDirectory}")
-    private String templatesDirectory;
+
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
     }
 
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
+    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
+        String caseSubmissionDate = "";
+        if (caveatData.getApplicationSubmittedDate() != null) {
+            caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
+        }
+        keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
+        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
+        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
+        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
+
+        return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
         return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
+    }
+
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
@@ -196,22 +215,6 @@ public class ConfirmationResponseService {
             .build();
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
-        Map<String, String> keyValue = new HashMap<>();
-        keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
-        String caseSubmissionDate = "";
-        if (caveatData.getApplicationSubmittedDate() != null) {
-            caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
-        }
-        keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
-        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
-
-        return markdownSubstitutionService
-            .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
-    }
-
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
@@ -222,12 +225,9 @@ public class ConfirmationResponseService {
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{solsSolicitorFirmName}}", ccdData.getSolicitor().getFirmName());
         keyValue.put("{{solsSolicitorAddress}}", createAddressValueString(ccdData.getSolicitor().getFirmAddress()));
-        keyValue
-            .put("{{solsSolicitorAddress.addressLine1}}", ccdData.getSolicitor().getFirmAddress().getAddressLine1());
-        keyValue
-            .put("{{solsSolicitorAddress.addressLine2}}", ccdData.getSolicitor().getFirmAddress().getAddressLine2());
-        keyValue
-            .put("{{solsSolicitorAddress.addressLine3}}", ccdData.getSolicitor().getFirmAddress().getAddressLine3());
+        keyValue.put("{{solsSolicitorAddress.addressLine1}}", ccdData.getSolicitor().getFirmAddress().getAddressLine1());
+        keyValue.put("{{solsSolicitorAddress.addressLine2}}", ccdData.getSolicitor().getFirmAddress().getAddressLine2());
+        keyValue.put("{{solsSolicitorAddress.addressLine3}}", ccdData.getSolicitor().getFirmAddress().getAddressLine3());
         keyValue.put("{{solsSolicitorAddress.postTown}}", ccdData.getSolicitor().getFirmAddress().getPostTown());
         keyValue.put("{{solsSolicitorAddress.county}}", ccdData.getSolicitor().getFirmAddress().getCounty());
         keyValue.put("{{solsSolicitorAddress.postCode}}", ccdData.getSolicitor().getFirmAddress().getPostCode());
@@ -248,12 +248,9 @@ public class ConfirmationResponseService {
         String originalWill = "\n*   the original will";
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
-        } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
-            originalWill = "\n*   the original will and any codicils";
         }
-        
         keyValue.put("{{originalWill}}", originalWill);
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -263,18 +260,20 @@ public class ConfirmationResponseService {
         String ihtText = "";
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "\n*   the inheritance tax form ";
-            if ("Yes".equals(ccdData.getIht217())) {
-                ihtForm = "IHT205 and IHT217";
-            } else {
-                ihtForm = ccdData.getIht().getFormName();
-            }
+            ihtText = "\n*   completed inheritance tax form ";
+            ihtForm = ccdData.getIht().getFormName();
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        String iht400 = "";
+        if (ihtFormValue.contentEquals(IHT_400421)) {
+            iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
+        }
+
+        String legalPhotocopy = "*   a photocopy of the signed legal statement and declaration";
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
+        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
@@ -285,13 +284,13 @@ public class ConfirmationResponseService {
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
-            .append(defaultString(address.getAddressLine2()))
-            .append(defaultString(address.getAddressLine3()))
-            .append(defaultString(address.getPostTown()))
-            .append(defaultString(address.getCounty()))
-            .append(defaultString(address.getPostCode()))
-            .append(defaultString(address.getCountry()))
-            .toString();
+                .append(defaultString(address.getAddressLine2()))
+                .append(defaultString(address.getAddressLine3()))
+                .append(defaultString(address.getPostTown()))
+                .append(defaultString(address.getCounty()))
+                .append(defaultString(address.getPostCode()))
+                .append(defaultString(address.getCountry()))
+                .toString();
     }
 
     private String defaultString(String value) {

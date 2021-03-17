@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

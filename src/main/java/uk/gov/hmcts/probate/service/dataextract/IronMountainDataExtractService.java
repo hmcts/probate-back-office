@@ -34,8 +34,7 @@ public class IronMountainDataExtractService {
 
         if (response != 201) {
             log.error("Failed to upload Iron Mountain file for: " + date);
-            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
-                "Failed to upload Iron Mountain file for date: " + date);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload Iron Mountain file for date: " + date);
         }
     }
 

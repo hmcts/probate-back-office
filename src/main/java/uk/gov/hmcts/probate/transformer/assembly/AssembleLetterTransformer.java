@@ -46,7 +46,6 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntL
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntNoTitle;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntPrejudiced;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntSubExec;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntTwoApps;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntWrongExec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomAffidavit;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomInitialEnq;
@@ -69,7 +68,6 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Miss
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoAwaitResponse;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoChangeApp;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeathCert;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeceased;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoGrantReq;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoRenunWill;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
@@ -131,7 +129,6 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sols
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertTrustCorp;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertWillSepPages;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenAuthorityPartners;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenExtendedRenun;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenPowerAttorney;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenVoid;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecClearing;
@@ -140,10 +137,13 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sols
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecIntForDom;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecMinority;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecNetEstate;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecSotDate;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecSotSigned;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecTitle;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.soplsRedecWillsForDom;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntTwoApps;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeceased;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenExtendedRenun;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecSotDate;
 
 @Slf4j
 @Component
@@ -320,11 +320,9 @@ public class AssembleLetterTransformer {
 
     private void addAllParagraphDetails(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
                                         ParagraphCode paragraphCode, CaseData caseData) {
-        List<ParagraphDetail> paragraphDetails =
-            getParagraphFunctions().get(paragraphCode).apply(paragraphCode, caseData);
+        List<ParagraphDetail> paragraphDetails = getParagraphFunctions().get(paragraphCode).apply(paragraphCode, caseData);
         for (ParagraphDetail paragraphDetail : paragraphDetails) {
-            CollectionMember<ParagraphDetail> paragraphDetailCollectionMember =
-                new CollectionMember<>(null, paragraphDetail);
+            CollectionMember<ParagraphDetail> paragraphDetailCollectionMember = new CollectionMember<>(null, paragraphDetail);
             allParagraphDetails.add(paragraphDetailCollectionMember);
 
         }

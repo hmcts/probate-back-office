@@ -87,5 +87,5 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year);
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

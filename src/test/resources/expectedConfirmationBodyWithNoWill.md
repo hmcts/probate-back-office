@@ -38,8 +38,9 @@ Print a copy of this page for your records.
  
 You now need to send us:
 
+*   fee payment: your fee account for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   the inheritance tax form IHT207
+*   completed inheritance tax form IHT207
 *   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents

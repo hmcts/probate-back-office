@@ -27,14 +27,17 @@ import static uk.gov.hmcts.reform.probate.model.ProbateDocumentType.CAVEAT_RAISE
 @RunWith(MockitoJUnitRunner.class)
 public class DocmosisPdfGenerationServiceTest {
 
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    TemplateProperties templateProperties;
-    @Mock
-    RestTemplate restTemplate;
-    @Mock
-    ResponseEntity<byte[]> responseEntity;
     @InjectMocks
     private DocmosisPdfGenerationService docmosisPdfGenerationService = new DocmosisPdfGenerationService();
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    TemplateProperties templateProperties;
+
+    @Mock
+    RestTemplate restTemplate;
+
+    @Mock
+    ResponseEntity<byte[]> responseEntity;
 
     @Before
     public void setup() throws IllegalAccessException {
@@ -46,10 +49,9 @@ public class DocmosisPdfGenerationServiceTest {
 
         ResponseEntity<byte[]> responseEntityBytes = ResponseEntity.ok("A String".getBytes());
         when(restTemplate
-            .postForEntity((String) isNull(), any(PdfDocumentRequest.class), eq(byte[].class)))
-            .thenReturn(responseEntityBytes);
+                .postForEntity((String)isNull(), any(PdfDocumentRequest.class), eq(byte[].class))).thenReturn(responseEntityBytes);
 
-        Map<String, Object> registry = new HashMap<>();
+        Map<String, Object> registry =  new HashMap<>();
         registry.put("name", "Bristol District Probate Registry");
         registry.put("phone", "02920 474373");
         registry.put("emailReplyToId", "6d98cad6-adb4-4446-b37e-5c3f0441a0c8");
@@ -60,7 +62,7 @@ public class DocmosisPdfGenerationServiceTest {
         registry.put("town", "South Wales");
         registry.put("postcode", "CF24 0RZ");
 
-        Map<String, Object> placeholders = new HashMap<>();
+        Map<String, Object> placeholders =  new HashMap<>();
         placeholders.put("caseReference", "1111-2222-3333-4444");
         placeholders.put("generatedDate", "13052019");
         placeholders.put("registry", registry);
@@ -68,7 +70,7 @@ public class DocmosisPdfGenerationServiceTest {
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
         byte[] result = docmosisPdfGenerationService.generateDocFrom(CAVEAT_RAISED.getTemplateName(),
-            placeholders);
+                placeholders);
 
         Assert.assertEquals(8, result.length);
     }
@@ -76,8 +78,8 @@ public class DocmosisPdfGenerationServiceTest {
     @Test(expected = PDFGenerationException.class)
     public void shouldThrowPDFGeneratedException() {
 
-        Map<String, Object> registry = new HashMap<>();
-        Map<String, Object> placeholders = new HashMap<>();
+        Map<String, Object> registry =  new HashMap<>();
+        Map<String, Object> placeholders =  new HashMap<>();
 
         docmosisPdfGenerationService.generateDocFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
 

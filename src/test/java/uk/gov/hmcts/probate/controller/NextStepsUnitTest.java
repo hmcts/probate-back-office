@@ -81,9 +81,8 @@ public class NextStepsUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock,
-            callbackResponseTransformerMock,
-            objectMapperMock, feeServiceMock, stateChangeServiceMock);
+        underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock, callbackResponseTransformerMock,
+                objectMapperMock, feeServiceMock, stateChangeServiceMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -97,12 +96,11 @@ public class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feeServiceResponseMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock))
-            .thenReturn(callbackResponseMock);
+                .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock)).thenReturn(callbackResponseMock);
 
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequestMock);
+                bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
@@ -115,7 +113,7 @@ public class NextStepsUnitTest {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequestMock);
+                bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
@@ -129,7 +127,7 @@ public class NextStepsUnitTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequestMock);
+                bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
@@ -140,11 +138,11 @@ public class NextStepsUnitTest {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
         when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
-            .thenReturn(callbackResponseMock);
+                .thenReturn(callbackResponseMock);
 
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequestMock);
+                bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));

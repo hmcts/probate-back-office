@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum LanguagePreference {
 
     ENGLISH("english"),

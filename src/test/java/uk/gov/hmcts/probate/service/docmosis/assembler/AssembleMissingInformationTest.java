@@ -19,8 +19,7 @@ public class AssembleMissingInformationTest {
 
         CaseData caseData = CaseData.builder().build();
 
-        List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoWill(ParagraphCode.MissInfoWill, caseData);
+        List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.MissInfoWill, caseData);
         assertEquals("MissInfoWill", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00126.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
@@ -34,8 +33,7 @@ public class AssembleMissingInformationTest {
     public void testMissingInfoDeathCert() {
 
         CaseData caseData = CaseData.builder().build();
-        List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoDeathCert(ParagraphCode.MissInfoDeathCert, caseData);
+        List<ParagraphDetail> response = assembleMissingInformation.missingInfoDeathCert(ParagraphCode.MissInfoDeathCert, caseData);
         assertEquals("MissInfoDeathCert", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00128.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
@@ -48,11 +46,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoChangeOfApplicant() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoChangeOfApplicant(ParagraphCode.MissInfoChangeApp, caseData);
+                assembleMissingInformation.missingInfoChangeOfApplicant(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals("MissInfoChangeApp", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
@@ -65,11 +62,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoDateOfRequest() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoDateOfRequest(ParagraphCode.MissInfoChangeApp, caseData);
+                assembleMissingInformation.missingInfoDateOfRequest(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals("MissInfoChangeApp", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
         assertEquals("Date", response.get(0).getEnableType().name());
@@ -82,11 +78,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoAlias() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoAlias(ParagraphCode.MissInfoChangeApp, caseData);
+                assembleMissingInformation.missingInfoAlias(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals("MissInfoChangeApp", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
         assertEquals("Static", response.get(0).getEnableType().name());
@@ -99,11 +94,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoRenunWill() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoRenunWill(ParagraphCode.MissInfoChangeApp, caseData);
+                assembleMissingInformation.missingInfoRenunWill(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals("MissInfoChangeApp", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
         assertEquals("Static", response.get(0).getEnableType().name());
@@ -116,11 +110,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoGrantReq() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoGrantReq(ParagraphCode.MissInfoChangeApp, caseData);
+                assembleMissingInformation.missingInfoGrantReq(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals("MissInfoChangeApp", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
         assertEquals("Static", response.get(0).getEnableType().name());
@@ -133,11 +126,10 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoDeceased() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleMissingInformation.missingInfoDeceased(ParagraphCode.MissInfoDeceased, caseData);
+                assembleMissingInformation.missingInfoDeceased(ParagraphCode.MissInfoDeceased, caseData);
         assertEquals("MissInfoDeceased", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00153.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());

@@ -32,8 +32,7 @@ public class Document {
         super();
     }
 
-    public Document(DocumentLink documentLink, DocumentType documentType, String documentFileName,
-                    LocalDate documentDateAdded, String documentGeneratedBy) {
+    public Document(DocumentLink documentLink, DocumentType documentType, String documentFileName, LocalDate documentDateAdded, String documentGeneratedBy) {
         this.documentLink = documentLink;
         this.documentType = documentType;
         this.documentFileName = documentFileName;

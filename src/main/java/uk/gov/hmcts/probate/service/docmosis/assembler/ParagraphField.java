@@ -13,10 +13,8 @@ public enum ParagraphField {
     ENT_ATTORNEY("EntAttorney", "Attorney and Executor cannot apply together", null),
     ENT_LEADING_APPLICATION("EntLeadingApp", "Leading Grant Application required", "personEntitled"),
     ENT_NO_TITLE("EntNoTitle", "No title", "personEntitledNoTitle"),
-    ENT_TWO_APPLICATIONS("EntTwoApps", "Two applications pending - name of applicant",
-        "nameOfApplicantOnOtherApplication"),
-    ENT_TWO_APPLICATIONS_REGISTRY("EntTwoAppsRegistry", "Two applications pending - name of registry",
-        "nameOfRegistry"),
+    ENT_TWO_APPLICATIONS("EntTwoApps", "Two applications pending - name of applicant", "nameOfApplicantOnOtherApplication"),
+    ENT_TWO_APPLICATIONS_REGISTRY("EntTwoAppsRegistry", "Two applications pending - name of registry", "nameOfRegistry"),
     ENT_FAMILY_TREE("EntFamTree", "Family tree", null),
     ENT_CONFIRM_DEATH("EntDeathPa", "Confirm death of 1st named executor", "firstNamedExec"),
     ENT_SUB_EXEC("EntSubExec", "Substituted executor applying when sole executor survives", "nameOfSoleExec"),
@@ -33,10 +31,8 @@ public enum ParagraphField {
     MISS_INFO_ALIAS("MissInfoAlias", "True name/Alias", null),
     MISS_INFO_RENUN_WILL("MissInfoRenunWill", "Renunciation (will)", null),
     MISS_INFO_GRANT_REQ("MissInfoGrantReq", "Why is a grant required?", null),
-    MISS_INFO_DECEASED_COUNTRY("MissInfoDeceased", "Deceased was resident in country of executed will - country",
-        "country"),
-    MISS_INFO_DECEASED_DATE("MissInfoDeceasedDate", "Deceased was resident in country of executed will - date",
-        "dateOfWill"),
+    MISS_INFO_DECEASED_COUNTRY("MissInfoDeceased", "Deceased was resident in country of executed will - country", "country"),
+    MISS_INFO_DECEASED_DATE("MissInfoDeceasedDate", "Deceased was resident in country of executed will - date", "dateOfWill"),
     INFO_CHANGE_APP("MissInfoChangeApp", "Name change of applicant", "applicantName"),
     INFO_DEATH_CERT("MissInfoDeathCert", "Death Certificate", "reason"),
     ANY_OTHER("WillAnyOther", "Any other wills", "limitation"),
@@ -71,8 +67,7 @@ public enum ParagraphField {
     SOT_PA1A_Q4("SotPa1aQ4", "PA1A Q4 incomplete/wrong", null),
     SOT_PA1A_Q5("SotPa1aQ5", "PA1A Q5 incomplete/wrong", null),
     SOT_PA1A_Q6("SotPa1aQ6", "PA1A Q6 incomplete/wrong", null),
-    WIT_EXECUTION("WitExecution", "Due execution of will affidavit - witness required",
-        "willOrCodicilExecutionAffidavit"),
+    WIT_EXECUTION("WitExecution", "Due execution of will affidavit - witness required", "willOrCodicilExecutionAffidavit"),
     WIT_SIGNATURE("WitSignature", "Signature of affidavit - witness required", "willOrCodicilSignatureAffidavit"),
     WIT_DATE("WitDate", "Date of will affidavit - witness required", "willOrCodicilDateOfAffidavit"),
     WIT_CONSENT("WitConsent", "Consent of proof of will", "personsPrejudiced"),
@@ -114,11 +109,9 @@ public enum ParagraphField {
     SOLS_AFFID_ALTERATIONS("AffidAlterations", "Alterations affidavit", null),
     SOLS_AFFID_DATE("AffidDate", "Date of execution affidavit", "reasonForAffidavitExecution"),
     SOLS_AFFID_SEARCH("AffidSearch", "Search affidavit", "reasonForAffidavitSearch"),
-    SOLS_AFFID_RECITAL("AffidMisRecital", "Mis-recital of date of will in codicil affidavit",
-        "reasonForAffidavitMissingRecital"),
+    SOLS_AFFID_RECITAL("AffidMisRecital", "Mis-recital of date of will in codicil affidavit", "reasonForAffidavitMissingRecital"),
     SOLS_REDEC_SOT_DATE("RedecSotDate", "Re-declare: incorrect or missing date of will in SOT - date", "date"),
-    SOLS_REDEC_SOT_WILL("RedecSotWill", "Re-declare: incorrect or missing date of will in SOT",
-        "willOrCodiclMissingDate"),
+    SOLS_REDEC_SOT_WILL("RedecSotWill", "Re-declare: incorrect or missing date of will in SOT", "willOrCodiclMissingDate"),
     SOLS_REDEC_CODICIL("RedecCodicil", "Re-declare: Codicil omitted", null),
     SOLS_REDEC_SOT_SIGNED("RedecSotSigned", "Re-declare: SOT not signed", null),
     SOLS_REDEC_DOMICILE("RedecDomcile", "Re-declare: Domicile", null),
@@ -139,10 +132,6 @@ public enum ParagraphField {
         this.fieldPlaceholderName = fieldPlaceholderName;
     }
 
-    public static List<ParagraphField> getAll() {
-        return Arrays.asList(ParagraphField.values());
-    }
-
     public String getFieldCode() {
         return fieldCode;
     }
@@ -153,5 +142,9 @@ public enum ParagraphField {
 
     public String getFieldPlaceholderName() {
         return fieldPlaceholderName;
+    }
+
+    public static List<ParagraphField> getAll() {
+        return Arrays.asList(ParagraphField.values());
     }
 }

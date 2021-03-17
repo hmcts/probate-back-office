@@ -20,6 +20,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GenericMapperService {
 
+    private ObjectMapper mapper;
+    private final RegistriesProperties registriesProperties;
+    private final FileSystemResourceService fileSystemResourceService;
+
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
@@ -33,9 +37,6 @@ public class GenericMapperService {
     private static final String COUNTY = "county";
     private static final String POSTCODE = "postCode";
     private static final String POST_TOWN = "postTown";
-    private final RegistriesProperties registriesProperties;
-    private final FileSystemResourceService fileSystemResourceService;
-    private ObjectMapper mapper;
 
     public Map<String, Object> addCaseData(CaseData caseData) {
         mapper = new ObjectMapper();
@@ -48,7 +49,7 @@ public class GenericMapperService {
     public Map<String, Object> addCaseDataWithRegistryProperties(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(
-            caseData.getRegistryLocation().toLowerCase());
+                caseData.getRegistryLocation().toLowerCase());
         Map<String, Object> placeholders = addCaseData(caseData);
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
@@ -81,7 +82,7 @@ public class GenericMapperService {
         Map<String, Object> mappedImages = new HashMap<>();
         for (Map.Entry entry : files.entrySet()) {
             mappedImages.put(entry.getKey().toString(),
-                "image:base64:" + fileSystemResourceService.getFileFromResourceAsString(entry.getValue().toString()));
+                    "image:base64:" + fileSystemResourceService.getFileFromResourceAsString(entry.getValue().toString()));
 
         }
         return mappedImages;

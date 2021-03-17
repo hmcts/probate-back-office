@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 

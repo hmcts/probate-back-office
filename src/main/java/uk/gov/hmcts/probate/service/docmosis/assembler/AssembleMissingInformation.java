@@ -26,13 +26,11 @@ public class AssembleMissingInformation {
     }
 
     public List<ParagraphDetail> missingInfoDeathCert(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase
-            .getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(CONDITIONS_DEATH_CERT));
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(CONDITIONS_DEATH_CERT));
     }
 
     public List<ParagraphDetail> missingInfoChangeOfApplicant(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode,
-            Arrays.asList(caseData.getPrimaryApplicantFullName()));
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(caseData.getPrimaryApplicantFullName()));
     }
 
     public List<ParagraphDetail> missingInfoDateOfRequest(ParagraphCode paragraphCode, CaseData caseData) {
@@ -55,11 +53,9 @@ public class AssembleMissingInformation {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             if (MISS_INFO_DECEASED_COUNTRY.name().equals(paragraphField.name())) {
-                paragraphDetails
-                    .add(assemblerBase.getSingleTextParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
+                paragraphDetails.add(assemblerBase.getSingleTextParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
             } else if (MISS_INFO_DECEASED_DATE.name().equals(paragraphField.name())) {
-                paragraphDetails
-                    .add(assemblerBase.getSingleDateParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
+                paragraphDetails.add(assemblerBase.getSingleDateParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
             }
         }
         return paragraphDetails;

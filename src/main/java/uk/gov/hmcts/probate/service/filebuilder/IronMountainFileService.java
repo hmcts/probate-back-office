@@ -21,8 +21,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class IronMountainFileService extends BaseFileService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-    private static final String DELIMITER = "|";
     private final TextFileBuilderService textFileBuilderService;
+    private static final String DELIMITER = "|";
     private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
@@ -58,18 +58,17 @@ public class IronMountainFileService extends BaseFileService {
             addGranteeDetails(fileData, createGrantee(data, 3));
             addGranteeDetails(fileData, createGrantee(data, 4));
             fileData.add(data.getApplicationType().name());
-            fileData
-                .add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
-                    data.getSolsSolicitorFirmName());
+            fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
+                data.getSolsSolicitorFirmName());
             addAddress(fileData, applicantAddress);
             fileData.add(getPoundValue(data.getIhtGrossValue()));
             fileData.add(getPoundValue(data.getIhtNetValue()));
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(registryLocationCheck(data.getRegistryLocation()));
             fileData.add("\n");
-        } catch (Exception e) {
+        } catch (Exception e){
             log.info("Exception preparing row data for Iron Mountain, caseId={}, exception={}", id, e.getMessage());
-            fileData.add("Exception proparing IM row data: " + e.getMessage());
+            fileData.add("Exception proparing IM row data: "+e.getMessage());
             fileData.add("\n");
         }
     }

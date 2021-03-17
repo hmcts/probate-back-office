@@ -5,12 +5,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -51,14 +53,11 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testSolicitorMissingMandatoryFieldsPA1P() {
         addAllMandatoryGORCitizenFields();
-        ocrFields.add(
-            OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
+        ocrFields.add(OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
-        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.",
-            warningsResponse.get(0));
+        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.", warningsResponse.get(0));
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(1));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.",
-            warningsResponse.get(2));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(2));
         assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(3));
         assertEquals(4, warningsResponse.size());
     }
@@ -67,8 +66,8 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFlagAsSolicitorCaseWarningPA1P() {
         addAllMandatoryGORSolicitorFields();
         assertEquals("The form has been flagged as a Solictor case.",
-            ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P
-            ).get(0));
+                ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P
+                ).get(0));
     }
 
     @Test
@@ -77,22 +76,19 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P);
         assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
         assertEquals(2, warningsResponse.size());
     }
 
     @Test
     public void testFlagSolsWillTypeReasonCaseWarningPA1P() {
         addAllMandatoryGORSolicitorFields();
-        ocrFields.add(
-            OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
+        ocrFields.add(OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P);
         assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
         assertEquals(2, warningsResponse.size());
     }
 
@@ -102,39 +98,36 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A);
         assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
         assertEquals(2, warningsResponse.size());
     }
 
     @Test
     public void testFlagSolsWillTypeReasonCaseWarningPA1A() {
         addAllMandatoryGORSolicitorFields();
-        ocrFields.add(
-            OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
+        ocrFields.add(OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A);
         assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
         assertEquals(2, warningsResponse.size());
     }
 
     @Test
     public void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
         addAllMandatoryGORCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "executorsNotApplying_0_notApplyingExecutorReason"));
+        ocrFields.remove(getOCRFieldByKey(ocrFields,"executorsNotApplying_0_notApplyingExecutorReason"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
         assertEquals("Executor 0 not applying reason (executorsNotApplying_0_notApplyingExecutorReason) is mandatory.",
-            results.get(0));
+                results.get(0));
     }
 
     @Test
     public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
         addAllMandatoryGORCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
+        ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
         assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
@@ -143,9 +136,8 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
         addAllMandatoryGORCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
-        ocrFields
-            .add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
+        ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
+        ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
         assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
@@ -154,7 +146,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
         addAllMandatoryIntestacyCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
+        ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
         assertEquals(1, results.size());
         assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
@@ -163,9 +155,8 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
         addAllMandatoryIntestacyCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
-        ocrFields
-            .add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
+        ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
+        ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
         assertEquals(1, results.size());
         assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
@@ -183,7 +174,7 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryGORCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).get(0));
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).get(0));
     }
 
     @Test
@@ -207,14 +198,11 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testSolicitorMissingMandatoryFieldsPA1A() {
         addAllMandatoryIntestacyCitizenFields();
-        ocrFields.add(
-            OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
+        ocrFields.add(OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
-        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.",
-            warningsResponse.get(0));
+        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.", warningsResponse.get(0));
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(1));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.",
-            warningsResponse.get(2));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(2));
         assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(3));
         assertEquals(4, warningsResponse.size());
     }
@@ -223,7 +211,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFlagAsSolicitorCaseWarningPA1A() {
         addAllMandatoryIntestacySolicitorFields();
         assertEquals("The form has been flagged as a Solictor case.",
-            ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A).get(0));
+                ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A).get(0));
     }
 
     @Test
@@ -238,7 +226,7 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryIntestacyCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).get(0));
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).get(0));
     }
 
     @Test
@@ -265,7 +253,7 @@ public class OCRToCCDMandatoryFieldTest {
         addAllCaveatCitizenMandatoryFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Caveator address postcode (caveatorAddressPostCode) is mandatory.",
-            ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).get(0));
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).get(0));
     }
 
     @Test
@@ -277,9 +265,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testSolicitorMissingMandatoryFieldsPA8A() {
         addAllCaveatCitizenMandatoryFields();
-        ocrFields.add(
-            OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm")
-                .build());
+        ocrFields.add(OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm").build());
         List<String> warningsResult = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A);
         assertEquals(5, warningsResult.size());
         assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(0));
@@ -300,10 +286,10 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testEmailFieldWarning() {
         final OCRField field = OCRField
-            .builder()
-            .name("primaryApplicantEmailAddress")
-            .value("invalidEmailAddress")
-            .build();
+                .builder()
+                .name("primaryApplicantEmailAddress")
+                .value("invalidEmailAddress")
+                .build();
         ocrFields.add(field);
         ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
         verify(ocrEmailValidator, times(1)).validateField(ocrFields);
@@ -311,21 +297,21 @@ public class OCRToCCDMandatoryFieldTest {
 
     private void addIHTMandatoryFields() {
         OCRField field1 = OCRField.builder()
-            .name("ihtFormCompletedOnline")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("ihtFormCompletedOnline")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField field2 = OCRField.builder()
-            .name("ihtFormId")
-            .value("C")
-            .description("IHT Form Id").build();
+                .name("ihtFormId")
+                .value("C")
+                .description("IHT Form Id").build();
         OCRField field3 = OCRField.builder()
-            .name("ihtGrossValue")
-            .value("220.30")
-            .description("Enter the gross value of the estate").build();
+                .name("ihtGrossValue")
+                .value("220.30")
+                .description("Enter the gross value of the estate").build();
         OCRField field4 = OCRField.builder()
-            .name("ihtNetValue")
-            .value("215.50")
-            .description("Enter the net value of the estate").build();
+                .name("ihtNetValue")
+                .value("215.50")
+                .description("Enter the net value of the estate").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -335,21 +321,21 @@ public class OCRToCCDMandatoryFieldTest {
 
     private void addPrimaryApplicantFields() {
         OCRField field1 = OCRField.builder()
-            .name("primaryApplicantForenames")
-            .value("Bob")
-            .description("Primary applicant forename").build();
+                .name("primaryApplicantForenames")
+                .value("Bob")
+                .description("Primary applicant forename").build();
         OCRField field2 = OCRField.builder()
-            .name("primaryApplicantSurname")
-            .value("Smith")
-            .description("Primary applicant surname").build();
+                .name("primaryApplicantSurname")
+                .value("Smith")
+                .description("Primary applicant surname").build();
         OCRField field3 = OCRField.builder()
-            .name("primaryApplicantAddressLine1")
-            .value("123 Alphabet Street")
-            .description("Primary applicant Building & Street").build();
+                .name("primaryApplicantAddressLine1")
+                .value("123 Alphabet Street")
+                .description("Primary applicant Building & Street").build();
         OCRField field4 = OCRField.builder()
-            .name("primaryApplicantAddressPostCode")
-            .value("NW1 5LE")
-            .description("Primary applicant postcode").build();
+                .name("primaryApplicantAddressPostCode")
+                .value("NW1 5LE")
+                .description("Primary applicant postcode").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -359,37 +345,37 @@ public class OCRToCCDMandatoryFieldTest {
 
     private void addDeceasedMandatoryFields() {
         OCRField field1 = OCRField.builder()
-            .name("deceasedForenames")
-            .value("John")
-            .description("Deceased forename").build();
+                .name("deceasedForenames")
+                .value("John")
+                .description("Deceased forename").build();
         OCRField field2 = OCRField.builder()
-            .name("deceasedSurname")
-            .value("Johnson")
-            .description("Deceased surname").build();
+                .name("deceasedSurname")
+                .value("Johnson")
+                .description("Deceased surname").build();
         OCRField field3 = OCRField.builder()
-            .name("deceasedAddressLine1")
-            .value("Smith")
-            .description("Deceased address").build();
+                .name("deceasedAddressLine1")
+                .value("Smith")
+                .description("Deceased address").build();
         OCRField field4 = OCRField.builder()
-            .name("deceasedAddressPostCode")
-            .value("NW1 6LE")
-            .description("Deceased postcode").build();
+                .name("deceasedAddressPostCode")
+                .value("NW1 6LE")
+                .description("Deceased postcode").build();
         OCRField field5 = OCRField.builder()
-            .name("deceasedDateOfBirth")
-            .value("1900-01-01")
-            .description("Deceased DOB").build();
+                .name("deceasedDateOfBirth")
+                .value("1900-01-01")
+                .description("Deceased DOB").build();
         OCRField field6 = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("2000-01-01")
-            .description("Deceased DOD").build();
+                .name("deceasedDateOfDeath")
+                .value("2000-01-01")
+                .description("Deceased DOD").build();
         OCRField field7 = OCRField.builder()
-            .name("deceasedAnyOtherNames")
-            .value("2000-01-01")
-            .description("Jack Johnson").build();
+                .name("deceasedAnyOtherNames")
+                .value("2000-01-01")
+                .description("Jack Johnson").build();
         OCRField field8 = OCRField.builder()
-            .name("deceasedDomicileInEngWales")
-            .value("true")
-            .description("Deceased Domicile In England or Wales").build();
+                .name("deceasedDomicileInEngWales")
+                .value("true")
+                .description("Deceased Domicile In England or Wales").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -407,17 +393,17 @@ public class OCRToCCDMandatoryFieldTest {
         addPrimaryApplicantFields();
         addExecutorNotApplyingFields();
         OCRField field1 = OCRField.builder()
-            .name("primaryApplicantHasAlias")
-            .value("true")
-            .description("Primary applicant has alias").build();
+                .name("primaryApplicantHasAlias")
+                .value("true")
+                .description("Primary applicant has alias").build();
         OCRField field2 = OCRField.builder()
-            .name("primaryApplicantAlias")
-            .value("Jack Johnson")
-            .description("Primary applicant alias name").build();
+                .name("primaryApplicantAlias")
+                .value("Jack Johnson")
+                .description("Primary applicant alias name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorIsApplying")
-            .value("False")
-            .description("Solicitor Applying").build();
+                .name("solsSolicitorIsApplying")
+                .value("False")
+                .description("Solicitor Applying").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -429,34 +415,34 @@ public class OCRToCCDMandatoryFieldTest {
         addDeceasedMandatoryFields();
         addPrimaryApplicantFields();
         OCRField field1 = OCRField.builder()
-            .name("solsSolicitorIsApplying")
-            .value("False")
-            .description("Solicitor Applying").build();
+                .name("solsSolicitorIsApplying")
+                .value("False")
+                .description("Solicitor Applying").build();
         ocrFields.add(field1);
     }
 
     private void addAllMandatoryGORSolicitorFields() {
         addAllMandatoryGORCitizenFields();
         OCRField field1 = OCRField.builder()
-            .name("solsSolicitorIsApplying")
-            .value("True")
-            .description("Solicitor Applying").build();
+                .name("solsSolicitorIsApplying")
+                .value("True")
+                .description("Solicitor Applying").build();
         OCRField field2 = OCRField.builder()
-            .name("solsSolicitorRepresentativeName")
-            .value("Mark Jones")
-            .description("Solicitor Representative Name").build();
+                .name("solsSolicitorRepresentativeName")
+                .value("Mark Jones")
+                .description("Solicitor Representative Name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorFirmName")
-            .value("MJ Solicitors")
-            .description("Solicitor Firm Name").build();
+                .name("solsSolicitorFirmName")
+                .value("MJ Solicitors")
+                .description("Solicitor Firm Name").build();
         OCRField field4 = OCRField.builder()
-            .name("solsSolicitorAppReference")
-            .value("SOLS123456")
-            .description("Solicitor App Reference").build();
+                .name("solsSolicitorAppReference")
+                .value("SOLS123456")
+                .description("Solicitor App Reference").build();
         OCRField field5 = OCRField.builder()
-            .name("solsSolicitorEmail")
-            .value("solicitor@probate-test.com")
-            .description("Solicitor Email Address").build();
+                .name("solsSolicitorEmail")
+                .value("solicitor@probate-test.com")
+                .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -468,25 +454,25 @@ public class OCRToCCDMandatoryFieldTest {
     private void addAllMandatoryIntestacySolicitorFields() {
         addAllMandatoryIntestacyCitizenFields();
         OCRField field1 = OCRField.builder()
-            .name("solsSolicitorIsApplying")
-            .value("True")
-            .description("Solicitor Applying").build();
+                .name("solsSolicitorIsApplying")
+                .value("True")
+                .description("Solicitor Applying").build();
         OCRField field2 = OCRField.builder()
-            .name("solsSolicitorRepresentativeName")
-            .value("Mark Jones")
-            .description("Solicitor Representative Name").build();
+                .name("solsSolicitorRepresentativeName")
+                .value("Mark Jones")
+                .description("Solicitor Representative Name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorFirmName")
-            .value("MJ Solicitors")
-            .description("Solicitor Firm Name").build();
+                .name("solsSolicitorFirmName")
+                .value("MJ Solicitors")
+                .description("Solicitor Firm Name").build();
         OCRField field4 = OCRField.builder()
-            .name("solsSolicitorAppReference")
-            .value("SOLS123456")
-            .description("Solicitor App Reference").build();
+                .name("solsSolicitorAppReference")
+                .value("SOLS123456")
+                .description("Solicitor App Reference").build();
         OCRField field5 = OCRField.builder()
-            .name("solsSolicitorEmail")
-            .value("solicitor@probate-test.com")
-            .description("Solicitor Email Address").build();
+                .name("solsSolicitorEmail")
+                .value("solicitor@probate-test.com")
+                .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -497,33 +483,33 @@ public class OCRToCCDMandatoryFieldTest {
 
     private void addAllCaveatCitizenMandatoryFields() {
         OCRField field1 = OCRField.builder()
-            .name("deceasedForenames")
-            .value("John")
-            .description("Deceased forename").build();
+                .name("deceasedForenames")
+                .value("John")
+                .description("Deceased forename").build();
         OCRField field2 = OCRField.builder()
-            .name("deceasedSurname")
-            .value("Johnson")
-            .description("Deceased surname").build();
+                .name("deceasedSurname")
+                .value("Johnson")
+                .description("Deceased surname").build();
         OCRField field3 = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("2000-01-01")
-            .description("Deceased DOD").build();
+                .name("deceasedDateOfDeath")
+                .value("2000-01-01")
+                .description("Deceased DOD").build();
         OCRField field4 = OCRField.builder()
-            .name("caveatorForenames")
-            .value("Montriah")
-            .description("Forenames(s)").build();
+                .name("caveatorForenames")
+                .value("Montriah")
+                .description("Forenames(s)").build();
         OCRField field5 = OCRField.builder()
-            .name("caveatorSurnames")
-            .value("Montague")
-            .description("Surname(s)").build();
+                .name("caveatorSurnames")
+                .value("Montague")
+                .description("Surname(s)").build();
         OCRField field6 = OCRField.builder()
-            .name("caveatorAddressLine1")
-            .value("123 Montague Street")
-            .description("Caveator address building and street").build();
+                .name("caveatorAddressLine1")
+                .value("123 Montague Street")
+                .description("Caveator address building and street").build();
         OCRField field7 = OCRField.builder()
-            .name("caveatorAddressPostCode")
-            .value("NW1 5LE")
-            .description("Caveator address postcode").build();
+                .name("caveatorAddressPostCode")
+                .value("NW1 5LE")
+                .description("Caveator address postcode").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -537,29 +523,29 @@ public class OCRToCCDMandatoryFieldTest {
     private void addAllCaveatSolcitorMandatoryFields() {
         addAllCaveatCitizenMandatoryFields();
         OCRField field1 = OCRField.builder()
-            .name("solsSolicitorRepresentativeName")
-            .value("Mark Jones")
-            .description("Solicitor Representative Name").build();
+                .name("solsSolicitorRepresentativeName")
+                .value("Mark Jones")
+                .description("Solicitor Representative Name").build();
         OCRField field2 = OCRField.builder()
-            .name("solsSolicitorFirmName")
-            .value("MJ Solicitors")
-            .description("Solicitor Firm Name").build();
+                .name("solsSolicitorFirmName")
+                .value("MJ Solicitors")
+                .description("Solicitor Firm Name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorAppReference")
-            .value("SOLS123456")
-            .description("Solicitor App Reference").build();
+                .name("solsSolicitorAppReference")
+                .value("SOLS123456")
+                .description("Solicitor App Reference").build();
         OCRField field4 = OCRField.builder()
-            .name("solsSolicitorAddressLine1")
-            .value("22 Palmer Street")
-            .description("Solicitor address building and street").build();
+                .name("solsSolicitorAddressLine1")
+                .value("22 Palmer Street")
+                .description("Solicitor address building and street").build();
         OCRField field5 = OCRField.builder()
-            .name("solsSolicitorAddressPostCode")
-            .value("NW1 5LA")
-            .description("Solicitor address postcode").build();
+                .name("solsSolicitorAddressPostCode")
+                .value("NW1 5LA")
+                .description("Solicitor address postcode").build();
         OCRField field6 = OCRField.builder()
-            .name("solsSolicitorEmail")
-            .value("solicitor@probate-test.com")
-            .description("Solicitor Email Address").build();
+                .name("solsSolicitorEmail")
+                .value("solicitor@probate-test.com")
+                .description("Solicitor Email Address").build();
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
@@ -571,13 +557,13 @@ public class OCRToCCDMandatoryFieldTest {
 
     private void addExecutorNotApplyingFields() {
         OCRField field1 = OCRField.builder()
-            .name("executorsNotApplying_0_notApplyingExecutorName")
-            .value("Peter Smith")
-            .description("Executor not applying name").build();
+                .name("executorsNotApplying_0_notApplyingExecutorName")
+                .value("Peter Smith")
+                .description("Executor not applying name").build();
         OCRField field2 = OCRField.builder()
-            .name("executorsNotApplying_0_notApplyingExecutorReason")
-            .value("Already wealthy")
-            .description("Executor not applying reason").build();
+                .name("executorsNotApplying_0_notApplyingExecutorReason")
+                .value("Already wealthy")
+                .description("Executor not applying reason").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);

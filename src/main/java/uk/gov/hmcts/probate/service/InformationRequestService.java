@@ -19,12 +19,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InformationRequestService {
     private final NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
-    private final InformationRequestCorrespondenceService informationRequestCorrespondenceService;
-    private final CallbackResponseTransformer callbackResponseTransformer;
-    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+
     private List<Document> documents;
     private List<Document> letterIdDocuments;
     private List<String> letterIds;
+
+    private final InformationRequestCorrespondenceService informationRequestCorrespondenceService;
+    private final CallbackResponseTransformer callbackResponseTransformer;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
 
     public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest) {
         documents = new LinkedList<>();
@@ -33,18 +35,15 @@ public class InformationRequestService {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
             notificationExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
-            documents =
-                informationRequestCorrespondenceService.emailInformationRequest(callbackRequest.getCaseDetails());
+            documents = informationRequestCorrespondenceService.emailInformationRequest(callbackRequest.getCaseDetails());
             //TODO: uncomment code when letters are being used again.
 
             // } else {
             //    callbackRequest.getCaseDetails().getData().getExecutorsApplyingNotifications().forEach(executor -> {
-            //        documents.addAll(informationRequestCorrespondenceService.generateLetterWithCoversheet
-            //        (callbackRequest,
+            //        documents.addAll(informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
             //                executor.getValue()));
             //        if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
-            //            letterIdDocuments = informationRequestCorrespondenceService.generateLetterWithCoversheet
-            //            (callbackRequest,
+            //            letterIdDocuments = informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
             //                    executor.getValue());
             //            letterIds.addAll(informationRequestCorrespondenceService
             //                    .getLetterId(letterIdDocuments, callbackRequest));

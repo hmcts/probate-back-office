@@ -48,43 +48,42 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     public void setUpClass() throws Exception {
         objectMapper = new ObjectMapper();
         ocrFields = ExceptionRecordOCRFields.builder()
-            .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
-            .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
-            .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_1_INOUT)
-            .build();
+                .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
+                .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
+                .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_1_INOUT)
+                .build();
 
         ocrFieldsMultiple = ExceptionRecordOCRFields.builder()
-            .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
-            .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
-            .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_1_INOUT)
-            .adoptiveRelatives1name(ADOPTED_RELATIVE_2_NAME)
-            .adoptiveRelatives1relationship(ADOPTED_RELATIVE_2_RELATIONSHIP)
-            .adoptiveRelatives1adoptedInOrOut(ADOPTED_RELATIVE_2_INOUT)
-            .adoptiveRelatives2name(ADOPTED_RELATIVE_3_NAME)
-            .adoptiveRelatives2relationship(ADOPTED_RELATIVE_3_RELATIONSHIP)
-            .adoptiveRelatives2adoptedInOrOut(ADOPTED_RELATIVE_3_INOUT)
-            .adoptiveRelatives3name(ADOPTED_RELATIVE_4_NAME)
-            .adoptiveRelatives3relationship(ADOPTED_RELATIVE_4_RELATIONSHIP)
-            .adoptiveRelatives3adoptedInOrOut(ADOPTED_RELATIVE_4_INOUT)
-            .adoptiveRelatives4name(ADOPTED_RELATIVE_5_NAME)
-            .adoptiveRelatives4relationship(ADOPTED_RELATIVE_5_RELATIONSHIP)
-            .adoptiveRelatives4adoptedInOrOut(ADOPTED_RELATIVE_5_INOUT)
-            .adoptiveRelatives5name(ADOPTED_RELATIVE_6_NAME)
-            .adoptiveRelatives5relationship(ADOPTED_RELATIVE_6_RELATIONSHIP)
-            .adoptiveRelatives5adoptedInOrOut(ADOPTED_RELATIVE_6_INOUT)
-            .build();
+                .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
+                .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
+                .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_1_INOUT)
+                .adoptiveRelatives1name(ADOPTED_RELATIVE_2_NAME)
+                .adoptiveRelatives1relationship(ADOPTED_RELATIVE_2_RELATIONSHIP)
+                .adoptiveRelatives1adoptedInOrOut(ADOPTED_RELATIVE_2_INOUT)
+                .adoptiveRelatives2name(ADOPTED_RELATIVE_3_NAME)
+                .adoptiveRelatives2relationship(ADOPTED_RELATIVE_3_RELATIONSHIP)
+                .adoptiveRelatives2adoptedInOrOut(ADOPTED_RELATIVE_3_INOUT)
+                .adoptiveRelatives3name(ADOPTED_RELATIVE_4_NAME)
+                .adoptiveRelatives3relationship(ADOPTED_RELATIVE_4_RELATIONSHIP)
+                .adoptiveRelatives3adoptedInOrOut(ADOPTED_RELATIVE_4_INOUT)
+                .adoptiveRelatives4name(ADOPTED_RELATIVE_5_NAME)
+                .adoptiveRelatives4relationship(ADOPTED_RELATIVE_5_RELATIONSHIP)
+                .adoptiveRelatives4adoptedInOrOut(ADOPTED_RELATIVE_5_INOUT)
+                .adoptiveRelatives5name(ADOPTED_RELATIVE_6_NAME)
+                .adoptiveRelatives5relationship(ADOPTED_RELATIVE_6_RELATIONSHIP)
+                .adoptiveRelatives5adoptedInOrOut(ADOPTED_RELATIVE_6_INOUT)
+                .build();
 
         ocrFieldsInOutError = ExceptionRecordOCRFields.builder()
-            .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
-            .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
-            .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_INOUT_ERROR)
-            .build();
+                .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
+                .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
+                .adoptiveRelatives0adoptedInOrOut(ADOPTED_RELATIVE_INOUT_ERROR)
+                .build();
     }
 
     @Test
     public void testGetAdoptedRelatives() {
-        List<CollectionMember<AdoptiveRelative>> response =
-            ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFields);
+        List<CollectionMember<AdoptiveRelative>> response = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFields);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_1_RELATIONSHIP, response.get(0).getValue().getRelationship());
         assertEquals(InOut.IN, response.get(0).getValue().getAdoptedInOrOut());
@@ -94,7 +93,7 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     @Test
     public void testGetMultipleAdoptedRelatives() throws JsonProcessingException {
         List<CollectionMember<AdoptiveRelative>> response
-            = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsMultiple);
+                = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsMultiple);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_1_RELATIONSHIP, response.get(0).getValue().getRelationship());
         assertEquals(InOut.IN, response.get(0).getValue().getAdoptedInOrOut());
@@ -125,6 +124,6 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     @Test(expected = OCRMappingException.class)
     public void testGetAdoptedRelativesWithInvalidInOutValue() {
         List<CollectionMember<AdoptiveRelative>> response
-            = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
+                = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
     }
 }

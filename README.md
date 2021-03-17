@@ -246,10 +246,6 @@ For mac
 ```bash
    ./ccdImports/conversionScripts/createAllXLS.sh docker.for.mac.localhost:4104
 ```
-For Windows 10
-```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.win.localhost:4104
-```
 
 For linux (replace ip with your own ip)
 ```bash
@@ -291,28 +287,7 @@ Add keywords to fees database
 ```bash
     ./bin/fees-add-keyword.sh
 ```
-## Running Back Office Puppeteer End To End Tests
-The tests are located at src/test/end-to-end and must be maintainend and run, as they are run as part of the nightly Jenkins CI build.
-Configuration is set by default to be able to run in an npx created local environment without amendment. 
 
-Config is by environment variables with defaults if not present. The .env file does not contain environment variables, 
-and so default values will be used for local run. These can be found in src/test/config.js, and are used by
-codecept config file src/test/end-to-end/codecept.conf.js.
-
-The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
-yarn script test:fullfunctional (not to be confused with functional tests).
-
-To see if it's running ok, change config value TestShowBrowserWindow in config.js from false to true and the browser will 
-show, allowing you to see what's going on.  
- 
-The default test configuration runs all end to end tests, however, often we just want to run the ones that are failing.
-As a step towards running an individual test, a new env var has been added for local use: process.env.E2E_TEST_PATH
-(see config.js).
-
-This defaults to './paths/**/*.js', which the Jenkins nightly build will use. 
-However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area.
-
- 
 ## Complete setup for local FE + e2e development
 ### probate-frontend
 set following in default.yml

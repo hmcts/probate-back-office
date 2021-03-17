@@ -27,16 +27,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LegacyImportServiceImpl implements LegacyImportService {
 
-    public static final String DNM_IND_YES = "Y";
     private static final String DO_IMPORT_YES = "YES";
+    public static final String DNM_IND_YES = "Y";
+
     private final ProbateManService probateManService;
     private final Map<ProbateManType, JpaRepository> repositories;
 
     @Override
     public boolean areLegacyRowsValidToImport(List<CollectionMember<CaseMatch>> rows) {
         List<CaseMatch> importableRows = rows.stream().map(CollectionMember::getValue)
-            .filter(this::canImportRow)
-            .collect(Collectors.toList());
+                .filter(this::canImportRow)
+                .collect(Collectors.toList());
 
         return importableRows.size() < 2;
     }
@@ -44,8 +45,8 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     @Override
     public List<CaseMatch> importLegacyRows(List<CollectionMember<CaseMatch>> rows) {
         List<CaseMatch> importableRows = rows.stream().map(CollectionMember::getValue)
-            .filter(this::canImportRow)
-            .collect(Collectors.toList());
+                .filter(this::canImportRow)
+                .collect(Collectors.toList());
 
         List<CaseMatch> updatedRows = new ArrayList<>();
         for (CaseMatch caseMatch : importableRows) {
@@ -71,8 +72,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
             updateLegacyModel(id, probateManType, ccdCaseId, repository, probateManModelOptional.get());
             updateCaseMatch(row, probateManModelOptional.get());
         } else {
-            log.info(
-                "Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
+            log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }
         return row;
     }
@@ -83,7 +83,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
         } catch (Exception e) {
             log.info("There was a problem saving the case for legacyId=" + legacyId + ": " + e.getMessage());
             return probateManService.retrieveCCDCase(probateManType.getCcdCaseType().getName(), legacyId)
-                .orElseThrow(() -> new RuntimeException(e));
+                    .orElseThrow(() -> new RuntimeException(e));
         }
     }
 
@@ -103,14 +103,14 @@ public class LegacyImportServiceImpl implements LegacyImportService {
 
     private boolean canImportRow(CaseMatch caseMatch) {
         return DO_IMPORT_YES.equalsIgnoreCase(caseMatch.getDoImport())
-            && hasCaseReference(caseMatch)
-            && !StringUtils.isEmpty(caseMatch.getLegacyCaseViewUrl());
+                && hasCaseReference(caseMatch)
+                && !StringUtils.isEmpty(caseMatch.getLegacyCaseViewUrl());
     }
 
     private boolean hasCaseReference(CaseMatch row) {
         return row.getCaseLink() == null
-            || row.getCaseLink().getCaseReference() == null
-            || row.getCaseLink().getCaseReference().equals("");
+                || row.getCaseLink().getCaseReference() == null
+                || row.getCaseLink().getCaseReference().equals("");
     }
 
     private String getLegacyTableId(String legacyCaseViewUrl) {

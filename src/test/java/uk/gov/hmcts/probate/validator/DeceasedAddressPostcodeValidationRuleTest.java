@@ -47,7 +47,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
         when(ccdData.getDeceased()).thenReturn(deceasedMock);
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedPostcodeIsNull")))
-            .thenReturn(executorPostcodeIsNullError);
+                .thenReturn(executorPostcodeIsNullError);
     }
 
     @Test
@@ -106,8 +106,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
 
     @Test
     public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
-        when(deceasedMock.getAddress())
-            .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
+        when(deceasedMock.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 

@@ -11,17 +11,15 @@ public class AssembleForeignDomicileTest extends AssembleTestBase {
     @Test
     public void shouldPopulateAffidavitOfLaw() {
 
-        List<ParagraphDetail> response =
-            assembleForeignDomicile.affidavitOfLaw(ParagraphCode.ForDomAffidavit, caseData);
+        List<ParagraphDetail> response = assembleForeignDomicile.affidavitOfLaw(ParagraphCode.ForDomAffidavit, caseData);
         assertAllForStaticField(response, "ForDomAffidavit", "FL-PRB-GNO-ENG-00100.docx",
-            "Foreign domicile affidavit of law");
+                "Foreign domicile affidavit of law");
     }
 
     @Test
     public void shouldPopulateInitialEnquiry() {
-        List<ParagraphDetail> response =
-            assembleForeignDomicile.initialEnquiry(ParagraphCode.ForDomInitialEnq, caseData);
+        List<ParagraphDetail> response = assembleForeignDomicile.initialEnquiry(ParagraphCode.ForDomInitialEnq, caseData);
         assertAllForStaticField(response, "ForDomInitial", "FL-PRB-GNO-ENG-00134.docx",
-            "Foreign domicile - initial enquiry");
+                "Foreign domicile - initial enquiry");
     }
 }

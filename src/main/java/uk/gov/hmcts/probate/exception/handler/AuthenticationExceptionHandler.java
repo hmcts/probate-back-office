@@ -18,8 +18,7 @@ import java.io.Serializable;
 public class AuthenticationExceptionHandler implements AuthenticationEntryPoint, Serializable {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
-        throws IOException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         AuthError authError = new AuthError(HttpStatus.FORBIDDEN.value(), e.getMessage());
 
         ObjectMapper mapper = new ObjectMapper();

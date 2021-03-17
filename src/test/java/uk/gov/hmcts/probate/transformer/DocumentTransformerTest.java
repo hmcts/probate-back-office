@@ -172,8 +172,7 @@ public class DocumentTransformerTest {
     public void shouldAddDigitalGrantDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_DRAFT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -182,8 +181,7 @@ public class DocumentTransformerTest {
     public void shouldAddDigitalGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_REISSUE_DRAFT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -192,8 +190,7 @@ public class DocumentTransformerTest {
     public void shouldAddDigitalGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_REISSUE).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(DIGITAL_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -202,8 +199,7 @@ public class DocumentTransformerTest {
     public void shouldAddIntestacyGrantToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -212,8 +208,7 @@ public class DocumentTransformerTest {
     public void shouldAddIntestacyGrantDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_DRAFT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -222,9 +217,7 @@ public class DocumentTransformerTest {
     public void shouldAddIntestacyGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE_DRAFT).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -233,8 +226,7 @@ public class DocumentTransformerTest {
     public void shouldAddIntestacyGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -243,8 +235,7 @@ public class DocumentTransformerTest {
     public void shouldAddAdmonWillGrantToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -253,8 +244,7 @@ public class DocumentTransformerTest {
     public void shouldAddAdmonWillGrantDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -263,9 +253,7 @@ public class DocumentTransformerTest {
     public void shouldAddAdmonWillGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_REISSUE_DRAFT).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -274,8 +262,7 @@ public class DocumentTransformerTest {
     public void shouldAddAdmonWillGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_REISSUE).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -284,9 +271,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshDigitalGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE_DRAFT).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -295,8 +280,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshDigitalGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -305,9 +289,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshIntestacyGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE_DRAFT).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -316,9 +298,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshIntestacyGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -327,9 +307,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshAdmonWillGrantReissueDraftToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -338,9 +316,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshAdmonWillGrantReissueToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build(),
-                false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -349,8 +325,7 @@ public class DocumentTransformerTest {
     public void shouldAddSOTRequestToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(SOT_INFORMATION_REQUEST).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(SOT_INFORMATION_REQUEST).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -377,8 +352,7 @@ public class DocumentTransformerTest {
     public void shouldAddCaveatStoppedToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(CAVEAT_STOPPED).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(CAVEAT_STOPPED).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().size());
     }
@@ -408,8 +382,7 @@ public class DocumentTransformerTest {
     public void shouldAddCaveatCoversheetEmailToGeneratedDocuments() {
         assertTrue(caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(caveatCallbackRequest, Document.builder().documentType(CAVEAT_COVERSHEET).build());
+        documentTransformer.addDocument(caveatCallbackRequest, Document.builder().documentType(CAVEAT_COVERSHEET).build());
 
         assertEquals(1, caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated().size());
     }
@@ -427,8 +400,7 @@ public class DocumentTransformerTest {
     public void shouldAddSOTToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(STATEMENT_OF_TRUTH).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(STATEMENT_OF_TRUTH).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
@@ -437,8 +409,7 @@ public class DocumentTransformerTest {
     public void shouldAddWelshSOTToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(WELSH_STATEMENT_OF_TRUTH).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_STATEMENT_OF_TRUTH).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
@@ -447,8 +418,7 @@ public class DocumentTransformerTest {
     public void shouldAddLegalStatementGopToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_PROBATE).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_PROBATE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
@@ -457,8 +427,7 @@ public class DocumentTransformerTest {
     public void shouldAddLegalStatementAdmonToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_ADMON).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_ADMON).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
@@ -467,8 +436,7 @@ public class DocumentTransformerTest {
     public void shouldAddLegalStatementIntestacyToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
@@ -477,8 +445,7 @@ public class DocumentTransformerTest {
     public void shouldAddAssembleLetterToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(ASSEMBLED_LETTER).build(), false);
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ASSEMBLED_LETTER).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }

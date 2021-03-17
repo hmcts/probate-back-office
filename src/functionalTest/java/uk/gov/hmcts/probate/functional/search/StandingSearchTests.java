@@ -18,28 +18,27 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class StandingSearchTests extends IntegrationTestBase {
 
-    public static final String STANDING_SEARCH_CREATE = "/standing-search/create";
     private static final int MONTHS_TO_ADD = 6;
     private static final String DEFAULT_APPLICATION_TYPE = "Personal";
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+    public static final String STANDING_SEARCH_CREATE = "/standing-search/create";
 
     @Test
-    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() {
+    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode(){
         Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("/search/standingSearchPayload.json"))
-            .when().post(STANDING_SEARCH_CREATE)
-            .andReturn();
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("/search/standingSearchPayload.json"))
+                .when().post(STANDING_SEARCH_CREATE)
+                .andReturn();
 
         response.then().assertThat().statusCode(200);
 
         JsonPath jsonPath = JsonPath.from(response.prettyPrint());
-        assertThat(ofPattern("yyyy-MM-dd").format(now().plusMonths(MONTHS_TO_ADD)),
-            is(equalTo(jsonPath.get("data.expiryDate"))));
+        assertThat(ofPattern("yyyy-MM-dd").format(now().plusMonths(MONTHS_TO_ADD)), is(equalTo(jsonPath.get("data.expiryDate"))));
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
-        assertThat(jsonPath.get("data.registryLocation"), equalTo("Manchester"));
-        assertThat(jsonPath.get("data.applicationType"), equalTo("Solicitor"));
+        assertThat(jsonPath.get("data.registryLocation"),equalTo("Manchester"));
+        assertThat(jsonPath.get("data.applicationType"),equalTo("Solicitor"));
     }
 
     @Test
@@ -50,11 +49,11 @@ public class StandingSearchTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replaceFirst("\"applicationType\": \"Solicitor\",", "");
         //ACT
         Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(jsonAsString)
-            .when().post(STANDING_SEARCH_CREATE)
-            .andReturn();
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonAsString)
+                .when().post(STANDING_SEARCH_CREATE)
+                .andReturn();
         //ASSERT
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.prettyPrint());

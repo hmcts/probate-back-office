@@ -1,11 +1,19 @@
 package uk.gov.hmcts.probate.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
+import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
+
+import java.math.BigDecimal;
 
 @Configuration
 public class ApplicationConfiguration {

@@ -23,6 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class GrantApplicationMapperTest {
 
+    @Value("${ccd.gateway.host}")
+    private String printServiceHost;
+
+    @Value("${printservice.legacyPath}")
+    private String printServiceLegacyPath;
+
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy LEGACY APPLICATION";
     private static final String PRIMARY_APPLICANT_ADDRESS = "PaAddL1, PaAddL2, PaAddPC";
@@ -39,14 +45,12 @@ public class GrantApplicationMapperTest {
     private static final Long NET_ESTATE = 9000L;
     private static final Long NET_ESTATE_TRANSFORMED = 900000L;
     private static final String SOLICITOR_REFERENCE = "SolRef1";
-    @MockBean
-    AppInsights appInsights;
-    @Value("${ccd.gateway.host}")
-    private String printServiceHost;
-    @Value("${printservice.legacyPath}")
-    private String printServiceLegacyPath;
+
     @Autowired
     private GrantApplicationMapper grantApplicationMapper;
+
+    @MockBean
+    AppInsights appInsights;
 
     @Test
     public void shouldMapToCcdDataForPersonalApplication() {
@@ -94,8 +98,7 @@ public class GrantApplicationMapperTest {
 
     private void assertPaSpecificDetails(GrantOfRepresentationData grantApplicationData) {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
-        assertThat(grantApplicationData.getPrimaryApplicantAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
+        assertThat(grantApplicationData.getPrimaryApplicantAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
         assertThat(grantApplicationData.getPrimaryApplicantForenames()).isEqualTo(PRIMARY_APPLICANT_FORENAMES);
         assertThat(grantApplicationData.getPrimaryApplicantSurname()).isEqualTo(PRIMARY_APPLICANT_SURNAME);
     }
@@ -103,23 +106,20 @@ public class GrantApplicationMapperTest {
     private void assertSolsSpecificDetails(GrantOfRepresentationData grantApplicationData) {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getSolsSolicitorAppReference()).isEqualTo(SOLICITOR_REFERENCE);
-        assertThat(grantApplicationData.getSolsSolicitorAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
+        assertThat(grantApplicationData.getSolsSolicitorAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
         assertThat(grantApplicationData.getSolsSolicitorFirmName())
-            .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
+                .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
     }
 
     private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
-        String legacyCaseViewUrl =
-            String.format(printServiceHost + printServiceLegacyPath, ProbateManType.GRANT_APPLICATION, ID);
+        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.GRANT_APPLICATION, ID);
         Address expectedDeceasedAddress = buildAddress(DECEASED_ADDRESS);
 
         assertThat(grantApplicationData.getDeceasedForenames()).isEqualTo(DECEASED_FORENAMES);
         assertThat(grantApplicationData.getDeceasedSurname()).isEqualTo(DECEASED_SURNAME);
         assertThat(grantApplicationData.getDeceasedDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
         assertThat(grantApplicationData.getDeceasedDateOfDeath()).isEqualTo(DATE_OF_DEATH);
-        assertThat(grantApplicationData.getDeceasedAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
+        assertThat(grantApplicationData.getDeceasedAddress()).isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
         assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);
@@ -151,8 +151,8 @@ public class GrantApplicationMapperTest {
 
     private Address buildAddress(String addressLine1) {
         return Address.builder()
-            .addressLine1(addressLine1)
-            .build();
+                .addressLine1(addressLine1)
+                .build();
     }
 
 }

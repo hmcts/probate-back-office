@@ -23,7 +23,7 @@ public class SolicitorExecutorService {
 
 
     public List<CollectionMember<AdditionalExecutorApplying>> updateSolicitorApplyingExecutor(
-        CaseData caseData, List<CollectionMember<AdditionalExecutorApplying>> execs) {
+            CaseData caseData, List<CollectionMember<AdditionalExecutorApplying>> execs) {
 
         List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class SolicitorExecutorService {
     }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> updateSolicitorNotApplyingExecutor(
-        CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
+            CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> updatedExecs = new ArrayList<>();
 
@@ -53,51 +53,46 @@ public class SolicitorExecutorService {
     }
 
     public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorAsApplyingExecutor(
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
 
-        if (execsApplying.isEmpty()) {
-            return execsApplying;
-        }
+        if (execsApplying.isEmpty()) return execsApplying;
 
         return execsApplying.stream()
-            .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
-            .collect(Collectors.toList());
+                .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
+                .collect(Collectors.toList());
     }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorAsNotApplyingExecutor(
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
+            List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
 
-        if (execsNotApplying.isEmpty()) {
-            return execsNotApplying;
-        }
+        if (execsNotApplying.isEmpty()) return execsNotApplying;
 
         return execsNotApplying.stream()
-            .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
-            .collect(Collectors.toList());
+                .filter(exec -> !SOL_AS_EXEC_ID.equals(exec.getId()))
+                .collect(Collectors.toList());
     }
 
     private CollectionMember<AdditionalExecutorApplying> getSolicitorApplyingExecutor(CaseData caseData) {
         AdditionalExecutorApplying exec = AdditionalExecutorApplying.builder()
-            .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-            .applyingExecutorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-            .applyingExecutorEmail(caseData.getSolsSolicitorEmail())
-            .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
-            .build();
+                .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .applyingExecutorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                .applyingExecutorEmail(caseData.getSolsSolicitorEmail())
+                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
+                .build();
 
         return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> getSolicitorNotApplyingExecutor(CaseData caseData) {
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
-            .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-            .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
-            .build();
+                .notApplyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
+                .build();
 
         return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData,
-                                                          List<CollectionMember<AdditionalExecutor>> execs) {
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
@@ -105,12 +100,12 @@ public class SolicitorExecutorService {
         }
 
         AdditionalExecutor solicitor = AdditionalExecutor.builder()
-            .additionalExecForenames(caseData.getSolsSOTForenames())
-            .additionalExecLastname(caseData.getSolsSOTSurname())
-            .additionalExecNameOnWill(NO)
-            .additionalApplying(YES)
-            .additionalExecAddress(caseData.getSolsSolicitorAddress())
-            .build();
+                .additionalExecForenames(caseData.getSolsSOTForenames())
+                .additionalExecLastname(caseData.getSolsSOTSurname())
+                .additionalExecNameOnWill(NO)
+                .additionalApplying(YES)
+                .additionalExecAddress(caseData.getSolsSolicitorAddress())
+                .build();
 
         CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
         updatedExecs.add(updatedExec);
@@ -118,8 +113,7 @@ public class SolicitorExecutorService {
         return updatedExecs;
     }
 
-    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData,
-                                                           List<CollectionMember<AdditionalExecutor>> execs) {
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
         List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
 
         if (execs != null && !execs.isEmpty()) {
@@ -127,12 +121,12 @@ public class SolicitorExecutorService {
         }
 
         AdditionalExecutor solicitor = AdditionalExecutor.builder()
-            .additionalExecForenames(caseData.getSolsSOTForenames())
-            .additionalExecLastname(caseData.getSolsSOTSurname())
-            .additionalExecNameOnWill(NO)
-            .additionalApplying(NO)
-            .additionalExecReasonNotApplying(caseData.getSolsSolicitorNotApplyingReason())
-            .build();
+                .additionalExecForenames(caseData.getSolsSOTForenames())
+                .additionalExecLastname(caseData.getSolsSOTSurname())
+                .additionalExecNameOnWill(NO)
+                .additionalApplying(NO)
+                .additionalExecReasonNotApplying(caseData.getSolsSolicitorNotApplyingReason())
+                .build();
 
         CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
         updatedExecs.add(updatedExec);

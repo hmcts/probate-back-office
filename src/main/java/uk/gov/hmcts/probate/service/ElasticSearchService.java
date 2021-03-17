@@ -34,9 +34,9 @@ public class ElasticSearchService {
     public MatchedCases runQuery(CaseType caseType, String jsonQuery) {
         log.info("ElasticSearchService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-            .queryParam(CASE_TYPE_ID, caseType.getCode())
-            .build().encode().toUri();
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+                .queryParam(CASE_TYPE_ID, caseType.getCode())
+                .build().encode().toUri();
 
         HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
 

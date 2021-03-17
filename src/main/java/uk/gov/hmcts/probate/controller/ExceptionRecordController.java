@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,34 +46,32 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Api(tags = "Manage bulk scanning exception record data")
 public class ExceptionRecordController {
 
-    private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
-    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private final ObjectMapper objectMapper;
+
+    private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
+    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
+
     @Autowired
     ExceptionRecordService erService;
 
-    @ApiOperation(value = "Transforms OCR data to case data", notes = "Will return errors if the transformation is "
-        + "unsuccessful.")
+    @ApiOperation(value = "Transforms OCR data to case data", notes = "Will return errors if the transformation is unsuccessful.")
     @ApiResponses({
-        @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
-        @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-        @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
+            @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
+            @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
+            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-exception-record",
-        consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulTransformationResponse> transformCase(
-        @Valid @RequestBody ExceptionRecordRequest erRequest) {
+            consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessfulTransformationResponse> transformCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
-        log.info("Transform exception record data for form type: {}, case: {}", erRequest.getFormType(),
-            erRequest.getId());
+        log.info("Transform exception record data for form type: {}, case: {}", erRequest.getFormType(), erRequest.getId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> warnings = ocrToCCDMandatoryField
-            .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()),
-                formType);
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
             throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
@@ -82,59 +81,51 @@ public class ExceptionRecordController {
             throw new OCRMappingException("This Exception Record can not be created as a case: " + erRequest.getId());
         }
 
-        log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType,
-            erRequest.getId());
+        log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType, erRequest.getId());
         switch (formType) {
             case PA8A:
                 callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                 break;
             case PA1P:
                 callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                    erRequest, GrantType.GRANT_OF_PROBATE, warnings);
+                        erRequest, GrantType.GRANT_OF_PROBATE, warnings);
                 break;
             case PA1A:
                 callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                    erRequest, GrantType.INTESTACY, warnings);
+                        erRequest, GrantType.INTESTACY, warnings);
                 break;
             default:
-                throw new OCRMappingException(
-                    "This Exception Record form currently has no case mapping for case " + erRequest.getId());
+                throw new OCRMappingException("This Exception Record form currently has no case mapping for case "+erRequest.getId());
         }
 
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @ApiOperation(value = "Updates a case based on availability of OCR data and documents", notes = "Will return "
-        + "errors if unsuccessful or no new documents found.")
+    @ApiOperation(value = "Updates a case based on availability of OCR data and documents", notes = "Will return errors if unsuccessful or no new documents found.")
     @ApiResponses({
-        @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
-        @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-        @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
-        @ApiResponse(code = 404, message = "Form type not found")
+            @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
+            @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
+            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
+            @ApiResponse(code = 404, message = "Form type not found")
     })
     @PostMapping(path = "/update-case",
-        consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulCaveatUpdateResponse> updateCase(
-        @Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
+            consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessfulCaveatUpdateResponse> updateCase(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
         logRequest(erCaseUpdateRequest);
-
+        
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
-        log.info("Update case data from exception record for form type: {}, case: {}", erRequest.getFormType(),
-            erRequest.getId());
+        log.info("Update case data from exception record for form type: {}, case: {}", erRequest.getFormType(), erRequest.getId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulCaveatUpdateResponse callbackResponse;
 
-        if (!erRequest.getJourneyClassification().name()
-            .equals(JourneyClassification.SUPPLEMENTARY_EVIDENCE_WITH_OCR.name())) {
+        if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.SUPPLEMENTARY_EVIDENCE_WITH_OCR.name())) {
             log.error("This Exception Record can not be created as a case update {}", erRequest.getId());
-            throw new OCRMappingException(
-                "This Exception Record can not be created as a case update for case:" + erRequest.getId());
+            throw new OCRMappingException("This Exception Record can not be created as a case update for case:" + erRequest.getId());
         }
 
-        log.info("Validation check passed, attempting to update case for form-type {}, case {}", formType,
-            erRequest.getId());
+        log.info("Validation check passed, attempting to update case for form-type {}, case {}", formType, erRequest.getId());
         switch (formType) {
             case PA8A: {
                 callbackResponse = erService.updateCaveatCaseFromExceptionRecord(erCaseUpdateRequest);
@@ -142,8 +133,7 @@ public class ExceptionRecordController {
             }
             default: {
                 log.error("This Exception Record form currently has no case mapping");
-                throw new OCRMappingException(
-                    "This Exception Record form currently has no case mapping for case: " + erRequest.getId());
+                throw new OCRMappingException("This Exception Record form currently has no case mapping for case: "+erRequest.getId());
             }
         }
 
@@ -159,8 +149,7 @@ public class ExceptionRecordController {
 
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
-        log.error("An error has occured during the bulk scanning OCR transformation process: {}",
-            exception.getMessage(), exception);
+        log.error("An error has occured during the bulk scanning OCR transformation process: {}", exception.getMessage(), exception);
         List<String> warnings;
         if (!exception.getWarnings().isEmpty()) {
             warnings = exception.getWarnings();
@@ -174,17 +163,15 @@ public class ExceptionRecordController {
 
     private void logRequest(CaveatCaseUpdateRequest caveatCaseUpdateRequest) {
         try {
-            log.info("logging request on ExceptionRecordController: {}",
-                objectMapper.writeValueAsString(caveatCaseUpdateRequest));
+            log.info("logging request on ExceptionRecordController: {}", objectMapper.writeValueAsString(caveatCaseUpdateRequest));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", e);
         }
     }
-
+    
     private void logResponse(SuccessfulCaveatUpdateResponse successfulCaveatUpdateResponse) {
         try {
-            log.info("logging response on ExceptionRecordController: {}",
-                objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
+            log.info("logging response on ExceptionRecordController: {}", objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", e);
         }

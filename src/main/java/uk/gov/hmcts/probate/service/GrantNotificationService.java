@@ -61,8 +61,7 @@ public class GrantNotificationService {
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantAwaitingDocumentation(date);
         log.info("Found cases for grant awaiting documentation notification: {}", foundCases.size());
         for (ReturnedCaseDetails foundCase : foundCases) {
-            delayedRepsonseData.add(
-                sendNotificationForCase(foundCase, SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
+            delayedRepsonseData.add(sendNotificationForCase(foundCase, SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
         }
         return GrantScheduleResponse.builder().scheduleResponseData(delayedRepsonseData).build();
     }
@@ -76,8 +75,7 @@ public class GrantNotificationService {
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
         if (!emailErrors.isEmpty()) {
-            log.error("Cannot send Grant notification, for email validation errors: {}",
-                emailErrors.get(0).getMessage());
+            log.error("Cannot send Grant notification, for email validation errors: {}", emailErrors.get(0).getMessage());
             return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
         }
 
@@ -103,15 +101,12 @@ public class GrantNotificationService {
             } else {
                 throw new RuntimeException("EventId not recognised for sending email");
             }
-            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent,
-                grantAwaitingDocumentatioNotificationSent);
+            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent, grantAwaitingDocumentatioNotificationSent);
         } catch (NotificationClientException e) {
-            log.error("Error sending email for Grant notification with exception: {}. Has message: {}", e.getClass(),
-                e.getMessage());
+            log.error("Error sending email for Grant notification with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
         } catch (RuntimeException re) {
-            log.error("Error updating case for Grant notification with exception: {}. Has message: {}", re.getClass(),
-                re.getMessage());
+            log.error("Error updating case for Grant notification with exception: {}. Has message: {}", re.getClass(), re.getMessage());
             caseId = getErroredCaseIdentifier(caseId, re.getMessage());
         }
 
@@ -119,23 +114,18 @@ public class GrantNotificationService {
     }
 
     private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
-        CaseDetails caseDetails =
-            ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-                securityUtils.getUserAndServiceSecurityDTO());
-        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-                || (caseDetails.getData().get(DELAY_SENT_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
-            ) {
+        CaseDetails caseDetails = ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
+            securityUtils.getUserAndServiceSecurityDTO());
+        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) { 
+            if ( (caseDetails.getData().get(IDENTIFIED_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(DELAY_SENT_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
+            ){
                 return true;
             }
         } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
-            ) {
+            if ( (caseDetails.getData().get(IDENTIFIED_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
+            ){
                 return true;
             }
         }
@@ -154,13 +144,11 @@ public class GrantNotificationService {
             .build();
 
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED,
-            securityUtils.getUserAndServiceSecurityDTO());
+            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
-    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent,
-                                 Boolean grantDelayedNotificationSent,
+    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
                                  Boolean grantAwaitingDocumentatioNotificationSent) {
         log.info("Updating case for grant notification, caseId: {}", foundCase.getId());
 
@@ -168,8 +156,7 @@ public class GrantNotificationService {
             .grantDelayedNotificationSent(grantDelayedNotificationSent)
             .grantAwaitingDocumentatioNotificationSent(grantAwaitingDocumentatioNotificationSent)
             .grantDelayedNotificationIdentified(FALSE)
-            .probateNotificationsGenerated(
-                getProbateDocuments(emailDocument, foundCase.getData().getProbateNotificationsGenerated()))
+            .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateNotificationsGenerated()))
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO());
@@ -177,18 +164,14 @@ public class GrantNotificationService {
 
     }
 
-    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(
-        Document emailDocument,
-        List<CollectionMember<Document>> probateDocumentsGenerated) {
-        List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> probateDocuments =
-            new ArrayList<>();
+    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(Document emailDocument,
+                                                                                                                List<CollectionMember<Document>> probateDocumentsGenerated) {
+        List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> probateDocuments = new ArrayList<>();
         for (CollectionMember<Document> documentCollectionMember : probateDocumentsGenerated) {
-            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(
-                documentCollectionMember.getId(),
+            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(documentCollectionMember.getId(),
                 getProbateDocument(documentCollectionMember.getValue())));
         }
-        probateDocuments.add(
-            new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, getProbateDocument(emailDocument)));
+        probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, getProbateDocument(emailDocument)));
         return probateDocuments;
     }
 

@@ -61,8 +61,7 @@ public class FileSystemResourceServiceTest {
         File mockFile = Mockito.mock(File.class);
         FileSystemResource fileSystemResource = mock(FileSystemResource.class);
         Mockito.when(fileSystemResource.getFile()).thenReturn(mockFile);
-        when(fileSystemResourceServiceSpy.getFileSystemResource(anyString()))
-            .thenReturn(Optional.of(fileSystemResource));
+        when(fileSystemResourceServiceSpy.getFileSystemResource(anyString())).thenReturn(Optional.of(fileSystemResource));
 
         String resource = fileSystemResourceServiceSpy.getFileFromResourceAsString("");
 

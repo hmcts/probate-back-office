@@ -26,21 +26,26 @@ import static org.mockito.Mockito.when;
 
 public class CaveatDocmosisServiceTest {
 
+    @InjectMocks
+    private CaveatDocmosisService caveatDocmosisService;
+
+    @Mock
+    private RegistriesProperties registriesPropertiesMock;
+
+    @Mock
+    private DateFormatterService dateFormatterService;
+
+    @Mock
+    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String CAV_EXPIRY_DATE = "31st December 2019";
+
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
     Map<String, Registry> registries = new HashMap<>();
-    @InjectMocks
-    private CaveatDocmosisService caveatDocmosisService;
-    @Mock
-    private RegistriesProperties registriesPropertiesMock;
-    @Mock
-    private DateFormatterService dateFormatterService;
-    @Mock
-    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
     @Before
     public void setUp() {
@@ -56,27 +61,26 @@ public class CaveatDocmosisServiceTest {
     @Test
     public void testCreateDataAsPlaceholders() {
         CaveatData caveatData = CaveatData.builder()
-            .registryLocation("leeds")
-            .expiryDate(LocalDate.of(2019, 12, 31))
-            .build();
+                .registryLocation("leeds")
+                .expiryDate(LocalDate.of(2019, 12, 31))
+                .build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
         assertEquals(placeholders.get("registry"), registries.get(
-            caveatData.getRegistryLocation().toLowerCase()));
+                caveatData.getRegistryLocation().toLowerCase()));
         assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        assertEquals(placeholders.get("caseReference"),
-            ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
+        assertEquals(placeholders.get("caseReference"), ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
         assertEquals(placeholders.get("caveatExpiryDate"), CAV_EXPIRY_DATE);
     }
 
     @Test
     public void testCreateDataAsPlaceholdersCoverSheet() {
         CaveatData caveatData = CaveatData.builder()
-            .registryLocation("leeds")
-            .build();
+                .registryLocation("leeds")
+                .build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);

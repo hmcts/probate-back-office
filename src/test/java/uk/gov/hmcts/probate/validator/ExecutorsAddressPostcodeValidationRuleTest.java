@@ -47,7 +47,7 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
 
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorPostcodeIsNull")))
-            .thenReturn(executorPostcodeIsNullError);
+                .thenReturn(executorPostcodeIsNullError);
     }
 
     @Test
@@ -72,8 +72,7 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
 
     @Test
     public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
-        when(executor.getAddress())
-            .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
+        when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 

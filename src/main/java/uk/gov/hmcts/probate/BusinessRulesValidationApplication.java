@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
-@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform", "uk.gov.hmcts.reform.sendletter",
-    "uk.gov.hmcts.probate.service"})
+@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform", "uk.gov.hmcts.reform.sendletter", "uk.gov.hmcts.probate.service"})
 public class BusinessRulesValidationApplication {
 
     @Value("#{'${authorised.services}'.split(',\\s*')}")

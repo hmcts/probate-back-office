@@ -41,7 +41,6 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,6 +48,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.validation.Valid;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
@@ -60,13 +60,11 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @Component
 public class NotificationService {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
-    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
-    private static final String PERSONALISATION_SOT_LINK = "sot_link";
-    private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Autowired
     private final EmailAddresses emailAddresses;
+
+    @Autowired
+    private BusinessValidationMessageService businessValidationMessageService;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
     private final NotificationClient notificationClient;
@@ -80,12 +78,20 @@ public class NotificationService {
     private final TemplateService templateService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final DocumentStoreClient documentStoreClient;
-    @Autowired
-    private BusinessValidationMessageService businessValidationMessageService;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+    private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String PERSONALISATION_SOT_LINK = "sot_link";
+
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
+
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
     private Long grantAwaitingDocumentationNotificationPeriodDays;
+
+    private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
 
@@ -93,38 +99,31 @@ public class NotificationService {
         throws NotificationClientException {
         return sendEmail(state, caseDetails, Optional.empty());
     }
-
+    
     public Document sendEmail(State state, CaseDetails caseDetails, Optional<CaseOrigin> caseOriginOptional)
         throws NotificationClientException {
 
         CaseData caseData = caseDetails.getData();
         log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
-        log.info(
-            "template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: "
-                + "{}, origin: {}",
-            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-            caseData.getPaperForm(), caseDetails.getId(),
-            caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
+        log.info("template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: {}, origin: {}", 
+            state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(),
-            caseOriginOptional.orElse(null));
+            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(), caseOriginOptional.orElse(null));
         log.info("Got templateId: {}", templateId);
-        Map<String, Object> personalisation =
-            grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
-                registry);
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+            registry);
+        String reference = caseData.getSolsSolicitorAppReference();
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils
-            .isEmpty(caseData.getSolsSOTName())) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils.isEmpty(caseData.getSolsSOTName())) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
-        String emailReplyToId = registry.getEmailReplyToId();
-        String emailAddress = getEmail(caseData);
-        String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
@@ -138,12 +137,11 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType()
+            , caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailAddress = executor.getEmail();
-        Map<String, Object> personalisation =
-            grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
-                registry);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+            registry);
         String reference = caseData.getSolsSolicitorAppReference();
         String emailReplyToId = registry.getEmailReplyToId();
 
@@ -161,8 +159,8 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(),
-            caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
+        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
+            , caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation;
 
@@ -197,17 +195,14 @@ public class NotificationService {
 
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
         NotificationClientException {
-        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
-            .get(caseDetails.get(0).getData().getApplicationType())
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH).get(caseDetails.get(0).getData().getApplicationType())
             .getExcelaData();
-        Map<String, String> personalisation =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
+        Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response;
 
-        response =
-            notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
+        response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
         log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
@@ -220,12 +215,11 @@ public class NotificationService {
             .getProbateSotDocumentsGenerated()
             .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
 
-        Registry registry =
-            registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
-            caseDetails.getData().getRegistryLocation(),
-            caseDetails.getData().getLanguagePreference());
+        String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType()
+            , caseDetails.getData().getRegistryLocation()
+            , caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =
@@ -247,8 +241,7 @@ public class NotificationService {
         @Valid CaseData caseData = caseDetails.getData();
         CallbackResponse callbackResponse;
         Document sentEmail;
-        callbackResponse =
-            eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+        callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
 
         if (callbackResponse.getErrors().isEmpty()) {
             sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
@@ -272,21 +265,17 @@ public class NotificationService {
         return sendGrantNotificationEmail(caseDetails, templateId);
     }
 
-    public Document sendGrantAwaitingDocumentationEmail(ReturnedCaseDetails caseDetails)
-        throws NotificationClientException {
+    public Document sendGrantAwaitingDocumentationEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
             .get(caseDetails.getData().getApplicationType())
             .getGrantAwaitingDocumentation();
         return sendGrantNotificationEmail(caseDetails, templateId);
     }
 
-    private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId)
-        throws NotificationClientException {
-
-        Registry registry =
-            registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
-        Map<String, Object> personalisation =
-            grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+    private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId) throws NotificationClientException {
+ 
+        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
         SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
@@ -296,15 +285,11 @@ public class NotificationService {
     }
 
     protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
-        String defaultRegistryLocation =
-            (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference))
-                ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getRegistries()
-            .get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
+        String defaultRegistryLocation = (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
+        return registriesProperties.getRegistries().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
     }
 
-    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,
-                                                   DocumentType docType) {
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
             .sentOn(LocalDateTime.now().format(formatter))
             .from(response.getFromEmail().orElse(""))
@@ -319,8 +304,7 @@ public class NotificationService {
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
-        LocalDate grantDelayedNotificationReleaseLocalDate =
-            LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
             log.info("Evidence Handled flag {} ", evidenceHandled);
@@ -338,13 +322,11 @@ public class NotificationService {
     public void startAwaitingDocumentationNotificationPeriod(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
-        LocalDate grantDelayedNotificationReleaseLocalDate =
-            LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)
             && (caseData.getScannedDocuments() == null || caseData.getScannedDocuments().isEmpty())) {
             LocalDate notificationDate = LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays);
-            log.info("Setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(),
-                caseDetails.getId());
+            log.info("Setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
             caseData.setGrantAwaitingDocumentationNotificationDate(notificationDate);
         }
     }
@@ -352,8 +334,7 @@ public class NotificationService {
     public void resetAwaitingDocumentationNotificationDate(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
-        LocalDate grantDelayedNotificationReleaseLocalDate =
-            LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)) {
             log.info("Resetting grantAwaitingDocumentationNotificationDate to null for case {}", caseDetails.getId());
             caseData.setGrantAwaitingDocumentationNotificationDate(null);
@@ -389,8 +370,7 @@ public class NotificationService {
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
-                response =
-                    notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+                response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
                 break;
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:

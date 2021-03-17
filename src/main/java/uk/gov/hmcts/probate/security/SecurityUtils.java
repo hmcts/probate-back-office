@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 

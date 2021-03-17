@@ -22,4 +22,3 @@ spring:
         idamRedirectUrl: auth.provider.client.redirect
         schedulerCaseWorkerUser: SCHEDULER_CASEWORKER_USERNAME
         schedulerCaseWorkerPass: SCHEDULER_CASEWORKER_PASSWORD
-        launchdarkly-key: ld.sdk_key

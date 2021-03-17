@@ -12,16 +12,18 @@ import static org.junit.Assert.assertNull;
 
 public class OCRFieldExtractorTest {
 
+    private List<OCRField> ocrFields = new ArrayList<>();
+
     private static final String SOME_KEY_WITH_NO_VALUE = "keyWithNoValue";
     private static final String SOME_KEY_WITH_NULL_VALUE = "keyWithNullValue";
     private static final String SOME_KEY_WITH_EMPTY_VALUE = "keyWithEmptyValue";
+
     private static final String LAST_NAME_KEY = "surname";
     private static final String MIDDLE_NAME_KEY = "middleName";
     private static final String FIRST_NAME_KEY = "firstName";
     private static final String LAST_NAME_VALUE = "Monkhouse";
     private static final String MIDDLE_NAME_VALUE = "Marley";
     private static final String FIRST_NAME_VALUE = "Bob";
-    private List<OCRField> ocrFields = new ArrayList<>();
 
     @Before
     public void setUp() {

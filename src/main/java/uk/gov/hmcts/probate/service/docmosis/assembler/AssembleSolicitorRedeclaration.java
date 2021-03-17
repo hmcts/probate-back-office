@@ -60,11 +60,10 @@ public class AssembleSolicitorRedeclaration {
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             if (SOLS_REDEC_SOT_WILL.name().equals(paragraphField.name())) {
                 paragraphDetails.add(
-                    assemblerBase.getSingleTextParagraphDetailWithDefaultValue(
-                        paragraphField, CONDITIONS_WILL, paragraphCode.getTemplateName()));
+                        assemblerBase.getSingleTextParagraphDetailWithDefaultValue(
+                                paragraphField, CONDITIONS_WILL, paragraphCode.getTemplateName()));
             } else if (SOLS_REDEC_SOT_DATE.name().equals(paragraphField.name())) {
-                paragraphDetails
-                    .add(assemblerBase.getSingleDateParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
+                paragraphDetails.add(assemblerBase.getSingleDateParagraphDetails(paragraphField, paragraphCode.getTemplateName()));
             }
         }
         return paragraphDetails;

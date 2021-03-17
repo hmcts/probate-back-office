@@ -40,8 +40,25 @@ class PuppeteerHelper extends Helper {
 
             await helper.page.evaluate(el => el.click(), clickableTab[0]);
         } else {
-            await helper.click(tabTitle);
+            helper.click(tabTitle);
         }
+    }
+
+    async navigateToPage(url) {
+        await this.amOnPage(url);
+        await this.waitForNavigationToComplete();
+    }
+
+    async downloadPdfIfNotIE11(pdfLink) {
+        const helper = this.helpers[helperName];
+        await helper.click(pdfLink);
+    }
+
+    async uploadDocumentIfNotMicrosoftEdge() {
+        const helper = this.helpers[helperName];
+        await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
+        await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
+        await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
     }
 
     replaceAll(string, search, replace) {
@@ -60,23 +77,6 @@ class PuppeteerHelper extends Helper {
         }
         return this.replaceAll(this.replaceAll(this.replaceAll(html1, '-c16'), '-c17'), '-c18') ===
             this.replaceAll(this.replaceAll(this.replaceAll(html2, '-c16'), '-c17'), '-c18');
-    }
-
-    async navigateToPage(url) {
-        await this.amOnPage(url);
-        await this.waitForNavigationToComplete();
-    }
-
-    async downloadPdfIfNotIE11(pdfLink) {
-        const helper = this.helpers[helperName];
-        await helper.click(pdfLink);
-    }
-
-    async uploadDocumentIfNotMicrosoftEdge() {
-        const helper = this.helpers[helperName];
-        await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
-        await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
-        await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
     }
 
     async performAsyncActionForElements(locator, actionFunc) {

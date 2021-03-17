@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
@@ -24,69 +24,67 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     @Test
     public void validateWillUpdateProbateWithoutHardStop() {
         given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("success.willUpdate.json"))
-            .post(VALIDATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolProbateCreated"))
-            .and().body("data.willExists", equalToIgnoringCase("Yes"))
-            .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.willUpdate.json"))
+                .post(VALIDATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
     }
 
     @Test
     public void validateWillUpdateIntestacyWithoutHardStop() {
         given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("success.willUpdateIntestacy.json"))
-            .post(VALIDATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolIntestacyCreated"))
-            .and().body("data.willExists", equalToIgnoringCase("No"))
-            .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.willUpdateIntestacy.json"))
+                .post(VALIDATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("SolIntestacyCreated"))
+                .and().body("data.willExists", equalToIgnoringCase("No"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
     }
 
     @Test
     public void validateWillUpdateAnnexedWithoutHardStop() {
         given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("success.willUpdateAdmon.json"))
-            .post(VALIDATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAdmonCreated"))
-            .and().body("data.willExists", equalToIgnoringCase("Yes"))
-            .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.willUpdateAdmon.json"))
+                .post(VALIDATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("SolAdmonCreated"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
     }
 
     @Test
     public void validateHardStopWithNoWillAccessOriginalProbate() {
         given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
-            .post(VALIDATE_PROBATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
-            .and().body("data.willExists", equalToIgnoringCase("Yes"))
-            .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+                .post(VALIDATE_PROBATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("Stopped"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
 
     @Test
     public void validateHardStopWithNoWillAccessOriginalAdmon() {
         given().relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalAdmon.json"))
-            .post(VALIDATE_ADMON_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
-            .and().body("data.willExists", equalToIgnoringCase("Yes"))
-            .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalAdmon.json"))
+                .post(VALIDATE_ADMON_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("Stopped"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
 
     @Test
     public void validateHardMessageWithNoOriginalWill() {
         Response response = given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
-            .post(CASE_STOP_CONFIRMATION);
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+                .post(CASE_STOP_CONFIRMATION);
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(
-            "You can't currently use this service if you do not have the original will.\\n\\nFollow your existing "
-                + "process for applying for probate for this client.\\n"));
+        assertTrue(response.getBody().asString().contains("You can't currently use this service if you do not have the original will.\\n\\nFollow your existing process for applying for probate for this client.\\n"));
     }
 
 }

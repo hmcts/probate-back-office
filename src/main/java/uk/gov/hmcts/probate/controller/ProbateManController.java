@@ -35,16 +35,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class ProbateManController {
 
-    private static final String SUBMISSION_NOT_ALLOWED = "Submission not allowed";
     private final ProbateManService probateManService;
     private final LegacySearchService legacySearchService;
     private final LegacyImportService legacyImportService;
     private final BusinessValidationMessageService businessValidationMessageService;
+    private static final String SUBMISSION_NOT_ALLOWED = "Submission not allowed";
 
     @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(
-        @PathVariable("probateManType") ProbateManType probateManType,
-        @PathVariable("id") String id) {
+    public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
+                                                                            @PathVariable("id") String id) {
         ProbateManModel probateManModel = probateManService.getProbateManModel(Long.parseLong(id), probateManType);
         return ResponseEntity.ok(ProbateManCaseResponse.builder().probateManCase(probateManModel).build());
     }
@@ -53,8 +52,7 @@ public class ProbateManController {
     public ResponseEntity<CallbackResponse> legacySearch(@RequestBody CallbackRequest callbackRequest,
                                                          HttpServletRequest request) {
         log.info("Performing legacy case search");
-        List<CollectionMember<CaseMatch>> caseMatchesList =
-            legacySearchService.findLegacyCaseMatches(callbackRequest.getCaseDetails());
+        List<CollectionMember<CaseMatch>> caseMatchesList = legacySearchService.findLegacyCaseMatches(callbackRequest.getCaseDetails());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
             .legacySearchResultRows(caseMatchesList)
@@ -72,8 +70,7 @@ public class ProbateManController {
                                                      HttpServletRequest request) {
 
         log.info("Performing legacy case import");
-        List<CaseMatch> rows = legacyImportService
-            .importLegacyRows(callbackRequest.getCaseDetails().getData().getLegacySearchResultRows());
+        List<CaseMatch> rows = legacyImportService.importLegacyRows(callbackRequest.getCaseDetails().getData().getLegacySearchResultRows());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
             .legacySearchResultRows(rows.stream().map(CollectionMember::new).collect(Collectors.toList()))

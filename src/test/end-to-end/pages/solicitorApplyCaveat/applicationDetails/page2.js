@@ -2,7 +2,6 @@
 
 const applicationDetailsConfig = require('./applicationDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const testConfig = require('src/test/config');
 
 module.exports = async function () {
     const I = this;
@@ -20,11 +19,6 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfBirth-year', applicationDetailsConfig.page2_dateOfBirth_year);
 
     await I.click(`#deceasedAnyOtherNames-${applicationDetailsConfig.page2_hasAliasYes}`);
-    if (!testConfig.TestAutoDelayEnabled) {
-        // only valid for local dev where we need it to run as fast as poss to minimise
-        // lost dev time
-        await I.wait(0.25);
-    }
 
     let idx = 0;
     /* eslint-disable no-await-in-loop */
@@ -33,11 +27,7 @@ module.exports = async function () {
         const propName = keys[i];
         if (propName.includes('page2_alias_')) {
             await I.click(applicationDetailsConfig.page2_addAliasButton);
-            if (!testConfig.TestAutoDelayEnabled) {
-                // only valid for local dev where we need it to run as fast as poss to minimise
-                // lost dev time
-                await I.wait(0.25);
-            }
+            await I.wait(0.1); // implicit wait needed here
             const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
             await I.waitForVisible(locator);
             await I.fillField(locator, applicationDetailsConfig[propName]);

@@ -20,29 +20,29 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sols
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.soplsRedecWillsForDom;
 
 public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
-    private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSolicitorRedeclaration assembleSolicitorRedeclaration =
         new AssembleSolicitorRedeclaration(assemblerBase);
+    private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
 
     @BeforeClass
     public static void setUpClass() {
-        code2Expected.put(solsRedecCodicil, new String[] {"RedecCodicil", "FL-PRB-GNO-ENG-00201.docx",
+        code2Expected.put(solsRedecCodicil, new String[]{"RedecCodicil", "FL-PRB-GNO-ENG-00201.docx",
             "Re-declare: Codicil omitted"});
-        code2Expected.put(solsRedecSotSigned, new String[] {"RedecSotSigned", "FL-PRB-GNO-ENG-00202.docx",
+        code2Expected.put(solsRedecSotSigned, new String[]{"RedecSotSigned", "FL-PRB-GNO-ENG-00202.docx",
             "Re-declare: SOT not signed"});
-        code2Expected.put(solsRedecDomicile, new String[] {"RedecDomcile", "FL-PRB-GNO-ENG-00203.docx",
+        code2Expected.put(solsRedecDomicile, new String[]{"RedecDomcile", "FL-PRB-GNO-ENG-00203.docx",
             "Re-declare: Domicile"});
-        code2Expected.put(solsRedecIntForDom, new String[] {"RedecIntForDom", "FL-PRB-GNO-ENG-00204.docx",
+        code2Expected.put(solsRedecIntForDom, new String[]{"RedecIntForDom", "FL-PRB-GNO-ENG-00204.docx",
             "Re-declare: Intestacy foreign domicile"});
-        code2Expected.put(soplsRedecWillsForDom, new String[] {"RedecWillsForDom", "FL-PRB-GNO-ENG-00205.docx",
+        code2Expected.put(soplsRedecWillsForDom, new String[]{"RedecWillsForDom", "FL-PRB-GNO-ENG-00205.docx",
             "Re-declare: Wills foreign domicile"});
-        code2Expected.put(solsRedecMinority, new String[] {"RedecMinority", "FL-PRB-GNO-ENG-00206.docx",
+        code2Expected.put(solsRedecMinority, new String[]{"RedecMinority", "FL-PRB-GNO-ENG-00206.docx",
             "Re-declare: Minority interest"});
-        code2Expected.put(solsRedecNetEstate, new String[] {"RedecNetEstate", "FL-PRB-GNO-ENG-00207.docx",
+        code2Expected.put(solsRedecNetEstate, new String[]{"RedecNetEstate", "FL-PRB-GNO-ENG-00207.docx",
             "Re-declare: Net estate over SSL"});
-        code2Expected.put(solsRedecTitle, new String[] {"RedecTitle", "FL-PRB-GNO-ENG-00208.docx",
+        code2Expected.put(solsRedecTitle, new String[]{"RedecTitle", "FL-PRB-GNO-ENG-00208.docx",
             "Re-declare: Title"});
-        code2Expected.put(solsRedecClearing, new String[] {"RedecClearing", "FL-PRB-GNO-ENG-00209.docx",
+        code2Expected.put(solsRedecClearing, new String[]{"RedecClearing", "FL-PRB-GNO-ENG-00209.docx",
             "Re-declare: Clearing"});
     }
 
@@ -73,9 +73,8 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSolssoplsRedecWillsForDom() {
 
-        List<ParagraphDetail> response =
-            assembleSolicitorRedeclaration.solsRedecWillsForeignDomicile(soplsRedecWillsForDom,
-                CaseData.builder().build());
+        List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecWillsForeignDomicile(soplsRedecWillsForDom,
+            CaseData.builder().build());
         assertAllForStaticField(response, soplsRedecWillsForDom, code2Expected);
     }
 
@@ -114,8 +113,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSolsRedecIntestacy() {
 
-        List<ParagraphDetail> response =
-            assembleSolicitorRedeclaration.solsRedecIntestacyForeignDomicile(solsRedecClearing,
+        List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecIntestacyForeignDomicile(solsRedecClearing,
                 CaseData.builder().build());
         assertAllForStaticField(response, solsRedecClearing, code2Expected);
     }
@@ -124,11 +122,10 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSolsRedecSotDate() {
 
-        CaseData caseData =
-            CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-            assembleSolicitorRedeclaration.solsRedecDate(ParagraphCode.solsRedecSotDate, caseData);
+                assembleSolicitorRedeclaration.solsRedecDate(ParagraphCode.solsRedecSotDate, caseData);
         assertEquals("RedecSotDate", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00200.docx", response.get(0).getTemplateName());
         assertEquals("Date", response.get(0).getEnableType().name());

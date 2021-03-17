@@ -35,6 +35,5 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link",
-  "noAddressFound": "No address found"
+  "UKpostcodeLink": ".manual-link"
 }

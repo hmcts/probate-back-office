@@ -64,8 +64,7 @@ public class OCRFormsController {
 
         ValidationResponse validationResponse =
             ValidationResponse.builder().warnings(warnings)
-                .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS)
-                .build();
+                .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
     }
 

@@ -24,7 +24,10 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class OCRToCCDMandatoryField {
 
+    private final OcrEmailValidator ocrEmailValidator;
+
     private static final String MANDATORY_FIELD_WARNING_STIRNG = "%s (%s) is mandatory.";
+
     private static final String DEPENDANT_KEY_PRIMARYAPPLICANTALIAS = "primaryApplicantAlias";
     private static final String DEPENDANT_DESC_PRIMARYAPPLICANTALIAS = "Primary applicant alias";
     private static final String DEPENDANT_KEY_IHTREFERENCENUMBER = "ihtReferenceNumber";
@@ -36,20 +39,19 @@ public class OCRToCCDMandatoryField {
     private static final String DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER = "Solicitors fee account number";
     private static final String DEPENDANT_KEY_SOLSWILLTYPE = "solsWillType";
     private static final String DEPENDANT_KEY_SOLSWILLTYPEREASON = "solsWillTypeReason";
+
     private static final String MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME =
-        "executorsNotApplying_%s_notApplyingExecutorName";
+            "executorsNotApplying_%s_notApplyingExecutorName";
     private static final String DEPENDANT_KEY_EXECUTORSNOTAPPLYING_EXECUTORREASON =
-        "executorsNotApplying_%s_notApplyingExecutorReason";
+            "executorsNotApplying_%s_notApplyingExecutorReason";
     private static final String DEPENDANT_DESC_EXECUTORSNOTAPPLYING_EXECUTORREASON =
-        "Executor %s not applying reason";
-    private static final String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
-        GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
-    private static final String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
-        GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
+            "Executor %s not applying reason";
+    private static final String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS = GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
+    private static final String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE = GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
+
     private static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
-    private final OcrEmailValidator ocrEmailValidator;
 
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
@@ -145,8 +147,7 @@ public class OCRToCCDMandatoryField {
                     DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
             } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
                 log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
-                warnings.add(
-                    String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
+                warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
             }
         }
         return warnings;
@@ -194,8 +195,7 @@ public class OCRToCCDMandatoryField {
                     DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
             } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
                 log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
-                warnings.add(
-                    String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
+                warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
             }
         }
 
@@ -244,7 +244,7 @@ public class OCRToCCDMandatoryField {
         switch (formType) {
             case PA8A:
                 if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
-                    || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
+                        || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
                     isSolicitorForm = true;
                 }
 
@@ -265,14 +265,11 @@ public class OCRToCCDMandatoryField {
                 }
 
                 if ((ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPE)
-                    && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE)))
-                    || (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPEREASON)
-                        && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPEREASON)))) {
+                        && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE))) ||
+                        (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPEREASON)
+                                && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPEREASON)))) {
                     log.warn("Solictor details include a will type or reason to be flagged.");
-                    warnings.add(
-                        "An application type and/or reason has been provided, this will need to be reviewed as it "
-                            + "will not be "
-                            +
+                    warnings.add("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
                             "mapped to the case.");
                 }
                 break;

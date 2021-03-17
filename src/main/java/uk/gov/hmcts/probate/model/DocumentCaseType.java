@@ -13,6 +13,10 @@ public enum DocumentCaseType {
     @JsonProperty("gop")
     GOP("gop");
 
+    public String getCaseType() {
+        return caseType;
+    }
+
     private final String caseType;
 
     DocumentCaseType(String caseType) {
@@ -20,11 +24,6 @@ public enum DocumentCaseType {
     }
 
     public static DocumentCaseType getCaseType(String name) {
-        return Arrays.stream(DocumentCaseType.values()).filter(caseState -> caseState.getCaseType().equals(name))
-            .findFirst().orElse(GOP);
-    }
-
-    public String getCaseType() {
-        return caseType;
+        return Arrays.stream(DocumentCaseType.values()).filter(caseState -> caseState.getCaseType().equals(name)).findFirst().orElse(GOP);
     }
 }
