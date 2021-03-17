@@ -140,7 +140,6 @@ public class ExecutorsTransformerTest {
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
 
-        assertEquals(NO, responseCaseData.getSolsSolicitorIsApplying());
         assertNull(responseCaseData.getSolsSolicitorNotApplyingReason());
     }
 

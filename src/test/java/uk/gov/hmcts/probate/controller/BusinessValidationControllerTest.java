@@ -380,6 +380,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
         caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
         caseDataBuilder.solsSolicitorIsExec(NO);
+        caseDataBuilder.solsSolicitorIsApplying(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -407,6 +408,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.solsSolicitorIsExec(NO);
+        caseDataBuilder.solsSolicitorIsApplying(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
