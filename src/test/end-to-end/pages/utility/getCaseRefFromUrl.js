@@ -1,11 +1,22 @@
 'use strict';
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
     let url = await I.grabCurrentUrl();
-    url = url.replace('#eventHistoryTab', '');
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
+    let caseRef;
+    if (testConfig.TestForXUI === true) {
+        url = url.replace('#Event%20History', '');
+        caseRef = url.split('/').pop()
+            .match(/.{4}/g)
+            .join('-');
+
+    } else {
+        url = url.replace('#eventHistoryTab', '');
+        caseRef = url.split('/').pop()
+            .match(/.{4}/g)
+            .join('-');
+    }
+
     return caseRef;
 };
