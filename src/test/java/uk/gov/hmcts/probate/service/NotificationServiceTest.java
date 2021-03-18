@@ -17,21 +17,12 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.Constants;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.LanguagePreference;
-import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -49,38 +40,17 @@ import uk.gov.service.notify.SendEmailResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
-import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
-import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
-import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
-import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
-import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
-import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
+import static uk.gov.hmcts.probate.model.State.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -1782,7 +1752,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate());
+        assertEquals(LocalDate.now().plusDays(49), caseDetails.getData().getGrantDelayedNotificationDate());
 
     }
 
@@ -1849,7 +1819,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1),
+        assertEquals(LocalDate.now().plusDays(35),
             caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
 
     }
@@ -1868,7 +1838,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
-        assertEquals(LocalDate.now().plusDays(1),
+        assertEquals(LocalDate.now().plusDays(35),
             caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
 
     }

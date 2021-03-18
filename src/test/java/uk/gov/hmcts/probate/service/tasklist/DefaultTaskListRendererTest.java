@@ -5,11 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
@@ -18,36 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.APPLICATION_FEE;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.APPLICATION_GROUNDS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DECEASED_ADDRESS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DECEASED_DOM_UK;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DECEASED_OTHER_NAMES;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DOB;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DOD;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.EXTRA_OUTSIDE_UK;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.EXTRA_UK;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.FEE_FOR_NON_UK_COPIES;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.FEE_FOR_UK_COPIES;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.GROSS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.IHT_FORM;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.NET;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.OTHER_EXEC_EXISTS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PAYMENT_METHOD;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_ADDRESS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_APPLICANT_APPLYING;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_APPLICANT_HAS_ALIAS;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_FORENAMES;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_SURNAME;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_APP_REFERENCE;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM_LINE1;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM_NAME;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM_POSTCODE;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.TOTAL_FEE;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.WILL_ACCESS_ORIGINAL;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.WILL_EXISTS;
+import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.*;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -153,7 +120,6 @@ public class DefaultTaskListRendererTest {
         + "  </summary>\n"
         + "  <div class=\"govuk-details__text\">\n"
         + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-        + "<li>the stamped (receipted) IHT 421 with this application</li>"
         + "<li>a photocopy of the signed legal statement and declaration</li>"
         + "</ul>\n"
         + "  </div>\n"

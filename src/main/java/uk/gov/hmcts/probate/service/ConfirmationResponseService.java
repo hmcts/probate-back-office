@@ -5,19 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
-import uk.gov.hmcts.probate.changerule.ChangeRule;
-import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
-import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
-import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
-import uk.gov.hmcts.probate.changerule.LifeInterestRule;
-import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
-import uk.gov.hmcts.probate.changerule.RenouncingRule;
-import uk.gov.hmcts.probate.changerule.ResiduaryRule;
-import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
-import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
+import uk.gov.hmcts.probate.changerule.*;
 import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -40,9 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.*;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 
 @Component
@@ -271,16 +257,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String iht400 = "";
-        if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = format("*   %s\n", PageTextConstants.DOCUMENT_IHT_421);
-        }
-
         String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
-        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));

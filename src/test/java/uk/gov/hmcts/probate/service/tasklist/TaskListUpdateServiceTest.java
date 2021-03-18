@@ -18,12 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CREATED;
-import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_REDEC;
-import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_REISSUE;
-import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
-import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
+import static uk.gov.hmcts.probate.model.ApplicationState.*;
 
 @Slf4j
 public class TaskListUpdateServiceTest {
@@ -138,7 +133,6 @@ public class TaskListUpdateServiceTest {
             + "  </summary>\n"
             + "  <div class=\"govuk-details__text\">\n"
             + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-            + "<li>the stamped (receipted) IHT 421 with this application</li>"
             + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n"
             + "  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" "
@@ -276,8 +270,7 @@ public class TaskListUpdateServiceTest {
             + "  </summary>\n"
             + "  <div class=\"govuk-details__text\">\n"
             + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-            + "<li>the stamped "
-            + "(receipted) IHT 421 with this application</li><li>a photocopy of the signed legal statement and "
+            + "<li>a photocopy of the signed legal statement and "
             + "declaration</li></ul>\n"
             + "  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p>"
