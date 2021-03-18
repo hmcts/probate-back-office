@@ -179,7 +179,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-will_and_codicil_dates", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {

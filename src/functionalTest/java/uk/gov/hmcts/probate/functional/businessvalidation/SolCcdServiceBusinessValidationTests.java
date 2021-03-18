@@ -47,7 +47,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
-    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -216,7 +216,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
-
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
@@ -231,6 +230,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() {
+        validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
+        validatePostSuccess("success.validWillAndCodicilDates.json", SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -707,12 +712,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
         assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
-    }
-
-    @Test
-    public void shouldPassValidateProbatePage1WithValidDates() {
-
-        // solsValidateProbatePage1
     }
 
 

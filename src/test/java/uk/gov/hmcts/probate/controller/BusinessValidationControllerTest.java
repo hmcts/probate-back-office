@@ -363,10 +363,59 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidWillDate() throws Exception {
+        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now());
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("The total number executors applying cannot exceed 4"));
+                        .value("Original will signed date must be in the past"));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidCodicilDate() throws Exception {
+        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now() }));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Codicil date must be in the past"));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidWillAndCodicilDates() throws Exception {
+        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now() }));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now());
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Codicil date must be in the past"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Original will signed date must be in the past"));
     }
 
     @Test
