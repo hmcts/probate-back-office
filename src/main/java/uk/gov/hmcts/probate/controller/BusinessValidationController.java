@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.validator.CodicilDateInPastRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateInPastRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -82,9 +83,8 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
-    // Inject in validation rules for GoP, which is currently a list of 1 rule to validate Codicil date
     private final CodicilDateInPastRule codicilDateInPastRule;
-    // private final Original codicilDateInPastRule;
+    private final OriginalWillSignedDateInPastRule originalWillSignedDateInPastRule;
 
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
@@ -179,13 +179,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-probate-p1", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-will_and_codicil_dates", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-        ValidationRule[] rules = new ValidationRule[]{codicilDateInPastRule};
+        ValidationRule[] rules = new ValidationRule[]{codicilDateInPastRule, originalWillSignedDateInPastRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
         
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,

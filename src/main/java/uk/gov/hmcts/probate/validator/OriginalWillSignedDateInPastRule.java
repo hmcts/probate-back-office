@@ -35,7 +35,7 @@ public class OriginalWillSignedDateInPastRule implements ValidationRule {
         List<String> allErrorCodes = new ArrayList<>();
         LocalDate willSignedDate = ccdData.getOriginalWillSignedDate();
 
-        if (willSignedDate != null && willSignedDate.compareTo(LocalDate.now()) < 0) {
+        if (willSignedDate != null && willSignedDate.compareTo(LocalDate.now()) >= 0) {
             allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST);
         }
 

@@ -35,8 +35,10 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateInPastRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateInPastRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
@@ -118,6 +120,10 @@ public class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedServiceMock;
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    @Mock
+    private CodicilDateInPastRule codicilDateInPastRuleMock;
+    @Mock
+    private OriginalWillSignedDateInPastRule originalWillSignedDateInPastRuleMock;
 
 
     private BusinessValidationController underTest;
@@ -139,6 +145,8 @@ public class BusinessValidationUnitTest {
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
             numberOfApplyingExecutorsValidationRuleMock,
+            codicilDateInPastRuleMock,
+            originalWillSignedDateInPastRuleMock,
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
