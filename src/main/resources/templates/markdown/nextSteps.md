@@ -39,7 +39,7 @@ Print a copy of this page for your records.
 You now need to send us:
 {{originalWill}}
 *   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
-{{iht400}}{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}
+{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}
 
 Where to send us your documents
 -------------------------------

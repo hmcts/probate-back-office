@@ -72,6 +72,7 @@
         <cve>CVE-2021-24122</cve>
         <cve>CVE-2021-25122</cve>
         <cve>CVE-2021-25329</cve>
+        <cve>CVE-2020-9484</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -80,5 +81,5 @@
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cve>CVE-2020-7021</cve>
         <cve>CVE-2021-22132</cve>
-    </suppress>
+    </suppress> 
 </suppressions>
