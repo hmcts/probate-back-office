@@ -36,9 +36,9 @@ pdf.service:
 
 docmosis:
   service:
-    uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
-    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
   assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
