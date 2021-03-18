@@ -47,6 +47,7 @@ public class ResponseCaseDataParent {
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected final String titleAndClearingType;
     protected final String titleAndClearingTypeNoT;
+    protected final String solsTrustCorpPosition;
     protected final String trustCorpName;
     protected SolsAddress trustCorpAddress;
     protected final List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;

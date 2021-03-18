@@ -795,6 +795,7 @@ public class CallbackResponseTransformer {
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
+            .solsTrustCorpPosition(caseData.getSolsTrustCorpPosition())
             .trustCorpName(caseData.getTrustCorpName())
             .trustCorpAddress(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())
