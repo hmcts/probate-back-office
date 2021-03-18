@@ -75,7 +75,8 @@ public class SolsHealthIndicatorTest {
 
     @Test
     public void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
-        when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        when(restTemplate.getForEntity(URL + HEALTH, String.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
         Health health = solsHealthIndicator.health();
 
@@ -89,7 +90,7 @@ public class SolsHealthIndicatorTest {
     public void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
         final String statusText = "status text";
         when(restTemplate.getForEntity(URL + HEALTH, String.class))
-                .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
+            .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
 
         Health health = solsHealthIndicator.health();
 

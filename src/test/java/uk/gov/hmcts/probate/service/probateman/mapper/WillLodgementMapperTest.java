@@ -24,12 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class WillLodgementMapperTest {
 
-    @Value("${ccd.gateway.host}")
-    private String printServiceHost;
-
-    @Value("${printservice.legacyPath}")
-    private String printServiceLegacyPath;
-
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy WILL";
     private static final String DECEASED_ALIAS_NAMES = "DeadAN1 DeadAN2";
@@ -37,12 +31,14 @@ public class WillLodgementMapperTest {
     private static final String SURNAME = "WLSN";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
-
-    @Autowired
-    private WillLodgementMapper willLodgementMapper;
-
     @MockBean
     AppInsights appInsights;
+    @Value("${ccd.gateway.host}")
+    private String printServiceHost;
+    @Value("${printservice.legacyPath}")
+    private String printServiceLegacyPath;
+    @Autowired
+    private WillLodgementMapper willLodgementMapper;
 
     @Test
     public void shouldMapToCcdData() {
@@ -54,18 +50,19 @@ public class WillLodgementMapperTest {
         willLodgement.setDateOfDeath1(DATE_OF_DEATH);
         willLodgement.setId(Long.valueOf(ID));
 
-        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.WILL_LODGEMENT, ID);
+        String legacyCaseViewUrl =
+            String.format(printServiceHost + printServiceLegacyPath, ProbateManType.WILL_LODGEMENT, ID);
         WillLodgementData expectedWillLodgementData = WillLodgementData.builder()
-                .deceasedFullAliasNameList(buildFullAliasNames())
-                .deceasedAnyOtherNames(true)
-                .deceasedForenames(FORENAMES)
-                .deceasedSurname(SURNAME)
-                .deceasedDateOfBirth(DATE_OF_BIRTH)
-                .deceasedDateOfDeath(DATE_OF_DEATH)
-                .legacyId(ID)
-                .legacyType(LEGACY_TYPE)
-                .legacyCaseViewUrl(legacyCaseViewUrl)
-                .build();
+            .deceasedFullAliasNameList(buildFullAliasNames())
+            .deceasedAnyOtherNames(true)
+            .deceasedForenames(FORENAMES)
+            .deceasedSurname(SURNAME)
+            .deceasedDateOfBirth(DATE_OF_BIRTH)
+            .deceasedDateOfDeath(DATE_OF_DEATH)
+            .legacyId(ID)
+            .legacyType(LEGACY_TYPE)
+            .legacyCaseViewUrl(legacyCaseViewUrl)
+            .build();
 
         WillLodgementData willLodgementData = willLodgementMapper.toCcdData(willLodgement);
 
@@ -74,8 +71,8 @@ public class WillLodgementMapperTest {
 
     private List<CollectionMember<FullAliasName>> buildFullAliasNames() {
         FullAliasName aliasName = FullAliasName.builder()
-                .fullAliasName(DECEASED_ALIAS_NAMES)
-                .build();
+            .fullAliasName(DECEASED_ALIAS_NAMES)
+            .build();
         List<CollectionMember<FullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<FullAliasName>>();
         CollectionMember<FullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
         aliasNamesCollections.add(aliasNamesCollection);

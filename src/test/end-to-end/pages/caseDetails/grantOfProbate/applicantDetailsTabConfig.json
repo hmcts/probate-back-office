@@ -1,7 +1,7 @@
 {
     "tabName": "Applicant details",
     "fields": [
-      "What application type is this?",
+      "Application type",
       "The undersigned declare that written notice has been given to all executors who have power reserved to them and are not making this application.",
       "First name(s)",
       "Last name(s)",

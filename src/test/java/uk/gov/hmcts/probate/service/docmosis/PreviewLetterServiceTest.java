@@ -34,24 +34,6 @@ import static org.mockito.Mockito.when;
 
 public class PreviewLetterServiceTest {
 
-    @InjectMocks
-    private PreviewLetterService previewLetterService;
-
-    @Mock
-    private RegistriesProperties registriesPropertiesMock;
-
-    @Mock
-    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
-
-    @Mock
-    private GenericMapperService genericMapperService;
-
-    @Mock
-    private AddressFormatterService addressFormatterService;
-
-    @Mock
-    private DateFormatterService dateFormatterService;
-
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -62,13 +44,23 @@ public class PreviewLetterServiceTest {
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    private CaseDetails caseDetails;
+    private static final String YES = "Yes";
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
     Map<String, Registry> registries = new HashMap<>();
-
-    private static final String YES = "Yes";
+    @InjectMocks
+    private PreviewLetterService previewLetterService;
+    @Mock
+    private RegistriesProperties registriesPropertiesMock;
+    @Mock
+    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+    @Mock
+    private GenericMapperService genericMapperService;
+    @Mock
+    private AddressFormatterService addressFormatterService;
+    @Mock
+    private DateFormatterService dateFormatterService;
+    private CaseDetails caseDetails;
 
     @Before
     public void setUp() {
@@ -87,7 +79,8 @@ public class PreviewLetterServiceTest {
         registry.setPhone("123456789");
         registries = mapper.convertValue(registry, Map.class);
 
-        DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
+        DynamicList dynamicList1 =
+            DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
 
         List<CollectionMember<ParagraphDetail>> paragraphDetails = Arrays.asList(
             new CollectionMember<ParagraphDetail>("id",
@@ -130,7 +123,8 @@ public class PreviewLetterServiceTest {
         caseDetails.setRegistryTelephone("123456789");
 
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
-        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails))
+            .thenReturn(mapper.convertValue(caseDetails, Map.class));
 
 
     }

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPaperPaymentMethod;
-import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolsPaymentMethods;
 
 @Slf4j
 @Component
@@ -37,7 +36,7 @@ public class OCRFieldPaymentMethodMapper {
                     return null;
                 default:
                     String errorMessage = "Payment method debitOrCredit, cheque, feeAccount or cash expected but got '"
-                            + paymentMethod + "'";
+                        + paymentMethod + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }

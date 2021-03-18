@@ -48,18 +48,19 @@ public class NextStepsController {
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validate(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult,
+        HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
         CallbackResponse callbackResponse;
-        Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
+        Optional<String> newState =
+            stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
             callbackResponse = callbackResponseTransformer
-                    .transformWithConditionalStateChange(callbackRequest, newState);
+                .transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             if (bindingResult.hasErrors()) {
                 log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
@@ -68,11 +69,12 @@ public class NextStepsController {
 
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
             FeeServiceResponse feeServiceResponse = feeService.getTotalFee(
-                    ccdData.getIht().getNetValueInPounds(),
-                    ccdData.getFee().getExtraCopiesOfGrant(),
-                    ccdData.getFee().getOutsideUKGrantCopies());
+                ccdData.getIht().getNetValueInPounds(),
+                ccdData.getFee().getExtraCopiesOfGrant(),
+                ccdData.getFee().getOutsideUKGrantCopies());
 
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse);
+            callbackResponse =
+                callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -80,15 +82,16 @@ public class NextStepsController {
 
     @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> getNextSteps(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class,
-                    NextStepsConfirmationGroup.class})
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class,
+            NextStepsConfirmationGroup.class})
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult,
+        HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
+        Optional<String> newState =
+            stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
             return ResponseEntity.ok(AfterSubmitCallbackResponse.builder().build());
         }
@@ -101,7 +104,7 @@ public class NextStepsController {
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
-                .getNextStepsConfirmation(ccdData);
+            .getNextStepsConfirmation(ccdData);
 
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
