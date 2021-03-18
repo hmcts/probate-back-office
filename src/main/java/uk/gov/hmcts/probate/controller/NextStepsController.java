@@ -63,7 +63,7 @@ public class NextStepsController {
                 .transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             if (bindingResult.hasErrors()) {
-                log.error("Case Id: {} with ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+                log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
