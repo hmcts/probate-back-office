@@ -22,7 +22,7 @@ public class FeatureToggleService {
         this.ldClient = ldClient;
 
         // ADDING LOGGING, REMOVE THIS BEFORE RELEASE
-        log.info("ld.user.key: {} ld.user.firstName: {} ld.user.lastName: {}", 
+        log.info("============= ld.user.key: {} ld.user.firstName: {} ld.user.lastName: {}", 
             ldUserKey, ldUserFirstName, ldUserLastName);
 
         this.ldUserBuilder = new LDUser.Builder(ldUserKey)
