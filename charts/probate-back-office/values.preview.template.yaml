@@ -147,4 +147,5 @@ java:
         - idamRedirectUrl
         - launchdarkly-key
         - probate-site-id
+        - launchdarklyUserkeyBackend
 
