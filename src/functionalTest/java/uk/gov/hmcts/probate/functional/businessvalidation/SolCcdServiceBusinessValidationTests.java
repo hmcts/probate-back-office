@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +49,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
+    private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -236,6 +238,34 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() {
         validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
         validatePostSuccess("success.validWillAndCodicilDates.json", SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidWillDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"originalWillSignedDate\": \"2020-10-10\",",
+                "\"originalWillSignedDate\": \"" + TODAY_YYYY_MM_DD + "\",");
+
+        validatePostFailureWithPayload(payload,"Original will signed date must be in the past",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"Original will signed date must be in the past",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidCodicilDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"codicilAddedDateList\": [\"2020-10-10\", \"2020-10-11\"],",
+                "\"codicilAddedDateList\": [\"2020-10-10\", \"2020-10-11\", \"" + TODAY_YYYY_MM_DD + "\"],");
+
+        validatePostFailureWithPayload(payload,"Codicil date must be in the past",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"Codicil date must be in the past",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -778,25 +808,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url) {
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(url)
-            .thenReturn();
-
-        if (statusCode == 200) {
-            response.then().assertThat().statusCode(statusCode)
-                .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
-                .and().body("errors", hasItem(containsString(errorMessage)));
-        } else if (statusCode == 400) {
-            response.then().assertThat().statusCode(statusCode)
-                .and().body("error", equalTo("Invalid Request"))
-                .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
-                .and().body("fieldErrors[0].message", equalTo(errorMessage));
-        } else {
-            assert false;
-        }
+        final String payload = utils.getJsonFromFile(jsonFileName);
+        validatePostFailureWithPayload(payload, errorMessage, statusCode, url);
     }
 
     private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String url) {
