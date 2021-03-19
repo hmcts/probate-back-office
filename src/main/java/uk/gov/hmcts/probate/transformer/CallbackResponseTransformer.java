@@ -815,7 +815,10 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved())
-            .iht217(caseData.getIht217());
+            .iht217(caseData.getIht217())
+            .originalWillSignedDate(caseData.getOriginalWillSignedDate())
+            .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
+            .codicilAddedDateList(caseData.getCodicilAddedDateList());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

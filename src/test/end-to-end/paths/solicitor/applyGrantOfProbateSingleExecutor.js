@@ -4,6 +4,7 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
+const gopConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
 const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
@@ -67,8 +68,15 @@ Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async functi
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
+
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
+    // eslint-disable-next-line
+    const gobDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig}
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, gobDtlsAndDcsdDtls, true);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
+
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
+    await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
 
     nextStepName = 'Complete application';
     endState = 'Case created';

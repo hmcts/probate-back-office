@@ -52,7 +52,6 @@ Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
 
     // SECOND case - the main test case
 
-    nextStepName = 'Create a will lodgement';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');

@@ -255,6 +255,11 @@ public class CallbackResponseTransformerTest {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
+    private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
+    private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
+    private static final List<LocalDate> VALID_ADDED_CODICIL_DATES =
+            Arrays.asList(new LocalDate[] {VALID_CODICIL_DATE});
+    private static final String NO_ACCESS_WILL_REASON = "I lost it";
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -424,7 +429,7 @@ public class CallbackResponseTransformerTest {
             .applicationType(APPLICATION_TYPE)
             .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
             .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
-                    .postCode(SOLICITOR_FIRM_POSTCODE).build())
+                .postCode(SOLICITOR_FIRM_POSTCODE).build())
             .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
             .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
             .solsSOTForenames(SOLICITOR_SOT_FORENAME)
@@ -437,6 +442,8 @@ public class CallbackResponseTransformerTest {
             .deceasedDateOfDeath(DOD)
             .willHasCodicils(YES)
             .willNumberOfCodicils(NUM_CODICILS)
+            .originalWillSignedDate(VALID_ORIGINAL_WILL_SIGNED_DATE)
+            .codicilAddedDateList(VALID_ADDED_CODICIL_DATES)
             .ihtFormId(IHT_FORM_ID)
             .ihtGrossValue(IHT_GROSS)
             .ihtNetValue(IHT_NET)
@@ -3075,5 +3082,37 @@ public class CallbackResponseTransformerTest {
                 underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
         verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithProbateAndSetWillAndCodicilDates() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(VALID_ORIGINAL_WILL_SIGNED_DATE, callbackResponse.getData().getOriginalWillSignedDate());
+        assertEquals(VALID_CODICIL_DATE, callbackResponse.getData().getCodicilAddedDateList().get(0));
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithProbateNoWillAndWillReason() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        caseDataBuilder.willAccessOriginal(NO);
+        caseDataBuilder.noOriginalWillAccessReason(NO_ACCESS_WILL_REASON);
+        caseDataBuilder.willHasCodicils(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getWillAccessOriginal());
+        assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
+        assertEquals(NO, callbackResponse.getData().getWillHasCodicils());
     }
 }
