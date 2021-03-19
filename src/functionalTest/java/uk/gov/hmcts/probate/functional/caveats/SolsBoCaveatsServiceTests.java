@@ -150,14 +150,14 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedSolicitorPaperEmailContents() {
+    public void verifyCaveatRaisedSolicitorPaperEmailContents() {
         ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_RAISED);
         assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE, EMAIL_NOTIFICATION_URL,
             responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedSolicitorPaperEmailContentsNoDOB() {
+    public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOB() {
         ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB, CAVEAT_RAISED);
         assertExpectedContentsWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
             responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
