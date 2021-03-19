@@ -217,7 +217,7 @@ public class DocumentController {
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
         Registry registry = registriesProperties.getRegistries().get(NEWCASTLE);
-        callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
+        callbackRequest.getCaseDetails().setNewcastleRegistryAddress(String.join(" ",
             registry.getAddressLine1(), registry.getAddressLine2(),
             registry.getTown(), registry.getPostcode()));
 
