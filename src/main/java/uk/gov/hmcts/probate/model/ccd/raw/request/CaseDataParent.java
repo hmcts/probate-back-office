@@ -52,6 +52,9 @@ public class CaseDataParent {
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
     protected final String iht217;
+    protected final String noOriginalWillAccessReason;
+    protected final LocalDate originalWillSignedDate;
+    protected final List<LocalDate> codicilAddedDateList;
 
     @Getter
     protected LocalDate authenticatedDate;
