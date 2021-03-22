@@ -406,11 +406,6 @@ public class CallbackResponseTransformer {
             .schemaVersion(schemaVersion)
             // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
             .schemaVersionCcdCopy(schemaVersion)
-
-            // set these next 2 properties as these properties are still used for in-flight cases on old schema /
-            // bulk scan created cases and ccd has limited logic facilities
-            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-            .solicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
@@ -984,13 +979,6 @@ public class CallbackResponseTransformer {
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
             .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
-
-
-        if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
-            builder
-                .primaryApplicantSecondPhoneNumber(null)
-                .primaryApplicantRelationshipToDeceased(null);
-        }
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder
