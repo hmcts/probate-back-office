@@ -51,6 +51,7 @@ module.exports = function () {
         caseProgressClickSelectOrFillElementsAndContinue: steps.caseProgress.clickSelectOrFillElementsAndContinue,
         caseProgressWaitForElementThenContinue: steps.caseProgress.waitForElementThenContinue,
         caseProgressCheckYourAnswers: steps.caseProgress.checkYourAnswers,
+        caseProgressConfirmApplication: steps.caseProgress.confirmApplication,
         caseProgressCompleteApplication: steps.caseProgress.completeApplication,
         caseProgressSubmittedConfirmation: steps.caseProgress.submittedConfirmation,
         caseProgressNavigateToCaseCaseworker: steps.caseProgress.navigateToCaseCaseworker,
