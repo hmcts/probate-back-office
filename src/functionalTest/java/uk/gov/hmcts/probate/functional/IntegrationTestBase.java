@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
+import java.util.regex.Pattern;
+
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -53,7 +55,7 @@ public abstract class IntegrationTestBase {
     }
 
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
-        return request.replaceAll(originalAttr, updatedAttr);
+        return request.replaceAll(Pattern.quote(originalAttr), updatedAttr);
     }
 
     protected String getJsonFromFile(String jsonFileName) {

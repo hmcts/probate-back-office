@@ -39,14 +39,17 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateInPastRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateInPastRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +83,9 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
+    private final CodicilDateInPastRule codicilDateInPastRule;
+    private final OriginalWillSignedDateInPastRule originalWillSignedDateInPastRule;
+
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -165,6 +171,25 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 numberOfApplyingExecutorsValidationRule);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+        ValidationRule[] rules = new ValidationRule[]{codicilDateInPastRule, originalWillSignedDateInPastRule};
+        final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
+        
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                gopPage1ValidationRules);
 
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
