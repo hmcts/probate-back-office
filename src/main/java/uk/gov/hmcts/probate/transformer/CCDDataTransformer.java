@@ -115,19 +115,6 @@ public class CCDDataTransformer {
             .build();
     }
 
-    private List<LocalDate> getCodicilAddedDates(CaseData caseData) {
-        final List<LocalDate> caseDataCodicilDates = caseData.getCodicilAddedDateList();
-
-        if (caseDataCodicilDates == null) {
-            return null;
-        }
-        List<LocalDate> codicilDates = new ArrayList<>();
-        for (int i = 0; i < caseDataCodicilDates.size(); i++) {
-            codicilDates.add(caseDataCodicilDates.get(i));
-        }
-        return codicilDates;
-    }
-
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
