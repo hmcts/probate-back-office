@@ -7,13 +7,6 @@
         <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
         <cve>CVE-2020-26939</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: commons-beanutils-1.9.3.jar
-   ]]></notes>
-        <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
-        <cve>CVE-2019-10086</cve>
-    </suppress>
      <suppress>
         <notes><![CDATA[
    file name: guava-28.0-jre.jar
@@ -27,13 +20,6 @@
    ]]></notes>
         <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
         <cve>CVE-2020-25638</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: httpclient-4.5.7.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
-        <cve>CVE-2020-13956</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
