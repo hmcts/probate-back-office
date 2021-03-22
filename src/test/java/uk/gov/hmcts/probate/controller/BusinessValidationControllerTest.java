@@ -363,7 +363,8 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -378,7 +379,8 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Original will signed date must be in the past"));
@@ -394,7 +396,8 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Codicil date must be in the past"));
@@ -410,7 +413,8 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Codicil date must be in the past"))
