@@ -104,7 +104,7 @@ Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
     // Note that End State does not change when generating a deposit receipt.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
-    generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'd MMM yyyy');
+    generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'DD MMM YYYY');
     await I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
