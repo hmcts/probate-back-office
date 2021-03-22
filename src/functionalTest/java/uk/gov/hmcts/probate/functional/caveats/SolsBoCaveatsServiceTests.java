@@ -11,7 +11,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
@@ -20,19 +24,19 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private static final String CAVEAT_RAISED = "/caveat/raise";
     private static final String CAVEAT_DEFAULT_VALUES = "/caveat/defaultValues";
-    private static final String CAVEAT_GENERAL_MESSAGE= "/caveat/general-message";
-    private static final String CAVEAT_CONFIRMATION ="/caveat/confirmation";
+    private static final String CAVEAT_GENERAL_MESSAGE = "/caveat/general-message";
+    private static final String CAVEAT_CONFIRMATION = "/caveat/confirmation";
     private static final String CAVEAT_EXTEND = "/caveat/extend";
     private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
     private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
     private static final String CAVEAT_VALIDATE = "/caveat/validate";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
-    private static final String DEFAULT_PAYLOAD= "caveatPayloadNotifications.json";
-    private static final String DEFAULT_PAYLOAD_NO_EMAIL= "caveatPayloadNotificationsNoEmail.json";
-    private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
+    private static final String DEFAULT_PAYLOAD = "caveatPayloadNotifications.json";
+    private static final String DEFAULT_PAYLOAD_NO_EMAIL = "caveatPayloadNotificationsNoEmail.json";
+    private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsNoEmailCTSC.json";
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
-    private static final String CAVEAT_EXTEND_PAYLOAD ="/caveat/caveatExtendPayloadExtend.json";
+    private static final String CAVEAT_EXTEND_PAYLOAD = "/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
@@ -71,6 +75,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertEquals(NO, bulkPrintRequested);
 
     }
+
     @Test
     public void verifySuccessForCaveatDefaultValuesWithPaperForm() {
         String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
@@ -81,7 +86,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertEquals(YES, paperForm);
 
     }
-
 
 
     @Test
@@ -122,7 +126,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
         String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
-        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN)+ "\""));
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
 
     }
 
@@ -147,7 +151,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() {
-        String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
+        final String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 1);
 
         assertCommons(response);
@@ -168,39 +172,42 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatConfirmationShouldReturnBadResponseCode() {
-        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
-        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",","\"caveatorEmailAddress\": \"\",");
+        String jsonAsString = getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
+        jsonAsString = jsonAsString
+            .replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",", "\"caveatorEmailAddress\": \"\",");
         Response response = postJson(jsonAsString, CAVEAT_CONFIRMATION);
         response.then().assertThat().statusCode(400);
         JsonPath jsonPath = JsonPath.from(response.asString());
 
-        assertThat(jsonPath.get("message"),is(equalTo("Invalid payload")));
-        assertThat(jsonPath.get("fieldErrors[0].field"),is(equalTo("caseDetails.data.caveatorEmailAddress")));
-        assertThat(jsonPath.get("fieldErrors[0].code"),is(equalTo("NotBlank")));
+        assertThat(jsonPath.get("message"), is(equalTo("Invalid payload")));
+        assertThat(jsonPath.get("fieldErrors[0].field"), is(equalTo("caseDetails.data.caveatorEmailAddress")));
+        assertThat(jsonPath.get("fieldErrors[0].code"), is(equalTo("NotBlank")));
     }
 
     @Test
-    public void verifyCaveatExtendShouldReturnOKResponseCode(){
+    public void verifyCaveatExtendShouldReturnOKResponseCode() {
         ResponseBody response = validatePostSuccess(CAVEAT_EXTEND_PAYLOAD, CAVEAT_EXTEND);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
 
-        assertThat(jsonPath.get("data.errors"),is(nullValue()));
-        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"),is(notNullValue()));
-        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("sentEmail"));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"), is(notNullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"), containsString("sentEmail"));
 
     }
 
     @Test
-    public void verifyCaveatExtendShouldReturnValidationError(){
-        String jsonAsString =  getJsonFromFile(CAVEAT_EXTEND_PAYLOAD);
-        jsonAsString =jsonAsString.replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",","\"caveatorEmailAddress\": \"\",");
+    public void verifyCaveatExtendShouldReturnValidationError() {
+        String jsonAsString = getJsonFromFile(CAVEAT_EXTEND_PAYLOAD);
+        jsonAsString = jsonAsString
+            .replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",", "\"caveatorEmailAddress\": \"\",");
         Response response = postJson(jsonAsString, CAVEAT_EXTEND);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(200);
-        assertThat(jsonPath.get("errors[0]"),is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
+        assertThat(jsonPath.get("errors[0]"),
+            is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
     }
 
     @Test
@@ -208,24 +215,24 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
-        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
-        assertThat(jsonPath.get("data.registryLocation"),is(equalTo("ctsc")));
-        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+        assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
 
     @Test
     public void verifyCaveatSolicitorCreateReturnsDefaultLocationAndApplicationType() {
         String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
-        jsonAsString.replaceFirst("Solicitor","Personal");
-        jsonAsString.replaceFirst("ctsc","Leeds");
+        jsonAsString.replaceFirst("Solicitor", "Personal");
+        jsonAsString.replaceFirst("ctsc", "Leeds");
         Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(200);
-        assertThat(jsonPath.get("data.applicationType"),is(equalTo("Solicitor")));
-        assertThat(jsonPath.get("data.registryLocation"),is(equalTo("ctsc")));
-        assertThat(jsonPath.get("data.errors"),is(nullValue()));
+        assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
+        assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
 
     @Test
@@ -259,38 +266,39 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     public void verifyCaveatValidateShouldReturnOKResponseCode() {
         ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_VALIDATE);
         JsonPath jsonPath = JsonPath.from(response.asString());
-        DateTimeFormatter iso_8601_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate today = LocalDate.now();
         LocalDate extended = today.plusMonths(6);
-        today.format(iso_8601_formatter);
+        today.format(iso8601Formatter);
 
-        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso_8601_formatter))));
-        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso_8601_formatter))));
+        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso8601Formatter))));
+        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso8601Formatter))));
     }
 
     @Test
     public void verifyCaveatValidateShouldReturnBadResponseCode() {
-        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
-        jsonAsString =jsonAsString.replace("caveator@probate-test.com","");
+        String jsonAsString = getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
+        jsonAsString = jsonAsString.replace("caveator@probate-test.com", "");
 
         Response response = postJson(jsonAsString, CAVEAT_VALIDATE);
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(400);
-        assertThat(jsonPath.get("message"),is(equalTo("Invalid payload")));
-        assertThat(jsonPath.get("fieldErrors[0].field"),is(equalTo("caseDetails.data.caveatorEmailAddress")));
-        assertThat(jsonPath.get("fieldErrors[0].code"),is(equalTo("NotBlank")));
+        assertThat(jsonPath.get("message"), is(equalTo("Invalid payload")));
+        assertThat(jsonPath.get("fieldErrors[0].field"), is(equalTo("caseDetails.data.caveatorEmailAddress")));
+        assertThat(jsonPath.get("fieldErrors[0].code"), is(equalTo("NotBlank")));
     }
+
     @Test
-    public void verifyCaveatValidateExtendShouldReturnOKResponseCode(){
-        DateTimeFormatter iso_8601_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public void verifyCaveatValidateExtendShouldReturnOKResponseCode() {
+        DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.now();
         LocalDate extended = localDate.plusMonths(6);
-        String today = localDate.format(iso_8601_formatter);
-        String extendedDate = extended.format(iso_8601_formatter);
-        String jsonAsString =  getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
-        jsonAsString = jsonAsString.replace("endDate",today);
+        String today = localDate.format(iso8601Formatter);
+        String extendedDate = extended.format(iso8601Formatter);
+        String jsonAsString = getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
+        jsonAsString = jsonAsString.replace("endDate", today);
 
         Response response = postJson(jsonAsString, CAVEAT_VALIDATE_EXTEND);
         JsonPath jsonPath = JsonPath.from(response.asString());
@@ -300,10 +308,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatValidateExtendShouldReturnValidationError(){
+    public void verifyCaveatValidateExtendShouldReturnValidationError() {
 
-        String jsonAsString =  getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
-        jsonAsString = jsonAsString.replace("endDate","1900-01-01");
+        String jsonAsString = getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
+        jsonAsString = jsonAsString.replace("endDate", "1900-01-01");
 
         Response response = postJson(jsonAsString, CAVEAT_VALIDATE_EXTEND);
         JsonPath jsonPath = JsonPath.from(response.asString());
@@ -320,32 +328,36 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         responseBody.prettyPrint();
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
 
-        assertThat(jsonPath.get("data.errors"),is(nullValue()));
-        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"),is(notNullValue()));
-        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("sentEmail"));
+        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_url"), is(notNullValue()));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"), containsString("sentEmail"));
     }
 
     @Test
-    public void verifyCaveatWithdrawWithoutEmailShouldReturnOkResponseCode(){
+    public void verifyCaveatWithdrawWithoutEmailShouldReturnOkResponseCode() {
 
-        String jsonAsString =  getJsonFromFile(CAVEAT_CASE_WITHDRAW_PAYLOAD);
-        jsonAsString = jsonAsString.replaceFirst("\"caveatRaisedEmailNotificationRequested\": \"Yes\",","\"caveatRaisedEmailNotificationRequested\": \"No\",");
+        String jsonAsString = getJsonFromFile(CAVEAT_CASE_WITHDRAW_PAYLOAD);
+        jsonAsString = jsonAsString.replaceFirst("\"caveatRaisedEmailNotificationRequested\": \"Yes\",",
+            "\"caveatRaisedEmailNotificationRequested\": \"No\",");
 
         Response response = postJson(jsonAsString, CAVEAT_WITHDRAW);
         JsonPath jsonPath = JsonPath.from(response.asString());
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),containsString("caveatCoversheet"));
-        assertThat(jsonPath.get("data.notificationsGenerated[1].value.DocumentType"),containsString("caveatWithdrawn"));
+        assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),
+            containsString("caveatCoversheet"));
+        assertThat(jsonPath.get("data.notificationsGenerated[1].value.DocumentType"),
+            containsString("caveatWithdrawn"));
 
     }
+
     private Response postJson(String jsonAsString, String caveatConfirmation) {
         return RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonAsString)
-                .when().post(caveatConfirmation)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(jsonAsString)
+            .when().post(caveatConfirmation)
+            .andReturn();
     }
 
     private void assertCommons(String response) {
@@ -371,15 +383,15 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private String generateDocument(String jsonFileName, String path, int placeholder) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.notificationsGenerated["
-                + placeholder
-                + "].value.DocumentLink.document_binary_url");
+            + placeholder
+            + "].value.DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -388,10 +400,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private String validatePostSuccessReturnPayload(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
 
         return jsonResponse.getBody().asString();
     }
