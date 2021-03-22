@@ -206,6 +206,16 @@ processResources {
   }
 }
 
+configurations.all {
+  resolutionStrategy {
+    eachDependency { DependencyResolveDetails details ->
+      if (details.requested.group in ['org.apache.tomcat.embed']) {
+        details.useVersion '9.0.43'
+      }
+    }
+  }
+}
+
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
