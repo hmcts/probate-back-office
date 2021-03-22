@@ -74,12 +74,4 @@
         <cve>CVE-2021-25329</cve>
          <cve>CVE-2020-9484</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: elasticsearch-7.9.2.jar
-   ]]></notes>
-        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
-        <cve>CVE-2020-7021</cve>
-        <cve>CVE-2021-22132</cve>
-    </suppress>
 </suppressions>
