@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -755,21 +754,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
-    }
-
-    private void validatePostSuccessAndCheckValues(String jsonPayload, String url, List<String> caseDataAttributes,
-                                                  List<String> caseDataValues) {
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonPayload)
-                .when().post(url)
-                .thenReturn();
-
-        response.then().assertThat().statusCode(200);
-        for (int i = 0; i < caseDataAttributes.size(); i++) {
-            response.then().body("data." + caseDataAttributes.get(i), equalTo(caseDataValues.get(i)));
-        }
     }
 
     private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage,
