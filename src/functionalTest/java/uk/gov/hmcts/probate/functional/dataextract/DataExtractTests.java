@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -121,6 +122,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .then().assertThat().statusCode(400);
     }
 
+    @Pending
     @Test
     public void verifyValidDateRequestReturnsOKForSmeeAndFord() {
         HashMap<String, String> parms = new HashMap<>();
