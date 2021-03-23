@@ -41,6 +41,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private String grantAwaitingDocumentationNotificationPeriodDays;
 
     @Test
+    @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
