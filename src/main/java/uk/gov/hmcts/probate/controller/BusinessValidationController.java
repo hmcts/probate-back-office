@@ -54,6 +54,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -344,7 +346,24 @@ public class BusinessValidationController {
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
 
-        CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        CallbackResponse response;
+
+        // validate the new trust corps
+        /*
+        if (NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
+            ValidationRule[] rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+            final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
+
+            response = eventValidationService.validateRequest(callbackRequest,
+                    gopPage1ValidationRules);
+
+            if (response.getErrors().isEmpty()) {
+                response = callbackResponseTransformer.paperForm(callbackRequest, document);
+            }
+        } else {
+            response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        */
+        response = callbackResponseTransformer.paperForm(callbackRequest, document);
 
         return ResponseEntity.ok(response);
     }
