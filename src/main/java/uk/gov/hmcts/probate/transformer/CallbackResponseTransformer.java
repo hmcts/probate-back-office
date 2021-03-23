@@ -381,15 +381,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        responseCaseDataBuilder.solicitorIsMainApplicant(caseData.solicitorIsApplying());
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
                                                           FeeServiceResponse feeServiceResponse) {
         final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
