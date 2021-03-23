@@ -24,3 +24,4 @@ spring:
         schedulerCaseWorkerPass: SCHEDULER_CASEWORKER_PASSWORD
         probate-site-id: payment.siteId
         launchdarkly-key: ld.sdk_key
+        launchdarklyUserkeyBackend: ld.user.key
