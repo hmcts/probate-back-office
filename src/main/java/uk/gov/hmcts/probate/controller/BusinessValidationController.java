@@ -39,11 +39,11 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.CodicilDateInPastRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
-import uk.gov.hmcts.probate.validator.OriginalWillSignedDateInPastRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -83,8 +83,8 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
-    private final CodicilDateInPastRule codicilDateInPastRule;
-    private final OriginalWillSignedDateInPastRule originalWillSignedDateInPastRule;
+    private final CodicilDateValidationRule codicilDateValidationRule;
+    private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
 
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
@@ -185,7 +185,7 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-        ValidationRule[] rules = new ValidationRule[]{codicilDateInPastRule, originalWillSignedDateInPastRule};
+        ValidationRule[] rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
         
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,

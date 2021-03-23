@@ -356,7 +356,8 @@ public class BusinessValidationControllerTest {
     @Test
     public void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
         caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
-        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(3));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -420,6 +421,74 @@ public class BusinessValidationControllerTest {
                         .value("Codicil date must be in the past"))
                 .andExpect(jsonPath("$.errors[1]")
                         .value("Original will signed date must be in the past"));
+    }
+
+    @Test
+    public void shouldNotValidateWithWillDateAfterDateOfDeath() throws Exception {
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithWillDateOnDateOfDeath() throws Exception {
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
+        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(2) }));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("A codicil cannot be made before the will was signed"));
+    }
+
+    @Test
+    public void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
+        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("A codicil cannot be made before the will was signed"));
     }
 
     @Test

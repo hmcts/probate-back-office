@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class OriginalWillDateSignedInPastTest {
+public class OriginalWillDateValidationRuleTest {
     @InjectMocks
     private OriginalWillSignedDateValidationRule underTest;
 
@@ -101,6 +101,7 @@ public class OriginalWillDateSignedInPastTest {
 
         assertEquals(2, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
+        assertEquals(fieldErrorResponse, validationError.get(1));
     }
 
     @Test

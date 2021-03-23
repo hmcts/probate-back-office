@@ -34,4 +34,5 @@ public class CCDData implements Serializable {
     private final String iht217;
     private final LocalDate originalWillSignedDate;
     private final List<LocalDate> codicilAddedDateList;
+    private final LocalDate deceasedDateOfDeath;
 }

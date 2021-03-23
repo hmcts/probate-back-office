@@ -17,9 +17,10 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-public class OriginalWillSignedDateInPastRule implements ValidationRule {
+public class OriginalWillSignedDateValidationRule implements ValidationRule {
     private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST = "originalWillSignedDateMustBeInThePast";
-    private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH = "originalWillSignedDateMustBeBeforeDateOfDeath";
+    private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH
+            = "originalWillSignedDateMustBeBeforeDateOfDeath";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 

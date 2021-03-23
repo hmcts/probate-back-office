@@ -19,9 +19,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CodicilDateInPastRuleTest {
+public class CodicilDateValidationRuleTest {
     @InjectMocks
-    private CodicilDateInPastRule underTest;
+    private CodicilDateValidationRule underTest;
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
@@ -70,6 +70,70 @@ public class CodicilDateInPastRuleTest {
 
         assertEquals(1, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
+    }
+
+    @Test
+    public void shouldErrorIfOneOfTheDatesIsBeforeOriginalWillDate() {
+        final ArrayList<LocalDate> dates = new ArrayList<>();
+        final LocalDate willDate = LocalDate.now().minusDays(1);
+        dates.add(LocalDate.of(2020,10,10));
+        dates.add(willDate.minusDays(1));
+        dates.add(LocalDate.of(2020,12,10));
+
+        when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
+        when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
+        when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
+        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
+        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
+                .thenReturn(fieldErrorResponse);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertEquals(1, validationError.size());
+        assertEquals(fieldErrorResponse, validationError.get(0));
+    }
+
+    @Test
+    public void shouldErrorIfOneOfTheDatesIsOnOriginalWillDate() {
+        final ArrayList<LocalDate> dates = new ArrayList<>();
+        final LocalDate willDate = LocalDate.now().minusDays(1);
+        dates.add(LocalDate.of(2020,10,10));
+        dates.add(willDate);
+        dates.add(LocalDate.of(2020,12,10));
+
+        when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
+        when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
+        when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
+        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
+        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
+                .thenReturn(fieldErrorResponse);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertEquals(1, validationError.size());
+        assertEquals(fieldErrorResponse, validationError.get(0));
+    }
+
+    @Test
+    public void shouldGiveTwoErrorsIfOneOfTheDatesIsInFutureAndOnOriginalWillDate() {
+        final ArrayList<LocalDate> dates = new ArrayList<>();
+        final LocalDate willDate = LocalDate.now().plusDays(1);
+        dates.add(LocalDate.of(2020,10,10));
+        dates.add(willDate);
+        dates.add(LocalDate.of(2020,12,10));
+
+        when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
+        when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
+        when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
+        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
+        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
+                .thenReturn(fieldErrorResponse);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertEquals(2, validationError.size());
+        assertEquals(fieldErrorResponse, validationError.get(0));
+        assertEquals(fieldErrorResponse, validationError.get(1));
     }
 
     @Test
