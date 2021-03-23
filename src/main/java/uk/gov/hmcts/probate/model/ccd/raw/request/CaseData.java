@@ -58,6 +58,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -212,6 +213,9 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationAdmonGroup.class,
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private final String primaryApplicantEmailAddress;
+
+    @Builder.Default
+    private final String primaryApplicantType = EXECUTOR_TYPE_LAY;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;

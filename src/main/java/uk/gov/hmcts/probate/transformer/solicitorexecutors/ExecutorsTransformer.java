@@ -15,8 +15,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.*;
 
 @Component
 @Slf4j
@@ -47,9 +46,18 @@ public class ExecutorsTransformer {
                 }
             }
         } else {
-            builder
-                    .solsSolicitorIsApplying(NO)
-                    .solsSolicitorNotApplyingReason(null);
+            if (YES.equals(caseData.getSolTitleAndClearingExecutor())) {
+                addSolicitorAsPrimaryApplicant(caseData, builder);
+
+                String executorType = isPartnerExecutor(caseData) ? EXECUTOR_TYPE_PROFESSIONAL
+                        : EXECUTOR_TYPE_TRUST_CORP;
+
+                builder
+                        .primaryApplicantType(executorType)
+                        .solsSolicitorIsApplying(NO)
+                        .solsSolicitorNotApplyingReason(null);
+
+            }
         }
 
     }
@@ -263,6 +271,17 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
         return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
                 && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
+    }
+
+    private boolean isPartnerExecutor(CaseData caseData) {
+        String titleAndClearing = caseData.getTitleAndClearingType();
+
+        return TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED.equals(titleAndClearing)
+                || TITLE_AND_CLEARING_PARTNER_POWER_RESERVED.equals(titleAndClearing)
+                || TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR.equals(titleAndClearing)
+                || TITLE_AND_CLEARING_SOLE_PRINCIPLE.equals(titleAndClearing)
+                || TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING.equals(titleAndClearing)
+                || TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING.equals(titleAndClearing);
     }
 
 }
