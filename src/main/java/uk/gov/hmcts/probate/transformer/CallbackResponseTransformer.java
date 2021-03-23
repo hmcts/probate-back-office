@@ -404,9 +404,6 @@ public class CallbackResponseTransformer {
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(schemaVersion)
-            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(schemaVersion)
-
             // set these next 2 properties as these properties are still used for in-flight cases on old schema /
             // bulk scan created cases and ccd has limited logic facilities
             .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
@@ -586,8 +583,6 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)
-            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(ccdVersion)
             .build()
         );
     }
@@ -608,7 +603,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
-            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .state(caseDetails.getState())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
@@ -877,7 +871,6 @@ public class CallbackResponseTransformer {
 
         builder
             .schemaVersion(caseData.getSchemaVersion())
-            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
             .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
             .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())

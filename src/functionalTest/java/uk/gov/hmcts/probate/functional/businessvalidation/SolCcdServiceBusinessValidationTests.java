@@ -14,12 +14,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
-
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -286,9 +283,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
+
     }
 
     @Test
@@ -296,18 +292,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
     public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-            new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-            new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
@@ -315,9 +307,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
@@ -325,9 +315,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
