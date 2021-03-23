@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
+import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
 import java.time.format.DateTimeFormatter;
 
@@ -38,6 +39,8 @@ public class DataExtractControllerTest {
     private IronMountainDataExtractService ironMountainDataExtractService;
     @MockBean
     private ExelaDataExtractService exelaDataExtractService;
+    @MockBean
+    private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     @MockBean
     private DataExtractDateValidator dataExtractDateValidator;
     @MockBean
@@ -132,6 +135,18 @@ public class DataExtractControllerTest {
     @Test
     public void exelaShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/exela"))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void smeeAndFordShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/smee-and-ford?fromDate=2019-02-13&toDate=2019-02-13"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+        mockMvc.perform(post("/data-extract/smee-and-ford"))
             .andExpect(status().is4xxClientError());
     }
 }

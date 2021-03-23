@@ -31,6 +31,7 @@ def secrets = [
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
+                secret('smeeAndFordEmail', 'SMEE_AND_FORD_EMAIL'),
                 secret('ftpSignature', 'FTP_SIGNATURE'),
                 secret('ftpEnv', 'FTP_ENV'),
                 secret('probate-bo-grantSignatureKey', 'PDF_SERVICE_GRANTSIGNATURESECRETKEY'),

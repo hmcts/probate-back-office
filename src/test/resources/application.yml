@@ -364,6 +364,7 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: excela@probate-test.com
+smeeAndFordEmail: smeeAndFord@probate-test.com
 
 welsh:
   months:

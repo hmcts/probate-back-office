@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
+import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
@@ -75,6 +76,7 @@ public class NotificationService {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
+    private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
@@ -211,6 +213,22 @@ public class NotificationService {
         log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
+    }
+
+    public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails) throws
+        NotificationClientException {
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+            .get(caseDetails.get(0).getData().getApplicationType())
+            .getSmeeAndFordData();
+        Map<String, String> personalisation =
+            smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails);
+        String reference = LocalDateTime.now().format(EXCELA_DATE);
+
+        SendEmailResponse response =
+            notificationClient.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(), personalisation, reference);
+        log.info("SF email reference response: {}", response.getReference());
+
+        return getGeneratedSentEmailDocument(response, emailAddresses.getSmeeAndFordEmail(), SENT_EMAIL);
     }
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,

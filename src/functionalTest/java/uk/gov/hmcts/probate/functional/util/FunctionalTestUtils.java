@@ -7,8 +7,10 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
+import org.pdfbox.pdfparser.PDFStreamParser;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -124,11 +127,11 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("user-id", userId));
     }
 
     public Headers getSolicitorHeadersWithUserId() {
@@ -137,11 +140,11 @@ public class FunctionalTestUtils {
 
     private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+            new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -158,6 +161,15 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+
+        return parsePDFToString(document.getBody().asInputStream());
+    }
+
+    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
+        Response document = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
