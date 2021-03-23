@@ -46,6 +46,7 @@ public class ResponseCaseDataParent {
     protected final String titleAndClearingType;
     protected final String titleAndClearingTypeNoT;
     protected final String trustCorpName;
+    protected final String solTitleAndClearingExecutor;
     protected SolsAddress trustCorpAddress;
     protected final List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected final String lodgementDate;

@@ -794,6 +794,7 @@ public class CallbackResponseTransformer {
             .lodgementAddress(caseData.getLodgementAddress())
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
+            .solTitleAndClearingExecutor(caseData.getSolTitleAndClearingExecutor())
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
