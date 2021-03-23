@@ -67,7 +67,9 @@ public class ExecutorsTransformer {
                 .primaryApplicantHasAlias(NO)
                 .primaryApplicantIsApplying(YES)
                 .solsSolicitorNotApplyingReason(null)
-                .solsPrimaryExecutorNotApplyingReason(null);
+                .solsPrimaryExecutorNotApplyingReason(null)
+                .primaryApplicantSecondPhoneNumber(null)
+                .primaryApplicantRelationshipToDeceased(null);
     }
 
     private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
