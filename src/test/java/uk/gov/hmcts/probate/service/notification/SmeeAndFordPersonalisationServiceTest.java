@@ -15,7 +15,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.util.TestUtils;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +48,8 @@ public class SmeeAndFordPersonalisationServiceTest {
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
+    private TestUtils testUtils = new TestUtils();
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -64,7 +68,8 @@ public class SmeeAndFordPersonalisationServiceTest {
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
         SolsAddress execAddress = buildAddress("Exec1");
-        additionalExecsApplying.add(new CollectionMember<AdditionalExecutorApplying>(AdditionalExecutorApplying.builder()
+        additionalExecsApplying.add(
+            new CollectionMember<AdditionalExecutorApplying>(AdditionalExecutorApplying.builder()
             .applyingExecutorFirstName("Exec1FN")
             .applyingExecutorLastName("Exec1LN")
             .applyingExecutorOtherNames("Exec1ON")
@@ -152,13 +157,15 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributes() {
+    public void shouldMapAllAttributes() throws IOException {
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
         Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases);
 
         assertThat(personalisation.get("smeeAndFordName"), is(LocalDateTime.now().format(DATA_DATE) + "sf"));
-        assertThat(personalisation.get("caseData"), is("Cardiff, 31/12/2021, 1, Jack  Michelson  , , null, " +
-            "31/12/2020, , , , 1000000, 900000, , 01/12/2000, , , \n"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedData.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
     }
 }

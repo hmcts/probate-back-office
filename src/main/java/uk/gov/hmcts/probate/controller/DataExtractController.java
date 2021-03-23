@@ -94,7 +94,7 @@ public class DataExtractController {
         dataExtractDateValidator.dateValidator(fromDate, toDate);
 
         log.info("Calling perform SF data extract from date...");
-        Document doc = smeeAndFordDataExtractService.performSFExtractForDateRange(fromDate, toDate);
+        Document doc = smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
         log.info("Perform SF data extract from date finished");
 
         return ResponseEntity.ok(doc);

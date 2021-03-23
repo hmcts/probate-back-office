@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
@@ -153,6 +154,9 @@ public class NotificationServiceTest {
 
     @MockBean
     private DocumentStoreClient documentStoreClient;
+
+    @MockBean
+    private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -1400,6 +1404,22 @@ public class NotificationServiceTest {
             anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendSmeeAndFordEmail() throws NotificationClientException {
+        Document doc = Document.builder().build();
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
+        
+        Document document = notificationService.sendSmeeAndFordEmail(excelaCaseData.build());
+
+        verify(notificationClient).sendEmail(
+            eq("pa-smeeFord-data"),
+            eq("smeeAndFord@probate-test.com"),
+            any(),
+            anyString());
+
+        assertEquals(doc, document);
     }
 
     @Test

@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.dataextract;
 import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DataExtractTests extends IntegrationTestBase {
@@ -142,6 +139,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .post(api)
             .thenReturn();
 
-        assertExpectedContentsForHeaders(documentTextFile, "DocumentLink.document_binary_url", response.body(), headers);
+        assertExpectedContentsForHeaders(documentTextFile, "DocumentLink.document_binary_url", 
+            response.body(), headers);
     }
 }

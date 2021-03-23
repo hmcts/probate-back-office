@@ -7,10 +7,8 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
-import org.pdfbox.pdfparser.PDFStreamParser;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
