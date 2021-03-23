@@ -1,0 +1,23 @@
+{
+  "size": 1000,
+  "from": 1,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "state": "BOGrantIssued"
+          }
+        },
+        {
+          "range": {
+            "data.grantIssuedDate": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

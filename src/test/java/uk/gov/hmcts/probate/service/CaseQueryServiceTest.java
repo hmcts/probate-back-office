@@ -55,6 +55,9 @@ public class CaseQueryServiceTest {
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
+    @Mock
+    private FileSystemResourceService fileSystemResourceService;
+
     @Captor
     private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
@@ -107,7 +110,8 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("2019-02-05", "2019-02-22");
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinDateRange("2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));

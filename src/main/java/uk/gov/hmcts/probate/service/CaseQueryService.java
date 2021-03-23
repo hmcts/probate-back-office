@@ -31,7 +31,6 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -60,12 +59,15 @@ public class CaseQueryService {
         "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
+    private static final String GRANT_RANGE_QUERY = "templates/elasticsearch/caseMatching/" 
+        + "grants_issued_date_range_query.json";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final FileSystemResourceService fileSystemResourceService;
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaseQueryService");
@@ -83,17 +85,20 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String startDate, String endDate) {
-        BoolQueryBuilder query = boolQuery();
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRange(String startDate, String endDate) {
+        String jsonQuery = getQueryTemplate()
+            .replace(":fromDate", startDate)
+            .replace(":toDate", endDate);
 
-        query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(rangeQuery(GRANT_ISSUED_DATE).gte(startDate).lte(endDate));
-
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
-
+        //could also use pagination on the url like this
+        //<URL>/searchCases?ctid=GrantOfRepresentation&page=1
         return runQuery(jsonQuery);
     }
 
+    private String getQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY);
+    }
+    
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
 
         BoolQueryBuilder query = boolQuery();
