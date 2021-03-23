@@ -796,6 +796,18 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
+    public void shouldSubmitTrustCorpsSolicitorGoPCaseForCaseworker() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(null);
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+    @Test
     public void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
         String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
 
