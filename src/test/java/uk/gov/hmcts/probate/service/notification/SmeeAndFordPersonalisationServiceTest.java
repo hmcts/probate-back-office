@@ -31,7 +31,6 @@ import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 
 public class SmeeAndFordPersonalisationServiceTest {
@@ -43,7 +42,6 @@ public class SmeeAndFordPersonalisationServiceTest {
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
 
     private static final DateTimeFormatter DATA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final Long ID = 1234567812345678L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
@@ -57,7 +55,6 @@ public class SmeeAndFordPersonalisationServiceTest {
 
         returnedCaseDetailsPersonal = buildAll(PERSONAL);
         returnedCaseDetailsSolicitor = buildAll(SOLICITOR);
-        //when(responseEntity.getBody()).thenReturn(fee);
     }
 
     private ReturnedCaseDetails buildAll(ApplicationType applicationType) {
