@@ -3,7 +3,6 @@
     "fields": [
       "What case type is this?",
       "Is this a paper form?",
-      "Will message",
       "IHT Form completed Online",
       "IHT Reference Number",
       "Gross value of the estate",
@@ -17,9 +16,7 @@
       "Did the deceased leave a will?",
       "Do you have access to the original will?",
       "Is the will dated before 4 April 1988?",
-      "When was the original will signed and dated?",      
       "Were any codicils added to the will?",
-      "When was the codicil added? 1",
       "Did the person who died have any wills that were made oustide of England and Wales",
       "What was the marital status of the deceased at the date of death?",
       "Did the person who has died marry or enter a civil partnership?",
@@ -32,6 +29,7 @@
       "How many over 18 years old?",
       "How many under 18 years old?",
       "Were there any sons or daughters of the person who has died who did not survive them?",
+      "Were there any children of people in the previous question, survived them?",
       "Was any relative of the person who has died legally adopted?",
       "Please name the legally adopted relatives and give their relationship to the person who has died.",
       "Name",
@@ -54,7 +52,6 @@
     "dataKeys": [
       "page1_list1_registry_location",
       "page1_list2_application_type",
-      "page1_boWillMessage",
       "page4_adoptive_relative_name",
       "page4_adoptive_relative_relationship",
       "page4_adoptive_adoptedInOrOut",
@@ -63,9 +60,7 @@
       "page6_willExistsYes",
       "page6_willDatedBeforeAprilYes",
       "page6_willAccessOriginalYes",
-      "page6_originalWillSignedDate",
       "page6_willHasCodicilsYes",
-      "page6_codicilDate",
       "page6_willsOutsideOfUKYes",
       "page6_deceasedEnterMarriageOrCPYes",
       "page6_dateOfMarriageOrCP_long",
@@ -75,7 +70,7 @@
       "page7_childrenSurvivedYes",
       "page7_childrenOverEighteenSurvived",
       "page7_childrenUnderEighteenSurvived",
-      "page7_childrenDiedNo",
+      "page7_childrenDiedYes",
       "page7_childrenDiedOverEighteen",
       "page7_childrenDiedUnderEighteen",
       "page7_grandChildrenSurvivedYes",
@@ -83,14 +78,13 @@
       "page7_grandChildrenSurvivedUnderEighteen",
       "page8_applyingAsAttorneyYes",
       "page8_representativeOfName",
-      "page8_representativeOfName_update",
       "page8_mentalCapacityYes",
       "page8_courtOfProtectionYes",
       "page8_epaOrLpaYes",
       "page8_epaRegisteredYes",
       "page9_domicilityIHTCertYes",
       "page10_ihtFormCompletedOnlineYes",
-      "page10_ihtReferenceNumber_update",
+      "page10_ihtReferenceNumber",
       "page10_ihtGrossValue",
       "page10_ihtNetValue",
       "address_line1",
@@ -101,5 +95,9 @@
       "address_country",
       "address_postcode"
     ],
-    "fieldsNotPresent": ["Please state the grounds for making this application and any information in support:"]
+    "fieldsNotPresent": [
+      "Please state the grounds for making this application and any information in support:",
+      "Version of schema applicable for this case"
+    ]
   }
+  
