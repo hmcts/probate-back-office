@@ -16,7 +16,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -76,7 +76,7 @@ public class ExecutorsTransformer {
             } else {
                 removeSolicitorAsPrimaryApplicant(builder);
                 builder
-                        .primaryApplicantType(EXECUTOR_TYPE_LAY);
+                        .primaryApplicantType(EXECUTOR_TYPE_NAMED);
             }
 
             builder

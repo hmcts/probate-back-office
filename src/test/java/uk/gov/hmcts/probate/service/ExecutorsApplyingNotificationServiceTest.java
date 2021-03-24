@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 
 public class ExecutorsApplyingNotificationServiceTest {
 
@@ -60,7 +61,8 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     @Test
     public void testPaAndExecutorIsAddedToExecutorsApplyingNotificationList() {
-        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com", "Lay"));
+        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
 
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
@@ -96,7 +98,8 @@ public class ExecutorsApplyingNotificationServiceTest {
             .primaryApplicantIsApplying("No")
             .build();
 
-        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com", "Lay"));
+        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
 
         CollectionMember<ExecutorsApplyingNotification> execApplying =
             buildExecNotification("Tommy Tank", "executor1@probate-test.com", "1");
@@ -163,10 +166,14 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     @Test
     public void testMultipleExecutorsAreAddedSuccessfully() {
-        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com", "Lay"));
-        additionalExecutorApplyingList.add(buildExecApplying("Bobby Bank", "executor2@probate-test.com", "Lay"));
-        additionalExecutorApplyingList.add(buildExecApplying("Dobby Dank", "executor3@probate-test.com", "Lay"));
-        additionalExecutorApplyingList.add(buildExecApplying("Jack Johnson", "executor4@probate-test.com", "Lay"));
+        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
+        additionalExecutorApplyingList.add(buildExecApplying("Bobby Bank", "executor2@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
+        additionalExecutorApplyingList.add(buildExecApplying("Dobby Dank", "executor3@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
+        additionalExecutorApplyingList.add(buildExecApplying("Jack Johnson", "executor4@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
 
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
@@ -210,7 +217,8 @@ public class ExecutorsApplyingNotificationServiceTest {
             .additionalExecutorsApplying(additionalExecutorApplyingList)
             .primaryApplicantIsApplying("No")
             .build();
-        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com", "Lay"));
+        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
+                EXECUTOR_TYPE_NAMED));
 
         CollectionMember<ExecutorsApplyingNotification> executorNotification1 =
             buildExecNotification("Tommy Tank", "executor1@probate-test.com", "1");

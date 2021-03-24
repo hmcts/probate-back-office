@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING;
@@ -44,7 +44,7 @@ public class ExecutorTypeService {
 
     public String solicitorExecutorType(CaseData caseData) {
         if (isSolicitorExecutorNamedOnWill(caseData)) {
-            return EXECUTOR_TYPE_LAY;
+            return EXECUTOR_TYPE_NAMED;
         } else {
             return executorTitleAndClearingType(caseData);
         }
