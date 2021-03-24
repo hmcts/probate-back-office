@@ -56,6 +56,7 @@ public class CCDDataTransformer {
             .iht217(caseData.getIht217())
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
+            .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
             .build();
     }
 

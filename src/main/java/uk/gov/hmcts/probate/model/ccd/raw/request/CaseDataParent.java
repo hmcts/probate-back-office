@@ -7,6 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
@@ -19,9 +20,6 @@ import java.util.List;
 public class CaseDataParent {
 
     protected final String schemaVersion;
-    // A second copy of schemaVersion, holding exactly the same value.
-    // Needed due to ccd quirks/RI to allow its use in FieldShowCondition for multiple pages for same event
-    protected String schemaVersionCcdCopy;
     protected final String registrySequenceNumber;
     protected final String deceasedDeathCertificate;
     protected final String deceasedDiedEngOrWales;
@@ -54,7 +52,7 @@ public class CaseDataParent {
     protected final String iht217;
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;
-    protected final List<LocalDate> codicilAddedDateList;
+    protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
 
     @Getter
     protected LocalDate authenticatedDate;

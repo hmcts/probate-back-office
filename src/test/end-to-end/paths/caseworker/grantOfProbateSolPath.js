@@ -49,7 +49,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage6('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
     await I.cwEnterSolsGoPPage9('create');
@@ -66,7 +66,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage6('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
     await I.cwEnterSolsGoPPage9('create');
@@ -101,7 +101,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage5('update', unique_deceased_user);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage6('update');
+    await I.cwEnterSolsGoPPage6('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage7('update');
