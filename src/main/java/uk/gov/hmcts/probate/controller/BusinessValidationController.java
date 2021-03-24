@@ -96,11 +96,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/sols-apply-as-exec")
-    public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
-        return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
-    }
-
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidate(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody

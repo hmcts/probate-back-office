@@ -127,7 +127,6 @@ public class BusinessValidationControllerTest {
     private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
-    private static final String SOLS_APPLY_AS_EXEC = "/sols-apply-as-exec";
     private static final String CASE_PRINTED = "/case/casePrinted";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
