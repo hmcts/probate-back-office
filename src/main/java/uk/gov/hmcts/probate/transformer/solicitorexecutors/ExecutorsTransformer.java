@@ -15,7 +15,16 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_POWER_RESERVED;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @Slf4j
@@ -56,7 +65,6 @@ public class ExecutorsTransformer {
                         .primaryApplicantType(executorType)
                         .solsSolicitorIsApplying(NO)
                         .solsSolicitorNotApplyingReason(null);
-
             }
         }
 
@@ -276,12 +284,14 @@ public class ExecutorsTransformer {
     private boolean isPartnerExecutor(CaseData caseData) {
         String titleAndClearing = caseData.getTitleAndClearingType();
 
-        return TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED.equals(titleAndClearing)
-                || TITLE_AND_CLEARING_PARTNER_POWER_RESERVED.equals(titleAndClearing)
-                || TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR.equals(titleAndClearing)
-                || TITLE_AND_CLEARING_SOLE_PRINCIPLE.equals(titleAndClearing)
-                || TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING.equals(titleAndClearing)
-                || TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING.equals(titleAndClearing);
+        return List.of(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING
+        ).contains(titleAndClearing);
     }
 
 }
