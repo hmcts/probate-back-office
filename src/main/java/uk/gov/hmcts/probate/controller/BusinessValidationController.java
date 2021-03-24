@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.APPLICATION_TYPE_SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -350,7 +351,8 @@ public class BusinessValidationController {
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
-        if (NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
+        if (APPLICATION_TYPE_SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType()) &&
+            NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
             ValidationRule[] rules =
                     new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
             final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
