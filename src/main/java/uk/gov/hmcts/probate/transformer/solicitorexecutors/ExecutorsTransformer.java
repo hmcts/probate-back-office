@@ -11,10 +11,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorTypeService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -33,19 +35,27 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class ExecutorsTransformer {
 
     protected final ExecutorListMapperService executorListMapperService;
+    protected final ExecutorTypeService executorTypeService;
 
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (isSolicitorExecutor(caseData)) {
-            if (isSolicitorApplying(caseData)) {
 
-                // Solicitor is primary applicant
+        // If solicitor is an executor named in will
+        if (executorTypeService.isSolicitorExecutorNamedOnWill(caseData)) {
+            // If solicitor is applying as a named executor
+            if (isSolicitorNamedOnWillApplying(caseData)) {
+
+                // Solicitor is the primary applicant
                 addSolicitorAsPrimaryApplicant(caseData, builder);
 
+            // If solicitor is not applying as named executor
             } else {
 
+                // Todo fix this with solicitor is main applicant toggle. this is incomplete as does not account for scenario of solicitor also amending name
+                // And the solicitor is the primary applicant
                 if (FormattingService.getSolsSOTName(caseData.getSolsSOTForenames(),
                         caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    // Remove the solicitor as the primary applicant
                     removeSolicitorAsPrimaryApplicant(builder);
                 }
 
@@ -55,17 +65,23 @@ public class ExecutorsTransformer {
                 }
             }
         } else {
-            if (YES.equals(caseData.getSolTitleAndClearingExecutor())) {
+            // If solicitor is applying as part of a title and clearing group
+            if (isSolicitorPartOfTitleAndClearingGroup(caseData)) {
+                // Solicitor is primary applicant
                 addSolicitorAsPrimaryApplicant(caseData, builder);
-
-                String executorType = isPartnerExecutor(caseData) ? EXECUTOR_TYPE_PROFESSIONAL
-                        : EXECUTOR_TYPE_TRUST_CORP;
-
+                // todo set is solicitor main applicant to yes
+                // Set solicitor executor type
                 builder
-                        .primaryApplicantType(executorType)
-                        .solsSolicitorIsApplying(NO)
-                        .solsSolicitorNotApplyingReason(null);
+                        .primaryApplicantType(executorTypeService.solicitorExecutorType(caseData));
+            } else {
+                removeSolicitorAsPrimaryApplicant(builder);
+                builder
+                        .primaryApplicantType(EXECUTOR_TYPE_LAY);
             }
+
+            builder
+                    .solsSolicitorIsApplying(NO)
+                    .solsSolicitorNotApplyingReason(null);
         }
 
     }
@@ -100,7 +116,7 @@ public class ExecutorsTransformer {
 
     public void otherExecutorExistsTransformation(
             CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData)
+        if (executorTypeService.isSolicitorExecutorNamedOnWill(caseData) && !isSolicitorNamedOnWillApplying(caseData)
                 && !otherExecutorExistsIsSetNo(caseData)) {
             builder.otherExecutorExists(YES);
         }
@@ -146,8 +162,9 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
-        // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+        // Add solicitor to list
+        if ((executorTypeService.isSolicitorExecutorNamedOnWill(caseData) && isSolicitorNamedOnWillApplying(caseData))
+                || isSolicitorPartOfTitleAndClearingGroup(caseData)) {
             execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         }
 
@@ -227,14 +244,15 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (executorTypeService.isSolicitorExecutorNamedOnWill(caseData)
+                && NO.equals(caseData.getSolsSolicitorIsApplying())) {
 
             // Add solicitor to not applying list
             execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
-        } else if (isSolicitorApplying(caseData)) {
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorNamedOnWillApplying(caseData)) {
 
-            // Remove solicitor from executor lists as they are primary applicant
+            // Remove solicitor from not applying list
             execsNotApplying = executorListMapperService.removeSolicitorFromNotApplyingList(execsNotApplying);
 
         }
@@ -253,6 +271,7 @@ public class ExecutorsTransformer {
 
     private void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+
         builder
                 .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
                 .primaryApplicantSurname(exec.getApplyingExecutorLastName())
@@ -260,15 +279,17 @@ public class ExecutorsTransformer {
                 .primaryApplicantAlias(null)
                 .primaryApplicantHasAlias(NO)
                 .primaryApplicantIsApplying(YES)
+                .primaryApplicantType(exec.getApplyingExecutorType())
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    protected boolean isSolicitorExecutor(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsExec());
+
+    protected boolean isSolicitorNamedOnWillApplying(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
-    protected boolean isSolicitorApplying(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsApplying());
+    private boolean isSolicitorPartOfTitleAndClearingGroup(CaseData caseData) {
+        return YES.equals(caseData.getSolTitleAndClearingExecutor());
     }
 
     private boolean otherExecutorExistsIsSetNo(CaseData caseData) {
@@ -276,22 +297,12 @@ public class ExecutorsTransformer {
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
+            // Todo use is solicitor main applicant
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
         return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
-                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
-    }
-
-    private boolean isPartnerExecutor(CaseData caseData) {
-        String titleAndClearing = caseData.getTitleAndClearingType();
-
-        return List.of(
-                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
-                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
-                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
-                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
-                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
-                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING
-        ).contains(titleAndClearing);
+                && ((!executorTypeService.isSolicitorExecutorNamedOnWill(caseData)
+                && !isSolicitorNamedOnWillApplying(caseData))
+                || NO.equals(caseData.getSolTitleAndClearingExecutor()));
     }
 
 }

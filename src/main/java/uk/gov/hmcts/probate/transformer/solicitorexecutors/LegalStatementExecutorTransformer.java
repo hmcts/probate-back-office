@@ -7,15 +7,19 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorTypeService;
 
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @Slf4j
 public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
 
-    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService) {
-        super(executorListMapperService);
+    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService,
+                                             ExecutorTypeService executorTypeService) {
+        super(executorListMapperService, executorTypeService);
     }
 
     /**
@@ -29,7 +33,9 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
                 createCaseworkerNotApplyingList(caseData);
 
         // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+        // Todo change this to is solicitor main applicant
+        if ((executorTypeService.isSolicitorExecutorNamedOnWill(caseData)
+                && isSolicitorNamedOnWillApplying(caseData)) || YES.equals(caseData.getSolTitleAndClearingExecutor())) {
             execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));

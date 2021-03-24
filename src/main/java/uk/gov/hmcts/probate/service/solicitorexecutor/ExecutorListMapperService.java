@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -19,7 +20,10 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ExecutorListMapperService {
+
+    protected final ExecutorTypeService executorTypeService;
 
     private static final String SOLICITOR_ID = "solicitor";
 
@@ -74,7 +78,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getSolsSOTForenames())
                 .applyingExecutorLastName(caseData.getSolsSOTSurname())
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                .applyingExecutorType(executorTypeService.solicitorExecutorType(caseData))
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .build());
     }
@@ -159,7 +163,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorFirstName(caseData.getPrimaryApplicantForenames())
                 .applyingExecutorLastName(caseData.getPrimaryApplicantSurname())
                 .applyingExecutorName(caseData.getPrimaryApplicantFullName())
-                .applyingExecutorType(EXECUTOR_TYPE_LAY)
+                .applyingExecutorType(caseData.getPrimaryApplicantType())
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
