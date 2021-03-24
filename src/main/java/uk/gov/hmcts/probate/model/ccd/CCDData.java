@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.model.ccd;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -33,6 +35,6 @@ public class CCDData implements Serializable {
     private final String willHasCodicils;
     private final String iht217;
     private final LocalDate originalWillSignedDate;
-    private final List<LocalDate> codicilAddedDateList;
+    private final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;
 }

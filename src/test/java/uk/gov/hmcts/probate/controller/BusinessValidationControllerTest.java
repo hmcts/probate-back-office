@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -355,7 +356,11 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(3));
         caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
 
@@ -372,7 +377,11 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldNotValidateWithInvalidWillDate() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now());
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -384,12 +393,20 @@ public class BusinessValidationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("Original will signed date must be in the past"));
+                        .value("A codicil cannot be made before the will was signed"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[2]")
+                        .value("The will must be signed and dated before the date of death"));
     }
 
     @Test
     public void shouldNotValidateWithInvalidCodicilDate() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now() }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now()).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -406,7 +423,11 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldNotValidateWithInvalidWillAndCodicilDates() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now() }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now()).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now());
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -420,7 +441,11 @@ public class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Codicil date must be in the past"))
                 .andExpect(jsonPath("$.errors[1]")
-                        .value("Original will signed date must be in the past"));
+                        .value("A codicil cannot be made before the will was signed"))
+                .andExpect(jsonPath("$.errors[2]")
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[3]")
+                        .value("The will must be signed and dated before the date of death"));
     }
 
     @Test
@@ -459,7 +484,11 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(2) }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(2)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -476,7 +505,11 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
-        caseDataBuilder.codicilAddedDateList(Arrays.asList(new LocalDate[] { LocalDate.now().minusDays(1) }));
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -805,7 +838,6 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
-
 
     @Test
     public void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {

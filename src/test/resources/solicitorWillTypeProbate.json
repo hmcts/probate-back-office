@@ -28,7 +28,10 @@
       "willAccessOriginal":"Yes",
       "originalWillSignedDate": "2017-08-10",
       "willHasCodicils":"Yes",
-      "codicilAddedDateList":["2017-10-10"],
+      "codicilAddedDateList":[{
+        "value": { "dateCodicilAdded": "2017-10-10" },
+        "id": null
+      }],
       "willNumberOfCodicils":null,
       "boSendToBulkPrint": "No",
       "bulkScanCaseReference": null,

@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
@@ -36,10 +38,13 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldErrorIfOneOfTheDatesIsToday() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(LocalDate.now());
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.now()).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
         when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
@@ -55,10 +60,13 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldErrorIfOneOfTheDatesIsInTheFuture() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(LocalDate.now().plusDays(1));
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.now().plusDays(1)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
         when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
@@ -74,11 +82,14 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldErrorIfOneOfTheDatesIsBeforeOriginalWillDate() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
         final LocalDate willDate = LocalDate.now().minusDays(1);
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(willDate.minusDays(1));
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
@@ -95,11 +106,15 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldErrorIfOneOfTheDatesIsOnOriginalWillDate() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
         final LocalDate willDate = LocalDate.now().minusDays(1);
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(willDate);
-        dates.add(LocalDate.of(2020,12,10));
+
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(willDate).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
@@ -116,11 +131,14 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldGiveTwoErrorsIfOneOfTheDatesIsInFutureAndOnOriginalWillDate() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
         final LocalDate willDate = LocalDate.now().plusDays(1);
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(willDate);
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(willDate).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
@@ -138,10 +156,13 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldPassIfOneOfTheDatesIsInThePast() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(LocalDate.now().minusDays(1));
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
         when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
@@ -156,10 +177,13 @@ public class CodicilDateValidationRuleTest {
 
     @Test
     public void shouldPassIfNoCodicilsEvenIfOneOfTheDatesIsInTheFuture() {
-        final ArrayList<LocalDate> dates = new ArrayList<>();
-        dates.add(LocalDate.of(2020,10,10));
-        dates.add(LocalDate.now().plusDays(1));
-        dates.add(LocalDate.of(2020,12,10));
+        final ArrayList<CollectionMember<CodicilAddedDate>> dates = new ArrayList<>();
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,10,10)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.now().plusDays(1)).build()));
+        dates.add(new CollectionMember<>(CodicilAddedDate.builder()
+                .dateCodicilAdded(LocalDate.of(2020,12,10)).build()));
 
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.NO);
         when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
@@ -171,5 +195,4 @@ public class CodicilDateValidationRuleTest {
 
         assertTrue(validationError.isEmpty());
     }
-
 }

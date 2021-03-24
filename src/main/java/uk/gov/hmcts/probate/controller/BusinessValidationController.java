@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
@@ -55,7 +56,6 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -348,10 +348,11 @@ public class BusinessValidationController {
 
         CallbackResponse response;
 
-        // validate the new trust corps
-        /*
+        // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
+        // note - we are assuming here that bulk scan imports set paper form = yes
         if (NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
-            ValidationRule[] rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+            ValidationRule[] rules =
+                    new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
             final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
 
             response = eventValidationService.validateRequest(callbackRequest,
@@ -362,8 +363,7 @@ public class BusinessValidationController {
             }
         } else {
             response = callbackResponseTransformer.paperForm(callbackRequest, document);
-        */
-        response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        }
 
         return ResponseEntity.ok(response);
     }
@@ -418,9 +418,15 @@ public class BusinessValidationController {
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
-            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            if (log.isDebugEnabled()) {
-                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            if (log != null && uri != null && callbackRequest != null) {
+                final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+                if (caseDetails != null) {
+                    final Long id =  callbackRequest.getCaseDetails().getId();
+                    log.info("POST: {} Case Id: {} ", uri, id == null ? "Unknown" : id.toString());
+                    if (log.isDebugEnabled()) {
+                        log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+                    }
+                }
             }
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
