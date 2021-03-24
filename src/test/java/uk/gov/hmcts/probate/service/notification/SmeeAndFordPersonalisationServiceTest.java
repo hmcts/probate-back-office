@@ -30,6 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 
@@ -43,7 +44,7 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     private static final DateTimeFormatter DATA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final Long ID = 1L;
+    private static final Long ID = 1234567812345678L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
@@ -61,22 +62,14 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     private ReturnedCaseDetails buildAll(ApplicationType applicationType) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
-        deceasedAliases.add(new CollectionMember<ProbateAliasName>(ProbateAliasName.builder()
-            .forenames("AliasForename1")
-            .lastName("AliasLastName1")
-            .build()));
+        deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
+        deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
-        SolsAddress execAddress = buildAddress("Exec1");
-        additionalExecsApplying.add(
-            new CollectionMember<AdditionalExecutorApplying>(AdditionalExecutorApplying.builder()
-            .applyingExecutorFirstName("Exec1FN")
-            .applyingExecutorLastName("Exec1LN")
-            .applyingExecutorOtherNames("Exec1ON")
-            .applyingExecutorAddress(execAddress)
-            .applyingExecutorEmail("exec1@probate-test.com")
-            .applyingExecutorPhoneNumber("0711111111")
-            .build()));
+        additionalExecsApplying
+            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "1")));
+        additionalExecsApplying
+            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "2")));
         SolsAddress primaryAddress = buildAddress("Prim");
         ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(CaseData.builder()
             .registryLocation("Registry Address")
@@ -109,6 +102,26 @@ public class SmeeAndFordPersonalisationServiceTest {
         return returnedCaseDetails;
     }
 
+    private AdditionalExecutorApplying buildApplyingExec(String prefix, String num) {
+        SolsAddress execAddress = buildAddress(prefix + "Exec" + num);
+
+        return AdditionalExecutorApplying.builder()
+            .applyingExecutorFirstName(prefix + "Exec" + num + "FN")
+            .applyingExecutorLastName(prefix + "Exec" + num + "LN")
+            .applyingExecutorOtherNames(prefix + "Exec" + num + "ON")
+            .applyingExecutorAddress(execAddress)
+            .applyingExecutorEmail("exec1@probate-test.com")
+            .applyingExecutorPhoneNumber("0711111111")
+            .build();
+    }
+
+    private ProbateAliasName buildAlias(String prefix, String suffix) {
+        return ProbateAliasName.builder()
+            .forenames(prefix + "AliasForename" + suffix)
+            .lastName(prefix + "AliasLastName" + suffix)
+            .build();
+    }
+
     private List<CollectionMember<Document>> buildGeneratedDocs() {
         List<CollectionMember<Document>> docs = new ArrayList<>();
         docs.add(new CollectionMember<Document>(Document.builder()
@@ -116,7 +129,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .documentFileName("OtherFileName")
             .build()));
         docs.add(new CollectionMember<Document>(Document.builder()
-            .documentType(GRANT_RAISED)
+            .documentType(DIGITAL_GRANT)
             .documentFileName("GrantFileName")
             .build()));
         

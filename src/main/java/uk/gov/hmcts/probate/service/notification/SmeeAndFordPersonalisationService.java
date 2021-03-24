@@ -39,6 +39,8 @@ public class SmeeAndFordPersonalisationService {
     private static final String COLDICILS_FLAG = "Codicils";
     private static final String SEP = ",";
     private static final String NEW_LINE = "\n";
+    private static final String SPACE = " ";
+    private static final String PDF_EXT = ".pdf";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
 
     public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases) {
@@ -103,7 +105,7 @@ public class SmeeAndFordPersonalisationService {
         List<DocumentType> documentTypes = Arrays.asList(GRANT_TYPES);
         for (CollectionMember<Document> document : data.getProbateDocumentsGenerated()) {
             if (documentTypes.contains(document.getValue().getDocumentType())) {
-                return document.getValue().getDocumentFileName();
+                return document.getValue().getDocumentType().getTemplateName() + PDF_EXT;
             }
         }
         return "";
@@ -132,9 +134,9 @@ public class SmeeAndFordPersonalisationService {
     private String getSolicitorDetails(CaseData data) {
         String sol = "";
         if (SOLICITOR.equals(data.getApplicationType())) {
-            sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName()) + SEP;
-            sol = sol + ifNotEmpty(getAddress(data.getSolsSolicitorAddress())) + SEP;
-            sol = sol + ifNotEmpty(data.getSolsSolicitorAppReference());
+            sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName());
+            sol = sol + SPACE + ifNotEmpty(getAddress(data.getSolsSolicitorAddress()));
+            sol = sol + SPACE + ifNotEmpty(data.getSolsSolicitorAppReference());
         }
         
         return sol;
@@ -143,39 +145,51 @@ public class SmeeAndFordPersonalisationService {
     private String getPrimaryApplicantDetails(CaseData data) {
         String primary = "";
         primary = primary + ifNotEmpty(data.getPrimaryApplicantForenames());
-        primary = primary + ifNotEmpty(data.getPrimaryApplicantSurname());
-        primary = primary + ifNotEmpty(data.getPrimaryApplicantAlias()) + SEP;
-        primary = primary + ifNotEmpty(getAddress(data.getPrimaryApplicantAddress()));
+        primary = primary + SPACE + ifNotEmpty(data.getPrimaryApplicantSurname());
+        primary = primary + SPACE + ifNotEmpty(data.getPrimaryApplicantAlias());
+        primary = primary + SPACE + ifNotEmpty(getAddress(data.getPrimaryApplicantAddress()));
         
         return primary;
     }
 
     private String getApplyingExecutorDetails(List<CollectionMember<AdditionalExecutorApplying>> 
                                                   additionalExecutorsApplying) {
+        int execCount = 0;
         String allExecs = "";
         if (additionalExecutorsApplying != null) {
             for (CollectionMember<AdditionalExecutorApplying> applying : additionalExecutorsApplying) {
-                allExecs = allExecs + ifNotEmpty(applying.getValue().getApplyingExecutorName()) + SEP;
-                allExecs = allExecs + ifNotEmpty(applying.getValue().getApplyingExecutorFirstName()) + SEP;
-                allExecs = allExecs + ifNotEmpty(applying.getValue().getApplyingExecutorLastName()) + SEP;
-                allExecs = allExecs + ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()) + SEP;
-                allExecs = allExecs + ifNotEmpty(getAddress(applying.getValue().getApplyingExecutorAddress())) + SEP;
+                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorName());
+                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorFirstName());
+                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorLastName());
+                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames());
+                allExecs = allExecs + SPACE + ifNotEmpty(getAddress(applying.getValue().getApplyingExecutorAddress()));
+                allExecs = allExecs + SEP;
+                execCount++;
+                if (execCount > 3) {
+                    break;
+                }
             }
+
         }
-        
+        while (execCount < 3) {
+            allExecs = allExecs + SEP;
+            execCount++;
+        }
+
+        allExecs = removeLastSeparator(allExecs);
         return allExecs;
     }
 
     private String getAddress(SolsAddress address) {
         String add = "";
         if (address != null) {
-            add = add + ifNotEmpty(address.getAddressLine1()) + SEP;
-            add = add + ifNotEmpty(address.getAddressLine2()) + SEP;
-            add = add + ifNotEmpty(address.getAddressLine3()) + SEP;
-            add = add + ifNotEmpty(address.getCounty()) + SEP;
-            add = add + ifNotEmpty(address.getPostTown()) + SEP;
-            add = add + ifNotEmpty(address.getPostCode()) + SEP;
-            add = add + ifNotEmpty(address.getCountry()) + SEP;
+            add = add + SPACE + ifNotEmpty(address.getAddressLine1());
+            add = add + SPACE + ifNotEmpty(address.getAddressLine2());
+            add = add + SPACE + ifNotEmpty(address.getAddressLine3());
+            add = add + SPACE + ifNotEmpty(address.getCounty());
+            add = add + SPACE + ifNotEmpty(address.getPostTown());
+            add = add + SPACE + ifNotEmpty(address.getPostCode());
+            add = add + SPACE + ifNotEmpty(address.getCountry());
         }
         
         return add;
@@ -185,7 +199,7 @@ public class SmeeAndFordPersonalisationService {
         if (StringUtils.isEmpty(value)) {
             return "";
         } else {
-            return value + " ";
+            return value + SPACE;
         }
     }
 
@@ -193,15 +207,20 @@ public class SmeeAndFordPersonalisationService {
         String aliases = "";
         if (data.getDeceasedAliasNameList() != null)  {
             for (CollectionMember<ProbateAliasName> alias : data.getDeceasedAliasNameList()) {
-                aliases = aliases + ifNotEmpty(alias.getValue().getForenames()) + " " 
-                    + ifNotEmpty(alias.getValue().getLastName()) + SEP;
+                aliases = aliases + ifNotEmpty(alias.getValue().getForenames()) + SPACE 
+                    + ifNotEmpty(alias.getValue().getLastName());
             }
         }
         return aliases;
     }
 
     private String getDeceasedNameWithHonours(CaseData data) {
-        return ifNotEmpty(data.getDeceasedForenames()) + " " + ifNotEmpty(data.getDeceasedSurname()) 
-            + " " + ifNotEmpty(data.getBoDeceasedHonours());
+        return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmpty(data.getDeceasedSurname()) 
+            + SPACE + ifNotEmpty(data.getBoDeceasedHonours());
     }
+
+    private String removeLastSeparator(String data) {
+        return data.substring(0, data.lastIndexOf(SEP));
+    }
+
 }
