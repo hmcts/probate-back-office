@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -41,8 +42,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -257,8 +258,8 @@ public class CallbackResponseTransformerTest {
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
     private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
-    private static final List<LocalDate> VALID_ADDED_CODICIL_DATES =
-            Arrays.asList(new LocalDate[] {VALID_CODICIL_DATE});
+    private static final List<CollectionMember<CodicilAddedDate>> VALID_ADDED_CODICIL_DATES =
+        Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(VALID_CODICIL_DATE).build()));
     private static final String NO_ACCESS_WILL_REASON = "I lost it";
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
@@ -3078,8 +3079,7 @@ public class CallbackResponseTransformerTest {
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        CallbackResponse callbackResponse =
-                underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
+        underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
         verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
     }
@@ -3095,7 +3095,8 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(VALID_ORIGINAL_WILL_SIGNED_DATE, callbackResponse.getData().getOriginalWillSignedDate());
-        assertEquals(VALID_CODICIL_DATE, callbackResponse.getData().getCodicilAddedDateList().get(0));
+        assertEquals(VALID_CODICIL_DATE, callbackResponse.getData().getCodicilAddedDateList()
+                .get(0).getValue().getDateCodicilAdded());
     }
 
     @Test

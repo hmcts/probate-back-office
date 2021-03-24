@@ -2,8 +2,13 @@
   "page1_waitForText": "Is the solicitor the main applicant?",
   "page1_originalWillSignedDate_day": "10",
   "page1_originalWillSignedDate_month": "10",
-  "page1_originalWillSignedDate_year": "2020",
-  "page1_originalWillSignedDate": "10 Oct 2020",
+  "page1_originalWillSignedDate_year": "2019",
+  "page1_originalWillSignedDate": "10 Oct 2019",
+
+  "page1_codicilDate_day": "11",
+  "page1_codicilDate_month": "10",
+  "page1_codicilDate_year": "2019",
+  "page1_codicilDate": "11 Oct 2019",
 
   "page2_firm_name": "Solicitor Rob Firm",
   "page2_optionYes": "Yes",

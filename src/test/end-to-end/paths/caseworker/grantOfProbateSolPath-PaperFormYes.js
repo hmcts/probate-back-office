@@ -14,7 +14,7 @@ const markForExaminationConfig = require('src/test/end-to-end/pages/markForExami
 const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markForIssueConfig');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig-PaperFormYes');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGoPSol/caseDetailsTabConfig');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGoPSol/caseDetailsTabConfig-PaperFormYes');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
@@ -25,7 +25,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfP
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsUpdateTabConfig');
-const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsUpdateTabConfig');
+const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsUpdateTabConfig-PaperFormYes');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedUpdateTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
@@ -49,7 +49,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage6('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
     await I.cwEnterSolsGoPPage9('create');
@@ -66,7 +66,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage3('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage4('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage5('create', unique_deceased_user);
-    await I.cwEnterSolsGoPPage6('create');
+    await I.cwEnterSolsGoPPage6('create', createGrantOfProbateConfig);
     await I.cwEnterSolsGoPPage7('create');
     await I.cwEnterSolsGoPPage8('create');
     await I.cwEnterSolsGoPPage9('create');
@@ -101,7 +101,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage5('update', unique_deceased_user);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage6('update');
+    await I.cwEnterSolsGoPPage6('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage7('update');
