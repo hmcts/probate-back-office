@@ -52,12 +52,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        returnedCaseDetailsPersonal = buildAll(PERSONAL);
-        returnedCaseDetailsSolicitor = buildAll(SOLICITOR);
     }
 
-    private ReturnedCaseDetails buildAll(ApplicationType applicationType) {
+    private ReturnedCaseDetails buildAll(ApplicationType applicationType, boolean hasScanned, boolean hasGrant) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
         deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
         deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
@@ -90,10 +87,10 @@ public class SmeeAndFordPersonalisationServiceTest {
             .solsSolicitorFirmName(applicationType == SOLICITOR ? "SolFirmName" : "")
             .solsSolicitorAddress(applicationType == SOLICITOR ? buildAddress("Sol") : null)
             .solsSolicitorAppReference(applicationType == SOLICITOR ? "SolAppRef" : null)
-            .scannedDocuments(buildScannedDocs())
+            .scannedDocuments(hasScanned ? buildScannedDocs() : null)
             .registryLocation("Cardiff")
             .willHasCodicils(Constants.YES)
-            .probateDocumentsGenerated(buildGeneratedDocs())
+            .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>())
             .build(), LAST_MODIFIED, ID);
         
         return returnedCaseDetails;
@@ -168,6 +165,9 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
+        returnedCaseDetailsPersonal = buildAll(PERSONAL, true, true);
+        returnedCaseDetailsSolicitor = buildAll(SOLICITOR, true, true);
+
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
         cases.add(returnedCaseDetailsSolicitor);
@@ -175,6 +175,22 @@ public class SmeeAndFordPersonalisationServiceTest {
 
         assertThat(personalisation.get("smeeAndFordName"), is(LocalDateTime.now().format(DATA_DATE) + "sf"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedData.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
+        returnedCaseDetailsPersonal = buildAll(PERSONAL, false, true);
+        returnedCaseDetailsSolicitor = buildAll(SOLICITOR, true, false);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases);
+
+        assertThat(personalisation.get("smeeAndFordName"), is(LocalDateTime.now().format(DATA_DATE) + "sf"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoDocs.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
     }

@@ -89,6 +89,19 @@ public class SmeeAndFordDataExtractServiceTest {
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any());
     }
 
+    @Test
+    public void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
+        List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
+            .build();
+        
+        when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
+
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
+
+        verify(notificationService, times(0)).sendSmeeAndFordEmail(any());
+    }
+
     @Test(expected = ClientException.class)
     public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
         when(notificationService.sendSmeeAndFordEmail(any())).thenThrow(NotificationClientException.class);
