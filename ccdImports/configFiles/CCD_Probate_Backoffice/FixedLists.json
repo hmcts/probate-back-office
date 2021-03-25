@@ -334,5 +334,5 @@
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Date", "ListElement": "DO NOT SHOW - Date"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Professional", "ListElement": "Probate practitioner"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "TrustCorporation", "ListElement": "Trust corporation"},
-  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Lay", "ListElement": "Lay executor"}
+  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Named", "ListElement": "Named executor"}
 ]

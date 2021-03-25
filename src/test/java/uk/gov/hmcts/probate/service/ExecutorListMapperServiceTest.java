@@ -24,7 +24,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
@@ -211,7 +211,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorType(EXECUTOR_TYPE_LAY)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorOtherNames(EXEC_WILL_NAME)
                 .build();
 
@@ -265,7 +265,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorType(EXECUTOR_TYPE_LAY)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
