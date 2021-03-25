@@ -57,6 +57,15 @@ public class CommonVariables {
 
     public static final String STOP_REASON = "Some reason";
 
+    public static final AdditionalExecutorApplying SOLICITOR_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_FORENAME)
+            .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+            .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+            .applyingExecutorPhoneNumber(SOLICITOR_FIRM_PHONE)
+            .applyingExecutorEmail(SOLICITOR_FIRM_EMAIL)
+            .applyingExecutorAddress(SOLICITOR_ADDRESS)
+            .build();
+
     public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)
             .applyingExecutorFirstName(EXEC_FIRST_NAME)

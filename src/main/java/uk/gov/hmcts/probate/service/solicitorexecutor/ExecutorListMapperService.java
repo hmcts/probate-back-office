@@ -84,7 +84,7 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
+        // Create applying executor collection member containing solicitor names
         return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(caseData.getSolsSOTForenames())
                 .applyingExecutorLastName(caseData.getSolsSOTSurname())
@@ -183,7 +183,7 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
+        // Create not applying executor collection member containing primary applicant names
         return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(caseData.getPrimaryApplicantFullName())
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
