@@ -34,7 +34,7 @@ public final class Constants {
 
     public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
-    public static final String EXECUTOR_TYPE_LAY = "Lay";
+    public static final String EXECUTOR_TYPE_NAMED = "Named";
 
     private Constants() {
     }
