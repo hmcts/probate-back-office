@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -346,8 +347,8 @@ public class BusinessValidationController {
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
-        if (APPLICATION_TYPE_SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
-                && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
+        if (ApplicationType.SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType()) &&
+            NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
             ValidationRule[] rules =
                     new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
             final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
