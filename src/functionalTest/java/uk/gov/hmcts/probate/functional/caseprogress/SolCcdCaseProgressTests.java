@@ -8,8 +8,8 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
+import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +19,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-public class SolCcdCaseProgressTests extends IntegrationTestBase  {
+public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
     private static final String TASKLIST_UPDATE_URL = "/tasklist/update";
     private static final String CASE_PRINTED_URL = "/case/casePrinted";
@@ -35,8 +35,115 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
 
     @Test
-    public void shouldTransformAppCreatedStateCorrectly() {
-        final String response = postSolJson("caseprogress/01-appCreated.json",
+    public void shouldTransformAppCreatedSolDtlsStateCorrectly() {
+        final String response = postSolJson("caseprogress/01-appCreatedSolDtls.json",
+                TASKLIST_UPDATE_URL);
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String taskList = jsonPath.get("data.taskList");
+        final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
+                + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
+                + "These steps are to be completed by the probate practitioner.</font></p></div>"
+                + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-"
+                + "body-s\"><a href=\""
+                + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
+                    .replaceFirst("<CASE_ID>", "1528365719153338")
+                + "\" class=\"govuk-link\">Add solicitor details</a>"
+                + "</p></div><div class=\"govuk-grid-column-one-third\">"
+                + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" "
+                + "title=\"NOT STARTED\" /></p>\n" + "</div></div>"
+                + "\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\">Add deceased details</p>"
+                + "</div><div class=\"govuk-grid-column-one-third\">"
+                + "</div></div>"
+                + "\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\">Add application details</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
+                + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+                + "<font color=\"#505a5f\">These steps are to be completed by the probate "
+                + "practitioner.</font></p></div>"
+                + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m "
+                + "govuk-section-break--visible\">\n\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
+                + "The legal statement is generated. You can review, change any details, then sign and "
+                + "submit your application."
+                + "</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\">Send documents<br/></p>"
+                + "</div><div class=\"govuk-grid-column-one-third\"></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
+                + "<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
+                + "These steps are completed by HM Courts and Tribunals Service staff. "
+                + "It can take a few weeks before the review starts."
+                + "</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break "
+                + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p "
+                + "class=\"govuk-body-s\">Authenticate documents</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+                + "<font color=\"#505a5f\">We will authenticate your documents and match "
+                + "them with your application.</font></p></div>"
+                + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
+                + "govuk-section-break--m "
+                + "govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\">Examine application</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+                + "<font color=\"#505a5f\">We review your application for incomplete information or problems "
+                + "and validate it against other "
+                + "cases or caveats. After the review we prepare the grant.</font></p></div>"
+                + "<div class=\"govuk-grid-column-one-third\">&nbsp;"
+                + "</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\""
+                + "><p class=\"govuk-body-s\">"
+                + "<font color=\"#505a5f\">Your application will update through any of these case states "
+                + "as it is reviewed by our team:</font>"
+                + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul "
+                + "class=\"govuk-list govuk-list--bullet\">\n"
+                + "<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for "
+                + "Quality Assurance</li>\n<li>Ready to issue</li>\n</ul>"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
+                + "<h2 class=\"govuk-heading-l\">"
+                + "4. Grant of representation</h2>\n<div class=\"govuk-grid-"
+                + "row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals "
+                + "Service staff.</font>"
+                + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break "
+                + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation"
+                + "</p></div>"
+                + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
+                + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
+                + "The grant will be delivered in the post a few days after issuing.</font></p></div>"
+                + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
+                + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
+
+        // make sure tasklist controller update in db works when called separately,
+        // which happens prior to first state change
+        assertEquals(expected, taskList);
+    }
+
+
+    @Test
+    public void shouldTransformAppCreatedDeceasedDtlsStateCorrectly() {
+        final String response = postSolJson("caseprogress/01a-appCreatedDeceasedDtls.json",
                 TASKLIST_UPDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
@@ -142,7 +249,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppUpdatedStateCorrectly() {
         final String response = postSolJson("caseprogress/02-appUpdated.json",
-                SOLS_VALIDATE_PROBATE_URL);
+            SOLS_VALIDATE_PROBATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\">"
@@ -256,7 +363,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppCreatedStateReenterDetailsCorrectly() {
         final String response = postSolJson("caseprogress/02a-appCreated-update-app.json",
-                TASKLIST_UPDATE_URL);
+            TASKLIST_UPDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -386,7 +493,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformAppUpdatedStateReenterDetailsCorrectly() {
         final String response = postSolJson("caseprogress/02b-appUpdated-update-app.json",
-                SOLS_VALIDATE_PROBATE_URL);
+            SOLS_VALIDATE_PROBATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -502,7 +609,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
         final String response = postCwJson("caseprogress/03-probateCreated.json",
-                SOLS_VALIDATE_URL);
+            SOLS_VALIDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 
@@ -666,7 +773,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<div class=\"govuk-details__text\">\n    "
             + "You now need to send us<br/><ul><li>your reference number 1528365719153338 written on a "
             + "piece of paper</li>"
-            + "<li>the stamped (receipted) IHT 421 with this application</li><li>a photocopy of the signed legal "
+            + "<li>a photocopy of the signed legal "
             + "statement "
             + "and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
@@ -725,7 +832,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         final String response = postCwJson("caseprogress/05-caseMarkAsReadyForExam.json",
-                CASE_DOCS_RECEIVED_URL);
+            CASE_DOCS_RECEIVED_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -784,8 +891,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">"
             + "\n    You now need to send us<br/><ul><li>your reference "
-            + "number 1528365719153338 written on a piece of paper</li><li>the stamped (receipted) "
-            + "IHT 421 with this application</li>"
+            + "number 1528365719153338 written on a piece of paper</li>"
             + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -890,7 +996,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenEscalated() {
         final String response = postCwJson("caseprogress/07-caseEscalated.json",
-                CASE_ESCALATED_URL);
+            CASE_ESCALATED_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 
@@ -927,7 +1033,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         final String response = postCwJson("caseprogress/08-caseMatchingExamining.json",
-                CASE_MATCHING_EXAMINING_URL);
+            CASE_MATCHING_EXAMINING_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -987,9 +1093,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>"
-            + "your reference number 1528365719153338 written on a piece of paper</li><li>the stamped (receipted) IHT "
-            + "421 "
-            + "with this application</li><li>a photocopy of the signed legal statement and "
+            + "your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<li>a photocopy of the signed legal statement and "
             + "declaration</li></ul>\n  </div>\n</details>"
             + "</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height"
             + "=\"31px\" "
@@ -1117,8 +1222,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "View the documents needed by HM Courts and Tribunal Service\n    </span>"
             + "\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now "
             + "need to send us<br/><ul><li>your reference number "
-            + "1528365719153338 written on a piece of paper</li><li>the stamped (receipted) IHT 421 with this "
-            + "application</li>"
+            + "1528365719153338 written on a piece of paper</li>"
             + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1182,7 +1286,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         final String response = postCwJson("caseprogress/10-caseMatchingReadyToIssue.json",
-                CASE_MATCHING_READY_TO_ISSUE_URL);
+            CASE_MATCHING_READY_TO_ISSUE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-"
@@ -1245,9 +1349,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts "
             + "and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/>"
-            + "<ul><li>your reference number 1528365719153338 written on a piece of paper</li><li>the stamped "
-            + "(receipted) "
-            + "IHT 421 with this application</li><li>a photocopy of the signed legal statement "
+            + "<ul><li>your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<li>a photocopy of the signed legal statement "
             + "and declaration</li></ul>\n  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img al"
             + "ign=\"right\" width=\"114px\" height=\"31px\" "
@@ -1306,7 +1409,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         final String response = postCwJson("caseprogress/11-markReadyToIssue.json",
-                CASE_MATCHING_EXAMINING_URL);
+            CASE_MATCHING_EXAMINING_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-"
@@ -1368,9 +1471,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul>"
-            + "<li>your reference number 1528365719153338 written on a piece of paper</li><li>"
-            + "the stamped (receipted) IHT 421 with this "
-            + "application</li><li>a photocopy of the signed legal statement "
+            + "<li>your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<li>a photocopy of the signed legal statement "
             + "and declaration</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1492,8 +1594,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
             + "\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">"
             + "\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>"
             + "\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>your reference number "
-            + "1528365719153338 written on a piece of paper</li><li>the "
-            + "stamped (receipted) IHT 421 with this application</li>"
+            + "1528365719153338 written on a piece of paper</li>"
             + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1567,11 +1668,11 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private String postCwJson(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path)
+            .andReturn();
 
         return jsonResponse.getBody().asString();
     }
@@ -1579,21 +1680,21 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase  {
     private String postSolJson(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getSolicitorHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path)
-                .andReturn();
+            .relaxedHTTPSValidation()
+            .headers(utils.getSolicitorHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path)
+            .andReturn();
 
         return jsonResponse.getBody().asString();
     }
 
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         Response response = given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
-                .when().post("/nextsteps/validate");
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
+            .when().post("/nextsteps/validate");
 
         TestCase.assertEquals(200, response.getStatusCode());
     }

@@ -19,4 +19,5 @@ module.exports = async function () {
     await I.click({css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+
 };

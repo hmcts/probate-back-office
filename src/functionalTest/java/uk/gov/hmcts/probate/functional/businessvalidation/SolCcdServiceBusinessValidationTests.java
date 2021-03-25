@@ -14,10 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import static org.hamcrest.Matchers.containsString;
@@ -47,7 +44,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
-    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
+    private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -216,7 +214,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
-
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
@@ -231,6 +228,119 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() {
+        validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
+        validatePostSuccess("success.validWillAndCodicilDates.json", SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidWillDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"originalWillSignedDate\": \"2017-10-10\",",
+                "\"originalWillSignedDate\": \"" + TODAY_YYYY_MM_DD + "\",");
+
+        validatePostFailureWithPayload(payload,"Original will signed date must be in the past",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"Original will signed date must be in the past",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidCodicilDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"dateCodicilAdded\": \"2020-10-11\"",
+                "\"dateCodicilAdded\": \"" + TODAY_YYYY_MM_DD + "\"");
+
+        validatePostFailureWithPayload(payload,"Codicil date must be in the past",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"Codicil date must be in the past",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsAfterDeathDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"originalWillSignedDate\": \"2017-10-10\",",
+                "\"originalWillSignedDate\": \"2018-01-02\",");
+
+        validatePostFailureWithPayload(payload,"The will must be signed and dated before the date of death",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"The will must be signed and dated before the date of death",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsOnDeathDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"originalWillSignedDate\": \"2017-10-10\",",
+                "\"originalWillSignedDate\": \"2018-01-01\",");
+
+        validatePostFailureWithPayload(payload,"The will must be signed and dated before the date of death",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"The will must be signed and dated before the date of death",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldPassOriginalWillAndCodicilDateValidationWhenWillDateIsBeforeDeathDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"originalWillSignedDate\": \"2017-10-10\",",
+                "\"originalWillSignedDate\": \"2017-12-31\",");
+
+        validatePostSuccessForPayload(payload, VALIDATE_URL);
+        validatePostSuccessForPayload(payload, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateBeforeWillDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"dateCodicilAdded\": \"2020-10-11\"",
+                "\"dateCodicilAdded\": \"2017-10-09\"");
+
+        validatePostFailureWithPayload(payload,"A codicil cannot be made before the will was signed",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"A codicil cannot be made before the will was signed",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateSameAsWillDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"dateCodicilAdded\": \"2020-10-11\"",
+                "\"dateCodicilAdded\": \"2017-10-10\"");
+
+        validatePostFailureWithPayload(payload,"A codicil cannot be made before the will was signed",
+                200, VALIDATE_URL);
+
+        validatePostFailureWithPayload(payload,"A codicil cannot be made before the will was signed",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+    }
+
+    @Test
+    public void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() {
+        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
+
+        payload = replaceAllInString(payload,"\"dateCodicilAdded\": \"2020-10-11\"",
+                "\"dateCodicilAdded\": \"2017-10-11\"");
+
+        validatePostSuccessForPayload(payload, VALIDATE_URL);
+        validatePostSuccessForPayload(payload, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -251,9 +361,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
+
     }
 
     @Test
@@ -261,18 +370,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
     public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-            new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-            new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
     @Test
@@ -280,9 +385,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList(null, null)));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
@@ -290,9 +393,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        validatePostSuccessAndCheckValues(payload, PAPER_FORM_URL,
-                new ArrayList<String>(Arrays.asList("schemaVersion", "schemaVersionCcdCopy")),
-                new ArrayList<String>(Arrays.asList("2.0.0", "2.0.0")));
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
     @Test
@@ -709,6 +810,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 
+
     private String transformCase(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -731,21 +833,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
-    }
-
-    private void validatePostSuccessAndCheckValues(String jsonPayload, String url, List<String> caseDataAttributes,
-                                                  List<String> caseDataValues) {
-        Response response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(jsonPayload)
-                .when().post(url)
-                .thenReturn();
-
-        response.then().assertThat().statusCode(200);
-        for (int i = 0; i < caseDataAttributes.size(); i++) {
-            response.then().body("data." + caseDataAttributes.get(i), equalTo(caseDataValues.get(i)));
-        }
     }
 
     private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage,
@@ -772,25 +859,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url) {
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(url)
-            .thenReturn();
-
-        if (statusCode == 200) {
-            response.then().assertThat().statusCode(statusCode)
-                .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
-                .and().body("errors", hasItem(containsString(errorMessage)));
-        } else if (statusCode == 400) {
-            response.then().assertThat().statusCode(statusCode)
-                .and().body("error", equalTo("Invalid Request"))
-                .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
-                .and().body("fieldErrors[0].message", equalTo(errorMessage));
-        } else {
-            assert false;
-        }
+        final String payload = utils.getJsonFromFile(jsonFileName);
+        validatePostFailureWithPayload(payload, errorMessage, statusCode, url);
     }
 
     private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String url) {

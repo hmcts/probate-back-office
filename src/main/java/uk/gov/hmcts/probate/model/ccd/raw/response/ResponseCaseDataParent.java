@@ -6,10 +6,10 @@ import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,9 +20,6 @@ import java.util.List;
 public class ResponseCaseDataParent {
 
     protected final String schemaVersion;
-    // A second copy of schemaVersion, holding exactly the same value.
-    // Needed due to ccd quirks/RI to allow its use in FieldShowCondition for multiple pages for same event
-    protected final String schemaVersionCcdCopy;
     protected final DynamicList reprintDocument;
     protected final String reprintNumberOfCopies;
     protected final DynamicList solsAmendLegalStatmentSelect;
@@ -71,4 +68,7 @@ public class ResponseCaseDataParent {
     protected final String escalatedDate;
     protected final String authenticatedDate;
     protected final String iht217;
+    protected final String noOriginalWillAccessReason;
+    protected final LocalDate originalWillSignedDate;
+    protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
 }

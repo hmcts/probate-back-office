@@ -5,7 +5,8 @@ public class StateConstants {
 
     public static final String STATE_PA_APP_CREATED = "PAAppCreated";
     public static final String STATE_CASE_CREATED = "CaseCreated";
-    public static final String STATE_SOL_APP_CREATED = "SolAppCreated";
+    public static final String STATE_SOL_APP_CREATED_SOLICITOR_DTLS = "SolAppCreatedSolicitorDtls";
+    public static final String STATE_SOL_APP_CREATED_DECEASED_DTLS = "SolAppCreatedDeceasedDtls";
     public static final String STATE_SOL_APP_UPDATED = "SolAppUpdated";
 
     public static final String STATE_SOL_PROBATE_CREATED = "SolProbateCreated";

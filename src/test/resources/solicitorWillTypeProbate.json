@@ -26,7 +26,12 @@
       "solsMinorityInterest": null,
       "solsApplicantSiblings": null,
       "willAccessOriginal":"Yes",
-      "willHasCodicils":"No",
+      "originalWillSignedDate": "2017-08-10",
+      "willHasCodicils":"Yes",
+      "codicilAddedDateList":[{
+        "value": { "dateCodicilAdded": "2017-10-10" },
+        "id": null
+      }],
       "willNumberOfCodicils":null,
       "boSendToBulkPrint": "No",
       "bulkScanCaseReference": null,

@@ -39,11 +39,13 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
         solicitorLegalStatementNextStepsTransformer
             .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
-        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
-        assertListCode(0, "SolAppCreated");
-        assertListValue(0, "Deceased Details");
-        assertListCode(1, "WillLeft");
-        assertListValue(1, "Grant of probate where the deceased left a will");
+        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
+        assertListCode(0, "SolAppCreatedSolicitorDtls");
+        assertListValue(0, "Probate practitioner details");
+        assertListCode(1, "SolAppCreatedDeceasedDtls");
+        assertListValue(1, "Deceased details");
+        assertListCode(2, "WillLeft");
+        assertListValue(2, "Probate details");
     }
 
     @Test
@@ -53,11 +55,13 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
         solicitorLegalStatementNextStepsTransformer
             .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
-        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
-        assertListCode(0, "SolAppCreated");
-        assertListValue(0, "Deceased Details");
-        assertListCode(1, "NoWill");
-        assertListValue(1, "Letters of administration where the deceased left no will");
+        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
+        assertListCode(0, "SolAppCreatedSolicitorDtls");
+        assertListValue(0, "Probate practitioner details");
+        assertListCode(1, "SolAppCreatedDeceasedDtls");
+        assertListValue(1, "Deceased details");
+        assertListCode(2, "NoWill");
+        assertListValue(2, "Letters of administration where the deceased left no will");
     }
 
     @Test
@@ -67,11 +71,13 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
         solicitorLegalStatementNextStepsTransformer
             .transformLegalStatmentAmendStates(caseDetails, responseCaseDataBuilder);
 
-        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(2));
-        assertListCode(0, "SolAppCreated");
-        assertListValue(0, "Deceased Details");
-        assertListCode(1, "WillLeftAnnexed");
-        assertListValue(1,
+        assertThat(responseCaseDataBuilder.build().getSolsAmendLegalStatmentSelect().getListItems().size(), is(3));
+        assertListCode(0, "SolAppCreatedSolicitorDtls");
+        assertListValue(0, "Probate practitioner details");
+        assertListCode(1, "SolAppCreatedDeceasedDtls");
+        assertListValue(1, "Deceased details");
+        assertListCode(2, "WillLeftAnnexed");
+        assertListValue(2,
             "Letters of administration with will annexed where the deceased left a will but none of the executors can"
                 + " apply");
     }

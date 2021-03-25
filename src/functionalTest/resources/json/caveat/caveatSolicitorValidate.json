@@ -1,0 +1,140 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "SolAppCreated",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Solicitor",
+      "registryLocation": "ctsc",
+      "solsSolicitorFirmName": "Theee Firm",
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "solsSolicitorPhoneNumber": "07070707077",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsSolicitorAppReference": "REF123",
+      "caveatorForenames": "Applicant_fn",
+      "caveatorSurname": "Applicant_ln",
+      "deceasedForenames": "Deceased_fn",
+      "deceasedSurname": "Deceased_ln",
+      "deceasedDateOfDeath": "2018-01-01",
+      "deceasedDateOfBirth": "2017-01-01",
+      "deceasedAnyOtherNames": "No",
+      "deceasedFullAliasNameList": [],
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsPaymentMethods": "fee account",
+      "solsFeeAccountNumber": "12345"
+    },
+    "data_classification": {
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "solsSolicitorFirmName",
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "solsSolicitorPhoneNumber": "123",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "12",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "solsSolicitorAppReference": "solsSolicitorAppReference",
+      "caveatorForenames": "caveatorForenames",
+      "caveatorSurname": "caveatorSurname",
+      "deceasedForenames": "deceasedForenames",
+      "deceasedSurname": "deceasedForenames",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1901-01-01",
+      "deceasedAnyOtherNames": "",
+      "deceasedFullAliasNameList": "",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "1 Flat B",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "applicationType": "Soliicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "Alex & Co",
+      "caveatorEmailAddress": "PUBLIC",
+      "solsSolicitorPhoneNumber": "9999",
+      "caveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "solsSolicitorAppReference": "solsSolicitorAppReference",
+      "caveatorForenames": "caveatorForenames",
+      "caveatorSurname": "caveatorSurname",
+      "deceasedForenames": "deceasedForenames",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAnyOtherNames": "",
+      "deceasedFullAliasNameList": "",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "County": "",
+          "PostTown": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      }
+    }
+  }
+}
