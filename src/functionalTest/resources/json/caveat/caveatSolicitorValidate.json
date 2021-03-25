@@ -48,6 +48,7 @@
         "PostCode": "2",
         "Country": ""
       },
+      "solsPaymentMethods": "fee account",
       "solsPBANumber": {
         "value": {
           "code": "PBA0082126",

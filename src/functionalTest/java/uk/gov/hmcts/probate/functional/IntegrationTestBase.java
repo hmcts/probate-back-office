@@ -114,6 +114,8 @@ public abstract class IntegrationTestBase {
         String documentUrl = jsonPath.get(responseDocumentUrl);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
+        log.info("response:" + response);
+        log.info("expectedText:" + expectedText);
         assertTrue(response.contains(expectedText));
     }
 
