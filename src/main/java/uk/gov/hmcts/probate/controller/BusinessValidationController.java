@@ -351,8 +351,8 @@ public class BusinessValidationController {
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
-        if (APPLICATION_TYPE_SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType()) &&
-            NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
+        if (APPLICATION_TYPE_SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
+                && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
             ValidationRule[] rules =
                     new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
             final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
