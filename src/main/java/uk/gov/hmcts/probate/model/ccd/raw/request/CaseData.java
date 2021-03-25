@@ -345,9 +345,8 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistRequestQA;
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
-
     @Builder.Default
-    private String evidenceHandled = YES;
+    private final String evidenceHandled = YES;
     private final String caseType;
     private final String paperForm;
     private final String languagePreferenceWelsh;
