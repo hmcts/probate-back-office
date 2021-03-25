@@ -66,11 +66,6 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
-        // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
-            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
-        }
-
         // Format exec lists into strings
         String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
         String execsNotApplyingNames = FormattingService.createExecsNotApplyingNames(execsNotApplying);
@@ -213,8 +208,7 @@ public class ExecutorsTransformer {
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
-                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
+        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();
     }
 
 }

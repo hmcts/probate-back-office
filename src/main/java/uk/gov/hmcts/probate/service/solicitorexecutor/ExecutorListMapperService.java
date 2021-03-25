@@ -82,16 +82,6 @@ public class ExecutorListMapperService {
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
-        // Update list
-        caseData.getAdditionalExecutorsApplying()
-                .forEach(exec -> exec.getValue().setApplyingExecutorName(exec.getValue().getApplyingExecutorFirstName()
-                        + " " + exec.getValue().getApplyingExecutorLastName()));
-
-        // Return list
-        return caseData.getAdditionalExecutorsApplying();
-    }
-
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
         // Create applying executor collection member containing primary applicant names
