@@ -523,10 +523,6 @@ public class CaseData extends CaseDataParent {
     private String registryAddress;
     private String registryEmailAddress;
 
-    public String solicitorIsApplying() {
-        return YES.equals(solsSolicitorIsApplying) ? YES : NO;
-    }
-
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);
     }
