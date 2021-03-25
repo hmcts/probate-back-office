@@ -29,7 +29,7 @@ public class ExecutorsTransformer {
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData)) {
-            // Check solsSolicitorIsMainApplicant field to prevent overwriting primary applicant fields for sch 1 cases
+            // Check solsSolicitorIsMainApplicant field to prevent overwriting primaryapp fields for schema 1 cases
             if (isSolicitorApplying(caseData) && !isSolicitorMainApplicantSetToNo(caseData)) {
 
                 // Solicitor is primary applicant
