@@ -1156,38 +1156,21 @@ public class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
     }
 
-//    @Test
-//    public void verifyPrimaryApplicantFieldsAre() {
-//        underTest.transformCase(callbackRequestMock);
-//
-//        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-//    }
-//
-//    @Test
-//    public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
-//        underTest.transformCase(callbackRequestMock);
-//
-//        verify(solicitorExecutorTransformer, times(1))
-//                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-//    }
-//
-//    @Test
-//    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
-//        caseDataBuilder.applicationType(SOLICITOR)
-//                .recordId(null)
-//                .paperForm(NO);
-//
-//        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-//        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-//        underTest.transformCase(callbackRequestMock);
-//
-//        verify(solicitorExecutorTransformer, times(1))
-//                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-//        verify(solicitorExecutorTransformer, times(1))
-//                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
-//        verify(solicitorExecutorTransformer, times(1))
-//                .nullSolicitorExecutorLists(any());
-//    }
+    @Test
+    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        underTest.transformCase(callbackRequestMock);
+        
+        verify(solicitorExecutorTransformer, times(1))
+                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
+        verify(solicitorExecutorTransformer, times(1))
+                .nullSolicitorExecutorLists(any());
+    }
 
     @Test
     public void verifyExecutorListsAreSet() {
