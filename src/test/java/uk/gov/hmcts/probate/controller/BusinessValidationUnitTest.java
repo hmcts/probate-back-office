@@ -157,18 +157,6 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateSolsApplyAsExecWithNoErrors() {
-        when(callbackResponseTransformerMock.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock))
-            .thenReturn(callbackResponseMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock);
-
-        assertThat(response.getBody(), is(callbackResponseMock));
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
-    }
-
-    @Test
     public void shouldValidateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
