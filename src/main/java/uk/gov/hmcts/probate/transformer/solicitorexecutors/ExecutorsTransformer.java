@@ -161,7 +161,7 @@ public class ExecutorsTransformer {
             // Add solicitor to not applying list
             execsApplying = executorListMapperService.addSolicitorToApplyingList(caseData, execsApplying);
 
-        } else if (isSolicitorApplying(caseData)) {
+        } else if (!isSolicitorApplying(caseData)) {
 
             // Remove solicitor from executor lists as they are primary applicant
             execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
