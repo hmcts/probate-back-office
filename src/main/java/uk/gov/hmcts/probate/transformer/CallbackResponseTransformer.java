@@ -1158,10 +1158,6 @@ public class CallbackResponseTransformer {
 
         builder
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
-
-        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
-            solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
-        }
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
