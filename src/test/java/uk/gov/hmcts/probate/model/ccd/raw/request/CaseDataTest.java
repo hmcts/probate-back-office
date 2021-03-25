@@ -655,33 +655,6 @@ public class CaseDataTest {
     }
 
     @Test
-    public void solicitorIsMainApplicantIsYes() {
-        final CaseData caseData = CaseData.builder()
-            .solsSolicitorIsApplying(YES)
-            .build();
-
-        assertEquals(YES, caseData.solicitorIsApplying());
-    }
-
-    @Test
-    public void solicitorIsMainApplicantIsNoWhenNoMainApplicant() {
-        final CaseData caseData = CaseData.builder()
-            .solsSolicitorIsMainApplicant(NO)
-            .build();
-
-        assertEquals(NO, caseData.solicitorIsApplying());
-    }
-
-    @Test
-    public void solicitorIsMainApplicantIsNoWhenNullMainApplicant() {
-        final CaseData caseData = CaseData.builder()
-            .solsSolicitorIsMainApplicant(null)
-            .build();
-
-        assertEquals(NO, caseData.solicitorIsApplying());
-    }
-
-    @Test
     public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantEmailAddress("primary@probate-test.com")
