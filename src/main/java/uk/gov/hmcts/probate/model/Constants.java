@@ -36,8 +36,6 @@ public final class Constants {
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
     public static final String EXECUTOR_TYPE_LAY = "Lay";
 
-    public static final String APPLICATION_TYPE_SOLICITOR = "Solicitor";
-
     private Constants() {
     }
 }

@@ -47,6 +47,7 @@ import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.APPLICATION_TYPE_SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -64,6 +64,7 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @Slf4j
 @Controller
@@ -351,7 +352,7 @@ public class BusinessValidationController {
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
-        if (APPLICATION_TYPE_SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
+        if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
                 && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
             ValidationRule[] rules =
                     new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
