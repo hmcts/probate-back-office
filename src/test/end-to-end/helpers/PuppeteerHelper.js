@@ -18,7 +18,7 @@ class PuppeteerHelper extends Helper {
         const promises = [];
 
         if (!testConfig.TestForXUI) {
-            promises.push(page.waitForNavigation({timeout: 60000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
+            promises.push(page.waitForNavigation({timeout: 160000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
         }
 
         if (locator) {
