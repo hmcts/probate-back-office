@@ -54,18 +54,19 @@ public class SmeeAndFordPersonalisationServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    private ReturnedCaseDetails buildAll(ApplicationType applicationType, boolean hasScanned, boolean hasGrant) {
+    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned, 
+                                                        boolean hasGrant) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
         deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
         deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
         additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "1")));
+            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "1", true)));
         additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "2")));
+            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "2", false)));
         SolsAddress primaryAddress = buildAddress("Prim");
-        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(CaseData.builder()
+        CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
             .registryLocation("Registry Address")
             .grantIssuedDate("2021-12-31")
             .deceasedForenames("Jack")
@@ -90,20 +91,19 @@ public class SmeeAndFordPersonalisationServiceTest {
             .scannedDocuments(hasScanned ? buildScannedDocs() : null)
             .registryLocation("Cardiff")
             .willHasCodicils(Constants.YES)
-            .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>())
-            .build(), LAST_MODIFIED, ID);
+            .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>());
         
-        return returnedCaseDetails;
+        return caseDataBuilder;
     }
 
-    private AdditionalExecutorApplying buildApplyingExec(String prefix, String num) {
+    private AdditionalExecutorApplying buildApplyingExec(String prefix, String num, boolean withAddress) {
         SolsAddress execAddress = buildAddress(prefix + "Exec" + num);
 
         return AdditionalExecutorApplying.builder()
             .applyingExecutorFirstName(prefix + "Exec" + num + "FN")
             .applyingExecutorLastName(prefix + "Exec" + num + "LN")
             .applyingExecutorOtherNames(prefix + "Exec" + num + "ON")
-            .applyingExecutorAddress(execAddress)
+            .applyingExecutorAddress(withAddress ? execAddress : null)
             .applyingExecutorEmail("exec1@probate-test.com")
             .applyingExecutorPhoneNumber("0711111111")
             .build();
@@ -165,8 +165,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = buildAll(PERSONAL, true, true);
-        returnedCaseDetailsSolicitor = buildAll(SOLICITOR, true, true);
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true)
+            .build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true)
+            .build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -181,9 +183,11 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = buildAll(PERSONAL, false, true);
-        returnedCaseDetailsSolicitor = buildAll(SOLICITOR, true, false);
-
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true)
+            .build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false)
+            .build(), LAST_MODIFIED, ID);
+        
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
         cases.add(returnedCaseDetailsSolicitor);

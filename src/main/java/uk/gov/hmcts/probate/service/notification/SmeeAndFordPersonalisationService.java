@@ -155,15 +155,15 @@ public class SmeeAndFordPersonalisationService {
     private String getApplyingExecutorDetails(List<CollectionMember<AdditionalExecutorApplying>> 
                                                   additionalExecutorsApplying) {
         int execCount = 0;
-        String allExecs = "";
+        StringBuilder allExecs = new StringBuilder();
         if (additionalExecutorsApplying != null) {
             for (CollectionMember<AdditionalExecutorApplying> applying : additionalExecutorsApplying) {
-                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorName());
-                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorFirstName());
-                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorLastName());
-                allExecs = allExecs + SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames());
-                allExecs = allExecs + SPACE + ifNotEmpty(getAddress(applying.getValue().getApplyingExecutorAddress()));
-                allExecs = allExecs + SEP;
+                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorName()));
+                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorFirstName()));
+                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorLastName()));
+                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
+                allExecs.append(SPACE + ifNotEmpty(getAddress(applying.getValue().getApplyingExecutorAddress())));
+                allExecs.append(SEP);
                 execCount++;
                 if (execCount > 3) {
                     break;
@@ -172,27 +172,28 @@ public class SmeeAndFordPersonalisationService {
 
         }
         while (execCount < 3) {
-            allExecs = allExecs + SEP;
+            allExecs.append(SEP);
             execCount++;
         }
 
-        allExecs = removeLastSeparator(allExecs);
-        return allExecs;
+        String execsData = allExecs.toString();
+        execsData = removeLastSeparator(execsData);
+        return execsData;
     }
 
     private String getAddress(SolsAddress address) {
-        String add = "";
+        StringBuilder addBuilder = new StringBuilder();
         if (address != null) {
-            add = add + SPACE + ifNotEmpty(address.getAddressLine1());
-            add = add + SPACE + ifNotEmpty(address.getAddressLine2());
-            add = add + SPACE + ifNotEmpty(address.getAddressLine3());
-            add = add + SPACE + ifNotEmpty(address.getCounty());
-            add = add + SPACE + ifNotEmpty(address.getPostTown());
-            add = add + SPACE + ifNotEmpty(address.getPostCode());
-            add = add + SPACE + ifNotEmpty(address.getCountry());
+            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine1()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine2()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine3()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getCounty()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getPostTown()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getPostCode()));
+            addBuilder.append(SPACE + ifNotEmpty(address.getCountry()));
         }
         
-        return add;
+        return addBuilder.toString();
     }
 
     private String ifNotEmpty(String value) {
@@ -204,14 +205,14 @@ public class SmeeAndFordPersonalisationService {
     }
 
     private String getDeceasedAliasNames(CaseData data) {
-        String aliases = "";
+        StringBuilder aliases = new StringBuilder();
         if (data.getDeceasedAliasNameList() != null)  {
             for (CollectionMember<ProbateAliasName> alias : data.getDeceasedAliasNameList()) {
-                aliases = aliases + ifNotEmpty(alias.getValue().getForenames()) + SPACE 
-                    + ifNotEmpty(alias.getValue().getLastName());
+                aliases.append(ifNotEmpty(alias.getValue().getForenames()) + SPACE 
+                    + ifNotEmpty(alias.getValue().getLastName()));
             }
         }
-        return aliases;
+        return aliases.toString();
     }
 
     private String getDeceasedNameWithHonours(CaseData data) {
