@@ -30,6 +30,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 
@@ -55,10 +57,13 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned, 
-                                                        boolean hasGrant) {
+                                                        boolean hasGrant, boolean hasCodicils,
+                                                        boolean hasDeceasedAlias) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
-        deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
-        deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
+        if (hasDeceasedAlias) {
+            deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
+            deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
+        }
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
         additionalExecsApplying
@@ -72,7 +77,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
             .boDeceasedHonours("OBE")
-            .deceasedAliasNameList(deceasedAliases)
+            .deceasedAliasNameList(hasDeceasedAlias ? deceasedAliases : null)
             .caseType("gop")
             .applicationType(applicationType)
             .deceasedDateOfDeath(LocalDate.of(2020, 12, 31))
@@ -90,7 +95,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .solsSolicitorAppReference(applicationType == SOLICITOR ? "SolAppRef" : null)
             .scannedDocuments(hasScanned ? buildScannedDocs() : null)
             .registryLocation("Cardiff")
-            .willHasCodicils(Constants.YES)
+            .willHasCodicils(hasCodicils ? YES : NO)
             .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>());
         
         return caseDataBuilder;
@@ -165,9 +170,9 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true)
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true)
             .build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true)
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false)
             .build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -183,9 +188,9 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true)
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true, false, true)
             .build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false)
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false)
             .build(), LAST_MODIFIED, ID);
         
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
