@@ -174,6 +174,82 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
+    public void shouldNotSetSolicitorAsPrimaryApplicantIfSolIsMainAppFieldSetToNo() {
+        responseCaseDataBuilder
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FORENAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES);
+
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
+
+        ResponseCaseData response = responseCaseDataBuilder.build();
+        assertNull(response.getSolsPrimaryExecutorNotApplyingReason());
+        assertEquals(PRIMARY_APPLICANT_FORENAME, response.getPrimaryApplicantForenames());
+        assertEquals(PRIMARY_APPLICANT_SURNAME, response.getPrimaryApplicantSurname());
+    }
+
+    @Test
+    public void shouldSetSolicitorAsPrimaryApplicantIfSolIsMainAppFieldIsNull() {
+        responseCaseDataBuilder
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FORENAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES);
+
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(null)
+                .solsSolicitorIsApplying(YES)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
+
+        ResponseCaseData response = responseCaseDataBuilder.build();
+        assertEquals(SOLICITOR_SOT_FORENAME, response.getPrimaryApplicantForenames());
+        assertEquals(SOLICITOR_SOT_SURNAME, response.getPrimaryApplicantSurname());
+    }
+
+    @Test
+    public void shouldSetSolicitorAsPrimaryApplicantIfSolIsMainAppFieldIsYes() {
+        responseCaseDataBuilder
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FORENAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES);
+
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        solicitorExecutorTransformerMock.setPrimaryApplicantFieldsWithSolicitorInfo(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
+
+        ResponseCaseData response = responseCaseDataBuilder.build();
+        assertEquals(SOLICITOR_SOT_FORENAME, response.getPrimaryApplicantForenames());
+        assertEquals(SOLICITOR_SOT_SURNAME, response.getPrimaryApplicantSurname());
+    }
+
+    @Test
     public void shouldNotChangeResponseCaseData() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)

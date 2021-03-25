@@ -381,15 +381,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        responseCaseDataBuilder.solicitorIsMainApplicant(caseData.solicitorIsApplying());
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
                                                           FeeServiceResponse feeServiceResponse) {
         final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
@@ -404,10 +395,6 @@ public class CallbackResponseTransformer {
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(schemaVersion)
-            // set these next 2 properties as these properties are still used for in-flight cases on old schema /
-            // bulk scan created cases and ccd has limited logic facilities
-            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-            .solicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
@@ -980,13 +967,6 @@ public class CallbackResponseTransformer {
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
             .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
-
-
-        if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
-            builder
-                .primaryApplicantSecondPhoneNumber(null)
-                .primaryApplicantRelationshipToDeceased(null);
-        }
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder

@@ -41,11 +41,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
-    private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    // Todo add tests for this endpoint
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
     public void verifyRequestWithDobBeforeDod() {
@@ -561,18 +562,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessSolicitorAsExecutor() {
-        ResponseBody responsebody =
-            validatePostSuccess("solicitorPayloadNotificationsMultipleExecutors.json", SOL_APPLY_AS_EXECUTOR_URL);
-        JsonPath jsonPath = JsonPath.from(responsebody.asString());
-        responsebody.prettyPrint();
-        String errors = jsonPath.get("data.errors");
-        String solicitoryLegalDoument = jsonPath.get("data.solsLegalStatementDocument.document_filename");
-        assertEquals(solicitoryLegalDoument, "legal_statement.pdf");
-        assertNull(errors);
-    }
-
-    @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
         body.prettyPrint();
@@ -663,7 +652,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(response);
 
         HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
-        assertEquals("exfn exln", executorNotApplying.get("notApplyingExecutorName"));
+        assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
         assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
         assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 

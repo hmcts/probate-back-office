@@ -3,7 +3,6 @@
   {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "DiedAfter", "ListElement": "They died after the deceased"},
   {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerReserved", "ListElement": "They're holding power reserved"},
   {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "Renunciation", "ListElement": "They have renounced"},
-  {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "PowerOfAttorney", "ListElement": "They have appointed or wish to appoint another person to act as their attorney"},
   {"LiveFrom": "01/01/2017", "ID": "notApplyingExecutorReasonFixedList", "ListElementCode": "MentallyIncapable", "ListElement": "They lack capacity to act as executor and the will allows for a substitution"},
   {"LiveFrom": "01/01/2017", "ID": "solsNotApplyingReasonFixedList", "ListElementCode": "Renunciation", "ListElement": "They have renounced", "DisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "ID": "solsNotApplyingReasonFixedList", "ListElementCode": "PowerReserved", "ListElement": "They're holding power reserved", "DisplayOrder": 2},
@@ -335,5 +334,5 @@
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Date", "ListElement": "DO NOT SHOW - Date"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Professional", "ListElement": "Probate practitioner"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "TrustCorporation", "ListElement": "Trust corporation"},
-  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Lay", "ListElement": "Lay executor"}
+  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Named", "ListElement": "Named executor"}
 ]
