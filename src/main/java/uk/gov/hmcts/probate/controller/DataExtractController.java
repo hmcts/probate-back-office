@@ -83,7 +83,7 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Exela data extract finished");
     }
 
-    @ApiOperation(value = "Initiate S and F data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
+    @ApiOperation(value = "Initiate Smee And Ford data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/smee-and-ford")
     public ResponseEntity initiateSmeeAndFordExtract(
                 @ApiParam(value = "Date to find cases against", required = true)
@@ -92,14 +92,14 @@ public class DataExtractController {
 
         dataExtractDateValidator.dateValidator(fromDate, toDate);
 
-        log.info("Calling perform SF data extract from date...");
+        log.info("Calling perform Smee And Ford data extract from date...");
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> {
-                smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
         });
-        log.info("Perform SF data extract from date finished");
+        log.info("Perform Smee And Ford data extract from date finished");
 
-        return ResponseEntity.accepted().body("Exela data extract finished");
+        return ResponseEntity.accepted().body("Smee And Ford data extract finished");
     }
 
 }

@@ -226,7 +226,7 @@ public class NotificationService {
 
         SendEmailResponse response =
             notificationClient.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(), personalisation, reference);
-        log.info("SF email reference response: {}", response.getReference());
+        log.info("Smee And Ford email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getSmeeAndFordEmail(), SENT_EMAIL);
     }

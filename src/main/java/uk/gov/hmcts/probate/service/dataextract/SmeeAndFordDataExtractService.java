@@ -25,9 +25,9 @@ public class SmeeAndFordDataExtractService {
         if (fromDate.equals(toDate)) {
             return performSmeeAndFordExtractForDate(fromDate);
         } else {
-            log.info("SF data extract initiated from date: {} to {}", fromDate, toDate);
+            log.info("Smee And Ford data extract initiated from date: {} to {}", fromDate, toDate);
             List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
-            log.info("Found {} cases with dated document for SF from-to", cases.size());
+            log.info("Found {} cases with dated document for Smee And Ford from-to", cases.size());
 
             return sendSmeeAndFordEmail(cases);
         }
@@ -36,7 +36,7 @@ public class SmeeAndFordDataExtractService {
     }
 
     private Document performSmeeAndFordExtractForDate(String date) {
-        log.info("SF data extract initiated for date: {}", date);
+        log.info("Smee And Ford data extract initiated for date: {}", date);
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Found {} cases with dated document for SF", cases.size());
 
@@ -44,15 +44,14 @@ public class SmeeAndFordDataExtractService {
     }
 
     private Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> cases) {
-        log.info("Sending email to SF for {} filtered cases", cases.size());
+        log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
-            log.info("Sending email to SF");
             try {
                 return notificationService.sendSmeeAndFordEmail(cases);
             } catch (NotificationClientException e) {
-                log.warn("NotificationService exception sending email to SF", e);
+                log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
-                    "Error on NotificationService sending email to SF");
+                    "Error on NotificationService sending email to Smee And Ford");
             }
         }
 
