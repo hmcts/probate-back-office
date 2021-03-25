@@ -141,7 +141,7 @@ public class DataExtractControllerTest {
     @Test
     public void smeeAndFordShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford?fromDate=2019-02-13&toDate=2019-02-13"))
-            .andExpect(status().isOk());
+            .andExpect(status().isAccepted());
     }
 
     @Test
