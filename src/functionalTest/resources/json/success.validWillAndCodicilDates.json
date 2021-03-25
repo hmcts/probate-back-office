@@ -36,8 +36,19 @@
       },
       "deceasedAnyOtherNames": "Yes",
       "willHasCodicils": "Yes",
-      "originalWillSignedDate": "2020-10-10",
-      "codicilAddedDateList": ["2020-10-10", "2020-10-11"],
+      "originalWillSignedDate": "2017-10-10",
+      "codicilAddedDateList": [{
+          "id": null,
+          "value": {
+            "dateCodicilAdded": "2020-10-10"
+          }
+        }, {
+          "id": null,
+          "value": {
+            "dateCodicilAdded": "2020-10-11"
+          }
+        }
+      ],
       "deceasedDateOfBirth": "1987-01-01",
       "solsDeceasedAliasNamesList": [
         {
