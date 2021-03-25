@@ -114,14 +114,6 @@ public class ExecutorsTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void otherExecutorExistsTransformation(
-            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (executorTypeService.isSolicitorExecutorNamedOnWill(caseData) && !isSolicitorNamedOnWillApplying(caseData)
-                && !otherExecutorExistsIsSetNo(caseData)) {
-            builder.otherExecutorExists(YES);
-        }
-    }
-
     /**
      * Set caseworker executor fields with solicitor journey fields.
      * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant
@@ -290,10 +282,6 @@ public class ExecutorsTransformer {
 
     private boolean isSolicitorPartOfTitleAndClearingGroup(CaseData caseData) {
         return YES.equals(caseData.getSolTitleAndClearingExecutor());
-    }
-
-    private boolean otherExecutorExistsIsSetNo(CaseData caseData) {
-        return NO.equals(caseData.getOtherExecutorExists());
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
