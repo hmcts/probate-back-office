@@ -29,7 +29,8 @@ public class ExecutorsTransformer {
     public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
                                                            ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         if (isSolicitorExecutor(caseData)) {
-            if (isSolicitorApplying(caseData)) {
+            // Check solsSolicitorIsMainApplicant field to prevent overwriting primaryapp fields for schema 1 cases
+            if (isSolicitorApplying(caseData) && !isSolicitorMainApplicantSetToNo(caseData)) {
 
                 // Solicitor is primary applicant
                 addSolicitorAsPrimaryApplicant(caseData, builder);
@@ -66,7 +67,9 @@ public class ExecutorsTransformer {
                 .primaryApplicantHasAlias(NO)
                 .primaryApplicantIsApplying(YES)
                 .solsSolicitorNotApplyingReason(null)
-                .solsPrimaryExecutorNotApplyingReason(null);
+                .solsPrimaryExecutorNotApplyingReason(null)
+                .primaryApplicantSecondPhoneNumber(null)
+                .primaryApplicantRelationshipToDeceased(null);
     }
 
     private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
@@ -245,6 +248,11 @@ public class ExecutorsTransformer {
 
     protected boolean isSolicitorApplying(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
+    }
+
+    // solsSolicitorIsMainApplicant will only be set in schema one cases
+    protected boolean isSolicitorMainApplicantSetToNo(CaseData caseData) {
+        return NO.equals(caseData.getSolsSolicitorIsMainApplicant());
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
