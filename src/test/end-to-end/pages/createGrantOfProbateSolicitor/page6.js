@@ -60,11 +60,10 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.selectOption({css: '#selectionList'}, createGrantOfProbateConfig.page6_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
-        //        complete these when completing cw amend story
-        //        await I.waitForElement({css: '#codicilAddedDateList_0_dateCodicilAdded-day'});
-        // if (createGrantOfProbateConfig.page1_paperForm === 'No') {
-        //        await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-day'}, createGrantOfProbateConfig.page6_codicilDate_day_update);
-        // }
+        if (createGrantOfProbateConfig.page1_paperForm === 'No') {
+            await I.waitForElement({css: '#codicilAddedDateList_0_dateCodicilAdded-day'});
+            await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-day'}, createGrantOfProbateConfig.page6_codicilDate_day_update);
+        }
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
