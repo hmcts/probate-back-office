@@ -31,7 +31,7 @@
         <notes><![CDATA[
          Suppressing as it's a false positive (see: https://pivotal.io/security/cve-2018-1258)
         ]]></notes>
-        <filePath regex="true">.*spring-security-(config|crypto|web|test|core)-5\.3\.4\.RELEASE\.jar</filePath>
+        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.3\.4\.RELEASE\.jar</filePath>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
