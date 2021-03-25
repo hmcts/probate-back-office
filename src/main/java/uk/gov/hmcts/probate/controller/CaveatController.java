@@ -29,7 +29,6 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.CaveatorEmailAddressValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
@@ -52,7 +51,6 @@ public class CaveatController {
     private final NotificationService notificationService;
     private final CaveatNotificationService caveatNotificationService;
     private final ConfirmationResponseService confirmationResponseService;
-    private final List<CaveatorEmailAddressValidationRule> allCaveatorEmailAddressValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -66,9 +64,11 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/defaultValues")
-    public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues(
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.defaultCaveatValues(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse =
+            caveatCallbackResponseTransformer.defaultCaveatValues(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -80,7 +80,8 @@ public class CaveatController {
         throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        CaveatCallbackResponse response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+        CaveatCallbackResponse response =
+            eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
         if (response.getErrors().isEmpty()) {
             Document document = notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, caveatDetails);
             response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
@@ -94,8 +95,8 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        validateEmailAddresses(caveatCallbackRequest);
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse =
+            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -105,8 +106,8 @@ public class CaveatController {
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        validateEmailAddresses(caveatCallbackRequest);
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse =
+            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -123,9 +124,8 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        validateEmailAddresses(caveatCallbackRequest);
-
-        CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse =
+            caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -141,8 +141,6 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        validateEmailAddresses(caveatCallbackRequest);
-
         CaveatData caveatData = caveatDataTransformer.transformSolsCaveats(caveatCallbackRequest);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
@@ -152,11 +150,14 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/validate-extend")
-    public ResponseEntity<CaveatCallbackResponse> validateExtend(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> validateExtend(
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
+        CaveatCallbackResponse caveatCallbackResponse =
+            eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
         }
 
         return ResponseEntity.ok(caveatCallbackResponse);
@@ -177,11 +178,5 @@ public class CaveatController {
         CaveatCallbackResponse response = caveatNotificationService.withdraw(caveatCallbackRequest);
 
         return ResponseEntity.ok(response);
-    }
-
-    private void validateEmailAddresses(CaveatCallbackRequest caveatCallbackRequest) {
-        for(CaveatorEmailAddressValidationRule rule : allCaveatorEmailAddressValidationRule){
-            rule.validate(caveatCallbackRequest.getCaseDetails());
-        }
     }
 }

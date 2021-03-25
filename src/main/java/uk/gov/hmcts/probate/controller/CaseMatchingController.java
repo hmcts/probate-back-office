@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @RequiredArgsConstructor
@@ -72,7 +71,7 @@ public class CaseMatchingController {
 
     @PostMapping(path = "/search-from-standing-search-flow")
     public ResponseEntity<StandingSearchCallbackResponse> searchFromStandingSearchFlow(
-            @RequestBody StandingSearchCallbackRequest request) {
+        @RequestBody StandingSearchCallbackRequest request) {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
 
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
@@ -82,7 +81,7 @@ public class CaseMatchingController {
 
     @PostMapping(path = "/search-from-will-lodgement-flow")
     public ResponseEntity<WillLodgementCallbackResponse> searchFromWillLodgementFlow(
-            @RequestBody WillLodgementCallbackRequest request) {
+        @RequestBody WillLodgementCallbackRequest request) {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
 
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
@@ -90,77 +89,83 @@ public class CaseMatchingController {
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addMatches(request, caseMatches));
     }
 
-    @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_VALUE, produces = {
+        APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> doImportFromGrant(@RequestBody CallbackRequest callbackRequest,
-                                                     HttpServletRequest request) {
+                                                              HttpServletRequest request) {
 
-        List<FieldErrorResponse> errors = validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+        List<FieldErrorResponse> errors =
+            validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(CallbackResponse.builder()
-                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
-                    .build());
+                .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build());
         }
 
 
         log.info("Performing import-legacy-from-grant-flow");
         List<CaseMatch> rows = legacyImportService
-                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+            .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 
-    @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_VALUE, produces = {
+        APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> doImportFromCaveat(@RequestBody CaveatCallbackRequest callbackRequest,
-                                                     HttpServletRequest request) {
+                                                                     HttpServletRequest request) {
 
-        List<FieldErrorResponse> errors = validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+        List<FieldErrorResponse> errors =
+            validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(CaveatCallbackResponse.builder()
-                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
-                    .build());
+                .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build());
         }
 
         log.info("import-legacy-from-caveat-flow");
         List<CaseMatch> rows = legacyImportService
-                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+            .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         return ResponseEntity.ok(caveatCallbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 
     @PostMapping(path = "/import-legacy-from-standing-search-flow",
-            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+        consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<StandingSearchCallbackResponse> doImportFromStandingSearch(
-            @RequestBody StandingSearchCallbackRequest callbackRequest, HttpServletRequest request) {
+        @RequestBody StandingSearchCallbackRequest callbackRequest, HttpServletRequest request) {
 
-        List<FieldErrorResponse> errors = validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+        List<FieldErrorResponse> errors =
+            validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(StandingSearchCallbackResponse.builder()
-                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
-                    .build());
+                .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build());
         }
 
         log.info("import-legacy-from-standing-search-flow");
         List<CaseMatch> rows = legacyImportService
-                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+            .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         return ResponseEntity.ok(standingSearchCallbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 
     @PostMapping(path = "/import-legacy-from-will-lodgement-flow",
-            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+        consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<WillLodgementCallbackResponse> doImportFromWillLodgement(
-            @RequestBody WillLodgementCallbackRequest callbackRequest, HttpServletRequest request) {
+        @RequestBody WillLodgementCallbackRequest callbackRequest, HttpServletRequest request) {
 
-        List<FieldErrorResponse> errors = validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+        List<FieldErrorResponse> errors =
+            validateLegacySearchImportRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
         if (!errors.isEmpty()) {
             return ResponseEntity.ok(WillLodgementCallbackResponse.builder()
-                    .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
-                    .build());
+                .errors(errors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build());
         }
 
         log.info("import-legacy-from-will-lodgement-flow");
         List<CaseMatch> rows = legacyImportService
-                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+            .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addMatches(callbackRequest, rows));
     }
