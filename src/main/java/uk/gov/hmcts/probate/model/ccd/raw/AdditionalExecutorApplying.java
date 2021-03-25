@@ -12,7 +12,7 @@ public class AdditionalExecutorApplying {
     private final String applyingExecutorFirstName;
     private final String applyingExecutorLastName;
     private final String applyingExecutorTrustCorpPosition;
-    // Professional, TrustCorporation, or Lay
+    // Professional, TrustCorporation, or Named
     private final String applyingExecutorType;
     private final String applyingExecutorPhoneNumber;
     private final String applyingExecutorEmail;

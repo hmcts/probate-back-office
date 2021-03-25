@@ -57,6 +57,10 @@ public class CommonVariables {
 
     public static final String STOP_REASON = "Some reason";
 
+    public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
+    public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
+    public static final String EXECUTOR_TYPE_NAMED = "Named";
+
     public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)
             .applyingExecutorFirstName(EXEC_FIRST_NAME)

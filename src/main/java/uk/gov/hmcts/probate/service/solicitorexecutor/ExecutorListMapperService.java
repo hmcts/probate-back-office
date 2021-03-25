@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_LAY;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -140,7 +140,7 @@ public class ExecutorListMapperService {
                                 exec.getValue().getAdditionalExecLastname()))
                         .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname())
-                        .applyingExecutorType(EXECUTOR_TYPE_LAY)
+                        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
@@ -169,7 +169,7 @@ public class ExecutorListMapperService {
                         caseData.getPrimaryApplicantForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
                 .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
-                .applyingExecutorType(EXECUTOR_TYPE_LAY)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
