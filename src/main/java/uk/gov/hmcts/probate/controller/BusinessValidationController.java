@@ -48,7 +48,6 @@ import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
