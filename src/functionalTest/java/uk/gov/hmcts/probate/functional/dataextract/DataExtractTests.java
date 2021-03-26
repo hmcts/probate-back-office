@@ -122,26 +122,14 @@ public class DataExtractTests extends IntegrationTestBase {
             .then().assertThat().statusCode(400);
     }
 
-    @Pending
     @Test
-    public void verifyValidDateRequestReturnsOKForSmeeAndFord() {
-        HashMap<String, String> parms = new HashMap<>();
-        parms.put("fromDate", "2021-03-19");
-        parms.put("toDate", "2021-03-19");
-        verifyEmailDocumentContentsNotificationGenerated(SMEE_AND_FORD_URL,
-            SMEE_AND_FORD_RESPONSE, parms);
-    }
-
-    private void verifyEmailDocumentContentsNotificationGenerated(String api, String documentTextFile, HashMap<String,
-        String> parms) {
-        Headers headers = utils.getHeaders(email, password, id);
-        Response response = RestAssured.given().relaxedHTTPSValidation().headers(headers)
-            .queryParams(parms)
+    public void verifyValidDateRequestReturnsAcceptedStatusForSmeeAndFord() {
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+            password, id)).queryParam("fromDate", "2019-02-03")
+            .queryParam("toDate", "2019-02-03")
             .when()
-            .post(api)
-            .thenReturn();
-
-        assertExpectedContentsForHeaders(documentTextFile, "DocumentLink.document_binary_url", 
-            response.body(), headers);
+            .post(SMEE_AND_FORD_URL)
+            .then().assertThat().statusCode(202);
     }
+
 }
