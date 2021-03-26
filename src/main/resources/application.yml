@@ -173,6 +173,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+# http://dm-store:8080
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
@@ -196,7 +197,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
-  grantAwaitingDocumentationNotificationPeriodDays: 21
+  grantAwaitingDocumentationNotificationPeriodDays: 35
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -214,8 +215,8 @@ notifications:
           grantRaised: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
           grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
           grantRaisedCtsc: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
-          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
-          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaised: "cad7831d-2e74-4921-8613-a69075216c94"
+          caveatRaisedCtsc: "d65e3b0c-846f-4c2a-b0f0-5a29712238cd"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
@@ -235,10 +236,10 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "99cdc36b-3fef-43bb-ab80-c1a831dd7565"
           grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
-          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
-          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaised: "cad7831d-2e74-4921-8613-a69075216c94"
+          caveatRaisedCtsc: "d65e3b0c-846f-4c2a-b0f0-5a29712238cd"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
+          caveatRaisedSols: "8803cddd-7fc4-4686-9f09-014cb2acefa7"
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"

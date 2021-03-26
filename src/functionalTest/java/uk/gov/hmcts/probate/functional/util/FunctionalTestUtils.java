@@ -23,7 +23,14 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -44,6 +51,12 @@ public class FunctionalTestUtils {
 
     @Value("${probate.caseworker.password}")
     private String caseworkerPassword;
+
+    @Value("${probate.solicitor.email}")
+    private String solicitorEmail;
+
+    @Value("${probate.solicitor.password}")
+    private String solicitorPassword;
 
     @Value("${evidence.management.url}")
     private String dmStoreUrl;
@@ -73,7 +86,7 @@ public class FunctionalTestUtils {
     public String getJsonFromFile(String fileName) {
         try {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            return new String(Files.readAllBytes(file.toPath()));
+            return new String(Files.readString(file.toPath(), Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -117,11 +130,24 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
-            new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization",
-                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-            new Header("user-id", userId));
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+                new Header("user-id", userId));
+    }
+
+    public Headers getSolicitorHeadersWithUserId() {
+        return getSolicitorHeadersWithUserId(serviceToken, userId);
+    }
+
+    private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
+        return Headers.headers(
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization",
+                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+                new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -286,5 +312,38 @@ public class FunctionalTestUtils {
             "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
 
+    public String formatDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        try {
+            Date date = originalFormat.parse(dateToConvert.toString());
+            String formattedDate = targetFormat.format(date);
+            return addDayNumberSuffix(formattedDate);
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
+    }
+    
+    private String addDayNumberSuffix(String formattedDate) {
+        int day = Integer.parseInt(formattedDate.substring(0, 2));
+        switch (day) {
+            case 3:
+            case 23:
+                return day + "rd " + formattedDate.substring(3);
+            case 1:
+            case 21:
+            case 31:
+                return day + "st " + formattedDate.substring(3);
+            case 2:
+            case 22:
+                return day + "nd " + formattedDate.substring(3);
+            default:
+                return day + "th " + formattedDate.substring(3);
+        }
+    }
 
 }
