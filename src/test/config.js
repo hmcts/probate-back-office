@@ -16,4 +16,3 @@ module.exports = {
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
     TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
 };
-
