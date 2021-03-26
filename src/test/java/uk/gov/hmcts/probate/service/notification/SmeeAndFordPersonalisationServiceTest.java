@@ -188,7 +188,7 @@ public class SmeeAndFordPersonalisationServiceTest {
         Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
             "fromDate", "toDate");
 
-        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extaract from fromDate to toDate"));
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedData.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
@@ -207,7 +207,7 @@ public class SmeeAndFordPersonalisationServiceTest {
         Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
             "fromDate", "toDate");
 
-        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extaract from fromDate to toDate"));
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoDocs.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));

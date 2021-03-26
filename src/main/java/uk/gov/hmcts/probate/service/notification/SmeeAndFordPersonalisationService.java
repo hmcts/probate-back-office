@@ -41,7 +41,7 @@ public class SmeeAndFordPersonalisationService {
     private static final String SPACE = " ";
     private static final String PDF_EXT = ".pdf";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
-    private static final String SUBJECT = "Smee And Ford Data extaract from :fromDate to :toDate";
+    private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
 
     private final FileSystemResourceService fileSystemResourceService;
