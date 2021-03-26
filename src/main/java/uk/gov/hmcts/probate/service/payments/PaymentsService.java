@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
 
+import static java.util.Locale.UK;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -36,8 +37,11 @@ public class PaymentsService {
     private static final String PAYMENT_ERROR_404 = "Account information could not be found";
     private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
     private static final String PAYMENT_ERROR_400 = "Payment Failed";
+    private static final String PAYMENT_ERROR_400_DUPLICATE_PAYMENT = "There has been a duplicate payment. Please try" +
+        " again after 5 minutes";
     private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
     private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
+    private static final String DUPICANT_PAYMENT_ERROR_KEY = "duplicate payment";
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -65,7 +69,7 @@ public class PaymentsService {
             } else if (e.getStatusCode().value() == UNPROCESSABLE_ENTITY.value()) {
                 throw new BusinessValidationException(PAYMENT_ERROR_422, e.getMessage());
             } else if (e.getStatusCode().value() == BAD_REQUEST.value()) {
-                throw new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
+                throw getExceptionForDuplicatePayment(e);
             } else if (e.getStatusCode().is5xxServerError()) {
                 throw new BusinessValidationException(PAYMENT_ERROR_5XX, e.getMessage());
             } else {
@@ -75,19 +79,30 @@ public class PaymentsService {
         return paymentResponse;
     }
 
+    private BusinessValidationException getExceptionForDuplicatePayment(HttpClientErrorException e) {
+        if (e.getMessage().contains(DUPICANT_PAYMENT_ERROR_KEY)) {
+            String[] empty = {};
+            String duplicateMessage = businessValidationMessageRetriever.getMessage(
+                "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
+            return new BusinessValidationException(duplicateMessage, e.getMessage());
+        } else {
+            return new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
+        }
+    }
+
     private BusinessValidationException getNewBusinessValidationException(HttpClientErrorException e) {
         String[] payError = {getErrorMessage(e)};
         String error1 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage", payError,
-            Locale.UK);
+            UK);
         String[] empty = {};
         String error2 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage2",
-            empty, Locale.UK);
+            empty, UK);
         String error3 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage3",
-            empty, Locale.UK);
+            empty, UK);
         String error4 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage4",
-            empty, Locale.UK);
+            empty, UK);
         String error5 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage5",
-            empty, Locale.UK);
+            empty, UK);
         return new BusinessValidationException(error1, e.getMessage(), error2, error3,
             error4, error5);
     }
