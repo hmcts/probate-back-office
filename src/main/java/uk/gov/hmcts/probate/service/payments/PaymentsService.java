@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Objects;
-import java.util.Optional;
 
 import static java.util.Locale.UK;
 import static org.springframework.http.HttpMethod.POST;
