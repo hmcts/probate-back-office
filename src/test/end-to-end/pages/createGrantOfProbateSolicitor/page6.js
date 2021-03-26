@@ -9,15 +9,18 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#willExists-${createGrantOfProbateConfig.page6_willExistsYes}`);
-        await I.click(`#willDatedBeforeApril-${createGrantOfProbateConfig.page6_willDatedBeforeAprilYes}`);
-        await I.click(`#willAccessOriginal-${createGrantOfProbateConfig.page6_willAccessOriginalYes}`);
-        await I.click(`#willHasCodicils-${createGrantOfProbateConfig.page6_willHasCodicilsYes}`);
+        await I.click({css: `#willExists-${createGrantOfProbateConfig.page6_willExistsYes}`});
+        await I.click({css: `#willDatedBeforeApril-${createGrantOfProbateConfig.page6_willDatedBeforeAprilYes}`});
+        await I.click({css: '#willAccessOriginal-No'});
+        await I.waitForVisible({css: '#noOriginalWillAccessReason'});
+        await I.click({css: `#willAccessOriginal-${createGrantOfProbateConfig.page6_willAccessOriginalYes}`});
+        await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
+        await I.click({css: `#willHasCodicils-${createGrantOfProbateConfig.page6_willHasCodicilsYes}`});
 
         if (createGrantOfProbateConfig.page1_paperForm === 'No') {
-            await I.fillField('#originalWillSignedDate-day', createGrantOfProbateConfig.page6_originalWillSignedDate_day);
-            await I.fillField('#originalWillSignedDate-month', createGrantOfProbateConfig.page6_originalWillSignedDate_month);
-            await I.fillField('#originalWillSignedDate-year', createGrantOfProbateConfig.page6_originalWillSignedDate_year);
+            await I.fillField({css: '#originalWillSignedDate-day'}, createGrantOfProbateConfig.page6_originalWillSignedDate_day);
+            await I.fillField({css: '#originalWillSignedDate-month'}, createGrantOfProbateConfig.page6_originalWillSignedDate_month);
+            await I.fillField({css: '#originalWillSignedDate-year'}, createGrantOfProbateConfig.page6_originalWillSignedDate_year);
 
             const addBtn = {css: '#codicilAddedDateList button'};
             await I.waitForVisible(addBtn);
@@ -34,10 +37,10 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-year'}, createGrantOfProbateConfig.page6_codicilDate_year);
 
         } else {
-            await I.dontSeeElement('#originalWillSignedDate-day');
-            await I.dontSeeElement('#originalWillSignedDate-month');
-            await I.dontSeeElement('#originalWillSignedDate-year');
-            await I.dontSeeElement('#codicilAddedDateList button');
+            await I.dontSeeElement({css: '#originalWillSignedDate-day'});
+            await I.dontSeeElement({css: '#originalWillSignedDate-month'});
+            await I.dontSeeElement({css: '#originalWillSignedDate-year'});
+            await I.dontSeeElement({css: '#codicilAddedDateList button'});
         }
 
         await I.click({css: `#willsOutsideOfUK-${createGrantOfProbateConfig.page6_willsOutsideOfUKYes}`});
