@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,32 +80,33 @@ public class SmeeAndFordDataExtractServiceTest {
     public void shouldExtractForDate() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any());
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test
     public void shouldExtractForDateRange() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any());
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 
     @Test
     public void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
-        
+
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
-        verify(notificationService, times(0)).sendSmeeAndFordEmail(any());
+        verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test(expected = ClientException.class)
     public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
-        when(notificationService.sendSmeeAndFordEmail(any())).thenThrow(NotificationClientException.class);
+        when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
+            .thenThrow(NotificationClientException.class);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
     }

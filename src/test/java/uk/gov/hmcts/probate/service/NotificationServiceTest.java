@@ -1457,7 +1457,7 @@ public class NotificationServiceTest {
         Document doc = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
         
-        Document document = notificationService.sendSmeeAndFordEmail(excelaCaseData.build());
+        Document document = notificationService.sendSmeeAndFordEmail(excelaCaseData.build(), "fromDate", "toDate");
 
         verify(notificationClient).sendEmail(
             eq("pa-smeeFord-data"),

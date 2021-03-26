@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,14 +25,13 @@ import java.util.Map;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class SmeeAndFordPersonalisationService {
-    private static final DateTimeFormatter DATA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String PERSONALISATION_SMEE_AND_FORD_NAME = "smeeAndFordName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
@@ -43,19 +41,26 @@ public class SmeeAndFordPersonalisationService {
     private static final String SPACE = " ";
     private static final String PDF_EXT = ".pdf";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
+    private static final String SUBJECT = "Smee And Ford Data extaract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
 
     private final FileSystemResourceService fileSystemResourceService;
 
-    public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases) {
+    public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases, String fromDate,
+                                                             String toDate) {
         HashMap<String, String> personalisation = new HashMap<>();
 
         StringBuilder data = getSmeeAndFordBuiltData(cases);
 
-        personalisation.put(PERSONALISATION_SMEE_AND_FORD_NAME, LocalDateTime.now().format(DATA_DATE) + "sf");
+        personalisation.put(PERSONALISATION_SMEE_AND_FORD_NAME, getSubject(fromDate, toDate));
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
+    }
+
+    private String getSubject(String fromDate, String toDate) {
+        return SUBJECT.replace(":fromDate", fromDate)
+            .replace(":toDate", toDate);
     }
 
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {

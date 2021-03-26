@@ -215,13 +215,13 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
-    public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails) throws
+    public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate, String toDate) throws
         NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
             .get(caseDetails.get(0).getData().getApplicationType())
             .getSmeeAndFordData();
         Map<String, String> personalisation =
-            smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails);
+            smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails, fromDate, toDate);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response =

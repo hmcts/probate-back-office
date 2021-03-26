@@ -29,7 +29,7 @@ public class SmeeAndFordDataExtractService {
             List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
             log.info("Found {} cases with dated document for Smee And Ford from-to", cases.size());
 
-            return sendSmeeAndFordEmail(cases);
+            return sendSmeeAndFordEmail(cases, fromDate, toDate);
         }
 
 
@@ -40,14 +40,14 @@ public class SmeeAndFordDataExtractService {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Found {} cases with dated document for SF", cases.size());
 
-        return sendSmeeAndFordEmail(cases);
+        return sendSmeeAndFordEmail(cases, date, date);
     }
 
-    private Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> cases) {
+    private Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> cases, String fromDate, String toDate) {
         log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
             try {
-                return notificationService.sendSmeeAndFordEmail(cases);
+                return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),

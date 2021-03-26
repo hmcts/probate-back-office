@@ -22,8 +22,6 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +40,13 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
-    
+
     @Mock
     private FileSystemResourceService fileSystemResourceService;
-    
+
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
 
-    private static final DateTimeFormatter DATA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final Long ID = 1234567812345678L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
@@ -60,13 +57,13 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        
+
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
-            .thenReturn("col1,col2,col3,col4,col5,col6,col7,col8,col9,col10," 
+            .thenReturn("col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,"
                 + "col11,col12,col13,col14,col15,col16,col17,col18,col19");
     }
 
-    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned, 
+    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
                                                         boolean hasDeceasedAlias) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
@@ -107,7 +104,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .registryLocation("Cardiff")
             .willHasCodicils(hasCodicils ? YES : NO)
             .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>());
-        
+
         return caseDataBuilder;
     }
 
@@ -141,7 +138,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .documentType(DIGITAL_GRANT)
             .documentFileName("GrantFileName")
             .build()));
-        
+
         return docs;
     }
 
@@ -161,8 +158,8 @@ public class SmeeAndFordPersonalisationServiceTest {
             .subtype("somthingElse")
             .fileName("ScannedOtherFileName")
             .build()));
-        
-        return  docs;
+
+        return docs;
     }
 
     private SolsAddress buildAddress(String pre) {
@@ -188,9 +185,10 @@ public class SmeeAndFordPersonalisationServiceTest {
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
         cases.add(returnedCaseDetailsSolicitor);
-        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
 
-        assertThat(personalisation.get("smeeAndFordName"), is(LocalDateTime.now().format(DATA_DATE) + "sf"));
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extaract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedData.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
@@ -202,13 +200,14 @@ public class SmeeAndFordPersonalisationServiceTest {
             .build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false)
             .build(), LAST_MODIFIED, ID);
-        
+
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
         cases.add(returnedCaseDetailsSolicitor);
-        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
 
-        assertThat(personalisation.get("smeeAndFordName"), is(LocalDateTime.now().format(DATA_DATE) + "sf"));
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extaract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoDocs.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
