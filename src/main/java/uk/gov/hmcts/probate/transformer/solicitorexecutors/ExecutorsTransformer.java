@@ -108,8 +108,9 @@ public class ExecutorsTransformer {
         }
 
         // Set builder with lists
-        builder.additionalExecutorsApplying(execsApplying);
-        builder.additionalExecutorsNotApplying(execsNotApplying);
+        builder
+                .additionalExecutorsApplying(execsApplying)
+                .additionalExecutorsNotApplying(execsNotApplying);
     }
 
     /**
