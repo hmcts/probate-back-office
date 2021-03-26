@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
-import java.util.Locale;
 import java.util.Objects;
 
 import static java.util.Locale.UK;
@@ -37,8 +36,6 @@ public class PaymentsService {
     private static final String PAYMENT_ERROR_404 = "Account information could not be found";
     private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
     private static final String PAYMENT_ERROR_400 = "Payment Failed";
-    private static final String PAYMENT_ERROR_400_DUPLICATE_PAYMENT = "There has been a duplicate payment. Please try" +
-        " again after 5 minutes";
     private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
     private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
     private static final String DUPICANT_PAYMENT_ERROR_KEY = "duplicate payment";
