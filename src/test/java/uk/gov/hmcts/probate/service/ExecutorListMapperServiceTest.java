@@ -250,7 +250,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
                 .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
-                .applyingExecutorType("Lay")
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .build());
 
         assertEquals(result, expected);

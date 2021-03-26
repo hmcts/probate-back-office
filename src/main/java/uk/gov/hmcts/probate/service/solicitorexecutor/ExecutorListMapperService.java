@@ -71,13 +71,12 @@ public class ExecutorListMapperService {
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
         // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+        return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
-                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
-                .applyingExecutorType("Lay")
                 .build());
     }
 
@@ -150,7 +149,6 @@ public class ExecutorListMapperService {
                                 + " " + exec.getValue().getAdditionalExecLastname())
                         .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
-                        .applyingExecutorType("Lay")
                         .build()))
                 .collect(Collectors.toList());
     }
