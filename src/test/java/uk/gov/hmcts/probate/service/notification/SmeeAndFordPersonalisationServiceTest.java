@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.notification;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -15,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -39,6 +42,9 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
+    
+    @Mock
+    private FileSystemResourceService fileSystemResourceService;
     
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
@@ -54,6 +60,10 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        
+        when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
+            .thenReturn("col1,col2,col3,col4,col5,col6,col7,col8,col9,col10," +
+                "col11,col12,col13,col14,col15,col16,col17,col18,col19");
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned, 

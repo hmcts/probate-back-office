@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +43,9 @@ public class SmeeAndFordPersonalisationService {
     private static final String SPACE = " ";
     private static final String PDF_EXT = ".pdf";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
+    private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
+
+    private final FileSystemResourceService fileSystemResourceService;
 
     public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases) {
         HashMap<String, String> personalisation = new HashMap<>();
@@ -56,6 +60,8 @@ public class SmeeAndFordPersonalisationService {
 
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
+        addHeaderRow(data);
+        data.append(NEW_LINE);
 
         for (ReturnedCaseDetails retCase : cases) {
             data.append(retCase.getData().getRegistryLocation());
@@ -95,6 +101,11 @@ public class SmeeAndFordPersonalisationService {
             data.append(NEW_LINE);
         }
         return data;
+    }
+
+    private void addHeaderRow(StringBuilder data) {
+        String header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE);
+        data.append(header);
     }
 
     private String getCaseType(CaseData data) {
