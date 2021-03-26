@@ -13,13 +13,6 @@
    ]]></notes>
         <cve>CVE-2020-15250</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.5.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
-        <cve>CVE-2020-13692</cve>
-    </suppress>
     <suppress until="2030-01-01">
         <notes><![CDATA[
          Suppressing as it's a false positive (see: https://pivotal.io/security/cve-2018-1258)
