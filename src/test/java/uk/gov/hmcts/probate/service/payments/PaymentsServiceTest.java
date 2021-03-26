@@ -145,6 +145,21 @@ public class PaymentsServiceTest {
     }
 
     @Test
+    public void shouldFailWith400WithNullMessage() {
+        try {
+            when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
+            when(httpClientErrorExceptionMock.getStatusCode()).thenReturn(BAD_REQUEST);
+
+            paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
+
+        } catch (BusinessValidationException e) {
+            assertEquals("Payment Failed", e.getUserMessage());
+            verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
+        }
+    }
+    
+    @Test
     public void shouldFailWith400DuplicatePayment() {
         try {
             when(httpClientErrorExceptionMock.getMessage()).thenReturn("duplicate payment");

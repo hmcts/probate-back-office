@@ -77,7 +77,7 @@ public class PaymentsService {
     }
 
     private BusinessValidationException getExceptionForDuplicatePayment(HttpClientErrorException e) {
-        if (e.getMessage().contains(DUPICANT_PAYMENT_ERROR_KEY)) {
+        if (e.getMessage() != null && e.getMessage().contains(DUPICANT_PAYMENT_ERROR_KEY)) {
             String[] empty = {};
             String duplicateMessage = businessValidationMessageRetriever.getMessage(
                 "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
