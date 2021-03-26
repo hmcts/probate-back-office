@@ -1,17 +1,12 @@
 package uk.gov.hmcts.probate.functional.dataextract;
 
 import io.restassured.RestAssured;
-import io.restassured.http.Headers;
-import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-
-import java.util.HashMap;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DataExtractTests extends IntegrationTestBase {
