@@ -90,8 +90,6 @@ public class CaseQueryService {
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
-        //could also use pagination on the url like this
-        //<URL>/searchCases?ctid=GrantOfRepresentation&page=1
         return runQuery(jsonQuery);
     }
 
