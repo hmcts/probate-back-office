@@ -138,6 +138,13 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
 
+To enable PBA payments for solicitors run this after startup of everything
+```
+docker-compose up -d wiremock
+./bin/wiremock.sh
+```
+
+
 ## Full setup
 
 Guidance on how to set up probate locally using the updated docker images.

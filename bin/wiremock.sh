@@ -167,7 +167,7 @@ curl -X POST \
             "method": "POST",
             "url": "/credit-account-payments",
             "bodyPatterns": [ {
-              "contains": "999900"
+              "contains": "999999"
               }
             ],
             "headers": {
