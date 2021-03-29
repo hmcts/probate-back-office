@@ -16,6 +16,9 @@ class PuppeteerHelper extends Helper {
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
         const promises = [];
+        /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+        console.error('!testConfig.TestForXUI..'+!testConfig.TestForXUI);
+
         if (!testConfig.TestForXUI) {
             promises.push(page.waitForNavigation({timeout: 240000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
         }
