@@ -10,7 +10,6 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

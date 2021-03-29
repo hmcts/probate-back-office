@@ -89,7 +89,8 @@ public abstract class AbstractCcdConsumerTest {
     }
 
     protected Map<String, Object> setUpStateMapForProviderWithCaseData(String eventId) throws Exception {
-        Map<String, Object> caseDataContentMap = objectMapper.convertValue(setUpCaseDataContent("dsl-backoffice-case.json", eventId), Map.class);
+        Map<String, Object> caseDataContentMap = objectMapper.convertValue(
+            setUpCaseDataContent("dsl-backoffice-case.json", eventId), Map.class);
         Map<String, Object> map = setUpStateMapForProvider(eventId);
         map.put(CASE_DATA_CONTENT, caseDataContentMap);
         return map;

@@ -39,7 +39,10 @@ public class SubmitForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
                 + "/cases")
             .query("ignore-warning=true")
             .method("POST")
-            .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
+            .headers(HttpHeaders.AUTHORIZATION,
+                SOME_AUTHORIZATION_TOKEN,
+                SERVICE_AUTHORIZATION,
+                SOME_SERVICE_AUTHORIZATION_TOKEN)
             .body(convertObjectToJsonString(getCaseDataContent(APPLY_FOR_GRANT, BASECASE_PAYLOAD_PATH)))
             .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .willRespondWith()
@@ -55,9 +58,13 @@ public class SubmitForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
 
         CaseDataContent caseDataContent = getCaseDataContent(APPLY_FOR_GRANT, BASECASE_PAYLOAD_PATH);
 
-        CaseDetails caseDetails = coreCaseDataApi.submitForCaseworker(SOME_AUTHORIZATION_TOKEN,
-            SOME_SERVICE_AUTHORIZATION_TOKEN, caseworkerUsername, jurisdictionId,
-            caseType, true, caseDataContent);
+        CaseDetails caseDetails = coreCaseDataApi.submitForCaseworker(
+            SOME_AUTHORIZATION_TOKEN,
+            SOME_SERVICE_AUTHORIZATION_TOKEN,
+            caseworkerUsername,
+            jurisdictionId,
+            caseType,
+            true, caseDataContent);
 
         assertNotNull(caseDetails);
         assertNotNull(caseDetails.getCaseTypeId());
