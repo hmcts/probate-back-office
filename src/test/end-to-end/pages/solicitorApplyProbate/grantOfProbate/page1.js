@@ -12,6 +12,7 @@ module.exports = async function () {
     await I.click({css: '#willAccessOriginal-No'});
     await I.waitForVisible({css: '#solsNoOriginalWill'});
     await I.waitForVisible({css: '#noOriginalWillAccessReason'});
+    await I.waitForText(grantOfProbateConfig.page1_noAccessOriginalWillLabel);
    
     await I.click({css: `#willAccessOriginal-${grantOfProbateConfig.optionYes}`});
     await I.waitForInvisible({css: '#solsNoOriginalWill'});
