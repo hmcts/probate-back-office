@@ -21,8 +21,6 @@ export TEST_USER_PASSWORD="Monday01"
 
 export PROF_USER_EMAIL="probatesolicitorpreprod@gmail.com"
 export PROF_USER_PASSWORD="Monday01"
-echo  PROF_USER_EMAIL
-echo  PROF_USER_PASSWORD
 export TESTS_FOR_XUI_SERVICE='false'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
