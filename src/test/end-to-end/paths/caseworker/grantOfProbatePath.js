@@ -15,6 +15,7 @@ const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markF
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsTabConfig');
 const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfig');
+
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
@@ -58,7 +59,6 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     // SECOND case - the main test case
 
-    nextStepName = 'PA1P/PA1A/Solicitors';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.enterGrantOfProbatePage1('create');
@@ -73,10 +73,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
@@ -88,7 +85,6 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     await I.chooseNextStep(nextStepName);
     await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Case created';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend case details';
@@ -159,11 +155,10 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     nextStepName = 'Find matches (Examining)';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
+    await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // case matching amended to remove all case matches to make test re-runnable
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Examine case';
@@ -181,11 +176,10 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     nextStepName = 'Find matches (Issue grant)';
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig, nextStepName);
+    await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // case matching amended to remove all case matches to make test re-runnable
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Issue grant';
