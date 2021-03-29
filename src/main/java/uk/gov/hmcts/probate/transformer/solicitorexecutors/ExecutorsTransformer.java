@@ -143,12 +143,12 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
 
         // Transform list
-        if (isSolicitorExecutor(caseData) && YES.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (isSolicitorApplying(caseData)) {
 
             // Add solicitor to applying list
             execsApplying = executorListMapperService.addSolicitorToApplyingList(caseData, execsApplying);
 
-        } else if (!isSolicitorApplying(caseData)) {
+        } else if (!isSolicitorExecutor(caseData) || !isSolicitorApplying(caseData)) {
 
             // Remove solicitor from applying executor list
             execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
@@ -162,7 +162,7 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (!isSolicitorExecutor(caseData) || !isSolicitorApplying(caseData)) {
 
             // Add solicitor to not applying list
             execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
