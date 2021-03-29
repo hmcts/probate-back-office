@@ -8,7 +8,7 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.waitForElement('#solsApplyPage');
     await I.runAccessibilityTest();
     await I.waitForText(applyProbateConfig.page2_subheading);
-    await I.waitForText('Provide the name of the probate practitioner making this application. This means the solicitor or other qualified professional');
+    await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
 
     await I.click(`#solsSolicitorWillSignSOT-${applyProbateConfig.page2_optionNo}`);
     await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);

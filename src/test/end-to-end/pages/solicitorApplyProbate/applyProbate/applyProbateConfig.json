@@ -1,6 +1,7 @@
 {
   "page2_waitForText": "Name of your firm",
   "page2_subheading": "Probate practitioner details",
+  "page2_probatePractionerHelp": "Provide the name of the probate practitioner making this application. This means the solicitor or other qualified professional",
   "page2_firm_name": "Solicitor Rob Firm",
   "page2_optionYes": "Yes",
   "page2_optionNo": "No",
