@@ -1,17 +1,12 @@
 package uk.gov.hmcts.probate.service.consumer.ccd;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.Map;
@@ -19,15 +14,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventResponseWithEmptyCaseDetails;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest({
-    "core_case_data.api.url: localhost:4456"
-})
 public class StartForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
-
-    @Rule
-    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4456, this);
-
 
     @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOffice")
     public RequestResponsePact startForCaseWorkerFragment(PactDslWithProvider builder) throws Exception {
@@ -52,9 +39,8 @@ public class StartForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
             .toPact();
     }
 
-
     @Test
-    @PactVerification(fragment = "startForCaseWorkerFragment")
+    @PactTestFor(pactMethod = "startForCaseWorkerFragment")
     public void verifyStartForCaseworker() {
         StartEventResponse startEventResponse = coreCaseDataApi.startForCaseworker(SOME_AUTHORIZATION_TOKEN,
             SOME_SERVICE_AUTHORIZATION_TOKEN, caseworkerUsername, jurisdictionId,

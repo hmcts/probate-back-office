@@ -1,17 +1,12 @@
 package uk.gov.hmcts.probate.service.consumer.ccd;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.Map;
@@ -21,14 +16,7 @@ import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertB
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildStartEventReponse;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest({
-    "core_case_data.api.url: localhost:4454"
-})
 public class StartEventForCaseworkerConsumerTest extends AbstractCcdConsumerTest {
-
-    @Rule
-    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("ccdDataStoreAPI_Cases", "localhost", 4454, this);
 
 
     @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "probate_backOffice")
@@ -57,7 +45,7 @@ public class StartEventForCaseworkerConsumerTest extends AbstractCcdConsumerTest
     }
 
     @Test
-    @PactVerification(fragment = "startEventForCaseworkerFragment")
+    @PactTestFor(pactMethod = "startEventForCaseworkerFragment")
     public void verifyStartEventForCaseworkerPact() {
 
         final StartEventResponse startEventResponse = coreCaseDataApi

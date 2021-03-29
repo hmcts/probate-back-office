@@ -1,9 +1,17 @@
 package uk.gov.hmcts.probate.service.consumer.ccd;
 
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.service.consumer.util.ObjectMapperTestUtil;
 import uk.gov.hmcts.probate.service.consumer.util.ResourceLoader;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -17,6 +25,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "ccdDataStoreAPI_Cases", port = "8891")
+@PactFolder("pacts")
+@SpringBootTest({
+    "core_case_data.api.url : localhost:8891"
+})
+@TestPropertySource(locations = {"/application.properties"})
 public abstract class AbstractCcdConsumerTest {
 
     @Autowired
@@ -57,6 +73,13 @@ public abstract class AbstractCcdConsumerTest {
     protected static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     protected static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     protected static final String VALID_PAYLOAD_PATH = "json/backoffice-case.json";
+
+    private static final int SLEEP_TIME = 2000;
+
+    @BeforeEach
+    public void prepareTest() throws Exception {
+        Thread.sleep(SLEEP_TIME);
+    }
 
     protected Map<String, Object> getCaseDetailsAsMap(String fileName) throws JSONException, IOException {
         File file = getFile(fileName);
