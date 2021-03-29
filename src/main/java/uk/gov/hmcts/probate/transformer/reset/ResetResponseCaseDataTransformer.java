@@ -36,7 +36,7 @@ public class ResetResponseCaseDataTransformer {
         }
 
         if (NO.equals(caseData.getDispenseWithNotice())) {
-            builder.dispenseWithNoticeOtherExecsList(null);
+            nullDispenseWithNoticeOptions(null);
         }
     }
 
@@ -56,6 +56,15 @@ public class ResetResponseCaseDataTransformer {
                 .nameOfFirmNamedInWill(null)
                 .whoSharesInCompanyProfits(null)
                 .soleTraderOrLimitedCompany(null);
+    }
+
+    private void nullDispenseWithNoticeOptions(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .dispenseWithNoticeOtherExecsList(null)
+                .dispenseWithNoticeLeaveGiven(null)
+                .dispenseWithNoticeLeaveGivenDate(null)
+                .dispenseWithNoticeOverview(null)
+                .dispenseWithNoticeSupportingDocs(null);
     }
 
 }
