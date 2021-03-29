@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,7 +15,7 @@ public class AdditionalExecutorApplying {
     private final String applyingExecutorLastName;
     private final String applyingExecutorTrustCorpPosition;
     // Professional, TrustCorporation, or Named
-    private final String applyingExecutorType;
+    private String applyingExecutorType;
     private final String applyingExecutorPhoneNumber;
     private final String applyingExecutorEmail;
     private final SolsAddress applyingExecutorAddress;

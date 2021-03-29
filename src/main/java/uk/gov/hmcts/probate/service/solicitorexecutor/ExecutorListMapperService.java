@@ -64,9 +64,16 @@ public class ExecutorListMapperService {
         List<CollectionMember<AdditionalExecutorApplying>> tempList =
                 new ArrayList(caseData.getAdditionalExecutorsApplying());
         // Update list
-        tempList.forEach(exec -> exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
-                        exec.getValue().getApplyingExecutorFirstName()
-                        + " " + exec.getValue().getApplyingExecutorLastName())));
+        tempList.forEach(exec ->  {
+            exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
+                    exec.getValue().getApplyingExecutorFirstName()
+                            + " " + exec.getValue().getApplyingExecutorLastName()));
+
+            // Default executor type
+            if ( exec.getValue().getApplyingExecutorType() == null) {
+                exec.getValue().setApplyingExecutorType(EXECUTOR_TYPE_NAMED);
+            }
+        });
 
         // Return list
         return tempList;

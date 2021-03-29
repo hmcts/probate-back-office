@@ -158,7 +158,7 @@
 
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
-                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} or codicil {% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %}as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} or codicil {% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endif %}
