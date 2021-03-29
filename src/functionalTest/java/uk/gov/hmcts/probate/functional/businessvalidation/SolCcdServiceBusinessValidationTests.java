@@ -680,24 +680,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         assertEquals("Yes", iht217);
     }
-    
-    @Test
-    public void shouldTransformPrimaryApplicantFieldsWithSolicitorInfo() {
-        String response = transformCase("solicitorPayloadNotificationsSolicitorAsPrimaryApplicant.json",
-                VALIDATE_URL);
-
-        JsonPath jsonPath = JsonPath.from(response);
-
-        assertEquals("Solicitor_fn", jsonPath.get("data.primaryApplicantForenames"));
-        assertEquals("Solicitor_ln", jsonPath.get("data.primaryApplicantSurname"));
-        assertEquals("solicitor@probate-test.com", jsonPath.get("data.primaryApplicantEmailAddress"));
-        assertEquals("SolAddLn1", jsonPath.get("data.primaryApplicantAddress.AddressLine1"));
-        assertNull(jsonPath.get("data.primaryApplicantAlias"));
-        assertEquals("No", jsonPath.get("data.primaryApplicantHasAlias"));
-        assertEquals("Yes", jsonPath.get("data.primaryApplicantIsApplying"));
-        assertNull(jsonPath.get("data.solsSolicitorNotApplyingReason"));
-        assertNull(jsonPath.get("data.solsPrimaryExecutorNotApplyingReason"));
-    }
 
     @Test
     public void shouldTransformCaseWithCitizenAttributes() {

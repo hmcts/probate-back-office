@@ -26,65 +26,6 @@ public class ExecutorsTransformer {
 
     protected final ExecutorListMapperService executorListMapperService;
 
-    public void setPrimaryApplicantFieldsWithSolicitorInfo(CaseData caseData,
-                                                           ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        if (isSolicitorExecutor(caseData)) {
-            // Check solsSolicitorIsMainApplicant field to prevent overwriting primaryapp fields for schema 1 cases
-            if (isSolicitorApplying(caseData) && !isSolicitorMainApplicantSetToNo(caseData)) {
-
-                // Solicitor is primary applicant
-                addSolicitorAsPrimaryApplicant(caseData, builder);
-
-            } else {
-
-                if (FormattingService.getSolsSOTName(caseData.getSolsSOTForenames(),
-                        caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
-                    removeSolicitorAsPrimaryApplicant(builder);
-                }
-
-                if (caseData.getSolsSolicitorIsApplying() == null) {
-                    builder
-                            .solsPrimaryExecutorNotApplyingReason(null);
-                }
-            }
-        } else {
-            builder
-                    .solsSolicitorIsApplying(NO)
-                    .solsSolicitorNotApplyingReason(null);
-        }
-
-    }
-
-    private void addSolicitorAsPrimaryApplicant(CaseData caseData,
-                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        builder
-                .primaryApplicantForenames(caseData.getSolsSOTForenames())
-                .primaryApplicantSurname(caseData.getSolsSOTSurname())
-                .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
-                .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                .primaryApplicantAlias(null)
-                .primaryApplicantHasAlias(NO)
-                .primaryApplicantIsApplying(YES)
-                .solsSolicitorNotApplyingReason(null)
-                .solsPrimaryExecutorNotApplyingReason(null)
-                .primaryApplicantSecondPhoneNumber(null)
-                .primaryApplicantRelationshipToDeceased(null);
-    }
-
-    private void removeSolicitorAsPrimaryApplicant(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        builder
-                .primaryApplicantForenames(null)
-                .primaryApplicantSurname(null)
-                .primaryApplicantPhoneNumber(null)
-                .primaryApplicantEmailAddress(null)
-                .primaryApplicantAddress(null)
-                .primaryApplicantAlias(null)
-                .primaryApplicantHasAlias(null)
-                .primaryApplicantIsApplying(null)
-                .solsPrimaryExecutorNotApplyingReason(null);
-    }
-
     /**
      * Set caseworker executor fields with solicitor journey fields.
      * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant
@@ -125,11 +66,6 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
-        // Add primary applicant to list
-        if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
-            execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
-        }
-
         // Format exec lists into strings
         String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
         String execsNotApplyingNames = FormattingService.createExecsNotApplyingNames(execsNotApplying);
@@ -148,6 +84,7 @@ public class ExecutorsTransformer {
                         ? new ArrayList<>() : new ArrayList<>(caseData.getAdditionalExecutorsApplying());
 
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
+        execsApplying = setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
 
         return execsApplying;
     }
@@ -202,18 +139,37 @@ public class ExecutorsTransformer {
 
     }
 
-    private  List<CollectionMember<AdditionalExecutorNotApplying>>  setExecutorNotApplyingListWithSolicitorInfo(
+    public List<CollectionMember<AdditionalExecutorApplying>> setExecutorApplyingListWithSolicitorInfo(
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
+
+        // Transform list
+        if (isSolicitorApplying(caseData)) {
+
+            // Add solicitor to applying list
+            execsApplying = executorListMapperService.addSolicitorToApplyingList(caseData, execsApplying);
+
+        } else if (!isSolicitorExecutor(caseData) || !isSolicitorApplying(caseData)) {
+
+            // Remove solicitor from applying executor list
+            execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
+
+        }
+
+        return execsApplying;
+    }
+
+    private List<CollectionMember<AdditionalExecutorNotApplying>> setExecutorNotApplyingListWithSolicitorInfo(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (isSolicitorExecutor(caseData) && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (!isSolicitorApplying(caseData)) {
 
             // Add solicitor to not applying list
             execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
         } else if (isSolicitorApplying(caseData)) {
 
-            // Remove solicitor from executor lists as they are primary applicant
+            // Remove solicitor from not applying executor list
             execsNotApplying = executorListMapperService.removeSolicitorFromNotApplyingList(execsNotApplying);
 
         }
@@ -235,6 +191,8 @@ public class ExecutorsTransformer {
         builder
                 .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
                 .primaryApplicantSurname(exec.getApplyingExecutorLastName())
+                .primaryApplicantEmailAddress(exec.getApplyingExecutorEmail())
+                .primaryApplicantPhoneNumber(exec.getApplyingExecutorPhoneNumber())
                 .primaryApplicantAddress(exec.getApplyingExecutorAddress())
                 .primaryApplicantAlias(null)
                 .primaryApplicantHasAlias(NO)
@@ -257,8 +215,7 @@ public class ExecutorsTransformer {
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty()
-                && !isSolicitorExecutor(caseData) && !isSolicitorApplying(caseData);
+        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();
     }
 
 }
