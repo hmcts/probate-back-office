@@ -33,6 +33,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
@@ -122,20 +123,23 @@ public class LegalStatementExecutorTransformerTest {
     @Test
     public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
+                .additionalExecutorsTrustCorpList(null)
+                .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
-        when(executorListMapperServiceMock.mapFromSolsAdditionalExecsToNotApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
+                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
         legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
-        legalStatementExecutors.addAll(additionalExecutorNotApplying);
         legalStatementExecutors.addAll(additionalExecutorNotApplying);
 
         CaseData caseData = caseDetailsMock.getData();

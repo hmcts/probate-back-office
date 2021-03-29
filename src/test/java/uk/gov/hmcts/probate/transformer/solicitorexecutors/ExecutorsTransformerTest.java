@@ -279,12 +279,6 @@ public class ExecutorsTransformerTest {
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying); 
-        when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
-                additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
-        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(caseDetailsMock.getData(),
@@ -544,8 +538,6 @@ public class ExecutorsTransformerTest {
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
                 additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
