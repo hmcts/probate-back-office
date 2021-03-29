@@ -53,8 +53,4 @@ public class TitleAndClearingTypeService {
         ).contains(titleAndClearing);
     }
 
-    public String executorTitleAndClearingType(CaseData caseData) {
-        return partnerTitleAndClearingOptionSelected(caseData) ? EXECUTOR_TYPE_PROFESSIONAL : EXECUTOR_TYPE_TRUST_CORP;
-    }
-
 }

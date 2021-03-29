@@ -36,7 +36,7 @@ public class ResetResponseCaseDataTransformer {
         }
 
         if (NO.equals(caseData.getDispenseWithNotice())) {
-            nullDispenseWithNoticeOptions(null);
+            nullDispenseWithNoticeOptions(builder);
         }
     }
 
