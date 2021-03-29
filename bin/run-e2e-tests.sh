@@ -2,7 +2,7 @@
 set -ex
 
 export TEST_E2E_URL=${TEST_XUI_E2E_URL}
-export E2E_TEST_PATH="./paths/solicitor/**/applyCaveat.js"
+export E2E_TEST_PATH="./paths/solicitor/**/applyGrantOfProbateMultiExecutor.js"
 export TEST_USER_EMAIL="probatebackoffice@gmail.com"
 export TEST_USER_PASSWORD="Monday01"
 export PROF_USER_EMAIL="probatesolicitorpreprod@gmail.com"
