@@ -49,7 +49,7 @@ public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTes
             .method("POST")
             .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION, SOME_SERVICE_AUTHORIZATION_TOKEN)
             .body(convertObjectToJsonString(getCaseDataContent(PAYMENT_SUCCESS_APP, BASECASE_PAYLOAD_PATH)))
-            .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .willRespondWith()
             .status(HttpStatus.SC_CREATED)
             .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
