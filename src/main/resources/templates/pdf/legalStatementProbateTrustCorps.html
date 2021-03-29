@@ -158,7 +158,7 @@
 
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
-                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will {% if numberOfCodicils == 1 %} or codicil {% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %}as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
+                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} or codicil {% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %}as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endif %}
@@ -206,8 +206,8 @@
                 {{ sharesInProfitType }} {% if count != case_details.case_data.whoSharesInCompanyProfits|length %}and {% endif %}
                 {% set count = count + 1 %}
                 {% endfor %}
-                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}{% endif %},
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased. The remaining profit-sharing
                 {% set count = 1 %}
                 {% for sharesInProfitType in case_details.case_data.whoSharesInCompanyProfits %}
@@ -269,13 +269,13 @@
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-            <p><span>Notice of this application has on the {{ executor.value.notApplyingExecutorDispenseWithNoticeLeaveGivenDate }}
-                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to the
+            <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
                 {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
             </span></p>
             {% else %}
             <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
-                Rule 27(3) of the Non-Contentious Probate Rules 1987 to the {{ executor.value.notApplyingExecutorName }}
+                Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
                 to whom power is to be reserved.
             </span></p>
             {% endif %}
@@ -370,8 +370,7 @@
             <p>Name:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (probate practitioner
-            {% if case_details.case_data.solsSolicitorIsApplying == "Yes" %}and executor){% endif %}</p>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
         </td>
     </tr>
     <tr>

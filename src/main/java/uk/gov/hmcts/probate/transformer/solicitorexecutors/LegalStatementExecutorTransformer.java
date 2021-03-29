@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
@@ -14,8 +15,11 @@ import java.util.List;
 @Slf4j
 public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
 
-    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService) {
+    private final DateFormatterService dateFormatterService;
+
+    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService, DateFormatterService dateFormatterService) {
         super(executorListMapperService);
+        this.dateFormatterService = dateFormatterService;
     }
 
     /**
@@ -41,6 +45,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);
     }
 
-
-
+    public void formatDates(CaseData caseData) {
+        caseData.setDispenseWithNoticeLeaveGivenDateFormatted(
+                dateFormatterService.formatDate(caseData.getDispenseWithNoticeLeaveGivenDate()));
+    }
 }

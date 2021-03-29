@@ -17,7 +17,7 @@ public class CaseDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         legalStatementExecutorTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
-
+        legalStatementExecutorTransformer.formatDates(caseData);
     }
 
 }
