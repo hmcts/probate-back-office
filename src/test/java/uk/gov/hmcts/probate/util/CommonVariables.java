@@ -68,7 +68,7 @@ public class CommonVariables {
     public static final String DISPENSE_WITH_NOTICE_LEAVE = "Dispense with notice";
     public static final String DISPENSE_WITH_NOTICE_LEAVE_DATE = "2020-01-01";
     public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
-    public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS= "Supporting docs";
+    public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
 
     public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)

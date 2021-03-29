@@ -2,12 +2,9 @@ package uk.gov.hmcts.probate.transformer.reset;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
