@@ -6,9 +6,12 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (verifyTrustCorpOpts) {
     const I = this;
-    await I.waitForClickable({css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`});
+    const dispNoticeLocator = {css: `#dispenseWithNotice-${grantOfProbateConfig.optionYes}`}; 
+    await I.waitForElement(dispNoticeLocator);
     await I.runAccessibilityTest();
-    await I.click(`#dispenseWithNotice-${grantOfProbateConfig.optionYes}`);
+    await I.scrollTo(dispNoticeLocator);
+    await I.waitForClickable(dispNoticeLocator);
+    await I.click(dispNoticeLocator);
     if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {

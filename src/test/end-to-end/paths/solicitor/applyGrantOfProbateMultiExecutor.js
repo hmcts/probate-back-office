@@ -5,7 +5,7 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
-const grantOfProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
+const gopConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
 const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
@@ -64,7 +64,13 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', grantOfProbateConfig);
+
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
+    const gobDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, gobDtlsAndDcsdDtls, true);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
+
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
 
     nextStepName = 'Complete application';

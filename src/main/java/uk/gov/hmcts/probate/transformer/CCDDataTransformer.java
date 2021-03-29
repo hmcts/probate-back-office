@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -40,7 +41,6 @@ public class CCDDataTransformer {
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
             .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
             .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
-            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
             .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(
                 callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
@@ -54,6 +54,9 @@ public class CCDDataTransformer {
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
             .iht217(caseData.getIht217())
+            .originalWillSignedDate(caseData.getOriginalWillSignedDate())
+            .codicilAddedDateList(getCodicilAddedDates(caseData))
+            .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
             .build();
     }
 
@@ -111,6 +114,19 @@ public class CCDDataTransformer {
             .feeForUkCopies(caseData.getFeeForUkCopies())
             .feeForNonUkCopies(caseData.getFeeForNonUkCopies())
             .build();
+    }
+
+    private List<CodicilAddedDate> getCodicilAddedDates(CaseData caseData) {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates = caseData.getCodicilAddedDateList();
+        if (codicilDates == null) {
+            return new ArrayList<>();
+        }
+        List<CodicilAddedDate> addedDates = new ArrayList<>();
+        addedDates.addAll(
+            codicilDates.stream()
+            .map(CollectionMember::getValue)
+            .collect(Collectors.toList()));
+        return addedDates;
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {

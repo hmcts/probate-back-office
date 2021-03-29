@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,7 +24,6 @@ public class CCDData implements Serializable {
     private final String boExaminationChecklistQ2;
     private final String applicationType;
     private final String solsSolicitorIsExec;
-    private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
@@ -32,4 +32,7 @@ public class CCDData implements Serializable {
     private final String sendLetterId;
     private final String willHasCodicils;
     private final String iht217;
+    private final LocalDate originalWillSignedDate;
+    private final List<CodicilAddedDate> codicilAddedDateList;
+    private final LocalDate deceasedDateOfDeath;
 }

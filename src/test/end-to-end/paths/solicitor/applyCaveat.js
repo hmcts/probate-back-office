@@ -63,9 +63,9 @@ Scenario('01 - Solicitor - Apply Caveat', async function (I) {
     await I.seeEndState(endState);
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    completeApplicationConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'd MMM yyyy');
+    completeApplicationConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'DD MMM YYYY');
     // When emailing the caveator, the Date added for the email document is set to today
-    completeApplicationConfig.notification_date = dateFns.format(new Date(), 'd MMM yyyy');
+    completeApplicationConfig.notification_date = dateFns.format(new Date(), 'DD MMM YYYY');
 
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);

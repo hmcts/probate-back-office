@@ -35,8 +35,10 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
@@ -118,6 +120,10 @@ public class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedServiceMock;
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    @Mock
+    private CodicilDateValidationRule codicilDateValidationRuleMock;
+    @Mock
+    private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
 
 
     private BusinessValidationController underTest;
@@ -139,24 +145,14 @@ public class BusinessValidationUnitTest {
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
             numberOfApplyingExecutorsValidationRuleMock,
+                codicilDateValidationRuleMock,
+                originalWillSignedDateValidationRuleMock,
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
-    }
-
-    @Test
-    public void shouldValidateSolsApplyAsExecWithNoErrors() {
-        when(callbackResponseTransformerMock.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock))
-            .thenReturn(callbackResponseMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock);
-
-        assertThat(response.getBody(), is(callbackResponseMock));
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
     @Test

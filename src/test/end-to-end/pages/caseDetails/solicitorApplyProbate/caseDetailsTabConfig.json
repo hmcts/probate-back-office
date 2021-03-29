@@ -20,9 +20,17 @@
       "Does the will appoint an executor?",
       "Application type"
     ],
+    "updateAppFields": [
+      "Do you have access to the original will?",
+      "Were any codicils added to the will?",
+      "When was the original will signed and dated?"
+    ],
     "dataKeys": [
       "page3_willLeftDisplay",
       "optionYes"
+    ],
+    "updateAppDataKeys": [
+      "page1_originalWillSignedDate"
     ]
   },
   "WillLeftAnnexed": {

@@ -18,9 +18,9 @@ public class CommonVariables {
     public static final String YES = "Yes";
     public static final String NO = "No";
 
-    public static final String SOLICITOR_SOT_FULLNAME = "Solicitor forename Solicitor surname";
-    public static final String SOLICITOR_SOT_FORENAME = "Solicitor forename";
-    public static final String SOLICITOR_SOT_SURNAME = "Solicitor surname";
+    public static final String SOLICITOR_SOT_FULLNAME = "Solicitor Forename Solicitor Surname";
+    public static final String SOLICITOR_SOT_FORENAME = "Solicitor Forename";
+    public static final String SOLICITOR_SOT_SURNAME = "Solicitor Surname";
     public static final String SOLICITOR_FIRM_EMAIL = "solicitor@probate-test.com";
     public static final String SOLICITOR_FIRM_PHONE = "0123456789";
     public static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
@@ -56,6 +56,10 @@ public class CommonVariables {
     public static final String SOLS_ALIAS_NAME = "AliasFN AliasSN";
 
     public static final String STOP_REASON = "Some reason";
+
+    public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
+    public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
+    public static final String EXECUTOR_TYPE_NAMED = "Named";
 
     public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)

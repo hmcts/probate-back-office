@@ -25,6 +25,12 @@ module.exports = async function (crud) {
         await I.waitForVisible(aliasLocator);
         await I.fillField(aliasLocator, createGrantOfProbateConfig.page2_alias);
 
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(0.25);
+        }
+
         await I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
 
         const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};

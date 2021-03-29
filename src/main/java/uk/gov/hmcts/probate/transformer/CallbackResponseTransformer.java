@@ -381,15 +381,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        responseCaseDataBuilder.solicitorIsMainApplicant(caseData.solicitorIsApplying());
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
                                                           FeeServiceResponse feeServiceResponse) {
         final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
@@ -404,13 +395,6 @@ public class CallbackResponseTransformer {
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(schemaVersion)
-            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(schemaVersion)
-
-            // set these next 2 properties as these properties are still used for in-flight cases on old schema /
-            // bulk scan created cases and ccd has limited logic facilities
-            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-            .solicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
@@ -586,8 +570,6 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseDataBuilder
             .schemaVersion(ccdVersion)
-            // 2nd copy of same field need to allow use in FieldShowCondition for multiple pages for same event
-            .schemaVersionCcdCopy(ccdVersion)
             .build()
         );
     }
@@ -608,7 +590,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
-            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .state(caseDetails.getState())
             .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
             .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
@@ -815,7 +796,10 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .morePartnersHoldingPowerReserved(caseData.getMorePartnersHoldingPowerReserved())
-            .iht217(caseData.getIht217());
+            .iht217(caseData.getIht217())
+            .originalWillSignedDate(caseData.getOriginalWillSignedDate())
+            .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
+            .codicilAddedDateList(caseData.getCodicilAddedDateList());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -874,7 +858,6 @@ public class CallbackResponseTransformer {
 
         builder
             .schemaVersion(caseData.getSchemaVersion())
-            .schemaVersionCcdCopy(caseData.getSchemaVersion())
             .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
             .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
             .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
@@ -984,13 +967,6 @@ public class CallbackResponseTransformer {
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
             .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
-
-
-        if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
-            builder
-                .primaryApplicantSecondPhoneNumber(null)
-                .primaryApplicantRelationshipToDeceased(null);
-        }
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder
@@ -1163,10 +1139,6 @@ public class CallbackResponseTransformer {
 
         builder
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
-
-        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
-            solicitorExecutorTransformer.otherExecutorExistsTransformation(caseData, builder);
-        }
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
