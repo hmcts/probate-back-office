@@ -36,6 +36,8 @@ public final class Constants {
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
     public static final String EXECUTOR_TYPE_NAMED = "Named";
 
+    public static final String EXECUTOR_NOT_APPLYING_REASON = "PowerReserved";
+
     private Constants() {
     }
 }

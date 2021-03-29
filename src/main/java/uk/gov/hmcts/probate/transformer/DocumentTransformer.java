@@ -58,6 +58,7 @@ public class DocumentTransformer {
             case STATEMENT_OF_TRUTH:
             case WELSH_STATEMENT_OF_TRUTH:
             case LEGAL_STATEMENT_PROBATE:
+            case LEGAL_STATEMENT_PROBATE_TRUST_CORPS:
             case LEGAL_STATEMENT_INTESTACY:
             case LEGAL_STATEMENT_ADMON:
                 callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()

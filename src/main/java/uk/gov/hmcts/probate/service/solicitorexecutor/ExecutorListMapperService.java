@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -59,13 +60,16 @@ public class ExecutorListMapperService {
     }
 
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
+
+        List<CollectionMember<AdditionalExecutorApplying>> tempList =
+                new ArrayList(caseData.getAdditionalExecutorsApplying());
         // Update list
-        caseData.getAdditionalExecutorsApplying()
-                .forEach(exec -> exec.getValue().setApplyingExecutorName(exec.getValue().getApplyingExecutorFirstName()
-                        + " " + exec.getValue().getApplyingExecutorLastName()));
+        tempList.forEach(exec -> exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
+                        exec.getValue().getApplyingExecutorFirstName()
+                        + " " + exec.getValue().getApplyingExecutorLastName())));
 
         // Return list
-        return caseData.getAdditionalExecutorsApplying();
+        return tempList;
     }
 
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
@@ -74,7 +78,8 @@ public class ExecutorListMapperService {
         return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
-                .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
+                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
+                        + " " + caseData.getSolsSOTSurname()))
                 .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .build());
@@ -90,11 +95,11 @@ public class ExecutorListMapperService {
                                 exec.getValue().getAdditionalExecForenames()))
                         .applyingExecutorLastName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(FormattingService.capitaliseEachWord(
+                                exec.getValue().getAdditionalExecForenames()
+                                        + " " + exec.getValue().getAdditionalExecLastname()))
                         .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                         .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
-                        .applyingExecutorType("TrustCorporation")
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -113,7 +118,6 @@ public class ExecutorListMapperService {
                         .applyingExecutorName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType("Professional")
                         .build()))
                 .collect(Collectors.toList());
     }
@@ -125,7 +129,7 @@ public class ExecutorListMapperService {
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
                         .notApplyingExecutorName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getNotApplyingExecutorName()))
-                        .notApplyingExecutorReason("PowerReserved")
+                        .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
                         .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
                         .notApplyingExecutorDispenseWithNoticeLeaveGiven(caseData.getDispenseWithNoticeLeaveGiven())
                         .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
@@ -145,8 +149,9 @@ public class ExecutorListMapperService {
                                 exec.getValue().getAdditionalExecForenames()))
                         .applyingExecutorLastName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname())
+                        .applyingExecutorName(FormattingService.capitaliseEachWord(
+                                exec.getValue().getAdditionalExecForenames()
+                                + " " + exec.getValue().getAdditionalExecLastname()))
                         .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
