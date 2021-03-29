@@ -42,6 +42,8 @@ public class CaseDataParent {
     protected final String morePartnersHoldingPowerReserved;
     protected final String dispenseWithNoticeLeaveGiven;
     protected final LocalDate dispenseWithNoticeLeaveGivenDate;
+    // Not final as field set in CaseDataTransformer
+    protected String dispenseWithNoticeLeaveGivenDateFormatted;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
