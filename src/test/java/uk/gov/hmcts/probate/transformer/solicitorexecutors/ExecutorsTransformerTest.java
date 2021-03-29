@@ -280,7 +280,7 @@ public class ExecutorsTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
+                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying); 
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
                 additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
