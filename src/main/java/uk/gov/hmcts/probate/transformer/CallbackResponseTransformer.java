@@ -1247,7 +1247,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getPrimaryApplicantHasAlias(CaseData caseData) {
-        if (PERSONAL.equals(caseData.getApplicationType())) {
+        if (caseData.getPrimaryApplicantHasAlias() == null) {
             return ANSWER_NO;
         } else {
             return caseData.getPrimaryApplicantHasAlias();

@@ -1227,7 +1227,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
@@ -1247,7 +1247,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
