@@ -162,7 +162,7 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (!isSolicitorExecutor(caseData) || !isSolicitorApplying(caseData)) {
+        if (!isSolicitorApplying(caseData)) {
 
             // Add solicitor to not applying list
             execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
