@@ -238,6 +238,8 @@ public class ExecutorsTransformerTest {
                 .primaryApplicantForenames(EXEC_FIRST_NAME);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
+                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
                 additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
 
@@ -277,10 +279,16 @@ public class ExecutorsTransformerTest {
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
+                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
+                additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
-                        caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
-        when(executorListMapperServiceMock.mapFromSolsAdditionalExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(caseDetailsMock.getData(),
+                additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
                 caseDetailsMock.getData(), responseCaseDataBuilder);
@@ -389,22 +397,6 @@ public class ExecutorsTransformerTest {
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(additionalExecutorNotApplying, responseCaseData.getAdditionalExecutorsNotApplying());
         verify(executorListMapperServiceMock, times(1))
-                .addSolicitorToNotApplyingList(any(), any());
-    }
-
-    @Test
-    public void caseworkerNotApplyingListShouldBeEmpty_NotExec() {
-        caseDataBuilder
-                .solsSolicitorIsExec(NO);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
-                caseDetailsMock.getData(), responseCaseDataBuilder);
-
-        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        assertTrue(responseCaseData.getAdditionalExecutorsNotApplying().isEmpty());
-        verify(executorListMapperServiceMock, times(0))
                 .addSolicitorToNotApplyingList(any(), any());
     }
     
