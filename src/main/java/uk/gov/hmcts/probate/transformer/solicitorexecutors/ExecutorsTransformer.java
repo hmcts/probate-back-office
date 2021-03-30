@@ -201,7 +201,7 @@ public class ExecutorsTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void setFieldsIfSolicitorIsNotExecutor(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder){
+    public void setFieldsIfSolicitorIsNotExecutor(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
         builder
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorNotApplyingReason(null);
