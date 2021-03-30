@@ -1136,7 +1136,6 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
 
         builder
             .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
@@ -1223,7 +1222,6 @@ public class CallbackResponseTransformer {
                 .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
-        solicitorExecutorTransformer.setPrimaryApplicantFieldsWithSolicitorInfo(caseData, builder);
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
@@ -1246,7 +1244,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getPrimaryApplicantHasAlias(CaseData caseData) {
-        if (PERSONAL.equals(caseData.getApplicationType())) {
+        if (caseData.getPrimaryApplicantHasAlias() == null) {
             return ANSWER_NO;
         } else {
             return caseData.getPrimaryApplicantHasAlias();

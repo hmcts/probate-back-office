@@ -88,7 +88,13 @@ public class LegalStatementExecutorTransformerTest {
 
     @Test
     public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
@@ -97,9 +103,12 @@ public class LegalStatementExecutorTransformerTest {
                 caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.addSolicitorToApplyingList(
+                caseDetailsMock.getData(), execsApplying)).thenReturn(execsApplying);
 
         legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
+
 
         List<CollectionMember<AdditionalExecutorApplying>> legalStatementExecutors = new ArrayList<>();
         legalStatementExecutors.addAll(additionalExecutorApplying);
@@ -113,20 +122,23 @@ public class LegalStatementExecutorTransformerTest {
     @Test
     public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
+                .additionalExecutorsTrustCorpList(null)
+                .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
-        when(executorListMapperServiceMock.mapFromSolsAdditionalExecsToNotApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
+                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
         legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
-        legalStatementExecutors.addAll(additionalExecutorNotApplying);
         legalStatementExecutors.addAll(additionalExecutorNotApplying);
 
         CaseData caseData = caseDetailsMock.getData();
@@ -172,24 +184,6 @@ public class LegalStatementExecutorTransformerTest {
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
-    }
-
-    @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_SolicitorIsPrimaryApplicant() {
-        caseDataBuilder
-                .solsSolicitorIsApplying(YES)
-                .solsSolicitorIsExec(YES);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromSolicitorToApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
-
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
-
-        CaseData caseData = caseDetailsMock.getData();
-        assertEquals(additionalExecutorApplying, caseData.getExecutorsApplyingLegalStatement());
-        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 
 }

@@ -1157,21 +1157,6 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void verifyPrimaryApplicantFieldsAre() {
-        underTest.transformCase(callbackRequestMock);
-
-        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-    }
-
-    @Test
-    public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
-        underTest.transformCase(callbackRequestMock);
-
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-    }
-
-    @Test
     public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
         caseDataBuilder.applicationType(SOLICITOR)
                 .recordId(null)
@@ -1181,8 +1166,6 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
         verify(solicitorExecutorTransformer, times(1))
                 .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
         verify(solicitorExecutorTransformer, times(1))
@@ -1222,7 +1205,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
@@ -1242,7 +1225,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
