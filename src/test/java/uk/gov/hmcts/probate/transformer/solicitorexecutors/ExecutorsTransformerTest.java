@@ -564,7 +564,7 @@ public class ExecutorsTransformerTest {
 
     @Test
     public void shouldSetExecutorNamesListToNone_SolicitorIsApplying() {
-       caseDataBuilder
+        caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
