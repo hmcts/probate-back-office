@@ -22,7 +22,7 @@ public class TitleAndClearingTypeService {
     public boolean partnerTitleAndClearingOptionSelected(CaseData caseData) {
         String titleAndClearing = caseData.getTitleAndClearingType();
 
-        return titleAndClearing != null && List.of(
+        return titleAndClearing.isEmpty() && List.of(
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
                 TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
                 TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
@@ -35,7 +35,7 @@ public class TitleAndClearingTypeService {
     public boolean trustCorpTitleAndClearingOptionSelected(CaseData caseData) {
         String titleAndClearing = caseData.getTitleAndClearingType();
 
-        return titleAndClearing != null && List.of(
+        return titleAndClearing.isEmpty() && List.of(
                 TITLE_AND_CLEARING_TRUST_CORP_SDJ,
                 TITLE_AND_CLEARING_TRUST_CORP
         ).contains(titleAndClearing);
@@ -44,7 +44,7 @@ public class TitleAndClearingTypeService {
     public boolean successorFirmTitleAndClearingOptionSelected(CaseData caseData) {
         String titleAndClearing = caseData.getTitleAndClearingType();
 
-        return titleAndClearing != null && List.of(
+        return titleAndClearing.isEmpty() && List.of(
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
                 TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING
