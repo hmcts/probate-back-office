@@ -573,7 +573,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestInTestacySuccessForDefaultNext() {
+    public void verifyTitleAndClearingListsReset() {
+        ResponseBody body = validatePostSuccess("solicitorAmendTitleAndClearingMultipleExecutors.json",
+                VALIDATE_PROBATE_URL);
+
+        JsonPath jsonPath = JsonPath.from(body.asString());
+        String powerReservedExecs = jsonPath.get("data.dispenseWithNoticeOtherExecsList");
+        String trustCorpExecs = jsonPath.get("data.additionalExecutorsTrustCorpList");
+
+        assertNull(powerReservedExecs);
+        assertNull(trustCorpExecs);
+    }
+
+    @Test
+    public void verifyRequestIntestacySuccessForDefaultNext() {
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadIntestacy.json", DEFAULT_SOLS_NEXT_STEP);
 
         JsonPath jsonPath = JsonPath.from(body.asString());
