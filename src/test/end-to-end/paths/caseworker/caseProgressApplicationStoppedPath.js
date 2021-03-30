@@ -50,7 +50,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '6: MentallyIncapable'},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '1: MentallyIncapable'},
             {locator: {css: '#otherExecutorExists-No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
