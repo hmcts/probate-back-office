@@ -38,6 +38,15 @@ public final class Constants {
 
     public static final String EXECUTOR_NOT_APPLYING_REASON = "PowerReserved";
 
+    public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
+    public static final String TITLE_AND_CLEARING_PARTNER_POWER_RESERVED = "TCTPartPowerRes";
+    public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR = "TCTSolePrinSucc";
+    public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE = "TCTSolePrin";
+    public static final String TITLE_AND_CLEARING_TRUST_CORP_SDJ = "TCTTrustCorpResWithSDJ";
+    public static final String TITLE_AND_CLEARING_TRUST_CORP = "TCTTrustCorpResWithApp";
+    public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING = "TCTPartSuccOthersRenouncing";
+    public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
+
     private Constants() {
     }
 }
