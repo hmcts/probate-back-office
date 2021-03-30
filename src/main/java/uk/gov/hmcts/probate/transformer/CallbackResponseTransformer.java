@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -108,6 +109,7 @@ public class CallbackResponseTransformer {
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
     private final ExecutorsTransformer solicitorExecutorTransformer;
+    private final ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
     private final TaskListUpdateService taskListUpdateService;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
@@ -1135,9 +1137,9 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
+        resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
-        builder
-            .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+        builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
