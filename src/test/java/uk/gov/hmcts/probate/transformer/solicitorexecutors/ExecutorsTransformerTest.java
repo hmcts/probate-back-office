@@ -571,10 +571,6 @@ public class ExecutorsTransformerTest {
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.addSolicitorToApplyingList(
-                caseDetailsMock.getData(), additionalExecutorApplying)).thenReturn(new ArrayList<>());
-        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(new ArrayList<>());
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
                 caseDetailsMock.getData(), responseCaseDataBuilder);
@@ -592,11 +588,6 @@ public class ExecutorsTransformerTest {
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(new ArrayList<>());
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(caseDetailsMock.getData(),
-                additionalExecutorNotApplying)).thenReturn(new ArrayList<>());
-
 
         solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
                 caseDetailsMock.getData(), responseCaseDataBuilder);
