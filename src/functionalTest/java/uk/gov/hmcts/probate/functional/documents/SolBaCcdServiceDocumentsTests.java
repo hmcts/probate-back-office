@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import net.minidev.json.JSONObject;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -1080,5 +1082,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertThat(response.statusCode(), is(equalTo(403)));
         assertTrue(response.getBody().asString().contains("Forbidden"));
 
+    }
+
+    @Test
+    public void verifyDefaultEvidenceToYes(){
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(GENERATE_LETTER_PAYLOAD))
+                .when().post(GENERATE_LETTER).andReturn();
+        assertTrue(jsonResponse.getBody().asString().contains("\"evidenceHandled\": \"Yes\""));
     }
 }

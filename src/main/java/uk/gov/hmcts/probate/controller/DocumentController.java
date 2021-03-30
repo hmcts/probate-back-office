@@ -41,14 +41,11 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.Constants.*;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -113,6 +110,12 @@ public class DocumentController {
         @RequestBody CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String letterId = null;
+
+        if (NO.toLowerCase().equals(caseData.getEvidenceHandled().toLowerCase())) {
+            caseData.setEvidenceHandled(NO);
+        } else {
+            caseData.setEvidenceHandled(YES);
+        }
 
         List<Document> documents = new ArrayList<>();
         Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
