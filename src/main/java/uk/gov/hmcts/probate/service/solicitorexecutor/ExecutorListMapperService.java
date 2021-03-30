@@ -23,6 +23,19 @@ public class ExecutorListMapperService {
 
     private static final String SOLICITOR_ID = "solicitor";
 
+    public List<CollectionMember<AdditionalExecutorApplying>> addSolicitorToApplyingList(
+            CaseData caseData, List<CollectionMember<AdditionalExecutorApplying>> execs) {
+
+        List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
+
+        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
+            updatedExecs = removeSolicitorFromApplyingList(execs);
+        }
+        updatedExecs.add(mapFromSolicitorToApplyingExecutor(caseData));
+
+        return updatedExecs;
+    }
+
     public List<CollectionMember<AdditionalExecutorNotApplying>> addSolicitorToNotApplyingList(
             CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
 
@@ -34,6 +47,18 @@ public class ExecutorListMapperService {
         updatedExecs.add(mapFromSolicitorToNotApplyingExecutor(caseData));
 
         return updatedExecs;
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> removeSolicitorFromApplyingList(
+            List<CollectionMember<AdditionalExecutorApplying>> execsApplying) {
+
+        if (execsApplying.isEmpty()) {
+            return execsApplying;
+        }
+
+        return execsApplying.stream()
+                .filter(exec -> !SOLICITOR_ID.equals(exec.getId()))
+                .collect(Collectors.toList());
     }
 
     public List<CollectionMember<AdditionalExecutorNotApplying>> removeSolicitorFromNotApplyingList(
@@ -58,19 +83,9 @@ public class ExecutorListMapperService {
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
-        // Update list
-        caseData.getAdditionalExecutorsApplying()
-                .forEach(exec -> exec.getValue().setApplyingExecutorName(exec.getValue().getApplyingExecutorFirstName()
-                        + " " + exec.getValue().getApplyingExecutorLastName()));
-
-        // Return list
-        return caseData.getAdditionalExecutorsApplying();
-    }
-
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
+        // Create applying executor collection member containing solicitor names
         return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
@@ -178,7 +193,7 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
+        // Create not applying executor collection member containing primary applicant names
         return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())

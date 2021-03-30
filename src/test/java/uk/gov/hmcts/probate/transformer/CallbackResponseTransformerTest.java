@@ -1161,14 +1161,6 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
-        underTest.transformCase(callbackRequestMock);
-
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-    }
-
-    @Test
     public void verifyTrustCorpFieldsAreReset() {
         underTest.transformCase(callbackRequestMock);
 
@@ -1186,8 +1178,6 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
         verify(solicitorExecutorTransformer, times(1))
                 .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
         verify(solicitorExecutorTransformer, times(1))
