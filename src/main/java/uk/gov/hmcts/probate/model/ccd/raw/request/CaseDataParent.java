@@ -46,6 +46,8 @@ public class CaseDataParent {
     protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     // Not final as field set in CaseDataTransformer
     protected String dispenseWithNoticeLeaveGivenDateFormatted;
+    // Not final as field set in CaseDataTransformer
+    protected List<CollectionMember<String>> codicilAddedFormattedDateList;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     // Not final so field can be reset in CaseDataTransformer
