@@ -24,4 +24,3 @@ export TESTS_FOR_XUI_SERVICE='false'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 
-//yarn test:functional
