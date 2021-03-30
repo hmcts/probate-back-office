@@ -563,6 +563,49 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
+    public void shouldSetExecutorNamesListToNone_SolicitorIsApplying() {
+       caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.addSolicitorToApplyingList(
+                caseDetailsMock.getData(), additionalExecutorApplying)).thenReturn(new ArrayList<>());
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(new ArrayList<>());
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals("None", responseCaseData.getSolsIdentifiedApplyingExecs());
+    }
+
+    @Test
+    public void shouldSetExecutorNamesListToNone_SolicitorNotApplying() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(new ArrayList<>());
+        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(caseDetailsMock.getData(),
+                additionalExecutorNotApplying)).thenReturn(new ArrayList<>());
+
+
+        solicitorExecutorTransformerMock.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                caseDetailsMock.getData(), responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals("None", responseCaseData.getSolsIdentifiedNotApplyingExecs());
+    }
+
+    @Test
     public void shouldSetSolicitorExecutorListsToNull() {
         responseCaseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
