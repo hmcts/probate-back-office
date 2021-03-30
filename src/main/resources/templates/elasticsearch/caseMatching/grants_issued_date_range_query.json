@@ -6,12 +6,12 @@
       "filter": [
         {
           "match": {
-            "state": "BOGrantIssued"
+            "state": "BOCaseStopped"
           }
         },
         {
           "range": {
-            "data.grantIssuedDate": {
+            "created_date": {
               "gte": ":fromDate",
               "lte": ":toDate"
             }
