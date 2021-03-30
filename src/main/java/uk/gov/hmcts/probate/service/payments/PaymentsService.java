@@ -82,7 +82,9 @@ public class PaymentsService {
             String[] empty = {};
             String duplicateMessage = businessValidationMessageRetriever.getMessage(
                 "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
-            return new BusinessValidationException(duplicateMessage, e.getMessage());
+            String duplicateMessage2 = businessValidationMessageRetriever.getMessage(
+                "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
+            return new BusinessValidationException(duplicateMessage, e.getMessage(), duplicateMessage2);
         } else {
             return new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
         }

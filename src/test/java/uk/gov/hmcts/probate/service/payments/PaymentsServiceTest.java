@@ -173,6 +173,7 @@ public class PaymentsServiceTest {
 
         } catch (BusinessValidationException e) {
             assertEquals("Duplicate payment error", e.getUserMessage());
+            verify(businessValidationMessageRetriever, times(2)).getMessage(any(), any(), any());
         }
     }
 
