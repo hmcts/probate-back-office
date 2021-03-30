@@ -11,7 +11,7 @@
     "eslint-src": "NODE_PATH=. eslint ./src",
     "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
-    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 16 parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
     "test:fullfunctional-cw": "./bin/run-e2e-tests-cw.sh",
     "test:fullfunctional": "./bin/run-e2e-tests.sh",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
