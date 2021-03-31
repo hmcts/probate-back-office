@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -127,6 +128,9 @@ public class NotificationControllerTest {
 
     @MockBean
     private GrantNotificationService grantNotificationService;
+
+    @MockBean
+    private RegistryDetailsService registryDetailsService;
 
     @SpyBean
     private DocumentService documentService;

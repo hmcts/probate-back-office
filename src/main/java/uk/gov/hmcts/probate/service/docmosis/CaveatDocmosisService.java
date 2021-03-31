@@ -36,7 +36,7 @@ public class CaveatDocmosisService {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
 
-        Registry registry = registriesProperties.getRegistries().get(
+        Registry registry = registriesProperties.getEnglish().get(
             caveatDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 

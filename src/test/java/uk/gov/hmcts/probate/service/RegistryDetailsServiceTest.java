@@ -48,7 +48,7 @@ public class RegistryDetailsServiceTest {
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
 
-        registriesProperties.setRegistries(registryMap);
+        registriesProperties.setEnglish(registryMap);
 
         caseDetails = new CaseDetails(CaseData.builder().registryLocation("bristol").build(), LAST_MODIFIED, CASE_ID);
     }

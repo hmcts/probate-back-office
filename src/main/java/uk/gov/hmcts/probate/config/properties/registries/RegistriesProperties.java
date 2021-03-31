@@ -16,5 +16,6 @@ import java.util.Map;
 @ConfigurationProperties("registry")
 public class RegistriesProperties {
 
-    private Map<String, Registry> registries = new HashMap<>();
+    private Map<String, Registry> english = new HashMap<>();
+    private Map<String, Registry> welsh = new HashMap<>();
 }

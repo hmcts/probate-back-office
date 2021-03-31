@@ -20,7 +20,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GenericMapperService {
 
+    private ObjectMapper mapper;
+    private final RegistriesProperties registriesProperties;
+    private final FileSystemResourceService fileSystemResourceService;
+
     private static final String PERSONALISATION_REGISTRY = "registry";
+    private static final String PERSONALISATION_REGISTRY_WELSH = "registryWelsh";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
@@ -33,9 +38,6 @@ public class GenericMapperService {
     private static final String COUNTY = "county";
     private static final String POSTCODE = "postCode";
     private static final String POST_TOWN = "postTown";
-    private final RegistriesProperties registriesProperties;
-    private final FileSystemResourceService fileSystemResourceService;
-    private ObjectMapper mapper;
 
     public Map<String, Object> addCaseData(CaseData caseData) {
         mapper = new ObjectMapper();
@@ -47,12 +49,18 @@ public class GenericMapperService {
 
     public Map<String, Object> addCaseDataWithRegistryProperties(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(
-            caseData.getRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getEnglish().get(caseData.getRegistryLocation().toLowerCase());
         Map<String, Object> placeholders = addCaseData(caseData);
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
+
+        if (caseDetails.getData().isLanguagePreferenceWelsh()) {
+            Registry registryWelsh = registriesProperties.getWelsh().get(caseData.getRegistryLocation().toLowerCase());
+            Map<String, Object> registryPlaceholdersWelsh = mapper.convertValue(registryWelsh, Map.class);
+
+            placeholders.put(PERSONALISATION_REGISTRY_WELSH, registryPlaceholdersWelsh);
+        }
         placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, caseDetails.getId().toString());
         return placeholders;
     }

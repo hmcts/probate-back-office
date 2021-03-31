@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -98,6 +99,9 @@ public class DocumentControllerTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private SendLetterResponse sendLetterResponseMock;

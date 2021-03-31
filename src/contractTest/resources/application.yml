@@ -304,7 +304,7 @@ documents:
             gop: WELSH_DIGITAL_GRANT_DRAFT
 
 registry:
-  registries:
+  english:
     oxford:
       name: Oxford Probate Registry
       phone: 0300 303 0648
@@ -407,6 +407,98 @@ registry:
       addressline2: Fitzalan Place
       addressline3: Cardiff
       town: South Wales
+      postcode: CF24 0RZ
+  welsh:
+    oxford:
+      name: Cofrestrfa Brofiant Rhydychen
+      phone: 0300 303 0648
+      addressline1: Combined Court Building
+      addressline2: St Aldates
+      town: Rhydychen
+      postcode: OX1 1LY
+    birmingham:
+      name: Cofrestrfa Brofiant Birmingham
+      phone: 0300 303 0648
+      addressline1: The Priory Courts
+      addressline2: 33 Bull Street
+      town: Birmingham
+      postcode: B4 6DU
+    manchester:
+      name: Cofrestrfa Brofiant Manceinion
+      phone: 0300 303 0648
+      addressline1: Manchester Civil Justice Centre
+      addressline2: Ground Floor
+      addressline3: 1 Bridge Street West
+      addressline4: PO Box 4240
+      town: Manceinion
+      postcode: M60 1WJ
+    leeds:
+      name: Cofrestrfa Brofiant Leeds
+      phone: 0300 303 0648
+      addressline1: York House
+      addressline2: York Place
+      town: Leeds
+      postcode: LS1 2BA
+    liverpool:
+      name: Cofrestrfa Brofiant Lerpwl
+      phone: 0300 303 0648
+      addressline1: Queen Elizabeth II Law Courts
+      addressline2: Derby Square
+      town: Lerpwl
+      postcode: L2 1XA
+    brighton:
+      name: Cofrestrfa Brofiant Brighton
+      phone: 0300 303 0648
+      addressline1: William Street
+      town: Brighton
+      postcode: BN2 0RF
+    london:
+      name: Adran Brofiant Llundain
+      phone: 0300 303 0648
+      addressline1: Principal Registry of the Family Division
+      addressline2: First Avenue House
+      addressline3: 42-49 High Holborn
+      town: Llundain
+      postcode: WC1V 6NP
+    cardiff:
+      name: Cofrestrfa Brofiant Cymru
+      phone: 0300 303 0654
+      addressline1: 3ydd Llawr, Llys Ynadon Caerdydd
+      addressline2: Plas Fitzalan
+      addressline3: Caerdydd
+      town: De Cymru
+      postcode: CF24 0RZ
+    newcastle:
+      name: Cofrestrfa Brofiant Newcastle-Upon-Tyne
+      phone: 0300 303 0648
+      addressline1: Newcastle DPR
+      addressline2: No 1 Waterloo Square
+      town: Newcastle-Upon-Tyne
+      postcode: NE1 4DR
+    winchester:
+      name: Cofrestrfa Brofiant Winchester
+      phone: 0300 303 0648
+      addressline1: 1st Floor
+      addressline2: Southside Offices
+      addressline3: The Law Courts
+      addressline4: Winchester
+      town: Hampshire
+      postcode: S023 9EL
+    ctsc:
+      name: Canolfan Gwasanaethau’r Llysoedd a’r Tribiwnlysoedd (CTSC)
+      phone: 0300 303 0654
+      addressline1: Principal Registry of the Family Division
+      addressline2: HMCTS Probate
+      addressline3: PO Box 12625
+      town: Harlow
+      postcode: CM20 9QE
+    bristol:
+      name: Y Gofrestrfa Brofiant ar gyfer Ardal Bryste
+      phone: 0300 303 0654
+      addressline1: 3ydd Llawr, Llys Ynadon Caerdydd
+      addressline2: Plas Fitzalan
+      addressline3: Caerdydd
+      town: De Cymru
       postcode: CF24 0RZ
       
 document:
