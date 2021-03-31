@@ -111,12 +111,6 @@ public class DocumentController {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String letterId = null;
 
-        if (NO.toLowerCase().equals(caseData.getEvidenceHandled().toLowerCase())) {
-            caseData.setEvidenceHandled(NO);
-        } else {
-            caseData.setEvidenceHandled(YES);
-        }
-
         List<Document> documents = new ArrayList<>();
         Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
@@ -154,6 +148,12 @@ public class DocumentController {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
+
+        if (NO.equalsIgnoreCase(caseData.getEvidenceHandled())) {
+            caseData.setEvidenceHandled(NO);
+        } else {
+            caseData.setEvidenceHandled(YES);
+        }
 
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();

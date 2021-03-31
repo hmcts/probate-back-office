@@ -37,7 +37,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "evidenceHandled": "Yes",
+      "evidenceHandled": null,
       "caseType": "gop",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
