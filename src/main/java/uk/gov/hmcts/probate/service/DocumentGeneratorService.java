@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +66,7 @@ public class DocumentGeneratorService {
     private final GenericMapperService genericMapperService;
     private final PreviewLetterService previewLetterService;
     private final DocumentTemplateService documentTemplateService;
+    private final CaseDataTransformer caseDataTransformer;
 
     private Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status,
                                    DocumentIssueType issueType) {
@@ -164,6 +166,8 @@ public class DocumentGeneratorService {
         DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
+                // Transform case data into expected format for legal statement
+                caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
                 log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
                 statementOfTruth = generateSolicitorSoT(callbackRequest);
                 log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
@@ -211,7 +215,11 @@ public class DocumentGeneratorService {
                 break;
             case GRANT_OF_PROBATE:
             default:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_PROBATE_TRUST_CORPS);
+                // Set document version to newer trust corp legal statement for cases with 2.0.0 schema version
+                DocumentType legalStatementVersion = callbackRequest.getCaseDetails().getData()
+                        .getSchemaVersion().equals("2.0.0")
+                        ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
+                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, legalStatementVersion);
                 break;
         }
         return statementOfTruth;

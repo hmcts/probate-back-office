@@ -93,11 +93,6 @@ public class ExecutorListMapperService {
             exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
                     exec.getValue().getApplyingExecutorFirstName()
                             + " " + exec.getValue().getApplyingExecutorLastName()));
-
-            // Default executor type
-            if ( exec.getValue().getApplyingExecutorType() == null) {
-                exec.getValue().setApplyingExecutorType(EXECUTOR_TYPE_NAMED);
-            }
         });
 
         // Return list

@@ -20,7 +20,7 @@ public class CaseDataTransformer {
 
         resetCaseDataTransformer.resetExecutorLists(caseData);
         legalStatementExecutorTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
-        legalStatementExecutorTransformer.formatDates(caseData);
+        legalStatementExecutorTransformer.formatFields(caseData);
     }
 
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
