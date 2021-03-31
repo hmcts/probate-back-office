@@ -8,14 +8,6 @@
           "match": {
             "state": "BOCaseStopped"
           }
-        },
-        {
-          "range": {
-            "created_date": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
-            }
-          }
         }
       ]
     }
