@@ -20,7 +20,7 @@ public class FormattingService {
     // Create a formatted string including all applying execs
     public static String createExecsApplyingNames(List<CollectionMember<AdditionalExecutorApplying>> execs) {
         if (execs.isEmpty()) {
-            return "";
+            return "None";
         }
 
         StringBuilder names = new StringBuilder();
@@ -35,7 +35,7 @@ public class FormattingService {
     // Create a formatted string including all not applying execs
     public static String createExecsNotApplyingNames(List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
         if (execs.isEmpty()) {
-            return "";
+            return "None";
         }
 
         StringBuilder names = new StringBuilder();
