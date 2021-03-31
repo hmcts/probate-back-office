@@ -19,7 +19,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
 
     private final DateFormatterService dateFormatterService;
 
-    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService, DateFormatterService dateFormatterService) {
+    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService,
+                                             DateFormatterService dateFormatterService) {
         super(executorListMapperService);
         this.dateFormatterService = dateFormatterService;
     }
@@ -58,7 +59,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         }
 
         // Set codicilAddedDate format
-        if (caseData.getCodicilAddedDateList() != null ) {
+        if (caseData.getCodicilAddedDateList() != null) {
             List<CollectionMember<String>> formattedCodicilDates = new ArrayList<>();
             caseData.getCodicilAddedDateList().forEach(date -> {
                 String formattedDate = dateFormatterService.formatDate(date.getValue().getDateCodicilAdded());

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
-
 @Data
 @Builder
 @AllArgsConstructor

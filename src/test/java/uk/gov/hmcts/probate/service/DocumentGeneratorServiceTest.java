@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -90,6 +91,9 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private DocumentTemplateService documentTemplateService;
+
+    @Mock
+    private CaseDataTransformer caseDataTransformer;
 
     @Mock
     private PlaceholderDecorator placeholderDecorator;

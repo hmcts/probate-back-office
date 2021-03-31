@@ -244,7 +244,7 @@ public class ExecutorListMapperServiceTest {
         CollectionMember<AdditionalExecutorApplying> result =
                 underTest.mapFromSolicitorToApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
-                null, AdditionalExecutorApplying.builder()
+                SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
                 .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)

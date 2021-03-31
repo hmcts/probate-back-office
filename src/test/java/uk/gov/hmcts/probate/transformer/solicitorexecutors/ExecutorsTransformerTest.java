@@ -238,8 +238,8 @@ public class ExecutorsTransformerTest {
                 .primaryApplicantForenames(EXEC_FIRST_NAME);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
+        when(executorListMapperServiceMock.mapFromApplyingToAdditionalExecutors(caseDetailsMock.getData()))
+                .thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
                 additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
 
@@ -249,7 +249,10 @@ public class ExecutorsTransformerTest {
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(additionalExecutorApplying,responseCaseData.getAdditionalExecutorsApplying());
         assertEquals(additionalExecutorNotApplying,responseCaseData.getAdditionalExecutorsNotApplying());
-
+        verify(executorListMapperServiceMock, times(1))
+                .mapFromApplyingToAdditionalExecutors(any());
+        verify(executorListMapperServiceMock, times(1))
+                .removeSolicitorFromApplyingList(any());
     }
 
     @Test
@@ -273,6 +276,8 @@ public class ExecutorsTransformerTest {
     @Test
     public void shouldSetCaseworkerNotApplyingExecutorLists() {
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
                 .additionalExecutorsTrustCorpList(null)
                 .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)

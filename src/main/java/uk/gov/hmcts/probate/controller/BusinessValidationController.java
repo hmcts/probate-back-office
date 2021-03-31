@@ -135,8 +135,8 @@ public class BusinessValidationController {
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE_TRUST_CORPS,
-                GRANT_OF_PROBATE_NAME);
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
+                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
     }
