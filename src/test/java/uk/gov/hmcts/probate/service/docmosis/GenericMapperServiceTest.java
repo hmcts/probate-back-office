@@ -188,7 +188,8 @@ public class GenericMapperServiceTest {
 
     @Test
     public void testCaseDataIsMappedSuccessfullyWithFormattedDOD() {
-        Map<String, Object> returnedMap = genericMapperService.addCaseData(englishCallbackRequest.getCaseDetails().getData());
+        Map<String, Object> returnedMap =
+            genericMapperService.addCaseData(englishCallbackRequest.getCaseDetails().getData());
         expectedMappedCaseData().keySet().stream()
             .forEach((key) -> {
                 assertEquals(expectedMappedCaseData().get(key), returnedMap.get(key));
@@ -250,7 +251,8 @@ public class GenericMapperServiceTest {
     public void testPartPopulatedAddressIsAppendedWithExistingValues() {
         SolsAddress address = SolsAddress.builder().addressLine1("321 street").postCode("AB").build();
 
-        assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME,
+        assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(),
+            APPEND_NAME,
             address).get("addressLine1"));
         assertEquals(null,
             genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, address).get(
