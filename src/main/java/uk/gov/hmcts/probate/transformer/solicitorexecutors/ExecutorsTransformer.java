@@ -49,8 +49,9 @@ public class ExecutorsTransformer {
         }
 
         // Set builder with lists
-        builder.additionalExecutorsApplying(execsApplying);
-        builder.additionalExecutorsNotApplying(execsNotApplying);
+        builder
+                .additionalExecutorsApplying(execsApplying)
+                .additionalExecutorsNotApplying(execsNotApplying);
     }
 
     /**
@@ -198,6 +199,12 @@ public class ExecutorsTransformer {
                 .primaryApplicantHasAlias(NO)
                 .primaryApplicantIsApplying(YES)
                 .solsPrimaryExecutorNotApplyingReason(null);
+    }
+
+    public void setFieldsIfSolicitorIsNotExecutor(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(null);
     }
 
     protected boolean isSolicitorExecutor(CaseData caseData) {

@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -419,6 +420,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
+
+    @Mock
+    private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
 
     @Mock
     private ExecutorsTransformer solicitorExecutorTransformer;
@@ -1154,6 +1158,14 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
         assertCommon(callbackResponse);
+    }
+
+    @Test
+    public void verifyTrustCorpFieldsAreReset() {
+        underTest.transformCase(callbackRequestMock);
+
+        verify(resetResponseCaseDataTransformer, times(1))
+                .resetTitleAndClearingFields(any(), any());
     }
 
     @Test
