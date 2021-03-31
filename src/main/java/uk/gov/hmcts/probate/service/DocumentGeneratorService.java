@@ -215,9 +215,9 @@ public class DocumentGeneratorService {
                 break;
             case GRANT_OF_PROBATE:
             default:
+                String schemaVersion = callbackRequest.getCaseDetails().getData().getSchemaVersion();
                 // Set document version to newer trust corp legal statement for cases with 2.0.0 schema version
-                DocumentType legalStatementVersion = callbackRequest.getCaseDetails().getData()
-                        .getSchemaVersion().equals("2.0.0")
+                DocumentType legalStatementVersion = schemaVersion != null && schemaVersion.equals("2.0.0")
                         ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
                 statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, legalStatementVersion);
                 break;
