@@ -2,8 +2,10 @@
   "case_type_id": "PROBATE_ExceptionRecord",
   "po_box": "12626",
   "po_box_jurisdiction": "PROBATE",
-  "form_type": "PA8A",
+  "form_type": "PA1P",
   "journey_classification": NEW_APPLICATION,
   "delivery_date": "2019-07-20T12:34:56.789Z",
-  "opening_date": "2019-07-21T13:00:00.000Z"
+  "opening_date": "2019-07-21T13:00:00.000Z",
+  "envelope_id": "qwertyuio",
+  "is_automated_process": false
 }
