@@ -33,18 +33,36 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
     private static final String DEFAULT_PAYLOAD = "caveatPayloadNotifications.json";
+    private static final String DEFAULT_PAYLOAD_RESPONSE = "caveatPayloadNotificationsResponse.txt";
+    private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsCTSC.json";
+    private static final String DEFAULT_PAYLOAD_CTSC_RESPONSE = "caveatPayloadNotificationsCTSCResponse.txt";
+    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB = "caveatPayloadNotificationsCTSCNoDOB.json";
+    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse" 
+        + ".txt";
+    private static final String PAYLOAD_CAVEAT_NO_DOB = "caveatPayloadNoDOB.json";
+    private static final String RESPONSE_CAVEAT_NO_DOB = "caveatPayloadNoDOBResponse.txt";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR = "caveatPayloadNotificationsSolicitor.json";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOB.json";
+    private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse" 
+        + ".txt";
     private static final String DEFAULT_PAYLOAD_NO_EMAIL = "caveatPayloadNotificationsNoEmail.json";
-    private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsNoEmailCTSC.json";
+    private static final String DEFAULT_PAYLOAD_CTSC_NO_EMAIL = "caveatPayloadNotificationsNoEmailCTSC.json";
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
     private static final String CAVEAT_EXTEND_PAYLOAD = "/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
+    private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD = "/caveat/caveatSolicitorValidate.json";
+    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE = "caveatSolicitorValidateResponse.txt";
+    private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB = "/caveat/caveatSolicitorValidateNoDOB.json";
+    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB = "caveatSolicitorValidateResponseNoDOB.txt";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
     private static final String CAVEAT_CASE_WITHDRAW_PAYLOAD = "/caveat/caveatCaseWithdraw.json";
-
-
     private static final String YES = "Yes";
     private static final String NO = "No";
+    private static final String EXPIRY_DATE_KEY = "EXPIRY_DATE_KEY";
+    private static final String EMAIL_NOTIFICATION_URL =
+        "data.notificationsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
     public void verifyCaveatRaisedShouldReturnOkResponseCode() {
@@ -100,34 +118,65 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertEquals(YES, bulkPrintRequested);
 
     }
-
-
+    
     @Test
-    public void verifySuccessForCaveatRaisedEmail() {
-        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
-
-        assertCommons(response);
-        assertTrue(response.contains("1542274092932452"));
-        assertTrue(response.contains("caveator@probate-test.com"));
-
+    public void verifyPersonalCaveatRaisedEmailContents() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE, EMAIL_NOTIFICATION_URL, responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
-    public void verifySuccessForCaveatRaisedEmailApplicationFee() {
-        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
-
-        assertCommons(response);
-        assertTrue(response.contains("1542274092932452"));
-        assertTrue(response.contains("£3 fee"));
-        assertTrue(response.contains("caveator@probate-test.com"));
-
+    public void verifyPersonalCaveatRaisedEmailContentsNoDOB() {
+        ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB, EMAIL_NOTIFICATION_URL, responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
-    public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
-        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
-        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
+    public void verifyPersonalCaveatRaisedCtscEmailContents() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_CTSC_RESPONSE, EMAIL_NOTIFICATION_URL,
+            responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
 
+    @Test
+    public void verifyPersonalCaveatRaisedCtscEmailContentsNoDOB() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_CTSC_NO_DOB, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE, EMAIL_NOTIFICATION_URL,
+            responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
+
+    @Test
+    public void verifyCaveatRaisedSolicitorPaperEmailContents() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE, EMAIL_NOTIFICATION_URL,
+            responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
+
+    @Test
+    public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOB() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
+            responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
+
+    @Test
+    public void verifySolicitorCaveatRaisedEmailContents() {
+        ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
+        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
+            responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
+
+    @Test
+    public void verifySolicitorCaveatRaisedEmailContentsNoDOB() {
+        ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB, CAVEAT_VALIDATE);
+        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB, EMAIL_NOTIFICATION_URL,
+            responseBody,
+            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
@@ -151,8 +200,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() {
-        final String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
-        String response = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 1);
+        final String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC_NO_EMAIL, CAVEAT_RAISED, 0);
+        String response = generateDocument(DEFAULT_PAYLOAD_CTSC_NO_EMAIL, CAVEAT_RAISED, 1);
 
         assertCommons(response);
         assertTrue(response.contains("#1542-2740-9293-2452"));

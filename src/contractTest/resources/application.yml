@@ -185,7 +185,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
-  grantAwaitingDocumentationNotificationPeriodDays: 21
+  grantAwaitingDocumentationNotificationPeriodDays: 35
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -544,3 +544,4 @@ ld:
     key: ${LD_USER_KEY:35222af3-7867-44ea-a1a0-f8fs32backend_dummy}
     firstName: Probate
     lastName: Backend
+    
