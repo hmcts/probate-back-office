@@ -18,7 +18,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'org.springframework.boot' version '2.3.4.RELEASE'
   id 'uk.gov.hmcts.java' version '0.12.2'
-  id 'com.github.ben-manes.versions' version '0.15.0'
+  id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.3.0'
   id 'jacoco'
@@ -206,6 +206,37 @@ processResources {
   }
 }
 
+dependencyManagement {
+  dependencies {
+    //CVE-2020-26939
+    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
+
+    //CVE-2020-15250
+    dependency group: 'junit', name: 'junit', version: '4.13.2'
+
+    //CVE-2021-22112
+    dependencySet(group: 'org.springframework.security', version: '5.3.8.RELEASE') {
+      entry 'spring-security-config'
+      entry 'spring-security-core'
+      entry 'spring-security-crypto'
+      entry 'spring-security-web'
+    }
+  }
+}
+
+configurations.all {
+  resolutionStrategy {
+    eachDependency { DependencyResolveDetails details ->
+      if (details.requested.group in ['org.apache.tomcat.embed']) {
+        details.useVersion '9.0.43'
+      }
+      if (details.requested.group in ['org.hibernate']) {
+        details.useVersion '5.4.25.Final'
+      }
+    }
+  }
+}
+
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
@@ -220,6 +251,7 @@ dependencies {
     force = true
   }
 
+  compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
@@ -231,7 +263,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -242,12 +274,14 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
 
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.9.2'
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.9.2'
-  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.9.2'
-  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.10.2'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.10.2'
+  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.10.2'
+  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
   compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
   compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
@@ -256,7 +290,7 @@ dependencies {
 
   compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   compile ('org.springframework.boot:spring-boot-starter-data-jpa')
-  compile ('org.postgresql:postgresql:42.2.5') {
+  compile ('org.postgresql:postgresql:42.2.18') {
     exclude module: 'slf4j-simple'
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
