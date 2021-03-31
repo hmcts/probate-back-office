@@ -47,6 +47,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -289,8 +290,12 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
     private final String solsSOTJobTitle;
 
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+        "{extraCopiesOfGrantIsNegative}")
     private final Long extraCopiesOfGrant;
 
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+        "{outsideUKGrantCopiesIsNegative}")
     private final Long outsideUKGrantCopies;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
