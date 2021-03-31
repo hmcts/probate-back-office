@@ -206,7 +206,7 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testRegistryMappedSuccessfullyForLanguagePreferenceWelsh() {
+    public void testRegistryMappedSuccessfullyLanguagePreferenceWelsh() {
         Map<String, Object> returnedMap =
             genericMapperService.addCaseDataWithRegistryProperties(welshCallbackRequest.getCaseDetails());
         expectedMappedRegistries().keySet().stream()
