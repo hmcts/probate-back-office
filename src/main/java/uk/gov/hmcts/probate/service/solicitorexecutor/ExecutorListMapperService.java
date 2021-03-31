@@ -87,14 +87,11 @@ public class ExecutorListMapperService {
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
 
         List<CollectionMember<AdditionalExecutorApplying>> tempList =
-                new ArrayList(caseData.getAdditionalExecutorsApplying());
+                new ArrayList<>(caseData.getAdditionalExecutorsApplying());
         // Update list
-        tempList.forEach(exec ->  {
-            exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
+        tempList.forEach(exec -> exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
                     exec.getValue().getApplyingExecutorFirstName()
-                            + " " + exec.getValue().getApplyingExecutorLastName()));
-        });
-
+                            + " " + exec.getValue().getApplyingExecutorLastName())));
         // Return list
         return tempList;
     }
