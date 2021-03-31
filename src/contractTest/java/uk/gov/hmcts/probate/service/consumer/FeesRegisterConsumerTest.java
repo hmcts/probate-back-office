@@ -112,7 +112,13 @@ public class FeesRegisterConsumerTest {
             .matchQuery("keyword", "GrantWill", "GrantWill")
             .willRespondWith()
             .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .status(HttpStatus.SC_NO_CONTENT)
+            .status(HttpStatus.SC_OK)
+            .body(new PactDslJsonBody()
+                .stringType("code", "FEE0544")
+                .stringType("description", "Copy of a document (for each copy)")
+                .numberType("version", 7)
+                .numberType("fee_amount", 0)
+            )
             .toPact();
     }
 
