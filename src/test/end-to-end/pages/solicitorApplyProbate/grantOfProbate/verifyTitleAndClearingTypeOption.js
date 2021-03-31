@@ -26,9 +26,9 @@ module.exports = async function (optName) {
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
     assert (isNa || isTrustOption ? !morePartnersHoldingPowerReservedVisible : morePartnersHoldingPowerReservedVisible);
-    assert (isNa || allRenouncing ? !otherPartnersApplyingAsExecutorsVisible : otherPartnersApplyingAsExecutorsVisible);
+    assert (isNa || isTrustOption || allRenouncing ? !otherPartnersApplyingAsExecutorsVisible : otherPartnersApplyingAsExecutorsVisible);
 
-    if (!isNa && !isTrustOption && isSuccessorFirm) {
+    if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');
         await I.scrollTo('#nameOfFirmNamedInWill');
         await I.waitForClickable({css: '#otherPartnersApplyingAsExecutors button'});

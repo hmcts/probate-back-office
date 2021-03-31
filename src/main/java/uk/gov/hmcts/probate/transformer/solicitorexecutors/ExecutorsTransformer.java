@@ -201,10 +201,12 @@ public class ExecutorsTransformer {
                 .solsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void setFieldsIfSolicitorIsNotExecutor(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        builder
-                .solsSolicitorIsApplying(NO)
-                .solsSolicitorNotApplyingReason(null);
+    public void setFieldsIfSolicitorIsNotExecutor(CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        if(!isSolicitorExecutor(caseData)){
+            builder
+                    .solsSolicitorIsApplying(NO)
+                    .solsSolicitorNotApplyingReason(null);
+        }
     }
 
     protected boolean isSolicitorExecutor(CaseData caseData) {
