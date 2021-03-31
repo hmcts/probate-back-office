@@ -95,6 +95,12 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.cwEnterSolsGoPPage1('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.cwEnterSolsGoPPage2('update', createGrantOfProbateConfig);
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
+    await I.cwEnterSolsGoPPage3('update', createGrantOfProbateConfig);
+    await I.checkMyAnswers(nextStepName);
+    await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage4('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
