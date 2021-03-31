@@ -91,7 +91,8 @@ public class GenericMapperServiceTest {
     private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
     private static Map<String, Object> PRIMARY_APPLICANT_ADDRESS_VALUE = new HashMap<>();
     private static Map<String, Object> SOLICITOR_ADDRESS_VALUE = new HashMap<>();
-    private CallbackRequest callbackRequest;
+    private CallbackRequest englishCallbackRequest;
+    private CallbackRequest welshCallbackRequest;
     private Map<String, Object> images = new HashMap<>();
     private Registry registry = new Registry();
 
@@ -123,7 +124,7 @@ public class GenericMapperServiceTest {
 
         when(registriesProperties.getEnglish()).thenReturn(registryMap);
 
-        CaseData caseData = CaseData.builder()
+        CaseData englishCaseData = CaseData.builder()
             .deceasedForenames("Nigel")
             .deceasedSurname("Deadsoul")
             .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
@@ -146,8 +147,35 @@ public class GenericMapperServiceTest {
             .solsSOTName("John Thesolicitor")
             .applicationType(ApplicationType.PERSONAL)
             .build();
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
-        callbackRequest = new CallbackRequest(caseDetails);
+        CaseDetails englishCaseDetails = new CaseDetails(englishCaseData, LAST_MODIFIED, CASE_ID);
+        englishCallbackRequest = new CallbackRequest(englishCaseDetails);
+
+        CaseData welshCaseData = CaseData.builder()
+            .deceasedForenames("Nigel")
+            .deceasedSurname("Deadsoul")
+            .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
+            .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
+            .deceasedAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).addressLine3(ADDRESS_LINE_3_VALUE)
+                .postCode(POSTCODE_VALUE).build())
+            .boDeceasedTitle("Mr")
+            .primaryApplicantIsApplying("Yes")
+            .primaryApplicantForenames("Tim")
+            .languagePreferenceWelsh("Yes")
+            .primaryApplicantSurname("Timson")
+            .primaryApplicantAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).postCode(POSTCODE_VALUE)
+                .build())
+            .solsSolicitorFirmName("Solicitors R us")
+            .solsSolicitorAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).build())
+            .ihtGrossValue(new BigDecimal(new BigInteger("8899"), 0))
+            .ihtNetValue(new BigDecimal(new BigInteger("7787"), 0))
+            .caseType("gop")
+            .registryLocation("Oxford")
+            .grantIssuedDate("2019-02-18")
+            .solsSOTName("John Thesolicitor")
+            .applicationType(ApplicationType.PERSONAL)
+            .build();
+        CaseDetails welshCaseDetails = new CaseDetails(welshCaseData, LAST_MODIFIED, CASE_ID);
+        welshCallbackRequest = new CallbackRequest(welshCaseDetails);
 
         images.put(CREST_IMAGE, CREST_FILE_PATH);
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
@@ -160,7 +188,7 @@ public class GenericMapperServiceTest {
 
     @Test
     public void testCaseDataIsMappedSuccessfullyWithFormattedDOD() {
-        Map<String, Object> returnedMap = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
+        Map<String, Object> returnedMap = genericMapperService.addCaseData(englishCallbackRequest.getCaseDetails().getData());
         expectedMappedCaseData().keySet().stream()
             .forEach((key) -> {
                 assertEquals(expectedMappedCaseData().get(key), returnedMap.get(key));
@@ -170,7 +198,17 @@ public class GenericMapperServiceTest {
     @Test
     public void testRegistryMappedSuccessfully() {
         Map<String, Object> returnedMap =
-            genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
+            genericMapperService.addCaseDataWithRegistryProperties(englishCallbackRequest.getCaseDetails());
+        expectedMappedRegistries().keySet().stream()
+            .forEach((key) -> {
+                assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
+            });
+    }
+
+    @Test
+    public void testRegistryMappedSuccessfullyForLanguagePreferenceWelsh() {
+        Map<String, Object> returnedMap =
+            genericMapperService.addCaseDataWithRegistryProperties(welshCallbackRequest.getCaseDetails());
         expectedMappedRegistries().keySet().stream()
             .forEach((key) -> {
                 assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
@@ -180,7 +218,7 @@ public class GenericMapperServiceTest {
     @Test
     public void testImagesMappedSuccessfully() {
         Map<String, Object> returnedMap = genericMapperService.addCaseDataWithImages(images,
-            callbackRequest.getCaseDetails());
+            englishCallbackRequest.getCaseDetails());
         expectedImages().keySet().stream()
             .forEach((key) -> {
                 assertEquals(expectedImages().get(key), returnedMap.get(key));
