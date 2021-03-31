@@ -28,7 +28,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
-    await I.applyForProbatePage2();
+    await I.applyForProbatePage2(true, true);
     await I.cyaPage();
 
     await I.seeEndState(endState);
