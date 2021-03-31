@@ -31,30 +31,30 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("Testprimaryexecutorfirstname", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLastNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("Testprimaryexecutorlastname", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAddressInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
-                + "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test AddressLine2, \n"
+                        + "Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("Deceasedfirstname \nDeceasedlastname", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -84,7 +84,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "We authorise SolicitorFirmName, as our appointed firm, to submit this application on our behalf.",
+            "We authorise Solicitorfirmname, as our appointed probate practitioner, " +
+                    "to submit this application on our \n" + "behalf.",
             DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
@@ -100,12 +101,12 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorFirmNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("SolicitorFirmName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("Solicitorfirmname", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAdditionalExecutor1NameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1FirstName AdditionalExecutor1LastName",
+        validatePostRequestSuccessForLegalStatement("Additionalexecutor1firstname Additionalexecutor1lastname",
             DOC_NAME, VALIDATE_PROBATE_URL);
     }
 

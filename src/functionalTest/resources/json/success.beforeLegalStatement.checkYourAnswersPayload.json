@@ -66,13 +66,13 @@
             "solsCYAStateTransition": "SolLegalStatementReviewed",
             "primaryApplicantForenames": "TestPrimaryExecutorFirstName",
             "primaryApplicantAddress": {
-                "County": "2",
-                "Country": "2",
-                "PostCode": "2",
-                "PostTown": "2",
-                "AddressLine1": "2",
-                "AddressLine2": "2",
-                "AddressLine3": "2"
+                "County": "Middlesex",
+                "Country": "United Kingdom",
+                "PostCode": "TW3 3DB",
+                "PostTown": "Hounslow",
+                "AddressLine1": "Test AddressLine1",
+                "AddressLine2": "Test AddressLine2",
+                "AddressLine3": "Test AddressLine3"
             },
             "applicationGrounds": "Grounds for application",
             "ukEstate": [
@@ -96,13 +96,13 @@
                     "value": {
                         "additionalApplying": "Yes",
                         "additionalExecAddress": {
-                            "County": "3",
-                            "Country": "3",
-                            "PostCode": "3",
-                            "PostTown": "3",
-                            "AddressLine1": "3",
-                            "AddressLine2": "3",
-                            "AddressLine3": "3"
+                            "County": "Middlesex",
+                            "Country": "United Kingdom",
+                            "PostCode": "TW3 3DB",
+                            "PostTown": "Hounslow",
+                            "AddressLine1": "Test AddressLine1",
+                            "AddressLine2": "Test AddressLine2",
+                            "AddressLine3": "Test AddressLine3"
                         },
                         "additionalExecLastname": "AdditionalExecutor1LastName",
                         "additionalExecForenames": "AdditionalExecutor1FirstName",
