@@ -12,9 +12,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
@@ -22,6 +24,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
+import static uk.gov.hmcts.probate.util.CommonVariables.DATE_FORMATTED;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_FORENAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_FORENAME_FORMATTED;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_SURNAME_FORMATTED;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
@@ -33,6 +41,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
@@ -44,6 +53,9 @@ public class LegalStatementExecutorTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
+
+    @Mock
+    private DateFormatterService dateFormatterServiceMock;
 
     @Mock
     private ExecutorListMapperService executorListMapperServiceMock;
@@ -186,4 +198,33 @@ public class LegalStatementExecutorTransformerTest {
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
 
+    @Test
+    public void shouldFormatCaseDataForLegalStatement() {
+        List<CollectionMember<CodicilAddedDate>> codicilAddedDate = new ArrayList<>();
+        codicilAddedDate.add(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(DATE).build()));
+
+        caseDataBuilder
+                .dispenseWithNoticeLeaveGivenDate(DATE)
+                .codicilAddedDateList(codicilAddedDate)
+                .deceasedForenames(DECEASED_FORENAME)
+                .deceasedSurname(DECEASED_SURNAME)
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(dateFormatterServiceMock.formatDate(
+                DATE)).thenReturn(DATE_FORMATTED);
+
+        legalStatementExecutorTransformerMock.formatFields(
+                caseDetailsMock.getData());
+
+        List<CollectionMember<String>> formattedCodicilDateList = new ArrayList<>();
+        formattedCodicilDateList.add(new CollectionMember<>(DATE_FORMATTED));
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(DECEASED_FORENAME_FORMATTED, caseData.getDeceasedForenames());
+        assertEquals(DECEASED_SURNAME_FORMATTED, caseData.getDeceasedSurname());
+        assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
+        assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
+        assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
+    }
 }

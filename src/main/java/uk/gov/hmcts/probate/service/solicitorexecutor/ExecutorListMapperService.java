@@ -84,7 +84,7 @@ public class ExecutorListMapperService {
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> mapFromApplyingToAdditionalExecutors(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>> mapAdditionalApplyingExecutors(CaseData caseData) {
 
         List<CollectionMember<AdditionalExecutorApplying>> tempList =
                 new ArrayList<>(caseData.getAdditionalExecutorsApplying());

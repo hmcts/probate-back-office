@@ -82,7 +82,7 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
                 caseData.getAdditionalExecutorsApplying() == null
                         || caseData.getAdditionalExecutorsApplying().isEmpty()
-                        ? new ArrayList<>() : executorListMapperService.mapFromApplyingToAdditionalExecutors(caseData);
+                        ? new ArrayList<>() : executorListMapperService.mapAdditionalApplyingExecutors(caseData);
 
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
         execsApplying = setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);

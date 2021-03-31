@@ -238,7 +238,7 @@ public class ExecutorsTransformerTest {
                 .primaryApplicantForenames(EXEC_FIRST_NAME);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromApplyingToAdditionalExecutors(caseDetailsMock.getData()))
+        when(executorListMapperServiceMock.mapAdditionalApplyingExecutors(caseDetailsMock.getData()))
                 .thenReturn(additionalExecutorApplying);
         when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
                 additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
@@ -250,7 +250,7 @@ public class ExecutorsTransformerTest {
         assertEquals(additionalExecutorApplying,responseCaseData.getAdditionalExecutorsApplying());
         assertEquals(additionalExecutorNotApplying,responseCaseData.getAdditionalExecutorsNotApplying());
         verify(executorListMapperServiceMock, times(1))
-                .mapFromApplyingToAdditionalExecutors(any());
+                .mapAdditionalApplyingExecutors(any());
         verify(executorListMapperServiceMock, times(1))
                 .removeSolicitorFromApplyingList(any());
     }

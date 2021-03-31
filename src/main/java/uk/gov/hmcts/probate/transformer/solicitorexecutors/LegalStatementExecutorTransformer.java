@@ -51,7 +51,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         formatNames(caseData);
     }
 
-    public void formatDates(CaseData caseData) {
+    private void formatDates(CaseData caseData) {
         // Set dispenseWithNoticeLeaveGivenDate format
         if (caseData.getDispenseWithNoticeLeaveGivenDate() != null) {
             caseData.setDispenseWithNoticeLeaveGivenDateFormatted(
@@ -69,7 +69,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         }
     }
 
-    public void formatNames(CaseData caseData) {
+    private void formatNames(CaseData caseData) {
         caseData.setDeceasedForenames(FormattingService.capitaliseEachWord(caseData.getDeceasedForenames()));
         caseData.setDeceasedSurname(FormattingService.capitaliseEachWord(caseData.getDeceasedSurname()));
         caseData.setSolsSolicitorFirmName(FormattingService.capitaliseEachWord(caseData.getSolsSolicitorFirmName()));

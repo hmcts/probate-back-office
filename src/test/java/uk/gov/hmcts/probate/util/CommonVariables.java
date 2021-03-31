@@ -18,6 +18,11 @@ public class CommonVariables {
     public static final String YES = "Yes";
     public static final String NO = "No";
 
+    public static final String DECEASED_FORENAME = "Deceased forename";
+    public static final String DECEASED_SURNAME = "Deceased surname";
+    public static final String DECEASED_FORENAME_FORMATTED = "Deceased Forename";
+    public static final String DECEASED_SURNAME_FORMATTED = "Deceased Surname";
+
     public static final String SOLICITOR_SOT_FULLNAME = "Solicitor Forename Solicitor Surname";
     public static final String SOLICITOR_SOT_FORENAME = "Solicitor Forename";
     public static final String SOLICITOR_SOT_SURNAME = "Solicitor Surname";
@@ -65,6 +70,7 @@ public class CommonVariables {
     public static final String TRUST_CORP_NAME = "Trust Corp Name";
     public static final String LODGEMENT_ADDRESS = "London";
     public static final LocalDate DATE = LocalDate.of(2021, 1, 1);
+    public static final String DATE_FORMATTED = "1st January 2020";
     public static final String DISPENSE_WITH_NOTICE_LEAVE = "Dispense with notice";
     public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
     public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
