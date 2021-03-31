@@ -1137,7 +1137,7 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(builder);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
         builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
@@ -1224,7 +1224,7 @@ public class CallbackResponseTransformer {
                 .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(builder);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
