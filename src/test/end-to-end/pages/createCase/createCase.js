@@ -13,11 +13,19 @@ module.exports = async function (jurisdiction, caseType, event) {
     }
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-jurisdiction', jurisdiction);
+    if (testConfig.TestForCrossBrowser) {
+        await I.wait(5);
+    }
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-case-type', caseType);
+    if (testConfig.TestForCrossBrowser) {
+        await I.wait(5);
+    }
     await I.waitForEnabled({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-event', event);
-
+    if (testConfig.TestForCrossBrowser) {
+        await I.wait(5);
+    }
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
 };
