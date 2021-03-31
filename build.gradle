@@ -263,7 +263,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind

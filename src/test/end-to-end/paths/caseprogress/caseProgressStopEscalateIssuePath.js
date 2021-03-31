@@ -46,7 +46,13 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#willAccessOriginal-Yes'}}, 
+            {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
+            {locator: {css: '#willHasCodicils-No'}}]);
+
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#dispenseWithNotice-No'}},
