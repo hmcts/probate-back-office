@@ -30,10 +30,10 @@ module.exports = async function (optName) {
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');
-        await I.scrollTo('#nameOfFirmNamedInWill');        
+        await I.scrollTo('#nameOfFirmNamedInWill');
     }
     if (otherPartnersApplyingAsExecutorsVisible) {
-        await I.scrollTo('#otherPartnersApplyingAsExecutors');        
+        await I.scrollTo('#otherPartnersApplyingAsExecutors');
         await I.waitForClickable({css: '#otherPartnersApplyingAsExecutors button'});
     }
 };
