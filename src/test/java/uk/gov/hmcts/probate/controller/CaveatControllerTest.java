@@ -231,9 +231,9 @@ public class CaveatControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("The caveator email address is invalid. It must be at least 6 characters long, " +
-                    "include @ and . (full stop) characters. It should not include spaces or any of " +
-                    "these characters: * ( ) & ! / ;"))
+                .value("The caveator email address is invalid. It must be at least 6 characters long, "
+                    + "include @ and . (full stop) characters. It should not include spaces or any of "
+                    + "these characters: * ( ) & ! / ;"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
