@@ -109,9 +109,21 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseList() {
+    public void findCasesWithDateRangeReturnsCaseListExela() {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinDateRange("2019-02-05", "2019-02-22");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeExela("2019-02-05", "2019-02-22");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListHMRC() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeHMRC("2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));

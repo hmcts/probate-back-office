@@ -97,7 +97,7 @@ public class HmrcDataExtractServiceTest {
     public void shouldExtractFoundCasesToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findCaseStateWithinDateRange(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
         
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
@@ -139,7 +139,7 @@ public class HmrcDataExtractServiceTest {
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
-        when(caseQueryService.findCaseStateWithinDateRange(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
 

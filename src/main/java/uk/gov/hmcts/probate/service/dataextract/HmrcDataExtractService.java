@@ -29,7 +29,7 @@ public class HmrcDataExtractService {
         } else {
             log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
-            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinDateRange(fromDate, toDate);
+            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
             log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
                 fromDate, toDate, casesFound.size());
 

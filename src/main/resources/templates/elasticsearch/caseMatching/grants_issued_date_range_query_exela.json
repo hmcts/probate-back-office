@@ -1,6 +1,6 @@
 {
   "size": 2000,
-  "from": 1,
+  "from": 0,
   "query": {
     "bool": {
       "filter": [
@@ -15,6 +15,11 @@
               "gte": ":fromDate",
               "lte": ":toDate"
             }
+          }
+        },
+        {
+          "exists": {
+            "field": "data.scannedDocuments"
           }
         }
       ]

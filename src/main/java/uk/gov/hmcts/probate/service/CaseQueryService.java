@@ -59,8 +59,10 @@ public class CaseQueryService {
         "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
-    private static final String GRANT_RANGE_QUERY = "templates/elasticsearch/caseMatching/" 
-        + "grants_issued_date_range_query.json";
+    private static final String GRANT_RANGE_QUERY_EXELA = "templates/elasticsearch/caseMatching/"
+        + "grants_issued_date_range_query_exela.json";
+    private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
+        + "grants_issued_date_range_query_hmrc.json";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -85,18 +87,22 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinDateRange(String startDate, String endDate) {
-        String jsonQuery = getQueryTemplate()
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
         return runQuery(jsonQuery);
     }
 
-    private String getQueryTemplate() {
-        return fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY);
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
+            .replace(":fromDate", startDate)
+            .replace(":toDate", endDate);
+
+        return runQuery(jsonQuery);
     }
-    
+
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
 
         BoolQueryBuilder query = boolQuery();
