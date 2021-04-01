@@ -152,10 +152,11 @@ public class DocumentController {
         throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        @Valid CaseData caseData = caseDetails.getData();
 
         validateEmailAddresses(callbackRequest);
         registryDetailsService.getRegistryDetails(caseDetails);
+        @Valid CaseData caseData = caseDetails.getData();
+
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
@@ -290,7 +291,7 @@ public class DocumentController {
     }
 
     private void validateEmailAddresses(CallbackRequest callbackRequest) {
-        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+        for (CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule) {
             rule.validate(callbackRequest.getCaseDetails());
         }
     }

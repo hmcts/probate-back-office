@@ -265,7 +265,8 @@ public class DocumentControllerTest {
             .andReturn();
 
         verify(bulkPrintService)
-            .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+            .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+                any(Document.class), eq(true));
     }
 
     @Test
@@ -280,7 +281,8 @@ public class DocumentControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(
-                jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                    is(DIGITAL_GRANT.getTemplateName())))
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED), any(CaseDetails.class));
         verify(documentGeneratorService)
@@ -292,7 +294,8 @@ public class DocumentControllerTest {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
-        String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsGrantIntestacy.json");
+        String solicitorPayload = testUtils
+            .getStringFromFile("personalPayloadNotificationsGrantIntestacy.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
             .content(solicitorPayload)
@@ -519,9 +522,9 @@ public class DocumentControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                    .value("The primary applicant email address is invalid. " +
-                            "It must be at least 6 characters long, include @ and . (full stop) characters. " +
-                            "It should not include spaces or any of these characters: * ( ) & ! / ;"))
+                    .value("The primary applicant email address is invalid. "
+                        + "It must be at least 6 characters long, include @ and . (full stop) characters. "
+                        + "It should not include spaces or any of these characters: * ( ) & ! / ;"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }

@@ -188,7 +188,7 @@ public class CaveatController {
     }
 
     private void validateEmailAddresses(CaveatCallbackRequest caveatCallbackRequest) {
-        for(CaveatorEmailAddressValidationRule rule : allCaveatorEmailAddressValidationRule){
+        for (CaveatorEmailAddressValidationRule rule : allCaveatorEmailAddressValidationRule) {
             rule.validate(caveatCallbackRequest.getCaseDetails());
         }
     }

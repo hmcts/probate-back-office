@@ -42,7 +42,11 @@ import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -110,7 +114,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
-    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule = new ArrayList<CaseDetailsEmailValidationRule>();
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule =
+        new ArrayList<CaseDetailsEmailValidationRule>();
 
     private BusinessValidationController underTest;
 
@@ -484,7 +489,8 @@ public class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null))
+            .thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
             .thenReturn(Arrays.asList(FieldErrorResponse.builder().build()));
         Document documentMock = Mockito.mock(Document.class);
