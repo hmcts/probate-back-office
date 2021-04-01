@@ -20,7 +20,7 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress_PostCode', deceasedDetailsConfig.address_postcode);
     await I.fillField('#deceasedAddress_Country', deceasedDetailsConfig.address_country);
 
-    await I.selectOption('#ihtFormId', deceasedDetailsConfig.page2_solsIHTFormValue);
+    await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
 

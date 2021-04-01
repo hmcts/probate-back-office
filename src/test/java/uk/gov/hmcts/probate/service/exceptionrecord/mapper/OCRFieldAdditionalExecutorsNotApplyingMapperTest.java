@@ -5,7 +5,6 @@ import org.junit.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplying;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
@@ -25,7 +24,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     private static final String EXECUTOR_NOT_APPLYING_3_REASON = "F";
 
     private OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper
-            = new OCRFieldAdditionalExecutorsNotApplyingMapper();
+        = new OCRFieldAdditionalExecutorsNotApplyingMapper();
 
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFields2;
@@ -37,42 +36,42 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     @Before
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
-                .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
-                .executorsNotApplying0notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_1_REASON)
-                .build();
+            .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
+            .executorsNotApplying0notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_1_REASON)
+            .build();
 
         ocrFields2 = ExceptionRecordOCRFields.builder()
-                .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
-                .executorsNotApplying0notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_1_REASON)
-                .executorsNotApplying1notApplyingExecutorName(EXECUTOR_NOT_APPLYING_2_NAME)
-                .executorsNotApplying1notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_2_REASON)
-                .executorsNotApplying2notApplyingExecutorName(EXECUTOR_NOT_APPLYING_3_NAME)
-                .executorsNotApplying2notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_3_REASON)
-                .build();
+            .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
+            .executorsNotApplying0notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_1_REASON)
+            .executorsNotApplying1notApplyingExecutorName(EXECUTOR_NOT_APPLYING_2_NAME)
+            .executorsNotApplying1notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_2_REASON)
+            .executorsNotApplying2notApplyingExecutorName(EXECUTOR_NOT_APPLYING_3_NAME)
+            .executorsNotApplying2notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_3_REASON)
+            .build();
 
         ocrFields3 = ExceptionRecordOCRFields.builder()
-                .build();
+            .build();
 
         ocrFields4 = ExceptionRecordOCRFields.builder()
-                .executorsNotApplying0notApplyingExecutorName(null)
-                .executorsNotApplying0notApplyingExecutorReason(null)
-                .build();
+            .executorsNotApplying0notApplyingExecutorName(null)
+            .executorsNotApplying0notApplyingExecutorReason(null)
+            .build();
 
         ocrFields5 = ExceptionRecordOCRFields.builder()
-                .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
-                .executorsNotApplying0notApplyingExecutorReason(null)
-                .build();
+            .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
+            .executorsNotApplying0notApplyingExecutorReason(null)
+            .build();
 
         ocrFields6 = ExceptionRecordOCRFields.builder()
-                .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
-                .executorsNotApplying0notApplyingExecutorReason("QQ")
-                .build();
+            .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
+            .executorsNotApplying0notApplyingExecutorReason("QQ")
+            .build();
     }
 
     @Test
     public void testExecutorsNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields);
         assertEquals(EXECUTOR_NOT_APPLYING_1_NAME, response.get(0).getValue().getNotApplyingExecutorName());
         assertEquals(ExecutorNotApplyingReason.DIED_BEFORE, response.get(0).getValue().getNotApplyingExecutorReason());
         assertTrue(response.get(0).getValue().getNotApplyingExecutorDiedBefore());
@@ -83,7 +82,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     @Test
     public void testMultipleExecutorsNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields2);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields2);
         assertEquals(EXECUTOR_NOT_APPLYING_1_NAME, response.get(0).getValue().getNotApplyingExecutorName());
         assertEquals(ExecutorNotApplyingReason.DIED_BEFORE, response.get(0).getValue().getNotApplyingExecutorReason());
         assertTrue(response.get(0).getValue().getNotApplyingExecutorDiedBefore());
@@ -93,7 +92,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
         assertFalse(response.get(1).getValue().getNotApplyingExecutorDiedBefore());
         assertTrue(response.get(1).getValue().getNotApplyingExecutorIsDead());
         assertEquals(EXECUTOR_NOT_APPLYING_3_NAME, response.get(2).getValue().getNotApplyingExecutorName());
-        assertEquals(ExecutorNotApplyingReason.MENTALLY_INCAPABLE, response.get(2).getValue().getNotApplyingExecutorReason());
+        assertEquals(ExecutorNotApplyingReason.MENTALLY_INCAPABLE,
+            response.get(2).getValue().getNotApplyingExecutorReason());
         assertFalse(response.get(2).getValue().getNotApplyingExecutorDiedBefore());
         assertFalse(response.get(2).getValue().getNotApplyingExecutorIsDead());
         assertEquals(3, response.size());
@@ -102,26 +102,26 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     @Test
     public void testNoExecutorNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields3);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields3);
         assertEquals(0, response.size());
     }
 
     @Test
     public void testNullExecutorNotApplyingShouldReturnNoRow() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields4);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields4);
         assertEquals(0, response.size());
     }
 
     @Test(expected = OCRMappingException.class)
     public void testMissingReasonExecutorNotApplyingShouldError() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields5);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields5);
     }
 
     @Test(expected = OCRMappingException.class)
     public void testInvalidReasonExecutorNotApplyingShouldError() {
         List<CollectionMember<ExecutorNotApplying>> response
-                = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
+            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
     }
 }

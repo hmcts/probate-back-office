@@ -3,7 +3,11 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+
+import java.util.List;
 
 @Jacksonized
 @SuperBuilder
@@ -15,6 +19,8 @@ public class ResponseCaseDataParent {
     protected String reprintNumberOfCopies;
 
     protected DynamicList solsAmendLegalStatmentSelect;
+
+    protected List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
 
     protected String declarationCheckbox;
     protected String ihtGrossValueField;
@@ -30,4 +36,8 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+    protected String taskList;
+    protected String escalatedDate;
+    protected String authenticatedDate;
+    protected String iht217;
 }
