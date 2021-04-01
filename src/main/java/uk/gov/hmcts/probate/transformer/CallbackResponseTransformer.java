@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -108,6 +109,7 @@ public class CallbackResponseTransformer {
     private final TaskListUpdateService taskListUpdateService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
+    private final PDFManagementService pdfManagementService;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
@@ -419,6 +421,8 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.caseType(caseType);
         }
 
+        Document coversheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+        responseCaseDataBuilder.solsCoversheetDocument(coversheet.getDocumentLink());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -580,6 +584,7 @@ public class CallbackResponseTransformer {
             .totalFee(transformToString(caseData.getTotalFee()))
 
             .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
+            .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .casePrinted(caseData.getCasePrinted())
             .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
             .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())

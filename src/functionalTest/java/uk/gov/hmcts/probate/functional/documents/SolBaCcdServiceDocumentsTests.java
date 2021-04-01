@@ -104,6 +104,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PREVIEW_LETTER = "/document/previewLetter";
     private static final String RE_PRINT = "/document/reprint";
 
+    public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
+
+
     private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbate.json";
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
@@ -217,6 +222,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String documentUrl =
             jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+    }
+
+    private String generateDocument(String jsonFileName, String path, String documentName) {
+        Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+
+        String documentUrl =
+            jsonPath.get("data." + documentName + ".document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -1081,4 +1102,55 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Forbidden"));
 
     }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() {
+        String payload = "/caseprogress/04a-caseCreated.json";
+        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils.
+            getJsonFromFile("/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetGopWillHasCodicils() {
+        String payload = "/caseprogress/04b-caseCreated.json";
+        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillHasCodicils");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetGopIht217() {
+        String payload = "/caseprogress/04c-caseCreated.json";
+        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04c-caseCreatedIHT217");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetIntestacy() {
+        String payload = "/caseprogressintestacy/04-caseCreated.json";
+        String response = generateDocument(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogressintestacy/expectedDocumentText/04-caseCreated");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetAdmonWill() {
+        String payload = "/caseprogressadmonwill/04-caseCreated.json";
+        String response = generateDocument(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
+        assertTrue(response.contains(expectedText));
+
+    }
+
 }

@@ -39,7 +39,6 @@
       "paperForm": "no",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
-      "willHasCodicils": "No",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
@@ -147,14 +146,11 @@
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
+      "iht217": "Yes",
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title",
-      "solsLifeInterest": "null",
-      "solsResiduary": "null",
-      "solsEntitledMinority": "null",
-      "solsDiedOrNotApplying": "null"
+      "solsSOTJobTitle": "job title"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
@@ -174,7 +170,6 @@
       },
       "deceasedAnyOtherNames": "PUBLIC",
       "solsFeeAccountNumber": "PUBLIC",
-      "willHasCodicils": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "willAccessOriginal": "PUBLIC",
       "willExists": "PUBLIC",
@@ -248,7 +243,6 @@
       },
       "deceasedAnyOtherNames": "PUBLIC",
       "solsFeeAccountNumber": "PUBLIC",
-      "willHasCodicils": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "willAccessOriginal": "PUBLIC",
       "willExists": "PUBLIC",
@@ -339,7 +333,6 @@
         "AddressLine3": ""
       },
       "deceasedAnyOtherNames": "No",
-      "willHasCodicils": "No",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
@@ -404,7 +397,6 @@
         "classification": "PUBLIC"
       },
       "deceasedAnyOtherNames": "PUBLIC",
-      "willHasCodicils": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "willAccessOriginal": "PUBLIC",
       "willExists": "PUBLIC",
@@ -471,7 +463,6 @@
         "classification": "PUBLIC"
       },
       "deceasedAnyOtherNames": "PUBLIC",
-      "willHasCodicils": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "willAccessOriginal": "PUBLIC",
       "willExists": "PUBLIC",

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +34,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     private static final String CASE_MATCHING_READY_TO_ISSUE_URL = "/case/validateCheckListDetails";
     private static final String GENERATE_GRANT_URL = "/document/generate-grant";
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+    private final FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
 
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
@@ -664,11 +666,12 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  "
             + "<div class=\"govuk-details__text\">\n    "
-            + "You now need to send us<br/><ul><li>your reference number 1528365719153338 written on a "
-            + "piece of paper</li>"
+            + "You now need to send us<br/><ul><li>the printed <a href=\"#\" target=\"_blank\""
+            + " rel=\"noopener noreferrer\" class=\"govuk-link\">coversheet</a>"
+            + " or your reference number 1528365719153338 written on a sheet of paper</li>"
             + "<li>a photocopy of the signed legal "
-            + "statement "
-            + "and declaration</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\">"
+            + "statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT205</li></ul>"
+            + "\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -783,9 +786,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts "
             + "and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">"
-            + "\n    You now need to send us<br/><ul><li>your reference "
-            + "number 1528365719153338 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
+            + "\n    You now need to send us<br/><ul><li>the printed coversheet or your reference "
+            + "number 1528365719153338 written on a sheet of paper</li>"
+            + "<li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the"
+            + " inheritance tax form IHT205</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -986,9 +990,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>"
-            + "your reference number 1528365719153338 written on a piece of paper</li>"
+            + "the printed coversheet or your reference number 1528365719153338 written on a sheet of paper</li>"
             + "<li>a photocopy of the signed legal statement and "
-            + "declaration</li></ul>\n  </div>\n</details>"
+            + "declaration</li><li>the original will</li><li>the inheritance tax form IHT205</li></ul>\n"
+            + "  </div>\n</details>"
             + "</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height"
             + "=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1114,9 +1119,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    </span>"
             + "\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now "
-            + "need to send us<br/><ul><li>your reference number "
-            + "1528365719153338 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
+            + "need to send us<br/><ul><li>the printed coversheet or your reference number "
+            + "1528365719153338 written on a sheet of paper</li><li>a photocopy of the signed legal statement and"
+            + " declaration</li><li>the original will</li><li>the inheritance tax form IHT205</li></ul>\n  "
+            + "</div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1242,9 +1248,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts "
             + "and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/>"
-            + "<ul><li>your reference number 1528365719153338 written on a piece of paper</li>"
+            + "<ul><li>the printed <a href=\"#\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">coversheet</a> or your reference number"
+            + " 1528365719153338 written on a sheet of paper</li>"
             + "<li>a photocopy of the signed legal statement "
-            + "and declaration</li></ul>\n  </div>\n"
+            + "and declaration</li><li>the original will</li><li>the inheritance tax form IHT205</li></ul>\n  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img al"
             + "ign=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -1364,9 +1371,9 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<span class=\"govuk-details__summary-text\">\n      "
             + "View the documents needed by HM Courts and Tribunal Service\n    "
             + "</span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul>"
-            + "<li>your reference number 1528365719153338 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement "
-            + "and declaration</li></ul>\n  </div>\n</details></p></div>"
+            + "<li>the printed coversheet or your reference number 1528365719153338 written on a sheet of paper</li>"
+            + "<li>a photocopy of the signed legal statement and declaration</li><li>the original will</li>"
+            + "<li>the inheritance tax form IHT205</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1486,9 +1493,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">"
             + "\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">"
             + "\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>"
-            + "\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>your reference number "
-            + "1528365719153338 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n  </div>\n</details></p></div>"
+            + "\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>the printed coversheet"
+            + " or your reference number 1528365719153338 written on a sheet of paper</li>"
+            + "<li>a photocopy of the signed legal statement and declaration</li>"
+            + "<li>the original will</li><li>the inheritance tax form IHT205</li></ul>\n  </div>\n</details></p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1556,6 +1564,46 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
         assertEquals(expectedHtml, taskList);
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithRenouncingExecutors() {
+        final String response = postCwJson("caseprogress/04a-caseCreated.json", TASKLIST_UPDATE_URL);
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String taskList = jsonPath.get("data.taskList");
+        String expected = fileSystemResourceService.getFileFromResourceAsString(
+            "json/caseprogress/expectedHTML/04a-caseCreatedRenouncingExecutors");
+        expected = expected
+            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
+            .replaceAll("<executorNotApplying1/>", "Solicitor_fn Solicitor_ln")
+            .replaceAll("<executorNotApplying2/>", "exec2 Renounced");
+        assertEquals(expected, taskList);
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithCodicils() {
+        final String response = postCwJson("caseprogress/04b-caseCreated.json", TASKLIST_UPDATE_URL);
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String taskList = jsonPath.get("data.taskList");
+        String expected = fileSystemResourceService.getFileFromResourceAsString(
+            "json/caseprogress/expectedHTML/04b-caseCreatedWillHasCodicils");
+        expected = expected
+            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
+            .replaceAll("<will/>", "the original will and any codicils");
+        assertEquals(expected, taskList);
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithIht217() {
+        final String response = postCwJson("caseprogress/04c-caseCreated.json", TASKLIST_UPDATE_URL);
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String taskList = jsonPath.get("data.taskList");
+        String expected = fileSystemResourceService.getFileFromResourceAsString(
+            "json/caseprogress/expectedHTML/04c-caseCreatedIHT217");
+        expected = expected
+            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
+            .replaceAll("<ihtForm/>", "the inheritance tax form IHT205 and IHT217");
+        assertEquals(expected, taskList);
     }
 
     private String postCwJson(String jsonFileName, String path) {

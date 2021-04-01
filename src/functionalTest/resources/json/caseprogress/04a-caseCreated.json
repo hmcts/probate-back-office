@@ -24,7 +24,7 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
-      "otherExecutorExists": "No",
+      "otherExecutorExists": "Yes",
       "outsideUKGrantCopies": null,
       "applicationType": "Solicitor",
       "deceasedAddress": {
@@ -43,7 +43,7 @@
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
-      "solsWillType": "WillLeftAnnexed",
+      "solsWillType": "WillLeft",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
@@ -51,10 +51,14 @@
       "solsApplicantSiblings": null,
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
-      "solsSolicitorIsExec": "No",
-      "solsSolicitorIsMainApplicant": null,
-      "solsSolicitorIsApplying": null,
-      "solsSolicitorNotApplyingReason": null,
+      "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsMainApplicant": "No",
+      "solsSolicitorIsApplying": "No",
+      "solsSolicitorNotApplyingReason": "Renunciation",
+      "willDispose": "Yes",
+      "englishWill": "Yes",
+      "appointExec": "Yes",
+      "applicationGrounds": "grounds",
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
@@ -82,53 +86,23 @@
       "solsPaymentMethods": "fee account",
       "solsAdditionalExecutorList": [
         {
-          "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+          "id": "solicitor",
           "value": {
-            "additionalApplying": "Yes",
-            "additionalExecAddress": {
-              "County": "county",
-              "Country": "country",
-              "PostCode": "postcode",
-              "PostTown": "posttown",
-              "AddressLine1": "addressline 1",
-              "AddressLine2": "addressline 2",
-              "AddressLine3": "addressline 3"
-            },
-            "additionalExecLastname": "exln1",
-            "additionalExecForenames": "exfn1",
-            "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "Alias name exfn1"
-          }
-        },
-        {
-          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
-          "value": {
-            "additionalApplying": "No",
-            "additionalExecLastname": "exln2",
-            "additionalExecForenames": "exfn2",
-            "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "alias name",
-            "additionalExecReasonNotApplying": "DiedBefore"
-          }
-        },
-
-        {
-          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
-          "value": {
-            "additionalApplying": "Yes",
-            "additionalExecLastname": "ex3ln",
-            "additionalExecForenames": "ex3fn",
+            "additionalExecForenames": "Solicitor_fn",
+            "additionalExecLastname": "Solicitor_ln",
             "additionalExecNameOnWill": "No",
-            "additionalExecReasonNotApplying": "DiedBefore",
-            "additionalExecAddress": {
-              "County": null,
-              "Country": null,
-              "PostCode": "postcode",
-              "PostTown": null,
-              "AddressLine1": "addressline 1",
-              "AddressLine2": null,
-              "AddressLine3": null
-            }
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "Renunciation"
+          }
+        },
+        {
+          "id": "149ebc69-c8be-4d90-94dd-f00715526779",
+          "value": {
+            "additionalExecForenames": "exec2",
+            "additionalExecLastname": "Renounced",
+            "additionalExecNameOnWill": "No",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "Renunciation"
           }
         }
       ],
@@ -141,6 +115,57 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
+      "additionalExecutorsNotApplying": [
+        {
+          "id": "solicitor",
+          "value": {
+            "notApplyingExecutorName": "solfn solsn",
+            "notApplyingExecutorReason": "Renunciation"
+          }
+        }
+      ],
+      "executorsApplyingForLegalStatement": [
+        {
+          "id": null,
+          "value": {
+            "additionalExecForenames": "exec",
+            "additionalExecLastname": "applying",
+            "additionalExecNameOnWill": "No",
+            "additionalApplying": "Yes",
+            "additionalExecAddress": {
+              "addressLine1": "Line 1",
+              "addressLine2": null,
+              "addressLine3": null,
+              "county": null,
+              "postTown":"London",
+              "country": "United Kingdom",
+              "postCode": "EC3A 2AD"
+            }
+          }
+        }
+      ],
+      "executorsNotApplyingForLegalStatement": [
+        {
+          "id": "solicitor",
+          "value": {
+            "additionalExecForenames": "solfn",
+            "additionalExecLastname": "solsn",
+            "additionalExecNameOnWill": "No",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "Renunciation"
+          }
+        },
+        {
+          "id": "149ebc69-c8be-4d90-94dd-f00715526779",
+          "value": {
+            "additionalExecForenames": "exec2",
+            "additionalExecLastname": "Renounced",
+            "additionalExecNameOnWill": "No",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "Renunciation"
+          }
+        }
+      ],
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
@@ -150,11 +175,7 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title",
-      "solsLifeInterest": "null",
-      "solsResiduary": "null",
-      "solsEntitledMinority": "null",
-      "solsDiedOrNotApplying": "null"
+      "solsSOTJobTitle": "job title"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
@@ -186,6 +207,10 @@
       "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
+      "willDispose": "PUBLIC",
+      "englishWill": "PUBLIC",
+      "appointExec": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "solsSOTNeedToUpdate": "PUBLIC",
       "primaryApplicantForenames": "PUBLIC",
       "primaryApplicantAddress": {
@@ -259,6 +284,10 @@
       "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
+      "willDispose": "PUBLIC",
+      "englishWill": "PUBLIC",
+      "appointExec": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "deceasedDateOfDeath": "PUBLIC",
       "solsSOTNeedToUpdate": "PUBLIC",
       "primaryApplicantForenames": "PUBLIC",
@@ -327,7 +356,7 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
-      "otherExecutorExists": "No",
+      "otherExecutorExists": "Yes",
       "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
@@ -346,10 +375,14 @@
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
-      "solsSolicitorIsExec": "No",
-      "solsSolicitorIsMainApplicant": null,
-      "solsSolicitorIsApplying": null,
-      "solsSolicitorNotApplyingReason": null,
+      "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsMainApplicant": "No",
+      "solsSolicitorIsApplying": "No",
+      "solsSolicitorNotApplyingReason": "Renunciation",
+      "willDispose": "Yes",
+      "englishWill": "Yes",
+      "appointExec": "Yes",
+      "applicationGrounds": "grounds",
       "deceasedDateOfDeath": "2000-01-01",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
@@ -414,6 +447,10 @@
       "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
+      "willDispose": "PUBLIC",
+      "englishWill": "PUBLIC",
+      "appointExec": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "solsSolicitorFirmName": "PUBLIC",
       "deceasedDateOfDeath": "PUBLIC",
       "primaryApplicantForenames": "PUBLIC",
@@ -482,6 +519,10 @@
       "solsSolicitorIsMainApplicant": "PUBLIC",
       "solsSolicitorIsApplying": "PUBLIC",
       "solsSolicitorNotApplyingReason": "PUBLIC",
+      "willDispose": "PUBLIC",
+      "englishWill": "PUBLIC",
+      "appointExec": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
       "deceasedDateOfDeath": "PUBLIC",
       "primaryApplicantForenames": "PUBLIC",
       "primaryApplicantAddress": {
