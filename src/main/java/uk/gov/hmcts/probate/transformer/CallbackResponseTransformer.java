@@ -686,7 +686,6 @@ public class CallbackResponseTransformer {
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
-            .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
             .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solsWillType(caseData.getSolsWillType())
@@ -971,7 +970,8 @@ public class CallbackResponseTransformer {
             .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+            .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder

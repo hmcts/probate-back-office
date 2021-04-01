@@ -48,6 +48,7 @@ import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
+import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
@@ -133,7 +134,7 @@ public class CallbackResponseTransformerTest {
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String DOMICILITY_COUNTRY = "OtherCountry";
 
-    // private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final String APPLICATION_GROUNDS = "Application grounds";
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
     private static final RegistryLocation BULK_SCAN_REGISTRY_LOCATION
@@ -262,6 +263,8 @@ public class CallbackResponseTransformerTest {
     private static final List<CollectionMember<CodicilAddedDate>> VALID_ADDED_CODICIL_DATES =
         Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(VALID_CODICIL_DATE).build()));
     private static final String NO_ACCESS_WILL_REASON = "I lost it";
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -483,7 +486,7 @@ public class CallbackResponseTransformerTest {
             .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
             .boCaseStopReasonList(STOP_REASONS_LIST)
             .boStopDetails(STOP_DETAILS)
-            // .applicationGrounds(APPLICATION_GROUNDS)  - commented for dtsb-904 as likely to be reinstated
+            .applicationGrounds(APPLICATION_GROUNDS)
             .willDispose(YES)
             .englishWill(NO)
             .appointExec(YES)
@@ -660,6 +663,7 @@ public class CallbackResponseTransformerTest {
             .grantDelayedNotificationSent(TRUE)
             .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
             .grantAwaitingDocumentatioNotificationSent(TRUE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();
@@ -3059,6 +3063,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
 
         assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
+        assertEquals(BULK_SCAN_ENVELOPES, grantOfRepresentationData.getBulkScanEnvelopes());
 
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());

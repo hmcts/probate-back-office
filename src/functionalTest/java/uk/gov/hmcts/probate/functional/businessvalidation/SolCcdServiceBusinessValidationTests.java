@@ -370,8 +370,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
-
     }
 
     @Test
@@ -379,6 +379,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
+        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
@@ -386,6 +387,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
@@ -394,6 +396,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
@@ -402,7 +405,16 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
+    }
+
+    @Test
+    public void verifySchemaVersionPaperFormNoPersonalApplication() {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
