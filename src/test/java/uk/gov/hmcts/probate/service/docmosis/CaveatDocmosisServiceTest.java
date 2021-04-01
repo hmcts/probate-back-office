@@ -32,7 +32,8 @@ public class CaveatDocmosisServiceTest {
     private static final String CAV_EXPIRY_DATE = "31st December 2019";
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
-    Map<String, Registry> registries = new HashMap<>();
+    Map<String, Registry> englishRegistries = new HashMap<>();
+    Map<String, Registry> welshRegistries = new HashMap<>();
     @InjectMocks
     private CaveatDocmosisService caveatDocmosisService;
     @Mock
@@ -47,14 +48,16 @@ public class CaveatDocmosisServiceTest {
         MockitoAnnotations.initMocks(this);
         registry.setName("leeds");
         registry.setPhone("123456789");
-        registries = mapper.convertValue(registry, Map.class);
+        englishRegistries = mapper.convertValue(registry, Map.class);
+        welshRegistries = mapper.convertValue(registry, Map.class);
 
-        when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(englishRegistries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(welshRegistries);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(CAV_EXPIRY_DATE);
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    public void testCreateDataAsPlaceholdersEnglishRegistry() {
         CaveatData caveatData = CaveatData.builder()
             .registryLocation("leeds")
             .expiryDate(LocalDate.of(2019, 12, 31))
@@ -64,7 +67,26 @@ public class CaveatDocmosisServiceTest {
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
-        assertEquals(placeholders.get("registry"), registries.get(
+        assertEquals(placeholders.get("registry"), englishRegistries.get(
+            caveatData.getRegistryLocation().toLowerCase()));
+        assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("caseReference"),
+            ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
+        assertEquals(placeholders.get("caveatExpiryDate"), CAV_EXPIRY_DATE);
+    }
+
+    @Test
+    public void testCreateDataAsPlaceholdersWelshRegistry() {
+        CaveatData caveatData = CaveatData.builder()
+            .registryLocation("leeds")
+            .expiryDate(LocalDate.of(2019, 12, 31))
+            .build();
+        CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+        Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
+
+        assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
+        assertEquals(placeholders.get("registry"), welshRegistries.get(
             caveatData.getRegistryLocation().toLowerCase()));
         assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         assertEquals(placeholders.get("caseReference"),

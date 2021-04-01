@@ -50,13 +50,15 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
+    private static final String PERSONALISATION_REGISTRY_WELSH = "registryWelsh";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
-    Map<String, Registry> registries = new HashMap<>();
+    Map<String, Registry> englishRegistries = new HashMap<>();
+    Map<String, Registry> welshRegistries = new HashMap<>();
     @InjectMocks
     private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
     @Mock
@@ -80,7 +82,8 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
 
         registry.setName("leeds");
         registry.setPhone("123456789");
-        registries = mapper.convertValue(registry, Map.class);
+        englishRegistries = mapper.convertValue(registry, Map.class);
+        welshRegistries = mapper.convertValue(registry, Map.class);
 
         CaseData caseData = CaseData.builder()
             .registryLocation("leeds")
@@ -117,7 +120,8 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
             .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
-        when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(englishRegistries);
+        when(registriesPropertiesMock.getWelsh()).thenReturn(welshRegistries);
         when(addressFormatterService.formatAddress(any())).thenReturn(PERSONALISATION_CAVEATOR_ADDRESS);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails))
@@ -126,7 +130,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    public void testCreateDataAsPlaceholdersEnglishRegistry() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         Map<String, Object> placeholders =
@@ -135,9 +139,37 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
             placeholders.get(PERSONALISATION_CASE_REFERENCE));
         assertEquals(generatedDateFormat.format(new Date()), placeholders.get(PERSONALISATION_GENERATED_DATE));
-        assertEquals(registries.get(
+        assertEquals(englishRegistries.get(
             caseDetails.getData().getRegistryLocation().toLowerCase()),
             placeholders.get(PERSONALISATION_REGISTRY));
+        assertEquals(
+            "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov"
+                + ".uk/inherits-someone-dies-without-will",
+            placeholders.get(PERSONALISATION_PA8AURL));
+        assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
+            placeholders.get(PERSONALISATION_PA8BURL));
+        assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
+        assertEquals("caveatorAddress",
+            placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
+        assertEquals(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+            placeholders.get("caveatExpiryDate"));
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+            placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
+    }
+
+    @Test
+    public void testCreateDataAsPlaceholdersWelshRegistry() {
+        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+
+        Map<String, Object> placeholders =
+            grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
+
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+            placeholders.get(PERSONALISATION_CASE_REFERENCE));
+        assertEquals(generatedDateFormat.format(new Date()), placeholders.get(PERSONALISATION_GENERATED_DATE));
+        assertEquals(welshRegistries.get(
+            caseDetails.getData().getRegistryLocation().toLowerCase()),
+            placeholders.get(PERSONALISATION_REGISTRY_WELSH));
         assertEquals(
             "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov"
                 + ".uk/inherits-someone-dies-without-will",

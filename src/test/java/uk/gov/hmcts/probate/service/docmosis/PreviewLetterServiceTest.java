@@ -40,6 +40,7 @@ public class PreviewLetterServiceTest {
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
+    private static final String PERSONALISATION_REGISTRY_WELSH = "registryWelsh";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
@@ -47,7 +48,8 @@ public class PreviewLetterServiceTest {
     private static final String YES = "Yes";
     Registry registry = new Registry();
     ObjectMapper mapper = new ObjectMapper();
-    Map<String, Registry> registries = new HashMap<>();
+    Map<String, Registry> englishRegistries = new HashMap<>();
+    Map<String, Registry> welshRegistries = new HashMap<>();
     @InjectMocks
     private PreviewLetterService previewLetterService;
     @Mock
@@ -77,7 +79,8 @@ public class PreviewLetterServiceTest {
 
         registry.setName("leeds");
         registry.setPhone("123456789");
-        registries = mapper.convertValue(registry, Map.class);
+        englishRegistries = mapper.convertValue(registry, Map.class);
+        welshRegistries = mapper.convertValue(registry, Map.class);
 
         DynamicList dynamicList1 =
             DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
@@ -122,7 +125,8 @@ public class PreviewLetterServiceTest {
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         caseDetails.setRegistryTelephone("123456789");
 
-        when(registriesPropertiesMock.getEnglish()).thenReturn(registries);
+        when(registriesPropertiesMock.getEnglish()).thenReturn(englishRegistries);
+        when(registriesPropertiesMock.getWelsh()).thenReturn(welshRegistries);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails))
             .thenReturn(mapper.convertValue(caseDetails, Map.class));
 
@@ -130,7 +134,7 @@ public class PreviewLetterServiceTest {
     }
 
     @Test
-    public void testAddLetterDataNoMatchedDetailOptional() {
+    public void testAddLetterDataNoMatchedDetailOptionalEnglishRegistry() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
@@ -138,9 +142,23 @@ public class PreviewLetterServiceTest {
         assertEquals(3, ((List) placeholders.get("templateList")).size());
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
             placeholders.get(PERSONALISATION_CASE_REFERENCE));
-        assertEquals(registries.get(
+        assertEquals(englishRegistries.get(
             caseDetails.getData().getRegistryLocation().toLowerCase()),
             placeholders.get(PERSONALISATION_REGISTRY));
+    }
+
+    @Test
+    public void testAddLetterDataNoMatchedDetailOptionalWelshRegistry() {
+        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+
+        Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
+
+        assertEquals(3, ((List) placeholders.get("templateList")).size());
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+            placeholders.get(PERSONALISATION_CASE_REFERENCE));
+        assertEquals(welshRegistries.get(
+            caseDetails.getData().getRegistryLocation().toLowerCase()),
+            placeholders.get(PERSONALISATION_REGISTRY_WELSH));
     }
 }
 
