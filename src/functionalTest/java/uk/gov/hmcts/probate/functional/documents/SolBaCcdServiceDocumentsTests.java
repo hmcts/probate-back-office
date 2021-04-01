@@ -1089,6 +1089,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD))
                 .when().post(GENERATE_GRANT).andReturn();
-        assertTrue(jsonResponse.getBody().asString().contains("\"evidenceHandled\": \"Yes\""));
+        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
     }
 }
