@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -23,6 +24,7 @@ public class ResponseCaseDataParent {
     protected final DynamicList reprintDocument;
     protected final String reprintNumberOfCopies;
     protected final DynamicList solsAmendLegalStatmentSelect;
+    protected List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
     protected final String declarationCheckbox;
     protected final String ihtGrossValueField;
     protected final String ihtNetValueField;

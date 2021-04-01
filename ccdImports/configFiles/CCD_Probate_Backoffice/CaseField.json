@@ -389,5 +389,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "nameOfSucceededFirm", "Label": "Name of firm that has succeeded to, and carried on the practice", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "morePartnersHoldingPowerReserved", "Label": "Is there more than one partner holding power reserved?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "otherPartnersApplyingAsExecutors", "Label": "Add all partners that are applying to act as an executor", "HintText": "Maximum 4", "FieldType": "Collection", "FieldTypeParameter": "OtherPartnerExecutorApplying", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationGrounds", "Label": "Please state the grounds for making this application and any information in support:", "FieldType": "TextArea", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationGrounds", "Label": "Please state the grounds for making this application and any information in support:", "FieldType": "TextArea", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkScanEnvelopes", "Label": "Bulk Scan Envelopes", "FieldType": "Collection", "FieldTypeParameter": "BulkScanEnvelope", "SecurityClassification": "PUBLIC"}
 ]
