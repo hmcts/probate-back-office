@@ -224,11 +224,13 @@ public class TaskStateRenderer {
         String ihtText = "";
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "the inheritance tax form ";
+            ihtText = "<li>the inheritance tax form ";
             if ("Yes".equals(data.getIht217())) {
-                ihtForm = "IHT205 and IHT217";
+                ihtForm = "IHT205 and IHT217</li>";
+            } else if ("".equals(ihtFormValue)) {
+                ihtText = "";
             } else {
-                ihtForm = data.getIhtFormId();
+                ihtForm = ihtFormValue + "</li>";
             }
         }
 

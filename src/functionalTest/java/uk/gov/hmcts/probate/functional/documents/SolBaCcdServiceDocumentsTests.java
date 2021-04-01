@@ -194,6 +194,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         return response;
     }
 
+    private String generateDocument(String jsonFileName, String path, String documentName) {
+        Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+
+        String documentUrl =
+            jsonPath.get("data." + documentName + ".document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+    }
+
     private String generateNonProbateDocument(String jsonFileName, String path) {
 
         Response jsonResponse = RestAssured.given()
@@ -222,22 +238,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String documentUrl =
             jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
-        return response;
-    }
-
-    private String generateDocument(String jsonFileName, String path, String documentName) {
-        Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path).andReturn();
-
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-
-        String documentUrl =
-            jsonPath.get("data." + documentName + ".document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -1107,8 +1107,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() {
         String payload = "/caseprogress/04a-caseCreated.json";
         String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
-        String expectedText = utils.
-            getJsonFromFile("/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
         assertTrue(response.contains(expectedText));
 
     }
