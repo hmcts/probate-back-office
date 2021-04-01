@@ -2,7 +2,6 @@
     "tabName": "Deceased",
     "fields": [
       "Was the deceased domiciled in England or Wales at the time of their death?",
-      "In what country was the deceased domiciled at the date of death?",
       "What type of date of death is?",
       "Date of death",
       "Date of birth",
@@ -26,8 +25,7 @@
       "page4_deceasedDod_long",
       "page4_dateOfDeathType",
       "page4_deceasedAlias",
-      "page8_deceasedDomicileInEngWalesYes",
-      "page8_domicilityCountry",
+      "page8_deceasedDomicileInEngWales",
       "address_line1",
       "address_line2",
       "address_line3",

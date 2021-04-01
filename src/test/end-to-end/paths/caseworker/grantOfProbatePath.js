@@ -115,6 +115,7 @@ Scenario('10 BO Grant of Representation E2E (Personal) - Grant issued', async fu
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
     await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
     await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
