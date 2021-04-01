@@ -10,8 +10,7 @@ module.exports = async function (crud) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
-        await I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
+        await I.click(`#deceasedDomicileInEngWales-Yes`);
         await I.click('#ukEstate > div > button:nth-child(2)');
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.25);
@@ -26,7 +25,8 @@ module.exports = async function (crud) {
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
-        const locator = {css: `#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`};
+        createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
+        const locator = {css: `#deceasedDomicileInEngWales-No`};
         await I.waitForElement(locator);
         await I.click(locator);
         await I.fillField({css: '#domicilityCountry'}, createGrantOfProbateConfig.page8_domicilityCountry);

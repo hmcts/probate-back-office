@@ -114,6 +114,7 @@ Scenario('11 BO Grant of Representation E2E (Solicitor - Non Trust Corp) - Grant
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
     await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
     await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
