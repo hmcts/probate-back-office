@@ -618,6 +618,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForWarningValidation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "addCommentForWarningValidation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForWarningValidation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "extendCaveatForWarningValidation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}
-
+  {"CaseTypeID": "Caveat", "CaseEventID": "extendCaveatForWarningValidation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "raiseCaveatFromBulkScan", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
 ]
