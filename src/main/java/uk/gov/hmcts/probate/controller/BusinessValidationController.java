@@ -131,7 +131,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
-            caseDataTransformer.transformCaseData(callbackRequest);
+            caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
@@ -171,6 +171,7 @@ public class BusinessValidationController {
                 numberOfApplyingExecutorsValidationRule);
 
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
             response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
         }
 
@@ -331,7 +332,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
-        @RequestBody CallbackRequest callbackRequest,
+        @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);

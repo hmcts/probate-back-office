@@ -87,10 +87,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PRIMARY_APPLICANT_STATEMENT =
         "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
     private static final String APPLYING_EXECUTOR_STATEMENT =
-            "We, FirstName LastName of 123 Street, Town, Postcode, UK "
-                    + "and FirstName2 LastName2 of addressline 1, addressline 2, addressline 3, posttown, county, "
-                    + "postcode, country and FirstName3 LastName3 of addressline 1, addressline 2, addressline 3, "
-                    + "posttown, county, postcode,";
+            "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
+                    + "addressline 2, addressline 3, posttown, county, postcode, country and FirstName3 LastName3"
+                    + " of addressline 1, addressline 2, addressline 3, posttown, county, postcode, country";
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";

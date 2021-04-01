@@ -345,6 +345,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyNegativeCopiesValues() {
+        validatePostFailure("failure.negativeUKCopies.json",
+            "Uk Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
+        validatePostFailure("failure.negativeOverseasCopies.json",
+            "Overseas Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
+    }
+    
+    @Test
     public void verifySuccessPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
@@ -573,7 +581,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestInTestacySuccessForDefaultNext() {
+    public void verifyTitleAndClearingListsReset() {
+        ResponseBody body = validatePostSuccess("solicitorAmendTitleAndClearingMultipleExecutors.json",
+                VALIDATE_PROBATE_URL);
+
+        JsonPath jsonPath = JsonPath.from(body.asString());
+        String powerReservedExecs = jsonPath.get("data.dispenseWithNoticeOtherExecsList");
+        String trustCorpExecs = jsonPath.get("data.additionalExecutorsTrustCorpList");
+
+        assertNull(powerReservedExecs);
+        assertNull(trustCorpExecs);
+    }
+
+    @Test
+    public void verifyRequestIntestacySuccessForDefaultNext() {
         ResponseBody body = validatePostSuccess("solicitorPDFPayloadIntestacy.json", DEFAULT_SOLS_NEXT_STEP);
 
         JsonPath jsonPath = JsonPath.from(body.asString());
@@ -679,24 +700,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String iht217 = jsonPath.get("data.iht217");
 
         assertEquals("Yes", iht217);
-    }
-    
-    @Test
-    public void shouldTransformPrimaryApplicantFieldsWithSolicitorInfo() {
-        String response = transformCase("solicitorPayloadNotificationsSolicitorAsPrimaryApplicant.json",
-                VALIDATE_URL);
-
-        JsonPath jsonPath = JsonPath.from(response);
-
-        assertEquals("Solicitor_fn", jsonPath.get("data.primaryApplicantForenames"));
-        assertEquals("Solicitor_ln", jsonPath.get("data.primaryApplicantSurname"));
-        assertEquals("solicitor@probate-test.com", jsonPath.get("data.primaryApplicantEmailAddress"));
-        assertEquals("SolAddLn1", jsonPath.get("data.primaryApplicantAddress.AddressLine1"));
-        assertNull(jsonPath.get("data.primaryApplicantAlias"));
-        assertEquals("No", jsonPath.get("data.primaryApplicantHasAlias"));
-        assertEquals("Yes", jsonPath.get("data.primaryApplicantIsApplying"));
-        assertNull(jsonPath.get("data.solsSolicitorNotApplyingReason"));
-        assertNull(jsonPath.get("data.solsPrimaryExecutorNotApplyingReason"));
     }
 
     @Test

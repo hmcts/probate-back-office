@@ -61,6 +61,24 @@ public class CommonVariables {
     public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
     public static final String EXECUTOR_TYPE_NAMED = "Named";
 
+    public static final String DIRECTOR = "Director";
+    public static final String TRUST_CORP_NAME = "Trust Corp Name";
+    public static final String LODGEMENT_ADDRESS = "London";
+    public static final LocalDate DATE = LocalDate.of(2021, 1, 1);
+    public static final String DISPENSE_WITH_NOTICE_LEAVE = "Dispense with notice";
+    public static final String DISPENSE_WITH_NOTICE_LEAVE_DATE = "2020-01-01";
+    public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
+    public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
+
+    public static final AdditionalExecutorApplying SOLICITOR_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_FORENAME)
+            .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+            .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+            .applyingExecutorPhoneNumber(SOLICITOR_FIRM_PHONE)
+            .applyingExecutorEmail(SOLICITOR_FIRM_EMAIL)
+            .applyingExecutorAddress(SOLICITOR_ADDRESS)
+            .build();
+
     public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)
             .applyingExecutorFirstName(EXEC_FIRST_NAME)

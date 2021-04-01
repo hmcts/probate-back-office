@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -419,6 +420,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
+
+    @Mock
+    private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
 
     @Mock
     private ExecutorsTransformer solicitorExecutorTransformer;
@@ -1157,18 +1161,11 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void verifyPrimaryApplicantFieldsAre() {
+    public void verifyTrustCorpFieldsAreReset() {
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1)).setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
-    }
-
-    @Test
-    public void verifyPrimaryApplicantFieldsAreSetBySolicitorExecTransformer() {
-        underTest.transformCase(callbackRequestMock);
-
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
+        verify(resetResponseCaseDataTransformer, times(1))
+                .resetTitleAndClearingFields(any(), any());
     }
 
     @Test
@@ -1181,8 +1178,6 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCase(callbackRequestMock);
 
-        verify(solicitorExecutorTransformer, times(1))
-                .setPrimaryApplicantFieldsWithSolicitorInfo(any(), any());
         verify(solicitorExecutorTransformer, times(1))
                 .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
         verify(solicitorExecutorTransformer, times(1))
