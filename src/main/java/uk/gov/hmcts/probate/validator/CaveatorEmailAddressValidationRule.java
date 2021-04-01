@@ -12,7 +12,7 @@ import static uk.gov.hmcts.probate.model.Constants.EMAIL_VALIDATION_REGEX;
 @RequiredArgsConstructor
 public class CaveatorEmailAddressValidationRule implements CaveatEmailValidationRule {
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
-    private static final String EMAIL_NOT_FOUND_CAVEAT = "emailNotProvidedCaveats";
+    private static final String EMAIL_NOT_FOUND_CAVEAT = "emailInvalidCaveats";
 
     @Override
     public void validate(CaveatDetails caveatDetails) {

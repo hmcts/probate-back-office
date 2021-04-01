@@ -65,6 +65,17 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/validate-amend-caveat")
+    public ResponseEntity<CaveatCallbackResponse> validateAmendCaveat(
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+
+        validateEmailAddresses(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
     @PostMapping(path = "/defaultValues")
     public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues(
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
