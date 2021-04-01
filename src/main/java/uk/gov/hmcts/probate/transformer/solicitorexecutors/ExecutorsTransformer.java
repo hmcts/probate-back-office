@@ -218,11 +218,6 @@ public class ExecutorsTransformer {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
-    // solsSolicitorIsMainApplicant will only be set in schema one cases
-    protected boolean isSolicitorMainApplicantSetToNo(CaseData caseData) {
-        return NO.equals(caseData.getSolsSolicitorIsMainApplicant());
-    }
-
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
         return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();

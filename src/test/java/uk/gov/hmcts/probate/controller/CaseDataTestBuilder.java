@@ -135,7 +135,6 @@ public class CaseDataTestBuilder {
         .solsSOTForenames(SOLICITOR_FORENAME)
         .solsSOTSurname(SOLICITOR_SURNAME)
         .solsSolicitorIsExec(SOLICITOR_APPLYING)
-        .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
         .solsSolicitorIsApplying(SOLICITOR_APPLYING)
         .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
         .solsSOTJobTitle(SOLICITOR_JOB_TITLE)

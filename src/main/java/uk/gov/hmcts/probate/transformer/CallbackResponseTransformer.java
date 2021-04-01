@@ -686,7 +686,6 @@ public class CallbackResponseTransformer {
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
-            .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
             .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solsWillType(caseData.getSolsWillType())

@@ -226,7 +226,6 @@ public class BusinessValidationControllerTest {
             .solsSOTForenames(SOLICITOR_FORENAMES)
             .solsSOTSurname(SOLICITOR_SURNAME)
             .solsSolicitorIsExec(YES)
-            .solsSolicitorIsMainApplicant(YES)
             .solsSolicitorIsApplying(YES)
             .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
             .solsSOTJobTitle(SOLICITOR_JOB_TITLE)

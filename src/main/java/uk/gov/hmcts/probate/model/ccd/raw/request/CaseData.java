@@ -91,8 +91,6 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsExecIsNull}")
     private final String solsSolicitorIsExec;
 
-    private final String solsSolicitorIsMainApplicant;
-
     private final String solsSolicitorIsApplying;
 
     private final String solsSolicitorNotApplyingReason;

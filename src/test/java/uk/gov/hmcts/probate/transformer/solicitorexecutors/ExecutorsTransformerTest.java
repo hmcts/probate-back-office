@@ -182,7 +182,6 @@ public class ExecutorsTransformerTest {
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
-                .solsSolicitorIsMainApplicant(NO)
                 .solsSolicitorIsApplying(YES)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
