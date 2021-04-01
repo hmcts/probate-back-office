@@ -421,7 +421,8 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.caseType(caseType);
         }
 
-        Document coversheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+        Document coversheet = pdfManagementService
+            .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
         responseCaseDataBuilder.solsCoversheetDocument(coversheet.getDocumentLink());
         return transformResponse(responseCaseDataBuilder.build());
     }

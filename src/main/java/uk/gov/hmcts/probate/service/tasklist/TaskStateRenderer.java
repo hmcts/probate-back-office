@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import com.google.common.base.Strings;
-import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -146,7 +144,8 @@ public class TaskStateRenderer {
     }
 
     private static String renderLinkOrText(TaskListState taskListState, TaskListState currState,
-                                           TaskState currTaskState, String linkText, String caseId, String willType, CaseDetails details) {
+                                           TaskState currTaskState, String linkText, String caseId,
+                                           String willType, CaseDetails details) {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
