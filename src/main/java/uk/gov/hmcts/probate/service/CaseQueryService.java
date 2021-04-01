@@ -88,7 +88,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
@@ -96,7 +96,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
