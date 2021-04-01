@@ -578,9 +578,12 @@ public class CallbackResponseTransformer {
 
     private String getSchemaVersion(CaseData cd) {
         final String paperForm = cd.getPaperForm();
+        final ApplicationType applicationType = cd.getApplicationType();
+
         // not applicable to intestacy or admon will yet
         return (GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
-                && (paperForm == null || paperForm.equals(NO)) ? SCHEMA_VERSION : null;
+                && (paperForm == null || paperForm.equals(NO))
+                && (applicationType == null || SOLICITOR.equals(applicationType)) ? SCHEMA_VERSION : null;
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
