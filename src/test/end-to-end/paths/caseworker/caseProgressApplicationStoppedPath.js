@@ -45,25 +45,13 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
 
         console.info('Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-
-        console.info('Dispense with notice and clearing type');
-        await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}},
-            {locator: {css: '#titleAndClearingType-TCTNoT'}},
-            {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
-        ]);
-
-        console.info('Remaining application details');
-
-        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
-            {locator: {css: '#otherExecutorExists-No'}},
-            /* {locator: {css: '#soleTraderOrLimitedCompany-Yes'}} */]);
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '1: MentallyIncapable'},
+            {locator: {css: '#otherExecutorExists-No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 

@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
@@ -46,6 +47,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -54,9 +56,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -108,9 +112,7 @@ public class CaseData extends CaseDataParent {
 
     private final String immovableEstate;
 
-    // This is an old schema (prior to 2.0.0) attribute so it should be not blank for
-    // an amend of these, but for new trust corp this field is no longer needed & not part of the schema
-    // @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
@@ -188,19 +190,21 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
     private final String solsLifeInterest;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
+    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+        ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -283,16 +287,15 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTSurnameIsNull}")
     private final String solsSOTSurname;
 
+    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
     private final String solsSOTJobTitle;
 
-    private final String solsReviewSOTConfirm;
-
-    private final String solsReviewSOTConfirmCheckbox1Names;
-
-    private final String solsReviewSOTConfirmCheckbox2Names;
-
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+        "{extraCopiesOfGrantIsNegative}")
     private final Long extraCopiesOfGrant;
 
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+        "{outsideUKGrantCopiesIsNegative}")
     private final Long outsideUKGrantCopies;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
@@ -495,8 +498,11 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
-    private List<CollectionMember<AdditionalExecutorApplying>> executorsApplyingLegalStatement;
-    private List<CollectionMember<AdditionalExecutorNotApplying>> executorsNotApplyingLegalStatement;
+    @Getter(lazy = true)
+    private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
+    @Getter(lazy = true)
+    private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement =
+        getAllExecutors(false);
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
     @Builder.Default
@@ -510,6 +516,8 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     private String pcqId;
+    @Builder.Default
+    private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
     private DynamicList solsAmendLegalStatmentSelect;
@@ -523,16 +531,162 @@ public class CaseData extends CaseDataParent {
     private String registryAddress;
     private String registryEmailAddress;
 
-    public String solicitorIsApplying() {
-        return YES.equals(solsSolicitorIsApplying) ? YES : NO;
+    public String solicitorIsMainApplicant() {
+        return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
     }
 
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);
     }
 
-    public boolean isPrimaryApplicantNotApplying() {
+    private boolean isPrimaryApplicantNotApplying() {
         return NO.equals(primaryApplicantIsApplying);
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> getAllExecutors(boolean applying) {
+        List<CollectionMember<AdditionalExecutor>> totalExecutors = new ArrayList<>();
+        if ((applying && isPrimaryApplicantApplying())
+            || (!applying && isPrimaryApplicantNotApplying())) {
+            AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
+                .additionalExecForenames(getPrimaryApplicantForenames())
+                .additionalExecLastname(getPrimaryApplicantSurname())
+                .additionalApplying(getPrimaryApplicantIsApplying())
+                .additionalExecAddress(getPrimaryApplicantAddress())
+                .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
+                .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
+                .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
+                .build();
+
+            CollectionMember<AdditionalExecutor> primaryAdditionalExecutors =
+                new CollectionMember<>(null, primaryExecutor);
+            totalExecutors.add(primaryAdditionalExecutors);
+        }
+
+        if (YES.equals(getOtherExecutorExists()) && getSolsAdditionalExecutorList() != null) {
+            totalExecutors.addAll(getSolsAdditionalExecutorList());
+        }
+
+        if (!isSolicitorCreatedGrant(getSolsWillType())) {
+            if (additionalExecutorsApplying != null) {
+                totalExecutors.addAll(mapAdditionalExecutorsApplying(getAdditionalExecutorsApplying()));
+            }
+
+            if (additionalExecutorsNotApplying != null) {
+                totalExecutors.addAll(mapAdditionalExecutorsNotApplying(getAdditionalExecutorsNotApplying()));
+            }
+        }
+
+        return totalExecutors.stream().filter(ex -> isApplying(ex, applying)).collect(Collectors.toList());
+    }
+
+    private boolean isSolicitorCreatedGrant(String solsWillType) {
+        return (solsWillType != null && solsFeeAccountNumber == null);
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
+        AdditionalExecutorApplying exec;
+        AdditionalExecutor newExec;
+        CollectionMember<AdditionalExecutor> newAdditionalExecutor;
+        List<CollectionMember<AdditionalExecutor>> newAdditionalExecutors = new ArrayList<>();
+
+        for (CollectionMember<AdditionalExecutorApplying> e : additionalExecutors) {
+            exec = e.getValue();
+
+            if (exec == null) {
+                continue;
+            }
+
+            String forenames = exec.getApplyingExecutorFirstName();
+            String surname = exec.getApplyingExecutorLastName();
+
+            if (exec.getApplyingExecutorFirstName() == null || exec.getApplyingExecutorLastName() == null) {
+                List<String> names = splitFullname(exec.getApplyingExecutorName());
+
+                if (names.size() > 2) {
+                    surname = names.remove(names.size() - 1);
+                    forenames = String.join(" ", names);
+                } else if (names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
+            }
+
+            newExec = AdditionalExecutor.builder()
+                .additionalExecForenames(forenames)
+                .additionalExecLastname(surname)
+                .additionalApplying(YES)
+                .additionalExecAddress(exec.getApplyingExecutorAddress())
+                .additionalExecNameOnWill(exec.getApplyingExecutorOtherNames() == null ? NO : YES)
+                .additionalExecAliasNameOnWill(exec.getApplyingExecutorOtherNames())
+                .additionalExecReasonNotApplying(null)
+                .build();
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
+            newAdditionalExecutors.add(newAdditionalExecutor);
+        }
+
+        return newAdditionalExecutors;
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsNotApplying(
+        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutors) {
+        AdditionalExecutorNotApplying exec;
+        AdditionalExecutor newExec;
+        CollectionMember<AdditionalExecutor> newAdditionalExecutor;
+        List<CollectionMember<AdditionalExecutor>> newAdditionalExecutors = new ArrayList<>();
+
+        for (CollectionMember<AdditionalExecutorNotApplying> e : additionalExecutors) {
+            exec = e.getValue();
+
+            if (exec == null) {
+                continue;
+            }
+
+            String forenames = null;
+            String surname = null;
+
+            if (exec.getNotApplyingExecutorName() != null) {
+                List<String> names = splitFullname(exec.getNotApplyingExecutorName());
+
+                if (names.size() > 2) {
+                    surname = names.remove(names.size() - 1);
+                    forenames = String.join(" ", names);
+                } else if (names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
+            }
+
+            newExec = AdditionalExecutor.builder()
+                .additionalExecForenames(forenames)
+                .additionalExecLastname(surname)
+                .additionalApplying(NO)
+                .additionalExecAddress(null)
+                .additionalExecNameOnWill(exec.getNotApplyingExecutorNameOnWill() == null ? NO : YES)
+                .additionalExecAliasNameOnWill(exec.getNotApplyingExecutorNameOnWill())
+                .additionalExecReasonNotApplying(exec.getNotApplyingExecutorReason())
+                .build();
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
+            newAdditionalExecutors.add(newAdditionalExecutor);
+        }
+
+        return newAdditionalExecutors;
+    }
+
+    private List<String> splitFullname(String fullName) {
+        return new ArrayList<>(Arrays.asList(fullName.split(" ")));
+    }
+
+    private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {
+        if (ex == null || ex.getValue() == null || ex.getValue().getAdditionalApplying() == null) {
+            return false;
+        }
+
+        return ex.getValue().getAdditionalApplying().equals(applying ? YES : NO);
     }
 
     public String getDeceasedFullName() {

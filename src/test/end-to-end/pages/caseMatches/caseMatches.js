@@ -14,6 +14,8 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
     // just a small delay - occasionally we get issues.
     // Only necessary where we have no auto delay (local dev).
+    await I.wait(60);
+
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(0.5);
     }
@@ -23,18 +25,23 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
         await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
     }
-
     // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
+        await I.scrollTo(btnLocatorLastChild);
+        await I.wait(0.25);
+
         await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
+
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.25);
         }
+        await I.wait(0.5);
+
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);

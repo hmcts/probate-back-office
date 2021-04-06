@@ -59,3 +59,4 @@ java:
         - launchdarkly-key
         - launchdarklyUserkeyBackend
         - probate-site-id
+        - launchdarklyUserkeyBackend
