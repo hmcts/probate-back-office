@@ -299,7 +299,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
-        @RequestBody CallbackRequest callbackRequest,
+        @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);

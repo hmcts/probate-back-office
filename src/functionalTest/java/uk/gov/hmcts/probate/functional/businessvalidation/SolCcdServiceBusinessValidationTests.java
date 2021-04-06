@@ -228,6 +228,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyNegativeCopiesValues() {
+        validatePostFailure("failure.negativeUKCopies.json",
+            "Uk Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
+        validatePostFailure("failure.negativeOverseasCopies.json",
+            "Overseas Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
+    }
+    
+    @Test
     public void verifySuccessPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = payload.replaceAll("\"paperForm\": null,", "\"paperForm\": \"Yes\",");
