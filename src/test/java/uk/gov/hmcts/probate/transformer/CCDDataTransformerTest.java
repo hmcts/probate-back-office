@@ -48,6 +48,7 @@ public class CCDDataTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
 
     private static final String IHT_FORM_ID = "IHT207";
+    private static final String EXEC_FIRSTNAME = "Forename";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
@@ -82,27 +83,22 @@ public class CCDDataTransformerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
-
         SolsAddress solsAddress = SolsAddress.builder()
-                .addressLine1(SOLICITOR_FIRM_LINE1)
-                .postCode(SOLICITOR_FIRM_POSTCODE)
-                .build();
-
+            .addressLine1(SOLICITOR_FIRM_LINE1)
+            .postCode(SOLICITOR_FIRM_POSTCODE)
+            .build();
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
         when(caseDataMock.getSolsSolicitorAddress()).thenReturn(solsAddress);
         when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
         when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
-
         when(caseDataMock.getDeceasedForenames()).thenReturn(DECEASED_FIRSTNAME);
         when(caseDataMock.getDeceasedSurname()).thenReturn(DECEASED_LASTNAME);
         when(caseDataMock.getDeceasedDateOfBirth()).thenReturn(DOB);
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(DOD);
-
         when(caseDataMock.getIhtFormId()).thenReturn(IHT_FORM_ID);
         when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
         when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
@@ -111,9 +107,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
-
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
-
         List<CollectionMember<AdditionalExecutor>> additionalExecutors = new ArrayList<>();
         CollectionMember<AdditionalExecutor> additionalExecutors1 = mock(CollectionMember.class);
         CollectionMember<AdditionalExecutor> additionalExecutors2 = mock(CollectionMember.class);
@@ -124,6 +118,7 @@ public class CCDDataTransformerTest {
         additionalExecutors.add(additionalExecutors1);
         additionalExecutors.add(additionalExecutors2);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
+        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(EXEC_FIRSTNAME);
         when(caseDataMock.isPrimaryApplicantApplying()).thenReturn(true);
 
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorp = new ArrayList<>();
