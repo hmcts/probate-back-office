@@ -94,12 +94,12 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage1('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
-    await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage2('update', createGrantOfProbateConfig);
-    await I.checkMyAnswers(nextStepName);
-    await I.chooseNextStep(nextStepName);
-    await I.cwEnterSolsGoPPage3('update', createGrantOfProbateConfig);
-    await I.checkMyAnswers(nextStepName);
+    if (createGrantOfProbateConfig.page1_solsSolicitorIsExec === 'No' && createGrantOfProbateConfig.page1_solsSolicitorIsApplying === 'No') {
+        await I.chooseNextStep(nextStepName);
+        await I.cwEnterSolsGoPPage2('update', createGrantOfProbateConfig);
+        await I.checkMyAnswers(nextStepName);
+    }
+    // note - page 3 not covered for update
     await I.chooseNextStep(nextStepName);
     await I.cwEnterSolsGoPPage4('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
@@ -152,7 +152,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     endState = 'Ready for examination';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
-    markForExaminationConfig.date = dateFns.format(new Date(), 'DD MMM YYYY');
+    markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
     await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
@@ -199,7 +199,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
-    issueGrantConfig.date = dateFns.format(new Date(), 'DD MMM YYYY');
+    issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
     await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
