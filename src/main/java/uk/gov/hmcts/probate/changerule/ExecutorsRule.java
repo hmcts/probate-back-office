@@ -13,17 +13,26 @@ public class ExecutorsRule implements ChangeRule {
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
         long numApplying = 0;
-        if (caseData.getSolsAdditionalExecutorList() != null) {
-            numApplying = caseData.getSolsAdditionalExecutorList().stream()
-                    .map(CollectionMember::getValue)
-                    .filter(additionalExecutor -> YES.equals(additionalExecutor.getAdditionalApplying()))
-                    .count();
-        }
-        if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
-            numApplying++;
+
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
+            // Trust corp executors are applying executors
+            numApplying += caseData.getAdditionalExecutorsTrustCorpList().size();
+        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
+            // Partner executors are applying executors
+            numApplying += caseData.getOtherPartnersApplyingAsExecutors().size();
         }
 
-        return numApplying == 0;
+        if (caseData.getSolsAdditionalExecutorList() != null) {
+            numApplying += caseData.getSolsAdditionalExecutorList().stream()
+                .map(CollectionMember::getValue)
+                .filter(additionalExecutor -> YES.equals(additionalExecutor.getAdditionalApplying()))
+                .count();
+            if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
+                numApplying++;
+            }
+
+            return numApplying == 0;
+        }
     }
 
     @Override

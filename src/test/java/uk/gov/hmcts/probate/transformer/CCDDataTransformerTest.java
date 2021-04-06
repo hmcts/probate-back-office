@@ -15,6 +15,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.math.BigDecimal;
@@ -123,6 +125,28 @@ public class CCDDataTransformerTest {
         additionalExecutors.add(additionalExecutors2);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
         when(caseDataMock.isPrimaryApplicantApplying()).thenReturn(true);
+
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorp = new ArrayList<>();
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorsTrustCorp1 = mock(CollectionMember.class);
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorsTrustCorp2 = mock(CollectionMember.class);
+        AdditionalExecutorTrustCorps additionalExecutorTrustCorp1 = mock(AdditionalExecutorTrustCorps.class);
+        AdditionalExecutorTrustCorps additionalExecutorTrustCorp2 = mock(AdditionalExecutorTrustCorps.class);
+        when(additionalExecutorsTrustCorp1.getValue()).thenReturn(additionalExecutorTrustCorp1);
+        when(additionalExecutorsTrustCorp2.getValue()).thenReturn(additionalExecutorTrustCorp2);
+        additionalExecutorsTrustCorp.add(additionalExecutorsTrustCorp1);
+        additionalExecutorsTrustCorp.add(additionalExecutorsTrustCorp2);
+        when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(additionalExecutorsTrustCorp);
+
+        List<CollectionMember<AdditionalExecutorPartners>> additionalExecutorsPartner = new ArrayList<>();
+        CollectionMember<AdditionalExecutorPartners> additionalExecutorsPartner1 = mock(CollectionMember.class);
+        CollectionMember<AdditionalExecutorPartners> additionalExecutorsPartner2 = mock(CollectionMember.class);
+        AdditionalExecutorPartners additionalExecutorPartner1 = mock(AdditionalExecutorPartners.class);
+        AdditionalExecutorPartners additionalExecutorPartner2 = mock(AdditionalExecutorPartners.class);
+        when(additionalExecutorsPartner1.getValue()).thenReturn(additionalExecutorPartner1);
+        when(additionalExecutorsPartner2.getValue()).thenReturn(additionalExecutorPartner2);
+        additionalExecutorsPartner.add(additionalExecutorsPartner1);
+        additionalExecutorsPartner.add(additionalExecutorsPartner2);
+        when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(additionalExecutorsPartner);
     }
 
     @Test
@@ -296,7 +320,7 @@ public class CCDDataTransformerTest {
         assertEquals(2018, ccdData.getCaseSubmissionDate().getYear());
         assertEquals(1, ccdData.getCaseSubmissionDate().getMonthValue());
         assertEquals(2, ccdData.getCaseSubmissionDate().getDayOfMonth());
-        assertEquals(3, ccdData.getExecutors().size());
+        assertEquals(7, ccdData.getExecutors().size());
 
     }
 }

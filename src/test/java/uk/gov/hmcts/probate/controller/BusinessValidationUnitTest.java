@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -111,6 +112,8 @@ public class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedServiceMock;
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    @Mock
+    private List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRuleMock;
 
 
     private BusinessValidationController underTest;
@@ -133,7 +136,8 @@ public class BusinessValidationUnitTest {
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
-            ihtFourHundredDateValidationRule);
+            ihtFourHundredDateValidationRule,
+            numberOfApplyingExecutorsValidationRuleMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }

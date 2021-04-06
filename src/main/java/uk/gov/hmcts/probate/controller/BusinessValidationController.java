@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -80,6 +81,7 @@ public class BusinessValidationController {
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -146,6 +148,19 @@ public class BusinessValidationController {
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY,
                 INTESTACY_NAME);
         }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateExecutors(
+        @RequestBody CallbackRequest callbackRequest,
+        HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+            numberOfApplyingExecutorsValidationRule);
+
         return ResponseEntity.ok(response);
     }
 

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,11 @@ public class ExecutorsRuleTest {
     @Mock
     private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
+    private CollectionMember<AdditionalExecutorTrustCorps> additionalTrustCorpExecutors1Mock;
+    @Mock
     private AdditionalExecutor additionalExecutor1Mock;
+    @Mock
+    private AdditionalExecutorTrustCorps additionalTrustCorpExecutor1Mock;
 
     @Before
     public void setup() {
@@ -61,6 +66,23 @@ public class ExecutorsRuleTest {
     public void shouldNotChangeStateWithPrimary() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
+
+        assertFalse(undertest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenMultipleExecutorListsAreNotEmpty() {
+        when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
+        when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        when(additionalTrustCorpExecutors1Mock.getValue()).thenReturn(additionalTrustCorpExecutor1Mock);
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalTrustCorpExecutors1Mock);
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutorsList);
+        when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(additionalExecutorsTrustCorpList);
+        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(YES);
 
         assertFalse(undertest.isChangeNeeded(caseDataMock));
     }
