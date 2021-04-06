@@ -9,7 +9,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click({css: `#willExists-${createGrantOfProbateConfig.page6_willExistsYes}`});
+        await I.click({css: `#willExists-Yes`});
         await I.waitForElement({css: '#willHasCodicils-Yes'});
         await I.click({css: `#willDatedBeforeApril-${createGrantOfProbateConfig.page6_willDatedBeforeAprilYes}`});
         await I.click({css: '#willAccessOriginal-No'});
@@ -39,7 +39,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-year'}, createGrantOfProbateConfig.page6_codicilDate_year);
 
         } else {
-            await I.wait(0.25);
+            await I.waitForClickable({css: '#willHasCodicils-No'});
             await I.click({css: '#willHasCodicils-No'});
             await I.dontSeeElement({css: '#noOriginalWillAccessReason'});
             await I.dontSeeElement({css: '#originalWillSignedDate-day'});
