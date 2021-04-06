@@ -147,7 +147,7 @@ Scenario('10 BO Grant of Representation E2E (Personal) - Grant issued', async fu
     endState = 'Ready for examination';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
-    markForExaminationConfig.date = dateFns.format(new Date(), 'DD MMM YYYY');
+    markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
     await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
@@ -194,7 +194,7 @@ Scenario('10 BO Grant of Representation E2E (Personal) - Grant issued', async fu
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
-    issueGrantConfig.date = dateFns.format(new Date(), 'DD MMM YYYY');
+    issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
     await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 

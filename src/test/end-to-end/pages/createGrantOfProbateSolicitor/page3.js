@@ -7,7 +7,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     const I = this;
 
-    if (createGrantOfProbateConfig.page1_paperForm === 'Yes') {
+    //currently do nothing on update
+    if (crud === 'update' || createGrantOfProbateConfig.page1_paperForm === 'Yes') {
         return;
     }
 
@@ -66,6 +67,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
             assert (numEls === 0);
         }
+    } else {
+        return; // currently do nothing
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
