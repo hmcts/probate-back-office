@@ -420,9 +420,20 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
             responseCaseDataBuilder.caseType(caseType);
         }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
 
-        Document coversheet = pdfManagementService
-            .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document, Document coversheet,
+                                      String caseType) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+            getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+            responseCaseDataBuilder.caseType(caseType);
+        }
+
         responseCaseDataBuilder.solsCoversheetDocument(coversheet.getDocumentLink());
         return transformResponse(responseCaseDataBuilder.build());
     }
