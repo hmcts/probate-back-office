@@ -14,6 +14,7 @@ public class ExecutorsRule implements ChangeRule {
     public boolean isChangeNeeded(CaseData caseData) {
         long numApplying = 0;
 
+
         if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
             // Trust corp executors are applying executors
             numApplying += caseData.getAdditionalExecutorsTrustCorpList().size();
@@ -27,10 +28,9 @@ public class ExecutorsRule implements ChangeRule {
                 .map(CollectionMember::getValue)
                 .filter(additionalExecutor -> YES.equals(additionalExecutor.getAdditionalApplying()))
                 .count();
-            if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
-                numApplying++;
-            }
-
+        }
+        if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
+            numApplying++;
         }
         return numApplying == 0;
     }
