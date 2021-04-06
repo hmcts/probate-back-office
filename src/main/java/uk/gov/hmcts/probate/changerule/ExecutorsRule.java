@@ -31,8 +31,8 @@ public class ExecutorsRule implements ChangeRule {
                 numApplying++;
             }
 
-            return numApplying == 0;
         }
+        return numApplying == 0;
     }
 
     @Override
