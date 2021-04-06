@@ -9,7 +9,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click({css: `#willExists-Yes`});
+        await I.click({css: '#willExists-Yes'});
         await I.waitForElement({css: '#willHasCodicils-Yes'});
         await I.click({css: `#willDatedBeforeApril-${createGrantOfProbateConfig.page6_willDatedBeforeAprilYes}`});
         await I.click({css: '#willAccessOriginal-No'});

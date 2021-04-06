@@ -67,10 +67,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
             assert (numEls === 0);
         }
-    } else {
-        return; // currently do nothing
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
-
 };
