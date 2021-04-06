@@ -554,7 +554,7 @@ public class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
-                "caseprogress/admonWill/solicitorCaseProgressSendDocumentsIHT217");
+                "caseprogress/admonwill/solicitorCaseProgressSendDocumentsIHT217");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
