@@ -1,5 +1,5 @@
 {
-  "size": 2000,
+  "size": :size,
   "from": 0,
   "query": {
     "bool": {

@@ -111,6 +111,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesWithDateRangeReturnsCaseListExela() {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        caseQueryService.dataExtractExelaSize = "2000";
         List<ReturnedCaseDetails> cases = caseQueryService
             .findCaseStateWithinDateRangeExela("2019-02-05", "2019-02-22");
 
@@ -121,6 +122,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseListHMRC() {
+        caseQueryService.dataExtractHmrcSize = "2000";
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         List<ReturnedCaseDetails> cases = caseQueryService
             .findCaseStateWithinDateRangeHMRC("2019-02-05", "2019-02-22");

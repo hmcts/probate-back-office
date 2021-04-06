@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -39,6 +40,10 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 @Slf4j
 public class CaseQueryService {
+    @Value("${data-extract.exela.size}")
+    protected String dataExtractExelaSize;
+    @Value("${data-extract.hmrc.size}")
+    protected String dataExtractHmrcSize;
 
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
@@ -89,6 +94,7 @@ public class CaseQueryService {
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
         String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
+            .replace(":size", dataExtractExelaSize)
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
@@ -97,6 +103,7 @@ public class CaseQueryService {
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
         String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
+            .replace(":size", dataExtractHmrcSize)
             .replace(":fromDate", startDate)
             .replace(":toDate", endDate);
 
