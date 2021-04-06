@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
@@ -101,6 +102,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String SOLS_PBA_PAY_REF = "PBA1234-AAA";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -161,6 +164,7 @@ public class CaveatCallbackResponseTransformerTest {
             .solsPBAPaymentReference(SOLS_PBA_PAY_REF)
             .pcqId(CAV_SOLICITOR_APP_REFERENCE);
 
+
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
             .registryLocation(BULK_SCAN_CAV_REGISTRY_LOCATION)
             .deceasedForenames(CAV_DECEASED_FORENAMES)
@@ -175,6 +179,7 @@ public class CaveatCallbackResponseTransformerTest {
             .caveatorAddress(CAV_BSP_CAVEATOR_ADDRESS)
             .applicationSubmittedDate(CAV_SUBMISSION_DATE)
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -422,6 +427,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
         assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
         assertEquals(BULK_SCAN_REFERENCE, caveatData.getBulkScanCaseReference());
+        assertEquals(BULK_SCAN_ENVELOPES, caveatData.getBulkScanEnvelopes());
 
         assertFalse(caveatData.getDeceasedAnyOtherNames());
         assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());

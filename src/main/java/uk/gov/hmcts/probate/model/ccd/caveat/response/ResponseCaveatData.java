@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -76,5 +77,7 @@ public class ResponseCaveatData {
     
     private String autoClosedExpiry;
     private String pcqId;
+
+    private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
 
 }

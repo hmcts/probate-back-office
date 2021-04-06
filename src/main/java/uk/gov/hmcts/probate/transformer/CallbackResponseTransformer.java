@@ -922,7 +922,8 @@ public class CallbackResponseTransformer {
             .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+            .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
 
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
