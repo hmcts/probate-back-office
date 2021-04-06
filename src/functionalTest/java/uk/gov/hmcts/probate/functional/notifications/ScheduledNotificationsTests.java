@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private String grantAwaitingDocumentationNotificationPeriodDays;
 
     @Test
+    @Pending
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -79,11 +81,9 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         assertTrue(emailDocText.contains(expectedText));
     }
 
+    @Pending
     @Test
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
-        String docDate = DATE_FORMAT
-            .format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
-
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson, EVENT_APPLY);
@@ -93,6 +93,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String updateGrantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(updateGrantDocCaseJson, EVENT_PRINT_CASE, caseId);
 
+        String docDate = DATE_FORMAT
+            .format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
         String expectedText =

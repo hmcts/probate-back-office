@@ -156,5 +156,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textValue", "FieldType": "Text", "FieldShowCondition": "enableType=\"Text\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaValue", "FieldType": "TextArea", "FieldShowCondition": "enableType=\"TextArea\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableType=\"List\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2020", "ID": "BulkScanEnvelope", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "ID", "SecurityClassification": "PUBLIC"},
+  {"LiveFrom": "01/01/2020", "ID": "BulkScanEnvelope", "ListElementCode": "action", "FieldType": "Text", "ElementLabel": "Action", "SecurityClassification": "PUBLIC"}
 ]

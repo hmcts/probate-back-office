@@ -96,6 +96,19 @@ public abstract class IntegrationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
+    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile, 
+            String responseDocumentUrl, ResponseBody responseBody, String expectedKey, String expectedValue) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replace(expectedKey, expectedValue);
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(expectedContentMissing);
