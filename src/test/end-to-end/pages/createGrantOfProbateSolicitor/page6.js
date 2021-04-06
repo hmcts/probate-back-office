@@ -10,7 +10,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
         await I.click({css: `#willExists-${createGrantOfProbateConfig.page6_willExistsYes}`});
-        await I.waitForElement({css: `#willHasCodicils-Yes`});
+        await I.waitForElement({css: '#willHasCodicils-Yes'});
         await I.click({css: `#willDatedBeforeApril-${createGrantOfProbateConfig.page6_willDatedBeforeAprilYes}`});
         await I.click({css: '#willAccessOriginal-No'});
 
@@ -18,8 +18,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible({css: '#noOriginalWillAccessReason'});
             await I.click({css: `#willAccessOriginal-${createGrantOfProbateConfig.page6_willAccessOriginalYes}`});
             await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
-            await I.click({css: `#willHasCodicils-Yes`});
-    
+            await I.click({css: '#willHasCodicils-Yes'});
+
             await I.fillField({css: '#originalWillSignedDate-day'}, createGrantOfProbateConfig.page6_originalWillSignedDate_day);
             await I.fillField({css: '#originalWillSignedDate-month'}, createGrantOfProbateConfig.page6_originalWillSignedDate_month);
             await I.fillField({css: '#originalWillSignedDate-year'}, createGrantOfProbateConfig.page6_originalWillSignedDate_year);
@@ -40,8 +40,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
         } else {
             await I.wait(0.25);
-            await I.click({css: `#willHasCodicils-No`});
-            await I.dontSeeElement({css: '#noOriginalWillAccessReason'});            
+            await I.click({css: '#willHasCodicils-No'});
+            await I.dontSeeElement({css: '#noOriginalWillAccessReason'});
             await I.dontSeeElement({css: '#originalWillSignedDate-day'});
             await I.dontSeeElement({css: '#originalWillSignedDate-month'});
             await I.dontSeeElement({css: '#originalWillSignedDate-year'});
