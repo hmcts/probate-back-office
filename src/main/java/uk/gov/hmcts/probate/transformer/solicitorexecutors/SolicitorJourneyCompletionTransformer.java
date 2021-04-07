@@ -12,9 +12,9 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
+public class SolicitorJourneyCompletionTransformer extends ExecutorsTransformer {
 
-    public LegalStatementExecutorTransformer(ExecutorListMapperService executorListMapperService) {
+    public SolicitorJourneyCompletionTransformer(ExecutorListMapperService executorListMapperService) {
         super(executorListMapperService);
     }
 
@@ -38,7 +38,5 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
         caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);
     }
-
-
 
 }

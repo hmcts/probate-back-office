@@ -28,8 +28,8 @@ import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
@@ -48,7 +48,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_NOT_APPLYING_R
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 
@@ -74,12 +74,12 @@ public class ExecutorListMapperServiceTest {
     public void setup() {
         initMocks(this);
         additionalExecutorsApplyingMock = new ArrayList<>();
-        additionalExecutorsApplyingMock.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
-        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         additionalExecutorsNotApplyingMock = new ArrayList<>();
-        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
-        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_NOT_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
@@ -201,7 +201,7 @@ public class ExecutorListMapperServiceTest {
     @Test
     public void shouldMapFromSolsAdditionalExecToApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
-        solsAdditionalExecs.add(SOLS_EXEC_APPLYING);
+        solsAdditionalExecs.add(SOLS_EXEC_ADDITIONAL_APPLYING);
         CaseData caseData = CaseData.builder().solsAdditionalExecutorList(solsAdditionalExecs).build();
 
         List<CollectionMember<AdditionalExecutorApplying>> result =

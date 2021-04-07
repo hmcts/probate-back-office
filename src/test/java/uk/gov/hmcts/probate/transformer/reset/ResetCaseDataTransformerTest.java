@@ -17,9 +17,8 @@ import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -80,8 +79,7 @@ public class ResetCaseDataTransformerTest {
         CaseData caseData = caseDetailsMock.getData();
 
         assertEquals(caseData.getOtherPartnersApplyingAsExecutors(), partnerExecutorList);
-        assertNull(caseData.getAdditionalExecutorsTrustCorpList());
-
+        assertEquals(0, caseData.getAdditionalExecutorsTrustCorpList().size());
     }
 
     @Test
@@ -100,8 +98,7 @@ public class ResetCaseDataTransformerTest {
         CaseData caseData = caseDetailsMock.getData();
 
         assertEquals(caseData.getAdditionalExecutorsTrustCorpList(), trustCorpsExecutorList);
-        assertNull(caseData.getOtherPartnersApplyingAsExecutors());
-
+        assertEquals(0, caseData.getOtherPartnersApplyingAsExecutors().size());
     }
 
     @Test
@@ -116,8 +113,8 @@ public class ResetCaseDataTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
 
-        assertNull(caseData.getAdditionalExecutorsTrustCorpList());
-        assertNull(caseData.getOtherPartnersApplyingAsExecutors());
+        assertEquals(0, caseData.getOtherPartnersApplyingAsExecutors().size());
+        assertEquals(0, caseData.getAdditionalExecutorsTrustCorpList().size());
     }
 
     @Test
@@ -132,8 +129,6 @@ public class ResetCaseDataTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
 
-        assertNull(caseData.getDispenseWithNoticeOtherExecsList());
+        assertEquals(0, caseData.getDispenseWithNoticeOtherExecsList().size());
     }
-
-
 }

@@ -275,7 +275,7 @@ public class DocumentController {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
         log.info("Initiating call for SoT");
-        caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
+        caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
             documentGeneratorService.generateSoT(callbackRequest)));
     }

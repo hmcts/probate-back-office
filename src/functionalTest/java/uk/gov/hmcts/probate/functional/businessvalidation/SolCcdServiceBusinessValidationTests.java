@@ -128,7 +128,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithIhtDateIsValid() {
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
-            "\"solsIHT400Date\": \"" + IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 20) + "\",");
+            "\"solsIHT400Date\": \""
+                    + IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 20) + "\",");
         validatePostSuccessForPayload(payload, VALIDATE_IHT_400_DATE);
     }
 
@@ -228,13 +229,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
-            "The total number executors applying cannot exceed 4", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "The total number executors applying cannot exceed 4",
+                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() {
         validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
-        validatePostSuccess("success.validWillAndCodicilDates.json", SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+        validatePostSuccess("success.validWillAndCodicilDates.json",
+                SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -370,7 +373,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
-        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
+        payload = replaceAllInString(payload,
+                "\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
@@ -378,16 +382,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionNullWhenPaperFormNoForAdmonWill() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
-        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
-        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
+        payload = replaceAllInString(payload,
+                "\"caseType\": \"intestacy\",", "\"caseType\": \"admonWill\",");
+        payload = replaceAllInString(payload,
+                "\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
     public void verifySchemaVersionPaperFormNull() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
+        payload = replaceAllInString(payload,
+                "\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,
+                "\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
@@ -395,8 +403,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionPaperFormYes() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"Yes\",");
-        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
+        payload = replaceAllInString(payload,
+                "\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,
+                "\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
@@ -404,8 +414,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionPaperFormNo() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
-        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
-        payload = replaceAllInString(payload,"\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
+        payload = replaceAllInString(payload,
+                "\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,
+                "\"applicationType\": \"Personal\",", "\"applicationType\": \"Solicitor\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", "2.0.0");
     }
 
@@ -413,15 +425,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifySchemaVersionPaperFormNoPersonalApplication() {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,"\"paperForm\": null,", "\"paperForm\": \"No\",");
-        payload = replaceAllInString(payload,"\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
+        payload = replaceAllInString(payload,
+                "\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "schemaVersion", null);
     }
 
     @Test
     public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithoutEmail() {
         String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
-            "\"primaryApplicantEmailAddress\": null,");
+        payload = replaceAllInString(payload,
+                "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
+               "\"primaryApplicantEmailAddress\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
 
         ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -431,7 +445,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() {
         String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
+        payload = replaceAllInString(payload,
+                "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
             "\"primaryApplicantEmailAddress\": null,");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
@@ -680,8 +695,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformSolicitorExecutorFields() {
-        String response = transformCase("solicitorPayloadNotificationsExecutors.json", TRANSFORM_URL);
-
+        String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_PROBATE_URL);
         JsonPath jsonPath = JsonPath.from(response);
 
         HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
@@ -695,9 +709,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
         assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
         assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
-        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine1"));
-        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine2"));
-        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("AddressLine3"));
+        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine1"));
+        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine2"));
+        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine3"));
         assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
         assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
         assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));

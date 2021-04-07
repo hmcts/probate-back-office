@@ -24,8 +24,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -33,15 +33,17 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorJourneyCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -124,7 +126,10 @@ public class BusinessValidationUnitTest {
     private CodicilDateValidationRule codicilDateValidationRuleMock;
     @Mock
     private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
-
+    @Mock
+    private SolicitorJourneyCompletionTransformer solCompletionTransformer;
+    @Mock
+    private ResetCaseDataTransformer resetCdTransformer;
 
     private BusinessValidationController underTest;
 
@@ -132,6 +137,7 @@ public class BusinessValidationUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
+        CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer);
         underTest = new BusinessValidationController(eventValidationServiceMock,
             notificationService,
             objectMapper,
@@ -139,7 +145,7 @@ public class BusinessValidationUnitTest {
             caseworkerAmendValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
-            caseDataTransformerMock,
+            cdt,
             confirmationResponseServiceMock,
             stateChangeServiceMock,
             pdfManagementServiceMock,
@@ -158,7 +164,8 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
@@ -566,5 +573,23 @@ public class BusinessValidationUnitTest {
     public void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
+
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        underTest.solsValidateProbate(callbackRequestMock, bindingResultMock, httpServletRequest);
+
+        verify(solCompletionTransformer, times(1))
+                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any());
+        verify(solCompletionTransformer, times(1))
+                .clearSolicitorExecutorLists(any());
     }
 }

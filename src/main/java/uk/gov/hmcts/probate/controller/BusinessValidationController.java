@@ -131,7 +131,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
-            caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
+            caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());

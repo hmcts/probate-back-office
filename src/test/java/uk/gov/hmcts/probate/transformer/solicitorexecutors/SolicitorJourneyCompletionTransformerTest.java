@@ -23,8 +23,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -33,12 +33,12 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LegalStatementExecutorTransformerTest {
+public class SolicitorJourneyCompletionTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -49,7 +49,7 @@ public class LegalStatementExecutorTransformerTest {
     private ExecutorListMapperService executorListMapperServiceMock;
 
     @InjectMocks
-    private LegalStatementExecutorTransformer legalStatementExecutorTransformerMock;
+    private SolicitorJourneyCompletionTransformer solicitorJourneyCompletionTransformerMock;
 
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
@@ -61,13 +61,13 @@ public class LegalStatementExecutorTransformerTest {
     @Before
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
-        additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+        additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         additionalExecutorNotApplying = new ArrayList<>();
-        additionalExecutorNotApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
+        additionalExecutorNotApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         solsAdditionalExecutorList = new ArrayList<>();
-        solsAdditionalExecutorList.add(SOLS_EXEC_APPLYING);
+        solsAdditionalExecutorList.add(SOLS_EXEC_ADDITIONAL_APPLYING);
         solsAdditionalExecutorList.add(SOLS_EXEC_NOT_APPLYING);
 
         trustCorpsExecutorList = new ArrayList<>();
@@ -89,8 +89,8 @@ public class LegalStatementExecutorTransformerTest {
     @Test
     public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
-        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+        execsApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+        execsApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
@@ -106,7 +106,7 @@ public class LegalStatementExecutorTransformerTest {
         when(executorListMapperServiceMock.addSolicitorToApplyingList(
                 caseDetailsMock.getData(), execsApplying)).thenReturn(execsApplying);
 
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
 
@@ -135,7 +135,7 @@ public class LegalStatementExecutorTransformerTest {
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
                 caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
@@ -157,9 +157,9 @@ public class LegalStatementExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
         CaseData caseData = caseDetailsMock.getData();
@@ -176,9 +176,10 @@ public class LegalStatementExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
+                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
+                    ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
-        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
                 caseDetailsMock.getData());
 
         CaseData caseData = caseDetailsMock.getData();

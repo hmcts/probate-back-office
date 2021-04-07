@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -31,10 +32,14 @@ public class ExecutorsTransformer {
      * Caseworker executor fields: additionalExecutorsApplying, additionalExecutorsNotApplying, and primary applicant
      * fields
      * Solicitor executor fields are: additionalExecutorsTrustCorpList, otherPartnersApplyingAsExecutors,
-     * dispenseWithNoticeOtherExecsList, solsAdditionalExecutorList, and solicitor information fields
+     * dispenseWithNoticeOtherExecsList, solsAdditionalExecutorList, and solicitor information fields.
+     * Note that we have allowed the mutation of some fields of the Request data, in order to make life simpler as
+     * CallbackResponSeTransformer was called from everywhere, whereas we just want to transform the sol journey
+     * executor lists once and once only, when they complete the application. So it is easier to amend the request
+     * data when the completion event happens.
+     * We should probably review this down the line and see if we can improve,and amend to a less mutative pattern.
      */
-    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(
-            CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(CaseData caseData) {
 
         // Get executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
@@ -45,13 +50,10 @@ public class ExecutorsTransformer {
         if (shouldSetPrimaryApplicantFieldsWithExecInfo(execsApplying, caseData)) {
             AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
             execsApplying.remove(0);
-            mapExecutorToPrimaryApplicantFields(tempExec, builder);
+            mapExecutorToPrimaryApplicantFields(tempExec, caseData);
         }
-
-        // Set builder with lists
-        builder
-                .additionalExecutorsApplying(execsApplying)
-                .additionalExecutorsNotApplying(execsNotApplying);
+        caseData.setAdditionalExecutorsApplying(execsApplying);
+        caseData.setAdditionalExecutorsNotApplying(execsNotApplying);
     }
 
     /**
@@ -178,35 +180,32 @@ public class ExecutorsTransformer {
         return execsNotApplying;
     }
 
-    // Remove the solicitor executor lists from the response data.
-    public void nullSolicitorExecutorLists(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        builder
-                .solsAdditionalExecutorList(null)
-                .additionalExecutorsTrustCorpList(null)
-                .otherPartnersApplyingAsExecutors(null)
-                .dispenseWithNoticeOtherExecsList(null);
+    // Clear the solicitor executor lists (on solicitor completion)
+    public void clearSolicitorExecutorLists(CaseData caseData) {
+        Optional.ofNullable(caseData.getSolsAdditionalExecutorList()).ifPresent(l -> l.clear());
+        Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(l -> l.clear());
+        Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(l -> l.clear());
+        Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(l -> l.clear());
     }
 
+    // Note - mutates the request data!
     private void mapExecutorToPrimaryApplicantFields(
-            AdditionalExecutorApplying exec, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
-        builder
-                .primaryApplicantForenames(exec.getApplyingExecutorFirstName())
-                .primaryApplicantSurname(exec.getApplyingExecutorLastName())
-                .primaryApplicantEmailAddress(exec.getApplyingExecutorEmail())
-                .primaryApplicantPhoneNumber(exec.getApplyingExecutorPhoneNumber())
-                .primaryApplicantAddress(exec.getApplyingExecutorAddress())
-                .primaryApplicantAlias(null)
-                .primaryApplicantHasAlias(NO)
-                .primaryApplicantIsApplying(YES)
-                .solsPrimaryExecutorNotApplyingReason(null);
+            AdditionalExecutorApplying exec, CaseData caseData) {
+        caseData.setPrimaryApplicantForenames(exec.getApplyingExecutorFirstName());
+        caseData.setPrimaryApplicantSurname(exec.getApplyingExecutorLastName());
+        caseData.setPrimaryApplicantEmailAddress(exec.getApplyingExecutorEmail());
+        caseData.setPrimaryApplicantPhoneNumber(exec.getApplyingExecutorPhoneNumber());
+        caseData.setPrimaryApplicantAddress(exec.getApplyingExecutorAddress());
+        caseData.setPrimaryApplicantAlias(null);
+        caseData.setPrimaryApplicantHasAlias(NO);
+        caseData.setPrimaryApplicantIsApplying(YES);
+        caseData.setSolsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void setFieldsIfSolicitorIsNotExecutor(CaseData caseData,
-                                                  ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+    public void setFieldsIfSolicitorIsNotExecutor(CaseData caseData) {
         if (!isSolicitorExecutor(caseData)) {
-            builder
-                    .solsSolicitorIsApplying(NO)
-                    .solsSolicitorNotApplyingReason(null);
+            caseData.setSolsSolicitorIsApplying(NO);
+            caseData.setSolsSolicitorNotApplyingReason(null);
         }
     }
 

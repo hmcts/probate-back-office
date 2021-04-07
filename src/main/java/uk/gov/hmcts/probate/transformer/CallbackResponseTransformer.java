@@ -971,7 +971,13 @@ public class CallbackResponseTransformer {
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
             .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
-            .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
+            .bulkScanEnvelopes(caseData.getBulkScanEnvelopes())
+            .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+            .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
+            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
+            .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
+            .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder
@@ -999,13 +1005,7 @@ public class CallbackResponseTransformer {
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
         builder
-            .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-            .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-            .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
-            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
-            .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
-            .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
+            .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
 
         if (caseData.getIhtFormCompletedOnline() != null) {
             if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
@@ -1140,7 +1140,7 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
         builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
@@ -1226,11 +1226,6 @@ public class CallbackResponseTransformer {
             builder
                 .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
-        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
-        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
-        solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
