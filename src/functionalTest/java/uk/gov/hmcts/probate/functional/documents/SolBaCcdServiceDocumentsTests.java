@@ -7,6 +7,7 @@ import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
@@ -1101,4 +1102,56 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Forbidden"));
 
     }
+
+    // create tests for each of the conditions and then wordings
+    @Test
+    public void verifyDomiciledInEnglandAndWales() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("domiciled in "+ENGLAND_AND_WALES));
+    }
+
+    @Test
+    public void verifyExecutorPowerReserved() {
+        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor4_name, another executor named in the will," +
+                " is not making this application but reserves power to do so at a later date."));
+    }
+
+    @Test
+    public void verifyExecutorRenunciation() {
+        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor3_name, another executor named in the will, has renounced probate and letters " +
+                "of administration with will annexed"));
+    }
+
+    @Test
+    public void verifyExecutorDiedBeforeAndAfter() {
+        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor1_name, another executor named in the will, has died in the lifetime of the deceased."));
+        assertTrue(response.contains("executor2_name, another executor named in the will, has survived the deceased and died since."));
+    }
+
+    @Test
+    public void verifyExecutorLacksMentalCapacity() { //how does the MentallyIncapable get set?
+        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor5_name, another executor named in the will, lacks capacity to manage their" +
+                " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
+    }
+
+    @Test
+    public void verifyExecutorPowerReservedNoticeDispense() { //date not being added to the statement
+        String response = generatePdfDocument("solicitorPayloadTrustCorpsSchema.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Notice of this application has on the" + // 10/10/2020 date not showing??
+                " been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987" +
+                " to executor1_name to whom power is to be reserved."));
+    }
+
+    @Test
+    public void verifyExecutorConcurrentApplication() {
+        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("We are concurrently applying for notice of this application" +
+                " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules" +
+                " 1987 to executor6_name to whom power is to be reserved."));
+    }
+
 }
