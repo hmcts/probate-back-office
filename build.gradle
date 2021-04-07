@@ -262,6 +262,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  compile group: 'uk.gov.hmcts.reform', name: 'life-events-client', version: 'DEV-SNAPSHOT'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -310,7 +311,7 @@ dependencies {
   testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-   
+
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
@@ -358,7 +359,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << '-parameters'  
+  options.compilerArgs << '-parameters'
 }
 
 bootJar {

@@ -2112,7 +2112,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorPhoneNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitorIsMainApplicant", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}, 
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExtraCopiesOfGrantLabel3", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsOutsideUKGrantCopiesLabel1", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsOutsideUKGrantCopiesLabel2", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
@@ -2616,4 +2616,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintDocument", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintNumberOfCopies", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
 
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]

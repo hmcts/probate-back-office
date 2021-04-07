@@ -10,6 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ public class FeignClientConfiguration {
     private int timeout;
 
     @Bean
+    @Primary
     public Client getFeignHttpClient() {
         return new ApacheHttpClient(getHttpClient());
     }
