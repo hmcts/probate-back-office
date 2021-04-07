@@ -2617,8 +2617,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintNumberOfCopies", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
 
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "levSystemNumber", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]

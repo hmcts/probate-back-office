@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -322,5 +323,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
-    private Integer levSystemNumber;
+    private List<CollectionMember<DeathRecord>> deathRecords;
 }
