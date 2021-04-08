@@ -13,5 +13,6 @@ public class WillDocument {
     private final String documentLabel;
     private final String documentDate;
     private final DocumentLink documentLink;
+    private final String uploadedComments;
     
 }

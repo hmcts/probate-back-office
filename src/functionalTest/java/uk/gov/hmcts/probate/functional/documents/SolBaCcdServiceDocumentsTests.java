@@ -112,8 +112,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     private static final String DEFAULT_PA_PAYLOAD_WITH_WILLS = "personalPayloadNotificationsWithWills.json";
-    private static final String DEFAULT_PA_PAYLOAD_WITH_WILL_SELECTION = 
+    private static final String DEFAULT_PA_PAYLOAD_WITH_WILL_SELECTION =
         "personalPayloadNotificationsWithWillSelection.json";
+    private static final String DEFAULT_PA_PAYLOAD_WITH_MULTI_WILL_SELECTION =
+        "personalPayloadNotificationsWithMultiWillSelection.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
     private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
@@ -170,13 +172,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalApplicantWillsAvailableShouldReturnOkResponseCode() {
+    public void verifyWillsAvailableShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_PA_PAYLOAD_WITH_WILLS, DETERMINE_WILLS_AVAILABLE);
     }
 
     @Test
-    public void verifyPersonalApplicantWillSelectionShouldReturnOkResponseCode() {
+    public void verifyWillSelectionShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_PA_PAYLOAD_WITH_WILL_SELECTION, DETERMINE_WILL_SELECTION);
+    }
+
+    @Test
+    public void verifyWillSelectionShouldReturnError() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PA_PAYLOAD_WITH_MULTI_WILL_SELECTION,
+            DETERMINE_WILL_SELECTION);
+        responseBody.prettyPrint();
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertThat(jsonPath.get("errors[0]"), is("A single will must been selected for Grant Issue"));
     }
 
     @Test

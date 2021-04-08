@@ -59,6 +59,7 @@ public class OrderWillsService {
                 willDateFormatter.format(document.getDocumentDateAdded()))
             .documentLabel(reformatDocumentLabel(document.getDocumentType()))
             .documentLink(document.getDocumentLink())
+            .uploadedComments(document.getDocumentGeneratedBy())
             .build();
         return new CollectionMember<>(willDocument);
     }

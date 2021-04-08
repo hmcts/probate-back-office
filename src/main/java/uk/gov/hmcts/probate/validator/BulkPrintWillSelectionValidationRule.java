@@ -18,7 +18,8 @@ public class BulkPrintWillSelectionValidationRule implements CaseDetailsValidati
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private static final String NO_WILL_SELECTION_MADE_FOR_GRANT_ISSUE = "noWillSelectionMadeForGrantIssue";
+    private static final String NO_SINGLE_WILL_SELECTION_MADE_FOR_GRANT_ISSUE 
+        = "noSingleWillSelectionMadeForGrantIssue";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -29,12 +30,12 @@ public class BulkPrintWillSelectionValidationRule implements CaseDetailsValidati
             .filter(willDocument -> willDocument.getDocumentSelected().contains(YES))
             .count();
 
-        if (numSelectedWills == 0) {
+        if (numSelectedWills != 1) {
             String[] args = {caseDetails.getId().toString()};
-            String userMessage = businessValidationMessageRetriever.getMessage(NO_WILL_SELECTION_MADE_FOR_GRANT_ISSUE, 
-                args, Locale.UK);
+            String userMessage = businessValidationMessageRetriever
+                .getMessage(NO_SINGLE_WILL_SELECTION_MADE_FOR_GRANT_ISSUE, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                "No will has been selected for Grant Issue for case id "
+                "No single will has been selected for Grant Issue for case id "
                     + caseDetails.getId());
         }
     }

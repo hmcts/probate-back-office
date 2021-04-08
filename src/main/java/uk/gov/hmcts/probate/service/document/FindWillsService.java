@@ -107,6 +107,7 @@ public class FindWillsService {
             .documentType(uploadDocument.getDocumentType())
             .documentLink(uploadDocument.getDocumentLink())
             .documentFileName(uploadDocument.getDocumentLink().getDocumentFilename())
+            .documentGeneratedBy(uploadDocument.getComment())
             .build();
     }
 

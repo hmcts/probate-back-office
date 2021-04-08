@@ -183,5 +183,6 @@
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentSelected", "EventElementLabel": "", "FieldDisplayOrder": 1, "DisplayContext": "OPTIONAL"},
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentLabel", "EventElementLabel": "", "FieldDisplayOrder": 2, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentDate", "EventElementLabel": "", "FieldDisplayOrder": 3, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentLink", "EventElementLabel": "", "FieldDisplayOrder": 4, "DisplayContext": "READONLY"}
+  {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "documentLink", "EventElementLabel": "", "FieldDisplayOrder": 4, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "WillSelection", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "willSelection", "ListElementCode": "uploadedComments", "EventElementLabel": "", "FieldDisplayOrder": 2, "DisplayContext": "READONLY"}
 ]

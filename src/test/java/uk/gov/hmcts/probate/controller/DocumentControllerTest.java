@@ -72,6 +72,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 public class DocumentControllerTest {
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
+    public static final String WILL_SELECTION_ERROR_TEXT = "You must select only one document to be printed as the final will";
     @Autowired
     private MockMvc mockMvc;
 
@@ -696,22 +697,37 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateWillsSelected() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithWillsSelectedForBulkPrint.json");
+    public void shouldValidateWillSingleSelected() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithWillSelectedForBulkPrint.json");
 
         mockMvc.perform(post("/document/validate-will-selection")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.willSelection[0].value.documentSelected[0]", containsString("Yes")))
+            .andExpect(jsonPath("$.data.willSelection[0].value.uploadedComments", 
+                containsString("some upload comments")))
             .andExpect(jsonPath("$.data.willSelection[1].value.documentSelected", empty()))
-            .andExpect(jsonPath("$.data.willSelection[2].value.documentSelected[0]", containsString("Yes")))
+            .andExpect(jsonPath("$.data.willSelection[2].value.documentSelected[0]", containsString("No")))
             .andExpect(jsonPath("$.data.willSelection[3].value.documentSelected", empty()))
             .andReturn();
     }
 
     @Test
-    public void shouldValidateNoWillsSelected() throws Exception {
+    public void shouldErrorValidateWillMultipleSelected() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithWillsSelectedForBulkPrint.json");
+
+        mockMvc.perform(post("/document/validate-will-selection")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors[0]")
+                .value(WILL_SELECTION_ERROR_TEXT))
+            .andReturn();
+    }
+
+    @Test
+    public void shouldErrorOnValidateNoWillsSelected() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithNoWillsSelectedForBulkPrint.json");
 
         mockMvc.perform(post("/document/validate-will-selection")
@@ -719,7 +735,7 @@ public class DocumentControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("No will has been selected for Grant Issue"))
+                .value(WILL_SELECTION_ERROR_TEXT))
             .andReturn();
     }
 

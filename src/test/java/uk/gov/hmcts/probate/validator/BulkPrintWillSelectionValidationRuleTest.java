@@ -59,7 +59,25 @@ public class BulkPrintWillSelectionValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenWillSelectionMade() {
+    public void shouldNotThrowExceptionWhenSingleWillSelectionMade() {
+        CollectionMember<WillDocument> will1 =
+            new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList("Yes")).build());
+        CollectionMember<WillDocument> will2 =
+            new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList()).build());
+        CollectionMember<WillDocument> will3 =
+            new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList("No")).build());
+        CollectionMember<WillDocument> will4 =
+            new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList("No")).build());
+        List<CollectionMember<WillDocument>> willSelection = Arrays.asList(will1, will2, will3, will4);
+        when(caseDataMock.getWillSelection()).thenReturn(willSelection);
+
+        bulkPrintWillSelectionValidationRule.validate(caseDetailsMock);
+
+        verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
+    }
+    
+    @Test(expected = BusinessValidationException.class)
+    public void shouldThrowExceptionWhenMultipleWillSelectionMade() {
         CollectionMember<WillDocument> will1 =
             new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList("Yes")).build());
         CollectionMember<WillDocument> will2 =
@@ -72,7 +90,5 @@ public class BulkPrintWillSelectionValidationRuleTest {
         when(caseDataMock.getWillSelection()).thenReturn(willSelection);
 
         bulkPrintWillSelectionValidationRule.validate(caseDetailsMock);
-
-        verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
     }
 }
