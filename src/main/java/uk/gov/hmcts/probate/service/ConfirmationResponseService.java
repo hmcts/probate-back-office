@@ -271,16 +271,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String iht400 = "";
-        if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = format("*   %s\n", PageTextConstants.DOCUMENT_IHT_421);
-        }
-
         String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
-        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
