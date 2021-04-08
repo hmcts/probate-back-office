@@ -72,7 +72,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 public class DocumentControllerTest {
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
-    public static final String WILL_SELECTION_ERROR_TEXT = "You must select only one document to be printed as the final will";
+    public static final String WILL_SELECTION_ERROR_TEXT 
+        = "You must select only one document to be printed as the final will";
     @Autowired
     private MockMvc mockMvc;
 
