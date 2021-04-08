@@ -8,4 +8,11 @@
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: axios:0.19.2
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/axios@.*$</packageUrl>
+        <vulnerabilityName>CVE-2020-28168</vulnerabilityName>
+    </suppress>
 </suppressions>
