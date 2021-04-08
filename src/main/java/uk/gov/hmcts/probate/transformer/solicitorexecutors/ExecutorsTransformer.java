@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
@@ -39,10 +40,11 @@ public class ExecutorsTransformer {
      * data when the completion event happens.
      * We should probably review this down the line and see if we can improve,and amend to a less mutative pattern.
      */
-    public void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(CaseData caseData) {
+    protected void mapSolicitorExecutorFieldsToCaseworkerExecutorFields(CaseData caseData) {
 
         // Get executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                createCaseworkerApplyingList(caseData);
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
@@ -65,7 +67,9 @@ public class ExecutorsTransformer {
             CaseData caseData, ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
 
         // Create executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                createCaseworkerApplyingList(caseData);
+
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
@@ -81,10 +85,7 @@ public class ExecutorsTransformer {
     public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
-                caseData.getAdditionalExecutorsApplying() == null
-                        || caseData.getAdditionalExecutorsApplying().isEmpty()
-                        ? new ArrayList<>() : new ArrayList<>(caseData.getAdditionalExecutorsApplying());
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
 
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
         execsApplying = setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
@@ -95,10 +96,7 @@ public class ExecutorsTransformer {
     public List<CollectionMember<AdditionalExecutorNotApplying>> createCaseworkerNotApplyingList(CaseData caseData) {
 
         // Initialise executor lists
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
-                caseData.getAdditionalExecutorsNotApplying() == null
-                        || caseData.getAdditionalExecutorsNotApplying().isEmpty()
-                        ? new ArrayList<>() : new ArrayList<>(caseData.getAdditionalExecutorsNotApplying());
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
 
         mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
         execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
@@ -109,15 +107,18 @@ public class ExecutorsTransformer {
     private void mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
 
-        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null
+                && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
             // Add trust corps executors
             execsApplying.addAll(executorListMapperService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
-        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
+        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null
+                && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()) {
             // Add partner executors
             execsApplying.addAll(executorListMapperService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
         }
 
-        if (caseData.getSolsAdditionalExecutorList() != null) {
+        if (caseData.getSolsAdditionalExecutorList() != null
+                && !caseData.getSolsAdditionalExecutorList().isEmpty()) {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
@@ -128,13 +129,15 @@ public class ExecutorsTransformer {
     private void mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
-        if (caseData.getDispenseWithNoticeOtherExecsList() != null) {
+        if (caseData.getDispenseWithNoticeOtherExecsList() != null
+            && !caseData.getDispenseWithNoticeOtherExecsList().isEmpty()) {
             // Add power reserved executors
             execsNotApplying.addAll(executorListMapperService
                     .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(caseData));
         }
 
-        if (caseData.getSolsAdditionalExecutorList() != null) {
+        if (caseData.getSolsAdditionalExecutorList() != null
+                && !caseData.getSolsAdditionalExecutorList().isEmpty()) {
             // Add main solicitor executor list
             execsNotApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecsToNotApplyingExecutors(caseData));
@@ -155,7 +158,6 @@ public class ExecutorsTransformer {
 
             // Remove solicitor from applying executor list
             execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
-
         }
 
         return execsApplying;
@@ -217,9 +219,111 @@ public class ExecutorsTransformer {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
+    protected List<CollectionMember<AdditionalExecutorApplying>> cloneExecsApplying(CaseData caseData) {
+
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        if (caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()) {
+            return execsApplying;
+        }
+
+        List<CollectionMember<AdditionalExecutorApplying>> cdExecsApplying = caseData.getAdditionalExecutorsApplying();
+        for (int i = 0; i < cdExecsApplying.size(); i++) {
+            execsApplying.add(new CollectionMember<>(cdExecsApplying.get(i).getId(),
+                    cloneExecApplying(cdExecsApplying.get(i).getValue())));
+        }
+        return execsApplying;
+    }
+
+    protected List<CollectionMember<AdditionalExecutorNotApplying>> cloneExecsNotApplying(CaseData caseData) {
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
+        if (caseData.getAdditionalExecutorsNotApplying() == null
+                || caseData.getAdditionalExecutorsNotApplying().isEmpty()) {
+            return execsNotApplying;
+        }
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> cdExecsNotApplying =
+                caseData.getAdditionalExecutorsNotApplying();
+        for (int i = 0; i < cdExecsNotApplying.size(); i++) {
+            execsNotApplying.add(new CollectionMember<>(cdExecsNotApplying.get(i).getId(), cloneExecNotApplying(
+                    cdExecsNotApplying.get(i).getValue())));
+        }
+        return execsNotApplying;
+    }
+
+    private AdditionalExecutorApplying cloneExecApplying(AdditionalExecutorApplying execApplying) {
+        //  throws JsonProcessingException {
+
+        return AdditionalExecutorApplying.builder()
+                .applyingExecutorAddress(cloneAddress(execApplying.getApplyingExecutorAddress()))
+                .applyingExecutorEmail(execApplying.getApplyingExecutorEmail())
+                .applyingExecutorFirstName(execApplying.getApplyingExecutorFirstName())
+                .applyingExecutorLastName(execApplying.getApplyingExecutorLastName())
+                .applyingExecutorName(execApplying.getApplyingExecutorName())
+                .applyingExecutorOtherNames(execApplying.getApplyingExecutorOtherNames())
+                .applyingExecutorOtherNamesReason(execApplying.getApplyingExecutorOtherNamesReason())
+                .applyingExecutorOtherReason(execApplying.getApplyingExecutorOtherReason())
+                .applyingExecutorPhoneNumber(execApplying.getApplyingExecutorPhoneNumber())
+                .applyingExecutorType(execApplying.getApplyingExecutorType())
+                .applyingExecutorTrustCorpPosition(execApplying.getApplyingExecutorTrustCorpPosition())
+                .build();
+
+        /*
+        Resolve Mockito issues and replace to make code more resilient to change
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper
+                .readValue(objectMapper.writeValueAsString(execApplying), AdditionalExecutorApplying.class);
+         */
+    }
+
+    private SolsAddress cloneAddress(SolsAddress addr) {
+        if (addr == null) {
+            return null;
+        }
+        return SolsAddress.builder()
+                .addressLine1(addr.getAddressLine1())
+                .addressLine2(addr.getAddressLine2())
+                .addressLine3(addr.getAddressLine3())
+                .county(addr.getCounty())
+                .country(addr.getCountry())
+                .postCode(addr.getPostCode())
+                .postTown(addr.getPostTown())
+
+                .build();
+    }
+
+    private AdditionalExecutorNotApplying cloneExecNotApplying(AdditionalExecutorNotApplying execNotApplying) {
+        // throws JsonProcessingException {
+
+        return AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorDispenseWithNotice(execNotApplying.getNotApplyingExecutorDispenseWithNotice())
+            .notApplyingExecutorDispenseWithNoticeLeaveGiven(
+                    execNotApplying.getNotApplyingExecutorDispenseWithNoticeLeaveGiven())
+            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(execNotApplying
+                    .getNotApplyingExecutorDispenseWithNoticeLeaveGivenDate())
+            .notApplyingExecutorName(execNotApplying.getNotApplyingExecutorName())
+            .notApplyingExecutorNameDifferenceComment(execNotApplying.getNotApplyingExecutorNameDifferenceComment())
+            .notApplyingExecutorNameOnWill(execNotApplying.getNotApplyingExecutorNameOnWill())
+            .notApplyingExecutorNotified(execNotApplying.getNotApplyingExecutorNotified())
+            .notApplyingExecutorReason(execNotApplying.getNotApplyingExecutorReason())
+            .build();
+
+        /*
+        Resolve Mockito issues and replace to make code more resilient to change
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper
+                .readValue(objectMapper.writeValueAsString(execNotApplying), AdditionalExecutorNotApplying.class);
+
+         */
+    }
+
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
-        return caseData.getPrimaryApplicantForenames() == null && !execsApplying.isEmpty();
+        return caseData.getPrimaryApplicantForenames() == null && execsApplying != null && !execsApplying.isEmpty();
     }
 
 }

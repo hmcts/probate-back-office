@@ -270,12 +270,13 @@ public class DocumentController {
             documents, letterId, pdfSize));
     }
 
+    // This only seems to be called when a caseworker stops a case
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
         log.info("Initiating call for SoT");
-        caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
+        caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
             documentGeneratorService.generateSoT(callbackRequest)));
     }

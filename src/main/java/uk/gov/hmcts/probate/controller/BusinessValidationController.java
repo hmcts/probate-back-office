@@ -389,7 +389,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_VALUE, produces = {
         APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForLegalStatementRegeneration(
-        @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) throws JsonProcessingException {
 
         return ResponseEntity
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));

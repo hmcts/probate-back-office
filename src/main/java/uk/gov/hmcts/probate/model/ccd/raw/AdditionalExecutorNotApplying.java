@@ -1,13 +1,16 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @Builder
-public class AdditionalExecutorNotApplying {
+@JsonSerialize
+public class AdditionalExecutorNotApplying implements Serializable {
 
     private final String notApplyingExecutorName;
     private final String notApplyingExecutorNameOnWill;

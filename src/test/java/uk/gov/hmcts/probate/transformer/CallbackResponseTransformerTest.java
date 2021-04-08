@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -762,7 +763,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .build();
@@ -785,7 +786,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSchemaVersionCorrectly() {
+    public void shouldSetSchemaVersionCorrectly() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -797,7 +798,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTestForNullDOB() {
+    public void shouldTestForNullDOB() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -809,7 +810,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTestForNullDOD() {
+    public void shouldTestForNullDOD() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfDeath(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -821,7 +822,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
+    public void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -2283,7 +2284,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformer() {
+    public void shouldCallSolLSAmendTransformer() throws JsonProcessingException {
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));

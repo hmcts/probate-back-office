@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -13,6 +15,8 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -100,6 +104,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
@@ -112,6 +117,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
             "solicitorPDFPayloadProbateMultipleExecutors.json";
+    private static final String EMPTY_REQUEST = "emptyRequest.json";
+
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
@@ -212,16 +219,21 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generatePdfDocument(String jsonFileName, String path) {
 
+        return generatePdfDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path);
+    }
+
+    private String generatePdfDocumentFromPayload(String payload, String path) {
+
         Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(payload)
+                .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
         String documentUrl =
-            jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+                jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
@@ -437,8 +449,23 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
-        String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws JsonProcessingException {
+
+        final ResponseBody body = validatePostSuccess(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD,
+                VALIDATE_PROBATE_URL);
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final Map<String, String> hm = jsonPath.get("data");
+        hm.remove("taskList");
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        String transformedData = objectMapper.writeValueAsString(hm);
+
+        String newRequest = utils.getJsonFromFile(EMPTY_REQUEST);
+        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": " + transformedData);
+
+        String response = generatePdfDocumentFromPayload(newRequest, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));

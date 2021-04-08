@@ -588,7 +588,7 @@ public class BusinessValidationUnitTest {
         underTest.solsValidateProbate(callbackRequestMock, bindingResultMock, httpServletRequest);
 
         verify(solCompletionTransformer, times(1))
-                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any());
+                .mapSolicitorExecutorFieldsOnCompletion(any());
         verify(solCompletionTransformer, times(1))
                 .clearSolicitorExecutorLists(any());
     }

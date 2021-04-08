@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +23,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -88,9 +89,6 @@ public class SolicitorJourneyCompletionTransformerTest {
 
     @Test
     public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        execsApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
-        execsApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
@@ -98,29 +96,19 @@ public class SolicitorJourneyCompletionTransformerTest {
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
-        when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
-                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
-        when(executorListMapperServiceMock.addSolicitorToApplyingList(
-                caseDetailsMock.getData(), execsApplying)).thenReturn(execsApplying);
+        CaseData caseData = caseDataBuilder.build();
 
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
+        SolicitorJourneyCompletionTransformer solJourneyCompletion =
+                new SolicitorJourneyCompletionTransformer(new ExecutorListMapperService());
 
+        solJourneyCompletion.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
-        List<CollectionMember<AdditionalExecutorApplying>> legalStatementExecutors = new ArrayList<>();
-        legalStatementExecutors.addAll(additionalExecutorApplying);
-        legalStatementExecutors.addAll(additionalExecutorApplying);
-
-        CaseData caseData = caseDetailsMock.getData();
-        assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
-        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
+        assertEquals(2, caseData.getAdditionalExecutorsApplying().size());
+        assertEquals(3, caseData.getExecutorsApplyingLegalStatement().size());
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
+    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() throws JsonProcessingException {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -135,19 +123,19 @@ public class SolicitorJourneyCompletionTransformerTest {
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
                 caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
+        CaseData caseData = caseDetailsMock.getData();
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
         legalStatementExecutors.addAll(additionalExecutorNotApplying);
 
-        CaseData caseData = caseDetailsMock.getData();
         assertEquals(legalStatementExecutors, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying()
+            throws JsonProcessingException {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME)
             .primaryApplicantSurname(EXEC_SURNAME)
@@ -159,16 +147,16 @@ public class SolicitorJourneyCompletionTransformerTest {
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
                 caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
-
         CaseData caseData = caseDetailsMock.getData();
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+
         assertEquals(additionalExecutorApplying, caseData.getExecutorsApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying()
+            throws JsonProcessingException {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -179,10 +167,9 @@ public class SolicitorJourneyCompletionTransformerTest {
                 caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
                     ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
-                caseDetailsMock.getData());
-
         CaseData caseData = caseDetailsMock.getData();
+        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }

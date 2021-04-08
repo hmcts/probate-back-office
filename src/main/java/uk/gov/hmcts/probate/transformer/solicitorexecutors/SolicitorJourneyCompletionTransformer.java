@@ -21,18 +21,22 @@ public class SolicitorJourneyCompletionTransformer extends ExecutorsTransformer 
     /**
      * Map all executors into executors applying and executors not applying lists for the solicitor legal statement.
      */
-    public void mapSolicitorExecutorFieldsToLegalStatementExecutorFields(CaseData caseData) {
+    public void mapSolicitorExecutorFieldsOnCompletion(CaseData caseData) {
 
-        // Create executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
-                createCaseworkerNotApplyingList(caseData);
+        mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData);
+        createLegalStatementExecutorLists(caseData);
+    }
+
+    public void createLegalStatementExecutorLists(CaseData caseData) {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
 
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantNotApplying()) {
-            execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            execsNotApplying.add(0, executorListMapperService
+                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
 
         caseData.setExecutorsApplyingLegalStatement(execsApplying);

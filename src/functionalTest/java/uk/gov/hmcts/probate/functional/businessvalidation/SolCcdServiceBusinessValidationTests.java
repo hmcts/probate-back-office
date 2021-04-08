@@ -45,7 +45,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    // Todo add tests for this endpoint
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test

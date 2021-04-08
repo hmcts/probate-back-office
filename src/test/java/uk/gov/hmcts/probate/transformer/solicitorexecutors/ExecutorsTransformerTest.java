@@ -239,7 +239,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldDefaultCaseworkerExecutorListsToExistingValues() {
+    public void shouldSwapSolicitorToNotApplyingList() {
         caseDataBuilder
                 .additionalExecutorsApplying(additionalExecutorApplying)
                 .additionalExecutorsNotApplying(additionalExecutorNotApplying)
@@ -247,18 +247,11 @@ public class ExecutorsTransformerTest {
 
         final CaseData cd = caseDataBuilder.build();
 
-        when(caseDetailsMock.getData()).thenReturn(cd);
-        when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
-                caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
-        when(executorListMapperServiceMock.removeSolicitorFromApplyingList(
-                additionalExecutorApplying)).thenReturn(additionalExecutorApplying);
+        new SolicitorJourneyCompletionTransformer(new ExecutorListMapperService())
+                .mapSolicitorExecutorFieldsOnCompletion(cd);
 
-        solicitorExecutorTransformerMock
-                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData());
-
-        assertEquals(additionalExecutorApplying, cd.getAdditionalExecutorsApplying());
-        assertEquals(additionalExecutorNotApplying, cd.getAdditionalExecutorsNotApplying());
-
+        assertEquals(0, cd.getAdditionalExecutorsApplying().size());
+        assertEquals(1, cd.getAdditionalExecutorsNotApplying().size());
     }
 
     @Test

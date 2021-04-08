@@ -16,19 +16,23 @@ public class CaseDataTransformer {
 
     public void transformCaseDataForSolicitorJourneyCompletion(CallbackRequest callbackRequest) {
 
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorJourneyCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
-        solicitorJourneyCompletionTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData);
-        solicitorJourneyCompletionTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+        solicitorJourneyCompletionTransformer
+                .mapSolicitorExecutorFieldsOnCompletion(caseData);
+
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorJourneyCompletionTransformer.clearSolicitorExecutorLists(caseData);
     }
 
-    public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+    public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        solicitorJourneyCompletionTransformer.createLegalStatementExecutorLists(caseData);
+    }
 
+    public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
     }
 
