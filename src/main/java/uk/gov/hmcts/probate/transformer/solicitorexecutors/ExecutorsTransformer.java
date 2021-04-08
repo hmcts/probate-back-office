@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
@@ -229,7 +228,7 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> cdExecsApplying = caseData.getAdditionalExecutorsApplying();
         for (int i = 0; i < cdExecsApplying.size(); i++) {
             execsApplying.add(new CollectionMember<>(cdExecsApplying.get(i).getId(),
-                    cloneExecApplying(cdExecsApplying.get(i).getValue())));
+                    cdExecsApplying.get(i).getValue().clone()));
         }
         return execsApplying;
     }
@@ -245,80 +244,10 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> cdExecsNotApplying =
                 caseData.getAdditionalExecutorsNotApplying();
         for (int i = 0; i < cdExecsNotApplying.size(); i++) {
-            execsNotApplying.add(new CollectionMember<>(cdExecsNotApplying.get(i).getId(), cloneExecNotApplying(
-                    cdExecsNotApplying.get(i).getValue())));
+            execsNotApplying.add(new CollectionMember<>(cdExecsNotApplying.get(i).getId(),
+                    cdExecsNotApplying.get(i).getValue().clone()));
         }
         return execsNotApplying;
-    }
-
-    private AdditionalExecutorApplying cloneExecApplying(AdditionalExecutorApplying execApplying) {
-        //  throws JsonProcessingException {
-
-        return AdditionalExecutorApplying.builder()
-                .applyingExecutorAddress(cloneAddress(execApplying.getApplyingExecutorAddress()))
-                .applyingExecutorEmail(execApplying.getApplyingExecutorEmail())
-                .applyingExecutorFirstName(execApplying.getApplyingExecutorFirstName())
-                .applyingExecutorLastName(execApplying.getApplyingExecutorLastName())
-                .applyingExecutorName(execApplying.getApplyingExecutorName())
-                .applyingExecutorOtherNames(execApplying.getApplyingExecutorOtherNames())
-                .applyingExecutorOtherNamesReason(execApplying.getApplyingExecutorOtherNamesReason())
-                .applyingExecutorOtherReason(execApplying.getApplyingExecutorOtherReason())
-                .applyingExecutorPhoneNumber(execApplying.getApplyingExecutorPhoneNumber())
-                .applyingExecutorType(execApplying.getApplyingExecutorType())
-                .applyingExecutorTrustCorpPosition(execApplying.getApplyingExecutorTrustCorpPosition())
-                .build();
-
-        /*
-        Resolve Mockito issues and replace to make code more resilient to change
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper
-                .readValue(objectMapper.writeValueAsString(execApplying), AdditionalExecutorApplying.class);
-         */
-    }
-
-    private SolsAddress cloneAddress(SolsAddress addr) {
-        if (addr == null) {
-            return null;
-        }
-        return SolsAddress.builder()
-                .addressLine1(addr.getAddressLine1())
-                .addressLine2(addr.getAddressLine2())
-                .addressLine3(addr.getAddressLine3())
-                .county(addr.getCounty())
-                .country(addr.getCountry())
-                .postCode(addr.getPostCode())
-                .postTown(addr.getPostTown())
-
-                .build();
-    }
-
-    private AdditionalExecutorNotApplying cloneExecNotApplying(AdditionalExecutorNotApplying execNotApplying) {
-        // throws JsonProcessingException {
-
-        return AdditionalExecutorNotApplying.builder()
-            .notApplyingExecutorDispenseWithNotice(execNotApplying.getNotApplyingExecutorDispenseWithNotice())
-            .notApplyingExecutorDispenseWithNoticeLeaveGiven(
-                    execNotApplying.getNotApplyingExecutorDispenseWithNoticeLeaveGiven())
-            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(execNotApplying
-                    .getNotApplyingExecutorDispenseWithNoticeLeaveGivenDate())
-            .notApplyingExecutorName(execNotApplying.getNotApplyingExecutorName())
-            .notApplyingExecutorNameDifferenceComment(execNotApplying.getNotApplyingExecutorNameDifferenceComment())
-            .notApplyingExecutorNameOnWill(execNotApplying.getNotApplyingExecutorNameOnWill())
-            .notApplyingExecutorNotified(execNotApplying.getNotApplyingExecutorNotified())
-            .notApplyingExecutorReason(execNotApplying.getNotApplyingExecutorReason())
-            .build();
-
-        /*
-        Resolve Mockito issues and replace to make code more resilient to change
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper
-                .readValue(objectMapper.writeValueAsString(execNotApplying), AdditionalExecutorNotApplying.class);
-
-         */
     }
 
     private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(

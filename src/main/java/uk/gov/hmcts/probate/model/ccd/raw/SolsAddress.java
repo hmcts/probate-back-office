@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +13,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @Builder
-@JsonSerialize
 public class SolsAddress implements Serializable {
+
+    @Override
+    public SolsAddress clone() {
+        try {
+            return (SolsAddress) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     @Size(min = 1, groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")

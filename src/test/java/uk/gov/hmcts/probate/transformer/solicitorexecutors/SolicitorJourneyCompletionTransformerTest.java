@@ -108,7 +108,7 @@ public class SolicitorJourneyCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() throws JsonProcessingException {
+    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -117,13 +117,14 @@ public class SolicitorJourneyCompletionTransformerTest {
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CaseData caseData = caseDataBuilder.build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
                 caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
-        CaseData caseData = caseDetailsMock.getData();
         solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();

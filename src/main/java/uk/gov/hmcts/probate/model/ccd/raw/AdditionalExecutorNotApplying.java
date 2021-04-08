@@ -1,16 +1,13 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @Builder
-@JsonSerialize
-public class AdditionalExecutorNotApplying implements Serializable {
+public class AdditionalExecutorNotApplying {
 
     private final String notApplyingExecutorName;
     private final String notApplyingExecutorNameOnWill;
@@ -21,4 +18,20 @@ public class AdditionalExecutorNotApplying implements Serializable {
     private final String notApplyingExecutorDispenseWithNoticeLeaveGiven;
     private final LocalDate notApplyingExecutorDispenseWithNoticeLeaveGivenDate;
 
+    @Override
+    public AdditionalExecutorNotApplying clone() {
+        // need to do this as super.clone() doesn't like the localdate
+        return AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorDispenseWithNotice(getNotApplyingExecutorDispenseWithNotice())
+            .notApplyingExecutorDispenseWithNoticeLeaveGiven(
+                    getNotApplyingExecutorDispenseWithNoticeLeaveGiven())
+            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
+                    getNotApplyingExecutorDispenseWithNoticeLeaveGivenDate())
+            .notApplyingExecutorName(getNotApplyingExecutorName())
+            .notApplyingExecutorNameDifferenceComment(getNotApplyingExecutorNameDifferenceComment())
+            .notApplyingExecutorNameOnWill(getNotApplyingExecutorNameOnWill())
+            .notApplyingExecutorNotified(getNotApplyingExecutorNotified())
+            .notApplyingExecutorReason(getNotApplyingExecutorReason())
+            .build();
+    }
 }
