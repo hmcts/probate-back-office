@@ -60,9 +60,8 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
-
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
         await I.caseProgressConfirmApplication();
+        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
         await I.caseProgressCompleteApplication();
 
         console.info('Payment');
