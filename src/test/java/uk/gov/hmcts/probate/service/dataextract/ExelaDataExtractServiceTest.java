@@ -82,7 +82,7 @@ public class ExelaDataExtractServiceTest {
 
 
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
-        when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinDateRangeExela(any(), any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
