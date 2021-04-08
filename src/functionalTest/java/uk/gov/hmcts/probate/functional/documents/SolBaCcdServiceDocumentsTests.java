@@ -187,7 +187,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             DETERMINE_WILL_SELECTION);
         responseBody.prettyPrint();
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertThat(jsonPath.get("errors[0]"), is("A single will must been selected for Grant Issue"));
+        assertThat(jsonPath.get("errors[0]"), is("You must select only one document to be printed as the final will"));
     }
 
     @Test
