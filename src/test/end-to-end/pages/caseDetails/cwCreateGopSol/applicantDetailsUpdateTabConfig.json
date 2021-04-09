@@ -28,10 +28,10 @@
       "County",
       "Postcode/Zipcode",
       "Country",
-      "Executor Name",
-      "Executor Name on Will",
+      "Executor name",
+      "Executor name on Will",
       "Reason for name difference",
-      "Executor Notified"
+      "Executor notified"
     ],
     "dataKeys": [
       "page1_list2_application_type",

@@ -26,9 +26,15 @@ public class CaseDataTransformer {
         solicitorJourneyCompletionTransformer.clearSolicitorExecutorLists(caseData);
     }
 
+    public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        solicitorJourneyCompletionTransformer
+                .mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+    }
+
     public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
-        solicitorJourneyCompletionTransformer.createLegalStatementExecutorLists(caseData);
+        solicitorJourneyCompletionTransformer.createLegalStatementExecutorListsFromTransformedLists(caseData);
     }
 
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
@@ -36,4 +42,8 @@ public class CaseDataTransformer {
         resetCaseDataTransformer.resetExecutorLists(caseData);
     }
 
+    public void transformSolCaseDataForCaseworkerCompletion(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        solicitorJourneyCompletionTransformer.mapPrimaryApplicantFields(caseData);
+    }
 }

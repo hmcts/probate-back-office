@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
@@ -131,7 +132,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
-            caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
+            caseDataTransformer.transformCaseDataForValidateProbate(callbackRequest);
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
@@ -357,6 +358,7 @@ public class BusinessValidationController {
                     gopPage1ValidationRules);
 
             if (response.getErrors().isEmpty()) {
+                // caseDataTransformer.transformSolCaseDataForCaseworkerCompletion(callbackRequest);
                 response = callbackResponseTransformer.paperForm(callbackRequest, document);
             }
         } else {

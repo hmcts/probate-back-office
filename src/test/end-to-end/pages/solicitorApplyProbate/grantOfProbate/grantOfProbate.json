@@ -72,6 +72,7 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link",
+  "UKpostcodeLink": "a.manual-link",
+  "page4_postcodeLink": "#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress a.manual-link",
   "noAddressFound": "No address found"
 }

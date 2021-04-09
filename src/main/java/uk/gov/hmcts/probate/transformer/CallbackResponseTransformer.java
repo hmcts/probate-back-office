@@ -112,6 +112,7 @@ public class CallbackResponseTransformer {
     private final ExecutorsTransformer solicitorExecutorTransformer;
     private final ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
     private final TaskListUpdateService taskListUpdateService;
+    private final CaseDataTransformer caseDataTransformer;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
@@ -394,6 +395,8 @@ public class CallbackResponseTransformer {
         final String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final String schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
+        caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
+
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
@@ -515,8 +518,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder)
-            throws JsonProcessingException {
+    public void transformCaseForSolicitorConfirmText(CaseDetails caseDetails, ResponseCaseDataBuilder<?, ?> builder) {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 

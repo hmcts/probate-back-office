@@ -29,14 +29,14 @@
       "County",
       "Postcode/Zipcode",
       "Country",
-      "Executor Name",
-      "Executor Name on Will",
+      "Executor name",
+      "Executor name on Will",
       "Reason for name difference",
       "Reason executor is not applying",
       "Is a dispense with notice required?",
       "Has leave already been given to dispense with notice?",
       "On what date was leave given to dispense with notice?",
-      "Executor Notified"
+      "Executor notified"
     ],
     "dataKeys": [
       "page1_list2_application_type",

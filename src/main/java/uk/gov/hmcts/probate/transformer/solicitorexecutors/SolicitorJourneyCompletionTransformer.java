@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class SolicitorJourneyCompletionTransformer extends ExecutorsTransformer {
+public class SolicitorJourneyCompletionTransformer extends LegalStatementExecutorTransformer {
 
     public SolicitorJourneyCompletionTransformer(ExecutorListMapperService executorListMapperService) {
         super(executorListMapperService);
@@ -24,23 +24,7 @@ public class SolicitorJourneyCompletionTransformer extends ExecutorsTransformer 
     public void mapSolicitorExecutorFieldsOnCompletion(CaseData caseData) {
 
         mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData);
-        createLegalStatementExecutorLists(caseData);
-    }
-
-    public void createLegalStatementExecutorLists(CaseData caseData) {
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
-
-        // Add primary applicant to list
-        if (caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-        } else if (caseData.isPrimaryApplicantNotApplying()) {
-            execsNotApplying.add(0, executorListMapperService
-                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
-        }
-
-        caseData.setExecutorsApplyingLegalStatement(execsApplying);
-        caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);
+        createLegalStatementExecutorListsFromTransformedLists(caseData);
     }
 
 }

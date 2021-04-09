@@ -47,14 +47,24 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
+        caseData.setAdditionalExecutorsApplying(execsApplying);
+        caseData.setAdditionalExecutorsNotApplying(execsNotApplying);
+        mapPrimaryApplicantFields(caseData);
+    }
+
+    public void mapPrimaryApplicantFields(CaseData caseData) {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                caseData.getAdditionalExecutorsApplying();
+
         // Populate primary applicant fields
-        if (shouldSetPrimaryApplicantFieldsWithExecInfo(execsApplying, caseData)) {
+        if (shouldSetPrimaryApplicantFieldsWithExecInfo(caseData)) {
             AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
+            // For a caseworker,
+            // this will remove the first executor they added (if the aplicant is applying) -
+            // This is odd quirky behaviour but is as designed
             execsApplying.remove(0);
             mapExecutorToPrimaryApplicantFields(tempExec, caseData);
         }
-        caseData.setAdditionalExecutorsApplying(execsApplying);
-        caseData.setAdditionalExecutorsNotApplying(execsNotApplying);
     }
 
     /**
@@ -250,8 +260,11 @@ public class ExecutorsTransformer {
         return execsNotApplying;
     }
 
-    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(
-            List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
+    private boolean shouldSetPrimaryApplicantFieldsWithExecInfo(CaseData caseData) {
+
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                caseData.getAdditionalExecutorsApplying();
+
         return caseData.getPrimaryApplicantForenames() == null && execsApplying != null && !execsApplying.isEmpty();
     }
 

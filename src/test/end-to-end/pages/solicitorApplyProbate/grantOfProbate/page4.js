@@ -29,20 +29,24 @@ module.exports = async function (isSolicitorApplying = false) {
 
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
         await I.click(`#solsAdditionalExecutorList_0_additionalExecNameOnWill-${grantOfProbateConfig.optionYes}`);
-        await I.click(`#solsAdditionalExecutorList_0_additionalApplying-${grantOfProbateConfig.optionYes}`);
+        await I.waitForVisible('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', testConfig.TestTimeToWaitForText);
+        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', grantOfProbateConfig.page2_executorAliasName);
+
+        await I.click({css: '#solsAdditionalExecutorList_0_additionalApplying-Yes'});
 
         await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', testConfig.TestTimeToWaitForText);
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', grantOfProbateConfig.page2_executorPostcode);
         await I.click('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress > div  > div > button');
 
         await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', testConfig.TestTimeToWaitForText);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', grantOfProbateConfig.page2_executorAliasName);
         const optLocator = {css: '#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList > option:first-child'};
         await I.waitForElement(optLocator, testConfig.TestTimeToWaitForText);
         const optText = await I.grabTextFrom(optLocator);
         if (optText.indexOf(grantOfProbateConfig.noAddressFound) >= 0) {
-            const addExecAddrLocator = {css: grantOfProbateConfig.UKpostcodeLink};
-            await I.waitForVisible(addExecAddrLocator);
+            const addExecAddrLocator = {css: grantOfProbateConfig.page4_postcodeLink};
+            await I.waitForElement(addExecAddrLocator); 
+            // getting an issue here - doesn't think it's visible when it is!
+            await I.waitForClickable(addExecAddrLocator, testConfig.TestTimeToWaitForText);
             await I.click(addExecAddrLocator);
             await I.waitForVisible({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'});
             await I.fillField({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'}, grantOfProbateConfig.page2_executorAddress_line1);

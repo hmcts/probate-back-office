@@ -138,7 +138,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
+    private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformedTemp.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
+
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -185,6 +187,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+    }
+
+    @Test
+    public void verifyTrustCorpsShouldReturnOkResponseCode() {
+        validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
     }
 
     private String generateDocument(String jsonFileName, String path) {
