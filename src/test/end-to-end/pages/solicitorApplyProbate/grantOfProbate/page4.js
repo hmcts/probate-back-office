@@ -44,9 +44,8 @@ module.exports = async function (isSolicitorApplying = false) {
         const optText = await I.grabTextFrom(optLocator);
         if (optText.indexOf(grantOfProbateConfig.noAddressFound) >= 0) {
             const addExecAddrLocator = {css: grantOfProbateConfig.page4_postcodeLink};
-            await I.waitForElement(addExecAddrLocator); 
-            // getting an issue here - doesn't think it's visible when it is!
-            await I.waitForClickable(addExecAddrLocator, testConfig.TestTimeToWaitForText);
+            await I.waitForElement(addExecAddrLocator);
+            await I.waitForClickable(addExecAddrLocator);
             await I.click(addExecAddrLocator);
             await I.waitForVisible({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'});
             await I.fillField({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'}, grantOfProbateConfig.page2_executorAddress_line1);
