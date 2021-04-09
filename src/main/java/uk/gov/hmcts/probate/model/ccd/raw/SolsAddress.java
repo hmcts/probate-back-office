@@ -15,15 +15,6 @@ import java.io.Serializable;
 @Builder
 public class SolsAddress implements Serializable {
 
-    @Override
-    public SolsAddress clone() {
-        try {
-            return (SolsAddress) super.clone();
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
-    }
-
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     @Size(min = 1, groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     @JsonProperty(value = "AddressLine1")
@@ -48,4 +39,18 @@ public class SolsAddress implements Serializable {
 
     @JsonProperty(value = "Country")
     private final String country;
+
+    @Override
+    public SolsAddress clone() {
+        // super.clone() is throwing CloneNotSupportedException
+        return SolsAddress.builder()
+                .addressLine1(addressLine1)
+                .addressLine2(addressLine2)
+                .addressLine3(addressLine3)
+                .county(county)
+                .country(country)
+                .postCode(postCode)
+                .postTown(postTown)
+                .build();
+    }
 }

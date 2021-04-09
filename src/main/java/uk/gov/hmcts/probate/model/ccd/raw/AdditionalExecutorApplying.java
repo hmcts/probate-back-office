@@ -24,13 +24,19 @@ public class AdditionalExecutorApplying {
 
     @Override
     public AdditionalExecutorApplying clone() {
-        try {
-            final AdditionalExecutorApplying exec = (AdditionalExecutorApplying) super.clone();
-            exec.setApplyingExecutorAddress(this.applyingExecutorAddress.clone());
-            return exec;
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
+        // super.clone() is returning an exception so resorting to this manual method
+        return AdditionalExecutorApplying.builder()
+                .applyingExecutorAddress(applyingExecutorAddress == null ? null : applyingExecutorAddress.clone())
+                .applyingExecutorEmail(applyingExecutorEmail)
+                .applyingExecutorFirstName(applyingExecutorFirstName)
+                .applyingExecutorLastName(applyingExecutorLastName)
+                .applyingExecutorName(applyingExecutorName)
+                .applyingExecutorOtherNames(applyingExecutorOtherNames)
+                .applyingExecutorOtherNamesReason(applyingExecutorOtherNamesReason)
+                .applyingExecutorOtherReason(applyingExecutorOtherReason)
+                .applyingExecutorPhoneNumber(applyingExecutorPhoneNumber)
+                .applyingExecutorType(applyingExecutorType)
+                .applyingExecutorTrustCorpPosition(applyingExecutorTrustCorpPosition)
+                .build();
     }
-
 }
