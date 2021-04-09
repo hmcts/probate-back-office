@@ -480,6 +480,6 @@ welsh:
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:
-    key: ${LD_USER_KEY:35222af3-7867-44ea-a2a0-f8e533ad12df}
+    key: ${LD_USER_KEY:dummy_key}
     firstName: Probate
     lastName: Backend
