@@ -28,7 +28,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
-        createLegalStatementExecutorLists (execsApplying, execsNotApplying, caseData);
+        createLegalStatementExecutorLists(execsApplying, execsNotApplying, caseData);
     }
 
     public void createLegalStatementExecutorListsFromTransformedLists(CaseData caseData) {
@@ -39,8 +39,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     }
 
     protected void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
-                                                     List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
-                                                     CaseData caseData) {
+                                             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
+                                             CaseData caseData) {
 
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {

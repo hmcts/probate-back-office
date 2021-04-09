@@ -444,9 +444,8 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldTransformCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
+        when(callbackResponseTransformerMock.transformCaseForPrintCase(callbackRequestMock))
             .thenReturn(callbackResponseMock);
-
         ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
             bindingResultMock);
 
@@ -573,23 +572,5 @@ public class BusinessValidationUnitTest {
     public void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
-
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
-                .thenReturn(callbackResponseMock);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-
-        underTest.solsValidateProbate(callbackRequestMock, bindingResultMock, httpServletRequest);
-
-        verify(solCompletionTransformer, times(1))
-                .mapSolicitorExecutorFieldsOnCompletion(any());
-        verify(solCompletionTransformer, times(1))
-                .clearSolicitorExecutorLists(any());
     }
 }

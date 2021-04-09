@@ -429,7 +429,10 @@ public class CallbackResponseTransformerTest {
     private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
 
     @Mock
-    private ExecutorsTransformer solicitorExecutorTransformer;
+    private ExecutorsTransformer solicitorExecutorTransformerMock;
+
+    @Mock
+    private CaseDataTransformer caseDataTransformerMock;
 
     @Before
     public void setup() {
@@ -831,7 +834,6 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
         CallbackResponse callbackResponse =
             underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
