@@ -39,7 +39,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SolicitorJourneyCompletionTransformerTest {
+public class SolicitorApplicationCompletionTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -50,7 +50,7 @@ public class SolicitorJourneyCompletionTransformerTest {
     private ExecutorListMapperService executorListMapperServiceMock;
 
     @InjectMocks
-    private SolicitorJourneyCompletionTransformer solicitorJourneyCompletionTransformerMock;
+    private SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformerMock;
 
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
@@ -98,8 +98,8 @@ public class SolicitorJourneyCompletionTransformerTest {
 
         CaseData caseData = caseDataBuilder.build();
 
-        SolicitorJourneyCompletionTransformer solJourneyCompletion =
-                new SolicitorJourneyCompletionTransformer(new ExecutorListMapperService());
+        SolicitorApplicationCompletionTransformer solJourneyCompletion =
+                new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService());
 
         solJourneyCompletion.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -125,7 +125,7 @@ public class SolicitorJourneyCompletionTransformerTest {
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
                 caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
         legalStatementExecutors.addAll(additionalExecutorNotApplying);
@@ -149,7 +149,7 @@ public class SolicitorJourneyCompletionTransformerTest {
                 caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         CaseData caseData = caseDetailsMock.getData();
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertEquals(additionalExecutorApplying, caseData.getExecutorsApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
@@ -169,7 +169,7 @@ public class SolicitorJourneyCompletionTransformerTest {
                     ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         CaseData caseData = caseDetailsMock.getData();
-        solicitorJourneyCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());

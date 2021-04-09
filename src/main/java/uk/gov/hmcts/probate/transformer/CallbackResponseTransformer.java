@@ -441,6 +441,11 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformCaseForPrintCase(CallbackRequest callbackRequest) {
+        caseDataTransformer.transformSolCaseDataForCaseworkerCompletion(callbackRequest);
+        return transformCase(callbackRequest);
+    }
+
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
         boolean transform = doTransform(callbackRequest);

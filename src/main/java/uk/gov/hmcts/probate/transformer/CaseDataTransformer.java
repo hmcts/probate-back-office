@@ -5,36 +5,36 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorJourneyCompletionTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 @Component
 @RequiredArgsConstructor
 public class CaseDataTransformer {
 
-    private final SolicitorJourneyCompletionTransformer solicitorJourneyCompletionTransformer;
+    private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
     private final ResetCaseDataTransformer resetCaseDataTransformer;
 
     public void transformCaseDataForSolicitorJourneyCompletion(CallbackRequest callbackRequest) {
 
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
-        solicitorJourneyCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
-        solicitorJourneyCompletionTransformer
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        solicitorApplicationCompletionTransformer
                 .mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
-        solicitorJourneyCompletionTransformer.clearSolicitorExecutorLists(caseData);
+        solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
     }
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
-        solicitorJourneyCompletionTransformer
+        solicitorApplicationCompletionTransformer
                 .mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
     }
 
     public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
-        solicitorJourneyCompletionTransformer.createLegalStatementExecutorListsFromTransformedLists(caseData);
+        solicitorApplicationCompletionTransformer.createLegalStatementExecutorListsFromTransformedLists(caseData);
     }
 
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
@@ -44,6 +44,6 @@ public class CaseDataTransformer {
 
     public void transformSolCaseDataForCaseworkerCompletion(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
-        solicitorJourneyCompletionTransformer.mapPrimaryApplicantFields(caseData);
+        solicitorApplicationCompletionTransformer.mapPrimaryApplicantFields(caseData);
     }
 }

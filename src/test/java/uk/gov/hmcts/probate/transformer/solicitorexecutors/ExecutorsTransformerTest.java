@@ -247,7 +247,7 @@ public class ExecutorsTransformerTest {
 
         final CaseData cd = caseDataBuilder.build();
 
-        new SolicitorJourneyCompletionTransformer(new ExecutorListMapperService())
+        new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService())
                 .mapSolicitorExecutorFieldsOnCompletion(cd);
 
         assertEquals(0, cd.getAdditionalExecutorsApplying().size());

@@ -9,9 +9,9 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 @Slf4j
 // Handles some casedata mappings for when a solicitor application becomes a case
 // for caseworker or solicitor journeys
-public class SolicitorJourneyCompletionTransformer extends LegalStatementExecutorTransformer {
+public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
 
-    public SolicitorJourneyCompletionTransformer(ExecutorListMapperService executorListMapperService) {
+    public SolicitorApplicationCompletionTransformer(ExecutorListMapperService executorListMapperService) {
         super(executorListMapperService);
     }
 

@@ -57,6 +57,9 @@ public class ExecutorsTransformer {
                 caseData.getAdditionalExecutorsApplying();
 
         // Populate primary applicant fields
+        // There are cw problems here, what if the name changes and also
+        // how can we remove element 0 when it has trust corp position and other
+        // data that will get lost?
         if (shouldSetPrimaryApplicantFieldsWithExecInfo(caseData)) {
             AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
             // For a caseworker,
