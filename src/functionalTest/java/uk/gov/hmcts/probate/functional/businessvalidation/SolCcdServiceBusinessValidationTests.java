@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -690,34 +689,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("somedoc.pdf", documentFilename);
         assertEquals("EX-REF-REC-001", exceptionRecordReference);
 
-    }
-
-    @Test
-    public void shouldTransformSolicitorExecutorFields() {
-        String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_PROBATE_URL);
-        JsonPath jsonPath = JsonPath.from(response);
-
-        HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
-        assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
-        assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
-        assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
-
-        HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
-        assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
-
-        HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
-        assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
-        assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
-        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine1"));
-        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine2"));
-        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine3"));
-        assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
-        assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
-        assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
-        assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
     }
 
     @Test

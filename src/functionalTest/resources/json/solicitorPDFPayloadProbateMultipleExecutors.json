@@ -24,6 +24,16 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "solsSOTForenames": "FirstName",
+      "solsSOTSurname": "LastName",
+      "solsSOTName": "FirstName LastName",
+      "solsPaymentMethods": "fee account",
+      "solsFeeAccountNumber": "01234",
+      "applicationFee": "0",
+      "totalFee": "0",
+      "feeForUkCopies": "0",
+      "feeForNonUkCopies": "0",
+      "solsSOTNeedToUpdate": "No",
       "solsSolicitorFirmName": "Firm Name",
       "solsSolicitorAddress": {
         "AddressLine1": "1",
@@ -65,6 +75,8 @@
       "willHasCodicils": "No",
       "otherExecutorExists": "No",
       "willExists": "Yes",
+      "extraCopiesOfGrant": "0",
+      "outsideUKGrantCopies": "0",
       "executorsApplying": [
         {
           "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9d",

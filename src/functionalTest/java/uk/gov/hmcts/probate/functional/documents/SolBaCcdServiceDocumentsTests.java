@@ -138,8 +138,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
-    private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformedTemp.json";
+    private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
+    private static final String VALIDATE_URL = "/nextsteps/validate";
 
 
     @Test
@@ -458,11 +459,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws JsonProcessingException {
 
-        final ResponseBody body = validatePostSuccess(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD,
+        ResponseBody body = validatePostSuccess(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD,
                 VALIDATE_PROBATE_URL);
 
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final Map<String, String> hm = jsonPath.get("data");
+        JsonPath jsonPath = JsonPath.from(body.asString());
+        Map<String, String> hm = jsonPath.get("data");
         hm.remove("taskList");
 
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -470,7 +471,23 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String transformedData = objectMapper.writeValueAsString(hm);
 
         String newRequest = utils.getJsonFromFile(EMPTY_REQUEST);
-        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": " + transformedData);
+        newRequest = newRequest.replaceFirst(Pattern.quote("\"state\": \"CaseCreated\""),
+                "\"state\": \"SolAppUpdated\"");
+        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": "
+            + transformedData.substring(0, transformedData.length() - 1) + ", \"solsSOTNeedToUpdate\": \"No\"}");
+
+        body = validatePostSuccessForPayload(newRequest, VALIDATE_URL);
+
+        jsonPath = JsonPath.from(body.asString());
+        hm = jsonPath.get("data");
+        hm.remove("taskList");
+        transformedData = objectMapper.writeValueAsString(hm);
+        newRequest = utils.getJsonFromFile(EMPTY_REQUEST);
+        newRequest = newRequest.replaceFirst(Pattern.quote("\"state\": \"CaseCreated\""),
+                "\"state\": \"SolAppUpdated\"");
+        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": "
+                + transformedData);
+
 
         String response = generatePdfDocumentFromPayload(newRequest, GENERATE_LEGAL_STATEMENT);
 

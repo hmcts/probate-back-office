@@ -1,10 +1,15 @@
 package uk.gov.hmcts.probate.functional.nextsteps;
 
+import io.restassured.path.json.JsonPath;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
@@ -13,6 +18,7 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
+    private static final String VALIDATE_URL = "/nextsteps/validate";
 
     @Test
     public void verifyDeceasedFirstNameInTheReturnedMarkdown() {
@@ -92,14 +98,52 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptySolicitorFirmAddressLine1ReturnsError() {
-        verifyAll("/nextsteps/validate", "failure.missingSolicitorAddressLine1.json", 400, "Invalid payload",
+        verifyAll(VALIDATE_URL, "failure.missingSolicitorAddressLine1.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.addressLine1");
     }
 
     @Test
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
-        verifyAll("/nextsteps/validate", "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
+        verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
+    }
+    @Test
+    public void shouldTransformSolicitorExecutorFields() {
+        String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
+        JsonPath jsonPath = JsonPath.from(response);
+
+        HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
+        Assert.assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
+        Assert.assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
+        Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
+
+        HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
+        Assert.assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
+
+        HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
+        Assert.assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
+        Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
+        Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine1"));
+        Assert.assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine2"));
+        Assert.assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+                .get("AddressLine3"));
+        Assert.assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
+        Assert.assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
+        Assert.assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
+        Assert.assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
+    }
+
+    private String transformCase(String jsonFileName, String path) {
+
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+
+        return jsonResponse.getBody().asString();
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
