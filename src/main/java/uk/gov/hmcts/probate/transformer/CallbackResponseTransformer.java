@@ -395,7 +395,7 @@ public class CallbackResponseTransformer {
         final String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final String schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
-        caseDataTransformer.transformCaseDataForSolicitorJourneyCompletion(callbackRequest);
+        caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -439,11 +439,6 @@ public class CallbackResponseTransformer {
             .build();
 
         return transformResponse(responseCaseData);
-    }
-
-    public CallbackResponse transformCaseForPrintCase(CallbackRequest callbackRequest) {
-        caseDataTransformer.transformSolCaseDataForCaseworkerCompletion(callbackRequest);
-        return transformCase(callbackRequest);
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
@@ -569,6 +564,12 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document) {
 
+        final CaseData cd = callbackRequest.getCaseDetails().getData();
+        if (SOLICITOR.equals(cd.getApplicationType())
+                && NO.equals(cd.getPaperForm())
+                && GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())) {
+            caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
+        }
         if (document != null) {
             documentTransformer.addDocument(callbackRequest, document, false);
         }

@@ -444,7 +444,7 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldTransformCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackResponseTransformerMock.transformCaseForPrintCase(callbackRequestMock))
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
             .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
             bindingResultMock);
@@ -564,6 +564,25 @@ public class BusinessValidationUnitTest {
 
         verify(notificationService, times(1))
             .sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldSubmitForSolicitorPaperFormNoWithEmail() throws NotificationClientException {
+        String paperFormValue = "No";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        verify(notificationService, times(1))
+                .sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
     }

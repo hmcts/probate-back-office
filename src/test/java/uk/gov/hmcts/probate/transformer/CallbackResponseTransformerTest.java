@@ -110,6 +110,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSU
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -3103,4 +3104,24 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
         assertEquals(NO, callbackResponse.getData().getWillHasCodicils());
     }
+
+    @Test
+    public void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.paperForm(NO);
+        caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        verify(caseDataTransformerMock, times(1))
+                .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
+    }
+
 }

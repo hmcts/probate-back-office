@@ -14,11 +14,12 @@ public class CaseDataTransformer {
     private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
     private final ResetCaseDataTransformer resetCaseDataTransformer;
 
-    public void transformCaseDataForSolicitorJourneyCompletion(CallbackRequest callbackRequest) {
+    public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        // rename this method
         solicitorApplicationCompletionTransformer
                 .mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -26,11 +27,16 @@ public class CaseDataTransformer {
         solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
     }
 
+
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        resetCaseDataTransformer.resetExecutorLists(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        // rename this method
         solicitorApplicationCompletionTransformer
-                .mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+                .mapSolicitorExecutorFieldsOnCompletion(caseData);
     }
+
 
     public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -42,8 +48,10 @@ public class CaseDataTransformer {
         resetCaseDataTransformer.resetExecutorLists(caseData);
     }
 
+    /*
     public void transformSolCaseDataForCaseworkerCompletion(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         solicitorApplicationCompletionTransformer.mapPrimaryApplicantFields(caseData);
     }
+     */
 }

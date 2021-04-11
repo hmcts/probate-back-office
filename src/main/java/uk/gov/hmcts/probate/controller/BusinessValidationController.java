@@ -325,7 +325,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCaseForPrintCase(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
         return ResponseEntity.ok(response);
     }

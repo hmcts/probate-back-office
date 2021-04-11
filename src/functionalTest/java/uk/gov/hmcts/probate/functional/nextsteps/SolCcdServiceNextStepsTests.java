@@ -107,6 +107,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
+
     @Test
     public void shouldTransformSolicitorExecutorFields() {
         String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
