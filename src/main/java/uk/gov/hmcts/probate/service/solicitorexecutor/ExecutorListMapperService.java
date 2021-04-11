@@ -31,7 +31,7 @@ public class ExecutorListMapperService {
         if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorFromApplyingList(execs);
         }
-        updatedExecs.add(mapFromSolicitorToApplyingExecutor(caseData));
+        updatedExecs.add(0, mapFromSolicitorToApplyingExecutor(caseData));
 
         return updatedExecs;
     }
