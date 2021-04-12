@@ -90,7 +90,7 @@ public class CcdClientApi implements CoreCaseDataService {
         CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse);
         log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
                 caseType.getName(), caseId);
-        CaseDetails caseDetails = coreCaseDataApi.submitEventForCaseWorker(
+        return coreCaseDataApi.submitEventForCaseWorker(
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
@@ -100,12 +100,42 @@ public class CcdClientApi implements CoreCaseDataService {
                 false,
                 caseDataContent
         );
-        return caseDetails;
+    }
+
+    @Override
+    public CaseDetails updateCaseAsCitizen(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
+                                              SecurityDTO securityDTO) {
+        log.info("Update case as citizen for caseType: {}, caseId: {}, eventId: {}",
+                caseType.getName(), caseId, eventId.getName());
+        log.info("Retrieve event token from CCD for citizen, caseType: {}, caseId: {}, eventId: {}",
+                caseType.getName(), caseId, eventId.getName());
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCitizen(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                caseType.getName(),
+                caseId,
+                eventId.getName()
+        );
+        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse);
+        log.info("Submit event to CCD for citizen, caseType: {}, caseId: {}",
+                caseType.getName(), caseId);
+        return coreCaseDataApi.submitEventForCitizen(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                caseType.getName(),
+                caseId,
+                false,
+                caseDataContent
+        );
     }
 
     @Override
     public CaseDetails readForCaseWorker(CcdCaseType caseType, String caseId, SecurityDTO securityDTO) {
-        CaseDetails caseDetails = coreCaseDataApi.readForCaseWorker(
+        return coreCaseDataApi.readForCaseWorker(
             securityDTO.getAuthorisation(),
             securityDTO.getServiceAuthorisation(),
             securityDTO.getUserId(),
@@ -113,10 +143,8 @@ public class CcdClientApi implements CoreCaseDataService {
             caseType.getName(),
             caseId
         );
-        
-        return caseDetails;
     }
-    
+
     private CaseDataContent createCaseDataContent(Object object,
                                    EventId eventId, StartEventResponse startEventResponse) {
         return CaseDataContent.builder()
