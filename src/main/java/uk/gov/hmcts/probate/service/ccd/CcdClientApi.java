@@ -26,6 +26,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 @RequiredArgsConstructor
 public class CcdClientApi implements CoreCaseDataService {
 
+    public static final String PROBATE_APPLICATION = "Probate application";
     private final CoreCaseDataApi coreCaseDataApi;
 
     @Override
@@ -39,7 +40,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 ccdCaseType.getName(),
                 eventId.getName()
         );
-        CaseDataContent caseDataContent = createCaseDataContent(object, eventId, startEventResponse);
+        CaseDataContent caseDataContent = createCaseDataContent(object, eventId, startEventResponse, PROBATE_APPLICATION, PROBATE_APPLICATION);
         log.info("Submit case for create case");
         return coreCaseDataApi.submitForCaseworker(
                 securityDTO.getAuthorisation(),
@@ -87,7 +88,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 caseId,
                 eventId.getName()
         );
-        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse);
+        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse, PROBATE_APPLICATION, PROBATE_APPLICATION);
         log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
                 caseType.getName(), caseId);
         return coreCaseDataApi.submitEventForCaseWorker(
@@ -104,7 +105,7 @@ public class CcdClientApi implements CoreCaseDataService {
 
     @Override
     public CaseDetails updateCaseAsCitizen(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
-                                              SecurityDTO securityDTO) {
+                                              SecurityDTO securityDTO, String description, String summary) {
         log.info("Update case as citizen for caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
         log.info("Retrieve event token from CCD for citizen, caseType: {}, caseId: {}, eventId: {}",
@@ -118,7 +119,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 caseId,
                 eventId.getName()
         );
-        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse);
+        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse, description, summary);
         log.info("Submit event to CCD for citizen, caseType: {}, caseId: {}",
                 caseType.getName(), caseId);
         return coreCaseDataApi.submitEventForCitizen(
@@ -146,19 +147,20 @@ public class CcdClientApi implements CoreCaseDataService {
     }
 
     private CaseDataContent createCaseDataContent(Object object,
-                                   EventId eventId, StartEventResponse startEventResponse) {
+                                                  EventId eventId, StartEventResponse startEventResponse,
+                                                  String description, String summary) {
         return CaseDataContent.builder()
-                .event(createEvent(eventId))
+                .event(createEvent(eventId, description, summary))
                 .eventToken(startEventResponse.getToken())
                 .data(object)
                 .build();
     }
 
-    private Event createEvent(EventId eventId) {
+    private Event createEvent(EventId eventId, String description, String summary) {
         return Event.builder()
                 .id(eventId.getName())
-                .description("Probate application")
-                .summary("Probate application")
+                .description(description)
+                .summary(summary)
                 .build();
     }
 }

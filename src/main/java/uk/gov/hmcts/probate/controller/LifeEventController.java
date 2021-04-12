@@ -25,9 +25,7 @@ public class LifeEventController {
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         final CaseDetails caseDetails = request.getCaseDetails();
-
-
-        lifeEventService.findDeathRecords(caseDetails);
+        lifeEventService.verifyDeathRecord(caseDetails);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

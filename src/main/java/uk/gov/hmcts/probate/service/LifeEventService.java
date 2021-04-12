@@ -26,6 +26,8 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class LifeEventService {
 
+    public static final String LIFE_EVENT_VERIFICATION_SUCCESSFUL = "Life Event Verification successful";
+    public static final String REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS = "Review LEV tab, proceed to other checks";
     private DeathService deathService;
     private CcdClientApi ccdClientApi;
     private SecurityUtils securityUtils;
@@ -38,7 +40,7 @@ public class LifeEventService {
         this.securityUtils = securityUtils;
     }
 
-    public void findDeathRecords(final CaseDetails caseDetails) {
+    public void verifyDeathRecord(final CaseDetails caseDetails) {
         final CaseData caseData = caseDetails.getData();
         final String deceasedForenames = caseData.getDeceasedForenames();
         final String deceasedSurname = caseData.getDeceasedSurname();
@@ -47,6 +49,12 @@ public class LifeEventService {
         List<V1Death> records = deathService
                 .searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname, deceasedDateOfDeath);
         log.info("Records returned: " + records);
+        if (1 == records.size()) {
+            updateCCDLifeEventVerified(caseDetails, records);
+        }
+    }
+
+    private void updateCCDLifeEventVerified(CaseDetails caseDetails, List<V1Death> records) {
         final List<CollectionMember<DeathRecord>> collectionMembers = mapDeathRecords(records);
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deathRecords(collectionMembers)
@@ -54,11 +62,14 @@ public class LifeEventService {
 
         final uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsReturned =
                 ccdClientApi.updateCaseAsCitizen(
-                CcdCaseType.GRANT_OF_REPRESENTATION,
-                caseDetails.getId().toString(),
-                grantOfRepresentationData,
-                EventId.DEATH_RECORD_VERIFIED,
-                securityUtils.getSecurityDTO());
+                        CcdCaseType.GRANT_OF_REPRESENTATION,
+                        caseDetails.getId().toString(),
+                        grantOfRepresentationData,
+                        EventId.DEATH_RECORD_VERIFIED,
+                        securityUtils.getSecurityDTO(),
+                        LIFE_EVENT_VERIFICATION_SUCCESSFUL,
+                        REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS
+                );
 
         log.info("caseDetailsReturned: {}", caseDetailsReturned.getData().toString());
     }
@@ -70,12 +81,12 @@ public class LifeEventService {
                 .collect(toList());
     }
 
-    private CollectionMember<DeathRecord> mapDeathRecord(V1Death deathRecord) {
-        final Deceased deceased = deathRecord.getDeceased();
+    private CollectionMember<DeathRecord> mapDeathRecord(V1Death v1Death) {
+        final Deceased deceased = v1Death.getDeceased();
 
-        DeathRecord dr = DeathRecord
+        DeathRecord deathRecord = DeathRecord
                 .builder()
-                .systemNumber(deathRecord.getId())
+                .systemNumber(v1Death.getId())
                 .name(String.format("%s %s", deceased.getForenames(), deceased.getSurname()))
                 .dateOfBirth(deceased.getDateOfBirth())
                 .sex(deceased.getSex().getValue())
@@ -83,6 +94,6 @@ public class LifeEventService {
                 .dateOfDeath(deceased.getDateOfDeath())
                 .build();
 
-        return new CollectionMember<>(null, dr);
+        return new CollectionMember<>(null, deathRecord);
     }
 }
