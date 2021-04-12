@@ -50,6 +50,9 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
     private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
+    private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
+    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
+    
     Registry registry = new Registry();
     HashMap<String, Object> personalisation = new HashMap<>();
     @Autowired
@@ -178,6 +181,29 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
+        assertEquals("Dyddiad marwolaeth yr ymadawedig yw: 10 Hydref 1900", 
+            response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
+        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
+        assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
+    }
+
+    @Test
+    public void getPersonalisationContentIsOkDOBNull() {
+        Map<String, String> response = caveatPersonalisationService
+            .getCaveatPersonalisation(caveatDetailsDobNull, registry);
+
+        assertEquals("cav first name cav surname", response.get(PERSONALISATION_APPLICANT_NAME));
+        assertEquals("forename surname", response.get(PERSONALISATION_DECEASED_NAME));
+        assertEquals(caveatDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
+        assertEquals("message content", response.get(PERSONALISATION_MESSAGE_CONTENT));
+        assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
+        assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
+        assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
+        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
+        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_DATE_OF_DEATH));
+        assertEquals("", response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
+        assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
+        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));    
     }
 
     @Test

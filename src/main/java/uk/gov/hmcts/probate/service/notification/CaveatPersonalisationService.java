@@ -40,8 +40,12 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
     private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
-    private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
-
+    private static final String PERSONALISATION_DATE_OF_BIRTH_TEXT = "deceased_date_of_birth_text";
+    private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
+    private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH_TEXT = "deceased_date_of_birth_welsh_text";
+    private static final String VALUE_DATE_OF_BIRTH_TEXT = "The deceased's date of birth: ";
+    private static final String VALUE_WELSH_DATE_OF_BIRTH_TEXT = "Dyddiad marwolaeth yr ymadawedig yw: ";
+    
     public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
@@ -76,8 +80,7 @@ public class CaveatPersonalisationService {
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
-        personalisation.put(PERSONALISATION_DATE_OF_DEATH,
-                dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+        getDODPersonalisation(caveatData, personalisation);
         getDOBPersonalisation(caveatData, personalisation);
 
         return personalisation;
@@ -99,8 +102,7 @@ public class CaveatPersonalisationService {
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
                         localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
-        personalisation.put(PERSONALISATION_DATE_OF_DEATH,
-                dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+        getDODPersonalisation(caveatData, personalisation);
         getDOBPersonalisation(caveatData, personalisation);
 
         return personalisation;
@@ -108,12 +110,22 @@ public class CaveatPersonalisationService {
 
     private void getDOBPersonalisation(CaveatData caveatData, HashMap<String, String> personalisation) {
         if (caveatData.getDeceasedDateOfBirth() != null) {
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH_TEXT,
+                VALUE_DATE_OF_BIRTH_TEXT + dateFormatterService
+                    .formatDate(caveatData.getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH_TEXT,
+                VALUE_WELSH_DATE_OF_BIRTH_TEXT 
+                    + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
         } else {
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_DATE_OF_BIRTH_TEXT, "");
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH_TEXT, "");
         }
     }
 
+    private void getDODPersonalisation(CaveatData caveatData, HashMap<String, String> personalisation) {
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH,
+            localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_DATE_OF_DEATH,
+            dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+    }
 }
