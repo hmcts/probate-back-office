@@ -31,9 +31,7 @@ public class CaseDataTransformer {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
-        // rename this method
-        solicitorApplicationCompletionTransformer
-                .mapSolicitorExecutorFieldsOnCompletion(caseData);
+        solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
     }
 
 
