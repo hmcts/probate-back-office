@@ -461,7 +461,7 @@ public class ExecutorsTransformerTest {
         ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
         et.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData());
 
-        assertEquals(solsAdditionalExecutorApplyingList.get(0), cd.getAdditionalExecutorsApplying().get(0));
+        assertEquals(solsAdditionalExecutorApplyingList.get(0), cd.getAdditionalExecutorsApplying().get(1));
         assertEquals(EXEC_FIRST_NAME, cd.getPrimaryApplicantForenames());
         assertNull(cd.getPrimaryApplicantSurname());
         assertNull(cd.getPrimaryApplicantAddress());
