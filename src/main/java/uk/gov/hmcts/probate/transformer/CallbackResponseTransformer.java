@@ -411,6 +411,26 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformForDeceasedDetails(CallbackRequest callbackRequest, Optional<String> newState) {
+        CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState);
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        final ResponseCaseData tempNamesResponse = responseCaseDataBuilder.build();
+        final ResponseCaseData responseData = response.getData();
+        responseData.setSolsIdentifiedApplyingExecs(tempNamesResponse.getSolsIdentifiedApplyingExecs());
+        responseData.setSolsIdentifiedNotApplyingExecs(tempNamesResponse.getSolsIdentifiedNotApplyingExecs());
+        responseData.setSolsIdentifiedApplyingExecsCcdCopy(tempNamesResponse.getSolsIdentifiedApplyingExecsCcdCopy());
+        responseData.setSolsIdentifiedNotApplyingExecsCcdCopy(tempNamesResponse
+                .getSolsIdentifiedNotApplyingExecsCcdCopy());
+
+        return response;
+    }
+
     public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);

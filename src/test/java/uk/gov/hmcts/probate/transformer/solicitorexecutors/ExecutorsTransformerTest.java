@@ -522,6 +522,8 @@ public class ExecutorsTransformerTest {
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
         assertEquals(EXEC_NAME + ", " + EXEC_NAME, responseCaseData.getSolsIdentifiedApplyingExecs());
         assertEquals(EXEC_NAME, responseCaseData.getSolsIdentifiedNotApplyingExecs());
+        assertEquals(EXEC_NAME + ", " + EXEC_NAME, responseCaseData.getSolsIdentifiedApplyingExecsCcdCopy());
+        assertEquals(EXEC_NAME, responseCaseData.getSolsIdentifiedNotApplyingExecsCcdCopy());
         verify(executorListMapperServiceMock, times(1))
                 .mapFromTrustCorpExecutorsToApplyingExecutors(any());
         verify(executorListMapperServiceMock, times(1))

@@ -52,6 +52,8 @@ public class CaseDataParent {
     protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
+    protected final String solsIdentifiedApplyingExecsCcdCopy;
+    protected final String solsIdentifiedNotApplyingExecsCcdCopy;
     protected final String iht217;
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;

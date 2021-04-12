@@ -61,8 +61,10 @@ public class ResponseCaseDataParent {
     protected final String solsSurname;
     protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
-    protected final String solsIdentifiedNotApplyingExecs;
-    protected final String solsIdentifiedApplyingExecs;
+    protected String solsIdentifiedNotApplyingExecs;
+    protected String solsIdentifiedApplyingExecs;
+    protected String solsIdentifiedNotApplyingExecsCcdCopy;
+    protected String solsIdentifiedApplyingExecsCcdCopy;
     protected final String solsReviewSOTConfirm;
     protected final String solsReviewSOTConfirmCheckbox1Names;
     protected final String solsReviewSOTConfirmCheckbox2Names;

@@ -92,6 +92,10 @@ public class ExecutorsTransformer {
         // Set builder with exec strings
         builder.solsIdentifiedApplyingExecs(execsApplyingNames);
         builder.solsIdentifiedNotApplyingExecs(execsNotApplyingNames);
+
+        // Set the copies of this data needed to get round ccd limitations
+        builder.solsIdentifiedApplyingExecsCcdCopy(execsApplyingNames);
+        builder.solsIdentifiedNotApplyingExecsCcdCopy(execsNotApplyingNames);
     }
 
     public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
