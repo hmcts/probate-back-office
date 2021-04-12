@@ -566,7 +566,8 @@ public class CallbackResponseTransformer {
 
         final CaseData cd = callbackRequest.getCaseDetails().getData();
         if (SOLICITOR.equals(cd.getApplicationType())
-                && NO.equals(cd.getPaperForm())
+                // We have currently applied this change to both paperform Yes and paperform No
+                // && NO.equals(cd.getPaperForm())
                 && GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())) {
             caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
         }
