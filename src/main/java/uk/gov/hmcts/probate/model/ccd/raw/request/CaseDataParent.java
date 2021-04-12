@@ -39,6 +39,7 @@ public class CaseDataParent {
     protected final LocalDate lodgementDate;
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected final String isPractitionerAnExecutor;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;

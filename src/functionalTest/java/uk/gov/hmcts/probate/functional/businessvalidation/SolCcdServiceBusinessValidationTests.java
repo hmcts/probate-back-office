@@ -790,6 +790,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("TCTPartSuccPowerRes", jsonPath.get("data.titleAndClearingType"));
         assertEquals("Test Solicitor Ltd", jsonPath.get("data.nameOfFirmNamedInWill"));
         assertEquals("New Firm Ltd", jsonPath.get("data.nameOfSucceededFirm"));
+        assertEquals("Yes", jsonPath.get("data.isPractitionerAnExecutor"));
         assertEquals("No", jsonPath.get("data.morePartnersHoldingPowerReserved"));
         assertEquals("Exec forename",
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecForenames"));

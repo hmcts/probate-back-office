@@ -814,7 +814,8 @@ public class CallbackResponseTransformer {
             .iht217(caseData.getIht217())
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
-            .codicilAddedDateList(caseData.getCodicilAddedDateList());
+            .codicilAddedDateList(caseData.getCodicilAddedDateList())
+            .isPractitionerAnExecutor(caseData.getIsPractitionerAnExecutor());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

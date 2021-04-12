@@ -816,6 +816,7 @@ public class CaseDataTest {
                 .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
+                .isPractitionerAnExecutor("Yes")
                 .build();
 
         assertEquals("Yes", caseData.getDispenseWithNotice());
@@ -830,6 +831,7 @@ public class CaseDataTest {
         assertEquals("Partners", caseData.getWhoSharesInCompanyProfits().get(0));
         assertEquals("Members", caseData.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
+        assertEquals("Yes", caseData.getIsPractitionerAnExecutor());
     }
 
     @Test

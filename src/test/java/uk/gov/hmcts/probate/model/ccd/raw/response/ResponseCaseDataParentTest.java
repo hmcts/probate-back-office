@@ -151,6 +151,7 @@ public class ResponseCaseDataParentTest {
                 .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
+                .isPractitionerAnExecutor("Yes")
                 .build();
 
         assertEquals("Yes", responseCaseDataParent.getDispenseWithNotice());
@@ -162,6 +163,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits().get(0));
         assertEquals("Members", responseCaseDataParent.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
+        assertEquals("Yes", responseCaseDataParent.getIsPractitionerAnExecutor());
     }
 
     @Test

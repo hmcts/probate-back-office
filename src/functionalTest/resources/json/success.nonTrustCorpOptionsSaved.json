@@ -30,6 +30,7 @@
       "dispenseWithNoticeSupportingDocs": "Supporting docs",
       "titleAndClearingType": "TCTPartSuccPowerRes",
       "nameOfFirmNamedInWill": "Test Solicitor Ltd",
+      "isPractitionerAnExecutor": "Yes",
       "morePartnersHoldingPowerReserved": "No",
       "otherPartnersApplyingAsExecutors": [
         {
