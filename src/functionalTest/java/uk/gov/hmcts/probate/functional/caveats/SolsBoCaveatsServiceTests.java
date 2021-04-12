@@ -140,15 +140,15 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalCaveatRaisedEmailContentsWelsh() {
         ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_WELSH, CAVEAT_RAISED);
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL, responseBody,
-            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL, 
+            responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
     public void verifyPersonalCaveatRaisedEmailContentsNoDOBWelsh() {
         ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB_WELSH, CAVEAT_RAISED);
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL, responseBody,
-            EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL, 
+            responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
 
     @Test
