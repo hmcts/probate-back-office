@@ -365,6 +365,12 @@ idam-s2s-auth:
 
 excelaEmail: excela@probate-test.com
 
+data-extract:
+  exela:
+    size: "2000"
+  hmrc:
+    size: "2000"
+
 welsh:
   months:
     1: "Ionawr"
