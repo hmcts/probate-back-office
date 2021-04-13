@@ -252,7 +252,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(result.getValue(), expected.getValue());
     }
 
     @Test
@@ -270,7 +270,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(result.getValue(), expected.getValue());
     }
 
     @Test
@@ -283,7 +283,7 @@ public class ExecutorListMapperServiceTest {
                 .notApplyingExecutorNameOnWill(EXEC_OTHER_NAMES)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(result.getValue(), expected.getValue());
     }
 
 
