@@ -9,7 +9,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressAppSto
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Case Progress E2E - application stopped path', async function (I) {
+Scenario('01 BO Case Progress E2E - application stopped path', async function ({I}) {
     // IDAM
     /* eslint-disable no-console */
     try {
