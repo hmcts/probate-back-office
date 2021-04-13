@@ -4,7 +4,7 @@ const grantOfProbateConfig = require('./grantOfProbate');
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (verifyTrustCorpOpts) {
+module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor) {
     const I = this;
     await I.runAccessibilityTest();
     const dispNoticeLocator = {css: '#dispenseWithNotice-Yes'};
@@ -52,5 +52,9 @@ module.exports = async function (verifyTrustCorpOpts) {
     await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);
     await I.fillField('#lodgementDate-month', grantOfProbateConfig.page2_lodgementDate_month);
     await I.fillField('#lodgementDate-year', grantOfProbateConfig.page2_lodgementDate_year);
+
+    if (!isSolicitorNamedExecutor) {
+        await I.click(`#isPractitionerAnExecutor-${grantOfProbateConfig.page2_optionNo}`);
+    }
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
