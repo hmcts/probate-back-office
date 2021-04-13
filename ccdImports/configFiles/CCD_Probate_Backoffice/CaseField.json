@@ -356,6 +356,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintDocument", "Label": "Which document do you wish to reprint?",  "FieldType": "DynamicList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintNumberOfCopies", "Label": "How many copies are needed?", "FieldType": "Number", "Min": "0", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkScanEnvelopes", "Label": "Bulk Scan Envelopes", "FieldType": "Collection", "FieldTypeParameter": "BulkScanEnvelope", "SecurityClassification": "PUBLIC"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "levSystemNumber", "Label": "System number", "FieldType": "Number", "SecurityClassification": "Public"}
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Records", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"}
 ]

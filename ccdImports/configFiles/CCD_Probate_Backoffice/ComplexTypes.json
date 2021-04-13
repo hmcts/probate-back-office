@@ -158,8 +158,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableType=\"List\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2020", "ID": "BulkScanEnvelope", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "ID", "SecurityClassification": "PUBLIC"},
-  {"LiveFrom": "01/01/2020", "ID": "BulkScanEnvelope", "ListElementCode": "action", "FieldType": "Text", "ElementLabel": "Action", "SecurityClassification": "PUBLIC"}
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dateValue", "FieldType": "Date", "FieldShowCondition": "enableType=\"Date\"", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2020", "ID": "BulkScanEnvelope", "ListElementCode": "action", "FieldType": "Text", "ElementLabel": "Action", "SecurityClassification": "PUBLIC"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "systemNumber", "FieldType": "Number", "ElementLabel": "System Number", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": "Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "dateOfBirth", "FieldType": "Date", "ElementLabel": "Date of birth", "SecurityClassification": "Public"},
