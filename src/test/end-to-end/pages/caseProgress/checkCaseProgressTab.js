@@ -9,7 +9,7 @@ module.exports = async function (opts) {
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFrom('markdown  p.govuk-body-s');
-     /* eslint-disable no-console */
+    /* eslint-disable no-console */
     console.log('texts=>', texts);
     console.log('length => ', texts.length);
     assert (texts.length === 17);
