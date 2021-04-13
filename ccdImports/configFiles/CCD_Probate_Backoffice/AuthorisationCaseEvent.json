@@ -671,6 +671,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationProbateDetails", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationIntestacy", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationAdmon", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteCaseStopped", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchesForReadyForExamining", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForReadyForExamination", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForReadyForExamination", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
