@@ -74,7 +74,7 @@ Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, gobDtlsAndDcsdDtls, true);
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
 
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', applyProbateConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
 
     nextStepName = 'Complete application';
