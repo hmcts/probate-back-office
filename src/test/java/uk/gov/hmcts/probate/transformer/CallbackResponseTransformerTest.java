@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
@@ -256,6 +257,8 @@ public class CallbackResponseTransformerTest {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -646,6 +649,7 @@ public class CallbackResponseTransformerTest {
             .grantDelayedNotificationSent(TRUE)
             .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
             .grantAwaitingDocumentatioNotificationSent(TRUE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();
@@ -3793,6 +3797,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
 
         assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
+        assertEquals(BULK_SCAN_ENVELOPES, grantOfRepresentationData.getBulkScanEnvelopes());
 
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());

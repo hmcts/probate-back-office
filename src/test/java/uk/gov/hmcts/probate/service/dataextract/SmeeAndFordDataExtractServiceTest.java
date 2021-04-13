@@ -72,7 +72,7 @@ public class SmeeAndFordDataExtractServiceTest {
 
 
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
-        when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinDateRangeSmeeAndFord(any(), any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
@@ -96,7 +96,7 @@ public class SmeeAndFordDataExtractServiceTest {
             .build();
 
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
-        when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinDateRangeSmeeAndFord(any(), any())).thenReturn(returnedCases);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 

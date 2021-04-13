@@ -26,7 +26,8 @@ public class SmeeAndFordDataExtractService {
             return performSmeeAndFordExtractForDate(fromDate);
         } else {
             log.info("Smee And Ford data extract initiated from date: {} to {}", fromDate, toDate);
-            List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+            List<ReturnedCaseDetails> cases = caseQueryService
+                .findCaseStateWithinDateRangeSmeeAndFord(fromDate, toDate);
             log.info("Found {} cases with dated document for Smee And Ford from-to", cases.size());
 
             return sendSmeeAndFordEmail(cases, fromDate, toDate);

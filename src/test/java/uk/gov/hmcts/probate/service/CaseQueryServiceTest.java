@@ -55,6 +55,9 @@ public class CaseQueryServiceTest {
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
+    @Mock
+    private FileSystemResourceService fileSystemResourceService;
+
     @Captor
     private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
@@ -106,8 +109,35 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("2019-02-05", "2019-02-22");
+    public void findCasesWithDateRangeReturnsCaseListExela() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        caseQueryService.dataExtractExelaSize = "2000";
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeExela("2019-02-05", "2019-02-22");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListHMRC() {
+        caseQueryService.dataExtractHmrcSize = "2000";
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeHMRC("2019-02-05", "2019-02-22");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+        caseQueryService.dataExtractHmrcSize = "2000";
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeSmeeAndFord("2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));

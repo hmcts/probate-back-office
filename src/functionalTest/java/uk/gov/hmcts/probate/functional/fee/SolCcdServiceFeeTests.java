@@ -56,6 +56,17 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
     }
 
+    @Test
+    public void verifyNegativeUKCopiesFeeReturns400() {
+        verifyIncorrectPostRequestReturns400("failure.negativeUKCopies.json", "Uk Grant copies cannot be negative");
+    }
+
+    @Test
+    public void verifyNegativeOverseasCopiesFeeReturns400() {
+        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be " 
+            + "negative");
+    }
+
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
         given().headers(utils.getHeaders())
                 .relaxedHTTPSValidation()

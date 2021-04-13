@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,7 +32,6 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -40,6 +40,12 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 @Slf4j
 public class CaseQueryService {
+    @Value("${data-extract.exela.size}")
+    protected String dataExtractExelaSize;
+    @Value("${data-extract.hmrc.size}")
+    protected String dataExtractHmrcSize;
+    @Value("${data-extract.smee-and-ford.size}")
+    protected String dataExtractSmeeAndFordSize;
 
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
@@ -60,12 +66,17 @@ public class CaseQueryService {
         "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
+    private static final String GRANT_RANGE_QUERY_EXELA = "templates/elasticsearch/caseMatching/"
+        + "grants_issued_date_range_query_exela.json";
+    private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
+        + "grants_issued_date_range_query_hmrc.json";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final FileSystemResourceService fileSystemResourceService;
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaseQueryService");
@@ -83,13 +94,29 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String startDate, String endDate) {
-        BoolQueryBuilder query = boolQuery();
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
+            .replace(":size", dataExtractExelaSize)
+            .replace(":fromDate", startDate)
+            .replace(":toDate", endDate);
 
-        query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(rangeQuery(GRANT_ISSUED_DATE).gte(startDate).lte(endDate));
+        return runQuery(jsonQuery);
+    }
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
+            .replace(":size", dataExtractHmrcSize)
+            .replace(":fromDate", startDate)
+            .replace(":toDate", endDate);
+
+        return runQuery(jsonQuery);
+    }
+
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
+            .replace(":size", dataExtractHmrcSize)
+            .replace(":fromDate", startDate)
+            .replace(":toDate", endDate);
 
         return runQuery(jsonQuery);
     }

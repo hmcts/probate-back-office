@@ -370,6 +370,14 @@ idam-s2s-auth:
 excelaEmail: excela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 
+data-extract:
+  exela:
+    size: "2000"
+  hmrc:
+    size: "2000"
+  smee-and-ford:
+    size: "2000"
+
 welsh:
   months:
     1: "Ionawr"
