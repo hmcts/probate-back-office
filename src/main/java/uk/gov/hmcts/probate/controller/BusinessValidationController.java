@@ -113,7 +113,7 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
                 stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
         }
 
         return ResponseEntity.ok(response);
