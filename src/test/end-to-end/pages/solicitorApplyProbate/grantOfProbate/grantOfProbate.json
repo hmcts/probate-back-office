@@ -20,6 +20,7 @@
   "page2_app_ref": "SOL-123-456",
   "page2_sol_email": "solicitor@probate-test.com",
   "page2_phone_num" : "0129898989",
+  "page2_prev_identified_execs_text": "Previously identified executors",
 
   "page2_dispenseWithNotice": "Yes",
   "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
