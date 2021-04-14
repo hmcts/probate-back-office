@@ -40,9 +40,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -95,6 +97,7 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String PRIMARY_APPLICANT_EMAIL = "primary@probate-test.com";
+    private static final String SOLICITOR_INVALID_EMAIL = ".primary@probate-test.com";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
@@ -116,11 +119,13 @@ public class BusinessValidationControllerTest {
     private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
     private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final ApplicationType APPLICATION_TYPE = ApplicationType.SOLICITOR;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String SOLS_VALIDATE_CREATION_URL = "/case/sols-validate-creation";
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String SOLS_APPLY_AS_EXEC = "/sols-apply-as-exec";
@@ -190,50 +195,51 @@ public class BusinessValidationControllerTest {
             .build();
 
         caseDataBuilder = CaseData.builder()
-            .deceasedDateOfBirth(DOB)
-            .deceasedDateOfDeath(DOD)
-            .deceasedForenames(FORENAME)
-            .deceasedSurname(SURNAME)
-            .deceasedAddress(DECEASED_ADDRESS)
-            .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
-            .deceasedDomicileInEngWales(DECEASED_DOM_UK)
-            .primaryApplicantForenames(PRIMARY_FORENAMES)
-            .primaryApplicantSurname(PRIMARY_SURNAME)
-            .primaryApplicantAddress(PRIMARY_ADDRESS)
-            .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
-            .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
-            .otherExecutorExists(OTHER_EXEC_EXISTS)
-            .solsWillType(WILL_TYPE_PROBATE)
-            .willExists(WILL_EXISTS)
-            .willAccessOriginal(WILL_ACCESS_ORIGINAL)
-            .ihtNetValue(NET)
-            .ihtGrossValue(GROSS)
-            .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
-            .willHasCodicils(WILL_HAS_CODICILS)
-            .willNumberOfCodicils(NUMBER_OF_CODICILS)
-            .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-            .solsSolicitorAddress(solsAddress)
-            .ukEstate(UK_ESTATE)
-            .applicationGrounds(APPLICATION_GROUNDS)
-            .willDispose(YES)
-            .englishWill(NO)
-            .appointExec(YES)
-            .ihtFormId(IHT_FORM)
-            .solsSOTForenames(SOLICITOR_FORENAMES)
-            .solsSOTSurname(SOLICITOR_SURNAME)
-            .solsSolicitorIsExec(YES)
-            .solsSolicitorIsMainApplicant(YES)
-            .solsSolicitorIsApplying(YES)
-            .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
-            .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
-            .solsPaymentMethods(PAYMENT_METHOD)
-            .applicationFee(APPLICATION_FEE)
-            .feeForUkCopies(FEE_FOR_UK_COPIES)
-            .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
-            .extraCopiesOfGrant(EXTRA_UK)
-            .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-            .totalFee(TOTAL_FEE)
-            .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+                .deceasedDateOfBirth(DOB)
+                .deceasedDateOfDeath(DOD)
+                .deceasedForenames(FORENAME)
+                .deceasedSurname(SURNAME)
+                .deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
+                .deceasedDomicileInEngWales(DECEASED_DOM_UK)
+                .primaryApplicantForenames(PRIMARY_FORENAMES)
+                .primaryApplicantSurname(PRIMARY_SURNAME)
+                .primaryApplicantAddress(PRIMARY_ADDRESS)
+                .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
+                .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
+                .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .willExists(WILL_EXISTS)
+                .willAccessOriginal(WILL_ACCESS_ORIGINAL)
+                .ihtNetValue(NET)
+                .ihtGrossValue(GROSS)
+                .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
+                .willHasCodicils(WILL_HAS_CODICILS)
+                .willNumberOfCodicils(NUMBER_OF_CODICILS)
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
+                .solsSolicitorAddress(solsAddress)
+                .ukEstate(UK_ESTATE)
+                .applicationGrounds(APPLICATION_GROUNDS)
+                .willDispose(YES)
+                .englishWill(NO)
+                .appointExec(YES)
+                .ihtFormId(IHT_FORM)
+                .solsSOTForenames(SOLICITOR_FORENAMES)
+                .solsSOTSurname(SOLICITOR_SURNAME)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
+                .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
+                .solsPaymentMethods(PAYMENT_METHOD)
+                .applicationFee(APPLICATION_FEE)
+                .feeForUkCopies(FEE_FOR_UK_COPIES)
+                .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
+                .extraCopiesOfGrant(EXTRA_UK)
+                .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
+                .totalFee(TOTAL_FEE)
+                .applicationType(APPLICATION_TYPE)
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
     }
 
     @Test

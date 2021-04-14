@@ -21,11 +21,13 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.validator.CaveatorEmailAddressValidationRule;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,6 +62,9 @@ public class CaveatControllerTest {
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
+
+    @MockBean
+    private List<CaveatorEmailAddressValidationRule> allCaveatorEmailAddressValidationRule;
 
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
@@ -201,6 +206,34 @@ public class CaveatControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this caveator. Add an email address or contact them by post."))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+    }
+
+    @Test
+    public void validCaveatorEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+
+        mockMvc.perform(post("/caveat/validate-amend-caveat")
+            .content(caveatPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void invalidCaveatorEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post("/caveat/validate-amend-caveat")
+            .content(personalPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors[0]")
+                .value("The caveator email address is invalid. It must be at least 6 characters long, "
+                    + "include @ and . (full stop) characters. It should not include spaces or any of "
+                    + "these characters: * ( ) & ! / ;"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }

@@ -122,7 +122,7 @@ public class NextStepsController {
     }
 
     public void validateEmailAddresses(CallbackRequest callbackRequest) {
-        for(CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule){
+        for (CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule) {
             rule.validate(callbackRequest.getCaseDetails());
         }
     }

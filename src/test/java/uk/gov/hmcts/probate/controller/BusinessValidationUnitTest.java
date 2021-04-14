@@ -38,9 +38,11 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -112,6 +114,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule =
+        new ArrayList<CaseDetailsEmailValidationRule>();
 
     private BusinessValidationController underTest;
 
@@ -133,6 +137,7 @@ public class BusinessValidationUnitTest {
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
+            allCaseDetailsEmailValidationRule,
             ihtFourHundredDateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
@@ -484,7 +489,8 @@ public class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null))
+            .thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
             .thenReturn(Arrays.asList(FieldErrorResponse.builder().build()));
         Document documentMock = Mockito.mock(Document.class);

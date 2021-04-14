@@ -20,13 +20,13 @@ public class CaveatorEmailAddressValidationRuleTest {
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private CaveatData CaveatDataEmptyEmail;
-    private CaveatData CaveatDataEmptyEmailNull;
-    private CaveatData CaveatDataEmailInvalid1;
-    private CaveatData CaveatDataEmailInvalid2;
-    private CaveatData CaveatDataEmailInvalid3;
-    private CaveatData CaveatDataEmailInvalid4;
-    private CaveatData CaveatDataEmailValid1;
+    private CaveatData caveatDataEmptyEmail;
+    private CaveatData caveatDataEmptyEmailNull;
+    private CaveatData caveatDataEmailInvalid1;
+    private CaveatData caveatDataEmailInvalid2;
+    private CaveatData caveatDataEmailInvalid3;
+    private CaveatData caveatDataEmailInvalid4;
+    private CaveatData caveatDataEmailValid1;
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -35,43 +35,43 @@ public class CaveatorEmailAddressValidationRuleTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        CaveatDataEmptyEmail = CaveatData.builder()
+        caveatDataEmptyEmail = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmptyEmailNull = CaveatData.builder()
+        caveatDataEmptyEmailNull = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress(null)
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailInvalid1 = CaveatData.builder()
+        caveatDataEmailInvalid1 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("example.@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailInvalid2 = CaveatData.builder()
+        caveatDataEmailInvalid2 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("example@.probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailInvalid3 = CaveatData.builder()
+        caveatDataEmailInvalid3 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("example@probate-test.com.")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailInvalid4 = CaveatData.builder()
+        caveatDataEmailInvalid4 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress(".example@probate-test.com")
                 .registryLocation("Bristol")
                 .build();
 
-        CaveatDataEmailValid1 = CaveatData.builder()
+        caveatDataEmailValid1 = CaveatData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorEmailAddress("example@probate-test.com")
                 .registryLocation("Bristol")
@@ -81,11 +81,11 @@ public class CaveatorEmailAddressValidationRuleTest {
 
     @Test
     public void shouldThrowApplyingExecEmailIsEmpty() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmptyEmail, LAST_MODIFIED, CASE_ID);
+        CaveatDetails caveatDetailsEmptyEmail =
+                new CaveatDetails(caveatDataEmptyEmail, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+            caveatorEmailAddressValidationRule.validate(caveatDetailsEmptyEmail);
         })
                 .isInstanceOf(BusinessValidationException.class);
     }
@@ -93,11 +93,11 @@ public class CaveatorEmailAddressValidationRuleTest {
 
     @Test
     public void shouldThrowApplyingExecEmailIsInvalid1() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailInvalid1, LAST_MODIFIED, CASE_ID);
+        CaveatDetails caveatDetailsInvalidEmail =
+                new CaveatDetails(caveatDataEmailInvalid1, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+            caveatorEmailAddressValidationRule.validate(caveatDetailsInvalidEmail);
         })
                 .isInstanceOf(BusinessValidationException.class)
                 .hasMessage("Caveator email does not meet the criteria for case id 12345678987654321");
@@ -105,11 +105,11 @@ public class CaveatorEmailAddressValidationRuleTest {
 
     @Test
     public void shouldThrowApplyingExecEmailIsInvalid2() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailInvalid2, LAST_MODIFIED, CASE_ID);
+        CaveatDetails caveatDetailsInvalidEmail =
+                new CaveatDetails(caveatDataEmailInvalid2, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+            caveatorEmailAddressValidationRule.validate(caveatDetailsInvalidEmail);
         })
                 .isInstanceOf(BusinessValidationException.class)
                 .hasMessage("Caveator email does not meet the criteria for case id 12345678987654321");
@@ -117,11 +117,11 @@ public class CaveatorEmailAddressValidationRuleTest {
 
     @Test
     public void shouldThrowApplyingExecEmailIsInvalid3() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailInvalid3, LAST_MODIFIED, CASE_ID);
+        CaveatDetails caveatDetailsInvalidEmail =
+                new CaveatDetails(caveatDataEmailInvalid3, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+            caveatorEmailAddressValidationRule.validate(caveatDetailsInvalidEmail);
         })
                 .isInstanceOf(BusinessValidationException.class)
                 .hasMessage("Caveator email does not meet the criteria for case id 12345678987654321");
@@ -129,28 +129,28 @@ public class CaveatorEmailAddressValidationRuleTest {
 
     @Test
     public void shouldThrowApplyingExecEmailIsInvalid4() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailInvalid4, LAST_MODIFIED, CASE_ID);
+        CaveatDetails caveatDetailsInvalidEmail =
+                new CaveatDetails(caveatDataEmailInvalid4, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+            caveatorEmailAddressValidationRule.validate(caveatDetailsInvalidEmail);
         })
                 .isInstanceOf(BusinessValidationException.class)
                 .hasMessage("Caveator email does not meet the criteria for case id 12345678987654321");
     }
 
     @Test
-    public void ApplyingExecEmailIsValid() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmailValid1, LAST_MODIFIED, CASE_ID);
-        caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+    public void applyingExecEmailIsValid() {
+        CaveatDetails caveatDetailsValidEmail =
+                new CaveatDetails(caveatDataEmailValid1, LAST_MODIFIED, CASE_ID);
+        caveatorEmailAddressValidationRule.validate(caveatDetailsValidEmail);
     }
 
     @Test
-    public void ApplyingExecEmailIsNull() {
-        CaveatDetails CaveatDetailsEmptyEmail =
-                new CaveatDetails(CaveatDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
-        caveatorEmailAddressValidationRule.validate(CaveatDetailsEmptyEmail);
+    public void applyingExecEmailIsNull() {
+        CaveatDetails caveatDetailsNullEmail =
+                new CaveatDetails(caveatDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
+        caveatorEmailAddressValidationRule.validate(caveatDetailsNullEmail);
     }
 
 }

@@ -139,14 +139,14 @@ public class EmailAddressPrimaryApplicantValidationRuleTest {
     }
 
     @Test
-    public void ApplyingExecEmailIsValid() {
+    public void applyingExecEmailIsValid() {
         CaseDetails caseDetailsEmailValid =
                 new CaseDetails(caseDataEmailValid, LAST_MODIFIED, CASE_ID);
         emailAddressPrimaryApplicantValidationRule.validate(caseDetailsEmailValid);
     }
 
     @Test
-    public void ApplyingExecEmailIsNull() {
+    public void applyingExecEmailIsNull() {
         CaseDetails caseDetailsEmailNull =
                 new CaseDetails(caseDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
         emailAddressPrimaryApplicantValidationRule.validate(caseDetailsEmailNull);

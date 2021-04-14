@@ -27,8 +27,10 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -74,6 +76,9 @@ public class NextStepsUnitTest {
     @Mock
     private StateChangeService stateChangeServiceMock;
 
+    private List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule =
+        new ArrayList<CaseDetailsEmailValidationRule>();
+
     @MockBean
     private AppInsights appInsights;
 
@@ -83,7 +88,7 @@ public class NextStepsUnitTest {
 
         underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock,
             callbackResponseTransformerMock,
-            objectMapperMock, feeServiceMock, stateChangeServiceMock);
+            objectMapperMock, feeServiceMock, stateChangeServiceMock, allCaseDetailsEmailValidationRule);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -95,7 +100,8 @@ public class NextStepsUnitTest {
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
-        when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feeServiceResponseMock);
+        when(feeServiceMock.getTotalFee(null, 0L, 0L))
+            .thenReturn(feeServiceResponseMock);
         when(callbackResponseTransformerMock
             .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock))
             .thenReturn(callbackResponseMock);

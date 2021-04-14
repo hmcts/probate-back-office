@@ -165,21 +165,21 @@ public class EmailAddressSolicitorValidationRuleTest {
     }
 
     @Test
-    public void ApplyingExecEmailIsValid() {
+    public void applyingExecEmailIsValid() {
         CaseDetails caseDetailsEmailValid =
                 new CaseDetails(caseDataEmailValid, LAST_MODIFIED, CASE_ID);
         emailAddressSolicitorValidationRule.validate(caseDetailsEmailValid);
     }
 
     @Test
-    public void ApplyingExecEmailIsValid2() {
+    public void applyingExecEmailIsValid2() {
         CaseDetails caseDetailsEmailValid =
                 new CaseDetails(caseDataEmailValid2, LAST_MODIFIED, CASE_ID);
         emailAddressSolicitorValidationRule.validate(caseDetailsEmailValid);
     }
 
     @Test
-    public void ApplyingExecEmailIsNull() {
+    public void applyingExecEmailIsNull() {
         CaseDetails caseDetailsEmailNull =
                 new CaseDetails(caseDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
         emailAddressSolicitorValidationRule.validate(caseDetailsEmailNull);

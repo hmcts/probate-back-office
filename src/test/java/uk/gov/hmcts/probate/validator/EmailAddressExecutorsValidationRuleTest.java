@@ -37,7 +37,8 @@ public class EmailAddressExecutorsValidationRuleTest {
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_EMPTY = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_EMPTY =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -51,7 +52,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_NULL = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_NULL =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -65,7 +67,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID1 = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID1 =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -79,7 +82,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID2 = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID2 =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -93,7 +97,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID3 = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID3 =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -107,7 +112,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID4 = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_INVALID4 =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -121,7 +127,8 @@ public class EmailAddressExecutorsValidationRuleTest {
                             .applyingExecutorOtherReason("")
                             .build()));
 
-    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_VALID = Arrays.asList(
+    private static final List<CollectionMember<AdditionalExecutorApplying>> EXECEUTORS_APPLYING_EMAIL_VALID =
+        Arrays.asList(
             new CollectionMember<>("id",
                     AdditionalExecutorApplying.builder()
                             .applyingExecutorName("Name surname")
@@ -240,21 +247,21 @@ public class EmailAddressExecutorsValidationRuleTest {
     }
 
     @Test
-    public void ApplyingExecEmailIsValid() {
+    public void applyingExecEmailIsValid() {
         CaseDetails caseDetailsEmailValid =
                 new CaseDetails(caseDataEmailValid, LAST_MODIFIED, CASE_ID);
         emailAddressExecutorsValidationRule.validate(caseDetailsEmailValid);
     }
 
     @Test
-    public void ApplyingExecEmailIsNull() {
+    public void applyingExecEmailIsNull() {
         CaseDetails caseDetailsEmailNull =
                 new CaseDetails(caseDataEmptyEmailNull, LAST_MODIFIED, CASE_ID);
         emailAddressExecutorsValidationRule.validate(caseDetailsEmailNull);
     }
 
     @Test
-    public void NoApplyingExecs() {
+    public void noApplyingExecs() {
         CaseDetails caseDetailsNoExecs =
                 new CaseDetails(caseDataNoAdditionalExecs, LAST_MODIFIED, CASE_ID);
         emailAddressExecutorsValidationRule.validate(caseDetailsNoExecs);

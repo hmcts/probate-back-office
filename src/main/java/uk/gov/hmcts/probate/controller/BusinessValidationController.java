@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -79,6 +80,7 @@ public class BusinessValidationController {
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final List<CaseDetailsEmailValidationRule> allCaseDetailsEmailValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
     @PostMapping(path = "/update-task-list")
@@ -183,6 +185,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
@@ -198,6 +201,7 @@ public class BusinessValidationController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        validateEmailAddresses(callbackRequest);
 
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, checkListAmendCaseValidationRules);
@@ -284,10 +288,11 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
-        @RequestBody CallbackRequest callbackRequest,
+        @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        validateEmailAddresses(callbackRequest);
 
         Document document = null;
         if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
@@ -313,7 +318,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/redeclarationSot", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationSot(
-        @RequestBody CallbackRequest callbackRequest) {
+            @RequestBody CallbackRequest callbackRequest) {
 
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
@@ -371,5 +376,11 @@ public class BusinessValidationController {
 
     private void validateIHT400Date(CallbackRequest callbackRequest) {
         ihtFourHundredDateValidationRule.validate(callbackRequest.getCaseDetails());
+    }
+
+    private void validateEmailAddresses(CallbackRequest callbackRequest) {
+        for (CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule) {
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }
