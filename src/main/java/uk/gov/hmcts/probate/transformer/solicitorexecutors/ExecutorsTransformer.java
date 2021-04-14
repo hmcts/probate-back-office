@@ -270,7 +270,7 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
                 caseData.getAdditionalExecutorsApplying();
 
-        return caseData.getPrimaryApplicantForenames() == null && execsApplying != null && !execsApplying.isEmpty();
+        return execsApplying != null && !execsApplying.isEmpty();
     }
 
 }
