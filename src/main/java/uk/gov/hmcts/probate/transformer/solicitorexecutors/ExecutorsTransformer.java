@@ -70,6 +70,8 @@ public class ExecutorsTransformer {
         }
     }
 
+
+
     /**
      * Set solsIdentifiedApplyingExecs and solsIdentifiedNotApplyingExecs with names of executors.
      * Get executor names from solicitor executor lists.
@@ -207,7 +209,7 @@ public class ExecutorsTransformer {
     }
 
     // Note - mutates the request data!
-    private void mapExecutorToPrimaryApplicantFields(
+    protected void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, CaseData caseData) {
         caseData.setPrimaryApplicantForenames(exec.getApplyingExecutorFirstName());
         caseData.setPrimaryApplicantSurname(exec.getApplyingExecutorLastName());
