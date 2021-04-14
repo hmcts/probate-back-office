@@ -172,7 +172,7 @@ public class ExecutorsTransformer {
             // Add solicitor to applying list
             execsApplying = executorListMapperService.addSolicitorToApplyingList(caseData, execsApplying);
 
-        } else if (!isSolicitorExecutor(caseData) || !isSolicitorApplying(caseData)) {
+        } else if (!isSolicitorNamedInWillAsAnExecutor(caseData) || !isSolicitorApplying(caseData)) {
 
             // Remove solicitor from applying executor list
             execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
@@ -185,12 +185,12 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         // Transform list
-        if (!isSolicitorApplying(caseData)) {
+        if (!isSolicitorApplying(caseData) && isSolicitorNamedInWillAsAnExecutor(caseData)) {
 
             // Add solicitor to not applying list
             execsNotApplying = executorListMapperService.addSolicitorToNotApplyingList(caseData, execsNotApplying);
 
-        } else if (isSolicitorApplying(caseData)) {
+        } else {
 
             // Remove solicitor from not applying executor list
             execsNotApplying = executorListMapperService.removeSolicitorFromNotApplyingList(execsNotApplying);
@@ -222,14 +222,14 @@ public class ExecutorsTransformer {
         caseData.setSolsPrimaryExecutorNotApplyingReason(null);
     }
 
-    public void setFieldsIfSolicitorIsNotExecutor(CaseData caseData) {
-        if (!isSolicitorExecutor(caseData)) {
+    public void setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(CaseData caseData) {
+        if (!isSolicitorNamedInWillAsAnExecutor(caseData)) {
             caseData.setSolsSolicitorIsApplying(NO);
             caseData.setSolsSolicitorNotApplyingReason(null);
         }
     }
 
-    protected boolean isSolicitorExecutor(CaseData caseData) {
+    protected boolean isSolicitorNamedInWillAsAnExecutor(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 

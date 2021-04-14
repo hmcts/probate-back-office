@@ -18,7 +18,7 @@ public class CaseDataTransformer {
 
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
-        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer
                 .mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -30,7 +30,7 @@ public class CaseDataTransformer {
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
-        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
     }
 

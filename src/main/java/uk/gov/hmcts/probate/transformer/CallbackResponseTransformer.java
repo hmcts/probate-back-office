@@ -1173,7 +1173,7 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
         builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
