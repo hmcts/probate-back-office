@@ -172,7 +172,7 @@ public class ExecutorsTransformer {
             // Add solicitor to applying list
             execsApplying = executorListMapperService.addSolicitorToApplyingList(caseData, execsApplying);
 
-        } else if (!isSolicitorNamedInWillAsAnExecutor(caseData) || !isSolicitorApplying(caseData)) {
+        } else {
 
             // Remove solicitor from applying executor list
             execsApplying = executorListMapperService.removeSolicitorFromApplyingList(execsApplying);
