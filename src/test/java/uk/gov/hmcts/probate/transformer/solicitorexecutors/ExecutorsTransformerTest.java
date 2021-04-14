@@ -448,27 +448,24 @@ public class ExecutorsTransformerTest {
 
 
     @Test
-    public void shouldNotSetPrimaryApplicantFields_ForenameSet() {
+    public void shouldAllowSetPrimaryApplicantFields_Forenames() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
                 .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .solsSOTForenames("Fred")
+                .solsSOTSurname("Bassett")
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         final CaseData cd = caseDataBuilder.build();
 
-        when(caseDetailsMock.getData()).thenReturn(cd);
         ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
-        et.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseDetailsMock.getData());
+        et.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(cd);
 
-        assertEquals(solsAdditionalExecutorApplyingList.get(0), cd.getAdditionalExecutorsApplying().get(1));
-        assertEquals(EXEC_FIRST_NAME, cd.getPrimaryApplicantForenames());
-        assertNull(cd.getPrimaryApplicantSurname());
-        assertNull(cd.getPrimaryApplicantAddress());
-        assertNull(cd.getPrimaryApplicantAlias());
-        assertNull(cd.getPrimaryApplicantHasAlias());
-        assertNull(cd.getPrimaryApplicantIsApplying());
-        assertNull(cd.getSolsPrimaryExecutorNotApplyingReason());
+        assertEquals(1, cd.getAdditionalExecutorsApplying().size());
+        assertEquals(solsAdditionalExecutorApplyingList.get(0), cd.getAdditionalExecutorsApplying().get(0));
+        assertEquals("Fred", cd.getPrimaryApplicantForenames());
+        assertEquals("Bassett", cd.getPrimaryApplicantSurname());
     }
 
     @Test
