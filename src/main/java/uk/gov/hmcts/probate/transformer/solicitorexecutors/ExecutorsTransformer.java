@@ -52,14 +52,13 @@ public class ExecutorsTransformer {
         mapPrimaryApplicantFields(caseData);
     }
 
+    // Only ever call this once, when we map 1st execApplying to primary applicant forenames
+    // Precondition - execsApplying has solicitor added as a temporary item, at position 0
     public void mapPrimaryApplicantFields(CaseData caseData) {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
                 caseData.getAdditionalExecutorsApplying();
 
         // Populate primary applicant fields
-        // There are cw problems here, what if the name changes and also
-        // how can we remove element 0 when it has trust corp position and other
-        // data that will get lost?
         if (shouldSetPrimaryApplicantFieldsWithExecInfo(caseData)) {
             AdditionalExecutorApplying tempExec = execsApplying.get(0).getValue();
             // For a caseworker,
@@ -274,7 +273,8 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
                 caseData.getAdditionalExecutorsApplying();
 
-        return caseData.getPrimaryApplicantForenames() == null && execsApplying != null && !execsApplying.isEmpty();
+        return execsApplying != null && !execsApplying.isEmpty()
+                && (YES.equals(caseData.getSolsSolicitorIsApplying()));
     }
 
 }
