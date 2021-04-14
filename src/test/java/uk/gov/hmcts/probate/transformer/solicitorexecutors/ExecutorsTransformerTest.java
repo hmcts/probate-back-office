@@ -459,7 +459,6 @@ public class ExecutorsTransformerTest {
 
         final CaseData cd = caseDataBuilder.build();
 
-        when(caseDetailsMock.getData()).thenReturn(cd);
         ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
         et.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(cd);
 
