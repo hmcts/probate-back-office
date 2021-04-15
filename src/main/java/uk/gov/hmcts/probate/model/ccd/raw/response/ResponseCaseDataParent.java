@@ -54,6 +54,7 @@ public class ResponseCaseDataParent {
     protected final String lodgementAddress;
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected final String anyOtherApplyingPartners;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String solsForenames;

@@ -819,6 +819,7 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
