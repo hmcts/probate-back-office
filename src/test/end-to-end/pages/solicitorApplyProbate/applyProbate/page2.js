@@ -18,18 +18,18 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
 
     if (isSolicitorNamedExecutor) {
-        await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionYes}`);
+        await I.click({css: '#solsSolicitorIsExec-Yes'});
 
         if (isSolicitorApplyingExecutor) {
-            await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionYes}`);
+            await I.click({css: '#solsSolicitorIsApplying-Yes'});
         } else {
-            await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionNo}`);
-            await I.waitForVisible('#solsSolicitorNotApplyingReason-PowerReserved');
-            await I.click('#solsSolicitorNotApplyingReason-PowerReserved');
+            await I.click({css: '#solsSolicitorIsApplying-No'});
+            await I.waitForVisible({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
+            await I.click({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
         }
     } else {
-        await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionNo}`);
-        await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionNo}`);
+        await I.click({css: '#solsSolicitorIsExec-No'});
+        await I.click({css: `#solsSolicitorIsApplying-${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
     }
 
     await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
