@@ -458,9 +458,9 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
 data-extract:
   exela:
-    size: "2000"
+    size: "10000"
   hmrc:
-    size: "2000"
+    size: "10000"
 
 welsh:
   months:
