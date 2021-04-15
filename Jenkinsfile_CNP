@@ -45,6 +45,7 @@ def secrets = [
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
                 secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
+                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY'),
                 secret('probate-site-id','PAYMENT_SITEID')
         ],
         's2s-${env}'      : [
@@ -114,6 +115,5 @@ withPipeline("java", product, component) {
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
-
 }
 
