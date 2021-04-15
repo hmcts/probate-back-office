@@ -45,6 +45,7 @@ public class PartnersAddedValidationRuleTest {
             partnersAddedValidationRule.validate(caseDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("'Yes' needs to be selected for question anyOtherApplyingPartners for case id 12345678987654321");
+            .hasMessage("'Yes' needs to be selected for question "
+                + "anyOtherApplyingPartners for case id 12345678987654321");
     }
 }

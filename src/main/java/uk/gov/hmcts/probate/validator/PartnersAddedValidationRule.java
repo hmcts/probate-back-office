@@ -22,13 +22,14 @@ public class PartnersAddedValidationRule {
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED, args, Locale.UK);
 
-        if(caseData.getAnyOtherApplyingPartners() != null){
+        if (caseData.getAnyOtherApplyingPartners() != null) {
             if (!(caseData.getSolsSolicitorIsExec().matches("No")
                 && caseData.getSolsSolicitorIsApplying().matches("Yes"))
                 && caseData.getAnyOtherApplyingPartners().matches("No")) {
 
                 throw new BusinessValidationException(userMessage,
-                    "'Yes' needs to be selected for question anyOtherApplyingPartners for case id " + caseDetails.getId());
+                    "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
+                        + caseDetails.getId());
             }
         }
     }
