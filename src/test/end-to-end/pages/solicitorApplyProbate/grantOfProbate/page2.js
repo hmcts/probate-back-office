@@ -11,7 +11,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(0.25);
     }
-    
+
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
         await I.waitForText(grantOfProbateConfig.page2_prev_identified_execs_text);
         await I.waitForText(grantOfProbateConfig.page2_sol_name);
@@ -35,6 +35,14 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
+    await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
+    await I.scrollTo({css: '#anyOtherApplyingPartners-Yes'});
+    await I.waitForClickable({css: '#anyOtherApplyingPartners-Yes'});
+    await I.click({css: '#anyOtherApplyingPartners-Yes'});
+    await I.waitForVisible({css: '#otherPartnersApplyingAsExecutors'});
+    await I.click({css: '#anyOtherApplyingPartners-No'});
+    await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'});
+
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
     await I.click(grantOfProbateConfig.UKpostcodeLink);
@@ -55,16 +63,6 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
 
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
-
-    if (!isSolicitorNamedExecutor && isSolicitorApplyingExecutor) {
-        await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
-        await I.scrollTo({css: '#anyOtherApplyingPartners-Yes'});
-        await I.waitForClickable({css: '#anyOtherApplyingPartners-Yes'});        
-        await I.waitForClickable({css: '#anyOtherApplyingPartners-Yes'});        
-        await I.waitForVisible({css: '#otherPartnersApplyingAsExecutors'})
-        await I.click({css: '#anyOtherApplyingPartners-No'});
-        await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'})
-    }
 
     await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
     await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);
