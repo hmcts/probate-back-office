@@ -86,6 +86,9 @@ public class ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
+        execsApplying = setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
+        execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
+
         // Format exec lists into strings
         String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
         String execsNotApplyingNames = FormattingService.createExecsNotApplyingNames(execsNotApplying);
@@ -223,7 +226,6 @@ public class ExecutorsTransformer {
 
     public void setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(CaseData caseData) {
         if (!isSolicitorNamedInWillAsAnExecutor(caseData)) {
-            caseData.setSolsSolicitorIsApplying(NO);
             caseData.setSolsSolicitorNotApplyingReason(null);
         }
     }
