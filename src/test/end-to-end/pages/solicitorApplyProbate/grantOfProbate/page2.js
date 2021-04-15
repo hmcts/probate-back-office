@@ -12,9 +12,11 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
         await I.wait(0.25);
     }
     
-    if (isSolicitorNamedExecutor && isSolicitorApplyingExecutor) {
+    if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
         await I.waitForText(grantOfProbateConfig.page2_prev_identified_execs_text);
         await I.waitForText(grantOfProbateConfig.page2_sol_name);
+    } else {
+        await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
     }
 
     await I.scrollTo(dispNoticeLocator);
