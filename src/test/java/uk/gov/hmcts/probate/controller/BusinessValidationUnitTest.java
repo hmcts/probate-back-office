@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.PartnersAddedValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -130,6 +131,8 @@ public class BusinessValidationUnitTest {
     private SolicitorApplicationCompletionTransformer solCompletionTransformer;
     @Mock
     private ResetCaseDataTransformer resetCdTransformer;
+    @Mock
+    private PartnersAddedValidationRule partnersAddedValidationRule;
 
     private BusinessValidationController underTest;
 
@@ -151,8 +154,9 @@ public class BusinessValidationUnitTest {
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
             numberOfApplyingExecutorsValidationRuleMock,
-                codicilDateValidationRuleMock,
-                originalWillSignedDateValidationRuleMock,
+            codicilDateValidationRuleMock,
+            originalWillSignedDateValidationRuleMock,
+            partnersAddedValidationRule,
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
