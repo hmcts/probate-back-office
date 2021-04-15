@@ -58,7 +58,9 @@
       "solsSOTForenames": "Probate",
       "boSendToBulkPrint": "Yes",
       "deceasedForenames": "Deceased",
-      "executorsApplying": [],
+      "executorsApplying": [
+
+      ],
       "dispenseWithNotice": "No",
       "solsSolicitorEmail": "test@test.com",
       "willAccessOriginal": "Yes",
@@ -175,26 +177,7 @@
       ],
       "additionalExecutorsNotApplying": [],
       "executorsApplyingLegalStatement": [],
-      "executorsNotApplyingLegalStatement": [],
-      "additionalExecutorsTrustCorpList": [
-        {
-          "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
-          "value": {
-            "additionalExecForenames": "FirstName2",
-            "additionalExecLastname": "LastName2",
-            "additionalExecutorTrustCorpPosition": "Solicitor",
-            "additionalExecAddress": {
-              "County": "county",
-              "Country": "country",
-              "PostCode": "postcode",
-              "PostTown": "posttown",
-              "AddressLine1": "addressline 1",
-              "AddressLine2": "addressline 2",
-              "AddressLine3": "addressline 3"
-            }
-          }
-        }
-      ]
+      "executorsNotApplyingLegalStatement": []
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",

@@ -1104,203 +1104,194 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyDomiciledInEnglandAndWales() {
+    public void verifySoTDomiciledInEnglandAndWales() {
         String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Main Applicant of Test, Test, A1 2BC, UK make the following" +
                 " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on" +
                 " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
-    }//done
+    }
 
     @Test
-    public void verifyExecutorPowerReserved() {
+    public void verifySoTIndividualExecutorPowerReserved() {
         String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor4_name, another executor named in the will," +
                 " is not making this application but reserves power to do so at a later date."));
-    }//done
+    }
 
     @Test
-    public void verifyExecutorRenunciation() {
+    public void verifySoTIndividualExecutorRenunciation() {
         String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor3_name, another executor named in the will, has renounced probate and letters " +
                 "of administration with will annexed"));
-    }//done
+    }
 
     @Test
-    public void verifyExecutorDiedBeforeAndAfter() {
+    public void verifySoTExecutorDiedBeforeAndAfterDeceased() {
         String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor1_name, another executor named in the will, has died in the lifetime of the deceased."));
         assertTrue(response.contains("executor2_name, another executor named in the will, has survived the deceased and died since."));
-    }//done
+    }
 
     @Test
-    public void verifyExecutorLacksMentalCapacity() { //how does the MentallyIncapable get set?
+    public void verifySoTExecutorLacksMentalCapacity() {
         String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor5_name, another executor named in the will, lacks capacity to manage their" +
                 " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
-    }//done
+    }
 
     @Test
-    public void verifyExecutorPowerReservedNoticeDispense() { //date not being added to the statement
-        String response = generatePdfDocument("solicitorPayloadTrustCorpsSchema.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Notice of this application has on the" + // 10/10/2020 date not showing??
-                " been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987" +
-                " to executor1_name to whom power is to be reserved."));
-    }//date not showing
+    public void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() {
+        String response = generatePdfDocument("solicitorPayloadDispenseNotGiven.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Notice of this application has on the 10th October 2010 " +
+                "been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules " +
+                "1987 to executor1_name to whom power is to be reserved."));
+    }
 
     @Test
-    public void verifyExecutorConcurrentApplication() {
+    public void verifySoTExecutorConcurrentApplication() {
         String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("We are concurrently applying for notice of this application" +
                 " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules" +
                 " 1987 to executor6_name to whom power is to be reserved."));
-    }//done
-
+    }
 
     @Test
-    public void verifyFirstParagraphOneDisplayedForClearingOne() {
+    public void verifySoTFirstParagraphPersonWhoDiedForClearingOne() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset," + //space between diedName
                 " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, " +
                 "domiciled in England and Wales. The will appoints an executor."));
-    } //done
+    }
 
     @Test
-    public void verifyFirstParagraphDisplayedForClearingTwo() {
+    public void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() {
         String response = generatePdfDocument("solicitorPayloadPartnersInFirm.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset," + //space between diedName
                 " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, " +
                 "domiciled in England and Wales. The will appoints an executor."));
-    } //done
+    }
 
 
     @Test
-    public void verifySecondParagraphDisplayedforClearingThree() {
+    public void verifySecondParagraphFirmSuccessionForClearingThree() {
         String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Firmname" +
                 " will that had succeeded to and carried on the practice of the " +
                 "firm Successor firm, at the date of death of the deceased."));
 
-    }//done
+    }
 
     @Test
-    public void verifySecondParagraphDisplayedforClearingFour() {
+    public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and " +
                 "Stakeholders in the firm Successor firm, at the date of death of the deceased."));
 
-    } //done
+    }
 
     @Test
-    public void verifyThirdParagraphDisplayedforClearingNine() {
+    public void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm" +
                 " that had succeeded to and carried on the practice of the " +
                 "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and " +
                 "Stakeholders in the firm Firmname will is renouncing their right to probate."));
 
-    } //done
+    }
 
     @Test
-    public void verifyThirdParagraphDisplayedforClearingTen() {
+    public void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm" +
                 " that had succeeded to and carried on the practice of the " +
                 "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and " +
                 "Stakeholders in the firm Firmname will is renouncing their right to probate."));
 
-    }//done
+    }
 
     @Test
-    public void verifyFourthParagraphDisplayedforClearingFive() {
+    public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() {
         String response = generatePdfDocument("solicitorPayLoadSuccessorFirmAllRenounce.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm" +
-                " that had succeeded to and carried on the practice of the " +
-                "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and " +
-                "Stakeholders in the firm Firmname will is renouncing their right to probate."));
+        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
 
-    }//not working
+    }
 
     @Test
-    public void verifyFourthParagraphDisplayedforClearingSix() {
+    public void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() {
         String response = generatePdfDocument("solicitorPayloadPartnersAllRenounce.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm" +
-                " that had succeeded to and carried on the practice of the " +
-                "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and " +
-                "Stakeholders in the firm Firmname will is renouncing their right to probate."));
+        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
 
-    }//not working
+    }
 
     @Test
-    public void verifyFifthParagraphDisplayedforClearingSeven() {
+    public void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() {
         String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, which has been filed with the Senior District Judge or Registry," +
                 " in which Exfn1 Exln1 identified by the position they hold and which is still in force, appointed them " +
                 "for the purpose of applying for probate of the will or for grants of probate on its behalf."));
 
-    }//done
+    }
 
     @Test
-    public void verifyFifthParagraphDisplayedforClearingEight() {
+    public void verifySoTFifthParagraphLodgedApplicationClearingEight() {
         String response = generatePdfDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, certified copy" +
                 " of which is lodged with this application, in which Exfn1 Exln1 identified by the position" +
                 " they hold and which is still in force, appointed them for the purpose of applying for probate" +
                 " of the will or for grants of probate on its behalf."));
 
-    }//done
+    }
 
 
     @Test
-    public void verifyFirstParagraphClearancePartnerSucceeded() {
+    public void verifySoTFirstParagraphClearancePartnerSucceeded() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm" +
                 " Firmname will that had succeeded to and carried on the practice of the firm Successor firm," +
                 " at the date of death of the deceased."));
 
-    }//done
+    }
 
     @Test
-    public void verifySecondParagraphSoleSucceeded() {
+    public void verifySoTSecondParagraphSoleSucceeded() {
         String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm" +
                 " Firmname will that had succeeded to and carried on the practice of the firm Successor firm," +
                 " at the date of death of the deceased."));
 
-    } //done
+    }
 
     @Test
-    public void verifyThirdParagraphPartnerRenounceSucceeded() {
+    public void verifySoTThirdParagraphPartnerRenounceSucceeded() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the " +
                 "firm Successor firm that had succeeded to and carried on the practice of the firm Firmname " +
                 "will, at the date of death of the deceased."));
-        //done
 
     }
 
     @Test
-    public void verifyFourthParagraphPartnerAllRenounceSucceeded() {
+    public void verifySoTFourthParagraphPartnerAllRenounceSucceeded() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounce.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("that had succeeded to and carried on the practice of the firm Successor firm," +
-                " at the date of death of the deceased.")); //not counting the professional user
+        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate.")); //not counting the professional user
 
-    }//not working
+    }
 
     @Test
-    public void verifyFifthParagraphJudgeSeniorDistrict() {
+    public void verifySoTFifthParagraphJudgeSeniorDistrict() {
         String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution," +
                 " which has been filed with the Senior District Judge or Registry, in which Exfn1 Exln1 identified by" +
                 " the position they hold and which is still in force, appointed them for the purpose of applying for probate" +
                 " of the will or for grants of probate on its behalf."));
-    }//done
+    }
 
     @Test
-    public void verifySixthParagraphTrustCorpResolutionLodged() {
+    public void verifySoTSixthParagraphTrustCorpResolutionLodged() {
         String response = generatePdfDocument("verifySolPayloadTrustCorpResolutionLodged.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, certified copy of which is lodged" +
                 " with this application, in which Exfn1 Exln1 identified by the position they hold and which" +
                 " is still in force, appointed them for the purpose of applying for probate of " +
                 "the will or for grants of probate on its behalf."));
-    }//done
+    }
 }
