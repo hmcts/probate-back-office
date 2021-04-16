@@ -22,13 +22,11 @@ module.exports = async function (optName) {
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
     const morePartnersHoldingPowerReservedVisible = (await I.grabNumberOfVisibleElements ({css: '#morePartnersHoldingPowerReserved'})) > 0;
     const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners-Yes'})) > 0;
-    const otherPartnersApplyingAsExecutorsVisible = (await I.grabNumberOfVisibleElements ({css: '#otherPartnersApplyingAsExecutors'})) > 0;
 
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
     assert (isNa || isTrustOption ? !morePartnersHoldingPowerReservedVisible : morePartnersHoldingPowerReservedVisible);
-    assert (anyOtherPartnersApplyingVisible);
-    assert (!otherPartnersApplyingAsExecutorsVisible); // not visible when screen first shown, only visible after anyOtherPartnersApplyingVisible-Yes clicked
+    assert (isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');

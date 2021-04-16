@@ -35,13 +35,19 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
+    await I.dontSeeElement({css: '#anyOtherApplyingPartners-Yes'});
     await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
+
+    await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
+    
     await I.scrollTo({css: '#anyOtherApplyingPartners-Yes'});
-    await I.waitForClickable({css: '#anyOtherApplyingPartners-Yes'});
     await I.click({css: '#anyOtherApplyingPartners-Yes'});
     await I.waitForVisible({css: '#otherPartnersApplyingAsExecutors'});
     await I.click({css: '#anyOtherApplyingPartners-No'});
     await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'});
+
+    await I.scrollTo({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
