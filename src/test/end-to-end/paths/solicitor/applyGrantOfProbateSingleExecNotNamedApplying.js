@@ -4,8 +4,8 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
-const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
 const gopConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
+const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
 const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
@@ -17,9 +17,11 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async function (I) {
-
+Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async function (I) {
+    const isSolicitorNamedExecutor = false;
+    const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';
+
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
 
@@ -28,7 +30,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
-    await I.applyForProbatePage2(true, true);
+    await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.cyaPage();
 
     await I.seeEndState(endState);
@@ -39,6 +41,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
     endState = 'Grant of probate created';
+
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -50,15 +53,16 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2(false, true, true);
+    await I.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.grantOfProbatePage3();
-    await I.grantOfProbatePage4();
+    await I.grantOfProbatePage4(isSolicitorApplyingExecutor);
     await I.grantOfProbatePage5();
     await I.cyaPage();
 
@@ -70,7 +74,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, gobDtlsAndDcsdDtls, true);
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
 
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
 
     nextStepName = 'Complete application';
@@ -87,5 +91,4 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
 
-}).tag('@crossbrowser')
-    .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);

@@ -4,13 +4,21 @@ const grantOfProbateConfig = require('./grantOfProbate');
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (verifyTrustCorpOpts) {
+module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
     await I.runAccessibilityTest();
     const dispNoticeLocator = {css: '#dispenseWithNotice-Yes'};
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(0.25);
     }
+
+    if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
+        await I.waitForText(grantOfProbateConfig.page2_prev_identified_execs_text);
+        await I.waitForText(grantOfProbateConfig.page2_sol_name);
+    } else {
+        await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
+    }
+
     await I.scrollTo(dispNoticeLocator);
     await I.waitForClickable(dispNoticeLocator);
     await I.click(dispNoticeLocator);
@@ -25,6 +33,20 @@ module.exports = async function (verifyTrustCorpOpts) {
     await I.fillField('#titleAndClearingTypeNoT', grantOfProbateConfig.page2_titleAndClearingTypeNoT);
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+
+    await I.dontSeeElement({css: '#anyOtherApplyingPartners-Yes'});
+    await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
+
+    await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
+    
+    await I.scrollTo({css: '#anyOtherApplyingPartners-Yes'});
+    await I.click({css: '#anyOtherApplyingPartners-Yes'});
+    await I.waitForVisible({css: '#otherPartnersApplyingAsExecutors'});
+    await I.click({css: '#anyOtherApplyingPartners-No'});
+    await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'});
+
+    await I.scrollTo({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.waitForElement('#trustCorpName');

@@ -221,6 +221,18 @@
             "type": "pwa-node"
         }, 
         {
+            "name": "Solicitor not named, applying Gop e2e",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateNotNamedApplying",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },         
+        {
             "name": "Solicitor applyCaveat e2e",
             "request": "launch",
             "runtimeArgs": [

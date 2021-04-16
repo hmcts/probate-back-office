@@ -411,6 +411,26 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformForDeceasedDetails(CallbackRequest callbackRequest, Optional<String> newState) {
+        CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState);
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        final ResponseCaseData tempNamesResponse = responseCaseDataBuilder.build();
+        final ResponseCaseData responseData = response.getData();
+        responseData.setSolsIdentifiedApplyingExecs(tempNamesResponse.getSolsIdentifiedApplyingExecs());
+        responseData.setSolsIdentifiedNotApplyingExecs(tempNamesResponse.getSolsIdentifiedNotApplyingExecs());
+        responseData.setSolsIdentifiedApplyingExecsCcdCopy(tempNamesResponse.getSolsIdentifiedApplyingExecsCcdCopy());
+        responseData.setSolsIdentifiedNotApplyingExecsCcdCopy(tempNamesResponse
+                .getSolsIdentifiedNotApplyingExecsCcdCopy());
+
+        return response;
+    }
+
     public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
@@ -799,6 +819,7 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
@@ -1152,7 +1173,7 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
         builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
