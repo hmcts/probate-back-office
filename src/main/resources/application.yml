@@ -459,7 +459,7 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 data-extract:
   block:
     size: "3000"
-    numDaysInclusive: 13
+    numDaysInclusive: 9
 
 welsh:
   months:
