@@ -24,6 +24,8 @@ public class PartnersAddedValidationRuleTest {
     private CaseData caseDataYesYes;
     private CaseData caseDataYesNo;
     private CaseData caseDataNoNo;
+    private CaseData caseDataNoError;
+    private CaseData caseDataNoErrorTwo;
 
     @Before
     public void setUp() {
@@ -48,6 +50,20 @@ public class PartnersAddedValidationRuleTest {
             .solsSolicitorIsExec("No")
             .solsSolicitorIsApplying("No")
             .anyOtherApplyingPartners("No")
+            .registryLocation("Bristol").build();
+
+        caseDataNoError = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .solsSolicitorIsExec("No")
+            .solsSolicitorIsApplying("No")
+            .anyOtherApplyingPartners("Yes")
+            .registryLocation("Bristol").build();
+
+        caseDataNoErrorTwo = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .solsSolicitorIsExec("No")
+            .solsSolicitorIsApplying("Yes")
+            .anyOtherApplyingPartners("Yes")
             .registryLocation("Bristol").build();
 
     }
@@ -89,5 +105,21 @@ public class PartnersAddedValidationRuleTest {
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("'Yes' needs to be selected for question "
                 + "anyOtherApplyingPartners for case id 12345678987654321");
+    }
+
+    @Test
+    public void shouldThrowNeedAtLeastOneMorePartnerNoError() {
+        CaseDetails caseDetails =
+            new CaseDetails(caseDataNoError, LAST_MODIFIED, CASE_ID);
+
+        partnersAddedValidationRule.validate(caseDetails);
+    }
+
+    @Test
+    public void shouldThrowNeedAtLeastOneMorePartnerNoErrorTwo() {
+        CaseDetails caseDetails =
+            new CaseDetails(caseDataNoErrorTwo, LAST_MODIFIED, CASE_ID);
+
+        partnersAddedValidationRule.validate(caseDetails);
     }
 }
