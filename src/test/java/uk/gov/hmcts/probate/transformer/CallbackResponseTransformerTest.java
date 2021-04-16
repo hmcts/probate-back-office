@@ -3108,8 +3108,9 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        caseDataBuilder.paperForm(NO);
         caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
@@ -3124,4 +3125,28 @@ public class CallbackResponseTransformerTest {
                 .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
     }
 
+    @Test
+    public void shouldTransformForDeceasedDetails() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .caseType(GRANT_OF_PROBATE_NAME)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSOTForenames("Fred")
+                .solsSOTSurname("Bassett")
+                .solsSOTName("Fred Bassett")
+                .solsSolicitorIsExec("Yes")
+                .solsSolicitorIsApplying("Yes");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
+
+        assertCommon(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+
+        assertTrue(CHANGED_STATE.isPresent());
+        assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
+        verify(solicitorExecutorTransformerMock, times(1))
+                .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
+    }
 }

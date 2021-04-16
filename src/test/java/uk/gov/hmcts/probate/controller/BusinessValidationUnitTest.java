@@ -175,7 +175,7 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
         when(callbackResponseTransformerMock
-            .transformWithConditionalStateChange(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
+            .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
@@ -195,7 +195,7 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(changedState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+        when(callbackResponseTransformerMock.transformForDeceasedDetails(callbackRequestMock, changedState))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
