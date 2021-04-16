@@ -17,6 +17,7 @@ Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped'
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeftAnnexed';
+    const updateAddressManually = true;
 
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
@@ -54,7 +55,7 @@ Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped'
     endState = 'Stopped';
     await I.chooseNextStep(nextStepName);
     await I.admonWillDetailsPage1();
-    await I.admonWillDetailsPage2();
+    await I.admonWillDetailsPage2(updateAddressManually);
     await I.admonWillDetailsPage3();
     await I.cyaPage();
     await I.admonWillDetailsPage4();
