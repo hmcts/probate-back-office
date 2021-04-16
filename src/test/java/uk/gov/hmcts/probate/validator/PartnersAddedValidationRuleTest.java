@@ -21,25 +21,67 @@ public class PartnersAddedValidationRuleTest {
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private CaseData caseDataNotNoYes;
+    private CaseData caseDataYesYes;
+    private CaseData caseDataYesNo;
+    private CaseData caseDataNoNo;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        caseDataNotNoYes = CaseData.builder()
+        caseDataYesYes = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("Yes")
             .solsSolicitorIsApplying("Yes")
             .anyOtherApplyingPartners("No")
             .registryLocation("Bristol").build();
 
+        caseDataYesNo = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .solsSolicitorIsExec("Yes")
+            .solsSolicitorIsApplying("No")
+            .anyOtherApplyingPartners("No")
+            .registryLocation("Bristol").build();
+
+        caseDataNoNo = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .solsSolicitorIsExec("No")
+            .solsSolicitorIsApplying("No")
+            .anyOtherApplyingPartners("No")
+            .registryLocation("Bristol").build();
+
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartner() {
+    public void shouldThrowNeedAtLeastOneMorePartnerYesYes() {
         CaseDetails caseDetails =
-            new CaseDetails(caseDataNotNoYes, LAST_MODIFIED, CASE_ID);
+            new CaseDetails(caseDataYesYes, LAST_MODIFIED, CASE_ID);
+
+        Assertions.assertThatThrownBy(() -> {
+            partnersAddedValidationRule.validate(caseDetails);
+        })
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("'Yes' needs to be selected for question "
+                + "anyOtherApplyingPartners for case id 12345678987654321");
+    }
+
+    @Test
+    public void shouldThrowNeedAtLeastOneMorePartnerYesNo() {
+        CaseDetails caseDetails =
+            new CaseDetails(caseDataYesNo, LAST_MODIFIED, CASE_ID);
+
+        Assertions.assertThatThrownBy(() -> {
+            partnersAddedValidationRule.validate(caseDetails);
+        })
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("'Yes' needs to be selected for question "
+                + "anyOtherApplyingPartners for case id 12345678987654321");
+    }
+
+    @Test
+    public void shouldThrowNeedAtLeastOneMorePartnerNoNo() {
+        CaseDetails caseDetails =
+            new CaseDetails(caseDataNoNo, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
             partnersAddedValidationRule.validate(caseDetails);
