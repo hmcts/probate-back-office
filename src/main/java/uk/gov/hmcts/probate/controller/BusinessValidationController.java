@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.PartnersAddedValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -88,6 +89,7 @@ public class BusinessValidationController {
     private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
+    private final PartnersAddedValidationRule partnersAddedValidationRule;
 
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
@@ -167,6 +169,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
+        partnersAddedValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 numberOfApplyingExecutorsValidationRule);
 
