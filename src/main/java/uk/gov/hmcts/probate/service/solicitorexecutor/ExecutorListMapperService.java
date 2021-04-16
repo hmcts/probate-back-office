@@ -87,7 +87,7 @@ public class ExecutorListMapperService {
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
         // Create applying executor collection member containing solicitor names
-        return new CollectionMember<>(UUID.randomUUID().toString(), AdditionalExecutorApplying.builder()
+        return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
                 .applyingExecutorName(caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname())
