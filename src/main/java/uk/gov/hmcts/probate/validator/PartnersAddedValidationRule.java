@@ -9,6 +9,9 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Locale;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Component
 @RequiredArgsConstructor
 public class PartnersAddedValidationRule {
@@ -22,15 +25,13 @@ public class PartnersAddedValidationRule {
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED, args, Locale.UK);
 
-        if (caseData.getAnyOtherApplyingPartners() != null) {
-            if (!(caseData.getSolsSolicitorIsExec().matches("No")
-                && caseData.getSolsSolicitorIsApplying().matches("Yes"))
-                && caseData.getAnyOtherApplyingPartners().matches("No")) {
+        if (caseData.getAnyOtherApplyingPartners() != null && !(NO.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying()))
+            && NO.equals(caseData.getAnyOtherApplyingPartners())) {
 
-                throw new BusinessValidationException(userMessage,
-                    "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
-                        + caseDetails.getId());
-            }
+            throw new BusinessValidationException(userMessage,
+                "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
+                    + caseDetails.getId());
         }
     }
 }
