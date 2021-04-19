@@ -74,7 +74,7 @@ public class CaseQueryServiceTest {
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
-        caseQueryService.dataExtractBlockSize = "2000";
+        caseQueryService.dataExtractBlockSize = 2000;
         caseQueryService.numDaysBlock = 13;
 
         CaseData caseData = CaseData.builder()
@@ -134,7 +134,7 @@ public class CaseQueryServiceTest {
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-        caseQueryService.numDaysBlock = 3;
+        caseQueryService.dataExtractBlockSize = 3;
 
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         caseQueryService.findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
