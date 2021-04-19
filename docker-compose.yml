@@ -467,22 +467,22 @@ services:
       - service-auth-provider-api
       - dm-store
 
-  probate-frontend:
-    image: hmctspublic.azurecr.io/probate/frontend:latest
-    environment:
-      - IDAM_API_URL=http://sidam-api:5000
-      - IDAM_S2S_URL=http://service-auth-provider-api:8080
-      - PAYMENT_API_URL=http://payments-api:8383
-      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
-      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
-      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
-      - USE_REDIS=false
-      - REDIS_USE_TLS=false
-      - USE_IDAM=true
-      - REQUIRE_CCD_CASE_ID=true
-      - NODE_ENV=dev
-    ports:
-      - 3000:3000
+#  probate-frontend:
+#    image: hmctspublic.azurecr.io/probate/frontend:latest
+#    environment:
+#      - IDAM_API_URL=http://sidam-api:5000
+#      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+#      - PAYMENT_API_URL=http://payments-api:8383
+#      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+#      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
+#      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+#      - USE_REDIS=false
+#      - REDIS_USE_TLS=false
+#      - USE_IDAM=true
+#      - REQUIRE_CCD_CASE_ID=true
+#      - NODE_ENV=dev
+#    ports:
+#      - 3000:3000
 
 
   probate-orchestrator:
@@ -585,20 +585,21 @@ services:
       MICROSERVICE: xui_webapp
       PROTOCOL: http
       XUI_ENV: local
-      SERVICES_DOCUMENTS_API: http://dm-store-aat.service.core-compute-aat.internal
+      SERVICES_DOCUMENTS_API: http://dm-store:8080
       SERVICES_PAYMENTS_URL: http://payments-api:8080
       SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
       SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
       SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
-      SERVICES_IDAM_API_URL: http://idam-api:5000
+      SERVICES_IDAM_API_URL: http://sidam-api:5000
       SERVICES_IDAM_CLIENT_ID: xuiwebapp
       SERVICES_IDAM_LOGIN_URL: http://localhost:3501
       SERVICES_IDAM_INDEX_URL: /
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
-      SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      SERVICES_S2S: http://service-auth-provider-api:8080
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
-      REDISCLOUD_URL: http://localhost:6780
+      #REDISCLOUD_URL: http://localhost:6780
+      REDISCLOUD_URL: http://dummyrediscloudurl
       HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
       HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
       APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
@@ -606,7 +607,7 @@ services:
       S2S_SECRET: "${XUI_SERVICE_KEY}"
       LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
     ports:
-      - 3002:3000
+      - 3000:3000
     depends_on:
       - ccd-api-gateway
       - ccd-data-store-api
