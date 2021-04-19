@@ -820,6 +820,7 @@ public class CallbackResponseTransformer {
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
             .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
+            .anyOtherApplyingPartnersTrustCorp(caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())

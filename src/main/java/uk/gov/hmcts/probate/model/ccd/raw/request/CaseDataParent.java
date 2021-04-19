@@ -40,6 +40,7 @@ public class CaseDataParent {
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
     protected final String anyOtherApplyingPartners;
+    protected final String anyOtherApplyingPartnersTrustCorp;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
