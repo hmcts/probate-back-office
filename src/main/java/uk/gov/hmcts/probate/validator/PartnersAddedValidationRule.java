@@ -39,7 +39,7 @@ public class PartnersAddedValidationRule {
         final String userMessage = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED, args, Locale.UK);
         final String userMessageTrustCorps = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED_TRUST_CORPS,
                 args, Locale.UK);
-// titleAndClearingType=\"TCTPartSuccOthersRenouncing\" OR titleAndClearingType=\"TCTPartOthersRenouncing\"
+
         final List<String> nonTrustPtnrTitleClearingTypes = new ArrayList<String>(asList(
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
                 TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
@@ -55,15 +55,15 @@ public class PartnersAddedValidationRule {
         // Must have other partners for trust corp / firm if NOT (not named in will, and applying)
 
         if (!(NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying()))) {
-            if (NO.equals(caseData.getAnyOtherApplyingPartners()) &&
-                    nonTrustPtnrTitleClearingTypes.contains(titleAndClearing)) {
+            if (NO.equals(caseData.getAnyOtherApplyingPartners())
+                    && nonTrustPtnrTitleClearingTypes.contains(titleAndClearing)) {
                 throw new BusinessValidationException(userMessage,
                         "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
                                 + caseDetails.getId());
             }
 
-            if (NO.equals(caseData.getAnyOtherApplyingPartnersTrustCorp()) &&
-                    trustPtnrTitleClearingTypes.contains(titleAndClearing)) {
+            if (NO.equals(caseData.getAnyOtherApplyingPartnersTrustCorp())
+                    && trustPtnrTitleClearingTypes.contains(titleAndClearing)) {
                 throw new BusinessValidationException(userMessageTrustCorps,
                         "'Yes' needs to be selected for question anyOtherApplyingPartnersTrustCorp for case id "
                                 + caseDetails.getId());
