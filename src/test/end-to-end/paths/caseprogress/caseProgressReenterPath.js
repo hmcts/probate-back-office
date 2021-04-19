@@ -55,7 +55,6 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#dispenseWithNotice-No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
-            {locator: {css: '#titleAndClearingTypeNoT'}, text: 'Test details'},
         ]);
 
         console.info('Remaining application details');

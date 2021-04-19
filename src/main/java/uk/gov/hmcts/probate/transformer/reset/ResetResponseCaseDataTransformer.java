@@ -20,7 +20,6 @@ public class ResetResponseCaseDataTransformer {
 
         if (titleAndClearingTypeService.partnerTitleAndClearingOptionSelected(caseData)) {
             nullTrustCorpOptions(builder);
-            builder.titleAndClearingTypeNoT(null);
 
             if (!titleAndClearingTypeService.successorFirmTitleAndClearingOptionSelected(caseData)) {
                 builder.nameOfSucceededFirm(null);
@@ -28,7 +27,6 @@ public class ResetResponseCaseDataTransformer {
 
         } else if (titleAndClearingTypeService.trustCorpTitleAndClearingOptionSelected(caseData)) {
             nullPartnerOptions(builder);
-            builder.titleAndClearingTypeNoT(null);
 
         } else {
             nullTrustCorpOptions(builder);

@@ -126,7 +126,6 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getNameOfSucceededFirm());
         assertNull(responseCaseData.getWhoSharesInCompanyProfits());
         assertNull(responseCaseData.getSoleTraderOrLimitedCompany());
-        assertNull(responseCaseData.getTitleAndClearingTypeNoT());
     }
 
     @Test
@@ -154,7 +153,6 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getTrustCorpAddress());
         assertNull(responseCaseData.getLodgementAddress());
         assertNull(responseCaseData.getLodgementDate());
-        assertNull(responseCaseData.getTitleAndClearingTypeNoT());
     }
 
     @Test

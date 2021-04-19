@@ -25,12 +25,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class PartnersAddedValidationRule {
+public class PartnersAddedValidationRule implements TitleAndClearingPageValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String PARTNERS_NEEDED = "partnersNeeded";
     private static final String PARTNERS_NEEDED_TRUST_CORPS = "partnersNeededTrustCorp";
 
+    @Override
     public void validate(CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
