@@ -811,7 +811,6 @@ public class CallbackResponseTransformer {
             .dispenseWithNoticeOverview(caseData.getDispenseWithNoticeOverview())
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
             .titleAndClearingType(caseData.getTitleAndClearingType())
-            .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
             .trustCorpName(caseData.getTrustCorpName())
             .trustCorpAddress(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())

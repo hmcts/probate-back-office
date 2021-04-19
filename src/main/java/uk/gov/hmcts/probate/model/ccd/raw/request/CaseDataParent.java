@@ -30,7 +30,6 @@ public class CaseDataParent {
     protected final String solsSolicitorWillSignSOT;
     protected final String dispenseWithNotice;
     protected final String titleAndClearingType;
-    protected final String titleAndClearingTypeNoT;
     protected final String trustCorpName;
     protected SolsAddress trustCorpAddress;
     // Not final so field can be reset in CaseDataTransformer

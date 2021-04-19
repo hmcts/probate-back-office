@@ -44,6 +44,7 @@ import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.PartnersAddedValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -132,7 +133,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private ResetCaseDataTransformer resetCdTransformer;
     @Mock
-    private PartnersAddedValidationRule partnersAddedValidationRule;
+    private List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
 
     private BusinessValidationController underTest;
 
@@ -156,7 +157,7 @@ public class BusinessValidationUnitTest {
             numberOfApplyingExecutorsValidationRuleMock,
             codicilDateValidationRuleMock,
             originalWillSignedDateValidationRuleMock,
-            partnersAddedValidationRule,
+            allTitleAndClearingValidationRules,
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,

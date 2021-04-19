@@ -168,10 +168,8 @@ public class ResponseCaseDataParentTest {
     public void shouldApplyTrustCorpNoneOfTheseAttributes() {
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .titleAndClearingType("TCTNoT")
-                .titleAndClearingTypeNoT("Reason")
                 .build();
 
         assertEquals("TCTNoT", responseCaseDataParent.getTitleAndClearingType());
-        assertEquals("Reason", responseCaseDataParent.getTitleAndClearingTypeNoT());
     }
 }

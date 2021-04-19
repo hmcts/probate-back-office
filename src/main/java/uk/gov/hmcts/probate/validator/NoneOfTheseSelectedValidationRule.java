@@ -14,25 +14,24 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class PartnersAddedValidationRule implements TitleAndClearingPageValidationRule{
+public class NoneOfTheseSelectedValidationRule implements TitleAndClearingPageValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
-    private static final String PARTNERS_NEEDED = "partnersNeeded";
+    private static final String NONE_OF_THESE_SELECTED = "noneOfTheseSelected";
 
     @Override
     public void validate(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
         String[] args = {caseDetails.getId().toString()};
-        String userMessage = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED, args, Locale.UK);
+        String userMessage = businessValidationMessageRetriever.getMessage(NONE_OF_THESE_SELECTED, args, Locale.UK);
 
-        if (caseData.getAnyOtherApplyingPartners() != null && !(NO.equals(caseData.getSolsSolicitorIsExec())
-            && YES.equals(caseData.getSolsSolicitorIsApplying()))
-            && NO.equals(caseData.getAnyOtherApplyingPartners())) {
+        if (NO.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying())
+            && caseData.getTitleAndClearingType().matches("TCTNoT")) {
 
             throw new BusinessValidationException(userMessage,
-                "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
-                    + caseDetails.getId());
+                "None of these selected, you need to make a paper application for case id " + caseDetails.getId());
         }
     }
 }
