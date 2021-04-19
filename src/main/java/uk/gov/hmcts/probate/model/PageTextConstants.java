@@ -10,7 +10,6 @@ public class PageTextConstants {
     public static final String IHT_TEXT = "<ihtText/>";
     public static final String IHT_FORM = "<ihtForm/>";
     public static final String RENOUNCING_EXECUTORS = "<renouncingExecutors/>";
-    public static final String DEAD_EXECUTORS = "<deadExecutors/>";
 
     private PageTextConstants() {
         throw new IllegalStateException("Utility class");

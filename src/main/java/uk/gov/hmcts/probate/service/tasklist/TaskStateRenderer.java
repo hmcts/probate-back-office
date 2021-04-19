@@ -150,7 +150,6 @@ public class TaskStateRenderer {
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
             .getData().getSolsCoversheetDocument().getDocumentBinaryUrl()
-            .replace("http://dm-store:8080", "http://localhost:3453");
 
         if (linkUrlTemplate != null && currState == taskListState
             && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
