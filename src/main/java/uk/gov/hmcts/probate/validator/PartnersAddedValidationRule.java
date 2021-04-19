@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class PartnersAddedValidationRule implements TitleAndClearingPageValidationRule{
+public class PartnersAddedValidationRule implements TitleAndClearingPageValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String PARTNERS_NEEDED = "partnersNeeded";
