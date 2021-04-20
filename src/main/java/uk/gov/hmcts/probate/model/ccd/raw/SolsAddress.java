@@ -39,4 +39,18 @@ public class SolsAddress implements Serializable {
 
     @JsonProperty(value = "Country")
     private final String country;
+
+    @Override
+    public SolsAddress clone() {
+        // super.clone() is throwing CloneNotSupportedException
+        return SolsAddress.builder()
+                .addressLine1(addressLine1)
+                .addressLine2(addressLine2)
+                .addressLine3(addressLine3)
+                .county(county)
+                .country(country)
+                .postCode(postCode)
+                .postTown(postTown)
+                .build();
+    }
 }

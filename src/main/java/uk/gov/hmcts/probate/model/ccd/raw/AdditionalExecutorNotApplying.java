@@ -18,4 +18,20 @@ public class AdditionalExecutorNotApplying {
     private final String notApplyingExecutorDispenseWithNoticeLeaveGiven;
     private final LocalDate notApplyingExecutorDispenseWithNoticeLeaveGivenDate;
 
+    @Override
+    public AdditionalExecutorNotApplying clone() {
+        // need to do this as super.clone() doesn't like the localdate
+        return AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorDispenseWithNotice(getNotApplyingExecutorDispenseWithNotice())
+            .notApplyingExecutorDispenseWithNoticeLeaveGiven(
+                    getNotApplyingExecutorDispenseWithNoticeLeaveGiven())
+            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
+                    getNotApplyingExecutorDispenseWithNoticeLeaveGivenDate())
+            .notApplyingExecutorName(getNotApplyingExecutorName())
+            .notApplyingExecutorNameDifferenceComment(getNotApplyingExecutorNameDifferenceComment())
+            .notApplyingExecutorNameOnWill(getNotApplyingExecutorNameOnWill())
+            .notApplyingExecutorNotified(getNotApplyingExecutorNotified())
+            .notApplyingExecutorReason(getNotApplyingExecutorReason())
+            .build();
+    }
 }

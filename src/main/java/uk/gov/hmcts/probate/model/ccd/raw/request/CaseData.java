@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
@@ -91,11 +92,9 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsExecIsNull}")
     private final String solsSolicitorIsExec;
 
-    private final String solsSolicitorIsMainApplicant;
+    private String solsSolicitorIsApplying;
 
-    private final String solsSolicitorIsApplying;
-
-    private final String solsSolicitorNotApplyingReason;
+    private String solsSolicitorNotApplyingReason;
 
     // EVENT = solicitorUpdateApplication
     private final String willDispose;
@@ -194,28 +193,28 @@ public class CaseData extends CaseDataParent {
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantForenamesIsNull}")
-    private final String primaryApplicantForenames;
+    private String primaryApplicantForenames;
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantSurnameIsNull}")
-    private final String primaryApplicantSurname;
+    private String primaryApplicantSurname;
 
-    private final String primaryApplicantHasAlias;
+    private String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
-    private final String primaryApplicantIsApplying;
+    private String primaryApplicantIsApplying;
 
-    private final String solsPrimaryExecutorNotApplyingReason;
+    private String solsPrimaryExecutorNotApplyingReason;
 
     @NotNull(groups = {ApplicationAdmonGroup.class,
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
-    private final SolsAddress primaryApplicantAddress;
+    private SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationAdmonGroup.class,
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
-    private final String primaryApplicantEmailAddress;
+    private String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
@@ -342,7 +341,7 @@ public class CaseData extends CaseDataParent {
     private final LegalStatement legalStatement;
     private final String deceasedMarriedAfterWillOrCodicilDate;
     private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
-    private final String primaryApplicantPhoneNumber;
+    private String primaryApplicantPhoneNumber;
     // EVENT = Amend case details
     private final String boDeceasedTitle;
     private final String boDeceasedHonours;
@@ -360,7 +359,7 @@ public class CaseData extends CaseDataParent {
     private final String caseType;
     private final String paperForm;
     private final String languagePreferenceWelsh;
-    private final String primaryApplicantAlias;
+    private String primaryApplicantAlias;
     private final String primaryApplicantAliasReason;
     private final String primaryApplicantOtherReason;
     private final String primaryApplicantSameWillName;
@@ -518,6 +517,8 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     private String pcqId;
+    @Builder.Default
+    private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
     private DynamicList solsAmendLegalStatmentSelect;

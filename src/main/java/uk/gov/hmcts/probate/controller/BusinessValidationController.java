@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -88,6 +89,7 @@ public class BusinessValidationController {
     private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
+    private final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
 
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
@@ -113,7 +115,7 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
                 stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
         }
 
         return ResponseEntity.ok(response);
@@ -131,7 +133,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
-            caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
+            caseDataTransformer.transformCaseDataForValidateProbate(callbackRequest);
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
@@ -167,6 +169,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
+        validateTitleAndClearingPage(callbackRequest);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 numberOfApplyingExecutorsValidationRule);
 
@@ -357,6 +360,7 @@ public class BusinessValidationController {
                     gopPage1ValidationRules);
 
             if (response.getErrors().isEmpty()) {
+                // caseDataTransformer.transformSolCaseDataForCaseworkerCompletion(callbackRequest);
                 response = callbackResponseTransformer.paperForm(callbackRequest, document);
             }
         } else {
@@ -389,7 +393,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_VALUE, produces = {
         APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForLegalStatementRegeneration(
-        @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) throws JsonProcessingException {
 
         return ResponseEntity
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
@@ -443,5 +447,11 @@ public class BusinessValidationController {
 
     private void validateIHT400Date(CallbackRequest callbackRequest) {
         ihtFourHundredDateValidationRule.validate(callbackRequest.getCaseDetails());
+    }
+
+    private void validateTitleAndClearingPage(CallbackRequest callbackRequest) {
+        for (TitleAndClearingPageValidationRule rule : allTitleAndClearingValidationRules) {
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 }

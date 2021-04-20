@@ -18,7 +18,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -64,29 +63,31 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME,
+                VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementAcceptInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "We confirm that the information we have provided is correct to the best of our knowledge.", DOC_NAME,
+            "We confirm that the information we have provided is correct to the best of our knowledge.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "The executors believe that all the information stated in the legal statement is true.", DOC_NAME,
+            "The executors believe that all the information stated in the legal statement is true.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement(
-            "We authorise Solicitorfirmname, as our appointed probate practitioner, " +
-                    "to submit this application on our \n" + "behalf.",
-            DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, "
+                + "as our appointed firm, to submit this application on our behalf.",
+                DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test

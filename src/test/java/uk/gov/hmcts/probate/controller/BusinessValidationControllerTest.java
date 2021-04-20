@@ -226,7 +226,6 @@ public class BusinessValidationControllerTest {
             .solsSOTForenames(SOLICITOR_FORENAMES)
             .solsSOTSurname(SOLICITOR_SURNAME)
             .solsSolicitorIsExec(YES)
-            .solsSolicitorIsMainApplicant(YES)
             .solsSolicitorIsApplying(YES)
             .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
             .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
@@ -817,6 +816,26 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
+    public void shouldReturnPersonalPaperFormSuccess() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        solicitorPayload =  solicitorPayload.replaceFirst("\"applicationType\": \"Solicitor\"",
+                "\"applicationType\": \"Personal\"");
+
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+                .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+                .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(emailDocument);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     public void shouldReturnPaperFormWithoutEmail() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
@@ -1032,6 +1051,5 @@ public class BusinessValidationControllerTest {
                     + "executors can apply")))
             .andReturn();
     }
-
 }
 

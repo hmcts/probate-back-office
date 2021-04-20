@@ -5,27 +5,44 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 @Component
 @RequiredArgsConstructor
 public class CaseDataTransformer {
 
-    private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
+    private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
     private final ResetCaseDataTransformer resetCaseDataTransformer;
 
-    public void transformCaseDataForLegalStatement(CallbackRequest callbackRequest) {
+    public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
-        legalStatementExecutorTransformer.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
-        legalStatementExecutorTransformer.formatFields(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
+        solicitorApplicationCompletionTransformer
+                .mapSolicitorExecutorFieldsOnCompletion(caseData);
+
+        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
+        solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
+    }
+
+
+    public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        resetCaseDataTransformer.resetExecutorLists(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
+        solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
+        solicitorApplicationCompletionTransformer.formatFields(caseData);
+    }
+
+
+    public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        solicitorApplicationCompletionTransformer.createLegalStatementExecutorListsFromTransformedLists(caseData);
     }
 
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
     }
 

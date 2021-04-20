@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -112,6 +113,7 @@ public class CallbackResponseTransformer {
     private final ExecutorsTransformer solicitorExecutorTransformer;
     private final ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
     private final TaskListUpdateService taskListUpdateService;
+    private final CaseDataTransformer caseDataTransformer;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
@@ -385,7 +387,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
-                                                          FeeServiceResponse feeServiceResponse) {
+                                  FeeServiceResponse feeServiceResponse) {
         final String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         final String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         final String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
@@ -393,6 +395,8 @@ public class CallbackResponseTransformer {
 
         final String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final String schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
+
+        caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -406,6 +410,26 @@ public class CallbackResponseTransformer {
             .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformForDeceasedDetails(CallbackRequest callbackRequest, Optional<String> newState) {
+        CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState);
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        final ResponseCaseData tempNamesResponse = responseCaseDataBuilder.build();
+        final ResponseCaseData responseData = response.getData();
+        responseData.setSolsIdentifiedApplyingExecs(tempNamesResponse.getSolsIdentifiedApplyingExecs());
+        responseData.setSolsIdentifiedNotApplyingExecs(tempNamesResponse.getSolsIdentifiedNotApplyingExecs());
+        responseData.setSolsIdentifiedApplyingExecsCcdCopy(tempNamesResponse.getSolsIdentifiedApplyingExecsCcdCopy());
+        responseData.setSolsIdentifiedNotApplyingExecsCcdCopy(tempNamesResponse
+                .getSolsIdentifiedNotApplyingExecsCcdCopy());
+
+        return response;
     }
 
     public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
@@ -502,7 +526,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest) {
+    public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest)
+            throws JsonProcessingException {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
@@ -560,6 +585,13 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document) {
 
+        final CaseData cd = callbackRequest.getCaseDetails().getData();
+        if (SOLICITOR.equals(cd.getApplicationType())
+                // We have currently applied this change to both paperform Yes and paperform No
+                // && NO.equals(cd.getPaperForm())
+                && GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())) {
+            caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
+        }
         if (document != null) {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
@@ -579,9 +611,12 @@ public class CallbackResponseTransformer {
 
     private String getSchemaVersion(CaseData cd) {
         final String paperForm = cd.getPaperForm();
+        final ApplicationType applicationType = cd.getApplicationType();
+
         // not applicable to intestacy or admon will yet
         return (GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
-                && (paperForm == null || paperForm.equals(NO)) ? SCHEMA_VERSION : null;
+                && (paperForm == null || paperForm.equals(NO))
+                && (applicationType == null || SOLICITOR.equals(applicationType)) ? SCHEMA_VERSION : null;
     }
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
@@ -684,7 +719,6 @@ public class CallbackResponseTransformer {
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
-            .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
             .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solsWillType(caseData.getSolsWillType())
@@ -778,7 +812,6 @@ public class CallbackResponseTransformer {
             .dispenseWithNoticeOverview(caseData.getDispenseWithNoticeOverview())
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
             .titleAndClearingType(caseData.getTitleAndClearingType())
-            .titleAndClearingTypeNoT(caseData.getTitleAndClearingTypeNoT())
             .trustCorpName(caseData.getTrustCorpName())
             .trustCorpAddress(caseData.getTrustCorpAddress())
             .lodgementAddress(caseData.getLodgementAddress())
@@ -786,6 +819,8 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
+            .anyOtherApplyingPartnersTrustCorp(caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
@@ -969,7 +1004,14 @@ public class CallbackResponseTransformer {
             .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
             .reprintDocument(caseData.getReprintDocument())
             .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+            .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+            .bulkScanEnvelopes(caseData.getBulkScanEnvelopes())
+            .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+            .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
+            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
+            .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
+            .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
 
         if (YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder
@@ -997,13 +1039,7 @@ public class CallbackResponseTransformer {
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
         builder
-            .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-            .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-            .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
-            .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
-            .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
-            .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
+            .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
 
         if (caseData.getIhtFormCompletedOnline() != null) {
             if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
@@ -1138,7 +1174,7 @@ public class CallbackResponseTransformer {
                 .deceasedAliasNamesList(null);
         }
 
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
+        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
         builder.solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
@@ -1224,11 +1260,6 @@ public class CallbackResponseTransformer {
             builder
                 .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-
-        solicitorExecutorTransformer.setFieldsIfSolicitorIsNotExecutor(caseData, builder);
-        solicitorExecutorTransformer.mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData, builder);
-        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
-        solicitorExecutorTransformer.nullSolicitorExecutorLists(builder);
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

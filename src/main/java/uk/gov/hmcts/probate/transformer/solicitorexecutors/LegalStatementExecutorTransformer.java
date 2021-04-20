@@ -35,12 +35,38 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 createCaseworkerNotApplyingList(caseData);
 
+        createLegalStatementExecutorLists(execsApplying, execsNotApplying, caseData);
+    }
+
+    public void createLegalStatementExecutorListsFromTransformedLists(CaseData caseData) {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
+
+        createLegalStatementExecutorLists(execsApplying, execsNotApplying, caseData);
+    }
+
+    protected void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
+                                             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
+                                             CaseData caseData) {
+
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantNotApplying()) {
-            execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            execsNotApplying.add(0, executorListMapperService
+                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
+
+        /* old code - remove once new code tested more thoroughly
+            // Add primary applicant to list
+            if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
+                execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
+            } else if (caseData.isPrimaryApplicantApplying()) {
+                execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            } else if (caseData.isPrimaryApplicantNotApplying()) {
+                execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            }
+         */
 
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
         caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);

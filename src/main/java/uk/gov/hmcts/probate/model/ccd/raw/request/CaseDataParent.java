@@ -30,7 +30,6 @@ public class CaseDataParent {
     protected final String solsSolicitorWillSignSOT;
     protected final String dispenseWithNotice;
     protected final String titleAndClearingType;
-    protected final String titleAndClearingTypeNoT;
     protected final String trustCorpName;
     protected SolsAddress trustCorpAddress;
     // Not final so field can be reset in CaseDataTransformer
@@ -39,6 +38,8 @@ public class CaseDataParent {
     protected final LocalDate lodgementDate;
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected final String anyOtherApplyingPartners;
+    protected final String anyOtherApplyingPartnersTrustCorp;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
@@ -56,6 +57,8 @@ public class CaseDataParent {
     protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
+    protected final String solsIdentifiedApplyingExecsCcdCopy;
+    protected final String solsIdentifiedNotApplyingExecsCcdCopy;
     protected final String iht217;
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;

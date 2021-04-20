@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -23,6 +24,7 @@ public class ResponseCaseDataParent {
     protected final DynamicList reprintDocument;
     protected final String reprintNumberOfCopies;
     protected final DynamicList solsAmendLegalStatmentSelect;
+    protected List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
     protected final String declarationCheckbox;
     protected final String ihtGrossValueField;
     protected final String ihtNetValueField;
@@ -44,7 +46,6 @@ public class ResponseCaseDataParent {
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected final String titleAndClearingType;
-    protected final String titleAndClearingTypeNoT;
     protected final String trustCorpName;
     protected SolsAddress trustCorpAddress;
     protected final List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
@@ -52,6 +53,8 @@ public class ResponseCaseDataParent {
     protected final String lodgementAddress;
     protected final String nameOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected final String anyOtherApplyingPartners;
+    protected final String anyOtherApplyingPartnersTrustCorp;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String solsForenames;
@@ -59,8 +62,10 @@ public class ResponseCaseDataParent {
     protected final String solsSurname;
     protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
-    protected final String solsIdentifiedNotApplyingExecs;
-    protected final String solsIdentifiedApplyingExecs;
+    protected String solsIdentifiedNotApplyingExecs;
+    protected String solsIdentifiedApplyingExecs;
+    protected String solsIdentifiedNotApplyingExecsCcdCopy;
+    protected String solsIdentifiedApplyingExecsCcdCopy;
     protected final String solsReviewSOTConfirm;
     protected final String solsReviewSOTConfirmCheckbox1Names;
     protected final String solsReviewSOTConfirmCheckbox2Names;

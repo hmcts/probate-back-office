@@ -10,8 +10,6 @@
       "County",
       "Postcode/Zipcode",
       "Country",
-      "Applicant phone number",
-      "Applicant email address",
       "Name of the firm, or the name under which the applicant operates",
       "Your reference for this application",
       "Solicitor name",
@@ -30,10 +28,10 @@
       "County",
       "Postcode/Zipcode",
       "Country",
-      "Executor Name",
-      "Executor Name on Will",
+      "Executor name",
+      "Executor name on Will",
       "Reason for name difference",
-      "Executor Notified"
+      "Executor notified"
     ],
     "dataKeys": [
       "page1_list2_application_type",

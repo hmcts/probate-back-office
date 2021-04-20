@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
@@ -32,7 +33,7 @@ public class ExecutorListMapperService {
         if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
             updatedExecs = removeSolicitorFromApplyingList(execs);
         }
-        updatedExecs.add(mapFromSolicitorToApplyingExecutor(caseData));
+        updatedExecs.add(0, mapFromSolicitorToApplyingExecutor(caseData));
 
         return updatedExecs;
     }
@@ -98,7 +99,7 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
-        // Create applying executor collection member containing primary applicant names
+        // Create applying executor collection member containing solicitor names
         return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
@@ -200,7 +201,7 @@ public class ExecutorListMapperService {
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
             CaseData caseData) {
         // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(null, AdditionalExecutorApplying.builder()
+        return new CollectionMember<>(UUID.randomUUID().toString(), AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
                         caseData.getPrimaryApplicantForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
@@ -215,7 +216,7 @@ public class ExecutorListMapperService {
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData) {
         // Create not applying executor collection member containing primary applicant names
-        return new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
+        return new CollectionMember<>(UUID.randomUUID().toString(), AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())

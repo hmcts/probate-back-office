@@ -248,7 +248,7 @@ For mac
 ```
 For Windows 10
 ```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.win.localhost:4104
+   ./ccdImports/conversionScripts/createAllXLS.sh host.docker.internal:4104
 ```
 
 For linux (replace ip with your own ip)

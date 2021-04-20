@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 
+import java.util.Optional;
+
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Component
@@ -22,18 +24,18 @@ public class ResetCaseDataTransformer {
 
     private void resetTitleAndClearingExecutorLists(CaseData caseData) {
         if (titleAndClearingTypeService.partnerTitleAndClearingOptionSelected(caseData)) {
-            caseData.setAdditionalExecutorsTrustCorpList(null);
+            Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(l -> l.clear());
         } else if (titleAndClearingTypeService.trustCorpTitleAndClearingOptionSelected(caseData)) {
-            caseData.setOtherPartnersApplyingAsExecutors(null);
+            Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(l -> l.clear());
         } else {
-            caseData.setAdditionalExecutorsTrustCorpList(null);
-            caseData.setOtherPartnersApplyingAsExecutors(null);
+            Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(l -> l.clear());
+            Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(l -> l.clear());
         }
     }
 
     private void resetPowerReservedExecutorsList(CaseData caseData) {
         if (NO.equals(caseData.getDispenseWithNotice())) {
-            caseData.setDispenseWithNoticeOtherExecsList(null);
+            Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(l -> l.clear());
         }
     }
 }

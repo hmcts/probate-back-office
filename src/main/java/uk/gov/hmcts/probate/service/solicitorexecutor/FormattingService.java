@@ -48,7 +48,10 @@ public class FormattingService {
     }
 
     public static String capitaliseEachWord(String name) {
-        return Arrays.stream(name.toLowerCase().split("\\s+"))
+        if (name == null) {
+            return null;
+        }
+        return Arrays.stream(name.split("\\s+"))
                         .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
                         .collect(Collectors.joining(" "));
     }

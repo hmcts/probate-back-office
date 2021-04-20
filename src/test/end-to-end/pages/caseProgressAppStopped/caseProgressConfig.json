@@ -32,7 +32,7 @@
     "FeeAccount": "1: fee account",
     "FeeAccountNumber": "001234",
     "AppStoppedHeader": "Grant of probate details",
-    "AppStoppedReasonText": "You can't currently use this service if the primary executor not applying and there are no other executors applying.",
+    "AppStoppedReasonText": "You can't currently use this service if the primary executor is not applying and there are no other executors applying.",
     "AppStoppedAdditionalText": "Follow your existing process for applying for probate for this client.",
     "AppStoppedTabTitle": "Paper application needed",
     "AppStoppedTabCheckText": "This application has been stopped. Based on the information you have entered, our online service cannot yet handle this type of application." 

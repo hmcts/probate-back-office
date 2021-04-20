@@ -845,11 +845,9 @@ public class CaseDataTest {
 
         final CaseData caseData = CaseData.builder()
                 .titleAndClearingType("TCTNoT")
-                .titleAndClearingTypeNoT("Reason")
                 .build();
 
         assertEquals("TCTNoT", caseData.getTitleAndClearingType());
-        assertEquals("Reason", caseData.getTitleAndClearingTypeNoT());
 
     }
 

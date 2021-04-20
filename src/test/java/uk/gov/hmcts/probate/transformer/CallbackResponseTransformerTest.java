@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,6 +49,7 @@ import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
+import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
@@ -108,6 +110,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSU
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -133,7 +136,7 @@ public class CallbackResponseTransformerTest {
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String DOMICILITY_COUNTRY = "OtherCountry";
 
-    // private static final String APPLICATION_GROUNDS = "Application grounds";
+    private static final String APPLICATION_GROUNDS = "Application grounds";
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
     private static final RegistryLocation BULK_SCAN_REGISTRY_LOCATION
@@ -262,6 +265,8 @@ public class CallbackResponseTransformerTest {
     private static final List<CollectionMember<CodicilAddedDate>> VALID_ADDED_CODICIL_DATES =
         Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(VALID_CODICIL_DATE).build()));
     private static final String NO_ACCESS_WILL_REASON = "I lost it";
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -425,7 +430,10 @@ public class CallbackResponseTransformerTest {
     private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
 
     @Mock
-    private ExecutorsTransformer solicitorExecutorTransformer;
+    private ExecutorsTransformer solicitorExecutorTransformerMock;
+
+    @Mock
+    private CaseDataTransformer caseDataTransformerMock;
 
     @Before
     public void setup() {
@@ -483,7 +491,7 @@ public class CallbackResponseTransformerTest {
             .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
             .boCaseStopReasonList(STOP_REASONS_LIST)
             .boStopDetails(STOP_DETAILS)
-            // .applicationGrounds(APPLICATION_GROUNDS)  - commented for dtsb-904 as likely to be reinstated
+            .applicationGrounds(APPLICATION_GROUNDS)
             .willDispose(YES)
             .englishWill(NO)
             .appointExec(YES)
@@ -660,6 +668,7 @@ public class CallbackResponseTransformerTest {
             .grantDelayedNotificationSent(TRUE)
             .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
             .grantAwaitingDocumentatioNotificationSent(TRUE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();
@@ -758,7 +767,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .build();
@@ -781,7 +790,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSchemaVersionCorrectly() {
+    public void shouldSetSchemaVersionCorrectly() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -793,7 +802,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTestForNullDOB() {
+    public void shouldTestForNullDOB() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -805,7 +814,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTestForNullDOD() {
+    public void shouldTestForNullDOD() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfDeath(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -817,7 +826,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
+    public void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -826,7 +835,6 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
         CallbackResponse callbackResponse =
             underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
@@ -1166,22 +1174,6 @@ public class CallbackResponseTransformerTest {
 
         verify(resetResponseCaseDataTransformer, times(1))
                 .resetTitleAndClearingFields(any(), any());
-    }
-
-    @Test
-    public void verifyExecutorFieldsAreSetBySolicitorExecutorTransformer() {
-        caseDataBuilder.applicationType(SOLICITOR)
-                .recordId(null)
-                .paperForm(NO);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        underTest.transformCase(callbackRequestMock);
-
-        verify(solicitorExecutorTransformer, times(1))
-                .mapSolicitorExecutorFieldsToCaseworkerExecutorFields(any(), any());
-        verify(solicitorExecutorTransformer, times(1))
-                .nullSolicitorExecutorLists(any());
     }
 
     @Test
@@ -2295,7 +2287,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformer() {
+    public void shouldCallSolLSAmendTransformer() throws JsonProcessingException {
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
@@ -3059,6 +3051,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
 
         assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
+        assertEquals(BULK_SCAN_ENVELOPES, grantOfRepresentationData.getBulkScanEnvelopes());
 
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
@@ -3110,5 +3103,50 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getWillAccessOriginal());
         assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
         assertEquals(NO, callbackResponse.getData().getWillHasCodicils());
+    }
+
+    @Test
+    public void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        verify(caseDataTransformerMock, times(1))
+                .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
+    }
+
+    @Test
+    public void shouldTransformForDeceasedDetails() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .caseType(GRANT_OF_PROBATE_NAME)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSOTForenames("Fred")
+                .solsSOTSurname("Bassett")
+                .solsSOTName("Fred Bassett")
+                .solsSolicitorIsExec("Yes")
+                .solsSolicitorIsApplying("Yes");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
+
+        assertCommon(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+
+        assertTrue(CHANGED_STATE.isPresent());
+        assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
+        verify(solicitorExecutorTransformerMock, times(1))
+                .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
     }
 }

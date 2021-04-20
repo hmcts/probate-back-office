@@ -8,7 +8,7 @@ module.exports = async function (crud) {
 
     const I = this;
 
-    if (testConfig.page1_solsSolicitorIsExec !== 'No' || testConfig.page1_solsSolicitorIsApplying !== 'No') {
+    if (createGrantOfProbateConfig.page1_solsSolicitorIsExec !== 'No' || createGrantOfProbateConfig.page1_solsSolicitorIsApplying !== 'No') {
         return;
     }
 

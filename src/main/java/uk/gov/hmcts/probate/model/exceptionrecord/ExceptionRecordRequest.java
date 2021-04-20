@@ -12,8 +12,8 @@ import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtract
 @Data
 public class ExceptionRecordRequest {
 
-    private final String id;
-    private final String caseTypeId;
+    private final String exceptionRecordId;
+    private final String exceptionRecordCaseTypeId;
     private final String poBox;
     private final String formType;
     private final String jurisdiction;
@@ -22,21 +22,25 @@ public class ExceptionRecordRequest {
     private final LocalDateTime openingDate;
     private final List<InputScannedDoc> scannedDocuments;
     private final List<OCRField> ocrFields;
+    private final String envelopeId;
+    private final Boolean isAutomatedProcess;
 
     public ExceptionRecordRequest(
-        @JsonProperty("id") String id,
-        @JsonProperty("case_type_id") String caseTypeId,
-        @JsonProperty("po_box") String poBox,
-        @JsonProperty("po_box_jurisdiction") String jurisdiction,
-        @JsonProperty("form_type") String formType,
-        @JsonProperty("journey_classification") JourneyClassification journeyClassification,
-        @JsonProperty("delivery_date") LocalDateTime deliveryDate,
-        @JsonProperty("opening_date") LocalDateTime openingDate,
-        @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
-        @JsonProperty("ocr_data_fields") List<OCRField> ocrFields
+            @JsonProperty("exception_record_id") String exceptionRecordId,
+            @JsonProperty("exception_record_case_type_id") String exceptionRecordCaseTypeId,
+            @JsonProperty("po_box") String poBox,
+            @JsonProperty("po_box_jurisdiction") String jurisdiction,
+            @JsonProperty("form_type") String formType,
+            @JsonProperty("journey_classification") JourneyClassification journeyClassification,
+            @JsonProperty("delivery_date") LocalDateTime deliveryDate,
+            @JsonProperty("opening_date") LocalDateTime openingDate,
+            @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
+            @JsonProperty("ocr_data_fields") List<OCRField> ocrFields,
+            @JsonProperty("envelope_id") String envelopeId,
+            @JsonProperty("is_automated_process") Boolean isAutomatedProcess
     ) {
-        this.id = id;
-        this.caseTypeId = caseTypeId;
+        this.exceptionRecordId = exceptionRecordId;
+        this.exceptionRecordCaseTypeId = exceptionRecordCaseTypeId;
         this.poBox = poBox;
         this.formType = formType;
         this.jurisdiction = jurisdiction;
@@ -45,6 +49,8 @@ public class ExceptionRecordRequest {
         this.openingDate = openingDate;
         this.scannedDocuments = scannedDocuments;
         this.ocrFields = ocrFields;
+        this.envelopeId = envelopeId;
+        this.isAutomatedProcess = isAutomatedProcess;
     }
 
     public ExceptionRecordOCRFields getOCRFieldsObject() {

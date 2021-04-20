@@ -75,7 +75,8 @@ public class CommonVariables {
     public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
     public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
 
-    public static final AdditionalExecutorApplying SOLICITOR_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+    public static final AdditionalExecutorApplying SOLICITOR_ADDITIONAL_EXECUTOR_APPLYING =
+            AdditionalExecutorApplying.builder()
             .applyingExecutorName(SOLICITOR_SOT_FORENAME)
             .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
             .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
@@ -84,7 +85,7 @@ public class CommonVariables {
             .applyingExecutorAddress(SOLICITOR_ADDRESS)
             .build();
 
-    public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+    public static final AdditionalExecutorApplying ADDITIONAL_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
             .applyingExecutorName(EXEC_NAME)
             .applyingExecutorFirstName(EXEC_FIRST_NAME)
             .applyingExecutorLastName(EXEC_SURNAME)
@@ -94,7 +95,8 @@ public class CommonVariables {
             .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
             .build();
 
-    public static final AdditionalExecutorNotApplying EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+    public static final AdditionalExecutorNotApplying ADDITIONAL_EXECUTOR_NOT_APPLYING =
+            AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorName(EXEC_NAME)
             .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
             .notApplyingExecutorDispenseWithNotice(YES)
@@ -102,14 +104,26 @@ public class CommonVariables {
             .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(LocalDate.of(2021, 1, 1))
             .build();
 
-    public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_APPLYING = new CollectionMember(EXEC_ID,
-            AdditionalExecutor.builder()
+    public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_ADDITIONAL_APPLYING =
+            new CollectionMember(EXEC_ID,
+                AdditionalExecutor.builder()
                     .additionalExecForenames(EXEC_FIRST_NAME)
                     .additionalExecLastname(EXEC_SURNAME)
                     .additionalExecAddress(EXEC_ADDRESS)
                     .additionalApplying(YES)
                     .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
                     .build());
+
+    public static final CollectionMember<AdditionalExecutorApplying> SOLS_EXEC_APPLYING = new CollectionMember(EXEC_ID,
+            AdditionalExecutorApplying.builder()
+                    .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                    .applyingExecutorLastName(EXEC_SURNAME)
+                    .applyingExecutorAddress(EXEC_ADDRESS)
+                    .applyingExecutorType("Named")
+                    .applyingExecutorOtherNames(EXEC_WILL_NAME)
+                    .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
+                    .build());
+
 
     public static final CollectionMember<AdditionalExecutor> SOLS_EXEC_NOT_APPLYING = new CollectionMember(EXEC_ID,
             AdditionalExecutor.builder()

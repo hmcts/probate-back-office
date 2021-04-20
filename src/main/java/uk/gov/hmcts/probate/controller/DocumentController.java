@@ -268,11 +268,13 @@ public class DocumentController {
             documents, letterId, pdfSize));
     }
 
+    // This only seems to be called once list lists are mapped to exec lists
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
         log.info("Initiating call for SoT");
+        caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
             documentGeneratorService.generateSoT(callbackRequest)));
     }

@@ -20,12 +20,13 @@
   "page2_app_ref": "SOL-123-456",
   "page2_sol_email": "solicitor@probate-test.com",
   "page2_phone_num" : "0129898989",
+  "page2_prev_identified_execs_text": "Previously identified executors",
 
   "page2_dispenseWithNotice": "Yes",
   "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
-  "page2_titleAndClearingTypeNoT": "Reason for None of These",
   "page2_nameOfTrustCorp": "Trust Corporation Name",
   "page2_positionInTrustCorp": "Solicitor",
+  "page2_waitForAnyOtherTcPartners": "Are there any other partners who are applying to act on behalf of the trust corporation?",
   "page2_waitForAdditionPerson": "Add all people acting on behalf of trust corporation",
   "page2_lodgementAddress": "London",
   "page2_lodgementDate_day": "01",
@@ -55,7 +56,7 @@
   "page3_dispenseWithNoticeSupportingDocs": "Supporting docs",
 
   "page4_waitForText": "Notes for this application",
-  "page4_previouslyIdentifiedApplyingExecutors": "E2E Executor Firstname E2E Executor Surname, Jason Rob",
+  "page4_previouslyIdentifiedApplyingExecutors": "Jason Rob, E2E Executor Firstname E2E Executor Surname",
   "page4_previouslyIdentifiedNotApplyingExecutors": "Name",
 
   "page5_applicationNotes": "Application notes in grant of probate details",
@@ -72,6 +73,7 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link",
+  "UKpostcodeLink": "a.manual-link",
+  "page4_postcodeLink": "#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress a.manual-link",
   "noAddressFound": "No address found"
 }
