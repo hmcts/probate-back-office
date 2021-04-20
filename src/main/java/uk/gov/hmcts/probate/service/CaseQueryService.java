@@ -26,6 +26,9 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,10 +43,10 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 @Slf4j
 public class CaseQueryService {
-    @Value("${data-extract.exela.size}")
-    protected String dataExtractExelaSize;
-    @Value("${data-extract.hmrc.size}")
-    protected String dataExtractHmrcSize;
+    @Value("${data-extract.block.size}")
+    protected int dataExtractBlockSize;
+    @Value("${data-extract.block.numDaysInclusive}")
+    protected int numDaysBlock;
 
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
@@ -68,6 +71,7 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_exela.json";
     private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_hmrc.json";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -93,23 +97,45 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
-            .replace(":size", dataExtractExelaSize)
-            .replace(":fromDate", startDate)
-            .replace(":toDate", endDate);
-
-        return runQuery(jsonQuery);
+        return findCaseStateWithinDateRange(GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
-            .replace(":size", dataExtractHmrcSize)
-            .replace(":fromDate", startDate)
-            .replace(":toDate", endDate);
-
-        return runQuery(jsonQuery);
+        return findCaseStateWithinDateRange(GRANT_RANGE_QUERY_HMRC, startDate, endDate);
     }
 
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String qry, String startDate,
+                                                                  String endDate) {
+        List<ReturnedCaseDetails> allCases = new ArrayList<>();
+        LocalDate end = LocalDate.parse(endDate, DATE_FORMAT);
+        LocalDate counter = LocalDate.parse(startDate, DATE_FORMAT);
+        while (!counter.isAfter(end)) {
+            String stBlock = counter.format(DATE_FORMAT);
+            LocalDate endCounter = counter.plusDays(numDaysBlock);
+            if (endCounter.isAfter(end)) {
+                endCounter = end;
+            }
+            String endBlock = endCounter.format(DATE_FORMAT);
+            log.info("findCaseStateWithinDateRange stBlock:" + stBlock + " endBlock:" + endBlock + " days:" 
+                + (counter.datesUntil(endCounter).count() + 1));
+            String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
+                .replace(":size", "" + dataExtractBlockSize)
+                .replace(":fromDate", stBlock)
+                .replace(":toDate", endBlock);
+            List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery);
+            if (blockCases.size() == dataExtractBlockSize) {
+                String message = "Number of cases returned during data range query at max block size for "
+                    + stBlock + " to " + endBlock;
+                throw new ClientDataException(message);
+            }
+            allCases.addAll(blockCases);
+
+            counter = endCounter.plusDays(1);
+        }
+
+        return allCases;
+    }
+    
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
 
         BoolQueryBuilder query = boolQuery();
