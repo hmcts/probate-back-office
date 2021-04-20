@@ -75,6 +75,25 @@ public class CommonVariables {
     public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
     public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
 
+    public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(EXEC_NAME)
+            .applyingExecutorFirstName(EXEC_FIRST_NAME)
+            .applyingExecutorLastName(EXEC_SURNAME)
+            .applyingExecutorPhoneNumber(EXEC_PHONE)
+            .applyingExecutorEmail(EXEC_EMAIL)
+            .applyingExecutorAddress(EXEC_ADDRESS)
+            .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+            .build();
+
+    public static final AdditionalExecutorNotApplying EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorName(EXEC_NAME)
+            .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
+            .notApplyingExecutorDispenseWithNotice(YES)
+            .notApplyingExecutorDispenseWithNoticeLeaveGiven(YES)
+            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(LocalDate.of(2021, 1, 1))
+            .build();
+
+
     public static final AdditionalExecutorApplying SOLICITOR_ADDITIONAL_EXECUTOR_APPLYING =
             AdditionalExecutorApplying.builder()
             .applyingExecutorName(SOLICITOR_SOT_FORENAME)

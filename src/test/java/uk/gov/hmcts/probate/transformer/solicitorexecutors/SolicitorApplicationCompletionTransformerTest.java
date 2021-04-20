@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +12,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
-import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -104,7 +102,7 @@ public class SolicitorApplicationCompletionTransformerTest {
         CaseData caseData = caseDataBuilder.build();
 
         SolicitorApplicationCompletionTransformer solJourneyCompletion =
-                new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService());
+            new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService());
 
         solJourneyCompletion.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -140,8 +138,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying()
-            throws JsonProcessingException {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME)
             .primaryApplicantSurname(EXEC_SURNAME)
@@ -161,8 +158,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying()
-            throws JsonProcessingException {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -178,35 +174,5 @@ public class SolicitorApplicationCompletionTransformerTest {
 
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
-    }
-
-    @Test
-    public void shouldFormatCaseDataForLegalStatement() {
-        List<CollectionMember<CodicilAddedDate>> codicilAddedDate = new ArrayList<>();
-        codicilAddedDate.add(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(DATE).build()));
-
-        caseDataBuilder
-                .dispenseWithNoticeLeaveGivenDate(DATE)
-                .codicilAddedDateList(codicilAddedDate)
-                .deceasedForenames(DECEASED_FORENAME)
-                .deceasedSurname(DECEASED_SURNAME)
-                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(dateFormatterServiceMock.formatDate(
-                DATE)).thenReturn(DATE_FORMATTED);
-
-        legalStatementExecutorTransformerMock.formatFields(
-                caseDetailsMock.getData());
-
-        List<CollectionMember<String>> formattedCodicilDateList = new ArrayList<>();
-        formattedCodicilDateList.add(new CollectionMember<>(DATE_FORMATTED));
-
-        CaseData caseData = caseDetailsMock.getData();
-        assertEquals(DECEASED_FORENAME_FORMATTED, caseData.getDeceasedForenames());
-        assertEquals(DECEASED_SURNAME_FORMATTED, caseData.getDeceasedSurname());
-        assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
-        assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
-        assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
     }
 }

@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
