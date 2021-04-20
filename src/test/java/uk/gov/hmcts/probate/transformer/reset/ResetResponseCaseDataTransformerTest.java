@@ -37,7 +37,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_NAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResetResponseCaseDataTransformerTest {
