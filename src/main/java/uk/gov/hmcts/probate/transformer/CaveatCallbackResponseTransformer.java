@@ -221,7 +221,8 @@ public class CaveatCallbackResponseTransformer {
             .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
             .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
             .autoClosedExpiry(caveatData.getAutoClosedExpiry())
-            .pcqId(caveatData.getPcqId());
+            .pcqId(caveatData.getPcqId())
+            .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
