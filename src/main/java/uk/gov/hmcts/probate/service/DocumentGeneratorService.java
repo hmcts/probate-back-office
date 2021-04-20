@@ -162,27 +162,27 @@ public class DocumentGeneratorService {
     }
 
     public Document generateSoT(CallbackRequest callbackRequest) {
-        Document statementOfTruth;
+        final Document statementOfTruth;
         DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
+        final CaseDetails cd = callbackRequest.getCaseDetails();
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
                 // Transform case data into expected format for legal statement
-                caseDataTransformer.transformCaseDataForLegalStatement(callbackRequest);
-                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
+                log.info("Initiate call to generate SoT for case id: {}", cd.getId());
                 statementOfTruth = generateSolicitorSoT(callbackRequest);
-                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                log.info("Successful response for SoT for case id: {}", cd.getId());
                 break;
             case PERSONAL:
             default:
-                CaseDetails caseDetails = callbackRequest.getCaseDetails();
-                log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
-                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-                if (caseDetails.getData().isLanguagePreferenceWelsh()) {
+                log.info("Initiate call to generate SoT for case id: {}", cd.getId());
+                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(cd);
+                if (cd.getData().isLanguagePreferenceWelsh()) {
                     placeholderDecorator.decorate(placeholders);
                     documentType = DocumentType.WELSH_STATEMENT_OF_TRUTH;
                 }
                 statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, documentType);
-                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                log.info("Successful response for SoT for case id: {}", cd.getId());
                 break;
         }
 
