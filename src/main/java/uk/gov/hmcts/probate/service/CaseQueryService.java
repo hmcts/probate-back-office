@@ -126,6 +126,7 @@ public class CaseQueryService {
             if (blockCases.size() == dataExtractBlockSize) {
                 String message = "Number of cases returned during data range query at max block size for "
                     + stBlock + " to " + endBlock;
+                log.info(message);
                 throw new ClientDataException(message);
             }
             allCases.addAll(blockCases);
