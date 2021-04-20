@@ -40,7 +40,9 @@ def secrets = [
                 secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL'),
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
-                secret('launchdarkly-key', 'LAUNCHDARKLY_KEY')
+                secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
+                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY')
+
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -105,10 +107,9 @@ withPipeline("java", product, component) {
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
   }
-  
+
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
-
 }
 
