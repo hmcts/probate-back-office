@@ -86,7 +86,6 @@ public class ResetResponseCaseDataTransformerTest {
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
                 .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
                 .whoSharesInCompanyProfits(sharesInCompanyProfits)
-                .soleTraderOrLimitedCompany(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .trustCorpName(TRUST_CORP_NAME)
                 .trustCorpAddress(SOLICITOR_ADDRESS)
@@ -108,8 +107,7 @@ public class ResetResponseCaseDataTransformerTest {
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
                 .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
-                .whoSharesInCompanyProfits(sharesInCompanyProfits)
-                .soleTraderOrLimitedCompany(YES);
+                .whoSharesInCompanyProfits(sharesInCompanyProfits);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -125,7 +123,6 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getNameOfFirmNamedInWill());
         assertNull(responseCaseData.getNameOfSucceededFirm());
         assertNull(responseCaseData.getWhoSharesInCompanyProfits());
-        assertNull(responseCaseData.getSoleTraderOrLimitedCompany());
     }
 
     @Test

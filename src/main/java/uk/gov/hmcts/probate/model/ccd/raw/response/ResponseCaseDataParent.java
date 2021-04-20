@@ -60,7 +60,6 @@ public class ResponseCaseDataParent {
     protected final String solsForenames;
     protected final String solsSolicitorWillSignSOT;
     protected final String solsSurname;
-    protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
     protected String solsIdentifiedNotApplyingExecs;
     protected String solsIdentifiedApplyingExecs;

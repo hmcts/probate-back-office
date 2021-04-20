@@ -49,7 +49,6 @@ public class CaseDataParent {
     protected final String dispenseWithNoticeSupportingDocs;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
-    protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;

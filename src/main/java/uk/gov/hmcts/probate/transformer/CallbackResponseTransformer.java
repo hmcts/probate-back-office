@@ -821,7 +821,6 @@ public class CallbackResponseTransformer {
             .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
             .anyOtherApplyingPartnersTrustCorp(caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
-            .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
             .taskList(caseData.getTaskList())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())

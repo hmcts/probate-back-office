@@ -16,6 +16,7 @@ module.exports = async function (optName) {
     const isNa = optName === 'TCTNoT';
     const isTrustOption = optName.startsWith('TCTTrustCorp');
     const allRenouncing = optName.endsWith('AllRenouncing');
+    const allPowerRes = optName.endsWith('PowerRes');
     const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing';
 
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
@@ -25,7 +26,7 @@ module.exports = async function (optName) {
 
     assert (isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     assert (isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
-    assert (isNa || isTrustOption ? !morePartnersHoldingPowerReservedVisible : morePartnersHoldingPowerReservedVisible);
+    assert (allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     assert (isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {

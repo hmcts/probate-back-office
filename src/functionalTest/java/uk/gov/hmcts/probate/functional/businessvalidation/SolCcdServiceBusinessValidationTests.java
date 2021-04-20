@@ -564,7 +564,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
         "\"titleAndClearingType\": \"TCTPartSuccPowerRes\","
-                + "\n\"soleTraderOrLimitedCompany\" : \"No\","
                 + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -833,7 +832,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname"));
         assertEquals("Address line 1",
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
-        assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 

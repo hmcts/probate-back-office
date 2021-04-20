@@ -148,7 +148,6 @@ public class ResponseCaseDataParentTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
-                .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
@@ -158,7 +157,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
-        assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
         assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits().get(0));
         assertEquals("Members", responseCaseDataParent.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());
