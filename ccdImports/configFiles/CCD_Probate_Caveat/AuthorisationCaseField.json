@@ -401,11 +401,11 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-registrar", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-superuser", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
 
 ]
