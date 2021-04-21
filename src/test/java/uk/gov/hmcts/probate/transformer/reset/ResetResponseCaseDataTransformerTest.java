@@ -108,6 +108,8 @@ public class ResetResponseCaseDataTransformerTest {
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
                 .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
                 .whoSharesInCompanyProfits(sharesInCompanyProfits);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -123,6 +125,8 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getOtherPartnersApplyingAsExecutors());
         assertNull(responseCaseData.getNameOfFirmNamedInWill());
         assertNull(responseCaseData.getNameOfSucceededFirm());
+        assertNull(responseCaseData.getAddressOfSucceededFirm());
+        assertNull(responseCaseData.getAddressOfFirmNamedInWill());
         assertNull(responseCaseData.getWhoSharesInCompanyProfits());
     }
 
@@ -133,8 +137,6 @@ public class ResetResponseCaseDataTransformerTest {
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .trustCorpName(TRUST_CORP_NAME)
                 .trustCorpAddress(SOLICITOR_ADDRESS)
-                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
-                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
                 .lodgementAddress(LODGEMENT_ADDRESS)
                 .lodgementDate(DATE);
 
@@ -151,8 +153,6 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getAdditionalExecutorsTrustCorpList());
         assertNull(responseCaseData.getTrustCorpName());
         assertNull(responseCaseData.getTrustCorpAddress());
-        assertNull(responseCaseData.getAddressOfSucceededFirm());
-        assertNull(responseCaseData.getAddressOfFirmNamedInWill());
         assertNull(responseCaseData.getLodgementAddress());
         assertNull(responseCaseData.getLodgementDate());
     }
