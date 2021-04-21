@@ -181,7 +181,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("Dyddiad marwolaeth yr ymadawedig yw: 10 Hydref 1900", 
+        assertEquals("Dyddiad geni’r ymadawedig yw: 10 Hydref 1900", 
             response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
         assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));

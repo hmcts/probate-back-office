@@ -44,7 +44,7 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
     private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH_TEXT = "deceased_date_of_birth_welsh_text";
     private static final String VALUE_DATE_OF_BIRTH_TEXT = "The deceased's date of birth: ";
-    private static final String VALUE_WELSH_DATE_OF_BIRTH_TEXT = "Dyddiad marwolaeth yr ymadawedig yw: ";
+    private static final String VALUE_WELSH_DATE_OF_BIRTH_TEXT = "Dyddiad geni’r ymadawedig yw: ";
     
     public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
