@@ -432,8 +432,8 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 
 data-extract:
   block:
-    size: "3000"
-    numDaysInclusive: 9
+    size: 3000
+    numDaysInclusive: 2
 
 welsh:
   months:

@@ -44,7 +44,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @Slf4j
 public class CaseQueryService {
     @Value("${data-extract.block.size}")
-    protected String dataExtractBlockSize;
+    protected int dataExtractBlockSize;
     @Value("${data-extract.block.numDaysInclusive}")
     protected int numDaysBlock;
 
@@ -117,15 +117,16 @@ public class CaseQueryService {
             }
             String endBlock = endCounter.format(DATE_FORMAT);
             log.info("findCaseStateWithinDateRange stBlock:" + stBlock + " endBlock:" + endBlock + " days:" 
-                + counter.datesUntil(endCounter).count());
+                + (counter.datesUntil(endCounter).count() + 1));
             String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
-                .replace(":size", dataExtractBlockSize)
+                .replace(":size", "" + dataExtractBlockSize)
                 .replace(":fromDate", stBlock)
                 .replace(":toDate", endBlock);
             List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery);
-            if (blockCases.size() == numDaysBlock) {
+            if (blockCases.size() == dataExtractBlockSize) {
                 String message = "Number of cases returned during data range query at max block size for "
                     + stBlock + " to " + endBlock;
+                log.info(message);
                 throw new ClientDataException(message);
             }
             allCases.addAll(blockCases);
