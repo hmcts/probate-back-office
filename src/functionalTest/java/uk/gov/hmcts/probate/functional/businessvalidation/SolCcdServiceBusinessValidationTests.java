@@ -832,6 +832,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname"));
         assertEquals("Address line 1",
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
+        assertEquals("1",
+            jsonPath.get("data.addressOfSucceededFirm.AddressLine1"));
+        assertEquals("1",
+            jsonPath.get("data.addressOfFirmNamedInWill.AddressLine1"));
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 

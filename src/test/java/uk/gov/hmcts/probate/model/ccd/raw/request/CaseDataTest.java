@@ -768,6 +768,24 @@ public class CaseDataTest {
                 "POSTCODE",
                 "");
 
+        SolsAddress addressOfSucceededFirm = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
+        SolsAddress addressOfFirmNamedInWill = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
                 .dispenseWithNoticeLeaveGiven("No")
@@ -776,6 +794,8 @@ public class CaseDataTest {
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .trustCorpAddress(trustCorpAddress)
+                .addressOfSucceededFirm(addressOfSucceededFirm)
+                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LOCAL_DATE)
@@ -788,6 +808,8 @@ public class CaseDataTest {
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals(trustCorpAddress, caseData.getTrustCorpAddress());
+        assertEquals(addressOfSucceededFirm, caseData.getAddressOfSucceededFirm());
+        assertEquals(addressOfFirmNamedInWill, caseData.getAddressOfFirmNamedInWill());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());

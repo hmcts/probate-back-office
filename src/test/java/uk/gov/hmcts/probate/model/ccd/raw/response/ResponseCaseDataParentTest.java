@@ -107,6 +107,24 @@ public class ResponseCaseDataParentTest {
                 "POSTCODE",
                 "");
 
+        SolsAddress addressOfSucceededFirm = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
+        SolsAddress addressOfFirmNamedInWill = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .dispenseWithNotice("Yes")
                 .dispenseWithNoticeLeaveGiven("No")
@@ -115,6 +133,8 @@ public class ResponseCaseDataParentTest {
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .trustCorpAddress(trustCorpAddress)
+                .addressOfSucceededFirm(addressOfSucceededFirm)
+                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate("02-02-2020")
@@ -127,6 +147,8 @@ public class ResponseCaseDataParentTest {
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
         assertEquals(trustCorpAddress, responseCaseDataParent.getTrustCorpAddress());
+        assertEquals(addressOfSucceededFirm, responseCaseDataParent.getAddressOfSucceededFirm());
+        assertEquals(addressOfFirmNamedInWill, responseCaseDataParent.getAddressOfFirmNamedInWill());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());

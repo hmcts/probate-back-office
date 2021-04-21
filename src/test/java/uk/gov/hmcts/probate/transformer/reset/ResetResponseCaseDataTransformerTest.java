@@ -88,6 +88,8 @@ public class ResetResponseCaseDataTransformerTest {
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .trustCorpName(TRUST_CORP_NAME)
                 .trustCorpAddress(SOLICITOR_ADDRESS)
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
                 .lodgementAddress(LODGEMENT_ADDRESS)
                 .lodgementDate("01-01-2020")
                 .dispenseWithNotice(NO)
@@ -131,6 +133,8 @@ public class ResetResponseCaseDataTransformerTest {
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .trustCorpName(TRUST_CORP_NAME)
                 .trustCorpAddress(SOLICITOR_ADDRESS)
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
                 .lodgementAddress(LODGEMENT_ADDRESS)
                 .lodgementDate(DATE);
 
@@ -147,6 +151,8 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getAdditionalExecutorsTrustCorpList());
         assertNull(responseCaseData.getTrustCorpName());
         assertNull(responseCaseData.getTrustCorpAddress());
+        assertNull(responseCaseData.getAddressOfSucceededFirm());
+        assertNull(responseCaseData.getAddressOfFirmNamedInWill());
         assertNull(responseCaseData.getLodgementAddress());
         assertNull(responseCaseData.getLodgementDate());
     }

@@ -17,7 +17,7 @@ module.exports = async function (optName) {
     const isTrustOption = optName.startsWith('TCTTrustCorp');
     const allRenouncing = optName.endsWith('AllRenouncing');
     const allPowerRes = optName.endsWith('PowerRes');
-    const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing';
+    const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing' || optName === 'TCTPartSuccOthersRenouncing';
 
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;

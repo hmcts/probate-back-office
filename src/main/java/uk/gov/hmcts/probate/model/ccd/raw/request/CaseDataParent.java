@@ -37,7 +37,9 @@ public class CaseDataParent {
     protected final String lodgementAddress;
     protected final LocalDate lodgementDate;
     protected final String nameOfFirmNamedInWill;
+    protected SolsAddress addressOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected SolsAddress addressOfSucceededFirm;
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
     // Not final so field can be reset in CaseDataTransformer

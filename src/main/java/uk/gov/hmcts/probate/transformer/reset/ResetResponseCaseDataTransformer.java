@@ -52,6 +52,8 @@ public class ResetResponseCaseDataTransformer {
                 .otherPartnersApplyingAsExecutors(null)
                 .nameOfSucceededFirm(null)
                 .nameOfFirmNamedInWill(null)
+                .addressOfFirmNamedInWill(null)
+                .addressOfSucceededFirm(null)
                 .whoSharesInCompanyProfits(null);
     }
 
