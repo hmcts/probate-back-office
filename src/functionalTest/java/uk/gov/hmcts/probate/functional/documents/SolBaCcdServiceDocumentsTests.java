@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.functional.documents;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -15,7 +13,6 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -96,10 +93,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
             "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
 
-    private static final String APPLYING_EXECUTOR_STATEMENT =
+    // Should this be Firstname Lastname?
+    private static final String APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA =
             "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
-                    + "addressline 2, addressline 3, posttown, county, postcode, country and FirstName3 LastName3"
+                    + "addressline 2, addressline 3, posttown, county, postcode, country and Firstname3 Lastname3"
                     + " of addressline 1, addressline 2, addressline 3, posttown, county, postcode, country";
+
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
@@ -146,8 +145,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
     private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
-    private static final String VALIDATE_URL = "/nextsteps/validate";
-
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -482,46 +479,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws JsonProcessingException {
-
-        ResponseBody body = validatePostSuccess(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD,
-                VALIDATE_PROBATE_URL);
-
-        JsonPath jsonPath = JsonPath.from(body.asString());
-        Map<String, String> hm = jsonPath.get("data");
-        hm.remove("taskList");
-
-        final ObjectMapper objectMapper = new ObjectMapper();
-
-        String transformedData = objectMapper.writeValueAsString(hm);
-
-        String newRequest = utils.getJsonFromFile(EMPTY_REQUEST);
-        newRequest = newRequest.replaceFirst(Pattern.quote("\"state\": \"CaseCreated\""),
-                "\"state\": \"SolAppUpdated\"");
-        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": "
-            + transformedData.substring(0, transformedData.length() - 1) + ", \"solsSOTNeedToUpdate\": \"No\"}");
-
-        body = validatePostSuccessForPayload(newRequest, VALIDATE_URL);
-
-        jsonPath = JsonPath.from(body.asString());
-        hm = jsonPath.get("data");
-        hm.remove("taskList");
-        transformedData = objectMapper.writeValueAsString(hm);
-        newRequest = utils.getJsonFromFile(EMPTY_REQUEST);
-        newRequest = newRequest.replaceFirst(Pattern.quote("\"state\": \"CaseCreated\""),
-                "\"state\": \"SolAppUpdated\"");
-        newRequest = newRequest.replaceFirst(Pattern.quote("\"case_data\": {}"), "\"case_data\": "
-                + transformedData);
-
-
-        String response = generatePdfDocumentFromPayload(newRequest, GENERATE_LEGAL_STATEMENT);
+    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
+        String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
-        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT));
+        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
