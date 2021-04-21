@@ -35,7 +35,7 @@
       "Contact email address",
       "Contact phone number",
       "Is the probate practitioner named in the will as an executor?",
-      "Is the probate practitioner applying?",
+      "is the probate practitioner acting as an executor?",
       "Building and Street",
       "Address Line 2",
       "Address Line 3",
@@ -61,7 +61,7 @@
   },
   "SolicitorMainApplicantAndExecutor" : {
     "fields": [
-      "Is the probate practitioner applying?",
+      "is the probate practitioner acting as an executor?",
       "First name(s)",
       "Last name(s)",
       "Contact phone number",
