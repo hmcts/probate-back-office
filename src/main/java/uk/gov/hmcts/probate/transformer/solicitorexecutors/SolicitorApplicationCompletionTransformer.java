@@ -27,6 +27,7 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
     public void mapSolicitorExecutorFieldsOnCompletion(CaseData caseData) {
 
         mapSolicitorExecutorFieldsToCaseworkerExecutorFields(caseData);
+        formatFields(caseData);
         createLegalStatementExecutorListsFromTransformedLists(caseData);
     }
 
@@ -35,6 +36,7 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
             mapExecutorToPrimaryApplicantFields(execsApplying.get(0).getValue(), caseData);
         }
+        formatFields(caseData);
         mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
     }
 }

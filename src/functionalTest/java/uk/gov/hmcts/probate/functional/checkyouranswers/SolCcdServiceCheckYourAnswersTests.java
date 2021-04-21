@@ -85,8 +85,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, "
-                + "as our appointed firm, to submit this application on our behalf.",
+        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorfirmname "
+                + "to sign a statement of truth on their behalf.",
                 DOC_NAME, VALIDATE_PROBATE_URL);
     }
 

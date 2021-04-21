@@ -45,7 +45,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         createLegalStatementExecutorLists(execsApplying, execsNotApplying, caseData);
     }
 
-    protected void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
+    public void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
                                              List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
                                              CaseData caseData) {
 

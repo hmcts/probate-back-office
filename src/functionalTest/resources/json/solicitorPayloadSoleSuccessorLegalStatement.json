@@ -78,6 +78,7 @@
         "AddressLine3": ""
       },
       "titleAndClearingType": "TCTSolePrinSucc",
+      "anyOtherApplyingPartners": "Yes",
       "deceasedAnyOtherNames": "No",
       "nameOfFirmNamedInWill": "Firmname will",
       "solsSolicitorFirmName": "Firmname",

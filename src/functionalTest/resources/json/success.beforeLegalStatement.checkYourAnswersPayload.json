@@ -53,7 +53,7 @@
             "solsSOTSurname": "Solicitor_ln",
             "solsSolicitorIsExec": "No",
             "solsSolicitorIsMainApplicant": null,
-            "solsSolicitorIsApplying": null,
+            "solsSolicitorIsApplying": "No",
             "solsSolicitorNotApplyingReason": null,
             "solsApplicantRelationshipToDeceased": null,
             "solsSpouseOrCivilRenouncing": null,

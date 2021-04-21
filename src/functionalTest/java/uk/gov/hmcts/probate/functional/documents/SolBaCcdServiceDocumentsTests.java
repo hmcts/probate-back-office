@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -90,6 +91,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
         "I, Firstname Lastname of 123 Street, Town, Postcode, make the following statement";
+
+    // doesn't lowercase the names before then capitalising first letter
+    private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
+            "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
+
     private static final String APPLYING_EXECUTOR_STATEMENT =
             "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
                     + "addressline 2, addressline 3, posttown, county, postcode, country and FirstName3 LastName3"
@@ -206,7 +212,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        response = response.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         return response;
     }
 
@@ -221,7 +228,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        response = response.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         return response;
     }
 
@@ -244,7 +252,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        response = response.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         return response;
     }
 
@@ -255,7 +264,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -268,7 +278,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll("\r", "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -280,7 +291,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("intestacyGrantForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replace("\r", "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -292,7 +304,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("intestacyGrantDraftForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -304,7 +317,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("gopGrantForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -316,7 +330,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -328,7 +343,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
         String expectedText = utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("19th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -340,7 +356,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("oxfordGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -352,7 +369,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -364,7 +382,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("leedsGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -376,7 +395,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("liverpoolGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -388,7 +408,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("brightonGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -400,7 +421,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("londonGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -412,7 +434,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("newcastleGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -424,7 +447,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -436,7 +460,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt");
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
         expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
@@ -509,7 +534,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
@@ -1100,8 +1125,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorGenerateLetterReturnOkResponseCode() {
-        String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
-        assertThat(getJsonFromFile("/document/assembledLetter.txt"), is(equalTo(response)));
+        final String response = generateDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
+        final String expected = getJsonFromFile("/document/assembledLetter.txt");
+        assertEquals(expected, response);
     }
 
     @Test
@@ -1126,7 +1152,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
 
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        response = response.replaceAll(Pattern.quote("\n"), "")
+                .replaceAll(Pattern.quote("\r"), "");
 
         assertThat(response, is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
     }
@@ -1241,9 +1268,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Firmname"
-                + " will that had succeeded to and carried on the practice of the "
-                + "firm Successor firm, at the date of death of the deceased."));
+                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm"
+                + " that had succeeded to and carried on the practice of the "
+                + "firm Firmname will, at the date of death of the deceased."));
 
     }
 
@@ -1325,7 +1352,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm,"
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
     }
@@ -1336,7 +1363,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm,"
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
     }

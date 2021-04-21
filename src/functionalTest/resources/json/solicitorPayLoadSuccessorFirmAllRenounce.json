@@ -80,6 +80,7 @@
         "AddressLine3": ""
       },
       "titleAndClearingType": "TCTPartSuccAllRenouncing",
+      "anyOtherApplyingPartners": "Yes",
       "deceasedAnyOtherNames": "No",
       "nameOfFirmNamedInWill": "Firmname will",
       "solsSolicitorFirmName": "Firmname",

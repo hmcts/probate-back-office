@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES;
+import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -51,6 +53,8 @@ public class ExecutorsTransformer {
         caseData.setAdditionalExecutorsNotApplying(execsNotApplying);
         mapPrimaryApplicantFields(caseData);
     }
+
+
 
     // Only ever call this once, when we map 1st execApplying to primary applicant forenames
     // Precondition - execsApplying has solicitor added as a temporary item, at position 0
@@ -127,11 +131,16 @@ public class ExecutorsTransformer {
     private void mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
 
-        if (caseData.getAdditionalExecutorsTrustCorpList() != null
+        final String titleClearingType = caseData.getTitleAndClearingType();
+        if (TRUST_CORP_TITLE_CLEARING_TYPES.contains(titleClearingType)
+                && YES.equals(caseData.getAnyOtherApplyingPartnersTrustCorp())
+                && caseData.getAdditionalExecutorsTrustCorpList() != null
                 && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
             // Add trust corps executors
             execsApplying.addAll(executorListMapperService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
-        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null
+        } else if (NON_TRUST_PTNR_TITLE_CLEARING_TYPES.contains(titleClearingType)
+                && YES.equals(caseData.getAnyOtherApplyingPartners())
+                && caseData.getOtherPartnersApplyingAsExecutors() != null
                 && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()) {
             // Add partner executors
             execsApplying.addAll(executorListMapperService.mapFromPartnerExecutorsToApplyingExecutors(caseData));
@@ -143,7 +152,6 @@ public class ExecutorsTransformer {
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
         }
-
     }
 
     private void mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(

@@ -1,5 +1,10 @@
 package uk.gov.hmcts.probate.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public final class Constants {
 
     public static final String YES = "Yes";
@@ -46,6 +51,18 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_TRUST_CORP = "TCTTrustCorpResWithApp";
     public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING = "TCTPartSuccOthersRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
+
+    public static final List<String> NON_TRUST_PTNR_TITLE_CLEARING_TYPES = new ArrayList<String>(asList(
+            TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+            TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+            TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+            TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+            TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+            TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING));
+
+    public static final List<String> TRUST_CORP_TITLE_CLEARING_TYPES = new ArrayList<>(asList(
+            TITLE_AND_CLEARING_TRUST_CORP_SDJ,
+            TITLE_AND_CLEARING_TRUST_CORP));
 
     private Constants() {
     }
