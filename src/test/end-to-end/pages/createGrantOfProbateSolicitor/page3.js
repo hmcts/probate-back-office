@@ -33,11 +33,6 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField('#trustCorpAddress_PostCode', createGrantOfProbateConfig.page3_trustAddress_postcode);
             await I.fillField('#trustCorpAddress_Country', createGrantOfProbateConfig.page3_trustAddress_country);
 
-            await I.fillField('#lodgementAddress', createGrantOfProbateConfig.page3_lodgementAddress);
-            await I.fillField('#lodgementDate-day', createGrantOfProbateConfig.page3_lodgementDate_day);
-            await I.fillField('#lodgementDate-month', createGrantOfProbateConfig.page3_lodgementDate_month);
-            await I.fillField('#lodgementDate-year', createGrantOfProbateConfig.page3_lodgementDate_year);
-
         } else if (tct === 'TCTPartSuccPowerRes') {
             await I.waitForVisible({css: '#nameOfFirmNamedInWill'});
             await I.fillField({css: '#nameOfFirmNamedInWill'}, createGrantOfProbateConfig.page3_nameOfFirmNamedInWill);
@@ -49,21 +44,13 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             tct === 'TCTPartSuccAllRenouncing' || tct === 'TCTPartAllRenouncing' || tct === 'TCTPartSuccOthersRenouncing' ||
             tct === 'TCTPartOthersRenouncing' || tct === 'TCTNoT') {
             //make sure both immediately visible
-            await I.waitForVisible('#soleTraderOrLimitedCompany-No');
             await I.waitForVisible('#whoSharesInCompanyProfits-Partners');
-
-            await I.scrollTo('#soleTraderOrLimitedCompany-No');
-            await I.click('#soleTraderOrLimitedCompany-No');
 
             await I.scrollTo('#whoSharesInCompanyProfits-Partners');
             await I.click('#whoSharesInCompanyProfits-Partners');
             await I.click('#whoSharesInCompanyProfits-Members');
         } else {
             // make sure fields are hidden
-            let numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-Yes'});
-            assert (numEls === 0);
-            numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-No'});
-            assert (numEls === 0);
             numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
             assert (numEls === 0);
         }

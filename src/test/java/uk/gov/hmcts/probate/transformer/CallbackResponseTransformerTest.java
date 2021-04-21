@@ -2261,11 +2261,31 @@ public class CallbackResponseTransformerTest {
                 "POSTCODE",
                 "");
 
+        SolsAddress addressOfSucceededFirm = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
+        SolsAddress addressOfFirmNamedInWill = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
         caseDataBuilder
                 .dispenseWithNotice(YES)
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .trustCorpAddress(trustCorpAddress)
+                .addressOfSucceededFirm(addressOfSucceededFirm)
+                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
@@ -2279,6 +2299,8 @@ public class CallbackResponseTransformerTest {
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("Trust corp name", callbackResponse.getData().getTrustCorpName());
         assertEquals(trustCorpAddress, callbackResponse.getData().getTrustCorpAddress());
+        assertEquals(addressOfSucceededFirm, callbackResponse.getData().getAddressOfSucceededFirm());
+        assertEquals(addressOfFirmNamedInWill, callbackResponse.getData().getAddressOfFirmNamedInWill());
         assertEquals(additionalExecutorsTrustCorpList, callbackResponse.getData()
                 .getAdditionalExecutorsTrustCorpList());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());

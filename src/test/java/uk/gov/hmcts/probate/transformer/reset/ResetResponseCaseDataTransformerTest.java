@@ -37,7 +37,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_NAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResetResponseCaseDataTransformerTest {
@@ -86,10 +85,11 @@ public class ResetResponseCaseDataTransformerTest {
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
                 .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
                 .whoSharesInCompanyProfits(sharesInCompanyProfits)
-                .soleTraderOrLimitedCompany(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .trustCorpName(TRUST_CORP_NAME)
                 .trustCorpAddress(SOLICITOR_ADDRESS)
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
                 .lodgementAddress(LODGEMENT_ADDRESS)
                 .lodgementDate("01-01-2020")
                 .dispenseWithNotice(NO)
@@ -108,8 +108,9 @@ public class ResetResponseCaseDataTransformerTest {
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
                 .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
-                .whoSharesInCompanyProfits(sharesInCompanyProfits)
-                .soleTraderOrLimitedCompany(YES);
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
+                .whoSharesInCompanyProfits(sharesInCompanyProfits);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -124,8 +125,9 @@ public class ResetResponseCaseDataTransformerTest {
         assertNull(responseCaseData.getOtherPartnersApplyingAsExecutors());
         assertNull(responseCaseData.getNameOfFirmNamedInWill());
         assertNull(responseCaseData.getNameOfSucceededFirm());
+        assertNull(responseCaseData.getAddressOfSucceededFirm());
+        assertNull(responseCaseData.getAddressOfFirmNamedInWill());
         assertNull(responseCaseData.getWhoSharesInCompanyProfits());
-        assertNull(responseCaseData.getSoleTraderOrLimitedCompany());
     }
 
     @Test
