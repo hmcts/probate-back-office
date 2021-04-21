@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE_FORMATTED;
 import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_FORENAME;
@@ -107,6 +108,8 @@ public class LegalStatementExecutorTransformerTest {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
+                .anyOtherApplyingPartnersTrustCorp(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
