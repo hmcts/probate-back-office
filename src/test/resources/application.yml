@@ -36,9 +36,9 @@ pdf.service:
 
 docmosis:
   service:
-    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
-    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
@@ -109,9 +109,9 @@ http.connect.request.timeout: 60000
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
-  grantDelayedNotificationPeriodDays: 1
+  grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
-  grantAwaitingDocumentationNotificationPeriodDays: 1
+  grantAwaitingDocumentationNotificationPeriodDays: 35
   govNotifyApiKey: "dummy_key"
   templates:
     email:
@@ -237,7 +237,7 @@ registry:
   registries:
     oxford:
       name: Oxford Probate Registry
-      phone: 0186 579 3055
+      phone: 0300 303 0648
       emailReplyToId: "oxford-emailReplyToId"
       addressline1: Combined Court Building
       addressline2: St Aldates
@@ -245,7 +245,7 @@ registry:
       postcode: OX1 1LY
     birmingham:
       name: Birmingham Probate Registry
-      phone: 0121 681 3401
+      phone: 0300 303 0648
       emailReplyToId: "birmingham-emailReplyToId"
       addressline1: The Priory Courts
       addressline2: 33 Bull Street
@@ -253,7 +253,7 @@ registry:
       postcode: B4 6DU
     manchester:
       name: Manchester Probate Registry
-      phone: 0161 240 5701 / 0161 240 5702
+      phone: 0300 303 0648
       emailReplyToId: "manchester-emailReplyToId"
       addressline1: Manchester Civil Justice Centre
       addressline2: Ground Floor
@@ -263,7 +263,7 @@ registry:
       postcode: M60 1WJ
     leeds:
       name: Leeds Probate Registry
-      phone: 0113 389 6133
+      phone: 0300 303 0648
       emailReplyToId: "leeds-emailReplyToId"
       addressline1: York House
       addressline2: York Place
@@ -271,22 +271,22 @@ registry:
       postcode: LS1 2BA
     liverpool:
       name: Liverpool Probate Registry
-      phone: 0151 236 8264
+      phone: 0300 303 0648
       emailReplyToId: "liverpool-emailReplyToId"
-      addressline1: The Queen Elizabeth II Law Courts
+      addressline1: Queen Elizabeth II Law Courts
       addressline2: Derby Square
       town: Liverpool
       postcode: L2 1XA
     brighton:
       name: Brighton Probate Registry
-      phone: 01273 573510
+      phone: 0300 303 0648
       emailReplyToId: "brighton-emailReplyToId"
       addressline1: William Street
       town: Brighton
       postcode: BN2 0RF
     london:
       name: London Probate Department
-      phone: 020 7421 8509
+      phone: 0300 303 0648
       emailReplyToId: "london-emailReplyToId"
       addressline1: Principal Registry of the Family Division
       addressline2: First Avenue House
@@ -295,7 +295,7 @@ registry:
       postcode: WC1V 6NP
     cardiff:
       name: Probate Registry of Wales
-      phone: 02920 474373
+      phone: 0300 303 0648
       emailReplyToId: "cardiff-emailReplyToId"
       addressline1: 3rd Floor, Cardiff Magistrates’ Court
       addressline2: Fitzalan Place
@@ -304,7 +304,7 @@ registry:
       postcode: CF24 0RZ
     newcastle:
       name: Newcastle-Upon-Tyne Probate Registry
-      phone: 0191 211 2170
+      phone: 0300 303 0648
       emailReplyToId: "newcastle-emailReplyToId"
       addressline1: Newcastle DPR
       addressline2: No 1 Waterloo Square
@@ -312,7 +312,7 @@ registry:
       postcode: NE1 4DR
     winchester:
       name: Winchester Probate Registry
-      phone: 01962 814100
+      phone: 0300 303 0648
       emailReplyToId: "winchester-emailReplyToId"
       addressline1: 1st Floor
       addressline2: Southside Offices
@@ -331,7 +331,7 @@ registry:
       postcode: CM20 9QE
     bristol:
       name: Bristol District Probate Registry
-      phone: 02920 474373
+      phone: 0300 303 0648
       emailReplyToId: "bristol-emailReplyToId"
       addressline1: The Probate Registry of Wales
       addressline2: Cardiff Magistrates' Court
@@ -364,6 +364,11 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: excela@probate-test.com
+
+data-extract:
+  block:
+    size: 3000
+    numDaysInclusive: 2
 
 welsh:
   months:

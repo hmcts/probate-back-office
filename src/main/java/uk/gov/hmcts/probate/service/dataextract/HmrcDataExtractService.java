@@ -29,7 +29,7 @@ public class HmrcDataExtractService {
         } else {
             log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
-            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
             log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
                 fromDate, toDate, casesFound.size());
 
@@ -55,12 +55,13 @@ public class HmrcDataExtractService {
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
             log.error("Failed to upload HMRC file for :" + dateDesc);
-            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload HMRC file for " + dateDesc);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to upload HMRC file for " + dateDesc);
         }
     }
 
     private String buildFileName(String toDate) {
-        return "1_" + fileExtractDateFormatter.getHMRCFormattedFileDate(toDate, LocalDateTime.now()) + ".new";
+        return "1_" + fileExtractDateFormatter.getHmrcFormattedFileDate(toDate, LocalDateTime.now()) + ".new";
     }
 
 }

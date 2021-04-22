@@ -77,15 +77,30 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
-    protected ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
+    protected ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr,
+                                                                  String updatedAttr) {
         String request = getJsonFromFile(jsonFileName);
         request = replaceAllInString(request, originalAttr, updatedAttr);
         return validatePostSuccessForPayload(request, path);
     }
 
-    protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl, ResponseBody responseBody) {
+    protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
+                                          ResponseBody responseBody) {
         String expectedText = getJsonFromFile(expectedResponseFile);
         expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile, 
+            String responseDocumentUrl, ResponseBody responseBody, String expectedKey, String expectedValue) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        expectedText = expectedText.replace(expectedKey, expectedValue);
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(responseDocumentUrl);

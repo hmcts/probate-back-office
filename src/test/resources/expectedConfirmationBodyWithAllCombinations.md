@@ -39,9 +39,7 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   fee payment: your fee account for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   the stamped (receipted) IHT 421 with this application
 *   renunciation form for Tim Smith
 *   death certificate for Bob Martin
 *   a photocopy of the signed legal statement and declaration

@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -36,65 +35,68 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class ProbateManController {
 
+    private static final String SUBMISSION_NOT_ALLOWED = "Submission not allowed";
     private final ProbateManService probateManService;
     private final LegacySearchService legacySearchService;
     private final LegacyImportService legacyImportService;
     private final BusinessValidationMessageService businessValidationMessageService;
-    private static final String SUBMISSION_NOT_ALLOWED = "Submission not allowed";
 
-    @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
-                                                                            @PathVariable("id") String id) {
+    @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(
+        @PathVariable("probateManType") ProbateManType probateManType,
+        @PathVariable("id") String id) {
         ProbateManModel probateManModel = probateManService.getProbateManModel(Long.parseLong(id), probateManType);
         return ResponseEntity.ok(ProbateManCaseResponse.builder().probateManCase(probateManModel).build());
     }
 
-    @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> legacySearch(@RequestBody CallbackRequest callbackRequest,
                                                          HttpServletRequest request) {
         log.info("Performing legacy case search");
-        List<CollectionMember<CaseMatch>> caseMatchesList = legacySearchService.findLegacyCaseMatches(callbackRequest.getCaseDetails());
+        List<CollectionMember<CaseMatch>> caseMatchesList =
+            legacySearchService.findLegacyCaseMatches(callbackRequest.getCaseDetails());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .legacySearchResultRows(caseMatchesList)
-                .paragraphDetails(null)
-                .build();
+            .legacySearchResultRows(caseMatchesList)
+            .paragraphDetails(null)
+            .build();
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
-                .data(responseCaseData)
-                .build();
+            .data(responseCaseData)
+            .build();
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/legacy/doImport", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/doImport", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> doImport(@RequestBody CallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
         log.info("Performing legacy case import");
-        List<CaseMatch> rows = legacyImportService.importLegacyRows(callbackRequest.getCaseDetails().getData().getLegacySearchResultRows());
+        List<CaseMatch> rows = legacyImportService
+            .importLegacyRows(callbackRequest.getCaseDetails().getData().getLegacySearchResultRows());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .legacySearchResultRows(rows.stream().map(CollectionMember::new).collect(Collectors.toList()))
-                .paragraphDetails(null)
-                .build();
+            .legacySearchResultRows(rows.stream().map(CollectionMember::new).collect(Collectors.toList()))
+            .paragraphDetails(null)
+            .build();
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
-                .data(responseCaseData)
-                .build();
+            .data(responseCaseData)
+            .build();
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/legacy/resetSearch", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/legacy/resetSearch", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> resetSearch(@RequestBody CallbackRequest callbackRequest,
                                                         BindingResult bindingResult,
                                                         HttpServletRequest request) {
 
         log.info("submitting legacy search - invalid action");
         List<String> errors = Arrays.asList(businessValidationMessageService
-                .generateError(SUBMISSION_NOT_ALLOWED, "legacyCaseSubmissionNotAllowed").getMessage());
+            .generateError(SUBMISSION_NOT_ALLOWED, "legacyCaseSubmissionNotAllowed").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
-                .errors(errors)
-                .build();
+            .errors(errors)
+            .build();
 
         return ResponseEntity.ok(callbackResponse);
     }
