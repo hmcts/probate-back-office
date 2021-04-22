@@ -72,6 +72,7 @@
     "page3_lodgementDate_month": "01",
     "page3_lodgementDate_year": "2020",
     "page3_trustCorpPostcodeLink": "#trustCorpAddress_trustCorpAddress a.manual-link",
+    "page3_addressOfSucceededFirmPostcodeLink": "#addressOfSucceededFirm_addressOfSucceededFirm  a.manual-link",
 
     "page4_waitForText": "About the applicant(s)",
     "page4_waitForText2": "Executors that are applying",

@@ -33,10 +33,20 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField('#trustCorpAddress_PostCode', createGrantOfProbateConfig.page3_trustAddress_postcode);
             await I.fillField('#trustCorpAddress_Country', createGrantOfProbateConfig.page3_trustAddress_country);
 
-        } else if (tct === 'TCTPartSuccPowerRes') {
+        } else if (tct.indexOf('Succ') >= 0) {
             await I.waitForVisible({css: '#nameOfFirmNamedInWill'});
             await I.fillField({css: '#nameOfFirmNamedInWill'}, createGrantOfProbateConfig.page3_nameOfFirmNamedInWill);
             await I.fillField({css: '#nameOfSucceededFirm'}, createGrantOfProbateConfig.page3_nameOfSucceededFirm);
+            
+            await I.click(createGrantOfProbateConfig.page3_addressOfSucceededFirmPostcodeLink);
+
+            await I.scrollTo('#addressOfSucceededFirm_AddressLine1');
+            await I.fillField('#addressOfSucceededFirm_AddressLine1', createGrantOfProbateConfig.page3_succeededAddress_line1);
+            await I.fillField('#addressOfSucceededFirm_AddressLine2', createGrantOfProbateConfig.page3_succeededAddress_line2);
+            await I.fillField('#addressOfSucceededFirm_PostTown', createGrantOfProbateConfig.page3_succeededAddress_town);
+            await I.fillField('#addressOfSucceededFirm_PostCode', createGrantOfProbateConfig.page3_succeededAddress_postcode);
+            await I.fillField('#addressOfSucceededFirm_Country', createGrantOfProbateConfig.page3_succeededAddress_country);            
+
             await I.click({css: '#morePartnersHoldingPowerReserved-No'});
         }
 
@@ -44,11 +54,11 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             tct === 'TCTPartSuccAllRenouncing' || tct === 'TCTPartAllRenouncing' || tct === 'TCTPartSuccOthersRenouncing' ||
             tct === 'TCTPartOthersRenouncing' || tct === 'TCTNoT') {
             //make sure both immediately visible
-            await I.waitForVisible('#whoSharesInCompanyProfits-Partners');
+            await I.waitForVisible('#whoSharesInCompanyProfits-partner');
 
-            await I.scrollTo('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Members');
+            await I.scrollTo('#whoSharesInCompanyProfits-partner');
+            await I.click('#whoSharesInCompanyProfits-partner');
+            await I.click('#whoSharesInCompanyProfits-member');
         } else {
             // make sure fields are hidden
             const numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});

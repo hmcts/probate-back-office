@@ -50,7 +50,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
 
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
-    await I.click(grantOfProbateConfig.UKpostcodeLink);
+    await I.click(grantOfProbateConfig.page2_trustCorpPostcodeLink);
     await I.fillField('#trustCorpAddress_AddressLine1', grantOfProbateConfig.address_line1);
     await I.fillField('#trustCorpAddress_AddressLine2', grantOfProbateConfig.address_line2);
     await I.fillField('#trustCorpAddress_AddressLine3', grantOfProbateConfig.address_line3);
