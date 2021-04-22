@@ -30,12 +30,12 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Testprimaryexecutorfirstname", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLastNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Testprimaryexecutorlastname", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastname", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Deceasedfirstname \nDeceasedlastname", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("DeceasedFirstName \nDeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
@@ -85,7 +85,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorfirmname "
+        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorFirmName "
                 + "to sign a statement of truth on their behalf.",
                 DOC_NAME, VALIDATE_PROBATE_URL);
     }
@@ -102,12 +102,12 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorFirmNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Solicitorfirmname", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("SolicitorFirmName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyAdditionalExecutor1NameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Additionalexecutor1firstname Additionalexecutor1lastname",
+        validatePostRequestSuccessForLegalStatement("AdditionalExecutor1FirstName AdditionalExecutor1LastName",
             DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
@@ -265,9 +265,15 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
-            textContent = textContent.replaceAll(Pattern.quote("\r"), "");
-            final String valMinusCr = validationString.replaceAll(Pattern.quote("\r"), "");
-            assertTrue(textContent.contains(valMinusCr));
+            textContent = textContent
+                    .replaceAll(Pattern.quote("\r"), "")
+                    .replaceAll(Pattern.quote("\n"), "");
+
+            final String valMinusCrLf = validationString
+                            .replaceAll(Pattern.quote("\r"), "")
+                            .replaceAll(Pattern.quote("\n"), "");
+
+            assertTrue(textContent.contains(valMinusCrLf));
             
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
