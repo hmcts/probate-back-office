@@ -64,6 +64,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -92,7 +93,7 @@ public class CallbackResponseTransformer {
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
-        LEGAL_STATEMENT_ADMON};
+        LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";

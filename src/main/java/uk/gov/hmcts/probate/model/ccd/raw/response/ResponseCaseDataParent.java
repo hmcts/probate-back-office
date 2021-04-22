@@ -41,7 +41,7 @@ public class ResponseCaseDataParent {
     protected final String registrySequenceNumber;
     protected final String dispenseWithNotice;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;

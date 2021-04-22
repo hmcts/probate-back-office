@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -24,9 +25,15 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
-import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
+import static uk.gov.hmcts.probate.util.CommonVariables.DATE_FORMATTED;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_FORENAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_FORENAME_FORMATTED;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.DECEASED_SURNAME_FORMATTED;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -35,12 +42,13 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.PRIMARY_EXEC_ALIAS_NAMES;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SolicitorApplicationCompletionTransformerTest {
+public class LegalStatementExecutorTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -54,7 +62,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     private ExecutorListMapperService executorListMapperServiceMock;
 
     @InjectMocks
-    private SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformerMock;
+    private LegalStatementExecutorTransformer legalStatementExecutorTransformerMock;
 
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
@@ -66,10 +74,10 @@ public class SolicitorApplicationCompletionTransformerTest {
     @Before
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
-        additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+        additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
 
         additionalExecutorNotApplying = new ArrayList<>();
-        additionalExecutorNotApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        additionalExecutorNotApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
 
         solsAdditionalExecutorList = new ArrayList<>();
         solsAdditionalExecutorList.add(SOLS_EXEC_ADDITIONAL_APPLYING);
@@ -93,6 +101,9 @@ public class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+        execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
@@ -102,15 +113,25 @@ public class SolicitorApplicationCompletionTransformerTest {
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        CaseData caseData = caseDataBuilder.build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromTrustCorpExecutorsToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.mapFromSolsAdditionalExecutorListToApplyingExecutors(
+                caseDetailsMock.getData())).thenReturn(additionalExecutorApplying);
+        when(executorListMapperServiceMock.addSolicitorToApplyingList(
+                caseDetailsMock.getData(), execsApplying)).thenReturn(execsApplying);
 
-        SolicitorApplicationCompletionTransformer solJourneyCompletion =
-            new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService());
+        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+                caseDetailsMock.getData());
 
-        solJourneyCompletion.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
-        assertEquals(2, caseData.getAdditionalExecutorsApplying().size());
-        assertEquals(3, caseData.getExecutorsApplyingLegalStatement().size());
+        List<CollectionMember<AdditionalExecutorApplying>> legalStatementExecutors = new ArrayList<>();
+        legalStatementExecutors.addAll(additionalExecutorApplying);
+        legalStatementExecutors.addAll(additionalExecutorApplying);
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(legalStatementExecutors, caseData.getExecutorsApplyingLegalStatement());
+        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 
     @Test
@@ -123,19 +144,19 @@ public class SolicitorApplicationCompletionTransformerTest {
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
-        CaseData caseData = caseDataBuilder.build();
-
-        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
                 caseDetailsMock.getData())).thenReturn(additionalExecutorNotApplying);
         when(executorListMapperServiceMock.addSolicitorToNotApplyingList(
                 caseDetailsMock.getData(), additionalExecutorNotApplying)).thenReturn(additionalExecutorNotApplying);
 
-        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
+        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+                caseDetailsMock.getData());
 
         List<CollectionMember<AdditionalExecutorNotApplying>> legalStatementExecutors = new ArrayList<>();
         legalStatementExecutors.addAll(additionalExecutorNotApplying);
 
+        CaseData caseData = caseDetailsMock.getData();
         assertEquals(legalStatementExecutors, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
@@ -143,19 +164,20 @@ public class SolicitorApplicationCompletionTransformerTest {
     @Test
     public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
-            .primaryApplicantForenames(EXEC_FIRST_NAME)
-            .primaryApplicantSurname(EXEC_SURNAME)
-            .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
-            .primaryApplicantAddress(EXEC_ADDRESS)
-            .primaryApplicantIsApplying(YES);
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .primaryApplicantIsApplying(YES);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
+
+        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+                caseDetailsMock.getData());
 
         CaseData caseData = caseDetailsMock.getData();
-        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
-
         assertEquals(additionalExecutorApplying, caseData.getExecutorsApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
@@ -169,13 +191,43 @@ public class SolicitorApplicationCompletionTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
-                    ADDITIONAL_EXECUTOR_NOT_APPLYING));
+                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
+
+        legalStatementExecutorTransformerMock.mapSolicitorExecutorFieldsToLegalStatementExecutorFields(
+                caseDetailsMock.getData());
 
         CaseData caseData = caseDetailsMock.getData();
-        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnCompletion(caseData);
-
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
+    }
+
+    @Test
+    public void shouldFormatCaseDataForLegalStatement() {
+        List<CollectionMember<CodicilAddedDate>> codicilAddedDate = new ArrayList<>();
+        codicilAddedDate.add(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(DATE).build()));
+
+        caseDataBuilder
+                .dispenseWithNoticeLeaveGivenDate(DATE)
+                .codicilAddedDateList(codicilAddedDate)
+                .deceasedForenames(DECEASED_FORENAME)
+                .deceasedSurname(DECEASED_SURNAME)
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(dateFormatterServiceMock.formatDate(
+                DATE)).thenReturn(DATE_FORMATTED);
+
+        legalStatementExecutorTransformerMock.formatFields(
+                caseDetailsMock.getData());
+
+        List<CollectionMember<String>> formattedCodicilDateList = new ArrayList<>();
+        formattedCodicilDateList.add(new CollectionMember<>(DATE_FORMATTED));
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(DECEASED_FORENAME_FORMATTED, caseData.getDeceasedForenames());
+        assertEquals(DECEASED_SURNAME_FORMATTED, caseData.getDeceasedSurname());
+        assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
+        assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
+        assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
     }
 }

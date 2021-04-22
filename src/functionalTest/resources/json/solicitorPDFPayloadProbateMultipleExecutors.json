@@ -112,6 +112,7 @@
         }
       ],
       "titleAndClearingType": "TCTPartSuccPowerRes",
+      "anyOtherApplyingPartners": "Yes",
       "solsAdditionalExecutorList": [
         {
           "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
@@ -153,6 +154,7 @@
         "AddressLine2": "addressline 2",
         "AddressLine3": "addressline 3"
       },
+      "theFollowingPropertyIsInvalid": "asThisIsNotTcTitleAndClearing",
       "additionalExecutorsTrustCorpList": [
         {
           "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",

@@ -119,10 +119,10 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 
         HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
-        Assert.assertEquals("exfn1 exln1", executorApplying1.get("applyingExecutorName"));
+        Assert.assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
 
         HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
-        Assert.assertEquals("exfn2 exln2", executorApplying2.get("applyingExecutorName"));
+        Assert.assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
         Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
         Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
                 .get("AddressLine1"));

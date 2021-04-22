@@ -542,6 +542,25 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
+    public void shouldSuccesfullyGenerateTrustCorpsProbateDeclaration() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbateTrustCorps.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(
+                        jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                                .value("legalStatementProbateTrustCorps.pdf"));
+    }
+
+    @Test
     public void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);

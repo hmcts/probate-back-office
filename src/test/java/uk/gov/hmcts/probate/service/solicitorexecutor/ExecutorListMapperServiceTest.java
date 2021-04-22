@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,13 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
-import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_PROFESSIONAL;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -121,6 +120,30 @@ public class ExecutorListMapperServiceTest {
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+    }
+
+    @Test
+    public void shouldMapAdditionalExecutorsApplyingList() {
+        CaseData caseData = CaseData.builder().additionalExecutorsApplying(additionalExecutorsApplyingMock).build();
+        List<CollectionMember<AdditionalExecutorApplying>> result = underTest
+                .mapAdditionalApplyingExecutors(caseData);
+
+        assertEquals(EXEC_NAME, result.get(0).getValue().getApplyingExecutorName());
+        assertEquals(EXEC_NAME, result.get(1).getValue().getApplyingExecutorName());
+        assertEquals(2, result.size());
+    }
+
+
+    @Test
+    public void shouldRemoveSolApplyingExec() {
+        additionalExecutorsApplyingMock.remove(1);
+        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
+        newExecsApplying = underTest.removeSolicitorFromApplyingList(additionalExecutorsApplyingMock);
+
+        assertEquals(1, newExecsApplying.size());
+        assertEquals(EXEC_FIRST_NAME, newExecsApplying.get(0).getValue().getApplyingExecutorFirstName());
+        assertEquals(EXEC_SURNAME, newExecsApplying.get(0).getValue().getApplyingExecutorLastName());
+        assertEquals(EXEC_ID, newExecsApplying.get(0).getId());
     }
 
     @Test
@@ -244,15 +267,15 @@ public class ExecutorListMapperServiceTest {
         CollectionMember<AdditionalExecutorApplying> result =
                 underTest.mapFromSolicitorToApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
-                null, AdditionalExecutorApplying.builder()
+                SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
                 .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
-                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
                 .build());
 
-        assertEquals(result.getValue(), expected.getValue());
+        assertEquals(expected.getValue(), result.getValue());
     }
 
     @Test

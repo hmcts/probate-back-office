@@ -18,6 +18,11 @@ public class CommonVariables {
     public static final String YES = "Yes";
     public static final String NO = "No";
 
+    public static final String DECEASED_FORENAME = "Deceased forename";
+    public static final String DECEASED_SURNAME = "Deceased surname";
+    public static final String DECEASED_FORENAME_FORMATTED = "Deceased Forename";
+    public static final String DECEASED_SURNAME_FORMATTED = "Deceased Surname";
+
     public static final String SOLICITOR_SOT_FULLNAME = "Solicitor Forename Solicitor Surname";
     public static final String SOLICITOR_SOT_FORENAME = "Solicitor Forename";
     public static final String SOLICITOR_SOT_SURNAME = "Solicitor Surname";
@@ -33,9 +38,9 @@ public class CommonVariables {
     public static final String PRIMARY_APPLICANT_SURNAME = "Primary app surname";
     public static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
 
-    public static final String EXEC_FIRST_NAME = "ExFName";
-    public static final String EXEC_SURNAME = "EXSName";
-    public static final String EXEC_NAME = "ExFName EXSName";
+    public static final String EXEC_FIRST_NAME = "Exfname";
+    public static final String EXEC_SURNAME = "Exsname";
+    public static final String EXEC_NAME = "Exfname Exsname";
     public static final String EXEC_TRUST_CORP_POS = "Trustcorp Position";
     public static final String EXEC_NAME_DIFF = "Ex name difference comment";
     public static final String EXEC_WILL_NAME = "Ex will name";
@@ -65,10 +70,29 @@ public class CommonVariables {
     public static final String TRUST_CORP_NAME = "Trust Corp Name";
     public static final String LODGEMENT_ADDRESS = "London";
     public static final LocalDate DATE = LocalDate.of(2021, 1, 1);
+    public static final String DATE_FORMATTED = "1st January 2020";
     public static final String DISPENSE_WITH_NOTICE_LEAVE = "Dispense with notice";
-    public static final String DISPENSE_WITH_NOTICE_LEAVE_DATE = "2020-01-01";
     public static final String DISPENSE_WITH_NOTICE_OVERVIEW = "Overview";
     public static final String DISPENSE_WITH_NOTICE_SUPPORTING_DOCS = "Supporting docs";
+
+    public static final AdditionalExecutorApplying EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(EXEC_NAME)
+            .applyingExecutorFirstName(EXEC_FIRST_NAME)
+            .applyingExecutorLastName(EXEC_SURNAME)
+            .applyingExecutorPhoneNumber(EXEC_PHONE)
+            .applyingExecutorEmail(EXEC_EMAIL)
+            .applyingExecutorAddress(EXEC_ADDRESS)
+            .applyingExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+            .build();
+
+    public static final AdditionalExecutorNotApplying EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorName(EXEC_NAME)
+            .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
+            .notApplyingExecutorDispenseWithNotice(YES)
+            .notApplyingExecutorDispenseWithNoticeLeaveGiven(YES)
+            .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(LocalDate.of(2021, 1, 1))
+            .build();
+
 
     public static final AdditionalExecutorApplying SOLICITOR_ADDITIONAL_EXECUTOR_APPLYING =
             AdditionalExecutorApplying.builder()
