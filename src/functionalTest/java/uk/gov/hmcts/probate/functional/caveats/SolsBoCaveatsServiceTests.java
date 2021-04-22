@@ -47,6 +47,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String RESPONSE_CAVEAT_NO_DOB_WELSH = "caveatPayloadNoDOBWelshResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR = "caveatPayloadNotificationsSolicitor.json";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_WELSH = "caveatPayloadNotificationsSolicitorWelsh.json";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH = 
+        "caveatPayloadNotificationsSolicitorResponseWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOB.json";
     private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse" 
         + ".txt";
@@ -173,6 +176,14 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE, EMAIL_NOTIFICATION_URL,
             responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
     }
+
+    @Test
+    public void verifyCaveatRaisedSolicitorPaperEmailContentsWelsh() {
+        ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_RAISED);
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
+            responseBody, EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+    }
+
 
     @Test
     public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOB() {
