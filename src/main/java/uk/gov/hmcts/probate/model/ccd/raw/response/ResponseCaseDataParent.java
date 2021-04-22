@@ -52,7 +52,9 @@ public class ResponseCaseDataParent {
     protected final String lodgementDate;
     protected final String lodgementAddress;
     protected final String nameOfFirmNamedInWill;
+    protected SolsAddress addressOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected SolsAddress addressOfSucceededFirm;
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
@@ -60,7 +62,6 @@ public class ResponseCaseDataParent {
     protected final String solsForenames;
     protected final String solsSolicitorWillSignSOT;
     protected final String solsSurname;
-    protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
     protected String solsIdentifiedNotApplyingExecs;
     protected String solsIdentifiedApplyingExecs;

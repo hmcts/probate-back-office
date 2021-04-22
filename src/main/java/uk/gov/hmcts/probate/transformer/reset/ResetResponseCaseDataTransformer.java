@@ -52,8 +52,9 @@ public class ResetResponseCaseDataTransformer {
                 .otherPartnersApplyingAsExecutors(null)
                 .nameOfSucceededFirm(null)
                 .nameOfFirmNamedInWill(null)
-                .whoSharesInCompanyProfits(null)
-                .soleTraderOrLimitedCompany(null);
+                .addressOfFirmNamedInWill(null)
+                .addressOfSucceededFirm(null)
+                .whoSharesInCompanyProfits(null);
     }
 
     private void nullDispenseWithNoticeOptions(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
