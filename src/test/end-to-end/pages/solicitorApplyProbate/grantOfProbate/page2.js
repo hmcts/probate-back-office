@@ -73,9 +73,5 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
 
-    await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
-    await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);
-    await I.fillField('#lodgementDate-month', grantOfProbateConfig.page2_lodgementDate_month);
-    await I.fillField('#lodgementDate-year', grantOfProbateConfig.page2_lodgementDate_year);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

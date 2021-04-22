@@ -768,6 +768,24 @@ public class CaseDataTest {
                 "POSTCODE",
                 "");
 
+        SolsAddress addressOfSucceededFirm = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
+        SolsAddress addressOfFirmNamedInWill = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
         final CaseData caseData = CaseData.builder()
                 .dispenseWithNotice("Yes")
                 .dispenseWithNoticeLeaveGiven("No")
@@ -776,6 +794,8 @@ public class CaseDataTest {
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .trustCorpAddress(trustCorpAddress)
+                .addressOfSucceededFirm(addressOfSucceededFirm)
+                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LOCAL_DATE)
@@ -788,6 +808,8 @@ public class CaseDataTest {
         assertEquals("TCTTrustCorpResWithApp", caseData.getTitleAndClearingType());
         assertEquals("Trust corp name", caseData.getTrustCorpName());
         assertEquals(trustCorpAddress, caseData.getTrustCorpAddress());
+        assertEquals(addressOfSucceededFirm, caseData.getAddressOfSucceededFirm());
+        assertEquals(addressOfFirmNamedInWill, caseData.getAddressOfFirmNamedInWill());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());
@@ -813,7 +835,6 @@ public class CaseDataTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
-                .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
@@ -826,7 +847,6 @@ public class CaseDataTest {
         assertEquals("Test Solicitor Ltd", caseData.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, caseData.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", caseData.getNameOfSucceededFirm());
-        assertEquals("No", caseData.getSoleTraderOrLimitedCompany());
         assertEquals("Partners", caseData.getWhoSharesInCompanyProfits().get(0));
         assertEquals("Members", caseData.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", caseData.getMorePartnersHoldingPowerReserved());
