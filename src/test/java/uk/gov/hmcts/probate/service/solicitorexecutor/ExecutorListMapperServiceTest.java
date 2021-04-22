@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +23,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
@@ -50,7 +50,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExecutorListMapperServiceTest {

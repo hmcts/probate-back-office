@@ -15,12 +15,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -87,16 +84,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_DIED_ON = "died on";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
-        "I, Firstname Lastname of 123 Street, Town, Postcode, make the following statement";
+        "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
 
     // doesn't lowercase the names before then capitalising first letter
     private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
             "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
 
-    // Should this be Firstname Lastname?
     private static final String APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA =
             "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
-                    + "addressline 2, addressline 3, posttown, county, postcode, country and Firstname3 Lastname3"
+                    + "addressline 2, addressline 3, posttown, county, postcode, country and FirstName3 LastName3"
                     + " of addressline 1, addressline 2, addressline 3, posttown, county, postcode, country";
 
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
@@ -1040,8 +1036,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
         response.prettyPrint();
 
-        assertThat(paragraphDetails.size(), is(3));
-        assertThat(templateName, is(equalTo(ParagraphCode.MissInfoWill.getTemplateName())));
+        assertTrue(paragraphDetails.size() ==3);
+        assertEquals(templateName, ParagraphCode.MissInfoWill.getTemplateName());
     }
 
     @Test
@@ -1057,7 +1053,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(response.asString());
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        assertThat(jsonPath.get("data.ihtReferenceNumber"), is(equalTo("ONLINE-123434")));
+        assertEquals(jsonPath.get("data.ihtReferenceNumber"), "ONLINE-123434");
     }
 
     @Test
@@ -1069,8 +1065,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
-        assertThat(jsonPath.get("data.reprintDocument.list_items[0].label"), is(equalTo("Grant")));
-        assertThat(jsonPath.get("data.reprintDocument.list_items[0].code"), is(equalTo("WelshGrantFileName")));
+        assertEquals(jsonPath.get("data.reprintDocument.list_items[0].label"), "Grant");
+        assertEquals(jsonPath.get("data.reprintDocument.list_items[0].code"), "WelshGrantFileName");
     }
 
     @Test
@@ -1084,9 +1080,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .body(jsonAsString)
             .when().post(DEFAULT_PRINT_VALUES)
             .andReturn();
-        assertThat(response.getStatusCode(), is(equalTo(200)));
+        assertEquals(response.getStatusCode(), 200);
         JsonPath jsonPath = JsonPath.from(response.asString());
-        assertThat(jsonPath.get("data.ihtReferenceNumber"), is(equalTo("ONLINE-123434")));
+        assertEquals(jsonPath.get("data.ihtReferenceNumber"), "ONLINE-123434");
     }
 
     @Test
@@ -1102,8 +1098,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         responseBody.prettyPrint();
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
-        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test
@@ -1121,7 +1117,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         response = response.replaceAll(Pattern.quote("\n"), "")
                 .replaceAll(Pattern.quote("\r"), "");
 
-        assertThat(response, is(equalTo(getJsonFromFile("/document/previewLetterResponse.txt"))));
+        assertEquals(response, getJsonFromFile("/document/previewLetterResponse.txt"));
     }
 
     @Test
@@ -1129,8 +1125,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json", PREVIEW_LETTER);
         responseBody.prettyPrint();
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertThat(jsonPath.get("data.ihtFormId"), is(equalTo("IHT205")));
-        assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test
@@ -1141,7 +1137,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .body(getJsonFromFile("/document/rePrint.json"))
             .when().post(RE_PRINT)
             .andReturn();
-        assertThat(response.statusCode(), is(equalTo(403)));
+        assertEquals(response.statusCode(), 403);
         assertTrue(response.getBody().asString().contains("Forbidden"));
 
     }

@@ -51,7 +51,7 @@ public class FormattingService {
         if (name == null) {
             return null;
         }
-        return Arrays.stream(name.toLowerCase().split("\\s+"))
+        return Arrays.stream(name.split("\\s+"))
                 .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
                 .collect(Collectors.joining(" "));
     }
