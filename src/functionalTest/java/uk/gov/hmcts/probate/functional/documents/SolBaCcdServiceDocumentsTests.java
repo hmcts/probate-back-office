@@ -1036,7 +1036,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
         response.prettyPrint();
 
-        assertTrue(paragraphDetails.size() ==3);
+        assertTrue(paragraphDetails.size() == 3);
         assertEquals(templateName, ParagraphCode.MissInfoWill.getTemplateName());
     }
 
