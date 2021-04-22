@@ -25,7 +25,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible({css: '#trustCorpName'});
             await I.fillField('#trustCorpName', createGrantOfProbateConfig.page3_nameOfTrustCorp);
 
-            await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+            await I.click(createGrantOfProbateConfig.page3_trustCorpPostcodeLink);
 
             await I.fillField('#trustCorpAddress_AddressLine1', createGrantOfProbateConfig.page3_trustAddress_line1);
             await I.fillField('#trustCorpAddress_AddressLine2', createGrantOfProbateConfig.page3_trustAddress_line2);
@@ -51,7 +51,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.click('#whoSharesInCompanyProfits-Members');
         } else {
             // make sure fields are hidden
-            numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
+            const numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
             assert (numEls === 0);
         }
     }
