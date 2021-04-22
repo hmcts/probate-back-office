@@ -35,7 +35,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyLastNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastname", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
