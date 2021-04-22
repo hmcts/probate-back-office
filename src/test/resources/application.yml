@@ -368,7 +368,7 @@ excelaEmail: excela@probate-test.com
 data-extract:
   block:
     size: 3000
-    numDaysInclusive: 4
+    numDaysInclusive: 2
 
 welsh:
   months:

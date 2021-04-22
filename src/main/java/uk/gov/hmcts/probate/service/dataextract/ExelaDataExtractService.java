@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
 
@@ -52,8 +51,8 @@ public class ExelaDataExtractService {
             log.info("Sending email to Excela");
             try {
                 notificationService.sendExcelaEmail(filteredCases);
-            } catch (NotificationClientException e) {
-                log.warn("NotificationService exception sending email to Exela", e);
+            } catch (Exception e) {
+                log.info("NotificationService exception sending email to Exela", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
                         "Error on NotificationService sending email to Exela");
             }
