@@ -23,15 +23,16 @@
   "page2_prev_identified_execs_text": "Previously identified executors",
 
   "page2_dispenseWithNotice": "Yes",
-  "page2_titleAndClearingType": "Trust Corporation (resolution lodged with this application)",
+  "page2_titleAndClearingType": "Trust corporation (resolution lodged with this application)",
   "page2_nameOfTrustCorp": "Trust Corporation Name",
   "page2_positionInTrustCorp": "Solicitor",
-  "page2_waitForAnyOtherTcPartners": "Are there any other partners who are applying to act on behalf of the trust corporation?",
+  "page2_waitForAnyOtherTcPartners": "Is anyone else applying to act as an executor on behalf of the trust corporation?",
   "page2_waitForAdditionPerson": "Add all people acting on behalf of trust corporation",
   "page2_lodgementAddress": "London",
   "page2_lodgementDate_day": "01",
   "page2_lodgementDate_month": "01",
   "page2_lodgementDate_year": "2020",
+  "page2_trustCorpPostcodeLink": "#trustCorpAddress_trustCorpAddress a.manual-link",
 
   "page2_waitForText": "About the executors",
   "page2_primaryApplicantFirstName": "E2E Primary Applicant Firstname",

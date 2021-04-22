@@ -603,7 +603,17 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "</div>\n"
             + "</div>\n";
 
-        assertEquals(expectedHtml, taskList);
+        // We are having issues running in Jenkins but not locally.
+        // Remove \n's in attempt to resolve
+        final String expectedHtmlMinusCrLf = expectedHtml
+                .replaceAll(Pattern.quote("\r"), "")
+                .replaceAll(Pattern.quote("\n"), "");
+
+        final String taskListMinusCrLf = taskList
+                .replaceAll(Pattern.quote("\r"), "")
+                .replaceAll(Pattern.quote("\n"), "");
+
+        assertEquals(expectedHtmlMinusCrLf, taskListMinusCrLf);
     }
 
     @Test

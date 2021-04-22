@@ -115,6 +115,7 @@
           }
         }
       ],
+      "dispenseWithNotice": "Yes",
       "totalFeePaperForm": "21600",
       "dateOfMarriageOrCP": "2009-01-01",
       "extraCopiesOfGrant": "1",
@@ -200,12 +201,13 @@
       "boCaveatStopSendToBulkPrint": "Yes",
       "primaryApplicantPhoneNumber": "01793 987654",
       "boRequestInfoSendToBulkPrint": "Yes",
+      "dispenseWithNoticeLeaveGiven": "Yes",
       "childrenOverEighteenSurvived": "1",
       "primaryApplicantEmailAddress": "test-sol@probate-test.com",
       "probateSotDocumentsGenerated": [],
       "boCaveatStopEmailNotification": "No",
       "boGrantReissueSendToBulkPrint": "Yes",
-      "childrenUnderEighteenSurvived": "1",
+      "dispenseWithNoticeLeaveGivenDate": "2010-10-10",
       "probateNotificationsGenerated": [
         {
           "id": "bda21997-7cc4-45f5-8271-eff5a3da3c25",

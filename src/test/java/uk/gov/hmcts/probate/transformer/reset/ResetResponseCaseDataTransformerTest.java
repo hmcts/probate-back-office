@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNull;
 import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_LEAVE;
-import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_LEAVE_DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_OVERVIEW;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_SUPPORTING_DOCS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
@@ -95,7 +94,7 @@ public class ResetResponseCaseDataTransformerTest {
                 .dispenseWithNotice(NO)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .dispenseWithNoticeLeaveGiven(DISPENSE_WITH_NOTICE_LEAVE)
-                .dispenseWithNoticeLeaveGivenDate(DISPENSE_WITH_NOTICE_LEAVE_DATE)
+                .dispenseWithNoticeLeaveGivenDate(DATE)
                 .dispenseWithNoticeOverview(DISPENSE_WITH_NOTICE_OVERVIEW)
                 .dispenseWithNoticeSupportingDocs(DISPENSE_WITH_NOTICE_SUPPORTING_DOCS);
 
@@ -185,7 +184,7 @@ public class ResetResponseCaseDataTransformerTest {
                 .dispenseWithNotice(NO)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
                 .dispenseWithNoticeLeaveGiven(DISPENSE_WITH_NOTICE_LEAVE)
-                .dispenseWithNoticeLeaveGivenDate(DISPENSE_WITH_NOTICE_LEAVE_DATE)
+                .dispenseWithNoticeLeaveGivenDate(DATE)
                 .dispenseWithNoticeOverview(DISPENSE_WITH_NOTICE_OVERVIEW)
                 .dispenseWithNoticeSupportingDocs(DISPENSE_WITH_NOTICE_SUPPORTING_DOCS);
 

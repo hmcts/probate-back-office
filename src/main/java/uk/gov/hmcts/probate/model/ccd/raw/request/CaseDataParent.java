@@ -46,7 +46,11 @@ public class CaseDataParent {
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
+    // Not final as field set in CaseDataTransformer
+    protected String dispenseWithNoticeLeaveGivenDateFormatted;
+    // Not final as field set in CaseDataTransformer
+    protected List<CollectionMember<String>> codicilAddedFormattedDateList;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     // Not final so field can be reset in CaseDataTransformer

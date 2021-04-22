@@ -132,12 +132,47 @@
           "id": "ac04f534-768a-461b-b5a1-2160c56f7424",
           "value": {
             "notApplyingExecutorName": "executor1_name",
+            "notApplyingExecutorReason": "DiedBefore"
+          }
+        },
+        {
+          "id": "ac04f534-768a-461b-b5a1-2160c56f7524",
+          "value": {
+            "notApplyingExecutorName": "executor2_name",
+            "notApplyingExecutorReason": "DiedAfter"
+          }
+        },
+        {
+          "id": "ac04f534-768a-461b-b5a1-2160c51f7524",
+          "value": {
+            "notApplyingExecutorName": "executor3_name",
+            "notApplyingExecutorReason": "Renunciation"
+          }
+        },
+        {
+          "id": "ac04f534-768a-461b-b5a1-2120c51f7524",
+          "value": {
+            "notApplyingExecutorName": "executor4_name",
+            "notApplyingExecutorReason": "PowerReserved"
+          }
+        },
+        {
+          "id": "ac04f534-768a-461b-b5a1-2120w51f7524",
+          "value": {
+            "notApplyingExecutorName": "executor5_name",
+            "notApplyingExecutorReason": "MentallyIncapable"
+          }
+        },
+        {
+          "id": "ac04f534-768a-461b-b5a1-2120w51f1524",
+          "value": {
+            "notApplyingExecutorName": "executor6_name",
             "notApplyingExecutorReason": "PowerReserved",
             "notApplyingExecutorNotified": "Yes",
-            "notApplyingExecutorNameOnWill": "executor1_alias",
+            "notApplyingExecutorNameOnWill": "executor6_alias",
             "notApplyingExecutorDispenseWithNotice": "Yes",
             "notApplyingExecutorNameDifferenceComment": "why not",
-            "notApplyingExecutorDispenseWithNoticeLeaveGiven": "Yes",
+            "notApplyingExecutorDispenseWithNoticeLeaveGiven": "No",
             "notApplyingExecutorDispenseWithNoticeLeaveGivenDate": "2020-10-10"
           }
         }

@@ -37,6 +37,7 @@
         "AddressLine3": ""
       },
       "titleAndClearingType": "TCTTrustCorpResWithApp",
+      "anyOtherApplyingPartnersTrustCorp": "Yes",
       "paperForm": "no",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
@@ -140,6 +141,7 @@
           }
         }
       ],
+      "theFollowingPropertyIsInvalid": "asThisIsTrustCorpsTitleAndClearing",
       "otherPartnersApplyingAsExecutors": [
         {
           "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
