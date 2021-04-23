@@ -65,7 +65,7 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
-                                                        boolean hasDeceasedAlias) {
+                                                        boolean hasDeceasedAlias, boolean hasDOD) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
         if (hasDeceasedAlias) {
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
@@ -87,7 +87,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .deceasedAliasNameList(hasDeceasedAlias ? deceasedAliases : null)
             .caseType("gop")
             .applicationType(applicationType)
-            .deceasedDateOfDeath(LocalDate.of(2020, 12, 31))
+            .deceasedDateOfDeath(hasDOD ? LocalDate.of(2020, 12, 31) : null)
             .deceasedAddress(deceasedAddress)
             .additionalExecutorsApplying(additionalExecsApplying)
             .primaryApplicantForenames("PrimaryFN")
@@ -177,10 +177,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true)
-            .build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false)
-            .build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false, 
+            true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -196,10 +196,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true, false, true)
-            .build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false)
-            .build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true, false, true, 
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false, 
+            true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -209,6 +209,25 @@ public class SmeeAndFordPersonalisationServiceTest {
 
         assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoDocs.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+            false).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false,
+            false).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNullDOD.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
     }

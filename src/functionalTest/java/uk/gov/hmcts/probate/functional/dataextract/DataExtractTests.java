@@ -13,7 +13,6 @@ public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
     private static final String EXCELA_URL = "/data-extract/exela";
     private static final String SMEE_AND_FORD_URL = "/data-extract/smee-and-ford";
-    private static final String SMEE_AND_FORD_RESPONSE = "dataExtractSmeeAndFordEmailResponse.txt";
     private static final String HMRC_URL = "/data-extract/hmrc";
 
     private static final String HMRC_DATA_EXTRACT_COMPLETION_MESSAGE = "Perform HMRC data extract finished";

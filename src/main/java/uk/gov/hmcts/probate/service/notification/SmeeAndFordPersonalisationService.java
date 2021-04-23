@@ -69,41 +69,48 @@ public class SmeeAndFordPersonalisationService {
         data.append(NEW_LINE);
 
         for (ReturnedCaseDetails retCase : cases) {
-            data.append(retCase.getData().getRegistryLocation());
-            data.append(SEP);
-            data.append(CONTENT_DATE.format(LocalDate.parse(retCase.getData().getGrantIssuedDate())));
-            data.append(SEP);
-            data.append(retCase.getId().toString());
-            data.append(SEP);
-            data.append(getDeceasedNameWithHonours(retCase.getData()));
-            data.append(SEP);
-            data.append(getDeceasedAliasNames(retCase.getData()));
-            data.append(SEP);
-            data.append(getCaseType(retCase.getData()));
-            data.append(SEP);
-            data.append(CONTENT_DATE.format(retCase.getData().getDeceasedDateOfDeath()));
-            data.append(SEP);
-            data.append(getAddress(retCase.getData().getDeceasedAddress()));
-            data.append(SEP);
-            data.append(getApplyingExecutorDetails(retCase.getData().getAdditionalExecutorsApplying()));
-            data.append(SEP);
-            data.append(getPrimaryApplicantDetails(retCase.getData()));
-            data.append(SEP);
-            data.append(retCase.getData().getIhtGrossValue().toString());
-            data.append(SEP);
-            data.append(retCase.getData().getIhtNetValue().toString());
-            data.append(SEP);
-            data.append(getSolicitorDetails(retCase.getData()));
-            data.append(SEP);
-            data.append(CONTENT_DATE.format(retCase.getData().getDeceasedDateOfBirth()));
-            data.append(SEP);
-            data.append(hasCodicil(retCase.getData()));
-            data.append(SEP);
-            data.append(getWillFileName(retCase.getData()));
-            data.append(SEP);
-            data.append(getGrantFileName(retCase.getData()));
-
-            data.append(NEW_LINE);
+            CaseData currentCaseData = retCase.getData();
+            try {
+                data.append(currentCaseData.getRegistryLocation());
+                data.append(SEP);
+                data.append(CONTENT_DATE.format(LocalDate.parse(currentCaseData.getGrantIssuedDate())));
+                data.append(SEP);
+                data.append(retCase.getId().toString());
+                data.append(SEP);
+                data.append(getDeceasedNameWithHonours(currentCaseData));
+                data.append(SEP);
+                data.append(getDeceasedAliasNames(currentCaseData));
+                data.append(SEP);
+                data.append(getCaseType(currentCaseData));
+                data.append(SEP);
+                data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfDeath()));
+                data.append(SEP);
+                data.append(getAddress(currentCaseData.getDeceasedAddress()));
+                data.append(SEP);
+                data.append(getApplyingExecutorDetails(currentCaseData.getAdditionalExecutorsApplying()));
+                data.append(SEP);
+                data.append(getPrimaryApplicantDetails(currentCaseData));
+                data.append(SEP);
+                data.append(currentCaseData.getIhtGrossValue().toString());
+                data.append(SEP);
+                data.append(currentCaseData.getIhtNetValue().toString());
+                data.append(SEP);
+                data.append(getSolicitorDetails(currentCaseData));
+                data.append(SEP);
+                data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
+                data.append(SEP);
+                data.append(hasCodicil(currentCaseData));
+                data.append(SEP);
+                data.append(getWillFileName(currentCaseData));
+                data.append(SEP);
+                data.append(getGrantFileName(currentCaseData));
+                data.append(NEW_LINE);
+            } catch (Exception e) {
+                data.append(retCase.getId().toString());
+                data.append(", ");
+                data.append(e.toString());
+                data.append("\n");
+            }
         }
         return data;
     }
