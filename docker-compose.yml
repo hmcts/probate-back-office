@@ -598,6 +598,7 @@ services:
       REDISCLOUD_URL: http://dummyrediscloudurl
       HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
       HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
+      SERVICES_PRD_API: http://mock-rd-professional-api:8080
       APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
       IDAM_SECRET: "${OAUTH2_CLIENT_SECRET}"
       S2S_SECRET: "${XUI_SERVICE_KEY}"
@@ -609,6 +610,12 @@ services:
       - ccd-data-store-api
       - sidam-api
 
+  mock-rd-professional-api:
+   image: rodolpheche/wiremock
+   volumes:
+    - ./mocks:/home/wiremock:rw
+   ports:
+    - 8765:8080
 
 volumes:
   ccd-docker-azure-blob-data:
