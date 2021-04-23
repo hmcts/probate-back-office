@@ -57,8 +57,9 @@ Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped'
     await I.admonWillDetailsPage1();
     await I.admonWillDetailsPage2(updateAddressManually);
     await I.admonWillDetailsPage3();
-    await I.cyaPage();
     await I.admonWillDetailsPage4();
+    await I.cyaPage();
+    await I.admonWillDetailsPage5();
 
     await I.seeEndState(endState);
 
