@@ -322,7 +322,7 @@ public class FunctionalTestUtils {
         int day = dateToConvert.getDayOfMonth();
         int year = dateToConvert.getYear();
         int month = dateToConvert.getMonth().getValue();
-        return String.join(" ", Integer.toString(day),  welshMonths[month-1],
+        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
             Integer.toString(year));
     }
     

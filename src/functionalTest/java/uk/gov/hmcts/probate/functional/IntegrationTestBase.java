@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 
 import static junit.framework.TestCase.assertTrue;
