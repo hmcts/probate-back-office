@@ -135,6 +135,7 @@ public class ResponseCaseDataParentTest {
                 .trustCorpAddress(trustCorpAddress)
                 .addressOfSucceededFirm(addressOfSucceededFirm)
                 .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
+                .furtherEvidenceForApplication("Further evidence")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate("02-02-2020")
@@ -149,6 +150,7 @@ public class ResponseCaseDataParentTest {
         assertEquals(trustCorpAddress, responseCaseDataParent.getTrustCorpAddress());
         assertEquals(addressOfSucceededFirm, responseCaseDataParent.getAddressOfSucceededFirm());
         assertEquals(addressOfFirmNamedInWill, responseCaseDataParent.getAddressOfFirmNamedInWill());
+        assertEquals("Further evidence", responseCaseDataParent.getFurtherEvidenceForApplication());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());

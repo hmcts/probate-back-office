@@ -77,4 +77,5 @@ public class ResponseCaseDataParent {
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;
     protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
+    protected final String furtherEvidenceForApplication;
 }

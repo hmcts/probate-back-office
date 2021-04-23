@@ -797,6 +797,7 @@ public class CaseDataTest {
                 .addressOfSucceededFirm(addressOfSucceededFirm)
                 .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
+                .furtherEvidenceForApplication("Further evidence")
                 .lodgementAddress("London")
                 .lodgementDate(LOCAL_DATE)
                 .build();
@@ -810,6 +811,7 @@ public class CaseDataTest {
         assertEquals(trustCorpAddress, caseData.getTrustCorpAddress());
         assertEquals(addressOfSucceededFirm, caseData.getAddressOfSucceededFirm());
         assertEquals(addressOfFirmNamedInWill, caseData.getAddressOfFirmNamedInWill());
+        assertEquals("Further evidence", caseData.getFurtherEvidenceForApplication());
         assertEquals(additionalExecutorsTrustCorpList, caseData.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", caseData.getLodgementAddress());
         assertEquals(LOCAL_DATE, caseData.getLodgementDate());

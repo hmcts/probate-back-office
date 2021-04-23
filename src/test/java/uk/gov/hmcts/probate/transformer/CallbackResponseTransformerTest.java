@@ -2286,6 +2286,7 @@ public class CallbackResponseTransformerTest {
                 .trustCorpAddress(trustCorpAddress)
                 .addressOfSucceededFirm(addressOfSucceededFirm)
                 .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
+                .furtherEvidenceForApplication("Further evidence")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
@@ -2301,6 +2302,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(trustCorpAddress, callbackResponse.getData().getTrustCorpAddress());
         assertEquals(addressOfSucceededFirm, callbackResponse.getData().getAddressOfSucceededFirm());
         assertEquals(addressOfFirmNamedInWill, callbackResponse.getData().getAddressOfFirmNamedInWill());
+        assertEquals("Further evidence", callbackResponse.getData().getFurtherEvidenceForApplication());
         assertEquals(additionalExecutorsTrustCorpList, callbackResponse.getData()
                 .getAdditionalExecutorsTrustCorpList());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());
