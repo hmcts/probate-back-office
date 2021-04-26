@@ -37,7 +37,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible({css: '#nameOfFirmNamedInWill'});
             await I.fillField({css: '#nameOfFirmNamedInWill'}, createGrantOfProbateConfig.page3_nameOfFirmNamedInWill);
             await I.fillField({css: '#nameOfSucceededFirm'}, createGrantOfProbateConfig.page3_nameOfSucceededFirm);
-            
+
             await I.click(createGrantOfProbateConfig.page3_addressOfSucceededFirmPostcodeLink);
 
             await I.scrollTo('#addressOfSucceededFirm_AddressLine1');
@@ -45,7 +45,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField('#addressOfSucceededFirm_AddressLine2', createGrantOfProbateConfig.page3_succeededAddress_line2);
             await I.fillField('#addressOfSucceededFirm_PostTown', createGrantOfProbateConfig.page3_succeededAddress_town);
             await I.fillField('#addressOfSucceededFirm_PostCode', createGrantOfProbateConfig.page3_succeededAddress_postcode);
-            await I.fillField('#addressOfSucceededFirm_Country', createGrantOfProbateConfig.page3_succeededAddress_country);            
+            await I.fillField('#addressOfSucceededFirm_Country', createGrantOfProbateConfig.page3_succeededAddress_country);
 
             await I.click({css: '#morePartnersHoldingPowerReserved-No'});
         }

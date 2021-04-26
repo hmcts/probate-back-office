@@ -68,4 +68,7 @@ public class CaseDataParent {
 
     @Getter
     protected LocalDate authenticatedDate;
+
+    protected String singularProfitSharingTextForLegalStatement;
+    protected String pluralProfitSharingTextForLegalStatement;
 }

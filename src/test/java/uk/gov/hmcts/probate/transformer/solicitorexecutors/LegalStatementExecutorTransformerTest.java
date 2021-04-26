@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -229,5 +230,57 @@ public class LegalStatementExecutorTransformerTest {
         assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
         assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
         assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
+    }
+
+    @Test
+    public void shouldOutputCorrectSingularWhoSharesInProfitText() {
+        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partners", "Shareholders"));
+
+        final CaseData caseData = CaseData.builder()
+                .whoSharesInCompanyProfits(companyProfits)
+                .build();
+
+        legalStatementExecutorTransformerMock.formatFields(caseData);
+
+        assertEquals("partner and shareholder", caseData.getSingularProfitSharingTextForLegalStatement());
+    }
+
+    @Test
+    public void shouldOutputCorrectPluralWhoSharesInProfitText() {
+        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partners", "Shareholders"));
+
+        final CaseData caseData = CaseData.builder()
+                .whoSharesInCompanyProfits(companyProfits)
+                .build();
+
+        legalStatementExecutorTransformerMock.formatFields(caseData);
+
+        assertEquals("partners and shareholders", caseData.getPluralProfitSharingTextForLegalStatement());
+    }
+
+    @Test
+    public void shouldOutputCorrectSingularWhoSharesInProfitText_SingularValue() {
+        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partner", "Shareholder"));
+
+        final CaseData caseData = CaseData.builder()
+                .whoSharesInCompanyProfits(companyProfits)
+                .build();
+
+        legalStatementExecutorTransformerMock.formatFields(caseData);
+
+        assertEquals("partner and shareholder", caseData.getSingularProfitSharingTextForLegalStatement());
+    }
+
+    @Test
+    public void shouldOutputCorrectPluralWhoSharesInProfitText_SingularValue() {
+        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partner", "Shareholder"));
+
+        final CaseData caseData = CaseData.builder()
+                .whoSharesInCompanyProfits(companyProfits)
+                .build();
+
+        legalStatementExecutorTransformerMock.formatFields(caseData);
+
+        assertEquals("partners and shareholders", caseData.getPluralProfitSharingTextForLegalStatement());
     }
 }

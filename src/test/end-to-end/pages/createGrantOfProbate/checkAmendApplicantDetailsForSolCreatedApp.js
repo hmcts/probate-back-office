@@ -1,7 +1,6 @@
 'use strict';
 
 const grantOfProbateConfig = require('./createGrantOfProbateConfig');
-const solGrantOfProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {

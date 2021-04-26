@@ -883,5 +883,4 @@ public class CaseDataTest {
         assertEquals(additionalExecutorsApplyingList, caseData.getExecutorsApplyingLegalStatement());
         assertEquals(additionalExecutorsNotApplyingList, caseData.getExecutorsNotApplyingLegalStatement());
     }
-
 }
