@@ -49,11 +49,25 @@
     "Has someone been appointed an attorney under the Enduring Power of Attory (EPA) or a Property and Financial Affairs Lasting Power of Attorney (LPA)",
     "Has the Enduring Power of Attorney (EPA) been registered with the office of the Public Guardian?",
     "Did the deceased have assets in any other names?",
-    "Is the language preference Welsh?"
+    "Is the language preference Welsh?",
+    "What best describes the title and clearing type?",
+    "Name of firm named in will",
+    "Name of firm that has succeeded to, and carried on the practice",
+    "Address of firm that has succeeded to, and carried on the practice",
+    "Who shares in the profits at your company?"
   ],
   "dataKeys": [
     "page1_list1_registry_location",
     "page1_list2_application_type",
+    "page3_titleAndClearingType",
+    "page3_nameOfFirmNamedInWill",
+    "page3_nameOfSucceededFirm",
+    "page3_succeededAddress_line1",
+    "page3_succeededAddress_line2",
+    "page3_succeededAddress_town",
+    "page3_succeededAddress_postcode",
+    "page3_succeededAddress_country",
+
     "page4_adoptive_relative_name",
     "page4_adoptive_relative_relationship",
     "page4_adoptive_adoptedInOrOut",
