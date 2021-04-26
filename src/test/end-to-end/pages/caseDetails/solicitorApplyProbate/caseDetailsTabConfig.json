@@ -10,8 +10,7 @@
   "dataKeys": [
     "page2_solsIHTFormValue",
     "page2_ihtGrossValueDisplay",
-    "page2_ihtNetValueDisplay",
-    "optionNo"
+    "page2_ihtNetValueDisplay"
   ],
   "WillLeft": {
     "fields": [
