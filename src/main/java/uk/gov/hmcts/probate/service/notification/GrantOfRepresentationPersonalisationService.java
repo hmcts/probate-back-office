@@ -56,7 +56,7 @@ public class GrantOfRepresentationPersonalisationService {
     public Map<String, String> getExcelaPersonalisation(List<ReturnedCaseDetails> cases) {
         HashMap<String, String> personalisation = new HashMap<>();
 
-        StringBuilder data = getBuiltData(cases);
+        StringBuilder data = getExcelaBuiltData(cases);
 
         personalisation.put(PERSONALISATION_EXCELA_NAME, LocalDateTime.now().format(EXCELA_DATE) + "will");
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
@@ -88,26 +88,37 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
-    private StringBuilder getBuiltData(List<ReturnedCaseDetails> cases) {
+    private StringBuilder getExcelaBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
-            data.append(getWillReferenceNumber(currentCase.getData()));
-            data.append(", ");
-            data.append(currentCase.getData().getDeceasedForenames());
-            data.append(", ");
-            data.append(currentCase.getData().getDeceasedSurname());
-            data.append(", ");
-            data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
-            data.append(", ");
-            data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
-            data.append(", ");
-            data.append(currentCase.getId().toString());
-            data.append(", ");
-            data.append(currentCase.getData().getRegistryLocation());
-            data.append("\n");
+            try {
+                data.append(getWillReferenceNumber(currentCase.getData()));
+                data.append(", ");
+                data.append(parseDelimiters(currentCase.getData().getDeceasedForenames()));
+                data.append(", ");
+                data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
+                data.append(", ");
+                data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
+                data.append(", ");
+                data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
+                data.append(", ");
+                data.append(currentCase.getId().toString());
+                data.append(", ");
+                data.append(currentCase.getData().getRegistryLocation());
+                data.append("\n");
+            } catch (Exception e) {
+                data.append(currentCase.getId().toString());
+                data.append(", ");
+                data.append(e.toString());
+                data.append("\n");
+            }
         }
         return data;
+    }
+
+    private String parseDelimiters(String value) {
+        return value.replaceAll(",", " ");
     }
 
     private String getWillReferenceNumber(CaseData data) {
