@@ -839,6 +839,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
     }
 
+    @Test
+    public void shouldTransformCaseWithFurtherEvidenceForApplication() {
+        final String response = transformCase("success.solicitorFurtherEvidenceForApplication.json",
+            TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        assertEquals("Further Evidence", jsonPath.get("data.furtherEvidenceForApplication"));
+    }
+
 
     private String transformCase(String jsonFileName, String path) {
 
