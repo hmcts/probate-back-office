@@ -11,7 +11,7 @@ const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorAp
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
-const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
+const caseDetailsTabIntestacyConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabIntestacyConfig');
 
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
@@ -66,9 +66,13 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
+
+    const inDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...intestacyDetailsConfig};
+    await I.seeCaseDetails(caseRef, caseDetailsTabIntestacyConfig, inDtlsAndDcsdDtls);
+
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabGopConfig, 'MaritalStatus', intestacyDetailsConfig);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', intestacyDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabIntestacyConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', inDtlsAndDcsdDtls);
 
     nextStepName = 'Complete application';
     endState = 'Case created';
