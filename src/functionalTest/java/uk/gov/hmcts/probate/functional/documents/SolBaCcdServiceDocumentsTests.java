@@ -1231,7 +1231,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm"
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
                 + "firm Firmname will, at the date of death of the deceased."));
 
@@ -1240,8 +1240,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing Partners and "
-                + "Stakeholders in the firm Successor firm, at the date of death of the deceased."));
+        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
+                + "stakeholder in the firm Successor firm, at the date of death of the deceased."));
 
     }
 
@@ -1250,10 +1250,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm"
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and "
-                + "Stakeholders in the firm Firmname will is renouncing their right to probate."));
+                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
+                + "stakeholders in the firm Firmname will is renouncing their right to probate."));
 
     }
 
@@ -1262,10 +1262,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm Successor firm"
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing Partners and "
-                + "Stakeholders in the firm Firmname will is renouncing their right to probate."));
+                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
+                + "stakeholders in the firm Firmname will is renouncing their right to probate."));
 
     }
 
@@ -1314,7 +1314,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm"
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
                 + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
@@ -1325,7 +1325,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the firm"
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
                 + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
@@ -1336,7 +1336,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing Partners and Stakeholders in the "
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the "
                 + "firm Successor firm that had succeeded to and carried on the practice of the firm Firmname "
                 + "will, at the date of death of the deceased."));
 

@@ -32,7 +32,7 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     } else {
         await I.click({css: '#solsSolicitorIsExec-No'});
         await I.click({css: `#solsSolicitorIsApplying-${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
-        if(isSolicitorApplyingExecutor){
+        if (isSolicitorApplyingExecutor) {
             await I.waitForVisible({css: '#applyForProbatePageHint2'});
         }
     }

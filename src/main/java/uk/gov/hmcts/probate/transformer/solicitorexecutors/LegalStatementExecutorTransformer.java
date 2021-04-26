@@ -75,6 +75,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     public void formatFields(CaseData caseData) {
         formatDates(caseData);
         formatNames(caseData);
+        caseData.setSingularProfitSharingTextForLegalStatement(getSingularProfitSharingTextForLegalStatement(caseData));
+        caseData.setPluralProfitSharingTextForLegalStatement(getPluralProfitSharingTextForLegalStatement(caseData));
     }
 
     private void formatDates(CaseData caseData) {
@@ -99,5 +101,36 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         caseData.setDeceasedForenames(FormattingService.capitaliseEachWord(caseData.getDeceasedForenames()));
         caseData.setDeceasedSurname(FormattingService.capitaliseEachWord(caseData.getDeceasedSurname()));
         caseData.setSolsSolicitorFirmName(FormattingService.capitaliseEachWord(caseData.getSolsSolicitorFirmName()));
+    }
+
+    private String getSingularProfitSharingTextForLegalStatement(CaseData caseData) {
+        return getPluralProfitSharingTextForLegalStatement(caseData, false);
+    }
+
+    private String getPluralProfitSharingTextForLegalStatement(CaseData caseData) {
+        return getPluralProfitSharingTextForLegalStatement(caseData, true);
+    }
+
+    private String getPluralProfitSharingTextForLegalStatement(CaseData caseData, boolean forPlural) {
+        if (caseData.getWhoSharesInCompanyProfits() == null) {
+            return "";
+        }
+
+        String execProfitSharing = "";
+        final int len = caseData.getWhoSharesInCompanyProfits().size();
+        for (int i = 0; i < len; i++) {
+            // lower case and remove the plural 's'
+            String whoShares = caseData.getWhoSharesInCompanyProfits().get(i).toLowerCase();
+            if (forPlural && !whoShares.endsWith("s")) {
+                whoShares += "s";
+            } else if (!forPlural && whoShares.endsWith("s")) {
+                whoShares = whoShares.substring(0, whoShares.length() - 1);
+            }
+            execProfitSharing += whoShares;
+            if (i < len - 1) {
+                execProfitSharing += " and ";
+            }
+        }
+        return execProfitSharing;
     }
 }
