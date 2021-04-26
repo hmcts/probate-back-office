@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
+import java.util.HashMap;
+
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -88,6 +90,21 @@ public abstract class IntegrationTestBase {
                                           ResponseBody responseBody) {
         String expectedText = getJsonFromFile(expectedResponseFile);
         expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
+        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        for (String key : expectedKeyValuerelacements.keySet()) {
+            expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
+        }
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(responseDocumentUrl);

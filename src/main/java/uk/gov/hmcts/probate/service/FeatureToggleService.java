@@ -18,7 +18,7 @@ public class FeatureToggleService {
                                 @Value("${ld.user.firstName}") String ldUserFirstName,
                                 @Value("${ld.user.lastName}") String ldUserLastName) {
         this.ldClient = ldClient;
-
+       
         this.ldUserBuilder = new LDUser.Builder(ldUserKey)
             .firstName(ldUserFirstName)
             .lastName(ldUserLastName)
