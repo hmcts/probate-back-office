@@ -13,6 +13,7 @@ module.exports = async function () {
 
     // check applicationGrounds invisible (schemaVersion makes invisible)
     await I.waitForInvisible({css: '#applicationGrounds'});
+    await I.waitForVisible({css: '#furtherEvidenceForApplication'});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

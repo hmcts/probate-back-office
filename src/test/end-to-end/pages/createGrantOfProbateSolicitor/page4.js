@@ -63,7 +63,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
 
         await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorName');
@@ -71,7 +71,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page4_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page4_name_difference);
@@ -117,20 +117,20 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
         await I.waitForVisible('#adoptiveRelatives_0_name');
         await I.fillField('#adoptiveRelatives_0_name', createGrantOfProbateConfig.page4_adoptive_relative_name);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
         await I.fillField('#adoptiveRelatives_0_relationship', createGrantOfProbateConfig.page4_adoptive_relative_relationship);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
         await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
     }
