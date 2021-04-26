@@ -179,7 +179,8 @@ def versions = [
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.0'
+        pact_version                    : '4.1.0',
+        elasticSearchVersion            : '7.12.0'
 ]
 
 jacocoTestReport {
@@ -274,9 +275,9 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
 
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.10.2'
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.10.2'
-  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.10.2'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
+  compile group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
