@@ -298,7 +298,7 @@ dependencies {
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  testCompile group: 'com.github.hmcts' name: 'probate-commons', version: versions.probateCommonsVersion
+  testCompile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
