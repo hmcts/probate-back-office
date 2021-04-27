@@ -1,5 +1,7 @@
 'use strict';
 
+
+const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -69,7 +71,7 @@ Scenario('04 - Solicitor - Apply Grant of probate (Will left annexed)', async fu
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const admonWillDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...admonWillDetailsConfig};
-    const awCaseDtlsConfig = {...caseDetailsTabDeceasedDtlsConfig, ...caseDetailsTabAdmonWillConfig};
+    const awCaseDtlsConfig = ld.merge(caseDetailsTabDeceasedDtlsConfig, caseDetailsTabAdmonWillConfig);
     await I.seeCaseDetails(caseRef, awCaseDtlsConfig, admonWillDtlsAndDcsdDtls);
 
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);

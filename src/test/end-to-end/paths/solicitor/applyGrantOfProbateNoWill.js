@@ -1,5 +1,6 @@
 'use strict';
 
+const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -68,7 +69,7 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const inDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...intestacyDetailsConfig};
-    const inCaseDtlsConfig = {...caseDetailsTabDeceasedDtlsConfig, ...caseDetailsTabIntestacyConfig};
+    const inCaseDtlsConfig = ld.merge(caseDetailsTabDeceasedDtlsConfig, caseDetailsTabIntestacyConfig);
 
     await I.seeCaseDetails(caseRef, inCaseDtlsConfig, inDtlsAndDcsdDtls);
 

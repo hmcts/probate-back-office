@@ -4,7 +4,11 @@
       "What best describes the title and clearing type?",
       "Name of trust corporation",
       "Address of trust corporation",
-      "Add all people acting on behalf of the trust corporation"
+      "Add all people acting on behalf of the trust corporation",
+      "Has leave already been given to dispense with notice?",
+      "Please give a brief overview of why notice should be dispensed with",
+      "Please list any supporting documents you are providing as part of your application",
+      "Executor name"
     ],
     "dataKeys": [
       "page2_dispenseWithNotice",
@@ -19,7 +23,11 @@
       "address_country",
       "page2_executorFirstName",
       "page2_executorSurname",
-      "page2_positionInTrustCorp"
+      "page2_positionInTrustCorp",
+      "page3_dispenseWithNoticeLeaveGiven",
+      "page3_dispenseWithNoticeOverview",
+      "page3_dispenseWithNoticeSupportingDocs",
+      "page3_dispenseWithNoticeName"
       
     ]
   }

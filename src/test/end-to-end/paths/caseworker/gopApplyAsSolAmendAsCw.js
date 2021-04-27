@@ -3,6 +3,7 @@
 // As per ExUi Solicitor test applyGrantOfProbateSingleExecutor.js but runs in ccd as needs
 // to sign out then log back in as a caseworker to amend details
 
+const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -80,7 +81,7 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
-    const gobDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
+    const gobDtlsAndDcsdDtls = ld.merge(deceasedDetailsConfig, gopConfig);
     
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, gobDtlsAndDcsdDtls, true);
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
