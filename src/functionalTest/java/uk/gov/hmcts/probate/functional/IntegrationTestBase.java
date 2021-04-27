@@ -124,11 +124,13 @@ public abstract class IntegrationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
-    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile, 
-            String responseDocumentUrl, ResponseBody responseBody, String expectedKey, String expectedValue) {
+    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
+        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
         String expectedText = getJsonFromFile(expectedResponseFile);
         expectedText = expectedText.replace("\n", "").replace("\r", "");
-        expectedText = expectedText.replace(expectedKey, expectedValue);
+        for (String key : expectedKeyValuerelacements.keySet()) {
+            expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
+        }
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(responseDocumentUrl);
