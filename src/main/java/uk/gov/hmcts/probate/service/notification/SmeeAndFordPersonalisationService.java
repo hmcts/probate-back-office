@@ -109,7 +109,7 @@ public class SmeeAndFordPersonalisationService {
                 data.append(retCase.getId().toString());
                 data.append(", ");
                 data.append(e.toString());
-                data.append("\n");
+                data.append(NEW_LINE);
             }
         }
         return data;

@@ -19,8 +19,7 @@ import java.util.List;
 public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
-
-
+    
     public Document performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             return performSmeeAndFordExtractForDate(fromDate);
@@ -32,8 +31,6 @@ public class SmeeAndFordDataExtractService {
 
             return sendSmeeAndFordEmail(cases, fromDate, toDate);
         }
-
-
     }
 
     private Document performSmeeAndFordExtractForDate(String date) {
