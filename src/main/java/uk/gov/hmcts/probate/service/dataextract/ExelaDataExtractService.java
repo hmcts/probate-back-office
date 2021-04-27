@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class ExelaDataExtractService {
         if (fromDate.equals(toDate)) {
             performExelaExtractForDate(fromDate);
         } else {
-            log.info("Excela data extract initiated from date: {}", fromDate);
-            List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+            log.info("Excela data extract initiated for dates from-to: {}-{}", fromDate, toDate);
+            List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinDateRangeExela(fromDate, toDate);
             log.info("Found {} cases with dated document for Excela", cases.size());
 
             sendExelaEmail(cases);
@@ -52,8 +51,8 @@ public class ExelaDataExtractService {
             log.info("Sending email to Excela");
             try {
                 notificationService.sendExcelaEmail(filteredCases);
-            } catch (NotificationClientException e) {
-                log.warn("NotificationService exception sending email to Exela", e);
+            } catch (Exception e) {
+                log.info("NotificationService exception sending email to Exela", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
                         "Error on NotificationService sending email to Exela");
             }
