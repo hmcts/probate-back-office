@@ -68,9 +68,10 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
-    await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabGopConfig, willType, gopDtlsAndDcsdDtls, true);
-    await I.dontSeeCaseDetails(caseDetailsTabGopConfig.fieldsNotPresent);
+    const gopCaseDtlsConfig = {...caseDetailsTabDeceasedDtlsConfig, ...caseDetailsTabGopConfig};
+    await I.seeCaseDetails(caseRef, gopCaseDtlsConfig, gopDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, gopCaseDtlsConfig, willType, gopDtlsAndDcsdDtls, true);
+    await I.dontSeeCaseDetails(gopCaseDtlsConfig.fieldsNotPresent);
 
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);

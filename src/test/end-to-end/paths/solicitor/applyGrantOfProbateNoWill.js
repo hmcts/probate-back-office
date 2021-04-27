@@ -68,10 +68,12 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const inDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...intestacyDetailsConfig};
-    await I.seeCaseDetails(caseRef, caseDetailsTabIntestacyConfig, inDtlsAndDcsdDtls);
+    const inCaseDtlsConfig = {...caseDetailsTabDeceasedDtlsConfig, ...caseDetailsTabIntestacyConfig};
+
+    await I.seeCaseDetails(caseRef, inCaseDtlsConfig, inDtlsAndDcsdDtls);
 
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabIntestacyConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, inCaseDtlsConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', inDtlsAndDcsdDtls);
 
     nextStepName = 'Complete application';

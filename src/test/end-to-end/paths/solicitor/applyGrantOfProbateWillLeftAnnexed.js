@@ -69,7 +69,8 @@ Scenario('04 - Solicitor - Apply Grant of probate (Will left annexed)', async fu
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const admonWillDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...admonWillDetailsConfig};
-    await I.seeCaseDetails(caseRef, caseDetailsTabAdmonWillConfig, admonWillDtlsAndDcsdDtls);
+    const awCaseDtlsConfig = {...caseDetailsTabDeceasedDtlsConfig, ...caseDetailsTabAdmonWillConfig};
+    await I.seeCaseDetails(caseRef, awCaseDtlsConfig, admonWillDtlsAndDcsdDtls);
 
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);
