@@ -1,85 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress>
-        <notes><![CDATA[
-   file name: bcprov-jdk15on-1.60.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
-        <cve>CVE-2020-26939</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: commons-beanutils-1.9.3.jar
-   ]]></notes>
-        <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
-        <cve>CVE-2019-10086</cve>
-    </suppress>
-     <suppress>
-        <notes><![CDATA[
-   file name: guava-28.0-jre.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-        <cve>CVE-2020-8908</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: hibernate-core-5.4.21.Final.jar
-   ]]></notes>
-        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
-        <cve>CVE-2020-25638</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: httpclient-4.5.7.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.httpcomponents:httpclient:.*$</gav>
-        <cve>CVE-2020-13956</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-datatype-jsr310-2.9.4.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
-        <cve>CVE-2018-1000873</cve>
-    </suppress>
-       <suppress>
-        <notes><![CDATA[
-   file name: junit-4.13.jar
-   ]]></notes>
-        <cve>CVE-2020-15250</cve>
-    </suppress>
-     <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.5.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
-        <cve>CVE-2020-13692</cve>
-    </suppress>
     <suppress until="2030-01-01">
         <notes><![CDATA[
          Suppressing as it's a false positive (see: https://pivotal.io/security/cve-2018-1258)
         ]]></notes>
-        <filePath regex="true">.*spring-security-(config|crypto|web|test|core)-5\.3\.4\.RELEASE\.jar</filePath>
+        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.3\.8\.RELEASE\.jar</filePath>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
-       <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.38.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-(websocket|core):.*$</gav>
-        <cve>CVE-2020-17527</cve>
-        <cve>CVE-2021-24122</cve>
-        <cve>CVE-2021-25122</cve>
-        <cve>CVE-2021-25329</cve>
-         <cve>CVE-2020-9484</cve>
-    </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: elasticsearch-7.9.2.jar
+   file name: commons-io-2.6.jar
    ]]></notes>
-        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
-        <cve>CVE-2020-7021</cve>
-        <cve>CVE-2021-22132</cve>
+        <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
+        <cve>CVE-2021-29425</cve>
     </suppress>
 </suppressions>

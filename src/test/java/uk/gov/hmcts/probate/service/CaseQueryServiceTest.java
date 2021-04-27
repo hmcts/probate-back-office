@@ -55,6 +55,9 @@ public class CaseQueryServiceTest {
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
+    @Mock
+    private FileSystemResourceService fileSystemResourceService;
+
     @Captor
     private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
@@ -71,6 +74,8 @@ public class CaseQueryServiceTest {
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
+        caseQueryService.dataExtractBlockSize = 2000;
+        caseQueryService.numDaysBlock = 13;
 
         CaseData caseData = CaseData.builder()
             .deceasedSurname("Smith")
@@ -106,10 +111,42 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("2019-02-05", "2019-02-22");
+    public void findCasesWithDateRangeReturnsCaseListExela() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
 
-        assertEquals(1, cases.size());
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void findCasesWithDateRangeThrowsError() {
+        CaseData caseData = CaseData.builder()
+            .deceasedSurname("Smith")
+            .build();
+        List<ReturnedCaseDetails> caseList =
+            new ImmutableList.Builder<ReturnedCaseDetails>()
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
+                .build();
+        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+        caseQueryService.dataExtractBlockSize = 3;
+
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        caseQueryService.findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListHMRC() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
     }
