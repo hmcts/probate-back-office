@@ -552,27 +552,8 @@ public class CallbackResponseTransformer {
         String professionalName = "";
         String confirmSOT = "";
 
-        if(!caseDetails.getData().getSolsWillType().matches("WillLeftAnnexed")){
-            executorNames = "The executor" + plural + " ";
-            professionalName = caseDetails.getData().getSolsSOTName();
-
-            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
-                + " confirm the following:\n\n"
-                + "I, " + professionalName + ", have provided a copy of this application to the executor" + plural
-                + " named below.\n\n"
-                + "I, " + professionalName + ", have informed the executor"  + plural
-                + " that in signing the statement of truth I am confirming that the executor "  + plural
-                + " believe "  + plural + " the facts set out in this legal statement are true.\n\n"
-                + "I, " + professionalName + ", have informed the executor"   + plural
-                + " of the consequences if it should subsequently appear that the executor "  + plural
-                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
-                + "I, " + professionalName + ", have been authorised but the executor"  + plural
-                + " to sign the statement of truth.\n\n"
-                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
-                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
-                + "statement of truth without an honest belief in its truth.\n";
-        }
-        else {
+        if (caseDetails.getData().getSolsWillType() != null
+            && caseDetails.getData().getSolsWillType().matches("WillLeftAnnexed")) {
             executorNames = "The applicant" + plural + " ";
             professionalName = caseDetails.getData().getSolsSOTName();
 
@@ -587,6 +568,25 @@ public class CallbackResponseTransformer {
                 + " of the consequences if it should subsequently appear that the applicant "  + plural
                 + " did not have an honest belief in the facts set out in the legal statement.\n\n"
                 + "I, " + professionalName + ", have been authorised but the applicant"  + plural
+                + " to sign the statement of truth.\n\n"
+                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
+                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
+                + "statement of truth without an honest belief in its truth.\n";
+        } else {
+            executorNames = "The executor" + plural + " ";
+            professionalName = caseDetails.getData().getSolsSOTName();
+
+            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
+                + " confirm the following:\n\n"
+                + "I, " + professionalName + ", have provided a copy of this application to the executor" + plural
+                + " named below.\n\n"
+                + "I, " + professionalName + ", have informed the executor"  + plural
+                + " that in signing the statement of truth I am confirming that the executor "  + plural
+                + " believe "  + plural + " the facts set out in this legal statement are true.\n\n"
+                + "I, " + professionalName + ", have informed the executor"   + plural
+                + " of the consequences if it should subsequently appear that the executor "  + plural
+                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
+                + "I, " + professionalName + ", have been authorised but the executor"  + plural
                 + " to sign the statement of truth.\n\n"
                 + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                 + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
