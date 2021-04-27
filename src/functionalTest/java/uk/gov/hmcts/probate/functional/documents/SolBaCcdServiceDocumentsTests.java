@@ -71,6 +71,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
+    private static final String FURTHER_EVIDENCE = "Further evidence";
     private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
@@ -514,6 +515,27 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceAdmonWill() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceIntestacy() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceTrustCorpProbate() {
+        String response = generatePdfDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
     }
 
     @Test
