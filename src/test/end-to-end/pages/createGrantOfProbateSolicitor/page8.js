@@ -13,7 +13,7 @@ module.exports = async function (crud) {
         await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page8_applyingAsAttorneyYes}`);
         await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.5); // needed in order to be able to switch off auto delay for local dev
+            await I.wait(testConfig.ManualDelayMedium); // needed in order to be able to switch off auto delay for local dev
         }
 
         await I.waitForVisible({css: '#attorneyOnBehalfOfNameAndAddress_0_name'}, createGrantOfProbateConfig.page8_representativeOfName);

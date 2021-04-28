@@ -58,8 +58,8 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         ]);
 
         console.info('Remaining application details');
-        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
         await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         // More extensive checks already performed at this stage for stop/escalate issue
         await I.caseProgressCheckYourAnswers();
@@ -89,7 +89,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
         await I.caseProgressContinueWithoutChangingAnything(5);
 
         await I.caseProgressClickGoButton();
-        await I.caseProgressContinueWithoutChangingAnything(5);
+        await I.caseProgressContinueWithoutChangingAnything(6);
 
         await I.caseProgressClickGoButton();
 
@@ -115,7 +115,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
             goToNextStep: true});
 
-        await I.caseProgressContinueWithoutChangingAnything(5);
+        await I.caseProgressContinueWithoutChangingAnything(6);
 
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 3,

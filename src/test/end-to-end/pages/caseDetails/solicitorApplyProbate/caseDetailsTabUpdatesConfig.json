@@ -1,18 +1,5 @@
 {
   "tabName": "Case details",
-  "fields": [
-    "Inheritance Tax form",
-    "Gross value of the estate",
-    "Net value of the estate",
-    "Did the deceased leave a will?",
-    "Did the deceased have assets in any other names?"
-  ],
-  "dataKeys": [
-    "page2_solsIHTFormValue",
-    "page2_ihtGrossValueDisplay",
-    "page2_ihtNetValueDisplay",
-    "optionNo"
-  ],
   "WillLeft": {
     "fields": [
       "Does the will dispose of the estate in England and Wales (or if will is in English, does it appoint an executor), or is the deceased a British National?",
@@ -57,9 +44,5 @@
     "dataKeys": [
       "page2_maritalstatus_display"
     ]
-  },
-  "fieldsNotPresent": [
-    "Please state the grounds for making this application and any information in support:",
-    "Version of schema applicable for this case"
-  ]  
+  }
 }

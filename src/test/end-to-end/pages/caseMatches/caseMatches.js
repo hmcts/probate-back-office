@@ -16,12 +16,12 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     if (!testConfig.TestAutoDelayEnabled) {
         // just a small delay - occasionally we get issues.
         // Only necessary where we have no auto delay (local dev).
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     } else {
         // Running in the pipeline means a much slower response bringing back existing cases.
         // This is a blunt approach, would be be better if we used an implicit wait
         // and check for events appearing, detect if a callback in progress, and wait for buttons.
-        // Perhaps even poll, or use a configured timeout and catch exception (assume no existing cases 
+        // Perhaps even poll, or use a configured timeout and catch exception (assume no existing cases
         // if timeout exception raised)
         await I.wait(60);
     }
@@ -37,7 +37,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
         await I.scrollTo(btnLocatorLastChild);
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
 
         await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
@@ -45,17 +45,17 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Only necessary where we have no auto delay (local dev).
 
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayShort);
         }
-        await I.wait(0.5);
 
+        await I.wait(testConfig.ManualDelayMedium);
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayShort);
         }
     }
 
@@ -67,7 +67,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.5);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.scrollTo({css: 'input[id$="valid-Yes"]'});
         await I.waitForElement({css: 'input[id$="valid-Yes"]'});
@@ -87,7 +87,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayShort);
         }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
     }

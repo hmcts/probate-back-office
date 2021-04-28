@@ -14,5 +14,9 @@ module.exports = {
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Pa55word11',
     TestForXUI: process.env.TESTS_FOR_XUI_SERVICE === 'true',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
-    TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
+    TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true',
+    // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
+    ManualDelayShort: 0.25,
+    ManualDelayMedium: 0.5,
+    ManualDelayLong: 0.75
 };
