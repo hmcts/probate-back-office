@@ -1,6 +1,5 @@
 'use strict';
 
-const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -13,6 +12,7 @@ const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
 const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
+const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
@@ -56,7 +56,7 @@ Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabDeceasedDtlsConfig, willType, deceasedDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
@@ -73,10 +73,10 @@ Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
-    const gopCaseDtlsConfig = ld.merge(caseDetailsTabDeceasedDtlsConfig, caseDetailsTabGopConfig);
-    await I.seeCaseDetails(caseRef, gopCaseDtlsConfig, gopDtlsAndDcsdDtls);
-    await I.seeUpdatesOnCase(caseRef, gopCaseDtlsConfig, willType, gopDtlsAndDcsdDtls, true);
-    await I.dontSeeCaseDetails(gopCaseDtlsConfig.fieldsNotPresent);
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
+    await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);

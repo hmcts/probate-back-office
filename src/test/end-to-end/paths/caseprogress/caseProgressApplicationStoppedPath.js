@@ -67,6 +67,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
             {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
             {locator: {css: '#otherExecutorExists-No'}}]);
 
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue

@@ -1,6 +1,5 @@
 'use strict';
 
-const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -13,6 +12,7 @@ const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
 const caseDetailsTabIntestacyConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabIntestacyConfig');
+const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
@@ -54,7 +54,7 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabDeceasedDtlsConfig, willType, deceasedDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Intestacy details';
     endState = 'Application updated';
@@ -69,12 +69,10 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const inDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...intestacyDetailsConfig};
-    const inCaseDtlsConfig = ld.merge(caseDetailsTabDeceasedDtlsConfig, caseDetailsTabIntestacyConfig);
-
-    await I.seeCaseDetails(caseRef, inCaseDtlsConfig, inDtlsAndDcsdDtls);
-
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, inDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabIntestacyConfig, inDtlsAndDcsdDtls);
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, inCaseDtlsConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', inDtlsAndDcsdDtls);
 
     nextStepName = 'Complete application';

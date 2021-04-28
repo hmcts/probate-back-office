@@ -1,7 +1,5 @@
 'use strict';
 
-
-const ld = require("lodash");
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
@@ -14,6 +12,7 @@ const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
 const caseDetailsTabAdmonWillConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabAdmonWillConfig');
+const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
@@ -56,7 +55,7 @@ Scenario('04 - Solicitor - Apply Grant of probate (Will left annexed)', async fu
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabDeceasedDtlsConfig, willType, deceasedDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Admon will details';
     endState = 'Application updated';
@@ -71,8 +70,9 @@ Scenario('04 - Solicitor - Apply Grant of probate (Will left annexed)', async fu
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
     const admonWillDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...admonWillDetailsConfig};
-    const awCaseDtlsConfig = ld.merge(caseDetailsTabDeceasedDtlsConfig, caseDetailsTabAdmonWillConfig);
-    await I.seeCaseDetails(caseRef, awCaseDtlsConfig, admonWillDtlsAndDcsdDtls);
+
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, admonWillDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabAdmonWillConfig, admonWillDtlsAndDcsdDtls);
 
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);

@@ -9,7 +9,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.runAccessibilityTest();
     const dispNoticeLocator = {css: `#dispenseWithNotice-${grantOfProbateConfig.page2_dispenseWithNotice}`};
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
@@ -66,7 +66,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.click('#additionalExecutorsTrustCorpList > div > button');
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);

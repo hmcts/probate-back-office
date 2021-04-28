@@ -21,7 +21,7 @@ module.exports = async function (updateAddressManually) {
     await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
 
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     if (updateAddressManually) {

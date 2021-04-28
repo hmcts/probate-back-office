@@ -58,9 +58,9 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         ]);
 
         console.info('Remaining application details');
-        // soleTraderOrLimitedCompany-Yes is currently missing - due to be reintroduced
         await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
 
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue
