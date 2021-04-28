@@ -136,6 +136,7 @@ java:
         - authTokenEmail
         - authTokenPassword
         - excelaEmail
+        - smeeAndFordEmail
         - ftpSignature
         - ftpEnv
         - probate-bo-grantSignatureKey
