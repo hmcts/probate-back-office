@@ -10,7 +10,7 @@ module.exports = async function () {
 
     await I.waitForText(createGrantOfProbateConfig.page10_waitForText, testConfig.TestTimeToWaitForText);
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     }
     await I.click(`#ihtFormCompletedOnline-${createGrantOfProbateConfig.page10_ihtFormCompletedOnlineYes}`);
     await I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page10_ihtReferenceNumber);

@@ -10,7 +10,10 @@ const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorAp
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabConfig');
+const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
+const caseDetailsTabIntestacyConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabIntestacyConfig');
+const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
+
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
@@ -50,8 +53,8 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
-    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, deceasedDetailsConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, willType, deceasedDetailsConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Intestacy details';
     endState = 'Application updated';
@@ -64,9 +67,13 @@ Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async 
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
+
+    const inDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...intestacyDetailsConfig};
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, inDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabIntestacyConfig, inDtlsAndDcsdDtls);
     await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabConfig, 'MaritalStatus', intestacyDetailsConfig);
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', intestacyDetailsConfig);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, 'MaritalStatus', inDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', inDtlsAndDcsdDtls);
 
     nextStepName = 'Complete application';
     endState = 'Case created';
