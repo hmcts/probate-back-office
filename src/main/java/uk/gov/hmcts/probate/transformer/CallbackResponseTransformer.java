@@ -555,24 +555,7 @@ public class CallbackResponseTransformer {
         String confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
-            && caseDetails.getData().getSolsWillType().matches("WillLeftAnnexed")) {
-
-            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
-                + " confirm the following:\n\n"
-                + "I, " + professionalName + ", have provided a copy of this application to the applicant"
-                + " named below.\n\n"
-                + "I, " + professionalName + ", have informed the applicant"
-                + " that in signing the statement of truth I am confirming that the applicant"
-                + " believes the facts set out in this legal statement are true.\n\n"
-                + "I, " + professionalName + ", have informed the applicant"
-                + " of the consequences if it should subsequently appear that the applicant"
-                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
-                + "I, " + professionalName + ", have been authorised by the applicant"
-                + " to sign the statement of truth.\n\n"
-                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
-                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
-                + "statement of truth without an honest belief in its truth.\n";
-        } else {
+            && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                 + " confirm the following:\n\n"
@@ -585,6 +568,23 @@ public class CallbackResponseTransformer {
                 + " of the consequences if it should subsequently appear that the executor"  + plural
                 + " did not have an honest belief in the facts set out in the legal statement.\n\n"
                 + "I, " + professionalName + ", have been authorised by the executor"  + plural
+                + " to sign the statement of truth.\n\n"
+                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
+                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
+                + "statement of truth without an honest belief in its truth.\n";
+        } else {
+
+            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
+                + " confirm the following:\n\n"
+                + "I, " + professionalName + ", have provided a copy of this application to the applicant"
+                + " named below.\n\n"
+                + "I, " + professionalName + ", have informed the applicant"
+                + " that in signing the statement of truth I am confirming that the applicant"
+                + " believes the facts set out in this legal statement are true.\n\n"
+                + "I, " + professionalName + ", have informed the applicant"
+                + " of the consequences if it should subsequently appear that the applicant"
+                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
+                + "I, " + professionalName + ", have been authorised by the applicant"
                 + " to sign the statement of truth.\n\n"
                 + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                 + "against anyone who makes, or causes to be made, a false statement in a document verified by a "

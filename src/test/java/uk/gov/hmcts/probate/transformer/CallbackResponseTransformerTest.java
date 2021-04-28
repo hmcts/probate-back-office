@@ -471,6 +471,7 @@ public class CallbackResponseTransformerTest {
             .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
             .deceasedAddress(DECEASED_ADDRESS)
             .deceasedAnyOtherNames(YES)
+            .caseType("gop")
             .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
             .primaryApplicantAddress(EXEC_ADDRESS)
             .solsDeceasedAliasNamesList(ALIAS_NAMES)
