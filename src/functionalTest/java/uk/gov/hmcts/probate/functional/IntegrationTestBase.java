@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -75,6 +76,19 @@ public abstract class IntegrationTestBase {
         return response.getBody();
     }
 
+    protected ResponseBody validatePostSuccessForQueryParms(String path, HashMap<String, String> queryParms) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .queryParams(queryParms)
+            .when().post(path)
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
     protected ResponseBody validatePostSuccess(String jsonFileName, String path) {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
@@ -94,6 +108,18 @@ public abstract class IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(responseDocumentUrl);
         String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsForHeaders(String expectedResponseFile, String responseDocumentUrl,
+                                                    ResponseBody responseBody, Headers headers) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers);
         response = response.replace("\n", "").replace("\r", "");
         assertTrue(response.contains(expectedText));
     }
