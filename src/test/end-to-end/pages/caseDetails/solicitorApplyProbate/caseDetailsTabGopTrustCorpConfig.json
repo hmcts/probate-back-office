@@ -1,0 +1,40 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "Is a dispense with notice required for any of the executors?",
+    "What best describes the title and clearing type?",
+    "Name of trust corporation",
+    "Address of trust corporation",
+    "Add all people acting on behalf of the trust corporation",
+    "Has leave already been given to dispense with notice?",
+    "Please give a brief overview of why notice should be dispensed with",
+    "Please list any supporting documents you are providing as part of your application",
+    "Name of the executor to whom power is reserved",
+    "First name(s)",
+    "Last name(s)",
+    "Please provide any further information that may be needed on your legal statement"
+  ],
+  "dataKeys": [
+    "page2_dispenseWithNotice",
+    "page2_titleAndClearingType",
+    "page2_nameOfTrustCorp",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_postcode",
+    "address_country",
+    "page2_executorFirstName",
+    "page2_executorSurname",
+    "page2_positionInTrustCorp",
+    "page3_dispenseWithNoticeLeaveGiven",
+    "page3_dispenseWithNoticeOverview",
+    "page3_dispenseWithNoticeSupportingDocs",
+    "page3_dispenseWithNoticeName",
+    "page4_otherExecutorExists",
+    "page2_executorFirstName",
+    "page2_executorSurname",
+    "page5_applicationNotes"
+  ]
+}

@@ -107,6 +107,24 @@ public class ResponseCaseDataParentTest {
                 "POSTCODE",
                 "");
 
+        SolsAddress addressOfSucceededFirm = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
+        SolsAddress addressOfFirmNamedInWill = new SolsAddress(
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
+
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .dispenseWithNotice("Yes")
                 .dispenseWithNoticeLeaveGiven("No")
@@ -115,6 +133,9 @@ public class ResponseCaseDataParentTest {
                 .titleAndClearingType("TCTTrustCorpResWithApp")
                 .trustCorpName("Trust corp name")
                 .trustCorpAddress(trustCorpAddress)
+                .addressOfSucceededFirm(addressOfSucceededFirm)
+                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
+                .furtherEvidenceForApplication("Further evidence")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
                 .lodgementDate("02-02-2020")
@@ -127,6 +148,9 @@ public class ResponseCaseDataParentTest {
         assertEquals("TCTTrustCorpResWithApp", responseCaseDataParent.getTitleAndClearingType());
         assertEquals("Trust corp name", responseCaseDataParent.getTrustCorpName());
         assertEquals(trustCorpAddress, responseCaseDataParent.getTrustCorpAddress());
+        assertEquals(addressOfSucceededFirm, responseCaseDataParent.getAddressOfSucceededFirm());
+        assertEquals(addressOfFirmNamedInWill, responseCaseDataParent.getAddressOfFirmNamedInWill());
+        assertEquals("Further evidence", responseCaseDataParent.getFurtherEvidenceForApplication());
         assertEquals(additionalExecutorsTrustCorpList, responseCaseDataParent.getAdditionalExecutorsTrustCorpList());
         assertEquals("London", responseCaseDataParent.getLodgementAddress());
         assertEquals("02-02-2020", responseCaseDataParent.getLodgementDate());
@@ -148,7 +172,6 @@ public class ResponseCaseDataParentTest {
                 .nameOfFirmNamedInWill("Test Solicitor Ltd")
                 .otherPartnersApplyingAsExecutors(otherPartnersList)
                 .nameOfSucceededFirm("New Firm Ltd")
-                .soleTraderOrLimitedCompany("No")
                 .whoSharesInCompanyProfits(Arrays.asList(new String[]{"Partners", "Members"}))
                 .morePartnersHoldingPowerReserved("No")
                 .build();
@@ -158,7 +181,6 @@ public class ResponseCaseDataParentTest {
         assertEquals("Test Solicitor Ltd", responseCaseDataParent.getNameOfFirmNamedInWill());
         assertEquals(otherPartnersList, responseCaseDataParent.getOtherPartnersApplyingAsExecutors());
         assertEquals("New Firm Ltd", responseCaseDataParent.getNameOfSucceededFirm());
-        assertEquals("No", responseCaseDataParent.getSoleTraderOrLimitedCompany());
         assertEquals("Partners", responseCaseDataParent.getWhoSharesInCompanyProfits().get(0));
         assertEquals("Members", responseCaseDataParent.getWhoSharesInCompanyProfits().get(1));
         assertEquals("No", responseCaseDataParent.getMorePartnersHoldingPowerReserved());

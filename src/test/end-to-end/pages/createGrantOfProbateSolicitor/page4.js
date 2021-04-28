@@ -18,7 +18,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.5);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.TestTimeToWaitForText);
 
@@ -33,7 +33,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.5);
+            await I.wait(testConfig.ManualDelayMedium);
         }
 
         await I.fillField({css: '#executorsApplying_0_applyingExecutorName'}, createGrantOfProbateConfig.page4_executor0_name);
@@ -43,7 +43,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.5);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.fillField({css: '#executorsApplying_0_applyingExecutorPhoneNumber'}, createGrantOfProbateConfig.page4_phone_number);
         await I.fillField('#executorsApplying_0_applyingExecutorEmail', createGrantOfProbateConfig.page4_applying_executor_email);
@@ -63,7 +63,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
 
         await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorName');
@@ -71,7 +71,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page4_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page4_name_difference);
@@ -117,20 +117,20 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.waitForVisible('#adoptiveRelatives_0_name');
         await I.fillField('#adoptiveRelatives_0_name', createGrantOfProbateConfig.page4_adoptive_relative_name);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.fillField('#adoptiveRelatives_0_relationship', createGrantOfProbateConfig.page4_adoptive_relative_relationship);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.selectOption('#adoptiveRelatives_0_adoptedInOrOut', createGrantOfProbateConfig.page4_adoptive_adoptedInOrOut);
     }

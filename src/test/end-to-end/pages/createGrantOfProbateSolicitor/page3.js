@@ -25,7 +25,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForVisible({css: '#trustCorpName'});
             await I.fillField('#trustCorpName', createGrantOfProbateConfig.page3_nameOfTrustCorp);
 
-            await I.click(createGrantOfProbateConfig.UKpostcodeLink);
+            await I.click(createGrantOfProbateConfig.page3_trustCorpPostcodeLink);
 
             await I.fillField('#trustCorpAddress_AddressLine1', createGrantOfProbateConfig.page3_trustAddress_line1);
             await I.fillField('#trustCorpAddress_AddressLine2', createGrantOfProbateConfig.page3_trustAddress_line2);
@@ -33,15 +33,20 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField('#trustCorpAddress_PostCode', createGrantOfProbateConfig.page3_trustAddress_postcode);
             await I.fillField('#trustCorpAddress_Country', createGrantOfProbateConfig.page3_trustAddress_country);
 
-            await I.fillField('#lodgementAddress', createGrantOfProbateConfig.page3_lodgementAddress);
-            await I.fillField('#lodgementDate-day', createGrantOfProbateConfig.page3_lodgementDate_day);
-            await I.fillField('#lodgementDate-month', createGrantOfProbateConfig.page3_lodgementDate_month);
-            await I.fillField('#lodgementDate-year', createGrantOfProbateConfig.page3_lodgementDate_year);
-
-        } else if (tct === 'TCTPartSuccPowerRes') {
+        } else if (tct.indexOf('Succ') >= 0) {
             await I.waitForVisible({css: '#nameOfFirmNamedInWill'});
             await I.fillField({css: '#nameOfFirmNamedInWill'}, createGrantOfProbateConfig.page3_nameOfFirmNamedInWill);
             await I.fillField({css: '#nameOfSucceededFirm'}, createGrantOfProbateConfig.page3_nameOfSucceededFirm);
+
+            await I.click(createGrantOfProbateConfig.page3_addressOfSucceededFirmPostcodeLink);
+
+            await I.scrollTo('#addressOfSucceededFirm_AddressLine1');
+            await I.fillField('#addressOfSucceededFirm_AddressLine1', createGrantOfProbateConfig.page3_succeededAddress_line1);
+            await I.fillField('#addressOfSucceededFirm_AddressLine2', createGrantOfProbateConfig.page3_succeededAddress_line2);
+            await I.fillField('#addressOfSucceededFirm_PostTown', createGrantOfProbateConfig.page3_succeededAddress_town);
+            await I.fillField('#addressOfSucceededFirm_PostCode', createGrantOfProbateConfig.page3_succeededAddress_postcode);
+            await I.fillField('#addressOfSucceededFirm_Country', createGrantOfProbateConfig.page3_succeededAddress_country);
+
             await I.click({css: '#morePartnersHoldingPowerReserved-No'});
         }
 
@@ -49,22 +54,14 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             tct === 'TCTPartSuccAllRenouncing' || tct === 'TCTPartAllRenouncing' || tct === 'TCTPartSuccOthersRenouncing' ||
             tct === 'TCTPartOthersRenouncing' || tct === 'TCTNoT') {
             //make sure both immediately visible
-            await I.waitForVisible('#soleTraderOrLimitedCompany-No');
-            await I.waitForVisible('#whoSharesInCompanyProfits-Partners');
+            await I.waitForVisible('#whoSharesInCompanyProfits-partner');
 
-            await I.scrollTo('#soleTraderOrLimitedCompany-No');
-            await I.click('#soleTraderOrLimitedCompany-No');
-
-            await I.scrollTo('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Partners');
-            await I.click('#whoSharesInCompanyProfits-Members');
+            await I.scrollTo('#whoSharesInCompanyProfits-partner');
+            await I.click('#whoSharesInCompanyProfits-partner');
+            await I.click('#whoSharesInCompanyProfits-member');
         } else {
             // make sure fields are hidden
-            let numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-Yes'});
-            assert (numEls === 0);
-            numEls = await I.grabNumberOfVisibleElements({css: '#soleTraderOrLimitedCompany-No'});
-            assert (numEls === 0);
-            numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
+            const numEls = await I.grabNumberOfVisibleElements({css: '#whoSharesInCompanyProfits-Partners'});
             assert (numEls === 0);
         }
     }

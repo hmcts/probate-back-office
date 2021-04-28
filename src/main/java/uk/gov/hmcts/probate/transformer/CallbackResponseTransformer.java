@@ -64,6 +64,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -92,7 +93,7 @@ public class CallbackResponseTransformer {
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
-        LEGAL_STATEMENT_ADMON};
+        LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -546,10 +547,36 @@ public class CallbackResponseTransformer {
         if (listOfApplyingExecs.size() > 1) {
             plural = "s";
         }
-        String executorNames = "The executor" + plural + " ";
-        String professionalName = caseDetails.getData().getSolsSOTName();
 
-        String confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
+        String executorNames = "";
+        String professionalName = "";
+        String confirmSOT = "";
+
+        if (caseDetails.getData().getSolsWillType() != null
+            && caseDetails.getData().getSolsWillType().matches("WillLeftAnnexed")) {
+            executorNames = "The applicant" + plural + " ";
+            professionalName = caseDetails.getData().getSolsSOTName();
+
+            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
+                + " confirm the following:\n\n"
+                + "I, " + professionalName + ", have provided a copy of this application to the applicant" + plural
+                + " named below.\n\n"
+                + "I, " + professionalName + ", have informed the applicant"  + plural
+                + " that in signing the statement of truth I am confirming that the applicant "  + plural
+                + " believe "  + plural + " the facts set out in this legal statement are true.\n\n"
+                + "I, " + professionalName + ", have informed the applicant"   + plural
+                + " of the consequences if it should subsequently appear that the applicant "  + plural
+                + " did not have an honest belief in the facts set out in the legal statement.\n\n"
+                + "I, " + professionalName + ", have been authorised but the applicant"  + plural
+                + " to sign the statement of truth.\n\n"
+                + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
+                + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
+                + "statement of truth without an honest belief in its truth.\n";
+        } else {
+            executorNames = "The executor" + plural + " ";
+            professionalName = caseDetails.getData().getSolsSOTName();
+
+            confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                 + " confirm the following:\n\n"
                 + "I, " + professionalName + ", have provided a copy of this application to the executor" + plural
                 + " named below.\n\n"
@@ -564,6 +591,7 @@ public class CallbackResponseTransformer {
                 + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                 + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                 + "statement of truth without an honest belief in its truth.\n";
+        }
 
         // if there are no executors then fill the space in with the professional users name (primary applicant)
         executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
@@ -817,11 +845,12 @@ public class CallbackResponseTransformer {
             .lodgementDate(ofNullable(caseData.getLodgementDate())
                     .map(dateTimeFormatter::format).orElse(null))
             .nameOfFirmNamedInWill(caseData.getNameOfFirmNamedInWill())
+            .addressOfFirmNamedInWill(caseData.getAddressOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
+            .addressOfSucceededFirm(caseData.getAddressOfSucceededFirm())
             .anyOtherApplyingPartners(caseData.getAnyOtherApplyingPartners())
             .anyOtherApplyingPartnersTrustCorp(caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
-            .soleTraderOrLimitedCompany(caseData.getSoleTraderOrLimitedCompany())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
             .taskList(caseData.getTaskList())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())
@@ -836,7 +865,8 @@ public class CallbackResponseTransformer {
             .iht217(caseData.getIht217())
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
-            .codicilAddedDateList(caseData.getCodicilAddedDateList());
+            .codicilAddedDateList(caseData.getCodicilAddedDateList())
+            .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

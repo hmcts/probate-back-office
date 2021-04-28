@@ -52,8 +52,8 @@ public class FormattingService {
             return null;
         }
         return Arrays.stream(name.split("\\s+"))
-                        .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
-                        .collect(Collectors.joining(" "));
+                .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
+                .collect(Collectors.joining(" "));
     }
 
     public static String getSolsSOTName(String firstNames, String surname) {

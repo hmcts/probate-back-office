@@ -20,7 +20,7 @@ module.exports = async function (crud) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
 
         await I.fillField('#primaryApplicantPhoneNumber', createGrantOfProbateConfig.page2_phoneNumber);

@@ -37,19 +37,25 @@ public class CaseDataParent {
     protected final String lodgementAddress;
     protected final LocalDate lodgementDate;
     protected final String nameOfFirmNamedInWill;
+    protected SolsAddress addressOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected SolsAddress addressOfSucceededFirm;
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
+    protected final String furtherEvidenceForApplication;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
+    // Not final as field set in CaseDataTransformer
+    protected String dispenseWithNoticeLeaveGivenDateFormatted;
+    // Not final as field set in CaseDataTransformer
+    protected List<CollectionMember<String>> codicilAddedFormattedDateList;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
-    protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
     protected final String solsIdentifiedNotApplyingExecs;
@@ -62,4 +68,7 @@ public class CaseDataParent {
 
     @Getter
     protected LocalDate authenticatedDate;
+
+    protected String singularProfitSharingTextForLegalStatement;
+    protected String pluralProfitSharingTextForLegalStatement;
 }

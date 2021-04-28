@@ -10,7 +10,7 @@ module.exports = async function (isSolicitorApplying = false) {
     await I.runAccessibilityTest();
 
     if (isSolicitorApplying) {
-        await I.click(`#otherExecutorExists-${grantOfProbateConfig.optionYes}`);
+        await I.click(`#otherExecutorExists-${grantOfProbateConfig.page4_otherExecutorExists}`);
 
         await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.TestTimeToWaitForText);
 
@@ -24,7 +24,7 @@ module.exports = async function (isSolicitorApplying = false) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(0.5);
+            await I.wait(testConfig.ManualDelayMedium);
         }
 
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);

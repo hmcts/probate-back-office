@@ -30,6 +30,24 @@
       "dispenseWithNoticeSupportingDocs": "Supporting docs",
       "titleAndClearingType": "TCTPartSuccPowerRes",
       "nameOfFirmNamedInWill": "Test Solicitor Ltd",
+      "addressOfSucceededFirm": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1A 1AA",
+        "PostTown": "London",
+        "AddressLine1": "1",
+        "AddressLine2": "Buckingham Palace",
+        "AddressLine3": "The place to be"
+      },
+      "addressOfFirmNamedInWill": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1A 1AA",
+        "PostTown": "London",
+        "AddressLine1": "1",
+        "AddressLine2": "Buckingham Palace",
+        "AddressLine3": "The place to be"
+      },
       "morePartnersHoldingPowerReserved": "No",
       "otherPartnersApplyingAsExecutors": [
         {
@@ -50,7 +68,6 @@
         }
       ],
       "nameOfSucceededFirm": "New Firm Ltd",
-      "soleTraderOrLimitedCompany": "No",
       "whoSharesInCompanyProfits": ["Partners"]
     },
     "data_classification": {},

@@ -40,20 +40,20 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyAddressInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
-                + "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test AddressLine2, \n"
+                        + "Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("DeceasedFirstName \nDeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -85,9 +85,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, "
-                        + "as our appointed firm, to submit this application on our behalf.",
-                        DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorFirmName "
+                + "to sign a statement of truth on their behalf.",
+                DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -265,9 +265,15 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
-            textContent = textContent.replaceAll(Pattern.quote("\r"), "");
-            final String valMinusCr = validationString.replaceAll(Pattern.quote("\r"), "");
-            assertTrue(textContent.contains(valMinusCr));
+            textContent = textContent
+                    .replaceAll(Pattern.quote("\r"), "")
+                    .replaceAll(Pattern.quote("\n"), "");
+
+            final String valMinusCrLf = validationString
+                            .replaceAll(Pattern.quote("\r"), "")
+                            .replaceAll(Pattern.quote("\n"), "");
+
+            assertTrue(textContent.contains(valMinusCrLf));
             
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");

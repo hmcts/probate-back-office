@@ -28,6 +28,7 @@
       "lodgementDate": "2020-01-01",
       "schemaVersion": "2.0.0",
       "trustCorpName": "Trust Corporation Name",
+      "furtherEvidenceForApplication": "Further evidence",
       "mentalCapacity": "Yes",
       "solsSOTSurname": "Jones",
       "applicationType": "Solicitor",
@@ -124,6 +125,7 @@
         "AddressLine3": ""
       },
       "titleAndClearingType": "TCTTrustCorpResWithApp",
+      "anyOtherApplyingPartnersTrustCorp": "No",
       "willDatedBeforeApril": "Yes",
       "deceasedAnyOtherNames": "Yes",
       "deceasedMaritalStatus": "neverMarried",

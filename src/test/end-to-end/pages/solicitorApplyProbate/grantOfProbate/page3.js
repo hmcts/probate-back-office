@@ -5,9 +5,9 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForClickable({css: `#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.optionNo}`});
+    await I.waitForClickable({css: `#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`});
     await I.runAccessibilityTest();
-    await I.click(`#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.optionNo}`);
+    await I.click(`#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`);
 
     await I.fillField('#dispenseWithNoticeOverview', grantOfProbateConfig.page3_dispenseWithNoticeOverview);
     await I.fillField('#dispenseWithNoticeSupportingDocs', grantOfProbateConfig.page3_dispenseWithNoticeSupportingDocs);

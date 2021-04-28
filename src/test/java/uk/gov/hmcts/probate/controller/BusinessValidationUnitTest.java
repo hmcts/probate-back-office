@@ -62,7 +62,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -214,7 +214,7 @@ public class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
             .thenReturn(documentMock);
         when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "gop"))
             .thenReturn(callbackResponseMock);

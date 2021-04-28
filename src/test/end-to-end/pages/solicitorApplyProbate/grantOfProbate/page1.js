@@ -11,11 +11,13 @@ module.exports = async function () {
 
     await I.click({css: '#willAccessOriginal-No'});
     await I.waitForVisible({css: '#solsNoOriginalWill'});
+    await I.waitForVisible({css: '#willAccessOriginalHintText'});
     await I.waitForVisible({css: '#noOriginalWillAccessReason'});
     await I.waitForText(grantOfProbateConfig.page1_noAccessOriginalWillLabel);
 
     await I.click({css: `#willAccessOriginal-${grantOfProbateConfig.optionYes}`});
     await I.waitForInvisible({css: '#solsNoOriginalWill'});
+    await I.waitForInvisible({css: '#willAccessOriginalHintText'});
     await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
 
     await I.fillField({css: '#originalWillSignedDate-day'}, grantOfProbateConfig.page1_originalWillSignedDate_day);
@@ -29,7 +31,7 @@ module.exports = async function () {
     await I.waitForClickable(addBtn);
     await I.click(addBtn);
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-day'}, grantOfProbateConfig.page1_codicilDate_day);

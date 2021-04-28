@@ -41,7 +41,7 @@ public class ResponseCaseDataParent {
     protected final String registrySequenceNumber;
     protected final String dispenseWithNotice;
     protected final String dispenseWithNoticeLeaveGiven;
-    protected final String dispenseWithNoticeLeaveGivenDate;
+    protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     protected final List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
@@ -52,7 +52,9 @@ public class ResponseCaseDataParent {
     protected final String lodgementDate;
     protected final String lodgementAddress;
     protected final String nameOfFirmNamedInWill;
+    protected SolsAddress addressOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
+    protected SolsAddress addressOfSucceededFirm;
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
@@ -60,7 +62,6 @@ public class ResponseCaseDataParent {
     protected final String solsForenames;
     protected final String solsSolicitorWillSignSOT;
     protected final String solsSurname;
-    protected final String soleTraderOrLimitedCompany;
     protected final List<String> whoSharesInCompanyProfits;
     protected String solsIdentifiedNotApplyingExecs;
     protected String solsIdentifiedApplyingExecs;
@@ -76,4 +77,5 @@ public class ResponseCaseDataParent {
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;
     protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
+    protected final String furtherEvidenceForApplication;
 }

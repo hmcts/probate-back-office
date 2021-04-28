@@ -14,7 +14,7 @@ module.exports = async function (crud) {
         await I.fillField('#domicilityCountry', createGrantOfProbateConfig.page9_domicilityCountry);
         await I.click('#ukEstate > div > button:nth-child(2)');
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page9_ukEstate_0_item);
         await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page9_ukEstate_0_value);
@@ -33,7 +33,7 @@ module.exports = async function (crud) {
     }
 
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

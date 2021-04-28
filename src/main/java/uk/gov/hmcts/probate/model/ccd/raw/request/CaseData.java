@@ -73,10 +73,11 @@ public class CaseData extends CaseDataParent {
     // Tasklist update
     private final String taskList;
 
+    // Not final as field set in CaseDataTransformer
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
-    private final String solsSolicitorFirmName;
+    private String solsSolicitorFirmName;
 
     @Valid
     private final SolsAddress solsSolicitorAddress;
@@ -113,13 +114,15 @@ public class CaseData extends CaseDataParent {
     // @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 
+    // Not final as field set in CaseDataTransformer
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedForenameIsNull}")
-    private final String deceasedForenames;
+    private String deceasedForenames;
 
+    // Not final as field set in CaseDataTransformer
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedSurnameIsNull}")
-    private final String deceasedSurname;
+    private String deceasedSurname;
 
     @NotNull(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
         ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")

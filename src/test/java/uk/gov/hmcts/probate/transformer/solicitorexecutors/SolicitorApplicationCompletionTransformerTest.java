@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
@@ -45,6 +46,9 @@ public class SolicitorApplicationCompletionTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
+
+    @Mock
+    private DateFormatterService dateFormatterServiceMock;
 
     @Mock
     private ExecutorListMapperService executorListMapperServiceMock;
@@ -93,13 +97,15 @@ public class SolicitorApplicationCompletionTransformerTest {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
+                .anyOtherApplyingPartnersTrustCorp(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .solsAdditionalExecutorList(solsAdditionalExecutorList);
 
         CaseData caseData = caseDataBuilder.build();
 
         SolicitorApplicationCompletionTransformer solJourneyCompletion =
-                new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService());
+            new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService());
 
         solJourneyCompletion.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -135,8 +141,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying()
-            throws JsonProcessingException {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME)
             .primaryApplicantSurname(EXEC_SURNAME)
@@ -156,8 +161,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying()
-            throws JsonProcessingException {
+    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -174,5 +178,4 @@ public class SolicitorApplicationCompletionTransformerTest {
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
-
 }

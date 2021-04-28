@@ -7,9 +7,9 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
     await I.runAccessibilityTest();
-    const dispNoticeLocator = {css: '#dispenseWithNotice-Yes'};
+    const dispNoticeLocator = {css: `#dispenseWithNotice-${grantOfProbateConfig.page2_dispenseWithNotice}`};
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
@@ -50,7 +50,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
 
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
-    await I.click(grantOfProbateConfig.UKpostcodeLink);
+    await I.click(grantOfProbateConfig.page2_trustCorpPostcodeLink);
     await I.fillField('#trustCorpAddress_AddressLine1', grantOfProbateConfig.address_line1);
     await I.fillField('#trustCorpAddress_AddressLine2', grantOfProbateConfig.address_line2);
     await I.fillField('#trustCorpAddress_AddressLine3', grantOfProbateConfig.address_line3);
@@ -62,20 +62,15 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.waitForText(grantOfProbateConfig.page2_waitForAnyOtherTcPartners);
     await I.click({css: '#anyOtherApplyingPartnersTrustCorp-Yes'});
 
-
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
     await I.click('#additionalExecutorsTrustCorpList > div > button');
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
 
-    await I.fillField('#lodgementAddress', grantOfProbateConfig.page2_lodgementAddress);
-    await I.fillField('#lodgementDate-day', grantOfProbateConfig.page2_lodgementDate_day);
-    await I.fillField('#lodgementDate-month', grantOfProbateConfig.page2_lodgementDate_month);
-    await I.fillField('#lodgementDate-year', grantOfProbateConfig.page2_lodgementDate_year);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

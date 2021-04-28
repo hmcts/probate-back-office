@@ -13,7 +13,7 @@ module.exports = async function (crud) {
         await I.click('#deceasedDomicileInEngWales-Yes');
         await I.click('#ukEstate > div > button:nth-child(2)');
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(testConfig.ManualDelayShort);
         }
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
         await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page8_ukEstate_0_value);
@@ -34,7 +34,7 @@ module.exports = async function (crud) {
 
     // occasionally the last input is not recorded when auto delay off
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(0.5);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     await I.waitForEnabled(commonConfig.continueButton);

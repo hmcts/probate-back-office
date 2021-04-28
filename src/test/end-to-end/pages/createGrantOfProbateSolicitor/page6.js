@@ -30,7 +30,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.waitForClickable(addBtn);
             await I.click(addBtn);
             if (!testConfig.TestAutoDelayEnabled) {
-                await I.wait(0.25);
+                await I.wait(testConfig.ManualDelayShort);
             }
 
             await I.waitForVisible({css: '#codicilAddedDateList_0_dateCodicilAdded-day'});

@@ -77,8 +77,10 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private CaseDetails caseDetails;
     private ReturnedCaseDetails returnedCaseDetails;
     private List<ReturnedCaseDetails> excelaCaseData = new ArrayList<>();
+    private List<ReturnedCaseDetails> excelaCaseDataWithCommas = new ArrayList<>();
     private List<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ArrayList<>();
     private List<ReturnedCaseDetails> excelaCaseDataNoSubtype = new ArrayList<>();
+    private List<ReturnedCaseDetails> excelaCaseDataNoDOB = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -128,6 +130,16 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
 
+        excelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
+            .applicationType(PERSONAL)
+            .deceasedForenames("Jack,Henry")
+            .deceasedSurname("Michelson, Howard")
+            .grantIssuedDate("2019-05-01")
+            .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
+            .scannedDocuments(scannedDocuments)
+            .registryLocation("Cardiff")
+            .build(), LAST_MODIFIED, ID));
+        
         excelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
@@ -144,6 +156,15 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedSurname("Michelson")
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
+            .scannedDocuments(scannedDocumentsNoSubtype)
+            .registryLocation("Cardiff")
+            .build(), LAST_MODIFIED, ID));
+
+        excelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
+            .applicationType(PERSONAL)
+            .deceasedForenames("Jack")
+            .deceasedSurname("Michelson")
+            .grantIssuedDate("2019-05-01")
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
@@ -206,6 +227,16 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
+    public void getExcelaPersonalisationContentIsOkWithCommas() {
+        Map<String, String> response =
+            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataWithCommas);
+
+        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals("123456, Jack Henry, Michelson  Howard, 01/01/2019, 01/05/2019, 1, Cardiff\n",
+            response.get(PERSONALISATION_CASE_DATA));
+    }
+
+    @Test
     public void getExcelaPersonalisationContentIsOkNoWillReference() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoWillReference);
@@ -223,6 +254,16 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
         assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
         assertEquals(", Jack, Michelson, 01/01/2019, 01/05/2019, 1, Cardiff\n",
+            response.get(PERSONALISATION_CASE_DATA));
+    }
+
+    @Test
+    public void getExcelaPersonalisationContentWithExceptionInData() {
+        Map<String, String> response =
+            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoDOB);
+
+        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(", Jack, Michelson, 1, java.lang.NullPointerException: temporal\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 

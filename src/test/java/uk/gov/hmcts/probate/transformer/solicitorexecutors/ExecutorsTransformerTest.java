@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
@@ -254,7 +257,7 @@ public class ExecutorsTransformerTest {
 
         final CaseData cd = caseDataBuilder.build();
 
-        new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService())
+        new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService())
                 .mapSolicitorExecutorFieldsOnCompletion(cd);
 
         assertEquals(0, cd.getAdditionalExecutorsApplying().size());
@@ -316,6 +319,8 @@ public class ExecutorsTransformerTest {
         additionalList.add(additionalNotApplying);
 
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsApplying(NO)
                 .additionalExecutorsTrustCorpList(null)
                 .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(dispenseList)
@@ -359,6 +364,8 @@ public class ExecutorsTransformerTest {
                 .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(null)
                 .solsAdditionalExecutorList(null)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
+                .anyOtherApplyingPartnersTrustCorp(YES)
                 .primaryApplicantForenames("forename");
 
         final CaseData cd = caseDataBuilder.build();
@@ -382,6 +389,8 @@ public class ExecutorsTransformerTest {
     public void shouldSetCaseworkerApplyingWithPartnerExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(null)
+                .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
+                .anyOtherApplyingPartners(YES)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .dispenseWithNoticeOtherExecsList(null)
                 .solsAdditionalExecutorList(null)
@@ -561,6 +570,8 @@ public class ExecutorsTransformerTest {
                 .solsSolicitorIsApplying(YES)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
+                .anyOtherApplyingPartnersTrustCorp(YES)
                 .additionalExecutorsTrustCorpList(tcExecutorList)
                 .dispenseWithNoticeOtherExecsList(dispenseList);
 
@@ -583,6 +594,8 @@ public class ExecutorsTransformerTest {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
+                .anyOtherApplyingPartnersTrustCorp(YES)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)

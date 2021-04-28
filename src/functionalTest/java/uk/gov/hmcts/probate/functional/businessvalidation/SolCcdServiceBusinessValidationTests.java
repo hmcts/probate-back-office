@@ -221,6 +221,42 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyErrorMessageSuccAllRenouncing() {
+        validatePostFailure("failure.practitionerExecAndApplyingSuccAllRenouncing.json",
+            "Probate practitioner cannot be applying if "
+                + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void verifyErrorMessageAllRenouncing() {
+        validatePostFailure("failure.practitionerExecAndApplyingAllRenouncing.json",
+            "Probate practitioner cannot be applying if "
+                + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void verifyErrorMessageNoneOfThese() {
+        validatePostFailure("failure.practitionerExecAndApplyingTCTNoT.json",
+            "If you have selected none of these because the title and clearing is not "
+                + "covered by the options above, you will not be able to continue making this application online. "
+                + "Please apply with a paper form.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void verifyErrorMessageNoPartnersAdded() {
+        validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersAdded.json",
+            "You need to add at least 1 other partner that acts as an executor",
+            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
+    public void verifyErrorMessageNoPartnersAddedTrustCorp() {
+        validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersTrustCorp.json",
+            "You need to add at least 1 other partner that acts on behalf of the trust corporation",
+            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+    }
+
+    @Test
     public void verifyNoOfApplyingExecutorsMoreThanFour() {
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
@@ -228,7 +264,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
             "The total number executors applying cannot exceed 4",
-                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -528,7 +564,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
         "\"titleAndClearingType\": \"TCTPartSuccPowerRes\","
-                + "\n\"soleTraderOrLimitedCompany\" : \"No\","
                 + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
@@ -797,8 +832,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecLastname"));
         assertEquals("Address line 1",
                 jsonPath.get("data.otherPartnersApplyingAsExecutors[0].value.additionalExecAddress.AddressLine1"));
-        assertEquals("No", jsonPath.get("data.soleTraderOrLimitedCompany"));
+        assertEquals("1",
+            jsonPath.get("data.addressOfSucceededFirm.AddressLine1"));
+        assertEquals("1",
+            jsonPath.get("data.addressOfFirmNamedInWill.AddressLine1"));
         assertEquals("Partners", jsonPath.get("data.whoSharesInCompanyProfits[0]"));
+    }
+
+    @Test
+    public void shouldTransformCaseWithFurtherEvidenceForApplication() {
+        final String response = transformCase("success.solicitorFurtherEvidenceForApplication.json",
+            TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        assertEquals("Further Evidence", jsonPath.get("data.furtherEvidenceForApplication"));
     }
 
 

@@ -313,6 +313,20 @@ public class FunctionalTestUtils {
             "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
 
+    public String convertToWelsh(LocalDate dateToConvert) {
+        String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
+            "Hydref", "Tachwedd","Rhagfyr"};
+
+        if (dateToConvert == null) {
+            return null;
+        }
+        int day = dateToConvert.getDayOfMonth();
+        int year = dateToConvert.getYear();
+        int month = dateToConvert.getMonth().getValue();
+        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
+            Integer.toString(year));
+    }
+    
     public String formatDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
