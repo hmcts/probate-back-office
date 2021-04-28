@@ -572,6 +572,9 @@ public class CallbackResponseTransformer {
                 + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                 + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                 + "statement of truth without an honest belief in its truth.\n";
+
+            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
         } else {
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
@@ -589,16 +592,10 @@ public class CallbackResponseTransformer {
                 + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                 + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                 + "statement of truth without an honest belief in its truth.\n";
-        }
 
-        if (caseDetails.getData().getCaseType().matches("gop")) {
-            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
-        } else {
             executorNames = executorNames + caseDetails.getData().getPrimaryApplicantForenames()
                 + " " + caseDetails.getData().getPrimaryApplicantSurname();
         }
-
 
         builder.solsReviewSOTConfirm(confirmSOT);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);

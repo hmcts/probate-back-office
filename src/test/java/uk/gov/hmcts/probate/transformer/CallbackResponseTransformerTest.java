@@ -2312,7 +2312,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformer() throws JsonProcessingException {
+    public void shouldCallSolLSAmendTransformerGoP() throws JsonProcessingException {
+        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
+        verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
+        caseDataBuilder.solsWillType("WillLeftAnnexed");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
