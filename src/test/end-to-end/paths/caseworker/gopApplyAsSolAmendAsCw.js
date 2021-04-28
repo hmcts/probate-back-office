@@ -85,7 +85,7 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
     await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-    
+
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 

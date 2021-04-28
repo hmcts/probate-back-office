@@ -21,7 +21,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Running in the pipeline means a much slower response bringing back existing cases.
         // This is a blunt approach, would be be better if we used an implicit wait
         // and check for events appearing, detect if a callback in progress, and wait for buttons.
-        // Perhaps even poll, or use a configured timeout and catch exception (assume no existing cases 
+        // Perhaps even poll, or use a configured timeout and catch exception (assume no existing cases
         // if timeout exception raised)
         await I.wait(60);
     }
