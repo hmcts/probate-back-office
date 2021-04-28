@@ -550,12 +550,13 @@ public class CallbackResponseTransformer {
             believePlural = "";
         }
 
-        String executorNames = "The applicant" + plural + " ";
+        String executorNames = "";
         String professionalName = caseDetails.getData().getSolsSOTName();
         String confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
             && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
+            executorNames = "The executor" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                 + " confirm the following:\n\n"
@@ -576,6 +577,7 @@ public class CallbackResponseTransformer {
             executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
                 executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
         } else {
+            executorNames = "The applicant" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                 + " confirm the following:\n\n"
