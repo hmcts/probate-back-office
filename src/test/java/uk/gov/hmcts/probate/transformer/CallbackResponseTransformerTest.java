@@ -471,6 +471,7 @@ public class CallbackResponseTransformerTest {
             .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
             .deceasedAddress(DECEASED_ADDRESS)
             .deceasedAnyOtherNames(YES)
+            .caseType("gop")
             .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
             .primaryApplicantAddress(EXEC_ADDRESS)
             .solsDeceasedAliasNamesList(ALIAS_NAMES)
@@ -2311,7 +2312,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformer() throws JsonProcessingException {
+    public void shouldCallSolLSAmendTransformerGoP() throws JsonProcessingException {
+        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
+        verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
+        caseDataBuilder.solsWillType("WillLeftAnnexed");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
