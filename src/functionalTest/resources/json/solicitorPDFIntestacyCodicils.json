@@ -36,6 +36,8 @@
       "ihtNetValue": 20000.00,
       "ihtGrossValue": 20000.00,
       "solsWillType": "NoWill",
+      "willHasCodicils": "Yes",
+      "willNumberOfCodicils": "2",
       "primaryApplicantForenames": "FirstName",
       "primaryApplicantSurname": "LastName",
       "primaryApplicantIsApplying": "Yes",

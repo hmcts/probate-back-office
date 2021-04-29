@@ -72,6 +72,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
     private static final String FURTHER_EVIDENCE = "Further evidence";
+    private static final String DOMICILITY_SENTENCE_UK = "The gross value for the estate in the United Kingdom amounts";
+    private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
+    private static final String FIRM_AUTHORISATION = "They have authorised Firm Name to sign a statement";
+    private static final String WILL_NO_CODICILS = "and is named in the will as";
     private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
@@ -123,6 +127,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String EMPTY_REQUEST = "emptyRequest.json";
 
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
@@ -522,6 +527,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_NO_CODICILS));
     }
 
     @Test
@@ -529,6 +537,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
+    }
+
+    @Test
+    public void verifySuccessForCodicilsIntestacy() {
+        String response = generatePdfDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
     }
 
     @Test
