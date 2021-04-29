@@ -153,6 +153,7 @@
       "solsSolicitorNotApplyingReason": null,
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
+      "iht217": "Yes",
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
@@ -416,6 +417,7 @@
       "primaryApplicantHasAlias": "No",
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
+      "iht217": "Yes",
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300"

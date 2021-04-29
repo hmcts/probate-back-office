@@ -9,7 +9,6 @@ module.exports = async function (updateAddressManually) {
     await I.runAccessibilityTest();
 
     await I.click(`#solsEntitledMinority-${admonWillDetailsConfig.optionNo}`);
-    await I.click(`#immovableEstate-${admonWillDetailsConfig.optionYes}`);
     await I.click(`#solsDiedOrNotApplying-${admonWillDetailsConfig.optionYes}`);
     await I.click(`#solsResiduary-${admonWillDetailsConfig.optionYes}`);
     await I.waitForElement('#solsResiduaryType');

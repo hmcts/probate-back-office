@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.functional.fee;
 
 
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -55,6 +54,17 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     @Test
     public void verifyEmptyApplicationFeeReturns400() {
         verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
+    }
+
+    @Test
+    public void verifyNegativeUKCopiesFeeReturns400() {
+        verifyIncorrectPostRequestReturns400("failure.negativeUKCopies.json", "Uk Grant copies cannot be negative");
+    }
+
+    @Test
+    public void verifyNegativeOverseasCopiesFeeReturns400() {
+        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be " 
+            + "negative");
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
