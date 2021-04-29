@@ -15,16 +15,4 @@
         <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch@.*$</packageUrl>
         <vulnerabilityName>CVE-2021-22134</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.38.jar
-   ]]></notes>
-        <cve>CVE-2021-24122</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-websocket-9.0.38.jar
-   ]]></notes>
-        <cve>CVE-2021-24122</cve>
-    </suppress>
 </suppressions>
