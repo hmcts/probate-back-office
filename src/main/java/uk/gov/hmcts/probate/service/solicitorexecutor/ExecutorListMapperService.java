@@ -98,19 +98,6 @@ public class ExecutorListMapperService {
         return tempList;
     }
 
-    public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
-            CaseData caseData) {
-        // Create applying executor collection member containing solicitor names
-        return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
-                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
-                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
-                        + " " + caseData.getSolsSOTSurname()))
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
-                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
-                .build());
-    }
-
     public List<CollectionMember<AdditionalExecutorApplying>> mapFromTrustCorpExecutorsToApplyingExecutors(
             CaseData caseData) {
         return caseData.getAdditionalExecutorsTrustCorpList()
@@ -197,6 +184,24 @@ public class ExecutorListMapperService {
                         .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
+            CaseData caseData) {
+        // Create applying executor collection member containing solicitor names
+        return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
+                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
+                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
+                        + " " + caseData.getSolsSOTSurname()))
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
+                .applyingExecutorTrustCorpPosition(
+                        TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())
+                                && NO.equals(caseData.getSolsSolicitorIsExec())
+                                && YES.equals(caseData.getSolsSolicitorIsApplying())
+                                ? caseData.getProbatePractitionersPositionInTrust() : null)
+                .build());
     }
 
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(

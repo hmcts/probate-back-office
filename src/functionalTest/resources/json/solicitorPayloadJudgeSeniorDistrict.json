@@ -67,6 +67,7 @@
       "nameOfSucceededFirm": "Successor firm",
       "otherExecutorExists": "No",
       "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsApplying": "Yes",
       "executorsNotApplying": [],
       "solsSolicitorAddress": {
         "County": "Somerset",
@@ -79,6 +80,7 @@
       },
       "titleAndClearingType": "TCTTrustCorpResWithSDJ",
       "anyOtherApplyingPartnersTrustCorp": "Yes",
+      "probatePractitionersPositionInTrust": "Director",
       "deceasedAnyOtherNames": "No",
       "nameOfFirmNamedInWill": "Firmname will",
       "solsSolicitorFirmName": "Firmname",
@@ -94,7 +96,6 @@
         "AddressLine3": ""
       },
       "primaryApplicantSurname": "Practioner",
-      "solsSolicitorIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
       "solsSolicitorPhoneNumber": "",
       "solsSolicitorWillSignSOT": "Yes",
@@ -106,7 +107,7 @@
         "Stakeholders"
       ],
       "deceasedDomicileInEngWales": "Yes",
-      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantIsApplying": "",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:5006/documents/c8daa6ae-8b85-4303-8db9-363cf85c4f74",
         "document_filename": "legalStatementProbate.pdf",

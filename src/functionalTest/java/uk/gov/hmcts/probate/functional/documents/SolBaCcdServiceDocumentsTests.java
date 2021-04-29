@@ -1382,6 +1382,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             + " the position they hold and which is still in force, "
             + "appointed them for the purpose of applying for probate"
             + " of the will or for grants of probate on its behalf."));
+
+
+        assertTrue(response.contains("Probate Practitioner is acting on behalf of Firmname will trust corporation. " +
+            "They hold the position of Director as per the resolution."));
     }
 
     @Test
