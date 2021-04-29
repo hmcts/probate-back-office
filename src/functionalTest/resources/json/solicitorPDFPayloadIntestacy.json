@@ -21,7 +21,7 @@
       "deceasedSurname": "Ceased",
       "deceasedDateOfDeath": "2020-01-23",
       "deceasedDateOfBirth": "1997-01-23",
-      "deceasedDomicileInEngWales": "No",
+      "deceasedDomicileInEngWales": "Yes",
       "deceasedAddress": {
         "AddressLine1": "Test",
         "AddressLine2": "Test",
