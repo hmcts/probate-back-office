@@ -1377,15 +1377,21 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTFifthParagraphJudgeSeniorDistrict() {
         String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
                 GENERATE_LEGAL_STATEMENT);
+
+        // Is it right that a solicitor always comes through as a named executor??
+
+        assertTrue( response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
+                + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
+                + "Somerset, BA5 2PA, United Kingdom make the following statement:"));
+
         assertTrue(response.contains("The executor named in the will has by a resolution,"
             + " which has been filed with the Senior District Judge or Registry, in which Exfn1 Exln1 identified by"
             + " the position they hold and which is still in force, "
             + "appointed them for the purpose of applying for probate"
             + " of the will or for grants of probate on its behalf."));
 
-
-        assertTrue(response.contains("Probate Practitioner is acting on behalf of Firmname will trust corporation. " +
-            "They hold the position of Director as per the resolution."));
+        assertTrue(response.contains("Exfn1 Exln1 is acting on behalf of Firmname will trust corporation. "
+            + "They hold the position of Solicitor as per the resolution."));
     }
 
     @Test
