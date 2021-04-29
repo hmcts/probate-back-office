@@ -17,6 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -210,6 +211,11 @@ public class ExecutorListMapperService {
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
+                .applyingExecutorTrustCorpPosition(
+                        TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())
+                        && NO.equals(caseData.getSolsSolicitorIsExec())
+                        && YES.equals(caseData.getSolsSolicitorIsApplying())
+                                ? caseData.getProbatePractitionersPositionInTrust() : null)
                 .build());
     }
 
