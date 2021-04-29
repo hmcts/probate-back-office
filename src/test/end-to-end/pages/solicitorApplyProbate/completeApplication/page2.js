@@ -9,8 +9,6 @@ module.exports = async function () {
     await I.fillField('#solsIHT400Date-month', '10');
     await I.fillField('#solsIHT400Date-year', '2020');
     await I.waitForNavigationToComplete(commonConfig.continueButton);
-    await I.waitForElement('#solsConfirmSignSOT1');
-    await I.runAccessibilityTest();
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+
 
 };

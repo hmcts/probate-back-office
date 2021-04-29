@@ -169,7 +169,7 @@ def versions = [
         hmctsJavaLogging                : '5.1.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
-        commonsIO                       : '2.6',
+        commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
         lombok                          : '1.18.16',
