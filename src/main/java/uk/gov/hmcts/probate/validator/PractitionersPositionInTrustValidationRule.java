@@ -10,11 +10,12 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class PractitionersPositionInTrustRule implements TitleAndClearingPageValidationRule {
+public class PractitionersPositionInTrustValidationRule implements TitleAndClearingPageValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String POS_TRUST_NEEDED = "practitionerPosTrustNeeded";
@@ -26,8 +27,10 @@ public class PractitionersPositionInTrustRule implements TitleAndClearingPageVal
         // final String[] args = {caseDetails.getId().toString()};
         final String posInTrust = caseData.getProbatePractitionersPositionInTrust();
 
-        if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
-            && (posInTrust == null || posInTrust == "")) {
+        if (NO.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying())
+            && (posInTrust == null || posInTrust == "")
+            && TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())) {
 
             final String userMessage = businessValidationMessageRetriever.getMessage(POS_TRUST_NEEDED, null, Locale.UK);
 
