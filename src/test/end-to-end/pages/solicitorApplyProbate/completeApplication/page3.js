@@ -11,6 +11,9 @@ module.exports = async function () {
     await I.click({css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'});
     await I.click({css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'});
 
+    await I.runAccessibilityTest();
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForElement('#solsConfirmSignSOT1');
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
 };
