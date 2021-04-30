@@ -47,6 +47,8 @@ public class CaseQueryService {
     protected int dataExtractBlockSize;
     @Value("${data-extract.block.numDaysInclusive}")
     protected int numDaysBlock;
+    @Value("${data-extract.smee-and-ford.size}")
+    protected int dataExtractSmeeAndFordSize;
 
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
@@ -97,14 +99,18 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(GRANT_RANGE_QUERY_EXELA, startDate, endDate);
+        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
     }
 
-    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String qry, String startDate,
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
+        return findCaseStateWithinDateRange(dataExtractSmeeAndFordSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+    }
+
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(int size, String qry, String startDate,
                                                                   String endDate) {
         List<ReturnedCaseDetails> allCases = new ArrayList<>();
         LocalDate end = LocalDate.parse(endDate, DATE_FORMAT);
@@ -119,11 +125,11 @@ public class CaseQueryService {
             log.info("findCaseStateWithinDateRange stBlock:" + stBlock + " endBlock:" + endBlock + " days:" 
                 + (counter.datesUntil(endCounter).count() + 1));
             String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
-                .replace(":size", "" + dataExtractBlockSize)
+                .replace(":size", "" + size)
                 .replace(":fromDate", stBlock)
                 .replace(":toDate", endBlock);
             List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery);
-            if (blockCases.size() == dataExtractBlockSize) {
+            if (blockCases.size() == size) {
                 String message = "Number of cases returned during data range query at max block size for "
                     + stBlock + " to " + endBlock;
                 log.info(message);
