@@ -52,7 +52,8 @@
       "Is the language preference Welsh?",
       "What best describes the title and clearing type?",
       "Name of trust corporation",
-      "Address of trust corporation"
+      "Address of trust corporation",
+      "Name of the probate practitioner's position within the trust corporation as per the resolution"
     ],
     "dataKeys": [
       "page1_list1_registry_location",
@@ -64,6 +65,7 @@
       "page3_trustAddress_town",
       "page3_trustAddress_postcode",
       "page3_trustAddress_country",
+      "page3_positionInTrustCorp",
   
       "page4_adoptive_relative_name",
       "page4_adoptive_relative_relationship",

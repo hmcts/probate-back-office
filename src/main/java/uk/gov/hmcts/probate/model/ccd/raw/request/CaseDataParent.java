@@ -46,6 +46,7 @@ public class CaseDataParent {
     // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
+    protected final String probatePractitionersPositionInTrust;
     protected final String dispenseWithNoticeLeaveGiven;
     protected final LocalDate dispenseWithNoticeLeaveGivenDate;
     // Not final as field set in CaseDataTransformer

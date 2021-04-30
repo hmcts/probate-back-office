@@ -12,7 +12,8 @@
     "Name of the executor to whom power is reserved",
     "First name(s)",
     "Last name(s)",
-    "Please provide any further information that may be needed on your legal statement"
+    "Please provide any further information that may be needed on your legal statement",
+    "Name of the probate practitioner's position within the trust corporation as per the resolution"
   ],
   "dataKeys": [
     "page2_dispenseWithNotice",

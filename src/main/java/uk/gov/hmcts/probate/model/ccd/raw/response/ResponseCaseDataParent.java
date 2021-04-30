@@ -59,6 +59,7 @@ public class ResponseCaseDataParent {
     protected final String anyOtherApplyingPartnersTrustCorp;
     protected final List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
+    protected final String probatePractitionersPositionInTrust;
     protected final String solsForenames;
     protected final String solsSolicitorWillSignSOT;
     protected final String solsSurname;

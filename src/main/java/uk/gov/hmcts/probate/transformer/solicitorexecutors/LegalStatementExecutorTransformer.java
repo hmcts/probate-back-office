@@ -48,7 +48,6 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     public void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
                                              List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
                                              CaseData caseData) {
-
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
