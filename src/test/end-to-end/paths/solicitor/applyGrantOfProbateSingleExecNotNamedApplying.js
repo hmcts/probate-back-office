@@ -90,7 +90,8 @@ Scenario('03 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
     await I.completeApplicationPage6();
-
+    await I.completeApplicationPage7();
+    
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);

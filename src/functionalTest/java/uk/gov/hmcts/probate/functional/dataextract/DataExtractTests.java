@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
     private static final String EXCELA_URL = "/data-extract/exela";
+    private static final String SMEE_AND_FORD_URL = "/data-extract/smee-and-ford";
     private static final String HMRC_URL = "/data-extract/hmrc";
 
     private static final String HMRC_DATA_EXTRACT_COMPLETION_MESSAGE = "Perform HMRC data extract finished";
@@ -113,6 +114,16 @@ public class DataExtractTests extends IntegrationTestBase {
             .when()
             .post(EXCELA_URL)
             .then().assertThat().statusCode(400);
+    }
+
+    @Test
+    public void verifyValidDateRequestReturnsAcceptedStatusForSmeeAndFord() {
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+            password, id)).queryParam("fromDate", "2019-02-03")
+            .queryParam("toDate", "2019-02-03")
+            .when()
+            .post(SMEE_AND_FORD_URL)
+            .then().assertThat().statusCode(202);
     }
 
 }
