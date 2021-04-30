@@ -32,6 +32,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.fillField('#trustCorpAddress_PostTown', createGrantOfProbateConfig.page3_trustAddress_town);
             await I.fillField('#trustCorpAddress_PostCode', createGrantOfProbateConfig.page3_trustAddress_postcode);
             await I.fillField('#trustCorpAddress_Country', createGrantOfProbateConfig.page3_trustAddress_country);
+            await I.fillField('#probatePractitionersPositionInTrust', createGrantOfProbateConfig.page3_positionInTrustCorp);
 
         } else if (tct.indexOf('Succ') >= 0) {
             await I.waitForVisible({css: '#nameOfFirmNamedInWill'});
