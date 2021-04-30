@@ -127,7 +127,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String EMPTY_REQUEST = "emptyRequest.json";
 
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
-    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
@@ -501,7 +501,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
@@ -515,7 +515,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
