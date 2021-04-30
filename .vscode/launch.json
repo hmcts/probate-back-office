@@ -257,10 +257,10 @@
             "type": "pwa-node"
         },
         {
-            "name": "Solicitor no will GoP e2e",
+            "name": "Solicitor no will (Intestacy) GoR e2e",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateNoWill",
+                "test-e2e-sol-gorNoWill",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -269,10 +269,10 @@
             "type": "pwa-node"
         },
         {
-            "name": "Solicitor will annexed GoP e2e",
+            "name": "Solicitor will annexed (Admon Will) GoR e2e",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateWillAnnexed",
+                "test-e2e-sol-gorWillAnnexed",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -281,10 +281,10 @@
             "type": "pwa-node"
         },
         {
-            "name": "Solicitor will annexed failure GoP e2e",
+            "name": "Solicitor will annexed (Admon Will) failure GoR e2e",
             "request": "launch",
             "runtimeArgs": [
-                "test-e2e-sol-grantOfProbateWillAnnexedFailure",
+                "test-e2e-sol-gorWillAnnexedFailure",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

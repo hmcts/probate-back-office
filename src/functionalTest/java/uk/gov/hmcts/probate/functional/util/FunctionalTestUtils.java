@@ -131,11 +131,11 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("user-id", userId));
     }
 
     public Headers getSolicitorHeadersWithUserId() {
@@ -144,11 +144,11 @@ public class FunctionalTestUtils {
 
     private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+            new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -165,6 +165,15 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+
+        return parsePDFToString(document.getBody().asInputStream());
+    }
+
+    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
+        Response document = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());

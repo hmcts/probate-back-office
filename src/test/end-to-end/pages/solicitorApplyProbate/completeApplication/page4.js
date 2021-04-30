@@ -1,14 +1,14 @@
 'use strict';
 
-const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const completeApplicationConfig = require('./completeApplication');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#solsPaymentMethods');
+    await I.waitForElement('#extraCopiesOfGrant');
     await I.runAccessibilityTest();
-    await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page4_paymentType);
-    await I.fillField('#solsFeeAccountNumber', completeApplicationConfig.page4_payAccountNum);
+    await I.fillField('#extraCopiesOfGrant', completeApplicationConfig.page3_extraCopiesUK);
+    await I.fillField('#outsideUKGrantCopies', completeApplicationConfig.page3_outsideUKGrantCopies);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

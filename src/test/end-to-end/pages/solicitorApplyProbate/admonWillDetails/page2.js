@@ -6,16 +6,8 @@ const testConfig = require('src/test/config.js');
 
 module.exports = async function (updateAddressManually) {
     const I = this;
-    await I.waitForElement('#solsEntitledMinority');
+    await I.waitForElement('#primaryApplicantForenames');
     await I.runAccessibilityTest();
-
-    await I.click(`#solsEntitledMinority-${admonWillDetailsConfig.optionNo}`);
-    await I.click(`#immovableEstate-${admonWillDetailsConfig.optionYes}`);
-    await I.click(`#solsDiedOrNotApplying-${admonWillDetailsConfig.optionYes}`);
-    await I.click(`#solsResiduary-${admonWillDetailsConfig.optionYes}`);
-    await I.waitForElement('#solsResiduaryType');
-    await I.selectOption('#solsResiduaryType', admonWillDetailsConfig.page2_legateeAndDevisee);
-    await I.click(`#solsLifeInterest-${admonWillDetailsConfig.optionNo}`);
 
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
     await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
