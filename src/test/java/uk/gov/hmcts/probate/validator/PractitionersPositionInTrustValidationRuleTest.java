@@ -130,8 +130,8 @@ public class PractitionersPositionInTrustValidationRuleTest {
         Assertions.assertThatThrownBy(() -> {
             practitionersPositionInTrustRule.validate(caseDetailsTc);
         })
-        .isInstanceOf(BusinessValidationException.class)
-        .hasMessage("Position in Trust must be specified for question probatePractitionersPositionInTrust for case id "
-                + "12345678987654321 if practitioner is not named in the will and is applying.");
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("Position in Trust must be specified for question probatePractitionersPositionInTrust "
+                + "for case id 12345678987654321 if practitioner is not named in the will and is applying.");
     }
 }

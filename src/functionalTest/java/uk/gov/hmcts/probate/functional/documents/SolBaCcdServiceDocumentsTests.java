@@ -1396,7 +1396,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         // Is it right that a solicitor always comes through as a named executor??
 
-        assertTrue( response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
+        assertTrue(response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
                 + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
                 + "Somerset, BA5 2PA, United Kingdom make the following statement:"));
 
