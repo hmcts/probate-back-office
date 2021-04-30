@@ -259,7 +259,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyErrorMessageNoPositionInTrustTrustCorp() {
         validatePostFailure("failure.practitionerNoPositionInTrust.json",
-                "You must specify the probate pactitioner's position within the Trust Corporation "
+                "You must specify the probate pactitioner's position within the trust corporation "
                             + "as per the resolution if they are acting as an executor",
                 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
