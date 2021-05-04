@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class CaseDataTransformer {
 
     private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
     private final ResetCaseDataTransformer resetCaseDataTransformer;
+    private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
 
     public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -37,6 +39,11 @@ public class CaseDataTransformer {
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
+    }
+
+    public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        legalStatementExecutorTransformer.formatFields(caseData);
     }
 
 
