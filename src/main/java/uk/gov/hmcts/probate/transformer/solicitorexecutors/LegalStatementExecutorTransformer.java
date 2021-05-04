@@ -13,6 +13,8 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
+
 @Component
 @Slf4j
 public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
@@ -50,10 +52,15 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
                                              CaseData caseData) {
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
-            execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            if (!execsApplying.stream().anyMatch(exec -> SOLICITOR_ID.equals(exec.getId()))) {
+                execsApplying.add(0,
+                        executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            }
         } else if (caseData.isPrimaryApplicantNotApplying()) {
-            execsNotApplying.add(0, executorListMapperService
-                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            if (!execsNotApplying.stream().anyMatch(exec -> SOLICITOR_ID.equals(exec.getId()))) {
+                execsNotApplying.add(0, executorListMapperService
+                        .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            }
         }
 
         /* old code - remove once new code tested more thoroughly
