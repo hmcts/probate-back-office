@@ -28,6 +28,7 @@
       "lodgementDate": "2020-01-01",
       "schemaVersion": "2.0.0",
       "trustCorpName": "Trust Corporation Name",
+      "originalWillSignedDateFormatted": "1st January 2021",
       "furtherEvidenceForApplication": "Further evidence",
       "mentalCapacity": "Yes",
       "solsSOTSurname": "Jones",
@@ -95,7 +96,7 @@
         {
           "id": "5f34bfd2-4c5c-4aae-89f4-aaa22d0761a9",
           "value": {
-            "dateCodicilAdded": "2017-10-11"
+            "dateCodicilAdded": "2021-01-01"
           }
         }
       ],
@@ -134,7 +135,7 @@
       "solsSolicitorFirmName": "Test Solicitors Ltd",
       "willGiftUnderEighteen": "Yes",
       "ihtFormCompletedOnline": "Yes",
-      "originalWillSignedDate": "2017-10-10",
+      "originalWillSignedDate": "2021-01-01",
       "applicationFeePaperForm": "21500",
       "foreignAssetEstateValue": "50000",
       "languagePreferenceWelsh": "No",
