@@ -271,7 +271,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        String legalPhotocopy = "";
+        if (!ccdData.isHasUploadedLegalStatement()) {
+            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        }
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);

@@ -16,7 +16,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -404,9 +406,29 @@ public class CallbackResponseTransformer {
             .applicationFee(applicationFee)
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
+            .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
             .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    private List<CollectionMember<UploadDocument>> addLegalStatementDocument(CallbackRequest callbackRequest) {
+        List<CollectionMember<UploadDocument>> currentUploads = callbackRequest.getCaseDetails().getData()
+            .getBoDocumentsUploaded();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<CollectionMember<UploadDocument>>();
+        }
+        DocumentLink uploadedLegalStatement = callbackRequest.getCaseDetails().getData()
+            .getSolsLegalStatementUpload();
+        if (uploadedLegalStatement != null) {
+            UploadDocument uploadDocument = UploadDocument.builder()
+                .documentLink(uploadedLegalStatement)
+                .documentType(DocumentType.UPLOADED_LEGAL_STATEMENT)
+                .build();
+            currentUploads.add(new CollectionMember<UploadDocument>(uploadDocument));
+        }
+
+        return currentUploads;
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
@@ -564,6 +586,7 @@ public class CallbackResponseTransformer {
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
+            .solsLegalStatementUpload(caseData.getSolsLegalStatementUpload())
 
             .ihtGrossValue(caseData.getIhtGrossValue())
             .ihtNetValue(caseData.getIhtNetValue())

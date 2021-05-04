@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -54,7 +56,19 @@ public class CCDDataTransformer {
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
             .iht217(caseData.getIht217())
+            .hasUploadedLegalStatement(determineHasUploadedLegalStatement(caseData))
             .build();
+    }
+
+    private boolean determineHasUploadedLegalStatement(CaseData data) {
+        if (data.getBoDocumentsUploaded() != null) {
+            for (CollectionMember<UploadDocument> uploadDocument : data.getBoDocumentsUploaded()) {
+                if (uploadDocument.getValue().getDocumentType().equals(DocumentType.UPLOADED_LEGAL_STATEMENT)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public CCDData transformEmail(CallbackRequest callbackRequest) {
