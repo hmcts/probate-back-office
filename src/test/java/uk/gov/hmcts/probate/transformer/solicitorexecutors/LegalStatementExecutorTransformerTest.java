@@ -225,14 +225,13 @@ public class LegalStatementExecutorTransformerTest {
         List<CollectionMember<String>> formattedCodicilDateList = new ArrayList<>();
         formattedCodicilDateList.add(new CollectionMember<>(DATE_FORMATTED));
 
-        String originalWillSignedDateFormatted = DATE_FORMATTED;
-
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(DECEASED_FORENAME_FORMATTED, caseData.getDeceasedForenames());
         assertEquals(DECEASED_SURNAME_FORMATTED, caseData.getDeceasedSurname());
         assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
         assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
         assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
+        String originalWillSignedDateFormatted = DATE_FORMATTED;
         assertEquals(originalWillSignedDateFormatted, caseData.getOriginalWillSignedDateFormatted());
     }
 
