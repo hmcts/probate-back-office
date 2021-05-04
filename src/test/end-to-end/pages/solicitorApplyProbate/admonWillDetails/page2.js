@@ -7,8 +7,6 @@ module.exports = async function (updateAddressManually) {
     const I = this;
     await I.runAccessibilityTest();
 
-
-
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
     await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
 
