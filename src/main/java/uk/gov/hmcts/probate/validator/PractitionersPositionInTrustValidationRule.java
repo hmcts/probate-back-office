@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Locale;
 
+import static uk.gov.hmcts.probate.model.Constants.EMPTY_STRING;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -24,12 +25,11 @@ public class PractitionersPositionInTrustValidationRule implements TitleAndClear
     public void validate(CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
-        // final String[] args = {caseDetails.getId().toString()};
         final String posInTrust = caseData.getProbatePractitionersPositionInTrust();
 
         if (NO.equals(caseData.getSolsSolicitorIsExec())
             && YES.equals(caseData.getSolsSolicitorIsApplying())
-            && (posInTrust == null || posInTrust == "")
+            && (posInTrust == null || posInTrust.equals(EMPTY_STRING))
             && TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())) {
 
             final String userMessage = businessValidationMessageRetriever.getMessage(POS_TRUST_NEEDED, null, Locale.UK);
