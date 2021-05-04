@@ -9,8 +9,6 @@ module.exports = async function () {
     await I.waitForElement('#solsEntitledMinority');
     await I.runAccessibilityTest();
     await I.click(`#solsEntitledMinority-${admonWillDetailsConfig.optionNo}`);
-    // only now shown if domiciled in EngWales = No
-    // await I.click(`#immovableEstate-${admonWillDetailsConfig.optionYes}`);
     await I.click(`#solsDiedOrNotApplying-${admonWillDetailsConfig.optionYes}`);
     await I.click(`#solsResiduary-${admonWillDetailsConfig.optionYes}`);
     await I.waitForElement('#solsResiduaryType');
