@@ -772,10 +772,11 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUPpload() {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .solsLegalStatementUpload(legalStatementUploadMock)
+            .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 

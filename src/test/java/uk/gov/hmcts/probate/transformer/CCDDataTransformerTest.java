@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -28,6 +29,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
 
 public class CCDDataTransformerTest {
 
@@ -132,6 +135,23 @@ public class CCDDataTransformerTest {
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithUploadedLegalStatement() {
+        ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
+        uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
+            .builder().documentType(UPLOADED_LEGAL_STATEMENT).build()));
+        uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
+            .builder().documentType(LEGAL_STATEMENT_PROBATE).build()));
+        when(caseDataMock.getBoDocumentsUploaded()).thenReturn(uploaded);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertCaseSubmissionDate(ccdData);
+        assertEquals(true, ccdData.isHasUploadedLegalStatement());
+
     }
 
     @Test
