@@ -46,8 +46,8 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     }
 
     public void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
-                                             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
-                                             CaseData caseData) {
+                                                  List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
+                                                  CaseData caseData) {
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
             execsApplying.add(0, executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
@@ -55,17 +55,6 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             execsNotApplying.add(0, executorListMapperService
                     .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
-
-        /* old code - remove once new code tested more thoroughly
-            // Add primary applicant to list
-            if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
-                execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
-            } else if (caseData.isPrimaryApplicantApplying()) {
-                execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-            } else if (caseData.isPrimaryApplicantNotApplying()) {
-                execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
-            }
-         */
 
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
         caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);
@@ -120,21 +109,21 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             return "";
         }
 
-        String execProfitSharing = "";
-        final int len = caseData.getWhoSharesInCompanyProfits().size();
-        for (int i = 0; i < len; i++) {
+        var execProfitSharingBldr = new StringBuilder();
+        final var len = caseData.getWhoSharesInCompanyProfits().size();
+        for (var i = 0; i < len; i++) {
             // lower case and remove the plural 's'
-            String whoShares = caseData.getWhoSharesInCompanyProfits().get(i).toLowerCase();
+            var whoShares = caseData.getWhoSharesInCompanyProfits().get(i).toLowerCase();
             if (forPlural && !whoShares.endsWith("s")) {
                 whoShares += "s";
             } else if (!forPlural && whoShares.endsWith("s")) {
                 whoShares = whoShares.substring(0, whoShares.length() - 1);
             }
-            execProfitSharing += whoShares;
+            execProfitSharingBldr.append(whoShares);
             if (i < len - 1) {
-                execProfitSharing += " and ";
+                execProfitSharingBldr.append(" and ");
             }
         }
-        return execProfitSharing;
+        return execProfitSharingBldr.toString();
     }
 }

@@ -23,8 +23,8 @@ public class FormattingService {
             return "None";
         }
 
-        StringBuilder names = new StringBuilder();
-        String finalName = execs.get(execs.size() - 1).getValue().getApplyingExecutorName();
+        var names = new StringBuilder();
+        final String finalName = execs.get(execs.size() - 1).getValue().getApplyingExecutorName();
         execs.remove(execs.size() - 1);
         execs.forEach(exec -> names.append(exec.getValue().getApplyingExecutorName()).append(", "));
         names.append(finalName);
@@ -38,8 +38,8 @@ public class FormattingService {
             return "None";
         }
 
-        StringBuilder names = new StringBuilder();
-        String finalName = execs.get(execs.size() - 1).getValue().getNotApplyingExecutorName();
+        var names = new StringBuilder();
+        final String finalName = execs.get(execs.size() - 1).getValue().getNotApplyingExecutorName();
         execs.remove(execs.size() - 1);
         execs.forEach(exec -> names.append(exec.getValue().getNotApplyingExecutorName()).append(", "));
         names.append(finalName);

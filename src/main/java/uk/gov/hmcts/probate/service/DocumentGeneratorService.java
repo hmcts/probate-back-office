@@ -164,7 +164,7 @@ public class DocumentGeneratorService {
     public Document generateSoT(CallbackRequest callbackRequest) {
         final Document statementOfTruth;
         DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
-        final CaseDetails cd = callbackRequest.getCaseDetails();
+        final var cd = callbackRequest.getCaseDetails();
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
                 // Transform case data into expected format for legal statement
