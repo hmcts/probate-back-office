@@ -38,6 +38,5 @@ module.exports = async function () {
     await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
     await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
 
-
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
