@@ -148,6 +148,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
     private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
+    private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -1311,7 +1312,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() {
         String response = generatePdfDocument("solicitorPayLoadSuccessorFirmAllRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
+        // all partners are renouncing, so other partners in the collection are ignored, and wording is
+        // 'the executor named in the will' as opposed to 'an executor named in the will'
+        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
 
     }
 
@@ -1319,7 +1322,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() {
         String response = generatePdfDocument("solicitorPayloadPartnersAllRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
+        // all partners are renouncing, so other partners in the collection are ignored, and wording is
+        // 'the executor named in the will' as opposed to 'an executor named in the will'
+        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
 
     }
 
@@ -1419,5 +1424,13 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 + " with this application, in which Exfn1 Exln1 identified by the position they hold and which"
                 + " is still in force, appointed them for the purpose of applying for probate of "
                 + "the will or for grants of probate on its behalf."));
+    }
+
+    @Test
+    public void verifySoTNoDuplicateSolExecutors() {
+        String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("The executor believes that all the information stated in the legal statement is true."));
+        assertTrue(response.contains("Fred Smith, the executor named in the will or codicil, is applying for probate"));
+        assertTrue(response.split("Fred Smith").length == 5);
     }
 }

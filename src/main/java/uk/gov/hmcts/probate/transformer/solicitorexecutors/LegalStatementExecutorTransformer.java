@@ -52,27 +52,28 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
                                              CaseData caseData) {
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
-            if (!execsApplying.stream().anyMatch(exec -> SOLICITOR_ID.equals(exec.getId()))) {
-                execsApplying.add(0,
-                        executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
+            // solicitor will always be at position 0
+            if (execsApplying.size() > 0 && SOLICITOR_ID.equals(execsApplying.get(0).getId())) {
+                execsApplying.remove(0);
             }
+            // retain primary applicant fields mapping, rather than using solicitor details
+            // (which have been mapped to primary applicant fields)
+            // in order that legal statement matches issue grant template which uses primary applicant fields
+            // (to cater for cw amend of one but not the other)
+            execsApplying.add(0, executorListMapperService
+                    .mapFromPrimaryApplicantToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantNotApplying()) {
-            if (!execsNotApplying.stream().anyMatch(exec -> SOLICITOR_ID.equals(exec.getId()))) {
-                execsNotApplying.add(0, executorListMapperService
-                        .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
+            // solicitor will always be at position 0
+            if (execsNotApplying.size() > 0 && SOLICITOR_ID.equals(execsNotApplying.get(0).getId())) {
+                execsNotApplying.remove(0);
             }
+            // retain primary applicant fields mapping, rather than using solicitor details
+            // (which have been mapped to primary applicant fields)
+            // in order that legal statement matches issue grant template which uses primary applicant fields
+            // (to cater for cw amend of one but not the other)
+            execsNotApplying.add(0, executorListMapperService
+                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
-
-        /* old code - remove once new code tested more thoroughly
-            // Add primary applicant to list
-            if (isSolicitorExecutor(caseData) && isSolicitorApplying(caseData)) {
-                execsApplying.add(executorListMapperService.mapFromSolicitorToApplyingExecutor(caseData));
-            } else if (caseData.isPrimaryApplicantApplying()) {
-                execsApplying.add(executorListMapperService.mapFromPrimaryApplicantToApplyingExecutor(caseData));
-            } else if (caseData.isPrimaryApplicantNotApplying()) {
-                execsNotApplying.add(executorListMapperService.mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
-            }
-         */
 
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
         caseData.setExecutorsNotApplyingLegalStatement(execsNotApplying);

@@ -107,8 +107,8 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(0).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
     }
 
     @Test

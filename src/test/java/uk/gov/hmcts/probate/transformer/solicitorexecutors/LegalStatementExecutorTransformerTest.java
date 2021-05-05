@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE_FORMATTED;
@@ -282,5 +283,39 @@ public class LegalStatementExecutorTransformerTest {
         legalStatementExecutorTransformerMock.formatFields(caseData);
 
         assertEquals("partners and shareholders", caseData.getPluralProfitSharingTextForLegalStatement());
+    }
+
+    @Test
+    public void shouldNotSetSolicitorAsExecutorTwice() {
+        caseDataBuilder
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorIsExec(YES)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .primaryApplicantIsApplying(YES);
+
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+                new ArrayList<>();
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                new ArrayList<>();
+
+        execsApplying.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
+                caseDetailsMock.getData())).thenReturn(
+                        new CollectionMember<>("12345", EXECUTOR_APPLYING));
+
+        legalStatementExecutorTransformerMock.createLegalStatementExecutorLists(execsApplying, 
+                execsNotApplying,
+                caseDetailsMock.getData());
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(execsApplying.size(), 1);
+        assertEquals(execsApplying.get(0).getId(), "12345");
+        assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 }
