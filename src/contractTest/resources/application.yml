@@ -432,8 +432,12 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 
 data-extract:
   block:
-    size: "3000"
-    numDaysInclusive: 9
+    size: 3000
+    numDaysInclusive: 2
+  smee-and-ford:
+    size: 10000
+
+smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 
 welsh:
   months:

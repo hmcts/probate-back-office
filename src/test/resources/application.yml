@@ -126,6 +126,7 @@ notifications:
           grantReissued: "pa-grant-reissued"
           generalCaveatMessage: "pa-general-caveat-message"
           excelaData: "pa-excela-data"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "pa-grant-raised"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan"
           caveatRaised: "pa-caveat-raised"
@@ -145,6 +146,7 @@ notifications:
           grantReissued: "sol-grant-reissued"
           generalCaveatMessage: "sol-general-caveat-message"
           excelaData: "pa-excela-data"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "sol-grant-raised"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan"
           caveatRaised: "sols-caveat-raised"
@@ -165,6 +167,7 @@ notifications:
           grantReissued: "pa-grant-reissued-welsh"
           generalCaveatMessage: "pa-general-caveat-message-welsh"
           excelaData: "pa-excela-data-welsh"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
@@ -183,6 +186,7 @@ notifications:
           grantReissued: "sol-grant-reissued-welsh"
           generalCaveatMessage: "sol-general-caveat-message-welsh"
           excelaData: "pa-excela-data-welsh"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
@@ -364,12 +368,15 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: excela@probate-test.com
+smeeAndFordEmail: smeeAndFord@probate-test.com
 
 data-extract:
   block:
-    size: "3000"
-    numDaysInclusive: 9
-
+    size: 3000
+    numDaysInclusive: 2
+  smee-and-ford:
+    size: 2000
+    
 welsh:
   months:
     1: "Ionawr"

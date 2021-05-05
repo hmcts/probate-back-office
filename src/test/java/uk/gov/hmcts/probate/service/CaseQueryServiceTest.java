@@ -74,7 +74,7 @@ public class CaseQueryServiceTest {
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
-        caseQueryService.dataExtractBlockSize = "2000";
+        caseQueryService.dataExtractBlockSize = 2000;
         caseQueryService.numDaysBlock = 13;
 
         CaseData caseData = CaseData.builder()
@@ -134,7 +134,7 @@ public class CaseQueryServiceTest {
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-        caseQueryService.numDaysBlock = 3;
+        caseQueryService.dataExtractBlockSize = 3;
 
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         caseQueryService.findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
@@ -145,6 +145,18 @@ public class CaseQueryServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         List<ReturnedCaseDetails> cases = caseQueryService
             .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+        caseQueryService.dataExtractSmeeAndFordSize = 10000;
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
