@@ -211,6 +211,9 @@ public class BusinessValidationController {
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
+
+            caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequest);
+
             Optional<String> newState =
                 stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON,

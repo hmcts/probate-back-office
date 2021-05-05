@@ -94,6 +94,11 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             });
             caseData.setCodicilAddedFormattedDateList(formattedCodicilDates);
         }
+
+        if (caseData.getOriginalWillSignedDate() != null) {
+            String formattedDate = dateFormatterService.formatDate(caseData.getOriginalWillSignedDate());
+            caseData.setOriginalWillSignedDateFormatted(formattedDate);
+        }
     }
 
     private void formatNames(CaseData caseData) {

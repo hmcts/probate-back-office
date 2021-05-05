@@ -210,6 +210,7 @@ public class LegalStatementExecutorTransformerTest {
         caseDataBuilder
                 .dispenseWithNoticeLeaveGivenDate(DATE)
                 .codicilAddedDateList(codicilAddedDate)
+                .originalWillSignedDate(DATE)
                 .deceasedForenames(DECEASED_FORENAME)
                 .deceasedSurname(DECEASED_SURNAME)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME);
@@ -230,6 +231,8 @@ public class LegalStatementExecutorTransformerTest {
         assertEquals(SOLICITOR_FIRM_NAME, caseData.getSolsSolicitorFirmName());
         assertEquals(DATE_FORMATTED, caseData.getDispenseWithNoticeLeaveGivenDateFormatted());
         assertEquals(formattedCodicilDateList, caseData.getCodicilAddedFormattedDateList());
+        String originalWillSignedDateFormatted = DATE_FORMATTED;
+        assertEquals(originalWillSignedDateFormatted, caseData.getOriginalWillSignedDateFormatted());
     }
 
     @Test

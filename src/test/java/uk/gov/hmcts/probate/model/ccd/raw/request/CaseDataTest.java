@@ -713,6 +713,7 @@ public class CaseDataTest {
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
             .registrySequenceNumber("registrySequenceNumber")
             .dispenseWithNotice("Yes")
+            .originalWillSignedDateFormatted("1st January 2020")
             .titleAndClearingType("TCTTrustCorpResWithApp")
             .registrySequenceNumber("registrySequenceNumber")
             .iht217("Yes")
@@ -732,6 +733,7 @@ public class CaseDataTest {
         assertEquals("registryAddress", caseData.getRegistryAddress());
         assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
         assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
+        assertEquals("1st January 2020", caseData.getOriginalWillSignedDateFormatted());
         assertEquals("Yes", caseData.getIht217());
     }
 

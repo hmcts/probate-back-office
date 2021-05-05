@@ -53,6 +53,7 @@ public class CaseDataParent {
     protected String dispenseWithNoticeLeaveGivenDateFormatted;
     // Not final as field set in CaseDataTransformer
     protected List<CollectionMember<String>> codicilAddedFormattedDateList;
+    protected String originalWillSignedDateFormatted;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
     // Not final so field can be reset in CaseDataTransformer

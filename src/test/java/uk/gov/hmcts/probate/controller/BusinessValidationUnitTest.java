@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -132,6 +133,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private ResetCaseDataTransformer resetCdTransformer;
     @Mock
+    private LegalStatementExecutorTransformer legalStatementExecutorTransformer;
+    @Mock
     private List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
 
     private BusinessValidationController underTest;
@@ -140,7 +143,8 @@ public class BusinessValidationUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
-        CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer);
+        CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer,
+            legalStatementExecutorTransformer);
         underTest = new BusinessValidationController(eventValidationServiceMock,
             notificationService,
             objectMapper,

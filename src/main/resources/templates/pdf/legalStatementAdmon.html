@@ -44,6 +44,7 @@
 </head>
 <body>
 <table>
+    {% set currentCodicil = 1 %}
     <thead>
     <tr>
         <td colspan="2" class="sequence">
@@ -167,7 +168,9 @@
                 <li>there is no life interest in respect of the estate contained in the will</li>
                 <li>all executors and any residuary, legatee or devisees in trust named in the will have either died or have chosen not to apply for a grant of probate (renounced)</li>
             </ul>
-            <p>I authorise {{ case_details.case_data.solsSolicitorFirmName }} to send on my behalf what I believe to be the true and original last will and testament of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+            <p>I authorise {{ case_details.case_data.solsSolicitorFirmName }} to send on my behalf what I believe to be the true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }} {% endif %}
+                {% if case_details.case_data.codicilAddedFormattedDateList != null %}{% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with {% else %}, and {% endif %}codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}{% endif %}
+            of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
             <p>I confirm that the information I have provided is correct to the best of my knowledge.</p>
         </td>
     </tr>

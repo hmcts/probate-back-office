@@ -76,11 +76,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
     private static final String FIRM_AUTHORISATION = "They have authorised Firm Name to sign a statement";
     private static final String WILL_NO_CODICILS = "and is named in the will as";
+    private static final String SIGNED_DATE = ", signed and dated 1st January 2021";
     private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
         "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
             + "provided is deliberately untruthful or dishonest, as well as revocation of the grant";
+    private static final String CODICIL_DATES = " with codicil signed and dated 3rd March 2020, and codicil signed"
+        + " and dated 5th March 2020, and codicil signed and dated 6th March 2020";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC =
         "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful "
             + "or dishonest";
@@ -129,6 +132,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
+    private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
+        "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
@@ -533,6 +538,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() {
+        String response = generatePdfDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_NO_CODICILS));
+        assertTrue(response.contains(SIGNED_DATE));
+        assertTrue(response.contains(CODICIL_DATES));
+    }
+
+    @Test
     public void verifySuccessForFurtherEvidenceIntestacy() {
         String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
@@ -551,6 +568,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForFurtherEvidenceTrustCorpProbate() {
         String response = generatePdfDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
+        assertTrue(response.contains(SIGNED_DATE));
+        assertTrue(response.contains("1st January 2021"));
         assertTrue(response.contains(FURTHER_EVIDENCE));
     }
 
