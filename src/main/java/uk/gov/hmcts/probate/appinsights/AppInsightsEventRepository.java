@@ -1,37 +1,31 @@
-package uk.gov.hmcts.probate.insights;
+package uk.gov.hmcts.probate.appinsights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.TelemetryConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.logging.appinsights.AbstractAppInsights;
+import uk.gov.hmcts.probate.insights.EventRepository;
 
 import java.util.Map;
 
-import static java.util.Collections.singletonMap;
-
 @Component
-public class AppInsights implements EventRepository {
+public class AppInsightsEventRepository implements EventRepository {
 
     private final TelemetryClient telemetry;
 
     @Autowired
-    public AppInsights(@Value("${azure.application-insights.instrumentation-key}")
-                                          String instrumentationKey,
+    public AppInsightsEventRepository(@Value("${azure.application-insights.instrumentation-key}")
+                                              String instrumentationKey,
                                       TelemetryClient telemetry) {
         TelemetryConfiguration.getActive().setInstrumentationKey(instrumentationKey);
         telemetry.getContext().getComponent().setVersion(getClass().getPackage().getImplementationVersion());
         this.telemetry = telemetry;
     }
 
+
     @Override
     public void trackEvent(String name, Map<String, String> properties) {
         telemetry.trackEvent(name, properties,null);
-    }
-
-    @Override
-    public void trackEvent2(String name, Map<String, String> properties) {
-        telemetry.trackException();
     }
 }

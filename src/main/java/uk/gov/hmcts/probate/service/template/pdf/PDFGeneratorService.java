@@ -67,7 +67,7 @@ public class PDFGeneratorService {
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
 
         Map<String, Object> paramMap = asMap(pdfGenerationData);
-        appInsights.trackEvent(REQUEST_SENT, pdfServiceConfiguration.getUrl());
+        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap(pdfServiceConfiguration.getUrl()));
 
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
@@ -76,4 +76,10 @@ public class PDFGeneratorService {
         return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
         });
     }
+
+    private Map<String, String> trackingMap(String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String ,String>();
+        trackMap.put("url", propertyToTrack);
+        return trackMap;
+       }
 }

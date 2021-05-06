@@ -24,12 +24,11 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.microsoft.applicationinsights.core.dependencies.io.grpc.netty.shaded.io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/forms", consumes = APPLICATION_JSON, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/forms", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 @Api(tags = "Manage bulk scanning data")
 public class OCRFormsController {
@@ -43,7 +42,7 @@ public class OCRFormsController {
         @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
         @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
-    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON)
+    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
