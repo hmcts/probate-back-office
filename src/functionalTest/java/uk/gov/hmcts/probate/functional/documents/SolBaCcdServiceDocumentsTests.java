@@ -1429,7 +1429,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySoTNoDuplicateSolExecutors() {
         String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor believes that all the information stated in the legal statement is true."));
+        assertTrue(response
+                .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, the executor named in the will or codicil, is applying for probate"));
         assertTrue(response.split("Fred Smith").length == 5);
     }

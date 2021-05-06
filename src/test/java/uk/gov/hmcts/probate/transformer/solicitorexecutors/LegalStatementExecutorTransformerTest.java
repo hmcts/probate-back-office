@@ -20,9 +20,9 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
@@ -235,7 +235,7 @@ public class LegalStatementExecutorTransformerTest {
 
     @Test
     public void shouldOutputCorrectSingularWhoSharesInProfitText() {
-        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partners", "Shareholders"));
+        final List<String> companyProfits = new ArrayList<>(asList("Partners", "Shareholders"));
 
         final CaseData caseData = CaseData.builder()
                 .whoSharesInCompanyProfits(companyProfits)
@@ -248,7 +248,7 @@ public class LegalStatementExecutorTransformerTest {
 
     @Test
     public void shouldOutputCorrectPluralWhoSharesInProfitText() {
-        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partners", "Shareholders"));
+        final List<String> companyProfits = new ArrayList<>(asList("Partners", "Shareholders"));
 
         final CaseData caseData = CaseData.builder()
                 .whoSharesInCompanyProfits(companyProfits)
@@ -261,7 +261,7 @@ public class LegalStatementExecutorTransformerTest {
 
     @Test
     public void shouldOutputCorrectSingularWhoSharesInProfitText_SingularValue() {
-        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partner", "Shareholder"));
+        final List<String> companyProfits = new ArrayList<>(asList("Partner", "Shareholder"));
 
         final CaseData caseData = CaseData.builder()
                 .whoSharesInCompanyProfits(companyProfits)
@@ -274,7 +274,7 @@ public class LegalStatementExecutorTransformerTest {
 
     @Test
     public void shouldOutputCorrectPluralWhoSharesInProfitText_SingularValue() {
-        final List<String> companyProfits = new ArrayList<>(Arrays.asList("Partner", "Shareholder"));
+        final List<String> companyProfits = new ArrayList<>(asList("Partner", "Shareholder"));
 
         final CaseData caseData = CaseData.builder()
                 .whoSharesInCompanyProfits(companyProfits)
@@ -296,18 +296,16 @@ public class LegalStatementExecutorTransformerTest {
                 .primaryApplicantAddress(EXEC_ADDRESS)
                 .primaryApplicantIsApplying(YES);
 
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
-                new ArrayList<>();
-
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
-                new ArrayList<>();
-
-        execsApplying.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
-
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
                 caseDetailsMock.getData())).thenReturn(
-                        new CollectionMember<>("12345", EXECUTOR_APPLYING));
+                new CollectionMember<>("12345", EXECUTOR_APPLYING));
+
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                new ArrayList<>();
 
         legalStatementExecutorTransformerMock.createLegalStatementExecutorLists(execsApplying, 
                 execsNotApplying,
