@@ -6,10 +6,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_POWER_RESERVED;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
@@ -28,7 +30,9 @@ public class TitleAndClearingTypeService {
                 TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
                 TITLE_AND_CLEARING_SOLE_PRINCIPLE,
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
-                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING
         ).contains(titleAndClearing);
     }
 
@@ -47,7 +51,8 @@ public class TitleAndClearingTypeService {
         return titleAndClearing != null && List.of(
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
                 TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
-                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING
         ).contains(titleAndClearing);
     }
 
