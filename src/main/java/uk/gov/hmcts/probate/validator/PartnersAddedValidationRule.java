@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES;
+import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES_NOT_ALL_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -36,7 +36,7 @@ public class PartnersAddedValidationRule implements TitleAndClearingPageValidati
 
         if (!(NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying()))) {
             if (NO.equals(caseData.getAnyOtherApplyingPartners())
-                    && NON_TRUST_PTNR_TITLE_CLEARING_TYPES.contains(titleAndClearing)) {
+                    && NON_TRUST_PTNR_TITLE_CLEARING_TYPES_NOT_ALL_RENOUNCING.contains(titleAndClearing)) {
                 throw new BusinessValidationException(userMessage,
                         "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
                                 + caseDetails.getId());
