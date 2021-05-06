@@ -316,4 +316,36 @@ public class LegalStatementExecutorTransformerTest {
         assertEquals("12345", execsApplying.get(0).getId());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
+
+    @Test
+    public void shouldNotSetNotApplyingSolicitorAsExecutorTwice() {
+        caseDataBuilder
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorIsExec(YES)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .primaryApplicantIsApplying(YES);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
+                caseDetailsMock.getData())).thenReturn(
+                new CollectionMember<>("12345", EXECUTOR_APPLYING));
+
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
+                new ArrayList<>();
+        execsNotApplying.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_NOT_APPLYING));
+
+        legalStatementExecutorTransformerMock.createLegalStatementExecutorLists(execsApplying,
+                execsNotApplying,
+                caseDetailsMock.getData());
+
+        CaseData caseData = caseDetailsMock.getData();
+        assertEquals(1, execsNotApplying.size());
+        assertEquals("12345", execsNotApplying.get(0).getId());
+        assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
+    }
 }
