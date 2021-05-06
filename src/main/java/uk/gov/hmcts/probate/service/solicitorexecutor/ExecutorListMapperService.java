@@ -19,21 +19,16 @@ import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 
 @Slf4j
 @Service
 public class ExecutorListMapperService {
 
-    private static final String SOLICITOR_ID = "solicitor";
-
     public List<CollectionMember<AdditionalExecutorApplying>> addSolicitorToApplyingList(
             CaseData caseData, List<CollectionMember<AdditionalExecutorApplying>> execs) {
 
-        List<CollectionMember<AdditionalExecutorApplying>> updatedExecs = new ArrayList<>();
-
-        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
-            updatedExecs = removeSolicitorFromApplyingList(execs);
-        }
+        var updatedExecs = removeSolicitorFromApplyingList(execs);
         updatedExecs.add(0, mapFromSolicitorToApplyingExecutor(caseData));
 
         return updatedExecs;
@@ -42,12 +37,8 @@ public class ExecutorListMapperService {
     public List<CollectionMember<AdditionalExecutorNotApplying>> addSolicitorToNotApplyingList(
             CaseData caseData, List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
 
-        List<CollectionMember<AdditionalExecutorNotApplying>> updatedExecs = new ArrayList<>();
-
-        if (execs.stream().anyMatch(exec -> !SOLICITOR_ID.equals(exec.getId()))) {
-            updatedExecs = removeSolicitorFromNotApplyingList(execs);
-        }
-        updatedExecs.add(mapFromSolicitorToNotApplyingExecutor(caseData));
+        var updatedExecs = removeSolicitorFromNotApplyingList(execs);
+        updatedExecs.add(0, mapFromSolicitorToNotApplyingExecutor(caseData));
 
         return updatedExecs;
     }

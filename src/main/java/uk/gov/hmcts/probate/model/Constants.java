@@ -69,6 +69,8 @@ public final class Constants {
                 TITLE_AND_CLEARING_TRUST_CORP));
     }
 
+    public static final String SOLICITOR_ID = "solicitor";
+
     private Constants() {
     }
 }

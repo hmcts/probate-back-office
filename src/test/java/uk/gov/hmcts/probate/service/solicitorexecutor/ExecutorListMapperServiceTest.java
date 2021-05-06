@@ -107,8 +107,8 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(0).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
     }
 
     @Test
@@ -349,5 +349,71 @@ public class ExecutorListMapperServiceTest {
         assertEquals(result.getValue(), expected.getValue());
     }
 
+    public void shouldMapFromSolicitorToApplyingExecutorTrustCorps() {
+        CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON)
+                .probatePractitionersPositionInTrust(DIRECTOR)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES);
 
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromSolicitorToApplyingExecutor(caseDataBuilder.build());
+
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                SOLICITOR_ID, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+                .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+                .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorAddress(SOLICITOR_ADDRESS)
+                .applyingExecutorTrustCorpPosition(DIRECTOR)
+                .build());
+
+        assertEquals(expected.getValue(), result.getValue());
+    }
+
+    @Test
+    public void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorps() {
+
+        CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON)
+                .probatePractitionersPositionInTrust(DIRECTOR)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES);
+
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromPrimaryApplicantToApplyingExecutor(caseDataBuilder.build());
+
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
+                .applyingExecutorTrustCorpPosition(DIRECTOR)
+                .build());
+
+        assertEquals(result.getValue(), expected.getValue());
+    }
 }
