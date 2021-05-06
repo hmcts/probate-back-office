@@ -175,7 +175,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : '1.1.2.5',
+        probateCommonsVersion           : '1.2.0',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -195,8 +195,9 @@ repositories {
   mavenLocal()
   mavenCentral()
   jcenter()
-  maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
   maven { url "https://repo.maven.apache.org/maven2" }
+  maven { url "https://jitpack.io" }
+
 }
 
 
@@ -244,7 +245,7 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-  compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+  compile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
@@ -257,9 +258,9 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
+  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  compile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
@@ -297,7 +298,7 @@ dependencies {
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+  testCompile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
@@ -323,7 +324,7 @@ dependencies {
   testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  testFunctionalCompile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
