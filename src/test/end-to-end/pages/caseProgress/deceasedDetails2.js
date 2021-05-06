@@ -15,6 +15,10 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField({css: '#deceasedAddress_PostCode'}, caseProgressConfig.deceasedAddrPostcode);
     await I.fillField({css: '#deceasedAddress_Country'}, caseProgressConfig.deceasedAddrCountry);
     await I.click({css: '#deceasedAnyOtherNames-No'});
+    await I.see(caseProgressConfig.IHT205Label);
+    await I.see(caseProgressConfig.IHT2207Label);
+    await I.see(caseProgressConfig.IHT400Label);
+    await I.see(caseProgressConfig.IHTDNULabel);
     await I.click({css: `#ihtFormId-${caseProgressConfig.IHTOption}`});
     await I.fillField({css: '#ihtGrossValue'}, caseProgressConfig.IHTGross);
     await I.fillField({css: '#ihtNetValue'}, caseProgressConfig.IHTNet);
