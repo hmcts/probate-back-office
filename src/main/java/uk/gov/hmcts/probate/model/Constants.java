@@ -62,6 +62,7 @@ public final class Constants {
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
                 TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING));
     }
+
     public static List<String> getTrustCorpTitleClearingTypes() {
         return new ArrayList<>(asList(
                 TITLE_AND_CLEARING_TRUST_CORP_SDJ,

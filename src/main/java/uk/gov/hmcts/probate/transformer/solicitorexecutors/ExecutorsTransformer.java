@@ -109,7 +109,7 @@ public class ExecutorsTransformer {
     public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = getExecsApplying(caseData);
 
         mapSolicitorExecutorApplyingListsToCaseworkerApplyingList(execsApplying, caseData);
         execsApplying = setExecutorApplyingListWithSolicitorInfo(execsApplying, caseData);
@@ -120,7 +120,7 @@ public class ExecutorsTransformer {
     public List<CollectionMember<AdditionalExecutorNotApplying>> createCaseworkerNotApplyingList(CaseData caseData) {
 
         // Initialise executor lists
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = getExecsNotApplying(caseData);
 
         mapSolicitorExecutorNotApplyingListsToCaseworkerNotApplyingList(execsNotApplying, caseData);
         execsNotApplying = setExecutorNotApplyingListWithSolicitorInfo(execsNotApplying, caseData);
@@ -246,22 +246,23 @@ public class ExecutorsTransformer {
         return YES.equals(caseData.getSolsSolicitorIsApplying());
     }
 
-    protected List<CollectionMember<AdditionalExecutorApplying>> cloneExecsApplying(CaseData caseData) {
+    protected List<CollectionMember<AdditionalExecutorApplying>> getExecsApplying(CaseData caseData) {
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         if (caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()) {
             return execsApplying;
         }
 
-        List<CollectionMember<AdditionalExecutorApplying>> cdExecsApplying = caseData.getAdditionalExecutorsApplying();
-        for (var i = 0; i < cdExecsApplying.size(); i++) {
-            execsApplying.add(new CollectionMember<>(cdExecsApplying.get(i).getId(),
-                    cdExecsApplying.get(i).getValue().clone()));
+        // create a new array (housing same objects)
+        var existingExecsApplying = caseData.getAdditionalExecutorsApplying();
+        for (var i = 0; i < existingExecsApplying.size(); i++) {
+            execsApplying.add(new CollectionMember<>(existingExecsApplying.get(i).getId(),
+                existingExecsApplying.get(i).getValue()));
         }
         return execsApplying;
     }
 
-    protected List<CollectionMember<AdditionalExecutorNotApplying>> cloneExecsNotApplying(CaseData caseData) {
+    protected List<CollectionMember<AdditionalExecutorNotApplying>> getExecsNotApplying(CaseData caseData) {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
         if (caseData.getAdditionalExecutorsNotApplying() == null
@@ -269,11 +270,11 @@ public class ExecutorsTransformer {
             return execsNotApplying;
         }
 
-        List<CollectionMember<AdditionalExecutorNotApplying>> cdExecsNotApplying =
+        List<CollectionMember<AdditionalExecutorNotApplying>> existingExecsNotApplying =
                 caseData.getAdditionalExecutorsNotApplying();
-        for (var i = 0; i < cdExecsNotApplying.size(); i++) {
-            execsNotApplying.add(new CollectionMember<>(cdExecsNotApplying.get(i).getId(),
-                    cdExecsNotApplying.get(i).getValue().clone()));
+        for (var i = 0; i < existingExecsNotApplying.size(); i++) {
+            execsNotApplying.add(new CollectionMember<>(existingExecsNotApplying.get(i).getId(),
+                existingExecsNotApplying.get(i).getValue()));
         }
         return execsNotApplying;
     }

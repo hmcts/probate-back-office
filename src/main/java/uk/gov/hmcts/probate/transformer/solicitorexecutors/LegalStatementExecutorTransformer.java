@@ -39,14 +39,15 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     }
 
     public void createLegalStatementExecutorListsFromTransformedLists(CaseData caseData) {
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = cloneExecsApplying(caseData);
-        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = cloneExecsNotApplying(caseData);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = getExecsApplying(caseData);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = getExecsNotApplying(caseData);
 
         createLegalStatementExecutorLists(execsApplying, execsNotApplying, caseData);
     }
 
     public void createLegalStatementExecutorLists(List<CollectionMember<AdditionalExecutorApplying>> execsApplying,
-                                                  List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying,
+                                                  List<CollectionMember<AdditionalExecutorNotApplying>>
+                                                          execsNotApplying,
                                                   CaseData caseData) {
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {

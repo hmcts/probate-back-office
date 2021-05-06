@@ -21,22 +21,4 @@ public class AdditionalExecutorApplying {
     private String applyingExecutorOtherNames;
     private String applyingExecutorOtherNamesReason;
     private String applyingExecutorOtherReason;
-
-    @Override
-    public AdditionalExecutorApplying clone() {
-        // super.clone() is returning an exception so resorting to this manual method
-        return AdditionalExecutorApplying.builder()
-                .applyingExecutorAddress(applyingExecutorAddress == null ? null : applyingExecutorAddress.clone())
-                .applyingExecutorEmail(applyingExecutorEmail)
-                .applyingExecutorFirstName(applyingExecutorFirstName)
-                .applyingExecutorLastName(applyingExecutorLastName)
-                .applyingExecutorName(applyingExecutorName)
-                .applyingExecutorOtherNames(applyingExecutorOtherNames)
-                .applyingExecutorOtherNamesReason(applyingExecutorOtherNamesReason)
-                .applyingExecutorOtherReason(applyingExecutorOtherReason)
-                .applyingExecutorPhoneNumber(applyingExecutorPhoneNumber)
-                .applyingExecutorType(applyingExecutorType)
-                .applyingExecutorTrustCorpPosition(applyingExecutorTrustCorpPosition)
-                .build();
-    }
 }
