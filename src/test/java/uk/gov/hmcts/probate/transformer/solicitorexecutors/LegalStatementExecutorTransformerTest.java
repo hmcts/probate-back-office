@@ -329,9 +329,11 @@ public class LegalStatementExecutorTransformerTest {
                 .primaryApplicantIsApplying(YES);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
+
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
                 caseDetailsMock.getData())).thenReturn(
-                new CollectionMember<>("12345", EXECUTOR_APPLYING));
+                new CollectionMember<>("solicitor", EXECUTOR_NOT_APPLYING));
+
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
 
@@ -345,7 +347,7 @@ public class LegalStatementExecutorTransformerTest {
 
         CaseData caseData = caseDetailsMock.getData();
         assertEquals(1, execsNotApplying.size());
-        assertEquals("12345", execsNotApplying.get(0).getId());
-        assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
+        assertEquals("solicitor", execsNotApplying.get(0).getId());
+        assertEquals(1, caseData.getExecutorsNotApplyingLegalStatement().size());
     }
 }
