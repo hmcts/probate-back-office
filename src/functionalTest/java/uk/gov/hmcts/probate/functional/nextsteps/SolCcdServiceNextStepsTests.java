@@ -9,54 +9,25 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
-    public void verifyDeceasedFirstNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName");
+    public void verifyAllDataInTheReturnedMarkdown() {
+        validatePostRequestSuccessForLegalStatement("success.nextsteps.json", "deceasedFirstName", "deceasedLastName",
+            "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "TestSOTJobTitle", 
+            "firmpc", "a photocopy of the signed legal statement and declaration");
     }
 
     @Test
-    public void verifyDeceasedLastNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("deceasedLastName");
-    }
-
-    @Test
-    public void verifyDODInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("01/01/2018");
-    }
-
-    @Test
-    public void verifySolReferenceInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("refCYA2");
-    }
-
-    @Test
-    public void verifyIHTFormIdInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("IHT205");
-    }
-
-    @Test
-    public void verifySolicitorFirmNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("SolicitorFirmName");
-    }
-
-    @Test
-    public void verifySolicitorSOTNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("Solicitor_fn Solicitor_ln");
-    }
-
-    @Test
-    public void verifySolicitorSOTJobTitleInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTJobTitle");
-    }
-
-    @Test
-    public void verifySolicitorSolicitorFirmPostcodeInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("firmpc");
+    public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
+        String fullResponse = validatePostRequestSuccessForLegalStatement("success.nextsteps-LegalStatementUploaded"
+                + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
+            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "TestSOTJobTitle", "firmpc");
+        assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
 
     @Test
@@ -113,16 +84,19 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
-    private void validatePostRequestSuccessForLegalStatement(String validationString) {
+    private String validatePostRequestSuccessForLegalStatement(String file, String... validationString) {
         Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile("success.nextsteps.json"))
+            .body(utils.getJsonFromFile(file))
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(validationString));
-
+        String responseString = response.getBody().asString();
+        for (String val : validationString) {
+            assertTrue(responseString.contains(val));
+        }
+        return responseString;
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
