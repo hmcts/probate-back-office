@@ -25,3 +25,11 @@ spring:
         schedulerCaseWorkerPass: SCHEDULER_CASEWORKER_PASSWORD
         launchdarkly-key: ld.sdk_key
         launchdarklyUserkeyBackend: ld.user.key
+        levPublicCertificate: lev.ssl.publicCertificate
+        levPrivateKey: lev.ssl.privateKey
+        levAccessTokenUri: lev.bearertoken.accessTokenUri
+        levClientId: lev.bearertoken.clientId
+        levClientSecret: lev.bearertoken.clientSecret
+        levUsername: lev.bearertoken.username
+        levPassword: lev.bearertoken.password
+        levDeathUrl: lev.death.url
