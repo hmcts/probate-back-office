@@ -312,8 +312,8 @@ public class LegalStatementExecutorTransformerTest {
                 caseDetailsMock.getData());
 
         CaseData caseData = caseDetailsMock.getData();
-        assertEquals(execsApplying.size(), 1);
-        assertEquals(execsApplying.get(0).getId(), "12345");
+        assertEquals(1, execsApplying.size());
+        assertEquals("12345", execsApplying.get(0).getId());
         assertEquals(new ArrayList<>(), caseData.getExecutorsNotApplyingLegalStatement());
     }
 }

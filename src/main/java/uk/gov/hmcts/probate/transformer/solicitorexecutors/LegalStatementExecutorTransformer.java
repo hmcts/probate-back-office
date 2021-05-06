@@ -53,7 +53,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         // Add primary applicant to list
         if (caseData.isPrimaryApplicantApplying()) {
             // solicitor will always be at position 0
-            if (execsApplying.size() > 0 && SOLICITOR_ID.equals(execsApplying.get(0).getId())) {
+            if (!execsApplying.isEmpty() && SOLICITOR_ID.equals(execsApplying.get(0).getId())) {
                 execsApplying.remove(0);
             }
             // retain primary applicant fields mapping, rather than using solicitor details
@@ -64,7 +64,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
                     .mapFromPrimaryApplicantToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantNotApplying()) {
             // solicitor will always be at position 0
-            if (execsNotApplying.size() > 0 && SOLICITOR_ID.equals(execsNotApplying.get(0).getId())) {
+            if (!execsNotApplying.isEmpty() && SOLICITOR_ID.equals(execsNotApplying.get(0).getId())) {
                 execsNotApplying.remove(0);
             }
             // retain primary applicant fields mapping, rather than using solicitor details
