@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES;
-import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
+import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 
 @Component
 @Slf4j
@@ -132,13 +132,13 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying, CaseData caseData) {
 
         final String titleClearingType = caseData.getTitleAndClearingType();
-        if (TRUST_CORP_TITLE_CLEARING_TYPES.contains(titleClearingType)
+        if (getTrustCorpTitleClearingTypes().contains(titleClearingType)
                 && YES.equals(caseData.getAnyOtherApplyingPartnersTrustCorp())
                 && caseData.getAdditionalExecutorsTrustCorpList() != null
                 && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
             // Add trust corps executors
             execsApplying.addAll(executorListMapperService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
-        } else if (NON_TRUST_PTNR_TITLE_CLEARING_TYPES.contains(titleClearingType)
+        } else if (getNonTrustPtnrTitleClearingTypes().contains(titleClearingType)
                 && YES.equals(caseData.getAnyOtherApplyingPartners())
                 && caseData.getOtherPartnersApplyingAsExecutors() != null
                 && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()) {
@@ -158,7 +158,7 @@ public class ExecutorsTransformer {
             List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying, CaseData caseData) {
 
         if (caseData.getDispenseWithNoticeOtherExecsList() != null
-            && !caseData.getDispenseWithNoticeOtherExecsList().isEmpty()) {
+                && !caseData.getDispenseWithNoticeOtherExecsList().isEmpty()) {
             // Add power reserved executors
             execsNotApplying.addAll(executorListMapperService
                     .mapFromDispenseWithNoticeExecsToNotApplyingExecutors(caseData));
@@ -212,10 +212,10 @@ public class ExecutorsTransformer {
 
     // Clear the solicitor executor lists (on solicitor completion)
     public void clearSolicitorExecutorLists(CaseData caseData) {
-        Optional.ofNullable(caseData.getSolsAdditionalExecutorList()).ifPresent(l -> l.clear());
-        Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(l -> l.clear());
-        Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(l -> l.clear());
-        Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(l -> l.clear());
+        Optional.ofNullable(caseData.getSolsAdditionalExecutorList()).ifPresent(List::clear);
+        Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(List::clear);
+        Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(List::clear);
+        Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(List::clear);
     }
 
     // Note - mutates the request data!
@@ -254,7 +254,7 @@ public class ExecutorsTransformer {
         }
 
         List<CollectionMember<AdditionalExecutorApplying>> cdExecsApplying = caseData.getAdditionalExecutorsApplying();
-        for (int i = 0; i < cdExecsApplying.size(); i++) {
+        for (var i = 0; i < cdExecsApplying.size(); i++) {
             execsApplying.add(new CollectionMember<>(cdExecsApplying.get(i).getId(),
                     cdExecsApplying.get(i).getValue().clone()));
         }
@@ -271,7 +271,7 @@ public class ExecutorsTransformer {
 
         List<CollectionMember<AdditionalExecutorNotApplying>> cdExecsNotApplying =
                 caseData.getAdditionalExecutorsNotApplying();
-        for (int i = 0; i < cdExecsNotApplying.size(); i++) {
+        for (var i = 0; i < cdExecsNotApplying.size(); i++) {
             execsNotApplying.add(new CollectionMember<>(cdExecsNotApplying.get(i).getId(),
                     cdExecsNotApplying.get(i).getValue().clone()));
         }

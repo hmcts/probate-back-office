@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 
 @Slf4j
 @Service
@@ -197,7 +197,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .applyingExecutorTrustCorpPosition(
-                        TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())
+                        getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
                                 && NO.equals(caseData.getSolsSolicitorIsExec())
                                 && YES.equals(caseData.getSolsSolicitorIsApplying())
                                 ? caseData.getProbatePractitionersPositionInTrust() : null)
@@ -217,7 +217,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
                 .applyingExecutorTrustCorpPosition(
-                        TRUST_CORP_TITLE_CLEARING_TYPES.contains(caseData.getTitleAndClearingType())
+                        getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
                         && NO.equals(caseData.getSolsSolicitorIsExec())
                         && YES.equals(caseData.getSolsSolicitorIsApplying())
                                 ? caseData.getProbatePractitionersPositionInTrust() : null)
