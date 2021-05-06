@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES;
+import static uk.gov.hmcts.probate.model.Constants.NON_TRUST_PTNR_TITLE_CLEARING_TYPES_NOT_ALL_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TRUST_CORP_TITLE_CLEARING_TYPES;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -138,7 +138,7 @@ public class ExecutorsTransformer {
                 && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()) {
             // Add trust corps executors
             execsApplying.addAll(executorListMapperService.mapFromTrustCorpExecutorsToApplyingExecutors(caseData));
-        } else if (NON_TRUST_PTNR_TITLE_CLEARING_TYPES.contains(titleClearingType)
+        } else if (NON_TRUST_PTNR_TITLE_CLEARING_TYPES_NOT_ALL_RENOUNCING.contains(titleClearingType)
                 && YES.equals(caseData.getAnyOtherApplyingPartners())
                 && caseData.getOtherPartnersApplyingAsExecutors() != null
                 && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()) {
