@@ -32,7 +32,6 @@ public class CaseDataParent {
     protected final String titleAndClearingType;
     protected final String trustCorpName;
     protected SolsAddress trustCorpAddress;
-    // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected final String lodgementAddress;
     protected final LocalDate lodgementDate;
@@ -43,20 +42,16 @@ public class CaseDataParent {
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
     protected final String furtherEvidenceForApplication;
-    // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorPartners>> otherPartnersApplyingAsExecutors;
     protected final String morePartnersHoldingPowerReserved;
     protected final String probatePractitionersPositionInTrust;
     protected final String dispenseWithNoticeLeaveGiven;
     protected final LocalDate dispenseWithNoticeLeaveGivenDate;
-    // Not final as field set in CaseDataTransformer
     protected String dispenseWithNoticeLeaveGivenDateFormatted;
-    // Not final as field set in CaseDataTransformer
     protected List<CollectionMember<String>> codicilAddedFormattedDateList;
     protected String originalWillSignedDateFormatted;
     protected final String dispenseWithNoticeOverview;
     protected final String dispenseWithNoticeSupportingDocs;
-    // Not final so field can be reset in CaseDataTransformer
     protected List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeOtherExecsList;
     protected final List<String> whoSharesInCompanyProfits;
     protected final String solsIdentifiedApplyingExecs;
