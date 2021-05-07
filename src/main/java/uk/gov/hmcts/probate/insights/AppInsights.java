@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.logging.appinsights.AbstractAppInsights;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
@@ -30,8 +31,9 @@ public class AppInsights implements EventRepository {
         telemetry.trackEvent(name, properties,null);
     }
 
-    @Override
-    public void trackEvent2(String name, Map<String, String> properties) {
-        telemetry.trackException();
+    private Map<String, String> trackingMap(String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String ,String>();
+        trackMap.put("url", propertyToTrack);
+        return trackMap;
     }
 }
