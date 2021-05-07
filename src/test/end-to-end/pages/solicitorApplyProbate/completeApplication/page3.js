@@ -14,6 +14,4 @@ module.exports = async function () {
 
     await I.runAccessibilityTest();
     await I.waitForNavigationToComplete(commonConfig.continueButton);
-    await I.waitForElement('#solsConfirmSignSOT1');
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
