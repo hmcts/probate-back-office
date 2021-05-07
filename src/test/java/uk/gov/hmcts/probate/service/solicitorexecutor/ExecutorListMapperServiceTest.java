@@ -326,13 +326,12 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
                 .applyingExecutorTrustCorpPosition(DIRECTOR)
                 .build());
-
         assertEquals(result.getValue(), expected.getValue());
     }
 
@@ -407,7 +406,7 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(EXEC_FIRST_NAME)
                 .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
