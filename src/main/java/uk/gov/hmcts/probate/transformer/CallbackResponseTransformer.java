@@ -263,7 +263,7 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {
+                var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
                     WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE
                 };
@@ -317,7 +317,7 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
                 || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {
+                var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
                     WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER
