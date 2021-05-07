@@ -12,5 +12,8 @@ module.exports = async function () {
     await I.fillField('#solsSOTSurname', completeApplicationConfig.page3_sol_surname);
     await I.fillField('#solsSOTJobTitle', completeApplicationConfig.page3_sol_jobtitle);
 
+    await I.runAccessibilityTest();
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForElement('#solsConfirmSignSOT1');
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
