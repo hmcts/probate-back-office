@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
+import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 
 @Slf4j
@@ -156,7 +157,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                        .applyingExecutorType(getSolExecType(caseData))
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
@@ -185,7 +186,7 @@ public class ExecutorListMapperService {
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
                 .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
                         + " " + caseData.getSolsSOTSurname()))
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorType(getSolExecType(caseData))
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .applyingExecutorTrustCorpPosition(
                         getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
@@ -203,7 +204,7 @@ public class ExecutorListMapperService {
                         caseData.getPrimaryApplicantForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
                 .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorType(getSolExecType(caseData))
                 .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
                 .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
                 .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
@@ -223,6 +224,22 @@ public class ExecutorListMapperService {
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())
                 .build());
+    }
+
+    private String getSolExecType(CaseData caseData){
+        String executorType = "";
+
+        if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
+        && getNonTrustPtnrTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            executorType = EXECUTOR_TYPE_PROFESSIONAL;
+        } else if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
+            && getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            executorType = EXECUTOR_TYPE_TRUST_CORP;
+        } else {
+            executorType = EXECUTOR_TYPE_NAMED;
+        }
+
+        return executorType;
     }
 
 }
