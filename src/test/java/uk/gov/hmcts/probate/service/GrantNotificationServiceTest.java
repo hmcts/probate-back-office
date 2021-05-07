@@ -126,7 +126,7 @@ public class GrantNotificationServiceTest {
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
 
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
 
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
@@ -152,7 +152,7 @@ public class GrantNotificationServiceTest {
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
 
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
 
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
@@ -182,7 +182,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -210,7 +210,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -238,7 +238,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -271,7 +271,7 @@ public class GrantNotificationServiceTest {
         GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
         assertTrue(grantOfRepresentationData.getGrantDelayedNotificationSent());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
         assertTrue(response.getScheduleResponseData().contains("<3:notificationError>"));
@@ -303,7 +303,7 @@ public class GrantNotificationServiceTest {
         GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
         assertTrue(grantOfRepresentationData.getGrantDelayedNotificationSent());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
         assertTrue(response.getScheduleResponseData().contains("<3:null>"));
@@ -328,7 +328,7 @@ public class GrantNotificationServiceTest {
         when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:null>"));
         assertTrue(response.getScheduleResponseData().contains("<2:null>"));
         assertTrue(response.getScheduleResponseData().contains("<3:null>"));
@@ -347,7 +347,7 @@ public class GrantNotificationServiceTest {
 
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:emailError>"));
         assertTrue(response.getScheduleResponseData().contains("<2:emailError>"));
         assertTrue(response.getScheduleResponseData().contains("<3:emailError>"));
@@ -379,7 +379,7 @@ public class GrantNotificationServiceTest {
         GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
         assertTrue(grantOfRepresentationData.getGrantAwaitingDocumentatioNotificationSent());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
         assertTrue(response.getScheduleResponseData().contains("3"));
@@ -413,7 +413,7 @@ public class GrantNotificationServiceTest {
         GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
         assertTrue(grantOfRepresentationData.getGrantAwaitingDocumentatioNotificationSent());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("1"));
         assertTrue(response.getScheduleResponseData().contains("2"));
         assertTrue(response.getScheduleResponseData().contains("3"));
@@ -443,7 +443,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -471,7 +471,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -499,7 +499,7 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<2:Case has already been updated>"));
         assertTrue(response.getScheduleResponseData().contains("<3:Case has already been updated>"));
@@ -524,7 +524,7 @@ public class GrantNotificationServiceTest {
         when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:null>"));
         assertTrue(response.getScheduleResponseData().contains("<2:null>"));
         assertTrue(response.getScheduleResponseData().contains("<3:null>"));
@@ -543,7 +543,7 @@ public class GrantNotificationServiceTest {
 
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
-        assertEquals(response.getScheduleResponseData().size(), 3);
+        assertEquals(3, response.getScheduleResponseData().size());
         assertTrue(response.getScheduleResponseData().contains("<1:emailError>"));
         assertTrue(response.getScheduleResponseData().contains("<2:emailError>"));
         assertTrue(response.getScheduleResponseData().contains("<3:emailError>"));

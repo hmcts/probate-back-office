@@ -40,13 +40,13 @@ public class CodicilDateValidationRule implements ValidationRule {
         if (Constants.NO.equals(ccdData.getWillHasCodicils()) || codicilDates == null) {
             return new ArrayList<>();
         }
-        LocalDate willSignedDate = ccdData.getOriginalWillSignedDate();
+        var willSignedDate = ccdData.getOriginalWillSignedDate();
         List<String> allErrorCodes = new ArrayList<>();
-        for (int i = 0; i < codicilDates.size(); i++) {
-            LocalDate codicilDate = codicilDates.get(i).getDateCodicilAdded();
+        for (var i = 0; i < codicilDates.size(); i++) {
+            var codicilDate = codicilDates.get(i).getDateCodicilAdded();
             if (codicilDate != null) {
                 if (codicilDate.compareTo(LocalDate.now()) >= 0
-                    && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST)) {
+                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST)) {
                     allErrorCodes.add(CODICIL_DATE_MUST_BE_IN_THE_PAST);
                 }
                 if (willSignedDate != null && codicilDate.compareTo(willSignedDate) <= 0

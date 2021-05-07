@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
@@ -22,16 +21,16 @@ public class NoneOfTheseSelectedValidationRule implements TitleAndClearingPageVa
     @Override
     public void validate(CaseDetails caseDetails) {
 
-        CaseData caseData = caseDetails.getData();
-        String[] args = {caseDetails.getId().toString()};
-        String userMessage = businessValidationMessageRetriever.getMessage(NONE_OF_THESE_SELECTED, args, Locale.UK);
+        var caseData = caseDetails.getData();
+        var args = new String[]{caseDetails.getId().toString()};
+        var userMessage = businessValidationMessageRetriever.getMessage(NONE_OF_THESE_SELECTED, args, Locale.UK);
 
         if (NO.equals(caseData.getSolsSolicitorIsExec())
-            && YES.equals(caseData.getSolsSolicitorIsApplying())
-            && caseData.getTitleAndClearingType().matches("TCTNoT")) {
+                && YES.equals(caseData.getSolsSolicitorIsApplying())
+                && caseData.getTitleAndClearingType().matches("TCTNoT")) {
 
             throw new BusinessValidationException(userMessage,
-                "None of these selected, you need to make a paper application for case id " + caseDetails.getId());
+                    "None of these selected, you need to make a paper application for case id " + caseDetails.getId());
         }
     }
 }

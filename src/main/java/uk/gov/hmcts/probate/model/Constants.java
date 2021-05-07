@@ -54,20 +54,43 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING = "TCTPartSuccAllRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
     public static final String EMPTY_STRING = "";
-
-    public static final List<String> NON_TRUST_PTNR_TITLE_CLEARING_TYPES_NOT_ALL_RENOUNCING = new ArrayList<>(asList(
-            TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
-            TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
-            TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
-            TITLE_AND_CLEARING_SOLE_PRINCIPLE,
-            TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
-            TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING));
-
-    public static final List<String> TRUST_CORP_TITLE_CLEARING_TYPES = new ArrayList<>(asList(
-            TITLE_AND_CLEARING_TRUST_CORP_SDJ,
-            TITLE_AND_CLEARING_TRUST_CORP));
-
     public static final String SOLICITOR_ID = "solicitor";
+   
+    public static List<String> getNonTrustPtnrTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING));
+    }
+
+    public static List<String> getNonTrustPtnrNotAllRenouncingTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING));
+    }
+
+    public static List<String> getTrustCorpTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_TRUST_CORP_SDJ,
+                TITLE_AND_CLEARING_TRUST_CORP));
+    }
+
+    public static List<String> getSuccessorTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING));
+    }
 
     private Constants() {
     }

@@ -6,7 +6,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
@@ -23,7 +22,7 @@ public class CaseDataTransformer {
 
     public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer
@@ -35,20 +34,20 @@ public class CaseDataTransformer {
 
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
     }
 
     public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final var caseData = callbackRequest.getCaseDetails().getData();
         legalStatementExecutorTransformer.formatFields(caseData);
     }
 
 
     public void transformCaseDataForLegalStatementRegeneration(CallbackRequest callbackRequest) {
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final var caseData = callbackRequest.getCaseDetails().getData();
 
         // we don't really need to do this, as the temp lists prior to sol journey completion should
         // be empty by this stage, however it makes functional testing a lot simpler to
@@ -64,8 +63,7 @@ public class CaseDataTransformer {
     }
 
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
     }
-
 }

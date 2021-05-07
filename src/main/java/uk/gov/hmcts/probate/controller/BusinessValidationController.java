@@ -26,7 +26,6 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
@@ -187,7 +186,7 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-        ValidationRule[] rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+        var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
         
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
@@ -355,15 +354,14 @@ public class BusinessValidationController {
         // note - we are assuming here that bulk scan imports set paper form = yes
         if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
                 && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
-            ValidationRule[] rules =
-                    new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+
+            var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
             final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
 
             response = eventValidationService.validateRequest(callbackRequest,
                     gopPage1ValidationRules);
 
             if (response.getErrors().isEmpty()) {
-                // caseDataTransformer.transformSolCaseDataForCaseworkerCompletion(callbackRequest);
                 response = callbackResponseTransformer.paperForm(callbackRequest, document);
             }
         } else {
@@ -424,7 +422,7 @@ public class BusinessValidationController {
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             if (log != null && uri != null && callbackRequest != null) {
-                final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+                final var caseDetails = callbackRequest.getCaseDetails();
                 if (caseDetails != null) {
                     final Long id =  callbackRequest.getCaseDetails().getId();
                     log.info("POST: {} Case Id: {} ", uri, id == null ? "Unknown" : id.toString());
