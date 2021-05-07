@@ -226,11 +226,11 @@ public class ExecutorListMapperService {
                 .build());
     }
 
-    private String getSolExecType(CaseData caseData){
+    private String getSolExecType(CaseData caseData) {
         String executorType = "";
 
         if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
-        && getNonTrustPtnrTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            && getNonTrustPtnrTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
             executorType = EXECUTOR_TYPE_PROFESSIONAL;
         } else if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
             && getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
