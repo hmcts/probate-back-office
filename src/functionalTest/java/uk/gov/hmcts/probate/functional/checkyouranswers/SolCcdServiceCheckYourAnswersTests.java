@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
@@ -278,8 +276,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             
             textContent = textContent.replace("\r", "").replaceAll("\n", "");
             validationString = validationString.replace("\r", "");
-            log.info("textContent:" + textContent);
-            log.info("validationString:" + validationString);
             assertTrue(textContent.contains(validationString));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
