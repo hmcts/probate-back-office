@@ -41,19 +41,19 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyAddressInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
-                + "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+                + "AddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("deceasedFirstName deceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -274,8 +274,10 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
-            assertTrue(textContent.replace("\r", "").replaceAll("\n", "")
-                .contains(validationString.replace("\r", "")));
+            textContent = textContent.replace("\r", "").replaceAll("\n", "");
+            validationString = validationString.replace("\r", "");
+
+            assertTrue(textContent.contains(validationString));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {
