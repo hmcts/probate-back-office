@@ -88,6 +88,7 @@ module.exports = function () {
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         completeApplicationPage1: steps.solicitorApplyProbate.completeApplication.page1,
         completeApplicationPage2: steps.solicitorApplyProbate.completeApplication.page2,
+        completeApplicationPage2a: steps.solicitorApplyProbate.completeApplication.page2a,
         completeApplicationPage3: steps.solicitorApplyProbate.completeApplication.page3,
         completeApplicationPage4: steps.solicitorApplyProbate.completeApplication.page4,
         completeApplicationPage5: steps.solicitorApplyProbate.completeApplication.page5,
