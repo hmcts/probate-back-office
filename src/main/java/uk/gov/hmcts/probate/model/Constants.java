@@ -1,4 +1,5 @@
 package uk.gov.hmcts.probate.model;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -192,7 +192,7 @@ public class CaseData extends CaseDataParent {
 
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantForenamesIsNull}")
-    private final String primaryApplicantForenames;
+    protected final String primaryApplicantForenames;
 
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
         message = "{primaryApplicantSurnameIsNull}")

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrNotAllRenouncingTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
@@ -221,6 +220,11 @@ public class ExecutorsTransformer {
     // Note - mutates the request data!
     protected void mapExecutorToPrimaryApplicantFields(
             AdditionalExecutorApplying exec, CaseData caseData) {
+        /*
+
+        Reinstate on merging Trust corps in.
+        Got a compile issue here that we don't get in DTSPB-673-trust-corp-epic
+
         caseData.setPrimaryApplicantForenames(exec.getApplyingExecutorFirstName());
         caseData.setPrimaryApplicantSurname(exec.getApplyingExecutorLastName());
         caseData.setPrimaryApplicantEmailAddress(exec.getApplyingExecutorEmail());
@@ -230,12 +234,18 @@ public class ExecutorsTransformer {
         caseData.setPrimaryApplicantHasAlias(NO);
         caseData.setPrimaryApplicantIsApplying(YES);
         caseData.setSolsPrimaryExecutorNotApplyingReason(null);
+         */
     }
 
     public void setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(CaseData caseData) {
+        /*
+        Reinstate on merging Trust corps in
+        Got a compile issue here that we don't get in DTSPB-673-trust-corp-epic
+
         if (!isSolicitorNamedInWillAsAnExecutor(caseData)) {
             caseData.setSolsSolicitorNotApplyingReason(null);
         }
+        */
     }
 
     protected boolean isSolicitorNamedInWillAsAnExecutor(CaseData caseData) {
