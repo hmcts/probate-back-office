@@ -27,6 +27,12 @@ module.exports = async function () {
         console.info(html2);
         console.info('*******************************');
         console.info('*******************************');
+        console.info('ERROR MESSAGE:');
+        console.log(e.message);
+        console.info('ERROR STACK:');
+        console.log(e.stack);
+        console.info('*******************************');
+        console.info('*******************************');
         throw e;
     }
 
