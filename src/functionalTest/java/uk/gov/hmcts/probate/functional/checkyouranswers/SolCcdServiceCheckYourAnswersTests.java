@@ -274,8 +274,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
             
-            assertTrue(textContent.replace("\r", "").replaceAll("\n", "")
-                .contains(validationString.replace("\r", "")));
+            textContent = textContent.replace("\r", "").replaceAll("\n", "");
+            validationString = validationString.replace("\r", "");
+            assertTrue(textContent.contains(validationString));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {
