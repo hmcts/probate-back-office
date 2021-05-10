@@ -369,6 +369,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
+        log.info("document:" +  document);
         assertTrue(document.contains(BIRMINGHAM_NO));
     }
 
