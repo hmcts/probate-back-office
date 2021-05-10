@@ -25,6 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -124,11 +130,11 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("user-id", userId));
     }
 
     public Headers getSolicitorHeadersWithUserId() {
@@ -137,11 +143,11 @@ public class FunctionalTestUtils {
 
     private Headers getSolicitorHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(solicitorEmail, solicitorPassword)),
+            new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -158,6 +164,15 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+
+        return parsePDFToString(document.getBody().asInputStream());
+    }
+
+    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
+        Response document = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
@@ -305,4 +320,53 @@ public class FunctionalTestUtils {
         return json.replaceAll("\"applicationID\": \"603\",",
             "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
+
+    public String convertToWelsh(LocalDate dateToConvert) {
+        String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
+            "Hydref", "Tachwedd","Rhagfyr"};
+
+        if (dateToConvert == null) {
+            return null;
+        }
+        int day = dateToConvert.getDayOfMonth();
+        int year = dateToConvert.getYear();
+        int month = dateToConvert.getMonth().getValue();
+        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
+            Integer.toString(year));
+    }
+    
+    public String formatDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        try {
+            Date date = originalFormat.parse(dateToConvert.toString());
+            String formattedDate = targetFormat.format(date);
+            return addDayNumberSuffix(formattedDate);
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
+    }
+    
+    private String addDayNumberSuffix(String formattedDate) {
+        int day = Integer.parseInt(formattedDate.substring(0, 2));
+        switch (day) {
+            case 3:
+            case 23:
+                return day + "rd " + formattedDate.substring(3);
+            case 1:
+            case 21:
+            case 31:
+                return day + "st " + formattedDate.substring(3);
+            case 2:
+            case 22:
+                return day + "nd " + formattedDate.substring(3);
+            default:
+                return day + "th " + formattedDate.substring(3);
+        }
+    }
+
 }

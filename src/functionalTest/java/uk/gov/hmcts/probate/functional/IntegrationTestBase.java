@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
+
+import java.util.HashMap;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -73,6 +76,19 @@ public abstract class IntegrationTestBase {
         return response.getBody();
     }
 
+    protected ResponseBody validatePostSuccessForQueryParms(String path, HashMap<String, String> queryParms) {
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .queryParams(queryParms)
+            .when().post(path)
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
     protected ResponseBody validatePostSuccess(String jsonFileName, String path) {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
@@ -88,6 +104,33 @@ public abstract class IntegrationTestBase {
                                           ResponseBody responseBody) {
         String expectedText = getJsonFromFile(expectedResponseFile);
         expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsForHeaders(String expectedResponseFile, String responseDocumentUrl,
+                                                    ResponseBody responseBody, Headers headers) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
+        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
+        String expectedText = getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        for (String key : expectedKeyValuerelacements.keySet()) {
+            expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
+        }
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(responseDocumentUrl);

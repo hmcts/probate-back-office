@@ -1,0 +1,60 @@
+{
+  "exception_record_id": "1000003",
+  "exception_record_case_type_id": "PROBATE_ExceptionRecord",
+  "po_box": "12626",
+  "po_box_jurisdiction": "PROBATE",
+  "form_type": "PA8A",
+  "journey_classification": "NEW_APPLICATION",
+  "delivery_date": "2019-07-20T12:34:56.789Z",
+  "opening_date": "2019-07-21T13:00:00.000Z",
+  "is_automated_process": "true",
+  "scanned_documents": [
+    {
+    "type": "form",
+    "subtype": "PA8A",
+    "url": {
+      "document_url":"https://dm-store:5006/fdfsfsdf",
+      "document_binary_url":"https://dm-store:5006/fdfsfsdf",
+      "document_filename":"123135453645.pdf"
+    },
+    "control_number": "123135453645",
+    "file_name": "123135453645.pdf",
+    "scanned_date": "2019-07-15T12:34:56.789Z",
+    "delivery_date": "2019-07-18T12:00:00.000Z"
+    }
+  ],
+  "ocr_data_fields": [
+    { "name": "caveatorForenames", "value": "Jessica" },
+    { "name": "caveatorMiddleNames", "value": "Diana" },
+    { "name": "caveatorSurnames", "value": "Simpson" },
+    { "name": "caveatorEmailAddress", "value": "" },
+    { "name": "caveatorAddressLine1", "value": "" },
+    { "name": "caveatorAddressLine2", "value": "" },
+    { "name": "caveatorAddressTown", "value": "" },
+    { "name": "caveatorAddressCounty", "value": "" },
+    { "name": "caveatorAddressPostCode", "value": "" },
+    { "name": "solsSolicitorRepresentativeName", "value": "John Major" },
+    { "name": "solsSolicitorFirmName", "value": "Major Solicitors Ltd" },
+    { "name": "solsSolicitorAppReference", "value": "SOL123456" },
+    { "name": "solsFeeAccountNumber", "value": "PBA-123456" },
+    { "name": "solsSolicitorAddressLine1", "value": "House of Peas" },
+    { "name": "solsSolicitorAddressLine2", "value": "London No Way" },
+    { "name": "solsSolicitorAddressTown", "value": "London Town" },
+    { "name": "solsSolicitorAddressCounty", "value": "Greater London" },
+    { "name": "solsSolicitorAddressPostCode", "value": "NW1 1LE" },
+    { "name": "solsSolicitorEmail", "value": "solicitor@probate-test.com" },
+    { "name": "solsSolicitorPhoneNumber", "value": "02073843749" },
+    { "name": "deceasedForenames", "value": "Thomas" },
+    { "name": "deceasedMiddleNames", "value": "Phillip" },
+    { "name": "deceasedSurname", "value": "Simpson" },
+    { "name": "deceasedDateOfDeath", "value": "02022019" },
+    { "name": "deceasedDateOfBirth", "value": "12031950" },
+    { "name": "deceasedAnyOtherNames", "value": "False" },
+    { "name": "deceasedAddressLine1", "value": "3 Roebuck Close" },
+    { "name": "deceasedAddressLine2", "value": "Roebuck Street" },
+    { "name": "deceasedAddressTown", "value": "La La Land" },
+    { "name": "deceasedAddressCounty", "value": "Middlesex" },
+    { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
+    { "name": "caseReference", "value": "" }
+    ]
+  }
