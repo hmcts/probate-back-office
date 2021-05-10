@@ -7,12 +7,14 @@ import lombok.Data;
 @Builder
 public class AdditionalExecutorApplying {
 
-    private final String applyingExecutorName;
     private final String applyingExecutorFirstName;
     private final String applyingExecutorLastName;
+    private final String applyingExecutorTrustCorpPosition;
+    private final String applyingExecutorType;
     private final String applyingExecutorPhoneNumber;
     private final String applyingExecutorEmail;
     private final SolsAddress applyingExecutorAddress;
+    private String applyingExecutorName;
     private String applyingExecutorOtherNames;
     private String applyingExecutorOtherNamesReason;
     private String applyingExecutorOtherReason;

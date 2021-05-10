@@ -20,11 +20,11 @@ public class FormattingService {
     // Create a formatted string including all applying execs
     public static String createExecsApplyingNames(List<CollectionMember<AdditionalExecutorApplying>> execs) {
         if (execs.isEmpty()) {
-            return "";
+            return "None";
         }
 
-        StringBuilder names = new StringBuilder();
-        String finalName = execs.get(execs.size() - 1).getValue().getApplyingExecutorName();
+        var names = new StringBuilder();
+        final String finalName = execs.get(execs.size() - 1).getValue().getApplyingExecutorName();
         execs.remove(execs.size() - 1);
         execs.forEach(exec -> names.append(exec.getValue().getApplyingExecutorName()).append(", "));
         names.append(finalName);
@@ -35,11 +35,11 @@ public class FormattingService {
     // Create a formatted string including all not applying execs
     public static String createExecsNotApplyingNames(List<CollectionMember<AdditionalExecutorNotApplying>> execs) {
         if (execs.isEmpty()) {
-            return "";
+            return "None";
         }
 
-        StringBuilder names = new StringBuilder();
-        String finalName = execs.get(execs.size() - 1).getValue().getNotApplyingExecutorName();
+        var names = new StringBuilder();
+        final String finalName = execs.get(execs.size() - 1).getValue().getNotApplyingExecutorName();
         execs.remove(execs.size() - 1);
         execs.forEach(exec -> names.append(exec.getValue().getNotApplyingExecutorName()).append(", "));
         names.append(finalName);
@@ -48,9 +48,12 @@ public class FormattingService {
     }
 
     public static String capitaliseEachWord(String name) {
+        if (name == null) {
+            return null;
+        }
         return Arrays.stream(name.split("\\s+"))
-                        .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
-                        .collect(Collectors.joining(" "));
+                .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
+                .collect(Collectors.joining(" "));
     }
 
     public static String getSolsSOTName(String firstNames, String surname) {

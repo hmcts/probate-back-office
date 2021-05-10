@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,17 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
-import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_APPLYING;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_PROFESSIONAL;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
@@ -48,7 +51,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_NOT_APPLYING_R
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_APPLYING;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 
@@ -74,12 +77,12 @@ public class ExecutorListMapperServiceTest {
     public void setup() {
         initMocks(this);
         additionalExecutorsApplyingMock = new ArrayList<>();
-        additionalExecutorsApplyingMock.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
-        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         additionalExecutorsNotApplyingMock = new ArrayList<>();
-        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(EXEC_ID, EXECUTOR_NOT_APPLYING));
-        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_NOT_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
@@ -104,8 +107,8 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(1).getValue().getNotApplyingExecutorName());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsNotApplying.get(0).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
     }
 
     @Test
@@ -120,7 +123,31 @@ public class ExecutorListMapperServiceTest {
                         additionalExecutorsNotApplyingMock);
 
         assertEquals(2, newExecsNotApplying.size());
-        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(1).getId());
+        assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
+    }
+
+    @Test
+    public void shouldMapAdditionalExecutorsApplyingList() {
+        CaseData caseData = CaseData.builder().additionalExecutorsApplying(additionalExecutorsApplyingMock).build();
+        List<CollectionMember<AdditionalExecutorApplying>> result = underTest
+                .mapAdditionalApplyingExecutors(caseData);
+
+        assertEquals(EXEC_NAME, result.get(0).getValue().getApplyingExecutorName());
+        assertEquals(EXEC_NAME, result.get(1).getValue().getApplyingExecutorName());
+        assertEquals(2, result.size());
+    }
+
+
+    @Test
+    public void shouldRemoveSolApplyingExec() {
+        additionalExecutorsApplyingMock.remove(1);
+        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
+        newExecsApplying = underTest.removeSolicitorFromApplyingList(additionalExecutorsApplyingMock);
+
+        assertEquals(1, newExecsApplying.size());
+        assertEquals(EXEC_FIRST_NAME, newExecsApplying.get(0).getValue().getApplyingExecutorFirstName());
+        assertEquals(EXEC_SURNAME, newExecsApplying.get(0).getValue().getApplyingExecutorLastName());
+        assertEquals(EXEC_ID, newExecsApplying.get(0).getId());
     }
 
     @Test
@@ -201,7 +228,7 @@ public class ExecutorListMapperServiceTest {
     @Test
     public void shouldMapFromSolsAdditionalExecToApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
-        solsAdditionalExecs.add(SOLS_EXEC_APPLYING);
+        solsAdditionalExecs.add(SOLS_EXEC_ADDITIONAL_APPLYING);
         CaseData caseData = CaseData.builder().solsAdditionalExecutorList(solsAdditionalExecs).build();
 
         List<CollectionMember<AdditionalExecutorApplying>> result =
@@ -244,15 +271,15 @@ public class ExecutorListMapperServiceTest {
         CollectionMember<AdditionalExecutorApplying> result =
                 underTest.mapFromSolicitorToApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
-                null, AdditionalExecutorApplying.builder()
+                SOLICITOR_ID, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
                 .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
-                .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(expected.getValue(), result.getValue());
     }
 
     @Test
@@ -270,7 +297,42 @@ public class ExecutorListMapperServiceTest {
                 .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(result.getValue(), expected.getValue());
+    }
+
+    @Test
+    public void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorpPosn() {
+        CaseData cd = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES)
+                .probatePractitionersPositionInTrust(DIRECTOR)
+                .build();
+
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromPrimaryApplicantToApplyingExecutor(cd);
+
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
+                .applyingExecutorTrustCorpPosition(DIRECTOR)
+                .build());
+        assertEquals(result.getValue(), expected.getValue());
     }
 
     @Test
@@ -283,8 +345,74 @@ public class ExecutorListMapperServiceTest {
                 .notApplyingExecutorNameOnWill(EXEC_OTHER_NAMES)
                 .build());
 
-        assertEquals(result, expected);
+        assertEquals(result.getValue(), expected.getValue());
     }
 
+    public void shouldMapFromSolicitorToApplyingExecutorTrustCorps() {
+        CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON)
+                .probatePractitionersPositionInTrust(DIRECTOR)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES);
 
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromSolicitorToApplyingExecutor(caseDataBuilder.build());
+
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                SOLICITOR_ID, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+                .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+                .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
+                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorAddress(SOLICITOR_ADDRESS)
+                .applyingExecutorTrustCorpPosition(DIRECTOR)
+                .build());
+
+        assertEquals(expected.getValue(), result.getValue());
+    }
+
+    @Test
+    public void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorps() {
+
+        CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsSolicitorNotApplyingReason(SOLICITOR_NOT_APPLYING_REASON)
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsExecutorAliasNames(EXEC_OTHER_NAMES)
+                .primaryApplicantAliasReason(EXEC_OTHER_NAMES_REASON)
+                .probatePractitionersPositionInTrust(DIRECTOR)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsApplying(YES);
+
+        CollectionMember<AdditionalExecutorApplying> result =
+                underTest.mapFromPrimaryApplicantToApplyingExecutor(caseDataBuilder.build());
+
+        CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
+                null, AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
+                .applyingExecutorName(EXEC_NAME)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorOtherNamesReason(EXEC_OTHER_NAMES_REASON)
+                .applyingExecutorTrustCorpPosition(DIRECTOR)
+                .build());
+
+        assertEquals(result.getValue(), expected.getValue());
+    }
 }

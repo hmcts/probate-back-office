@@ -78,7 +78,7 @@ public class CaseData extends CaseDataParent {
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
-    private final String solsSolicitorFirmName;
+    private String solsSolicitorFirmName;
 
     @Valid
     private final SolsAddress solsSolicitorAddress;
@@ -117,11 +117,11 @@ public class CaseData extends CaseDataParent {
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedForenameIsNull}")
-    private final String deceasedForenames;
+    private String deceasedForenames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedSurnameIsNull}")
-    private final String deceasedSurname;
+    private String deceasedSurname;
 
     @NotNull(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
         ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
@@ -498,8 +498,11 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
+    private List<CollectionMember<AdditionalExecutorApplying>> executorsApplyingLegalStatement;
+    private List<CollectionMember<AdditionalExecutorNotApplying>> executorsNotApplyingLegalStatement;
     @Getter(lazy = true)
-    private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
+    private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement =
+        getAllExecutors(true);
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement =
         getAllExecutors(false);
@@ -539,7 +542,7 @@ public class CaseData extends CaseDataParent {
         return YES.equals(primaryApplicantIsApplying);
     }
 
-    private boolean isPrimaryApplicantNotApplying() {
+    public boolean isPrimaryApplicantNotApplying() {
         return NO.equals(primaryApplicantIsApplying);
     }
 
