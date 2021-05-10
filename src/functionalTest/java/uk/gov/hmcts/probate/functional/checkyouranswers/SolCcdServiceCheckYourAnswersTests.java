@@ -53,7 +53,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
