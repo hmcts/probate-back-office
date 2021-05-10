@@ -7,16 +7,34 @@ module.exports = async function () {
 
     const I = this;
 
-    await I.saveScreenshot('debugNightly.png', true);
+    // await I.saveScreenshot('debugNightly.png', true);
+    console.info('***** HTML PRIOR TO ISSUE ********');
+
+    const html = await I.grabHTMLFrom({css: 'ccd-app'});
+    console.info(html);
+    console.info('*******************************');
+    console.info('*******************************');
+
     await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
 
     try {
         // eslint-disable-next-line
         await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator, 120);
     } catch (e) {
-        await I.saveScreenshot('debugNightlyInCatchBlock.png', true);
+        // await I.saveScreenshot('debugNightlyInCatchBlock.png', true);
+        console.info('***** HTML IN CATCH BLOCK ********')
+        const html2 = await I.grabHTMLFrom({css: 'ccd-app'});
+        console.info(html2);
+        console.info('*******************************');
+        console.info('*******************************');
         throw e;
     }
-    await I.saveScreenshot('debugNightlyAfterExecution.png', true);
+
+    // await I.saveScreenshot('debugNightlyAfterExecution.png', true);
+    console.info('***** HTML AFTER NAV COMPLETE ********')
+    const html3 = await I.grabHTMLFrom({css: 'ccd-app'});
+    console.info(html3);
+    console.info('*******************************');
+    console.info('*******************************');
 
 };
