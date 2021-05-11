@@ -11,9 +11,9 @@
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT400421", "ListElement": "IHT400 and IHT421 - there was inheritance tax to pay", "DisplayOrder": 3},
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "NA", "ListElement": "Not applicable - DO NOT USE", "DisplayOrder": 4},
 
-  {"LiveFrom": "02/01/2017", "ID": "spikeLimit", "ListElementCode": "spikeLimit1", "ListElement": "First sentence limit", "DisplayOrder": 1},
-  {"LiveFrom": "02/01/2017", "ID": "spikeLimit", "ListElementCode": "spikeLimit2", "ListElement": "second sentence limit", "DisplayOrder": 2},
-  {"LiveFrom": "02/01/2017", "ID": "spikeLimit", "ListElementCode": "spikeLimit3", "ListElement": "third sentence limit", "DisplayOrder": 3},
+  {"LiveFrom": "02/01/2017", "ID": "SpikeLimit", "ListElementCode": "spikeLimit1", "ListElement": "first sentence limit", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "SpikeLimit", "ListElementCode": "spikeLimit2", "ListElement": "second sentence limit", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "SpikeLimit", "ListElementCode": "spikeLimit3", "ListElement": "third sentence limit", "DisplayOrder": 3},
 
 
   {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "fee account", "ListElement": "Fee account", "DisplayOrder": 1},
