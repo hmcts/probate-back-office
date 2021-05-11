@@ -7,6 +7,8 @@ module.exports = async function () {
 
     const I = this;
 
+    /* eslint-disable-no-console */
+
     // await I.saveScreenshot('debugNightly.png', true);
     console.info('***** HTML PRIOR TO ISSUE ********');
 
