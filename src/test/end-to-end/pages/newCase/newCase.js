@@ -10,7 +10,10 @@ module.exports = async function () {
     // await I.saveScreenshot('debugNightly.png', true);
     console.info('***** HTML PRIOR TO ISSUE ********');
 
-    const html = await I.grabHTMLFrom({css: 'ccd-app'});
+    const rootNode = testConfig.TestForXUI ? 'exui-root' : 'ccd-app'; 
+    console.info(`root node: ${rootNode}`); // will indicate to us whether config flag is set to exui or ccd 
+
+    const html = await I.grabHTMLFrom({css: rootNode});
     console.info(html);
     console.info('*******************************');
     console.info('*******************************');
@@ -23,7 +26,7 @@ module.exports = async function () {
     } catch (e) {
         // await I.saveScreenshot('debugNightlyInCatchBlock.png', true);
         console.info('***** HTML IN CATCH BLOCK ********')
-        const html2 = await I.grabHTMLFrom({css: 'ccd-app'});
+        const html2 = await I.grabHTMLFrom({css: rootNode});
         console.info(html2);
         console.info('*******************************');
         console.info('*******************************');
@@ -38,7 +41,7 @@ module.exports = async function () {
 
     // await I.saveScreenshot('debugNightlyAfterExecution.png', true);
     console.info('***** HTML AFTER NAV COMPLETE ********')
-    const html3 = await I.grabHTMLFrom({css: 'ccd-app'});
+    const html3 = await I.grabHTMLFrom({css: rootNode});
     console.info(html3);
     console.info('*******************************');
     console.info('*******************************');
