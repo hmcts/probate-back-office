@@ -63,7 +63,7 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
@@ -464,22 +464,24 @@ services:
       - service-auth-provider-api
       - dm-store
 
-#  probate-frontend:
-#    image: hmctspublic.azurecr.io/probate/frontend:latest
-#    environment:
-#      - IDAM_API_URL=http://sidam-api:5000
-#      - IDAM_S2S_URL=http://service-auth-provider-api:8080
-#      - PAYMENT_API_URL=http://payments-api:8383
-#      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
-#      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
-#      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
-#      - USE_REDIS=false
-#      - REDIS_USE_TLS=false
-#      - USE_IDAM=true
-#      - REQUIRE_CCD_CASE_ID=true
-#      - NODE_ENV=dev
-#    ports:
-#      - 3000:3000
+  probate-frontend:
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    environment:
+      - IDAM_API_URL=http://sidam-api:5000
+      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
+      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - USE_REDIS=false
+      - REDIS_USE_TLS=false
+      - USE_IDAM=true
+      - REQUIRE_CCD_CASE_ID=true
+      - NODE_ENV=dev
+      - LAUNCHDARKLY_KEY=sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
+      - LAUNCHDARKLY_USER_KEY=35222af3-7867-44ea-a2a0-f8e533ad12de
+    ports:
+      - 3000:3000
 
 
   probate-orchestrator:
@@ -573,7 +575,7 @@ services:
 
  # complete the XUI setup for probate-back-office - this has just been added as a starting point    
   xui-manage-cases:
-    image: hmctspublic.azurecr.io/xui/webapp:latest
+    image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
     environment:
       FEATURE_APP_INSIGHTS_ENABLED: "true"
       FEATURE_SECURE_COOKIE_ENABLED: "false"
@@ -582,13 +584,14 @@ services:
       MICROSERVICE: xui_webapp
       PROTOCOL: http
       XUI_ENV: local
+
       SERVICES_DOCUMENTS_API: http://dm-store:8080
       SERVICES_PAYMENTS_URL: http://payments-api:8080
       SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
       SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
       SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
       SERVICES_IDAM_API_URL: http://sidam-api:5000
-      SERVICES_IDAM_CLIENT_ID: ccd_gateway
+      SERVICES_IDAM_CLIENT_ID: xui_webapp
       SERVICES_IDAM_LOGIN_URL: http://localhost:3501
       SERVICES_IDAM_INDEX_URL: /
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
@@ -599,17 +602,16 @@ services:
       REDISCLOUD_URL: http://dummyrediscloudurl
       HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
       HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
-      SERVICES_PRD_API: http://mock-rd-professional-api:8080
+
       APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
-      IDAM_SECRET: ccd_gateway_secret
+      IDAM_SECRET: xui_webapp_secret
       S2S_SECRET: "AAAAAAAAAAAAAAAA"
       LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
     ports:
-      - 3000:3000
+      - 3455:3000
     depends_on:
       - ccd-api-gateway
       - ccd-data-store-api
-      - sidam-api
 
   mock-rd-professional-api:
    image: rodolpheche/wiremock
