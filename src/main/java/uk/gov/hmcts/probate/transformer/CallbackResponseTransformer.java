@@ -572,9 +572,12 @@ public class CallbackResponseTransformer {
                 .declaration(caseData.getDeclaration()).legalStatement(caseData.getLegalStatement())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
 
-                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
-                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
-                .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
+                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1() == null ? ANSWER_YES
+                        : caseData.getBoExaminationChecklistQ1())
+                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2() == null ? ANSWER_YES
+                        : caseData.getBoExaminationChecklistQ2())
+                .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA() == null ? ANSWER_YES
+                        : caseData.getBoExaminationChecklistRequestQA())
 
                 .payments(caseData.getPayments())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
