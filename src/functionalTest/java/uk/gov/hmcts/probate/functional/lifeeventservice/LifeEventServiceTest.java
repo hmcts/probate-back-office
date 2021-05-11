@@ -13,7 +13,7 @@ import static junit.framework.TestCase.assertEquals;
 public class LifeEventServiceTest extends IntegrationTestBase {
 
     @Test
-    public void toDo() {
+    public void shouldReturn200() {
         final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreated.json");
         
         Response response = RestAssured.given()
