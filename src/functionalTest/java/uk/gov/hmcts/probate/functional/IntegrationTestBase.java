@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -56,7 +57,19 @@ public abstract class IntegrationTestBase {
     }
 
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
-        return request.replaceAll(originalAttr, updatedAttr);
+        return request.replaceAll(Pattern.quote(originalAttr), updatedAttr);
+    }
+
+    protected String removeCarriageReturns(String text) {
+        return text.replaceAll(Pattern.quote("\r"), "");
+    }
+
+    protected String removeLineFeeds(String text) {
+        return text.replaceAll(Pattern.quote("\n"), "");
+    }
+
+    protected String removeCrLfs(String text) {
+        return removeLineFeeds(removeCarriageReturns(text));
     }
 
     protected String getJsonFromFile(String jsonFileName) {
