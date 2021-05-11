@@ -40,14 +40,14 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyAddressInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test AddressLine2, \n"
-                        + "Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
+                + "AddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("DeceasedFirstName \nDeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("DeceasedFirstName DeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 

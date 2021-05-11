@@ -8,7 +8,7 @@
     "Did the deceased have assets in any other names?"
   ],
   "dataKeys": [
-    "page2_solsIHTFormValue",
+    "page2_solsIHT400421FormLabel",
     "page2_ihtGrossValueDisplay",
     "page2_ihtNetValueDisplay"
   ],
