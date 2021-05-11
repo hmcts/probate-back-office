@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.lifeevents.client.model.V1Death;
-import uk.gov.hmcts.lifeevents.client.service.DeathService;
+import com.github.hmcts.lifeevents.client.model.V1Death;
+import com.github.hmcts.lifeevents.client.service.DeathService;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -32,7 +32,7 @@ public class LifeEventService {
     private DeathRecordService deathRecordService;
 
     @Autowired
-    public LifeEventService(final DeathService deathService, final CcdClientApi ccdClientApi, 
+    public LifeEventService(final DeathService deathService, final CcdClientApi ccdClientApi,
                             final DeathRecordService deathRecordService) {
         this.deathService = deathService;
         this.ccdClientApi = ccdClientApi;
@@ -57,7 +57,7 @@ public class LifeEventService {
     private void updateCCDLifeEventVerified(final String caseId,
                                             final List<V1Death> records,
                                             final SecurityDTO securityDTO) {
-        
+
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
                 .builder()
                 .deathRecords(deathRecordService.mapDeathRecords(records))

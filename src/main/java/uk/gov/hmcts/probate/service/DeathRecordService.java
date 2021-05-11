@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.lifeevents.client.model.Deceased;
-import uk.gov.hmcts.lifeevents.client.model.V1Death;
+import com.github.hmcts.lifeevents.client.model.Deceased;
+import com.github.hmcts.lifeevents.client.model.V1Death;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
