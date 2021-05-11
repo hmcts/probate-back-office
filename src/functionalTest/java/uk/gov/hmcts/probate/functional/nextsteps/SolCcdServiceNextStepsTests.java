@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static junit.framework.TestCase.assertFalse;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
