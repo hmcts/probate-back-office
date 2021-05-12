@@ -14,13 +14,9 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
@@ -1025,7 +1021,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
-        assertEquals(jsonPath.get("data.errors"), nullValue());
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test
@@ -1050,7 +1046,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
-        assertEquals(jsonPath.get("data.errors"), nullValue());
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test

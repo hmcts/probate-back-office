@@ -235,7 +235,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorCaveatRaisedEmailContentsNoDOB() {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB, CAVEAT_VALIDATE);
+        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB,
+                CAVEAT_VALIDATE);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB, EMAIL_NOTIFICATION_URL,

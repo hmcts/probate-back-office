@@ -77,7 +77,7 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
-        Response response = RestAssured.given()
+        final Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(payload)
@@ -90,7 +90,7 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForQueryParms(String path, HashMap<String, String> queryParms) {
-        Response response = RestAssured.given()
+        final Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .queryParams(queryParms)
@@ -115,47 +115,40 @@ public abstract class IntegrationTestBase {
 
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
                                           ResponseBody responseBody) {
-        String expectedText = getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
         assertTrue(response.contains(expectedText));
     }
 
     protected void assertExpectedContentsForHeaders(String expectedResponseFile, String responseDocumentUrl,
                                                     ResponseBody responseBody, Headers headers) {
-        String expectedText = getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers);
-        response = response.replace("\n", "").replace("\r", "");
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers));
         assertTrue(response.contains(expectedText));
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
         String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
-        String expectedText = getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
         for (String key : expectedKeyValuerelacements.keySet()) {
             expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
         }
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
         assertTrue(response.contains(expectedText));
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(expectedContentMissing);
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(expectedContentMissing);
         assertTrue(documentUrl == null);
     }
-
 }

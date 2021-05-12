@@ -1053,7 +1053,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<hr class=\"govuk-"
             + "section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
