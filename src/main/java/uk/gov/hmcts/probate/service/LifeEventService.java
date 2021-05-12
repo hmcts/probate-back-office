@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service;
 
+import com.github.hmcts.lifeevents.client.model.V1Death;
+import com.github.hmcts.lifeevents.client.service.DeathService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import com.github.hmcts.lifeevents.client.model.V1Death;
-import com.github.hmcts.lifeevents.client.service.DeathService;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,6 +18,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @Service
@@ -46,8 +48,13 @@ public class LifeEventService {
         final String deceasedSurname = caseData.getDeceasedSurname();
         final LocalDate deceasedDateOfDeath = caseData.getDeceasedDateOfDeath();
         log.info("Trying LEV call");
-        List<V1Death> records = deathService
-                .searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname, deceasedDateOfDeath);
+        List<V1Death> records = emptyList();
+        try {
+            records = deathService
+                    .searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname, deceasedDateOfDeath);
+        } catch (Exception e) {
+            log.error("Error during LEV call", e);
+        }
         log.info("Records returned: " + records.size());
         if (1 == records.size()) {
             updateCCDLifeEventVerified(caseDetails.getId().toString(), records, securityDTO);
