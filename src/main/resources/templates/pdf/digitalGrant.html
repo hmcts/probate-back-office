@@ -332,6 +332,9 @@
                 &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.00")}} and the net value amounts to
                 &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.00")}}
             </p>
+            <p>
+                <b>Limitations: </b>{{case_details.case_data.spikeLimitText}}
+            </p>
         </td>
     </tr>
     <tr>
@@ -352,6 +355,7 @@
                 {{case_details.case_data.solsSolicitorAppReference}})
                 {{address(case_details.case_data.solsSolicitorAddress)}} {% else %}personally{% endif %}<br />
                 If you wish to validate the information contained within this document please call {{case_details.ctscTelephone}}</p>
+
         </td>
     </tr>
     </tbody>
