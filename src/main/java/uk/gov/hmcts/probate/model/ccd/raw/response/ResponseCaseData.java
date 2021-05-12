@@ -323,4 +323,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
 
+    private final String spikeLimitText;
+
 }

@@ -224,6 +224,8 @@ public class CaseData extends CaseDataParent {
 
     private final String solsAdditionalInfo;
 
+    private final String spikeLimitText;
+
     // EVENT = solicitorUpdateIntestacy
     @NotBlank(groups = {ApplicationProbateGroup.class,
         ApplicationAdmonGroup.class,
