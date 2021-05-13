@@ -5,13 +5,15 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#applicationGrounds');
+
+    await I.waitForElement('#deceasedDomicileInEngWales');
     await I.runAccessibilityTest();
-    await I.fillField('#applicationGrounds', deceasedDetailsConfig.page2_applicationGrounds);
+
     await I.click(`#deceasedDomicileInEngWales-${deceasedDetailsConfig.optionYes}`);
     await I.click(`#deceasedAnyOtherNames-${deceasedDetailsConfig.optionNo}`);
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
+
     await I.fillField('#deceasedAddress_AddressLine1', deceasedDetailsConfig.address_line1);
     await I.fillField('#deceasedAddress_AddressLine2', deceasedDetailsConfig.address_line2);
     await I.fillField('#deceasedAddress_AddressLine3', deceasedDetailsConfig.address_line3);

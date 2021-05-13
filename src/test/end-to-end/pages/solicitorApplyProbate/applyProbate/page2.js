@@ -3,26 +3,41 @@
 const applyProbateConfig = require('./applyProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApplicant = false) {
+module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
-    await I.waitForElement('#solsSolicitorFirmName');
+    await I.waitForElement('#solsApplyPage');
     await I.runAccessibilityTest();
+    await I.waitForText(applyProbateConfig.page2_subheading);
+    await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
 
-    await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
+    await I.click(`#solsSolicitorWillSignSOT-${applyProbateConfig.page2_optionNo}`);
+    await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
+    await I.fillField('#solsSurname', applyProbateConfig.page2_sol_surname);
 
-    if (isSolicitorExecutor) {
-        await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionYes}`);
-        await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
-        await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
-        if (isSolicitorMainApplicant) {
-            await I.click(`#solsSolicitorIsMainApplicant-${applyProbateConfig.page2_optionYes}`);
+    await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
+    await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
+
+    if (isSolicitorNamedExecutor) {
+        await I.click({css: '#solsSolicitorIsExec-Yes'});
+        await I.waitForVisible({css: '#applyForProbatePageHint1'});
+
+        if (isSolicitorApplyingExecutor) {
+            await I.click({css: '#solsSolicitorIsApplying-Yes'});
+            await I.waitForVisible({css: '#applyForProbatePageHint1'});
         } else {
-            await I.click(`#solsSolicitorIsMainApplicant-${applyProbateConfig.page2_optionNo}`);
-            await I.click(`#solsSolicitorIsApplying-${applyProbateConfig.page2_optionYes}`);
+            await I.click({css: '#solsSolicitorIsApplying-No'});
+            await I.waitForVisible({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
+            await I.click({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
         }
     } else {
-        await I.click(`#solsSolicitorIsExec-${applyProbateConfig.page2_optionNo}`);
+        await I.click({css: '#solsSolicitorIsExec-No'});
+        await I.click({css: `#solsSolicitorIsApplying-${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
+        if (isSolicitorApplyingExecutor) {
+            await I.waitForVisible({css: '#applyForProbatePageHint2'});
+        }
     }
+
+    await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
 
     await I.click(applyProbateConfig.UKpostcodeLink);
     await I.fillField('#solsSolicitorAddress_AddressLine1', applyProbateConfig.address_line1);
@@ -33,9 +48,9 @@ module.exports = async function (isSolicitorExecutor = false, isSolicitorMainApp
     await I.fillField('#solsSolicitorAddress_PostCode', applyProbateConfig.address_postcode);
     await I.fillField('#solsSolicitorAddress_Country', applyProbateConfig.address_country);
 
-    await I.fillField('#solsSolicitorAppReference', applyProbateConfig.page2_app_ref);
     await I.fillField('#solsSolicitorEmail', applyProbateConfig.page2_sol_email);
     await I.fillField('#solsSolicitorPhoneNumber', applyProbateConfig.page2_phone_num);
+    await I.fillField('#solsSolicitorAppReference', applyProbateConfig.page2_app_ref);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -24,12 +24,13 @@ const executorTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/w
 
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
 const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
+
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
+Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
 
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 
@@ -48,18 +49,16 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
     await I.checkMyAnswers(nextStepName);
-    let endState = 'Will lodgement created';
 
     // SECOND case - the main test case
 
-    nextStepName = 'Create a will lodgement';
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
     await I.checkMyAnswers(nextStepName);
-    endState = 'Will lodgement created';
+    let endState = 'Will lodgement created';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')

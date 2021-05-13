@@ -17,14 +17,16 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED;
+import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED_DECEASED_DTLS;
+import static uk.gov.hmcts.probate.model.Constants.STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class SolicitorLegalStatementNextStepsTransformer {
-    public static final String STATE_SOLS_APP_CREATED_LABEL = "Deceased Details";
-    public static final String GRANT_TYPE_PROBATE_LABEL = "Grant of probate where the deceased left a will";
+    public static final String STATE_SOLS_APP_CREATED_SOLICITOR_DTLS_LABEL = "Probate practitioner details";
+    public static final String STATE_SOLS_APP_CREATED_LABEL = "Deceased details";
+    public static final String GRANT_TYPE_PROBATE_LABEL = "Probate details";
     public static final String GRANT_TYPE_INTESTACY_LABEL = "Letters of administration where the deceased left no will";
     public static final String GRANT_TYPE_ADMON_LABEL =
         "Letters of administration with will annexed where the deceased left a will but none of the executors can "
@@ -39,6 +41,7 @@ public class SolicitorLegalStatementNextStepsTransformer {
 
     private DynamicList getAppropriateNextEventsForSolicitorLegalStatementAmend(CaseData caseData) {
         List<DynamicListItem> listItems = new ArrayList<>();
+        listItems.add(getSolicitorDetailsListItem());
         listItems.add(getDeceasedDetailsListItem());
         switch (caseData.getSolsWillType()) {
             case GRANT_TYPE_PROBATE:
@@ -73,8 +76,12 @@ public class SolicitorLegalStatementNextStepsTransformer {
         return buildListItem(GRANT_TYPE_ADMON, GRANT_TYPE_ADMON_LABEL);
     }
 
+    private DynamicListItem getSolicitorDetailsListItem() {
+        return buildListItem(STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS, STATE_SOLS_APP_CREATED_SOLICITOR_DTLS_LABEL);
+    }
+
     private DynamicListItem getDeceasedDetailsListItem() {
-        return buildListItem(STATE_GRANT_TYPE_CREATED, STATE_SOLS_APP_CREATED_LABEL);
+        return buildListItem(STATE_GRANT_TYPE_CREATED_DECEASED_DTLS, STATE_SOLS_APP_CREATED_LABEL);
     }
 
     private DynamicListItem buildListItem(String code, String label) {

@@ -1,0 +1,105 @@
+{
+  "case_details": {
+    "id": 1521205807091932,
+    "jurisdiction": "PROBATE",
+    "state": "SolAnswersChecked",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      3,
+      16,
+      13,
+      10,
+      7,
+      9000000
+    ],
+    "last_modified": [
+      2018,
+      3,
+      16,
+      15,
+      22,
+      55,
+      335000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "dispenseWithNotice": "Yes",
+      "dispenseWithNoticeLeaveGiven": "No",
+      "dispenseWithNoticeOverview": "Overview",
+      "dispenseWithNoticeSupportingDocs": "Supporting docs",
+      "titleAndClearingType": "TCTPartSuccPowerRes",
+      "nameOfFirmNamedInWill": "Test Solicitor Ltd",
+      "addressOfSucceededFirm": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1A 1AA",
+        "PostTown": "London",
+        "AddressLine1": "1",
+        "AddressLine2": "Buckingham Palace",
+        "AddressLine3": "The place to be"
+      },
+      "addressOfFirmNamedInWill": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1A 1AA",
+        "PostTown": "London",
+        "AddressLine1": "1",
+        "AddressLine2": "Buckingham Palace",
+        "AddressLine3": "The place to be"
+      },
+      "morePartnersHoldingPowerReserved": "No",
+      "otherPartnersApplyingAsExecutors": [
+        {
+          "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
+          "value": {
+            "additionalExecForenames": "Exec forename",
+            "additionalExecLastname": "Exec lastname",
+            "additionalExecAddress": {
+              "County": "Address County",
+              "Country": "Address Country",
+              "PostCode": "POST CODE",
+              "PostTown": "POST TOWN",
+              "AddressLine1": "Address line 1",
+              "AddressLine2": "Address line 2",
+              "AddressLine3": "Address line 3"
+            }
+          }
+        }
+      ],
+      "nameOfSucceededFirm": "New Firm Ltd",
+      "whoSharesInCompanyProfits": ["Partners"]
+    },
+    "data_classification": {},
+    "case_details_before": {
+      "id": 1521205807091932,
+      "jurisdiction": "PROBATE",
+      "state": "SolExecutorDetailsUpdated",
+      "case_type_id": "GrantOfRepresentation",
+      "created_date": [
+        2018,
+        3,
+        16,
+        13,
+        10,
+        7,
+        9000000
+      ],
+      "last_modified": [
+        2018,
+        3,
+        16,
+        13,
+        34,
+        47,
+        583000000
+      ],
+      "security_classification": "PUBLIC",
+      "case_data": {},
+      "data_classification": {}},
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {},
+    "event_id": "solicitorCheckYourAnswers"
+  }}

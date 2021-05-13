@@ -17,6 +17,7 @@ import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
 
@@ -154,7 +155,7 @@ public class TaskStateRenderer {
     private static String getLinkUrlTemplate(TaskListState taskListState, String willType) {
         switch (taskListState) {
             case TL_STATE_ADD_SOLICITOR_DETAILS:
-                return null;
+                return SOLICITOR_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_DECEASED_DETAILS:
                 return DECEASED_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_APPLICATION_DETAILS:

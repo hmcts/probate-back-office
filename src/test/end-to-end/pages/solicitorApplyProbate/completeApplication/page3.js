@@ -1,17 +1,13 @@
 'use strict';
 
-const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const testConfig = require('src/test/config.js');
 const completeApplicationConfig = require('./completeApplication');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
+// doc upload page
 module.exports = async function () {
     const I = this;
-
-    await I.waitForElement('#solsSOTForenames');
+    await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
     await I.runAccessibilityTest();
-    await I.fillField('#solsSOTForenames', completeApplicationConfig.page3_sol_forename);
-    await I.fillField('#solsSOTSurname', completeApplicationConfig.page3_sol_surname);
-    await I.fillField('#solsSOTJobTitle', completeApplicationConfig.page3_sol_jobtitle);
-
-    await I.runAccessibilityTest();
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.goButton);
 };

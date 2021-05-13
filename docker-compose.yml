@@ -570,48 +570,50 @@ services:
       - shared-database
       - service-auth-provider-api
 
- # complete the XUI setup for probate-back-office - this has just been added as a starting point    
-  xui:
-    image: "hmctspublic.azurecr.io/xui/webapp:latest"
-    environment:
-      MICROSERVICE: xui_webapp
-      PROTOCOL: http
-      XUI_ENV: local
+#  Complete the XUI setup for probate-back-office - this has just been added as a starting point
+#  (copied from FPL).
+#  This has now been commented until it's ready, to save local docker resources
+#  xui:
+#    image: "hmctspublic.azurecr.io/xui/webapp:latest"
+#    environment:
+#      MICROSERVICE: xui_webapp
+#      PROTOCOL: http
+#      XUI_ENV: local
 
-      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
-      SERVICES_CCD_DATA_STORE_API: http://localhost:4452
-      SERVICES_DOCUMENTS_API: http://dm-store:8080
-      SERVICES_S2S: http://service-auth-provider-api:8080
-      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
-      SERVICES_IDAM_API_URL: http://idam-api:5000
-      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
-      SERVICES_IDAM_CLIENT_ID: xui_webapp
-      SERVICES_PAYMENTS_URL: http://wiremock:8080
-      SERVICES_CCD_CASE_ASSIGNMENT_API: http://wiremock:8080
-      SERVICES_PRD_API: http://wiremock:8080
+#      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
+#      SERVICES_CCD_DATA_STORE_API: http://localhost:4452
+#      SERVICES_DOCUMENTS_API: http://dm-store:8080
+#      SERVICES_S2S: http://service-auth-provider-api:8080
+#      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
+#      SERVICES_IDAM_API_URL: http://idam-api:5000
+#      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
+#      SERVICES_IDAM_CLIENT_ID: xui_webapp
+#      SERVICES_PAYMENTS_URL: http://wiremock:8080
+#      SERVICES_CCD_CASE_ASSIGNMENT_API: http://wiremock:8080
+#      SERVICES_PRD_API: http://wiremock:8080
 
-      SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
-      REDISCLOUD_URL: http://dummyrediscloudurl
+#      SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
+#      REDISCLOUD_URL: http://dummyrediscloudurl
 
-      #real LAUNCH_DARKLY_CLIENT_ID must be set to enable share a case functionality
-      #LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_CLIENT_ID:-dummy}"
+#      #real LAUNCH_DARKLY_CLIENT_ID must be set to enable share a case functionality
+#      #LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_CLIENT_ID:-dummy}"
 
-      FEATURE_REDIS_ENABLED: "false"
-      FEATURE_APP_INSIGHTS_ENABLED: "false"
-      FEATURE_SECURE_COOKIE_ENABLED: "false"
-      APPINSIGHTS_INSTRUMENTATIONKEY: fake
+#      FEATURE_REDIS_ENABLED: "false"
+#      FEATURE_APP_INSIGHTS_ENABLED: "false"
+#      FEATURE_SECURE_COOKIE_ENABLED: "false"
+#      APPINSIGHTS_INSTRUMENTATIONKEY: fake
 
-      #S2S_SECRET:  "${IDAM_KEY_XUI_WEBAPP}"
-      #IDAM_SECRET: "${OAUTH2_CLIENT_XUI}"
+#      #S2S_SECRET:  "${IDAM_KEY_XUI_WEBAPP}"
+#      #IDAM_SECRET: "${OAUTH2_CLIENT_XUI}"
 
-      #JURISDICTIONS: PUBLICLAW
+#      #JURISDICTIONS: PUBLICLAW
 
-    ports:
-      - 3333:3000
-    depends_on:
-      - idam-web-public
-      - ccd-data-store-api
-      - ccd-api-gateway    
+#    ports:
+#      - 3333:3000
+#    depends_on:
+#      - idam-web-public
+#      - ccd-data-store-api
+#      - ccd-api-gateway    
       
 volumes:
   ccd-docker-azure-blob-data:

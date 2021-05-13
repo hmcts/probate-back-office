@@ -1,4 +1,5 @@
 {
+    "solIsApplying": true,
     "solFirmName": "DummySolicitor",
     "solFirstname": "Billy",
     "solSurname": "Bloggs",
@@ -7,7 +8,6 @@
     "solAddrCounty": "Wilts",
     "solAddrCountry": "UK",
     "solAddrPostcode": "CN12JU",
-    "solIsMainApplicant": true,
     "ref": "ABC",
     "solEmail": "bbloggs@test.com",
     "solPhone": "07654321234",
@@ -20,7 +20,6 @@
     "deceasedDobDay": "09",
     "deceasedDobMonth": "09",
     "deceasedDobYear": "1978",
-    "groundsForApplication": "Test",
     "deceasedAddr1": "2 Main St",
     "deceasedAddrTown": "Cirencester",
     "deceasedAddrCounty": "Wilts",

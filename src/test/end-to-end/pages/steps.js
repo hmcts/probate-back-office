@@ -7,6 +7,7 @@ module.exports = function () {
     return actor({
 
         // Login
+
         authenticateWithIdamIfAvailable: steps.IDAM.signIn,
         selectNewCase: steps.newCase.newCase,
         selectCaseTypeOptions: steps.createCase.createCase,
@@ -30,6 +31,16 @@ module.exports = function () {
         enterGrantOfProbatePage7: steps.createGrantOfProbate.page7,
         enterGrantOfProbatePage8: steps.createGrantOfProbate.page8,
         enterGrantOfProbatePage9: steps.createGrantOfProbate.page9,
+        cwEnterSolsGoPPage1: steps.createGrantOfProbateSolicitor.page1,
+        cwEnterSolsGoPPage2: steps.createGrantOfProbateSolicitor.page2,
+        cwEnterSolsGoPPage3: steps.createGrantOfProbateSolicitor.page3,
+        cwEnterSolsGoPPage4: steps.createGrantOfProbateSolicitor.page4,
+        cwEnterSolsGoPPage5: steps.createGrantOfProbateSolicitor.page5,
+        cwEnterSolsGoPPage6: steps.createGrantOfProbateSolicitor.page6,
+        cwEnterSolsGoPPage7: steps.createGrantOfProbateSolicitor.page7,
+        cwEnterSolsGoPPage8: steps.createGrantOfProbateSolicitor.page8,
+        cwEnterSolsGoPPage9: steps.createGrantOfProbateSolicitor.page9,
+        cwEnterSolsGoPPage10: steps.createGrantOfProbateSolicitor.page10,
 
         caseProgressSolicitorDetails: steps.caseProgress.solicitorDetails,
         caseProgressSolicitorDetailsCheckAnswers: steps.caseProgress.solicitorDetailsCheckAnswers,
@@ -45,6 +56,7 @@ module.exports = function () {
         caseProgressSubmittedConfirmation: steps.caseProgress.submittedConfirmation,
         caseProgressNavigateToCaseCaseworker: steps.caseProgress.navigateToCaseCaseworker,
         caseProgressCaseworkerChangeState: steps.caseProgress.caseworkerChangeState,
+        caseProgressClickGoButton: steps.caseProgress.clickGoButton,
         caseProgressClickGoAndSignOut: steps.caseProgress.clickGoAndSignOut,
         caseProgressNavigateToCaseSolicitor: steps.caseProgress.navigateToCaseSolicitor,
         caseProgressFeePayment: steps.caseProgress.feePayment,
@@ -62,6 +74,7 @@ module.exports = function () {
 
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
+        dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
         seeUpdatesOnCase: steps.caseDetails.caseDetailsUpdated,
         chooseNextStep: steps.nextStep.nextStep,
         printCase: steps.printCase.printCase,
@@ -85,22 +98,30 @@ module.exports = function () {
         deceasedDetailsPage4: steps.solicitorApplyProbate.deceasedDetails.page4,
         grantOfProbatePage1: steps.solicitorApplyProbate.grantOfProbate.page1,
         grantOfProbatePage2: steps.solicitorApplyProbate.grantOfProbate.page2,
+        verifyTitleAndClearingTypeOption: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
+        verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
+        grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
+        grantOfProbatePage5: steps.solicitorApplyProbate.grantOfProbate.page5,
+        grantOfProbatePage6: steps.solicitorApplyProbate.grantOfProbate.page6,
         completeApplicationPage1: steps.solicitorApplyProbate.completeApplication.page1,
         completeApplicationPage2: steps.solicitorApplyProbate.completeApplication.page2,
-        completeApplicationPage2a: steps.solicitorApplyProbate.completeApplication.page2a,
         completeApplicationPage3: steps.solicitorApplyProbate.completeApplication.page3,
         completeApplicationPage4: steps.solicitorApplyProbate.completeApplication.page4,
         completeApplicationPage5: steps.solicitorApplyProbate.completeApplication.page5,
         completeApplicationPage6: steps.solicitorApplyProbate.completeApplication.page6,
         completeApplicationPage7: steps.solicitorApplyProbate.completeApplication.page7,
+        completeApplicationPage8: steps.solicitorApplyProbate.completeApplication.page8,
         admonWillDetailsPage1: steps.solicitorApplyProbate.admonWillDetails.page1,
         admonWillDetailsPage2: steps.solicitorApplyProbate.admonWillDetails.page2,
         admonWillDetailsPage3: steps.solicitorApplyProbate.admonWillDetails.page3,
         admonWillDetailsPage4: steps.solicitorApplyProbate.admonWillDetails.page4,
+        admonWillDetailsPage5: steps.solicitorApplyProbate.admonWillDetails.page5,
+        admonWillDetailsPage6: steps.solicitorApplyProbate.admonWillDetails.page6,
         intestacyDetailsPage1: steps.solicitorApplyProbate.intestacyDetails.page1,
         intestacyDetailsPage2: steps.solicitorApplyProbate.intestacyDetails.page2,
         intestacyDetailsPage3: steps.solicitorApplyProbate.intestacyDetails.page3,
+        intestacyDetailsPage4: steps.solicitorApplyProbate.intestacyDetails.page4,
         applyCaveatPage1: steps.solicitorApplyCaveat.applyCaveat.page1,
         applyCaveatPage2: steps.solicitorApplyCaveat.applyCaveat.page2,
         caveatApplicationDetailsPage1: steps.solicitorApplyCaveat.applicationDetails.page1,
@@ -108,6 +129,9 @@ module.exports = function () {
         completeCaveatApplicationPage1: steps.solicitorApplyCaveat.completeApplication.page1,
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
         completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
-        getCaseRefFromUrl: steps.utility.getCaseRefFromUrl
+        getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
+        navigateToCaseCaseworker: steps.utility.navigateToCaseCaseworker,
+        checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
+        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
     });
 };

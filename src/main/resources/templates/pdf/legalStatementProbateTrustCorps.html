@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all" th:text="${title}">Probate application</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+
+            body {
+                font-family: Verdana, Arial;
+            }
+
+            .incomplete-banner {
+                border: 1px solid #000;
+                background-color: #ffafaf;
+                text-align: center;
+                padding: 10px 0;
+                font-size: 1.3em;
+            }
+
+            .sequence {
+                border-bottom: 1px solid #000;
+                padding: 10px 0 10px 3px;
+            }
+
+            .table-content {
+                display: block;
+                padding-top: 8px;
+            }
+
+            .pagebreak {
+                min-height: 1020px;
+            }
+
+            .legal-header {
+                font-size: 1.2em;
+                text-align: center;
+            }
+
+            .spacer {
+                height: 20px;
+            }
+
+        </style>
+</head>
+<body>
+<table>
+    {% set multipleExecutors = case_details.case_data.executorsApplyingLegalStatement|length > 1 %}
+    {% set numberOfCodicils = case_details.case_data.codicilAddedDateList|length %}
+    {% set currentCodicil = 1 %}
+    <thead>
+    <tr>
+        <td colspan="2" class="sequence">
+            <strong><span>{{ case_details.id }}</span></strong>
+        </td>
+    </tr>
+    </thead>
+    <tbody class="table-content">
+    <tr>
+        <td colspan="2" style="height: 15px;">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="legal-header">
+            <strong>IN THE HIGH COURT OF JUSTICE</strong><br />
+            FAMILY DIVISION<br />
+            (PROBATE)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="height: 15px;">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold"><h2>Legal statement</h2></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>The {% if (multipleExecutors) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
+            <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %},
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+                {{ executor.value.applyingExecutorName }} of
+                {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} and {% endif %}
+                {% set countApplying = countApplying + 1 %}
+                {% endfor %}
+                make the following statement:</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">The person who died</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }},
+                {% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {% for alias in case_details.case_data.solsDeceasedAliasNamesList %} {{ alias.value.SolsAliasname }}{%
+                if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %} {% endfor
+                %}
+                {% endif %}
+                of
+                {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
+                case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine2 != null and
+                case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine2 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine3 != null and
+                case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine3 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostTown != null and
+                case_details.case_data.deceasedAddress.PostTown != "" %}{{
+                case_details.case_data.deceasedAddress.PostTown }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.County != null and
+                case_details.case_data.deceasedAddress.County != "" %}{{ case_details.case_data.deceasedAddress.County
+                }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostCode != null and
+                case_details.case_data.deceasedAddress.PostCode != "" %}{{
+                case_details.case_data.deceasedAddress.PostCode }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.Country != null and
+                case_details.case_data.deceasedAddress.Country != "" %}{{
+                case_details.case_data.deceasedAddress.Country }}{% endif %}
+                was born on {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
+                and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domiciled in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}England and Wales.{% endif %}
+                {% if case_details.case_data.appointExec == "Yes" %}
+                The will appoints an executor.{% endif %}
+                {% if case_details.case_data.appointExecNo == "Yes" %}
+                The will appoints an executor according to the tenor.{% endif %}
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">The estate of the person who died</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>The gross value for the estate in {% if case_details.case_data.deceasedDomicileInEngWales == "Yes"%}the United Kingdom {% else %}England and Wales {% endif %}
+                amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">Executors applying for probate</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+
+            {% if executor.value.applyingExecutorType == "Named" %}
+            <p>
+                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} or codicil{% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                is applying for probate.
+            </p>
+            {% endif %}
+
+            {% if executor.value.applyingExecutorType == "Professional"%}
+            {% set morePartners = case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTPartPowerRes" %}
+            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                at the date of death of the deceased. That power is reserved to the other profit-sharing
+                {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
+                in the {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}successor {% endif %} firm.
+            </p>
+            {% endif %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
+            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                at the date of death of the deceased.
+            </p>
+            {% endif %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                at the date of death of the deceased. The remaining profit-sharing
+                {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
+                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                {% if morePartners %} are {% else %} is {% endif %} renouncing their right to probate.
+            </p>
+            {% endif %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                at the date of death of the deceased. The other executors have renounced probate.
+            </p>
+            {% endif %}
+            {% endif %}
+
+            {% if executor.value.applyingExecutorType == "TrustCorporation"%}
+
+            <p>The executor named in the will has by a resolution,
+                {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} which has been filed with the Senior District Judge or Registry, {% else %} certified copy of which is lodged with this application, {% endif %}
+                in which {{ executor.value.applyingExecutorName }} identified by the position they hold and which is still in force, appointed them for the purpose of applying for probate of the will or for grants of probate on its behalf.
+            </p>
+            <p>The executor is a trust corporation as defined by rule 2(1) of the NCPR 1987 and has power to accept the grant now applied for.</p>
+
+            <p> {{ executor.value.applyingExecutorName }} is acting on behalf of {{ case_details.case_data.nameOfFirmNamedInWill }}
+                trust corporation. They hold the position of {{ executor.value.applyingExecutorTrustCorpPosition }} as per the resolution.</p>
+            {% endif %}
+
+            {% endfor %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTNoT" %}
+            <p>The title and clearing for making this application and any supporting evidence:<p>{{ case_details.case_data.titleAndClearingTypeNoT }}</p></p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="spacer"></td>
+    </tr>
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">Executors not applying for probate</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
+            {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+            {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
+            {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
+            <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
+                {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
+            </span></p>
+            {% else %}
+            <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
+                Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
+                to whom power is to be reserved.
+            </span></p>
+            {% endif %}
+            {% else %}
+            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if numberOfCodicils == 1 %} or codicil{% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
+            </span></p>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>None.</p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td  colspan="2">
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise
+                {{ case_details.case_data.solsSolicitorFirmName }} to send on
+                {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
+                {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
+                true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with {% else %}, and {% endif %}codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
+            </p>
+                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+            <p> {{ case_details.case_data.furtherEvidenceForApplication }} </p>
+                {% endif %}
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} confirm that the information {% if (multipleExecutors) %}we{% else %}I{% endif %} have provided is correct to the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge.</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="spacer"></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="font-weight: bold">Declaration</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} confirm that {% if (multipleExecutors) %}we{% else %}I{% endif %} will deal with the estate of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, according to law. {% if (multipleExecutors) %}We{% else %}I{% endif %} will:</p>
+            <ul>
+                <li>collect the whole estate</li>
+                <li>keep full details (an inventory) of the estate</li>
+                <li>keep a full account of how the estate has been distributed</li>
+            </ul>
+
+            <p>If the probate registry (court) asks {% if (multipleExecutors) %}us{% else %}me{% endif %} to do so, {% if (multipleExecutors) %}we{% else %}I{% endif %} will:</p>
+            <ul>
+                <li>provide the full details of the estate and how it has been distributed</li>
+                <li>return the grant of probate to the court</li>
+            </ul>
+
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} understand that:</p>
+            <ul>
+                <li>the application will be rejected if {% if (multipleExecutors) %}we{% else %}I{% endif %} do not provide information (if asked)</li>
+                <li>proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant</li>
+            </ul>
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise {{ case_details.case_data.solsSolicitorFirmName }}, as {% if (multipleExecutors) %}our{% else %}my{% endif %} appointed probate practitioner, to
+                submit this application on {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf.</p>
+        </td>
+    </tr>
+    {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+    {% if executor.id != "solicitor" %}
+    <tr>
+        <td>
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ executor.value.applyingExecutorName }} (executor)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Signature:</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Date (DD/MM/YYYY):</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    <tr>
+        <td>
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Signature:</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Date (DD/MM/YYYY):</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

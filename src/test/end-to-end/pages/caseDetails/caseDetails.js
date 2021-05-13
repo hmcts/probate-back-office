@@ -30,7 +30,6 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
         if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
             await I.waitForText(tabConfigFile.fields[i]);
         }
-        // await I.see(tabConfigFile.fields[i]);
     }
 
     const dataConfigKeys = tabConfigFile.dataKeys;

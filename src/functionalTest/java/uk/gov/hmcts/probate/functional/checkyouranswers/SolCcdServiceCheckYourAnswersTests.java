@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
@@ -46,7 +47,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName deceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("DeceasedFirstName DeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
@@ -62,28 +63,31 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME,
+                VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementAcceptInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "We confirm that the information we have provided is correct to the best of our knowledge.", DOC_NAME,
+            "We confirm that the information we have provided is correct to the best of our knowledge.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "The executors believe that all the information stated in the legal statement is true.", DOC_NAME,
+            "The executors believe that all the information stated in the legal statement is true.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement(
-            "We authorise SolicitorFirmName, as our appointed firm, to submit this application on our behalf.",
-            DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorFirmName "
+                + "to sign a statement of truth on their behalf.",
+                DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -118,18 +122,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
-    }
-
-    @Test
-    public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"",
-            "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
-    public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"",
-            "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -207,7 +199,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     @Test
@@ -217,7 +209,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     private String replaceString(String oldJson, String newJson) {
@@ -273,10 +265,16 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
 
             String textContent = textContentOf(response2.extract().body().asByteArray());
+            textContent = textContent
+                    .replaceAll(Pattern.quote("\r"), "")
+                    .replaceAll(Pattern.quote("\n"), "");
+
+            final String valMinusCrLf = validationString
+                            .replaceAll(Pattern.quote("\r"), "")
+                            .replaceAll(Pattern.quote("\n"), "");
+
+            assertTrue(textContent.contains(valMinusCrLf));
             
-            textContent = textContent.replace("\r", "").replaceAll("\n", "");
-            validationString = validationString.replace("\r", "");
-            assertTrue(textContent.contains(validationString));
             String contentType = response2.extract().contentType();
             assertEquals(contentType, "application/pdf");
         } catch (IOException e) {

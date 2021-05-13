@@ -1,10 +1,13 @@
 {
   "page2_waitForText": "Name of your firm",
+  "page2_subheading": "Probate practitioner details",
+  "page2_probatePractionerHelp": "Provide the name of the probate practitioner making this application. This means the solicitor or other qualified professional",
   "page2_firm_name": "Solicitor Rob Firm",
   "page2_optionYes": "Yes",
   "page2_optionNo": "No",
   "page2_sol_forename":"Jason",
   "page2_sol_surname":"Rob",
+  "page2_sol_name":"Jason Rob",
   "page2_app_ref": "SOL-123-456",
   "page2_sol_email": "solicitor@probate-test.com",
   "page2_phone_num" : "0129898989",

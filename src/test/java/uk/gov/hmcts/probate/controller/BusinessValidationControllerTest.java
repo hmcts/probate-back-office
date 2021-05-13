@@ -17,6 +17,8 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -36,6 +38,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -120,10 +123,11 @@ public class BusinessValidationControllerTest {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_EXEC_URL = "/case/sols-validate-executors";
+    private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
-    private static final String SOLS_APPLY_AS_EXEC = "/sols-apply-as-exec";
     private static final String CASE_PRINTED = "/case/casePrinted";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
@@ -214,7 +218,7 @@ public class BusinessValidationControllerTest {
             .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
             .solsSolicitorAddress(solsAddress)
             .ukEstate(UK_ESTATE)
-            .applicationGrounds(APPLICATION_GROUNDS)
+            // .applicationGrounds(APPLICATION_GROUNDS) - commented for dtsb-904 as likely to be reinstated
             .willDispose(YES)
             .englishWill(NO)
             .appointExec(YES)
@@ -222,7 +226,6 @@ public class BusinessValidationControllerTest {
             .solsSOTForenames(SOLICITOR_FORENAMES)
             .solsSOTSurname(SOLICITOR_SURNAME)
             .solsSolicitorIsExec(YES)
-            .solsSolicitorIsMainApplicant(YES)
             .solsSolicitorIsApplying(YES)
             .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
             .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
@@ -293,9 +296,231 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
             .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Solicitor IHT Form cannot be empty"));
     }
 
+    @Test
+    public void shouldValidateWithCorrectNumberOfExecutors() throws Exception {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor"
+                ));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldNotValidateWithTooManyExecutors() throws Exception {
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
+                new AdditionalExecutorTrustCorps(
+                        "Executor forename",
+                        "Executor surname",
+                        "Solicitor"
+                ));
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
+
+        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The total number executors applying cannot exceed 4"));
+    }
+
+    @Test
+    public void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(3));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidWillDate() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now());
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("A codicil cannot be made before the will was signed"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[2]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidCodicilDate() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now()).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Codicil date must be in the past"));
+    }
+
+    @Test
+    public void shouldNotValidateWithInvalidWillAndCodicilDates() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now()).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now());
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Codicil date must be in the past"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("A codicil cannot be made before the will was signed"))
+                .andExpect(jsonPath("$.errors[2]")
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[3]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithWillDateAfterDateOfDeath() throws Exception {
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithWillDateOnDateOfDeath() throws Exception {
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The will must be signed and dated before the date of death"));
+    }
+
+    @Test
+    public void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(2)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("A codicil cannot be made before the will was signed"));
+    }
+
+    @Test
+    public void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+
+        caseDataBuilder.codicilAddedDateList(codicilDates);
+        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("A codicil cannot be made before the will was signed"));
+    }
 
     @Test
     public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
@@ -312,7 +537,27 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementProbate.pdf"));
+    }
+
+    @Test
+    public void shouldSuccesfullyGenerateTrustCorpsProbateDeclaration() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbateTrustCorps.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(
+                        jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                                .value("legalStatementProbateTrustCorps.pdf"));
     }
 
     @Test
@@ -337,7 +582,8 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementIntestacy.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementIntestacy.pdf"));
     }
 
     @Test
@@ -363,7 +609,8 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(
-                jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
+                jsonPath("$.data.solsLegalStatementDocument.document_filename")
+                        .value("legalStatementAdmon.pdf"));
     }
 
     @Test
@@ -378,9 +625,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsExec"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.solsSolicitorIsExec"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor named as an exec must be chosen"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Solicitor named as an exec must be chosen"));
     }
 
     @Test
@@ -413,9 +662,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfDeath"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedDateOfDeath"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of death cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Date of death cannot be empty"));
     }
 
     private void validateDobIsNullError(String url) throws Exception {
@@ -428,9 +679,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfBirth"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedDateOfBirth"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of birth cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Date of birth cannot be empty"));
     }
 
     private void validateForenameIsNullError(String url) throws Exception {
@@ -443,9 +696,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedForenames"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedForenames"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased forename cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Deceased forename cannot be empty"));
     }
 
     private void validateSurnameIsNullError(String url) throws Exception {
@@ -459,9 +714,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.deceasedSurname"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("Deceased surname cannot be empty"));
     }
 
     private void validateAddressIsNullError(String url) throws Exception {
@@ -474,9 +731,11 @@ public class BusinessValidationControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.primaryApplicantAddress"))
+            .andExpect(jsonPath("$.fieldErrors[0].field")
+                    .value("caseDetails.data.primaryApplicantAddress"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("The executor address cannot be empty"));
+            .andExpect(jsonPath("$.fieldErrors[0].message")
+                    .value("The executor address cannot be empty"));
     }
 
     @Test
@@ -552,7 +811,28 @@ public class BusinessValidationControllerTest {
 
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.schemaVersion", is("2.0.0")))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldReturnPersonalPaperFormSuccess() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        solicitorPayload =  solicitorPayload.replaceFirst("\"applicationType\": \"Solicitor\"",
+                "\"applicationType\": \"Personal\"");
+
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+                .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+                .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(emailDocument);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -583,6 +863,17 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldSubmitTrustCorpsSolicitorGoPCaseForCaseworker() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(null);
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -635,7 +926,8 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+        String solicitorPayload =
+                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -676,7 +968,8 @@ public class BusinessValidationControllerTest {
             .thenReturn(document);
         mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+            .andExpect(jsonPath("$.errors[0]")
+                    .value("You can only use this event for digital cases."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -697,11 +990,18 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeft")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Probate practitioner details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
-                is("Grant of probate where the deceased left a will")))
+                    is("Deceased details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("WillLeft")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
+                is("Probate details")))
             .andReturn();
     }
 
@@ -713,10 +1013,17 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("NoWill")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Probate practitioner details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
+                    is("Deceased details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("NoWill")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration where the deceased left no will")))
             .andReturn();
     }
@@ -729,14 +1036,20 @@ public class BusinessValidationControllerTest {
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
-            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeftAnnexed")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code",
+                    is("SolAppCreatedSolicitorDtls")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label",
+                    is("Probate practitioner details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code",
+                    is("SolAppCreatedDeceasedDtls")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label",
+                    is("Deceased details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
+                    is("WillLeftAnnexed")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration with will annexed where the deceased left a will but none of the "
                     + "executors can apply")))
             .andReturn();
     }
-
 }
 

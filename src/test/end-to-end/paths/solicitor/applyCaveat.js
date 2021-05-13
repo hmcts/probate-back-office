@@ -19,7 +19,7 @@ const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/s
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Caveat', async function (I) {
+Scenario('01 - Solicitor - Apply Caveat', async function (I) {
 
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
@@ -40,7 +40,6 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, applyCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, applyCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, applyCaveatConfig);
-    await I.seeCaseDetails(caseRef, notificationsTabConfig, {});
 
     endState = 'Caveat updated';
     await I.chooseNextStep(nextStepName);

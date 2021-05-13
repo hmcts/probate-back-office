@@ -1,0 +1,37 @@
+{
+  "case_details": {
+    "id": 1594226214833023,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {},
+    "grantSignatureBase64": null,
+    "registryAddressLine1": null,
+    "registryAddressLine2": null,
+    "registryAddressLine3": null,
+    "registryAddressLine4": null,
+    "registryTown": null,
+    "registryPostcode": null,
+    "registryTelephone": null,
+    "ctscTelephone": null
+  }
+}

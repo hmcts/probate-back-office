@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -47,6 +49,8 @@ public class CCDDataTransformerTest {
     private static final String DECEASED_LASTNAME = "Lastname";
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
+
+    private static final String EXEC_FIRSTNAME = "Forename";
 
     private static final String IHT_FORM_ID = "IHT207";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
@@ -125,7 +129,30 @@ public class CCDDataTransformerTest {
         additionalExecutors.add(additionalExecutors1);
         additionalExecutors.add(additionalExecutors2);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
+        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(EXEC_FIRSTNAME);
         when(caseDataMock.isPrimaryApplicantApplying()).thenReturn(true);
+
+        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorp = new ArrayList<>();
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorsTrustCorp1 = mock(CollectionMember.class);
+        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorsTrustCorp2 = mock(CollectionMember.class);
+        AdditionalExecutorTrustCorps additionalExecutorTrustCorp1 = mock(AdditionalExecutorTrustCorps.class);
+        AdditionalExecutorTrustCorps additionalExecutorTrustCorp2 = mock(AdditionalExecutorTrustCorps.class);
+        when(additionalExecutorsTrustCorp1.getValue()).thenReturn(additionalExecutorTrustCorp1);
+        when(additionalExecutorsTrustCorp2.getValue()).thenReturn(additionalExecutorTrustCorp2);
+        additionalExecutorsTrustCorp.add(additionalExecutorsTrustCorp1);
+        additionalExecutorsTrustCorp.add(additionalExecutorsTrustCorp2);
+        when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(additionalExecutorsTrustCorp);
+
+        List<CollectionMember<AdditionalExecutorPartners>> additionalExecutorsPartner = new ArrayList<>();
+        CollectionMember<AdditionalExecutorPartners> additionalExecutorsPartner1 = mock(CollectionMember.class);
+        CollectionMember<AdditionalExecutorPartners> additionalExecutorsPartner2 = mock(CollectionMember.class);
+        AdditionalExecutorPartners additionalExecutorPartner1 = mock(AdditionalExecutorPartners.class);
+        AdditionalExecutorPartners additionalExecutorPartner2 = mock(AdditionalExecutorPartners.class);
+        when(additionalExecutorsPartner1.getValue()).thenReturn(additionalExecutorPartner1);
+        when(additionalExecutorsPartner2.getValue()).thenReturn(additionalExecutorPartner2);
+        additionalExecutorsPartner.add(additionalExecutorsPartner1);
+        additionalExecutorsPartner.add(additionalExecutorsPartner2);
+        when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(additionalExecutorsPartner);
     }
 
     @Test
@@ -316,7 +343,7 @@ public class CCDDataTransformerTest {
         assertEquals(2018, ccdData.getCaseSubmissionDate().getYear());
         assertEquals(1, ccdData.getCaseSubmissionDate().getMonthValue());
         assertEquals(2, ccdData.getCaseSubmissionDate().getDayOfMonth());
-        assertEquals(3, ccdData.getExecutors().size());
+        assertEquals(7, ccdData.getExecutors().size());
 
     }
 }

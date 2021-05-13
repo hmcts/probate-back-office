@@ -44,6 +44,7 @@
 </head>
 <body>
 <table>
+    {% set currentCodicil = 1 %}
     <thead>
     <tr>
         <td colspan="2" class="sequence">
@@ -72,7 +73,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The administrator believes that all the information stated in the legal statement is true.</p>
+            <p>The administrator believes that all the information stated in the legal statement is true. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}They have authorised {{case_details.case_data.solsSolicitorFirmName}} to sign a statement of truth on their behalf.{% endif %}</p>
             <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
             <p>I, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
@@ -127,7 +128,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The gross value for the estate in England and Wales amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            <p>The gross value for the estate {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}in the United Kingdom {% else %}in England and Wales{% endif %} amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
             <p>To the best of my knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
@@ -141,6 +142,9 @@
                 {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
                 {{ case_details.case_data.applicationGrounds }}
                 {% endif %}
+                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+                {{ case_details.case_data.furtherEvidenceForApplication }}
+                {% endif %}
             </p>
             <p>
                 {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }}, of
@@ -151,7 +155,8 @@
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
-                is applying for Letters of Administration (with will annexed) and is named in the will as
+                is applying for Letters of Administration (with will annexed) and is named in the
+                {% if case_details.case_data.willHasCodicils == "No" %} will{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} will and/or codicil{% else %} will and/or codicils{% endif %} as
                 {% if case_details.case_data.solsResiduaryType == "Legatee" %} the residuary legatee.
                 {% elseif case_details.case_data.solsResiduaryType == "Devisee" %} the residuary devisee.
                 {% else %} the residuary legatee and devisee.
@@ -163,7 +168,9 @@
                 <li>there is no life interest in respect of the estate contained in the will</li>
                 <li>all executors and any residuary, legatee or devisees in trust named in the will have either died or have chosen not to apply for a grant of probate (renounced)</li>
             </ul>
-            <p>I authorise {{ case_details.case_data.solsSolicitorFirmName }} to send on my behalf what I believe to be the true and original last will and testament of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+            <p>I authorise {{ case_details.case_data.solsSolicitorFirmName }} to send on my behalf what I believe to be the true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }} {% endif %}
+                {% if case_details.case_data.codicilAddedFormattedDateList != null %}{% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with {% else %}, and {% endif %}codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}{% endif %}
+            of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
             <p>I confirm that the information I have provided is correct to the best of my knowledge.</p>
         </td>
     </tr>
@@ -196,12 +203,15 @@
     </tr>
     <tr>
         <td>
-            Print name
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p>IN BLOCK CAPITALS (applicant):</p>
+            <p>Signature:</p>
         </td>
         <td>
             <p>..................................................</p>
@@ -209,7 +219,23 @@
     </tr>
     <tr>
         <td>
-            <p>Signed by (applicant):</p>
+            <p>Date (DD/MM/YYYY):</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Signature:</p>
         </td>
         <td>
             <p>..................................................</p>

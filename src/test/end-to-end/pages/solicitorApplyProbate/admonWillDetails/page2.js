@@ -2,13 +2,19 @@
 
 const admonWillDetailsConfig = require('./admonWillDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function (updateAddressManually) {
     const I = this;
+    await I.waitForElement('#primaryApplicantForenames');
     await I.runAccessibilityTest();
 
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
     await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
+
+    if (!testConfig.TestAutoDelayEnabled) {
+        await I.wait(testConfig.ManualDelayShort);
+    }
 
     if (updateAddressManually) {
         await I.click(admonWillDetailsConfig.UKpostcodeLink);

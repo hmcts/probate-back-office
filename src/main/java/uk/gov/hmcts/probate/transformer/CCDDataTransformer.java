@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -40,7 +41,6 @@ public class CCDDataTransformer {
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
             .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
             .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
-            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
             .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(
                 callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
@@ -55,6 +55,9 @@ public class CCDDataTransformer {
             .willHasCodicils(caseData.getWillHasCodicils())
             .iht217(caseData.getIht217())
             .hasUploadedLegalStatement(determineHasUploadedLegalStatement(caseData))
+            .originalWillSignedDate(caseData.getOriginalWillSignedDate())
+            .codicilAddedDateList(getCodicilAddedDates(caseData))
+            .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
             .build();
     }
 
@@ -125,10 +128,23 @@ public class CCDDataTransformer {
             .build();
     }
 
+    private List<CodicilAddedDate> getCodicilAddedDates(CaseData caseData) {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates = caseData.getCodicilAddedDateList();
+        if (codicilDates == null) {
+            return new ArrayList<>();
+        }
+        List<CodicilAddedDate> addedDates = new ArrayList<>();
+        addedDates.addAll(
+            codicilDates.stream()
+            .map(CollectionMember::getValue)
+            .collect(Collectors.toList()));
+        return addedDates;
+    }
+
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
-            executors = caseData.getSolsAdditionalExecutorList().stream()
+            executors.addAll(caseData.getSolsAdditionalExecutorList().stream()
                 .map(CollectionMember::getValue)
                 .map(executor -> Executor.builder()
                     .applying(YES.equals(executor.getAdditionalApplying()))
@@ -137,18 +153,44 @@ public class CCDDataTransformer {
                     .forename(executor.getAdditionalExecForenames())
                     .lastname(executor.getAdditionalExecLastname())
                     .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         }
 
-        Executor primaryExecutor = Executor.builder()
-            .applying(caseData.isPrimaryApplicantApplying())
-            .address(caseData.getPrimaryApplicantAddress())
-            .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
-            .forename(caseData.getPrimaryApplicantForenames())
-            .lastname(caseData.getPrimaryApplicantSurname())
-            .build();
+        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
+            executors.addAll(caseData.getAdditionalExecutorsTrustCorpList().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> Executor.builder()
+                    .applying(true)
+                    .address(caseData.getTrustCorpAddress())
+                    .reasonNotApplying(null)
+                    .forename(executor.getAdditionalExecForenames())
+                    .lastname(executor.getAdditionalExecLastname())
+                    .build())
+                .collect(Collectors.toList()));
+        }
 
-        executors.add(primaryExecutor);
+        if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
+            executors.addAll(caseData.getOtherPartnersApplyingAsExecutors().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> Executor.builder()
+                    .applying(true)
+                    .address(executor.getAdditionalExecAddress())
+                    .reasonNotApplying(null)
+                    .forename(executor.getAdditionalExecForenames())
+                    .lastname(executor.getAdditionalExecLastname())
+                    .build())
+                .collect(Collectors.toList()));
+        }
+
+        if (caseData.getPrimaryApplicantForenames() != null) {
+            executors.add(Executor.builder()
+                    .applying(caseData.isPrimaryApplicantApplying())
+                    .address(caseData.getPrimaryApplicantAddress())
+                    .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
+                    .forename(caseData.getPrimaryApplicantForenames())
+                    .lastname(caseData.getPrimaryApplicantSurname())
+                    .build());
+        }
 
         return executors;
     }
