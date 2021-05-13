@@ -32,6 +32,7 @@ public class CCDData implements Serializable {
     private final String sendLetterId;
     private final String willHasCodicils;
     private final String iht217;
+    private final boolean hasUploadedLegalStatement;
     private final LocalDate originalWillSignedDate;
     private final List<CodicilAddedDate> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;

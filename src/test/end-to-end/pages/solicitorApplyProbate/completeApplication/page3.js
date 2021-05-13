@@ -1,16 +1,13 @@
 'use strict';
 
+const testConfig = require('src/test/config.js');
+const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
+// doc upload page
 module.exports = async function () {
     const I = this;
-
-    await I.waitForElement('#solsReviewSOTConfirmCheckbox1');
+    await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
     await I.runAccessibilityTest();
-    await I.scrollTo({css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'});
-    await I.click({css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'});
-    await I.click({css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'});
-
-    await I.runAccessibilityTest();
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.goButton);
 };

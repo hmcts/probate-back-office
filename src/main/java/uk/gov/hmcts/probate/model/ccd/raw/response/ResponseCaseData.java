@@ -101,6 +101,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String solsSOTNeedToUpdate;
+    private final DocumentLink solsLegalStatementUpload;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;

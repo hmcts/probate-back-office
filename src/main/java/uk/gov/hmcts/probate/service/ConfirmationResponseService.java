@@ -271,7 +271,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        String legalPhotocopy = "";
+        if (hasNoLegalStatmentBeenUploaded(ccdData)) {
+            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        }
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
@@ -282,6 +285,10 @@ public class ConfirmationResponseService {
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
+    boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
+        return !ccdData.isHasUploadedLegalStatement();
+    } 
+    
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))

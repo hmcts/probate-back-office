@@ -3,19 +3,21 @@
   "page1_AdmonWilllegalStmtLink": "legalStatementAdmon.pdf",
   "page1_NoWilllegalStmtLink":"legalStatementIntestacy.pdf",
 
-  "page3_extraCopiesUK": "1",
-  "page3_outsideUKGrantCopies":"2",
+  "page3_waitForText":"Upload legal statement",
 
-  "page4_paymentType": "Fee account",
-  "page4_payAccountNum": "1234",
+  "page5_extraCopiesUK": "1",
+  "page5_outsideUKGrantCopies":"2",
+  
+  "page6_paymentType": "Fee account",
+  "page6_payAccountNum": "1234",
 
-  "page5_waitForText":"Save or Submit application",
+  "page7_waitForText":"Save or Submit application",
 
-  "page6_waitForText":"This probate application has now been submitted",
-  "page6_applicationFee": "Application fee £155.00",
-  "page6_additionalCopiesFee": "Fee for additional UK copies £1.50",
-  "page6_feeForCertifiedCopies": "Fee for certified copies £3.00",
-  "page6_totalFeeAmount": "Fee amount £159.50",
+  "page8_waitForText":"This probate application has now been submitted",
+  "page8_applicationFee": "Application fee £155.00",
+  "page8_additionalCopiesFee": "Fee for additional UK copies £1.50",
+  "page8_feeForCertifiedCopies": "Fee for certified copies £3.00",
+  "page8_totalFeeAmount": "Fee amount £159.50",
 
   "optionYes": "Yes",
   "optionNo": "No"

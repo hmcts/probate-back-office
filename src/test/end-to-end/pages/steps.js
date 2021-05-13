@@ -111,6 +111,7 @@ module.exports = function () {
         completeApplicationPage5: steps.solicitorApplyProbate.completeApplication.page5,
         completeApplicationPage6: steps.solicitorApplyProbate.completeApplication.page6,
         completeApplicationPage7: steps.solicitorApplyProbate.completeApplication.page7,
+        completeApplicationPage8: steps.solicitorApplyProbate.completeApplication.page8,
         admonWillDetailsPage1: steps.solicitorApplyProbate.admonWillDetails.page1,
         admonWillDetailsPage2: steps.solicitorApplyProbate.admonWillDetails.page2,
         admonWillDetailsPage3: steps.solicitorApplyProbate.admonWillDetails.page3,

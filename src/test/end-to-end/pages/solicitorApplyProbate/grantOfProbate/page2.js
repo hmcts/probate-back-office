@@ -9,7 +9,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.runAccessibilityTest();
     const dispNoticeLocator = {css: `#dispenseWithNotice-${grantOfProbateConfig.page2_dispenseWithNotice}`};
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(testConfig.ManualDelayShort);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {

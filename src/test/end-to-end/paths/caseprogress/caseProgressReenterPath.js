@@ -127,6 +127,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+        await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
 
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
             {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);

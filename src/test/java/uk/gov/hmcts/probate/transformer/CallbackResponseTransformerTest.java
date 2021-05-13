@@ -415,7 +415,7 @@ public class CallbackResponseTransformerTest {
     private DocumentLink documentLinkMock;
 
     @Mock
-    private UploadDocument uploadDocumentMock;
+    private DocumentLink legalStatementUploadMock;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -788,6 +788,33 @@ public class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertEquals(0, callbackResponse.getData().getBoDocumentsUploaded().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .solsLegalStatementUpload(legalStatementUploadMock)
+            .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
+            .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
+        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
+        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
+        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
+
+        CallbackResponse callbackResponse =
+            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertCommon(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+
+        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+        assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
+        assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
     }
 
     @Test

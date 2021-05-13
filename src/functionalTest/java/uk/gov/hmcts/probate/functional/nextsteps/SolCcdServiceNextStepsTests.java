@@ -14,6 +14,7 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.assertFalse;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -21,8 +22,18 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/nextsteps/validate";
 
     @Test
-    public void verifyDeceasedFirstNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName");
+    public void verifyAllDataInTheReturnedMarkdown() {
+        validatePostRequestSuccessForLegalStatement("success.nextsteps.json", "deceasedFirstName",
+            "deceasedLastName", "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln",
+            "firmpc", "a photocopy of the signed legal statement and declaration");
+    }
+
+    @Test
+    public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
+        String fullResponse = validatePostRequestSuccessForLegalStatement("success.nextsteps-LegalStatementUploaded"
+                + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
+            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc");
+        assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
 
     @Test
@@ -149,14 +160,28 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile("success.nextsteps.json"))
-            .post("/nextsteps/confirmation");
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(utils.getJsonFromFile("success.nextsteps.json"))
+                .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().asString().contains(validationString));
+    }
 
+    private String validatePostRequestSuccessForLegalStatement(String file, String... validationString) {
+        Response response = given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeaders())
+            .body(utils.getJsonFromFile(file))
+            .post("/nextsteps/confirmation");
+
+        assertEquals(200, response.getStatusCode());
+        String responseString = response.getBody().asString();
+        for (String val : validationString) {
+            assertTrue(responseString.contains(val));
+        }
+        return responseString;
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
