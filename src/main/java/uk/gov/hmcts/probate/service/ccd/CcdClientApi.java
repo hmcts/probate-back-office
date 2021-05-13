@@ -108,8 +108,6 @@ public class CcdClientApi implements CoreCaseDataService {
     @Override
     public CaseDetails updateCaseAsCitizen(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
                                               SecurityDTO securityDTO, String description, String summary) {
-        log.info("Update case as citizen for caseType: {}, caseId: {}, eventId: {}",
-                caseType.getName(), caseId, eventId.getName());
         log.info("Retrieve event token from CCD for citizen, caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
         StartEventResponse startEventResponse = coreCaseDataApi.startEventForCitizen(
