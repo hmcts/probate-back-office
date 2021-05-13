@@ -73,7 +73,6 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Reenter solicitor details');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-Yes'}]);
-        await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsAmendLegalStatmentSelect'}, option: '1: SolAppCreatedSolicitorDtls'}]);
         await I.caseProgressContinueWithoutChangingAnything();
         await I.caseProgressCheckCaseProgressTab({
@@ -128,6 +127,7 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+        await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
 
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
             {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
