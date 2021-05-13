@@ -478,8 +478,9 @@ services:
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
-      - LAUNCHDARKLY_KEY=sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
-      - LAUNCHDARKLY_USER_KEY=35222af3-7867-44ea-a2a0-f8e533ad12de
+      - LAUNCHDARKLY_KEY: "${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY: "${LD_FE_USER_KEY}"
+
     ports:
       - 3000:3000
 
@@ -598,7 +599,6 @@ services:
       SERVICES_S2S: http://service-auth-provider-api:8080
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
-      #REDISCLOUD_URL: http://localhost:6780
       REDISCLOUD_URL: http://dummyrediscloudurl
       HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
       HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
@@ -612,13 +612,6 @@ services:
     depends_on:
       - ccd-api-gateway
       - ccd-data-store-api
-
-  mock-rd-professional-api:
-   image: rodolpheche/wiremock
-   volumes:
-    - ./mocks:/home/wiremock:rw
-   ports:
-    - 8765:8080
 
 volumes:
   ccd-docker-azure-blob-data:
