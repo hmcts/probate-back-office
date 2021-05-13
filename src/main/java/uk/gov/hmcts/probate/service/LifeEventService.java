@@ -55,7 +55,7 @@ public class LifeEventService {
         } catch (Exception e) {
             log.error("Error during LEV call", e);
         }
-        log.info("Records returned: " + records.size());
+        log.info("LEV Records returned: " + records.size());
         if (1 == records.size()) {
             updateCCDLifeEventVerified(caseDetails.getId().toString(), records, securityDTO);
         }
@@ -64,6 +64,8 @@ public class LifeEventService {
     private void updateCCDLifeEventVerified(final String caseId,
                                             final List<V1Death> records,
                                             final SecurityDTO securityDTO) {
+        
+        log.info("LEV update CCD: " + caseId);
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
                 .builder()
