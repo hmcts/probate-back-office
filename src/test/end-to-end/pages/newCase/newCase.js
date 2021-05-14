@@ -12,7 +12,7 @@ module.exports = async function () {
 
     try {
         await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator, 120);
-    } catch(e) {
+    } catch (e) {
         I.logPageHtml(false, e);
         throw e;
     }
