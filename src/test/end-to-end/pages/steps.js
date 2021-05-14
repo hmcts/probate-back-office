@@ -108,6 +108,7 @@ module.exports = function () {
         completeCaveatApplicationPage1: steps.solicitorApplyCaveat.completeApplication.page1,
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
         completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
-        getCaseRefFromUrl: steps.utility.getCaseRefFromUrl
+        getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
+        logPageHtml: steps.utility.logPageHtml
     });
 };
