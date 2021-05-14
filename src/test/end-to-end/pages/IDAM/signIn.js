@@ -9,7 +9,12 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
         await I.amOnLoadedPage('/');
     }
 
-    await I.waitForText('Sign in');
+    try {
+        await I.waitForText('Sign in', 240000);
+    } catch(e) {
+        I.logPageHtml(false, e);
+        throw e;
+    }
 
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
