@@ -11,7 +11,7 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     try {
         await I.waitForText('Sign in', 240000);
-    } catch(e) {
+    } catch (e) {
         I.logPageHtml(false, e);
         throw e;
     }
