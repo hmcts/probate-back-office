@@ -1,5 +1,4 @@
 'use strict';
-const assert = require('assert');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 // NO LONGER SEEMS TO BE PART OF THE FLOW
