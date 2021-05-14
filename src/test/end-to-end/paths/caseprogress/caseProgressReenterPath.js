@@ -85,13 +85,13 @@ Scenario('02 BO Case Progress E2E - standard path', async function (I) {
 
         await I.caseProgressContinueWithoutChangingAnything(3);
 
-        await I.caseProgressClickGoButton();
+        await I.caseProgressSelectPenultimateNextStepAndGo();
         await I.caseProgressContinueWithoutChangingAnything(5);
 
-        await I.caseProgressClickGoButton();
+        await I.caseProgressSelectPenultimateNextStepAndGo();
         await I.caseProgressContinueWithoutChangingAnything(6);
 
-        await I.caseProgressClickGoButton();
+        await I.caseProgressSelectPenultimateNextStepAndGo();
 
         console.info('Reenter deceased details');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-Yes'}]);
