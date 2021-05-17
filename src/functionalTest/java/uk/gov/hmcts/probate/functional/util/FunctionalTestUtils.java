@@ -235,7 +235,8 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail, caseworkerPassword);
+        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
+                caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -243,7 +244,8 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail, schedulerPassword);
+        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
+                schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
