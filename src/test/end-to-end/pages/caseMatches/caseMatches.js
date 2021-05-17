@@ -19,8 +19,8 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.wait(0.5);
     } else {
         // This was set to 60 for pipeline which seems overkill, perhaps
-        // we had a problem one time with ES? Now set back to 10
-        await I.wait(10);
+        // we had a problem one time with ES? Now set back to 6
+        await I.wait(6);
     }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
