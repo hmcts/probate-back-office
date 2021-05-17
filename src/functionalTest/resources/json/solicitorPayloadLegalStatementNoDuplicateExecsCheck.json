@@ -160,7 +160,7 @@
       "solsAdditionalExecutorList": [],
       "solsLegalStatementDocument": {
         "document_url": "http://dm-store:8080/documents/b392e5b0-b0b5-48a1-b15d-6ffad8306122",
-        "document_filename": "legalStatementProbateTrustCorps.pdf",
+        "document_filename": "legalStatementGrantOfProbate.pdf",
         "document_binary_url": "http://dm-store:8080/documents/b392e5b0-b0b5-48a1-b15d-6ffad8306122/binary"
       },
       "boCaveatStopSendToBulkPrint": "Yes",
