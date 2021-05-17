@@ -88,7 +88,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenStandingSearchFlow() {
         createCase();
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
@@ -109,7 +109,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() {
         createCase();
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.prettyPrint();
