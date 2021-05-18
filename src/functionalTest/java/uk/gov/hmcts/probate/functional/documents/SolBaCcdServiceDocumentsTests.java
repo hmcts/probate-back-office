@@ -1324,7 +1324,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
         assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
-
     }
 
     @Test
