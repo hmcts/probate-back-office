@@ -23,7 +23,9 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // and check for events appearing, detect if a callback in progress, and wait for buttons.
         // Perhaps even poll, or use a configured timeout and catch exception (assume no existing cases
         // if timeout exception raised)
-        await I.wait(60);
+        // This was set to 60 for pipeline which seems overkill, perhaps
+        // we had a problem one time with ES? Now set back to 6
+        await I.wait(6);
     }
 
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
