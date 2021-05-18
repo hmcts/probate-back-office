@@ -1310,12 +1310,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() {
-        String response = generatePdfDocument("solicitorPayLoadSuccessorFirmAllRenounce.json",
+        String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
                 GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
         assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
-
     }
 
     @Test
