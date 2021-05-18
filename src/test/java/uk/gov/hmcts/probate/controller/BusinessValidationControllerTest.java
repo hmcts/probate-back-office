@@ -548,7 +548,7 @@ public class BusinessValidationControllerTest {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
         Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS)
-                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbateTrustCorps.pdf").build())
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementGrantOfProbate.pdf").build())
                 .build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
                 .thenReturn(probateDocument);
@@ -557,7 +557,7 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(
                         jsonPath("$.data.solsLegalStatementDocument.document_filename")
-                                .value("legalStatementProbateTrustCorps.pdf"));
+                                .value("legalStatementGrantOfProbate.pdf"));
     }
 
     @Test
