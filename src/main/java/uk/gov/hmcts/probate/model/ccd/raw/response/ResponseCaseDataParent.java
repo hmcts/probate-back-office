@@ -40,4 +40,5 @@ public class ResponseCaseDataParent {
     protected String escalatedDate;
     protected String authenticatedDate;
     protected String iht217;
+    protected String isAutomatedProcess;
 }

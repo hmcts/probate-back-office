@@ -343,6 +343,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "autoClosedExpiry", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "isAutomatedProcess", "UserRole": "caseworker-probate-systemupdate", "CRUD": "C"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationType", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "registryLocation", "UserRole": "citizen", "CRUD": "CRU"},

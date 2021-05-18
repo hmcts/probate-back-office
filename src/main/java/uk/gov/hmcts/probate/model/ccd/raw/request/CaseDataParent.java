@@ -18,6 +18,7 @@ public class CaseDataParent {
     protected final String deceasedForeignDeathCertInEnglish;
     protected final String deceasedForeignDeathCertTranslation;
     protected final String iht217;
+    protected final String isAutomatedProcess;
 
     @Getter
     protected LocalDate authenticatedDate;
