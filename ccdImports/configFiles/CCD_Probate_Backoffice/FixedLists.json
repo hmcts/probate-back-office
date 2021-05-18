@@ -327,7 +327,7 @@
   {"LiveFrom": "06/01/2017", "ID": "SolsRedecParagraphs", "ListElementCode": "RedecTitle", "ListElement": "Re-declare: Title"},
   {"LiveFrom": "06/01/2017", "ID": "SolsRedecParagraphs", "ListElementCode": "RedecClearing", "ListElement": "Re-declare: Clearing"},
   {"LiveFrom": "06/01/2017", "ID": "SOTReview1", "ListElementCode": "BelieveTrue", "ListElement": " believe(s) that the facts stated in this legal statement are true."},
-  {"LiveFrom": "06/01/2017", "ID": "SOTReview2", "ListElementCode": "BelieveTrue", "ListElement": " understand(s) that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement in a document verified by a statement of truth without an honest belief in its truth."},
+  {"LiveFrom": "06/01/2017", "ID": "SOTReview2", "ListElementCode": "BelieveTrue", "ListElement": " understand(s) that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth."},
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Text", "ListElement": "DO NOT SHOW - Text"},
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "TextArea", "ListElement": "DO NOT SHOW - TextArea"},
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "List", "ListElement": "DO NOT SHOW - List"},
