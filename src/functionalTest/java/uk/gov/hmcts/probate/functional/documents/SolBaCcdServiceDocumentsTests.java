@@ -1,10 +1,13 @@
 package uk.gov.hmcts.probate.functional.documents;
 
 import io.restassured.RestAssured;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -155,6 +158,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
 
+    private RestAssuredConfig config;
+
+    @Before
+    public void setUp() {
+        RestAssured.useRelaxedHTTPSValidation();
+        config = RestAssured.config()
+                .httpClient(HttpClientConfig.httpClientConfig()
+                        .setParam("http.connection.timeout", 60000)
+                        .setParam("http.socket.timeout", 60000)
+                        .setParam("http.connection-manager.timeout", 60000));
+    }
+
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
@@ -210,6 +225,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -225,6 +241,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateNonProbateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -244,6 +261,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generatePdfDocumentFromPayload(String payload, String path) {
 
         Response jsonResponse = RestAssured.given()
+                .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(payload)
@@ -1069,6 +1087,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyAssembleLetterShouldReturnIHTReferenceNumber() {
         final String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1098,6 +1117,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1127,6 +1147,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("/document/generateLetter.json"))
@@ -1152,6 +1173,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorRePrintReturnBadResponseCode() {
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .body(getJsonFromFile("/document/rePrint.json"))
