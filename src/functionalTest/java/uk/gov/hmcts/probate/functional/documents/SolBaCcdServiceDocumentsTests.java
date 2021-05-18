@@ -5,7 +5,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -1362,8 +1361,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-    // Test ignored - it passes locally but not in jenkins for some reason
-    @Ignore
     @Test
     public void verifySoTFourthParagraphPartnerAllRenounceSucceeded() {
         String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
