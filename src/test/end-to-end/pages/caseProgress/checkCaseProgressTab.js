@@ -11,7 +11,7 @@ module.exports = async function (opts) {
     const texts = await I.grabTextFrom('markdown  p.govuk-body-s');
     assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the probate practitioner.');
-    assert (texts[1] === 'Add solicitor details');
+    assert (texts[1] === 'Add probate practitioner details');
     assert (texts[2] === 'Add deceased details');
     assert (texts[3] === 'Add application details');
     assert (texts[4] === 'These steps are to be completed by the probate practitioner.');

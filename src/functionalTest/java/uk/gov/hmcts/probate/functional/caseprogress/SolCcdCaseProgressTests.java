@@ -50,7 +50,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
                 + "body-s\"><a href=\""
                 + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
                     .replaceFirst("<CASE_ID>", "1528365719153338")
-                + "\" class=\"govuk-link\">Add solicitor details</a>"
+                + "\" class=\"govuk-link\">Add probate practitioner details</a>"
                 + "</p></div><div class=\"govuk-grid-column-one-third\">"
                 + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -154,7 +154,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\">"
+            + "<p class=\"govuk-body-s\">Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -261,7 +261,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\""
             + "govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div>"
+            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add probate practitioner details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -374,7 +374,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "one-third\">&nbsp;</div>"
             + "</div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" "
+            + "Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" "
             + "width=\"114px\" "
             + "height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -503,7 +503,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p>"
+            + "Add probate practitioner details</p>"
             + "</div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\""
             + "114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -619,7 +619,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "These steps are to be completed by the probate practitioner.</font></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div>"
+            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add probate practitioner details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -723,7 +723,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "completed by the probate practitioner.</font></p>"
             + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div>"
+            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add probate practitioner details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -842,7 +842,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add solicitor details</p></div>"
+            + "<p class=\"govuk-body-s\">Add probate practitioner details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1044,7 +1044,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
+            + "Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
             + "<img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent"
             + ".com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1175,7 +1175,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" "
+            + "Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" "
             + "width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPL"
@@ -1298,7 +1298,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\">"
+            + "<p class=\"govuk-body-s\">Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw."
             + "githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -1420,7 +1420,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "steps are to be completed by the probate practitioner.</font></p>"
             + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add solicitor details</p></div>"
+            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add probate practitioner details</p></div>"
             + "<div class=\"govuk-grid-column-one-third\"><p>"
             + "<img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw."
             + "githubusercontent.com/hmcts/probate-back-office/"
@@ -1549,7 +1549,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\">"
+            + "<p class=\"govuk-body-s\">Add probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\">"
             + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
