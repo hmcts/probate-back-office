@@ -56,24 +56,30 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
             // solicitor will always be at position 0
             if (!execsApplying.isEmpty() && SOLICITOR_ID.equals(execsApplying.get(0).getId())) {
                 execsApplying.remove(0);
+                // retain primary applicant fields mapping, rather than using solicitor details
+                // (which have been mapped to primary applicant fields)
+                // in order that legal statement matches issue grant template which uses primary applicant fields
+                // (to cater for cw amend of one but not the other)
+                execsApplying.add(0, executorListMapperService
+                        .mapFromPrimaryApplicantToApplyingExecutor(caseData, SOLICITOR_ID));
+            } else {
+                execsApplying.add(0, executorListMapperService
+                        .mapFromPrimaryApplicantToApplyingExecutor(caseData));
             }
-            // retain primary applicant fields mapping, rather than using solicitor details
-            // (which have been mapped to primary applicant fields)
-            // in order that legal statement matches issue grant template which uses primary applicant fields
-            // (to cater for cw amend of one but not the other)
-            execsApplying.add(0, executorListMapperService
-                    .mapFromPrimaryApplicantToApplyingExecutor(caseData));
         } else if (caseData.isPrimaryApplicantNotApplying()) {
             // solicitor will always be at position 0
             if (!execsNotApplying.isEmpty() && SOLICITOR_ID.equals(execsNotApplying.get(0).getId())) {
                 execsNotApplying.remove(0);
+                // retain primary applicant fields mapping, rather than using solicitor details
+                // (which have been mapped to primary applicant fields)
+                // in order that legal statement matches issue grant template which uses primary applicant fields
+                // (to cater for cw amend of one but not the other)
+                execsNotApplying.add(0, executorListMapperService
+                        .mapFromPrimaryApplicantToNotApplyingExecutor(caseData, SOLICITOR_ID));
+            } else {
+                execsNotApplying.add(0, executorListMapperService
+                        .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
             }
-            // retain primary applicant fields mapping, rather than using solicitor details
-            // (which have been mapped to primary applicant fields)
-            // in order that legal statement matches issue grant template which uses primary applicant fields
-            // (to cater for cw amend of one but not the other)
-            execsNotApplying.add(0, executorListMapperService
-                    .mapFromPrimaryApplicantToNotApplyingExecutor(caseData));
         }
 
         caseData.setExecutorsApplyingLegalStatement(execsApplying);
