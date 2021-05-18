@@ -6,7 +6,9 @@ const testConfig = require('src/test/config.js');
 
 module.exports = async function (updateAddressManually) {
     const I = this;
+
     await I.waitForElement('#primaryApplicantForenames');
+    await I.waitForText('First name(s)');
     await I.runAccessibilityTest();
 
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);

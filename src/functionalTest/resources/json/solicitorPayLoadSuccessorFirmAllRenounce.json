@@ -156,14 +156,14 @@
           }
         }
       ],
-      "additionalExecutorsApplying": [
+      "executorsApplying": [
         {
           "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e1ba",
           "value": {
-            "additionalExecForenames": "FirstName2",
-            "additionalExecLastname": "LastName2",
-            "additionalExecutorTrustCorpPosition": "Solicitor",
-            "additionalExecAddress": {
+            "applyingExecutorFirstName": "FirstName2",
+            "applyingExecutorLastName": "LastName2",
+            "applyingExecutorTrustCorpPosition": "Solicitor",
+            "applyingExecutorAddress": {
               "County": "county",
               "Country": "country",
               "PostCode": "postcode",
@@ -176,7 +176,7 @@
           }
         }
       ],
-      "additionalExecutorsNotApplying": [],
+      "executorsNotApplying": [],
       "executorsApplyingLegalStatement": [],
       "executorsNotApplyingLegalStatement": []
     },
