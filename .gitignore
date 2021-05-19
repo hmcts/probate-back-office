@@ -36,3 +36,6 @@ node_modules/\.bin/
 node_modules/
 
 src/test/end-to-end/functional-output/
+
+bin/main
+bin/test
