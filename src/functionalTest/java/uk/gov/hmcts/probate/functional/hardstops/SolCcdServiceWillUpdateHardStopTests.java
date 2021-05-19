@@ -82,7 +82,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))
             .post(CASE_STOP_CONFIRMATION);
         assertEquals(200, response.getStatusCode());
         assertFalse(response.getBody().asString().contains(
