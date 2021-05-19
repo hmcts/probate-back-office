@@ -85,9 +85,9 @@ public class ExceptionRecordService {
             caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             if (erRequest.getIsAutomatedProcess()) {
-                caveatData.setIsAutomatedProcess(YES);
+                caveatData.setAutomatedProcess(YES);
             } else {
-                caveatData.setIsAutomatedProcess(NO);
+                caveatData.setAutomatedProcess(NO);
             }
 
             // Add scanned documents
@@ -128,9 +128,9 @@ public class ExceptionRecordService {
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
             if (erRequest.getIsAutomatedProcess()) {
-                grantOfRepresentationData.setIsAutomatedProcess(YES);
+                grantOfRepresentationData.setAutomatedProcess(YES);
             } else {
-                grantOfRepresentationData.setIsAutomatedProcess(NO);
+                grantOfRepresentationData.setAutomatedProcess(NO);
             }
 
             // Add scanned documents

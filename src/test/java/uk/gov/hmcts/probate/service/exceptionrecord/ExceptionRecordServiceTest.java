@@ -152,7 +152,7 @@ public class ExceptionRecordServiceTest {
         assertEquals(RegistryLocation.CTSC, caveatDataResponse.getRegistryLocation());
         assertEquals(ApplicationType.PERSONAL, caveatDataResponse.getApplicationType());
         assertEquals("Jones", caveatDataResponse.getCaveatorSurname());
-        assertEquals(NO, caveatDataResponse.getIsAutomatedProcess());
+        assertEquals(NO, caveatDataResponse.getAutomatedProcess());
     }
 
     @Test
@@ -274,7 +274,7 @@ public class ExceptionRecordServiceTest {
         assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("Smith", grantOfRepresentationDataResponse.getPrimaryApplicantSurname());
-        assertEquals(NO, grantOfRepresentationDataResponse.getIsAutomatedProcess());
+        assertEquals(NO, grantOfRepresentationDataResponse.getAutomatedProcess());
     }
 
     public ObjectMapper getObjectMapper() {

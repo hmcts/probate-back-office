@@ -48,6 +48,7 @@ public class ResponseCaveatData {
     private final String applicationSubmittedDate;
     private final String expiryDate;
     private final String messageContent;
+    private final String automatedProcess;
     private final String caveatReopenReason;
 
     private final String caveatRaisedEmailNotificationRequested;
