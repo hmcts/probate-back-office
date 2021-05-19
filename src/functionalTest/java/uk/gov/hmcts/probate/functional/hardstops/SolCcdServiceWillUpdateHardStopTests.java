@@ -9,8 +9,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
@@ -76,17 +76,17 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
             .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
 
+    // We no longer stop these
     @Test
-    public void validateHardMessageWithNoOriginalWill() {
+    public void validateNoHardMessageWithNoOriginalWill() {
         Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
             .post(CASE_STOP_CONFIRMATION);
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(
+        assertFalse(response.getBody().asString().contains(
             "You can't currently use this service if you do not have the original will.\\n\\nFollow your existing "
                 + "process for applying for probate for this client.\\n"));
     }
-
 }

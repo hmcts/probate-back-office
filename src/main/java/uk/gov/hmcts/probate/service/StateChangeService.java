@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -45,7 +44,6 @@ public class StateChangeService {
     private final ImmovableEstateRule immovableEstateRule;
     private final LifeInterestRule lifeInterestRule;
     private final MinorityInterestRule minorityInterestRule;
-    private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingRule;
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorRule;
@@ -55,10 +53,6 @@ public class StateChangeService {
 
 
     public Optional<String> getChangedStateForProbateUpdate(CaseData caseData) {
-        if (noOriginalWillRule.isChangeNeeded(caseData)) {
-            return Optional.of(STATE_STOPPED);
-        }
-
         if (executorsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -94,10 +88,6 @@ public class StateChangeService {
 
     public Optional<String> getChangedStateForAdmonUpdate(CaseData caseData) {
         if (immovableEstateRule.isChangeNeeded(caseData)) {
-            return Optional.of(STATE_STOPPED);
-        }
-
-        if (noOriginalWillRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
 

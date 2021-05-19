@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -68,8 +67,6 @@ public class StateChangeServiceTest {
     @Mock
     private MinorityInterestRule minorityInterestRule;
     @Mock
-    private NoOriginalWillRule noOriginalWillRule;
-    @Mock
     private RenouncingRule renouncingRule;
     @Mock
     private ResiduaryRule residuaryRule;
@@ -94,7 +91,6 @@ public class StateChangeServiceTest {
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
             entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule,
-            noOriginalWillRule,
             renouncingRule, residuaryRule, solsExecutorRule, spouseOrCivilRule, updateApplicationRule,
             callbackResponseTransformer);
 
@@ -124,7 +120,6 @@ public class StateChangeServiceTest {
     @Test
     public void shouldChangeStateForAnyRuleValid() {
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
 
@@ -285,25 +280,6 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateForOriginalWillRuleValid() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-
-        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals("Stopped", newState.get());
-    }
-
-    @Test
-    public void shouldNOTChangeStateForOriginalWillRule() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
-
-        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
-
-        assertEquals(Optional.empty(), newState);
-    }
-
-    @Test
     public void shouldChangeStateForRenouncingRuleValid() {
         when(renouncingRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
@@ -391,7 +367,6 @@ public class StateChangeServiceTest {
 
     @Test
     public void shouldNOTChangeStateForAllRulesInvalid() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
@@ -536,5 +511,4 @@ public class StateChangeServiceTest {
         Optional<String> state = underTest.getRedeclarationComplete(caseData);
         assertEquals(Optional.empty(), state);
     }
-
 }
