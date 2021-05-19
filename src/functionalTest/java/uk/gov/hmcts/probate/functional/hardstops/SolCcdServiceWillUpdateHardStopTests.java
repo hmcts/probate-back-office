@@ -55,23 +55,23 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalProbate() {
+    public void validateNoHardStopWithNoWillAccessOriginalProbate() {
         given().relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))
             .post(VALIDATE_PROBATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
+            .and().body("data.state", equalToIgnoringCase("SolDraftCase"))
             .and().body("data.willExists", equalToIgnoringCase("Yes"))
             .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalAdmon() {
+    public void validateNoHardStopWithNoWillAccessOriginalAdmon() {
         given().relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalAdmon.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalAdmon.json"))
             .post(VALIDATE_ADMON_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
+            .and().body("data.state", equalToIgnoringCase("SolDraftCase"))
             .and().body("data.willExists", equalToIgnoringCase("Yes"))
             .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
