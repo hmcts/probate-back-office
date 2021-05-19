@@ -15,6 +15,7 @@ module.exports = async function () {
     await I.click(`#solsLifeInterest-${admonWillDetailsConfig.optionNo}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForText('Notes for this application (Optional)');
     await I.fillField('#solsAdditionalInfo', admonWillDetailsConfig.page4_applicationNotes);
     await I.waitForNavigationToComplete(commonConfig.goButton);
 };
