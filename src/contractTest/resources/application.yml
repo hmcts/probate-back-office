@@ -47,9 +47,9 @@ pdf.service:
 
 docmosis:
   service:
-    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
-    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   templates:
     caveatRaised:
       templateName: FL-PRB-GNO-ENG-00011.doc
@@ -432,8 +432,12 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 
 data-extract:
   block:
-    size: "3000"
-    numDaysInclusive: 13
+    size: 3000
+    numDaysInclusive: 2
+  smee-and-ford:
+    size: 10000
+
+smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 
 welsh:
   months:

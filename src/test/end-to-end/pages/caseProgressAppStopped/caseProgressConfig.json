@@ -27,6 +27,10 @@
     "deceasedAddrCounty": "Wilts",
     "deceasedAddrCountry": "UK",
     "deceasedAddrPostcode": "CN12JU",
+    "IHT205Label": "IHT205 - there was no inheritance tax to pay",
+    "IHT2207Label": "IHT207 - the person who died lived abroad and there was no inheritance tax to pay",
+    "IHT400Label": "IHT400 and IHT421",
+    "IHTDNULabel": "Not applicable - DO NOT USE",
     "IHTOption": "IHT205",
     "IHTGross": "175000",
     "IHTNet": "140000",
@@ -37,6 +41,6 @@
     "AppStoppedReasonText": "You can't currently use this service if the primary executor not applying and there are no other executors applying.",
     "AppStoppedAdditionalText": "Follow your existing process for applying for probate for this client.",
     "AppStoppedTabTitle": "Paper application needed",
-    "AppStoppedTabCheckText": "This application has been stopped. Based on the information you have entered, our online service cannot yet handle this type of application." 
+    "AppStoppedTabCheckText": "This application has been stopped. Based on the information you have entered, our online service cannot yet handle this type of application."
 }
 

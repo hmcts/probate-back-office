@@ -17,7 +17,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -41,19 +40,19 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyAddressInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
-                + "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+                + "AddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("deceasedFirstName deceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -147,7 +146,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
-        Response response = given()
+        final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
@@ -172,14 +171,15 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() {
-        Response response = given()
+        final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json").replace("primaryApplicantForenames", ""))
+            .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json")
+                    .replace("primaryApplicantForenames", ""))
             .when()
             .post(VALIDATE_INTESTACY_URL)
             .andReturn();
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
 
         assertEquals(400, response.getStatusCode());
         assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
@@ -188,14 +188,14 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() {
-        Response response = given()
+        final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWill.json").replace("Main", ""))
             .when().post(VALIDATE_ADMON_URL)
             .andReturn();
 
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertEquals(400, response.getStatusCode());
         assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
         assertEquals(jsonPath.get("message"), "Invalid payload");
@@ -221,13 +221,13 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
     }
 
-    private String replaceString(String oldJson, String newJson) {
+    private String replaceStringInCheckYourAnswersPayload(String oldJson, String newJson) {
         return utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")
             .replace(oldJson, newJson);
     }
 
     private String textContentOf(byte[] pdfData) throws IOException {
-        PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(pdfData));
+        final PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(pdfData));
         try {
             return new PDFTextStripper().getText(pdfDocument);
         } finally {
@@ -236,7 +236,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString, String fileName, String url) {
-        Response response = given()
+        final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(fileName))
@@ -250,17 +250,17 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                                                              String postURL) {
         given().relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(replaceString(oldString, replacingString))
+            .body(replaceStringInCheckYourAnswersPayload(oldString, replacingString))
             .when().post(postURL).then().statusCode(400)
             .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
             .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
 
     private String extractDocumentId(Response response) {
-        String bodyString = response.body().asString();
-        JsonPath jsonPath = JsonPath.from(bodyString);
-        String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
-        String[] url = urlNode.split("/");
+        final String bodyString = response.body().asString();
+        final JsonPath jsonPath = JsonPath.from(bodyString);
+        final String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
+        final String[] url = urlNode.split("/");
         return url[4];
     }
 
@@ -273,10 +273,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .when().get("/documents/" + documentId + "/binary")
                 .then().assertThat().statusCode(200);
 
-            String textContent = textContentOf(response2.extract().body().asByteArray());
-            assertTrue(textContent.replace("\r", "").contains(validationString.replace("\r", "")));
-            String contentType = response2.extract().contentType();
-            assertEquals(contentType, "application/pdf");
+            final String textContent = removeCrLfs(textContentOf(response2.extract().body().asByteArray()));
+            validationString = removeCrLfs(validationString);
+            assertTrue(textContent.contains(validationString));
+
+            assertEquals(response2.extract().contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();
         }
