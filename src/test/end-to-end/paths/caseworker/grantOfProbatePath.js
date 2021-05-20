@@ -1,5 +1,4 @@
 'use strict';
-
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -29,9 +28,14 @@ const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseD
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
 
+const {
+    legacyParse,
+    convertTokens
+} = require('@date-fns/upgrade/v2');
+
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) {
+Scenario('01 BO Grant of Representation E2E - Grant issued', async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
@@ -144,7 +148,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
     endState = 'Ready for examination';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
-    markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
+    markForExaminationConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
@@ -195,7 +199,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function (I) 
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
-    issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
+    issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
     await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
