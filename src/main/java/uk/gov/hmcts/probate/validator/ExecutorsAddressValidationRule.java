@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
@@ -23,15 +23,15 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
-        System.out.println(ccdData);// NOSONAR lightweight logging
         Set<FieldErrorResponse> errors = new HashSet<>();
+        System.out.println(ccdData);
         ccdData.getExecutors().stream().filter(Executor::isApplying).map(Executor::getAddress).forEach(address -> {
             if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
-                // errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
-                // "executorAddressIsNull"));
-                System.out.println(address);// NOSONAR lightweight logging
+                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                System.out.println(address);
             }
         });
+
         return new ArrayList<>(errors);
     }
 }

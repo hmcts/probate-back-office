@@ -55,9 +55,9 @@ public class ExecutorsAddressValidationRuleTest {
         when(executor.getAddress()).thenReturn(null);
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
-        Assert.assertTrue(errors.isEmpty());
-        // Assert.assertEquals(1, errors.size());
-        // Assert.assertTrue(errors.contains(executorAddressIsNullError));
+
+        Assert.assertEquals(1, errors.size());
+        Assert.assertTrue(errors.contains(executorAddressIsNullError));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class ExecutorsAddressValidationRuleTest {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().postCode("PS1 0LS").build());
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
-        Assert.assertTrue(errors.isEmpty());
-        // Assert.assertEquals(1, errors.size());
-        // Assert.assertTrue(errors.contains(executorAddressIsNullError));
+
+        Assert.assertEquals(1, errors.size());
+        Assert.assertTrue(errors.contains(executorAddressIsNullError));
     }
 
     @Test
