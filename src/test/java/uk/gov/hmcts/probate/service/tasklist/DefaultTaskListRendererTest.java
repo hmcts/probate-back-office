@@ -99,7 +99,7 @@ public class DefaultTaskListRendererTest {
         + "govuk-grid-column-one-third\">&nbsp;</div></div>\n"
         + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
         + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add "
-        + "solicitor details</p>"
+        + "probate practitioner details</p>"
         + "</div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
         + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
         + TaskState.CODE_BRANCH
