@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.functional.casematch;
 
 import io.restassured.RestAssured;
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String CAVEAT_LEGACY_SEARCH_JSON = "casematch/caveatLegacySearch.json";
     public static final String WILL_LODGEMENT_LEGACY_SEARCH_JSON = "casematch/willLodgementLegacySearch.json";
     public static final String STANDING_SEARCH_LEGACY_SEARCH_JSON = "casematch/standingSearchLegacySearch.json";
-    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayoad.json";
+    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayload.json";
     private static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     private static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
     private static final String WILL_LODGEMENT_MATCH_CASE_JSON = "casematch/willLodgementMatchCase.json";
@@ -49,16 +47,9 @@ public class CaseMatchingTests extends IntegrationTestBase {
     private static final String IMPORT_LEGACY_WILL_LODGEMENT_SEARCH =
         "/case-matching/import-legacy-from-will-lodgement-flow";
 
-    private RestAssuredConfig config;
-
     @Before
     public void setUp() {
-        RestAssured.useRelaxedHTTPSValidation();
-        config = RestAssured.config()
-                .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+        initialiseConfig();
     }
 
     @Test

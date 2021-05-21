@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.functional.bulkscanning;
 
 import io.restassured.RestAssured;
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
@@ -44,16 +42,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private String jsonRequest;
     private String jsonResponse;
 
-    private RestAssuredConfig config;
-
     @Before
     public void setUp() {
-        RestAssured.useRelaxedHTTPSValidation();
-        config = RestAssured.config()
-                .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+        initialiseConfig();
     }
 
     private void validateOCRDataPostSuccess(String formName, String bodyText, String containsText,

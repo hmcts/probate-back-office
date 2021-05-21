@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.functional.businessvalidation;
 
 import io.restassured.RestAssured;
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -45,16 +43,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOL_APPLY_AS_EXECUTOR_URL = "/case/sols-apply-as-exec";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
 
-    private RestAssuredConfig config;
-
     @Before
     public void setUp() {
-        RestAssured.useRelaxedHTTPSValidation();
-        config = RestAssured.config()
-                .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+        initialiseConfig();
     }
 
     @Test
@@ -501,7 +492,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(response);
         final String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
         final String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
-        final String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
+        final String notApplyingAlias =
+                jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
 
         final String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
         final String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
