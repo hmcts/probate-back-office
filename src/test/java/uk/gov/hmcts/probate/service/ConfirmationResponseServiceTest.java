@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -73,8 +72,6 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MinorityInterestRule minorityInterestRuleMock;
     @Mock
-    private NoOriginalWillRule noOriginalWillRuleMock;
-    @Mock
     private RenouncingRule renouncingRuleMock;
     @Mock
     private ResiduaryRule residuaryRuleMock;
@@ -116,7 +113,6 @@ public class ConfirmationResponseServiceTest {
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
-            noOriginalWillRuleMock,
             renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
@@ -469,10 +465,9 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
-    public void shouldStopWillConfirmationForWillNotOriginalProbate() {
+    public void shouldNotStopWillConfirmationForWillNotOriginalProbate() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
@@ -480,14 +475,13 @@ public class ConfirmationResponseServiceTest {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Test
-    public void shouldStopWillConfirmationForWillNotOriginalAdmon() {
+    public void shouldNotStopWillConfirmationForWillNotOriginalAdmon() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -495,14 +489,13 @@ public class ConfirmationResponseServiceTest {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Test
     public void shouldNOTStopWillNotOriginalConfirmation() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
