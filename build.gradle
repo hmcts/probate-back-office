@@ -55,6 +55,7 @@ sonarqube {
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.cpd.exclusions", "**/test/**," + "**/src/**"
+    property "sonar.coverage.exclusions", "**/test/**,**/src/**"
   }
 }
 
