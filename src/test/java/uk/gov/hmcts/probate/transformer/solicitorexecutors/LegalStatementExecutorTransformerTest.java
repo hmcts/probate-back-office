@@ -24,6 +24,8 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
@@ -301,7 +303,7 @@ public class LegalStatementExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(
+                any(CaseData.class), anyString())).thenReturn(
                 new CollectionMember<>("12345", EXECUTOR_APPLYING));
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
@@ -333,7 +335,7 @@ public class LegalStatementExecutorTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(
+                any(CaseData.class), anyString())).thenReturn(
                 new CollectionMember<>("12345", EXECUTOR_NOT_APPLYING));
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();

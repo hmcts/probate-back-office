@@ -66,7 +66,6 @@
       "nameOfSucceededFirm": "Successor firm",
       "otherExecutorExists": "No",
       "solsSolicitorIsExec": "Yes",
-      "executorsNotApplying": [],
       "solsSolicitorAddress": {
         "County": "Somerset",
         "Country": "United Kingdom",
@@ -173,6 +172,7 @@
           }
         }
       ],
+      "executorsNotApplying": [],
       "executorsApplyingLegalStatement": [],
       "executorsNotApplyingLegalStatement": []
     }

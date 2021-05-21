@@ -198,8 +198,13 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
             CaseData caseData) {
+        return mapFromPrimaryApplicantToApplyingExecutor(caseData, UUID.randomUUID().toString());
+    }
+
+    public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
+            CaseData caseData, String collectionMemberId) {
         // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(UUID.randomUUID().toString(), AdditionalExecutorApplying.builder()
+        return new CollectionMember<>(collectionMemberId, AdditionalExecutorApplying.builder()
                 .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
                         caseData.getPrimaryApplicantForenames()))
                 .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
@@ -219,7 +224,13 @@ public class ExecutorListMapperService {
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData) {
         // Create not applying executor collection member containing primary applicant names
-        return new CollectionMember<>(UUID.randomUUID().toString(), AdditionalExecutorNotApplying.builder()
+        return mapFromPrimaryApplicantToNotApplyingExecutor(caseData, UUID.randomUUID().toString());
+    }
+
+    public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
+            CaseData caseData, String collectionMemberId) {
+        // Create not applying executor collection member containing primary applicant names
+        return new CollectionMember<>(collectionMemberId, AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())

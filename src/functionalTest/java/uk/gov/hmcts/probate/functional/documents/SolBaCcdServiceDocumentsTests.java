@@ -1,10 +1,13 @@
 package uk.gov.hmcts.probate.functional.documents;
 
 import io.restassured.RestAssured;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -151,6 +155,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
+    private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+
+    private RestAssuredConfig config;
+
+    @Before
+    public void setUp() {
+        RestAssured.useRelaxedHTTPSValidation();
+        config = RestAssured.config()
+                .httpClient(HttpClientConfig.httpClientConfig()
+                        .setParam("http.connection.timeout", 60000)
+                        .setParam("http.socket.timeout", 60000)
+                        .setParam("http.connection-manager.timeout", 60000));
+    }
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -207,6 +224,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -222,6 +240,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateNonProbateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -241,6 +260,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generatePdfDocumentFromPayload(String payload, String path) {
 
         Response jsonResponse = RestAssured.given()
+                .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(payload)
@@ -1066,6 +1086,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyAssembleLetterShouldReturnIHTReferenceNumber() {
         final String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1095,6 +1116,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1124,6 +1146,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("/document/generateLetter.json"))
@@ -1149,6 +1172,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorRePrintReturnBadResponseCode() {
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .body(getJsonFromFile("/document/rePrint.json"))
@@ -1371,8 +1395,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
                 GENERATE_LEGAL_STATEMENT);
 
-        // Is it right that a solicitor always comes through as a named executor??
-
         assertTrue(response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
                 + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
                 + "Somerset, BA5 2PA, United Kingdom make the following statement:"));
@@ -1404,6 +1426,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
-        assertTrue(response.split("Fred Smith").length == 5);
+        assertTrue(response.split("Fred Smith").length == 4);
+    }
+
+    @Test
+    public void verifySoTSolNotRepeated() {
+        String response = generatePdfDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
+        assertFalse(response
+                .contains("Jim Smith (executor)"));
+        assertTrue(response
+                .contains("Jim Smith (probate practitioner and executor)"));
+        assertTrue(response.split("Jim Smith").length == 5);
     }
 }
