@@ -52,7 +52,7 @@
   "page2_positionInTrust": "Director",
 
   "page3_dispenseWithNoticeLeaveGiven": "No",
-  "page3_dispenseWithNoticeName": "Name",
+  "page3_dispenseWithNoticeName": "DispenseWithNoticeName",
   "page3_dispenseWithNoticeOverview": "Overview",
   "page3_dispenseWithNoticeSupportingDocs": "Supporting docs",
 

@@ -108,7 +108,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
@@ -172,7 +172,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
