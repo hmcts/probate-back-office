@@ -1084,8 +1084,6 @@ public class CallbackResponseTransformer {
 
         if (isSolicitorExecutor(caseData)) {
             if (isSolicitorMainApplicant(caseData)) {
-                System.out.println("isSolicitorMainApplicant");
-                System.out.println(caseData);
                 builder.primaryApplicantForenames(caseData.getSolsSOTForenames())
                         .primaryApplicantSurname(caseData.getSolsSOTSurname())
                         .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
