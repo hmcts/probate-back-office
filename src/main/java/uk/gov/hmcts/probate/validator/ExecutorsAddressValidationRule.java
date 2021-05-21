@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
@@ -24,11 +26,11 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         Set<FieldErrorResponse> errors = new HashSet<>();
-        System.out.println(ccdData);
+        log.info(ccdData);
         ccdData.getExecutors().stream().filter(Executor::isApplying).map(Executor::getAddress).forEach(address -> {
             if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                 errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
-                System.out.println(address);
+                log.info(address);
             }
         });
 
