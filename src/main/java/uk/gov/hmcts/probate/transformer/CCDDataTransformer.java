@@ -35,21 +35,26 @@ public class CCDDataTransformer {
     private CCDData buildCCDData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        return CCDData.builder().solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
-                .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
-                .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
-                .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
-                .solsSolicitorIsMainApplicant(
-                        callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
-                .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-                .solsSolicitorNotApplyingReason(
-                        callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
-                .solicitor(buildSolicitorDetails(caseData)).deceased(buildDeceasedDetails(caseData))
-                .iht(buildInheritanceTaxDetails(caseData)).fee(buildFeeDetails(caseData))
-                .solsAdditionalInfo(caseData.getSolsAdditionalInfo()).executors(getAllExecutors(caseData))
-                .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
-                .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
-                .willHasCodicils(caseData.getWillHasCodicils()).iht217(caseData.getIht217()).build();
+        return CCDData.builder()
+            .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
+            .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
+            .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
+            .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
+            .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
+            .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
+            .solsSolicitorNotApplyingReason(
+                callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
+            .solicitor(buildSolicitorDetails(caseData))
+            .deceased(buildDeceasedDetails(caseData))
+            .iht(buildInheritanceTaxDetails(caseData))
+            .fee(buildFeeDetails(caseData))
+            .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+            .executors(getAllExecutors(caseData))
+            .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
+            .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
+            .willHasCodicils(caseData.getWillHasCodicils())
+            .iht217(caseData.getIht217())
+            .build();
     }
 
     public CCDData transformEmail(CallbackRequest callbackRequest) {
@@ -60,56 +65,76 @@ public class CCDDataTransformer {
     private CCDData buildEmailCCDData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        return CCDData.builder().solsSolicitorEmail(notNullWrapper(caseData.getSolsSolicitorEmail()))
-                .primaryApplicantEmailAddress(notNullWrapper(caseData.getPrimaryApplicantEmailAddress()))
-                .applicationType(notNullWrapper(caseData.getApplicationType().toString()))
+        return CCDData.builder()
+            .solsSolicitorEmail(notNullWrapper(caseData.getSolsSolicitorEmail()))
+            .primaryApplicantEmailAddress(notNullWrapper(caseData.getPrimaryApplicantEmailAddress()))
+            .applicationType(notNullWrapper(caseData.getApplicationType().toString()))
 
-                .build();
+            .build();
     }
 
     private Solicitor buildSolicitorDetails(CaseData caseData) {
-        return Solicitor.builder().firmName(caseData.getSolsSolicitorFirmName())
-                .firmAddress(caseData.getSolsSolicitorAddress()).fullname(caseData.getSolsSOTName())
-                .jobRole(caseData.getSolsSOTJobTitle()).build();
+        return Solicitor.builder()
+            .firmName(caseData.getSolsSolicitorFirmName())
+            .firmAddress(caseData.getSolsSolicitorAddress())
+            .fullname(caseData.getSolsSOTName())
+            .jobRole(caseData.getSolsSOTJobTitle())
+            .build();
     }
 
     private Deceased buildDeceasedDetails(CaseData caseData) {
-        return Deceased.builder().firstname(caseData.getDeceasedForenames()).lastname(caseData.getDeceasedSurname())
-                .dateOfBirth((caseData.getDeceasedDateOfBirth())).dateOfDeath((caseData.getDeceasedDateOfDeath()))
-                .address(caseData.getDeceasedAddress()).build();
+        return Deceased.builder()
+            .firstname(caseData.getDeceasedForenames())
+            .lastname(caseData.getDeceasedSurname())
+            .dateOfBirth((caseData.getDeceasedDateOfBirth()))
+            .dateOfDeath((caseData.getDeceasedDateOfDeath()))
+            .address(caseData.getDeceasedAddress())
+            .build();
     }
 
     private InheritanceTax buildInheritanceTaxDetails(CaseData caseData) {
-        return InheritanceTax.builder().formName(caseData.getIhtFormId()).netValue(caseData.getIhtNetValue())
-                .grossValue(caseData.getIhtGrossValue()).build();
+        return InheritanceTax.builder()
+            .formName(caseData.getIhtFormId())
+            .netValue(caseData.getIhtNetValue())
+            .grossValue(caseData.getIhtGrossValue())
+            .build();
     }
 
     private Fee buildFeeDetails(CaseData caseData) {
-        return Fee.builder().extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
-                .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
-                .paymentMethod(caseData.getSolsPaymentMethods())
-                .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber()).applicationFee(caseData.getApplicationFee())
-                .amount(caseData.getTotalFee()).feeForUkCopies(caseData.getFeeForUkCopies())
-                .feeForNonUkCopies(caseData.getFeeForNonUkCopies()).build();
+        return Fee.builder()
+            .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
+            .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
+            .paymentMethod(caseData.getSolsPaymentMethods())
+            .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
+            .applicationFee(caseData.getApplicationFee())
+            .amount(caseData.getTotalFee())
+            .feeForUkCopies(caseData.getFeeForUkCopies())
+            .feeForNonUkCopies(caseData.getFeeForNonUkCopies())
+            .build();
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
-            executors = caseData.getSolsAdditionalExecutorList().stream().map(CollectionMember::getValue)
-                    .map(executor -> Executor.builder().applying(YES.equals(executor.getAdditionalApplying()))
-                            .address(executor.getAdditionalExecAddress())
-                            .reasonNotApplying(executor.getAdditionalExecReasonNotApplying())
-                            .forename(executor.getAdditionalExecForenames())
-                            .lastname(executor.getAdditionalExecLastname()).build())
-                    .collect(Collectors.toList());
+            executors = caseData.getSolsAdditionalExecutorList().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> Executor.builder()
+                    .applying(YES.equals(executor.getAdditionalApplying()))
+                    .address(executor.getAdditionalExecAddress())
+                    .reasonNotApplying(executor.getAdditionalExecReasonNotApplying())
+                    .forename(executor.getAdditionalExecForenames())
+                    .lastname(executor.getAdditionalExecLastname())
+                    .build())
+                .collect(Collectors.toList());
         }
 
-        Executor primaryExecutor = Executor.builder().applying(caseData.isPrimaryApplicantApplying())
-                .address(caseData.getPrimaryApplicantAddress())
-                .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
-                .forename(caseData.getPrimaryApplicantForenames()).lastname(caseData.getPrimaryApplicantSurname())
-                .build();
+        Executor primaryExecutor = Executor.builder()
+            .applying(caseData.isPrimaryApplicantApplying())
+            .address(caseData.getPrimaryApplicantAddress())
+            .reasonNotApplying(caseData.getSolsPrimaryExecutorNotApplyingReason())
+            .forename(caseData.getPrimaryApplicantForenames())
+            .lastname(caseData.getPrimaryApplicantSurname())
+            .build();
 
         executors.add(primaryExecutor);
 
@@ -133,7 +158,9 @@ public class CCDDataTransformer {
     private CaveatData buildCCDDataCaveats(CaveatCallbackRequest callbackRequest) {
         CaveatData caseData = callbackRequest.getCaseDetails().getData();
 
-        return CaveatData.builder().caveatorEmailAddress(notNullWrapper(caseData.getCaveatorEmailAddress())).build();
+        return CaveatData.builder()
+            .caveatorEmailAddress(notNullWrapper(caseData.getCaveatorEmailAddress()))
+            .build();
     }
 
     public CaveatData transformSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
@@ -144,13 +171,15 @@ public class CCDDataTransformer {
     private CaveatData buildCCDDataSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
         CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
 
-        return CaveatData.builder().registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
-                .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
-                .applicationSubmittedDate(
-                        getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails().getLastModified()))
-                .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
-                .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
-                .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber())).build();
+        return CaveatData.builder()
+            .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
+            .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
+            .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
+                .getLastModified()))
+            .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
+            .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
+            .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
+            .build();
     }
 
     public CCDData transformBulkPrint(String letterId) {
@@ -160,7 +189,8 @@ public class CCDDataTransformer {
 
     private CCDData buildCCDDataBulkPrint(String letterId) {
 
-        return CCDData.builder().sendLetterId(notNullWrapper(letterId)).build();
+        return CCDData.builder().sendLetterId(notNullWrapper(letterId))
+            .build();
     }
 
     private String notNullWrapper(String nullableString) {
