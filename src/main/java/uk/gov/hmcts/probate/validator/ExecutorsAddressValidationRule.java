@@ -29,7 +29,6 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
             if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                 // errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 // "executorAddressIsNull"));
-                System.out.println("COMING TO GET EXECUTOR ERRROR => ");
                 System.out.println(address);
             }
         });
