@@ -5,3 +5,6 @@ app/assets/javascripts/*.js
 coverage
 *.min.js
 .eslintrc.js
+target/*
+build/*
+functional-output/*

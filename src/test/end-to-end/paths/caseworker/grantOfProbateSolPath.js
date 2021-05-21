@@ -30,7 +30,7 @@ const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/c
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant issued', async function (I) {
+Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant issued', async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
@@ -152,7 +152,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
     endState = 'Ready for examination';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
-    markForExaminationConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
+    markForExaminationConfig.date = dateFns.format(new Date(), 'd MMM yyyy');
     await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
@@ -199,7 +199,7 @@ Scenario('12 BO Grant of Representation E2E (Solicitor - Trust Corp) - Grant iss
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
-    issueGrantConfig.date = dateFns.format(new Date(), 'D MMM YYYY');
+    issueGrantConfig.date = dateFns.format(new Date(), 'd MMM yyyy');
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
     await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 

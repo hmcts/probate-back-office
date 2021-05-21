@@ -14,7 +14,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped', async function (I) {
+Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped', async function ({I}) {
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeftAnnexed';

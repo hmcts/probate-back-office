@@ -1,5 +1,4 @@
 'use strict';
-
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -28,9 +27,14 @@ const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pa
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
+const {
+    legacyParse,
+    convertTokens
+} = require('@date-fns/upgrade/v2');
+
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
+Scenario('13 BO Will Lodgement E2E - Withdraw will', async function ({I}) {
 
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 
@@ -103,7 +107,7 @@ Scenario('13 BO Will Lodgement E2E - Withdraw will', async function (I) {
     // Note that End State does not change when generating a deposit receipt.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
-    generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    generateDepositReceiptConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case

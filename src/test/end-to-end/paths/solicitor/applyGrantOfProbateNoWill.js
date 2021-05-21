@@ -20,7 +20,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async function (I) {
+Scenario('02 - Solicitor - Apply Grant of probate - No Will (Intestacy)', async function ({I}) {
 
     const willType = 'NoWill';
 
