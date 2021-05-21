@@ -39,3 +39,7 @@ src/test/end-to-end/functional-output/
 
 bin/main
 bin/test
+bin/contractTest
+bin/testCaseCreator
+bin/testFunctional
+bin/testSmoke
