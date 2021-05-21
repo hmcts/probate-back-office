@@ -23,18 +23,16 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
-
-        System.out.println("TEMPORARY COMMENT OUT ADDRESS VALIDATION");
         System.out.println(ccdData);
-
+        Set<FieldErrorResponse> errors = new HashSet<>();
         ccdData.getExecutors().stream().filter(Executor::isApplying).map(Executor::getAddress).forEach(address -> {
             if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                 // errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 // "executorAddressIsNull"));
+                System.out.println("COMING TO GET EXECUTOR ERRROR => ");
+                System.out.println(address);
             }
         });
-
         return new ArrayList<>(errors);
     }
 }

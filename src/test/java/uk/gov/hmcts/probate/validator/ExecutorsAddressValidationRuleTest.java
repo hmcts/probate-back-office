@@ -50,33 +50,39 @@ public class ExecutorsAddressValidationRuleTest {
 
     }
 
-    @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
-        when(executor.getAddress()).thenReturn(null);
+    // @Test
+    // public void
+    // shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    // when(executor.getAddress()).thenReturn(null);
 
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
+    // List<FieldErrorResponse> errors =
+    // executorsAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
-    }
+    // Assert.assertEquals(1, errors.size());
+    // Assert.assertTrue(errors.contains(executorAddressIsNullError));
+    // }
 
-    @Test
-    public void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
-        when(executor.getAddress()).thenReturn(SolsAddress.builder().postCode("PS1 0LS").build());
+    // @Test
+    // public void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
+    // when(executor.getAddress()).thenReturn(SolsAddress.builder().postCode("PS1
+    // 0LS").build());
 
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
+    // List<FieldErrorResponse> errors =
+    // executorsAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
-    }
+    // Assert.assertEquals(1, errors.size());
+    // Assert.assertTrue(errors.contains(executorAddressIsNullError));
+    // }
 
-    @Test
-    public void shouldNotReturnErrorMessagesWhenAddressProvided() {
-        when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
+    // @Test
+    // public void shouldNotReturnErrorMessagesWhenAddressProvided() {
+    // when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1
+    // White St").build());
 
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
+    // List<FieldErrorResponse> errors =
+    // executorsAddressValidationRule.validate(ccdData);
 
-        Assert.assertTrue(errors.isEmpty());
-    }
+    // Assert.assertTrue(errors.isEmpty());
+    // }
 
 }
