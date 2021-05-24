@@ -82,7 +82,7 @@ docmosis:
     sentEmail:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
-      templateName: FL-PRB-SOT-ENG-00090.doc
+      templateName: FL-PRB-SOT-ENG-00090-DTSPB-1989.doc
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
