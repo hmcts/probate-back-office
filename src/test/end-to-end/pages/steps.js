@@ -45,6 +45,7 @@ module.exports = function () {
         caseProgressSubmittedConfirmation: steps.caseProgress.submittedConfirmation,
         caseProgressNavigateToCaseCaseworker: steps.caseProgress.navigateToCaseCaseworker,
         caseProgressCaseworkerChangeState: steps.caseProgress.caseworkerChangeState,
+        caseProgressSelectPenultimateNextStepAndGo: steps.caseProgress.selectPenultimateNextStepAndGo,
         caseProgressClickGoAndSignOut: steps.caseProgress.clickGoAndSignOut,
         caseProgressNavigateToCaseSolicitor: steps.caseProgress.navigateToCaseSolicitor,
         caseProgressFeePayment: steps.caseProgress.feePayment,
