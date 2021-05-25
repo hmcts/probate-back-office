@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.hardstops;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -16,14 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
-    public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     public static final String VALIDATE_URL = "/case/sols-validate";
     private static final String CASE_STOP_CONFIRMATION = "/case/stopConfirmation";
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
+
     @Test
     public void validateWillUpdateProbateWithoutHardStop() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.willUpdate.json"))
             .post(VALIDATE_URL).then().statusCode(200)
@@ -34,7 +41,9 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateWillUpdateIntestacyWithoutHardStop() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.willUpdateIntestacy.json"))
             .post(VALIDATE_URL).then().statusCode(200)
@@ -45,7 +54,9 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateWillUpdateAnnexedWithoutHardStop() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.willUpdateAdmon.json"))
             .post(VALIDATE_URL).then().statusCode(200)
@@ -55,8 +66,10 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateNoHardStopWithNoWillAccessOriginalProbate() {
-        given().relaxedHTTPSValidation()
+    public void validateHardStopWithNoWillAccessOriginalProbate() {
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))
             .post(VALIDATE_PROBATE_URL).then().statusCode(200)
@@ -66,8 +79,10 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateNoHardStopWithNoWillAccessOriginalAdmon() {
-        given().relaxedHTTPSValidation()
+    public void validateHardStopWithNoWillAccessOriginalAdmon() {
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalAdmon.json"))
             .post(VALIDATE_ADMON_URL).then().statusCode(200)
@@ -78,8 +93,9 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     // We no longer stop these
     @Test
-    public void validateNoHardMessageWithNoOriginalWill() {
-        Response response = given()
+    public void validateHardMessageWithNoOriginalWill() {
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))

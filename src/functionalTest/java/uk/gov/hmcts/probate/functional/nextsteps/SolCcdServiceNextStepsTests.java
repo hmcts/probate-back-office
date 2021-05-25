@@ -5,6 +5,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -28,9 +29,14 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "firmpc", "a photocopy of the signed legal statement and declaration");
     }
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
+
     @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
-        String fullResponse = validatePostRequestSuccessForLegalStatement("success.nextsteps-LegalStatementUploaded"
+        final String fullResponse = validatePostRequestSuccessForLegalStatement("success.nextsteps-LegalStatementUploaded"
                 + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc");
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
@@ -121,18 +127,18 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformSolicitorExecutorFields() {
-        String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
-        JsonPath jsonPath = JsonPath.from(response);
+        final String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
+        final JsonPath jsonPath = JsonPath.from(response);
 
-        HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
+        final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
         Assert.assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
         Assert.assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
         Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 
-        HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
+        final HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
         Assert.assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
 
-        HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
+        final HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
         Assert.assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
         Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
         Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
@@ -149,7 +155,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private String transformCase(String jsonFileName, String path) {
 
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -159,26 +165,20 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
-        Response response = given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("success.nextsteps.json"))
-                .post("/nextsteps/confirmation");
-
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(validationString));
+        validatePostRequestSuccessForLegalStatement("success.nextsteps.json", validationString);
     }
 
     private String validatePostRequestSuccessForLegalStatement(String file, String... validationString) {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile(file))
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
-        String responseString = response.getBody().asString();
-        for (String val : validationString) {
+        final String responseString = response.getBody().asString();
+        for (final String val : validationString) {
             assertTrue(responseString.contains(val));
         }
         return responseString;
@@ -186,7 +186,9 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
                                                              String errorMsg) {
-        Response response = given().relaxedHTTPSValidation()
+        final Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(replaceString(oldString, replacingString))
             .post("/nextsteps/validate");
@@ -200,7 +202,9 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void verifyAll(String url, String jsonInput, int statusCode, String message, String fieldError) {
-        Response response = given().relaxedHTTPSValidation()
+        final Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile(jsonInput))
             .post(url);

@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
@@ -26,6 +27,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String DOC_NAME = "success.beforeLegalStatement.checkYourAnswersPayload.json";
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
@@ -117,7 +123,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyIncorrectInputReturns400() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
@@ -138,6 +146,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
@@ -163,6 +172,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() {
         final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json")
@@ -180,6 +190,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() {
         final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWill.json").replace("Main", ""))
@@ -194,7 +205,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeLegalStatement() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
@@ -204,7 +217,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeSigningSOT() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
@@ -239,7 +254,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg,
                                                              String postURL) {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(replaceStringInCheckYourAnswersPayload(oldString, replacingString))
             .when().post(postURL).then().statusCode(400)
@@ -259,6 +276,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         IntegrationTestBase.setEvidenceManagementUrlAsBaseUri();
         try {
             final ValidatableResponse response2 = given()
+                .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/documents/" + documentId + "/binary")
