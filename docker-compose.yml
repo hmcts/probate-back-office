@@ -478,8 +478,8 @@ services:
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
-      - LAUNCHDARKLY_KEY: "${LD_SDK_FE_KEY}"
-      - LAUNCHDARKLY_USER_KEY: "${LD_FE_USER_KEY}"
+      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
 
     ports:
       - 3000:3000
