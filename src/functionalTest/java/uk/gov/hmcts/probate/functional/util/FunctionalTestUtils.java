@@ -258,7 +258,12 @@ public class FunctionalTestUtils {
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
-            .when().get(ccdStartAsCaseworkerUrl).andReturn();
+            .when()
+                .get(ccdStartAsCaseworkerUrl)
+            .then()
+                .statusCode(200)
+                .extract().response();
+        log.info(startResponse.getBody().prettyPrint());
         String token = startResponse.getBody().jsonPath().get("token");
         String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
