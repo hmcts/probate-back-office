@@ -152,9 +152,10 @@ public class FunctionalTestUtils {
 
     public String downloadPdfAndParseToString(String documentUrl) {
         Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId())
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithUserId())
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl))
+                .then().statusCode(200).extract().response();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
@@ -162,18 +163,20 @@ public class FunctionalTestUtils {
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
         String userId = getSchedulerCaseworkerUserId();
         Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId(serviceToken, userId))
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithUserId(serviceToken, userId))
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl))
+                .then().statusCode(200).extract().response();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
 
     public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
         Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(headers)
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl))
+                .then().statusCode(200).extract().response();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
@@ -225,9 +228,10 @@ public class FunctionalTestUtils {
 
         String userInfoUrl = authProviderUrl + "/details";
         Response userResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when().get(userInfoUrl).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(headers)
+                .when().get(userInfoUrl)
+                .then().statusCode(200).extract().response();
 
         JsonPath jsonPath = JsonPath.from(userResponse.getBody().asString());
         return jsonPath.get("id");
