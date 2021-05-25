@@ -456,6 +456,8 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+      LAUNCHDARKLY_KEY: "${LD_SDK_BO_KEY}"
+      LD_USER_KEY: "${LD_BO_USER_KEY}"
     ports:
       - 4104:4104
     depends_on:
