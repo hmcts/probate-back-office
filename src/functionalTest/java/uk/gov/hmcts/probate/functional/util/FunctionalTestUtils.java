@@ -256,11 +256,11 @@ public class FunctionalTestUtils {
         String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventId + "/token";
         Response startResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .when()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .when()
                 .get(ccdStartAsCaseworkerUrl)
-            .then()
+                .then()
                 .statusCode(200)
                 .extract().response();
         log.info(startResponse.getBody().prettyPrint());
@@ -269,10 +269,14 @@ public class FunctionalTestUtils {
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .body(caseCreateJson)
-            .when().post(submitForCaseworkerUrl).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .body(caseCreateJson)
+                .when().post(submitForCaseworkerUrl)
+                .then()
+                .statusCode(201)
+                .extract().response();
+        log.info(submitResponse.getBody().prettyPrint());
         return submitResponse.getBody().asString();
     }
 
@@ -280,10 +284,16 @@ public class FunctionalTestUtils {
         String user = getCaseworkerUserId();
         String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId;
-        Response startResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .when().get(ccdFindCaseUrl).andReturn();
+        Response startResponse = RestAssured
+                .given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .when()
+                .get(ccdFindCaseUrl)
+                .then()
+                .statusCode(200)
+                .extract().response();
+        log.info(startResponse.getBody().prettyPrint());
         return startResponse.getBody().asString();
     }
 
@@ -301,7 +311,11 @@ public class FunctionalTestUtils {
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
-            .when().get(ccdStartAsCaseworkerUrl).andReturn();
+            .when().get(ccdStartAsCaseworkerUrl)
+                .then()
+                .statusCode(200)
+                .extract().response();
+        log.info(startResponse.getBody().prettyPrint());
         return startResponse.getBody().jsonPath().get("token");
     }
 
@@ -310,10 +324,14 @@ public class FunctionalTestUtils {
         String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/events";
         Response submitResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .body(caseJson)
-            .when().post(submitForCaseworkerUrl).andReturn();
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .body(caseJson)
+                .when().post(submitForCaseworkerUrl)
+                .then()
+                .statusCode(201)
+                .extract().response();
+        log.info(submitResponse.getBody().prettyPrint());
         return submitResponse.getBody().asString();
     }
 
