@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.printservice;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -16,9 +17,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
+
     @Test
     public void verifySuccessForGetPrintTemplateDocuments() {
-        Response response = RestAssured.given()
+        final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.printCaseDetails.json"))
@@ -33,7 +40,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySolsTemplateDetails() {
-        Response response = RestAssured.given().relaxedHTTPSValidation()
+        final Response response = RestAssured.given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .when().get("/template/case-details/sol");
 
@@ -63,7 +72,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyPaTemplateDetails() {
-        Response response = RestAssured.given().relaxedHTTPSValidation()
+        final Response response = RestAssured.given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .when().get("/template/case-details/pa");
 
@@ -93,7 +104,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyprobateManLegacyCaseReturnsOkResponseCode() {
-        Response response = RestAssured.given().relaxedHTTPSValidation()
+        final Response response = RestAssured.given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .when().get("/template/probateManLegacyCase");
         response.prettyPrint();
@@ -104,7 +117,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyprobateManLegacyCaseReturnsBadResponseCode() {
-        Response response = RestAssured.given().relaxedHTTPSValidation()
+        final Response response = RestAssured.given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .when().get("/template/probateManLegacyCase");
         response.prettyPrint();
