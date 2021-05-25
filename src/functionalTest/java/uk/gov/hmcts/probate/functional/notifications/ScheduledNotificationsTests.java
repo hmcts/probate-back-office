@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.core.annotations.Pending;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,11 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String ATTRIBUTE_GRANT_DELAYED_NOTIFICATION_DATE = "grantDelayedNotificationDate";
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
     private String grantAwaitingDocumentationNotificationPeriodDays;
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     @Pending
@@ -116,6 +122,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         //pause to enable ccd logstash/ES to index the case update
         Thread.sleep(ES_DELAY);
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithSchedulerCaseworkerUser())
             .when().post(path + "?date=" + date)
