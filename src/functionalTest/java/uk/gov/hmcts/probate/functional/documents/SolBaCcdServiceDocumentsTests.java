@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.functional.documents;
 
 import io.restassured.RestAssured;
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -157,16 +155,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
 
-    private RestAssuredConfig config;
-
     @Before
     public void setUp() {
-        RestAssured.useRelaxedHTTPSValidation();
-        config = RestAssured.config()
-                .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+        initialiseConfig();
     }
 
     @Test
@@ -259,7 +250,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generatePdfDocumentFromPayload(String payload, String path) {
 
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
@@ -468,7 +459,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
-        String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
@@ -509,7 +500,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForFurtherEvidenceAdmonWill() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
         assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
@@ -519,7 +510,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() {
-        String response = generatePdfDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
         assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
@@ -531,14 +522,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForFurtherEvidenceIntestacy() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
     }
 
     @Test
     public void verifySuccessForCodicilsIntestacy() {
-        String response = generatePdfDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK));
         assertTrue(response.contains(FIRM_AUTHORISATION));
@@ -546,7 +537,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForFurtherEvidenceTrustCorpProbate() {
-        String response = generatePdfDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(SIGNED_DATE));
         assertTrue(response.contains("1st January 2021"));
@@ -1184,7 +1175,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTDomiciledInEnglandAndWales() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Main Applicant of Test, Test, A1 2BC, UK make the following"
                 + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
                 + " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
@@ -1192,7 +1183,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTIndividualExecutorPowerReserved() {
-        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor4_name, another executor named in the will,"
                 + " is not making this application but reserves power to do so at a later date."));
@@ -1200,7 +1191,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTIndividualExecutorRenunciation() {
-        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor3_name, another executor named in the will, "
                 + "has renounced probate and letters "
@@ -1209,7 +1200,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTExecutorDiedBeforeAndAfterDeceased() {
-        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "executor1_name, another executor named in the will, has died in the lifetime of the deceased."));
@@ -1219,7 +1210,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTExecutorLacksMentalCapacity() {
-        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "executor5_name, another executor named in the will, lacks capacity to manage their"
@@ -1228,7 +1219,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() {
-        String response = generatePdfDocument("solicitorPayloadDispenseNotGiven.json",
+        final String response = generatePdfDocument("solicitorPayloadDispenseNotGiven.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Notice of this application has on the 10th October 2010 "
                 + "been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules "
@@ -1237,7 +1228,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTExecutorConcurrentApplication() {
-        String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("We are concurrently applying for notice of this application"
                 + " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules"
@@ -1246,7 +1237,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFirstParagraphPersonWhoDiedForClearingOne() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
@@ -1256,7 +1247,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() {
-        String response = generatePdfDocument("solicitorPayloadPartnersInFirm.json",
+        final String response = generatePdfDocument("solicitorPayloadPartnersInFirm.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
@@ -1267,7 +1258,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySecondParagraphFirmSuccessionForClearingThree() {
-        String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
+        final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
@@ -1278,7 +1269,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
-        String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
                 + "stakeholder in the firm Successor firm, at the date of death of the deceased."));
 
@@ -1286,7 +1277,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
@@ -1298,7 +1289,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
@@ -1310,7 +1301,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
                 GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
@@ -1319,7 +1310,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() {
-        String response = generatePdfDocument("solicitorPayloadPartnersAllRenounce.json",
+        final String response = generatePdfDocument("solicitorPayloadPartnersAllRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
@@ -1328,7 +1319,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() {
-        String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
+        final String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor named in the will has by a resolution, which has been filed with the "
@@ -1341,7 +1332,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFifthParagraphLodgedApplicationClearingEight() {
-        String response = generatePdfDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, certified copy"
                 + " of which is lodged with this application, in which Exfn1 Exln1 identified by the position"
                 + " they hold and which is still in force, appointed them for the purpose of applying for probate"
@@ -1352,7 +1343,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFirstParagraphClearancePartnerSucceeded() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
@@ -1363,7 +1354,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTSecondParagraphSoleSucceeded() {
-        String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
+        final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
@@ -1374,7 +1365,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTThirdParagraphPartnerRenounceSucceeded() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the "
@@ -1385,14 +1376,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTFourthParagraphPartnerAllRenounceSucceeded() {
-        String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
     }
 
     @Test
     public void verifySoTFifthParagraphJudgeSeniorDistrict() {
-        String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
+        final String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
                 GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
@@ -1411,7 +1402,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTSixthParagraphTrustCorpResolutionLodged() {
-        String response = generatePdfDocument("verifySolPayloadTrustCorpResolutionLodged.json",
+        final String response = generatePdfDocument("verifySolPayloadTrustCorpResolutionLodged.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, "
                 + "certified copy of which is lodged"
@@ -1422,7 +1413,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTNoDuplicateSolExecutors() {
-        String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
@@ -1431,7 +1422,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySoTSolNotRepeated() {
-        String response = generatePdfDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
+        final String response = generatePdfDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
         assertFalse(response
                 .contains("Jim Smith (executor)"));
         assertTrue(response
