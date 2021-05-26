@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -35,6 +36,11 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_URL = "/document/generate-grant";
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
     private final FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
@@ -138,7 +144,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -252,7 +258,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "govuk-section-break--m "
             + "govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -382,7 +388,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -498,7 +504,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "</div>\n"
             + "</div>\n";
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -602,7 +608,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -720,7 +726,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<hr class=\"govuk-section-break govuk-section-"
             + "break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -852,7 +858,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -887,7 +893,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -924,7 +930,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -1058,7 +1064,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<hr class=\"govuk-"
             + "section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -1179,7 +1185,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -1303,7 +1309,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<hr class=\"govuk-section-break govuk-section-break"
             + "--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -1434,7 +1440,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<hr class=\"govuk-section-break govuk-section-break--m "
             + "govuk-section-break--visible\">\n\n</div>\n</div>\n";
 
-        assertEquals(expected, taskList);
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
     @Test
@@ -1563,7 +1569,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
         expectedHtml = expectedHtml.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
-        assertEquals(expectedHtml, taskList);
+        assertEquals(removeCrLfs(expectedHtml), removeCrLfs(taskList));
     }
 
     @Test
@@ -1607,8 +1613,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     }
 
     private String postCwJson(String jsonFileName, String path) {
-
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -1619,8 +1625,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     }
 
     private String postSolJson(String jsonFileName, String path) {
-
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getSolicitorHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -1631,7 +1637,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     }
 
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))

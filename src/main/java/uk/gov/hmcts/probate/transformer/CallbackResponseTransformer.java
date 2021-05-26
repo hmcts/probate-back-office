@@ -356,8 +356,8 @@ public class CallbackResponseTransformer {
     public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getBoExaminationChecklistRequestQA()
-            .equalsIgnoreCase(ANSWER_YES)) {
+        if (ANSWER_YES.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
+                .getBoExaminationChecklistRequestQA())) {
             responseCaseDataBuilder.state(QA_CASE_STATE);
         }
         return transformResponse(responseCaseDataBuilder.build());
