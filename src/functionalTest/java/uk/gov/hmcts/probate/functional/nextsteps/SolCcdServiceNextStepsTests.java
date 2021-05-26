@@ -36,7 +36,8 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
-        final String fullResponse = validatePostRequestSuccessForLegalStatement("success.nextsteps-LegalStatementUploaded"
+        final String fullResponse = validatePostRequestSuccessForLegalStatement(
+            "success.nextsteps-LegalStatementUploaded"
                 + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc");
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
