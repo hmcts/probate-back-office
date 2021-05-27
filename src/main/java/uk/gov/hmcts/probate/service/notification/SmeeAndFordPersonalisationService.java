@@ -157,9 +157,9 @@ public class SmeeAndFordPersonalisationService {
         if (SOLICITOR.equals(data.getApplicationType())) {
             sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName());
             sol = sol + SEP;
-            sol = sol + getFullAddress(data.getSolsSolicitorAddress());
             sol = sol + ifNotEmpty(data.getSolsSolicitorAppReference());
             sol = sol + SEP;
+            sol = sol + getFullAddress(data.getSolsSolicitorAddress());
         } else {
             sol = sol + SEP;
             sol = sol + SEP;
