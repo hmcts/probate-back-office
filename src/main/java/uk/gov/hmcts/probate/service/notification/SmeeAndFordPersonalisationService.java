@@ -157,8 +157,7 @@ public class SmeeAndFordPersonalisationService {
         if (SOLICITOR.equals(data.getApplicationType())) {
             sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName());
             sol = sol + SEP;
-            sol = sol + getAddress(data.getSolsSolicitorAddress());
-            sol = sol + SEP;
+            sol = sol + getFullAddress(data.getSolsSolicitorAddress());
             sol = sol + ifNotEmpty(data.getSolsSolicitorAppReference());
             sol = sol + SEP;
         } else {
@@ -200,12 +199,11 @@ public class SmeeAndFordPersonalisationService {
             execCount++;
         }
 
-        String execsData = allExecs.toString();
-        return execsData;
+        return allExecs.toString();
     }
 
     private String getApplyingExecutorDetails(CollectionMember<AdditionalExecutorApplying> applying) {
-        StringBuilder allExecs = new StringBuilder();
+        var allExecs = new StringBuilder();
         allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
         allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
         allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
@@ -217,7 +215,7 @@ public class SmeeAndFordPersonalisationService {
     }
 
     private String getFullAddress(SolsAddress address) {
-        StringBuilder addBuilder = new StringBuilder();
+        var addBuilder = new StringBuilder();
         if (address != null) {
             addBuilder.append(getAddress(address));
             addBuilder.append(SEP);
@@ -234,39 +232,31 @@ public class SmeeAndFordPersonalisationService {
     }
     
     private String getAddress(SolsAddress address) {
-        StringBuilder addBuilder = new StringBuilder();
-        if (address != null) {
+        var addBuilder = new StringBuilder();
             addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine1()));
             addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
             addBuilder.append(ifNotEmpty(address.getAddressLine3()));
-        }
         
         return addBuilder.toString();
     }
 
     private String getCounty(SolsAddress address) {
-        StringBuilder addBuilder = new StringBuilder();
-        if (address != null) {
-            addBuilder.append(ifNotEmpty(address.getCounty()));
-        }
+        var addBuilder = new StringBuilder();
+        addBuilder.append(ifNotEmpty(address.getCounty()));
 
         return addBuilder.toString();
     }
 
     private String getPostTown(SolsAddress address) {
-        StringBuilder addBuilder = new StringBuilder();
-        if (address != null) {
-            addBuilder.append(ifNotEmpty(address.getPostTown()));
-        }
+        var addBuilder = new StringBuilder();
+        addBuilder.append(ifNotEmpty(address.getPostTown()));
 
         return addBuilder.toString();
     }
 
     private String getPostCode(SolsAddress address) {
-        StringBuilder addBuilder = new StringBuilder();
-        if (address != null) {
-            addBuilder.append(ifNotEmpty(address.getPostCode()));
-        }
+        var addBuilder = new StringBuilder();
+        addBuilder.append(ifNotEmpty(address.getPostCode()));
 
         return addBuilder.toString();
     }
@@ -321,9 +311,6 @@ public class SmeeAndFordPersonalisationService {
     }
 
     private String removeLastNewLine(String data) {
-        if (data.indexOf(NEW_LINE) <= 0) {
-            return data;
-        }
         return data.substring(0, data.lastIndexOf(NEW_LINE));
     }
 

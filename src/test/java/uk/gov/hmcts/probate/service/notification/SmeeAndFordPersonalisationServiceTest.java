@@ -73,7 +73,8 @@ public class SmeeAndFordPersonalisationServiceTest {
                 + "Codicil being present,pdf file name field for Wills,pdf for Digital Grant");
     }
 
-    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned,
+    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
+                                                        int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
                                                         boolean hasDeceasedAlias, boolean hasDOD) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
@@ -83,10 +84,14 @@ public class SmeeAndFordPersonalisationServiceTest {
         }
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
-        additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "1", true)));
-        additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "2", false)));
+        if (numExecs == -1) {
+            additionalExecsApplying = null;
+        } else {
+            for (int i = 0; i < numExecs; i++) {
+                additionalExecsApplying
+                    .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "" + i, true)));
+            }
+        }
         SolsAddress primaryAddress = buildAddress("Prim");
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
             .registryLocation("Registry Address")
@@ -187,9 +192,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false, 
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false, 
             true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -205,10 +211,32 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true, false, true, 
+    public void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
             true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false, 
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
+            false,
+            true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoExecs.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
+            true, 
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
+            false, 
             true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -225,9 +253,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             false).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false,
             false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
