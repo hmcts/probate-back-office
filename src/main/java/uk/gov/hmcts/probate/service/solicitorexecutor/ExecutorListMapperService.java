@@ -157,7 +157,7 @@ public class ExecutorListMapperService {
                         .applyingExecutorName(FormattingService.capitaliseEachWord(
                                 exec.getValue().getAdditionalExecForenames()
                                 + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(getSolExecType(caseData))
+                        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                         .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                         .build()))
                 .collect(Collectors.toList());
