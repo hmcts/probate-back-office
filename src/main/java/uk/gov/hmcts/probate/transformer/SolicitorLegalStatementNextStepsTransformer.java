@@ -27,10 +27,8 @@ public class SolicitorLegalStatementNextStepsTransformer {
     public static final String STATE_SOLS_APP_CREATED_SOLICITOR_DTLS_LABEL = "Probate practitioner details";
     public static final String STATE_SOLS_APP_CREATED_LABEL = "Deceased details";
     public static final String GRANT_TYPE_PROBATE_LABEL = "Probate details";
-    public static final String GRANT_TYPE_INTESTACY_LABEL = "Letters of administration where the deceased left no will";
-    public static final String GRANT_TYPE_ADMON_LABEL =
-        "Letters of administration with will annexed where the deceased left a will but none of the executors can "
-            + "apply";
+    public static final String GRANT_TYPE_INTESTACY_LABEL = "Letters of administration details";
+    public static final String GRANT_TYPE_ADMON_LABEL =  "Letters of administration with will annexed details";
 
 
     public void transformLegalStatmentAmendStates(@Valid CaseDetails caseDetails,

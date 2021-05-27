@@ -1024,7 +1024,7 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
                     is("NoWill")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
-                is("Letters of administration where the deceased left no will")))
+                is("Letters of administration details")))
             .andReturn();
     }
 
@@ -1047,8 +1047,7 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].code",
                     is("WillLeftAnnexed")))
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
-                is("Letters of administration with will annexed where the deceased left a will but none of the "
-                    + "executors can apply")))
+                is("Letters of administration with will annexed details")))
             .andReturn();
     }
 }

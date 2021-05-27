@@ -61,7 +61,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
         assertListCode(1, "SolAppCreatedDeceasedDtls");
         assertListValue(1, "Deceased details");
         assertListCode(2, "NoWill");
-        assertListValue(2, "Letters of administration where the deceased left no will");
+        assertListValue(2, "Letters of administration details");
     }
 
     @Test
@@ -77,9 +77,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
         assertListCode(1, "SolAppCreatedDeceasedDtls");
         assertListValue(1, "Deceased details");
         assertListCode(2, "WillLeftAnnexed");
-        assertListValue(2,
-            "Letters of administration with will annexed where the deceased left a will but none of the executors can"
-                + " apply");
+        assertListValue(2, "Letters of administration with will annexed details");
     }
 
     private void assertListCode(int ind, String value) {
