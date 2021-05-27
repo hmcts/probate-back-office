@@ -4,3 +4,6 @@ public/*
 app/assets/javascripts/*.js
 coverage
 *.min.js
+target/*
+build/*
+functional-output/*

@@ -433,6 +433,10 @@ data-extract:
   block:
     size: 3000
     numDaysInclusive: 2
+  smee-and-ford:
+    size: 10000
+
+smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 
 welsh:
   months:

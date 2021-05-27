@@ -90,7 +90,6 @@
                 "lastName": "Name",
                 "firstName": "Fourth Executor",
                 "isApplying": "No",
-                "executorNotified": "Yes",
                 "notApplyingKey": "optionPowerReserved",
                 "executorNotified": "Yes",
                 "notApplyingReason": "This executor doesn&rsquo;t want to apply now, but may do in the future (this is also known as power reserved)"

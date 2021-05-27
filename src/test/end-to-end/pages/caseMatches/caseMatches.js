@@ -12,12 +12,15 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
-    // just a small delay - occasionally we get issues.
-    // Only necessary where we have no auto delay (local dev).
-    await I.wait(60);
 
     if (!testConfig.TestAutoDelayEnabled) {
+        // just a small delay - occasionally we get issues.
+        // Only necessary where we have no auto delay (local dev).
         await I.wait(0.5);
+    } else {
+        // This was set to 60 for pipeline which seems overkill, perhaps
+        // we had a problem one time with ES? Now set back to 6
+        await I.wait(6);
     }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
