@@ -193,7 +193,7 @@ public class SmeeAndFordPersonalisationService {
 
         }
         while (execCount < 3) {
-            for (int i = 0; i < 6; i++) {
+            for (var i = 0; i < 6; i++) {
                 allExecs.append(SEP);
             }
             execCount++;

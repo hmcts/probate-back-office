@@ -231,6 +231,26 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
+    public void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
+            false,
+            true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataExtraExecs.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
             true, 
