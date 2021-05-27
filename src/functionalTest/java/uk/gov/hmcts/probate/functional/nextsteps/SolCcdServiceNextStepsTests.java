@@ -24,7 +24,8 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyAllDataInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("success.nextsteps.json", "deceasedFirstName",
+        validatePostRequestSuccessForLegalStatement("success.nextsteps.json",
+            "deceasedFirstName",
             "deceasedLastName", "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln",
             "firmpc", "a photocopy of the signed legal statement and declaration");
     }
@@ -36,7 +37,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
-        final String fullResponse = validatePostRequestSuccessForLegalStatement(
+        String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded"
                 + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc");
