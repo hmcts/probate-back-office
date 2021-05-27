@@ -243,6 +243,7 @@ public class ExecutorListMapperServiceTest {
                 .build();
 
         assertEquals(expected, result.get(0).getValue());
+        assertEquals(expected.getApplyingExecutorType(), result.get(0).getValue().getApplyingExecutorType());
         assertEquals(EXEC_ID, result.get(0).getId());
         assertEquals(1, result.size());
     }
