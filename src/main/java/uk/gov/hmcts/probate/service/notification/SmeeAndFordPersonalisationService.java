@@ -233,9 +233,9 @@ public class SmeeAndFordPersonalisationService {
     
     private String getAddress(SolsAddress address) {
         var addBuilder = new StringBuilder();
-            addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine1()));
-            addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
-            addBuilder.append(ifNotEmpty(address.getAddressLine3()));
+        addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine1()));
+        addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
+        addBuilder.append(ifNotEmpty(address.getAddressLine3()));
         
         return addBuilder.toString();
     }
