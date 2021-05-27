@@ -164,6 +164,10 @@ public class SmeeAndFordPersonalisationService {
             sol = sol + SEP;
             sol = sol + SEP;
             sol = sol + SEP;
+            sol = sol + SEP;
+            sol = sol + SEP;
+            sol = sol + SEP;
+            sol = sol + SEP;
         }
         
         return sol;
