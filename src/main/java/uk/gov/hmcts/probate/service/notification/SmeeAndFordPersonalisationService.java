@@ -53,7 +53,7 @@ public class SmeeAndFordPersonalisationService {
         StringBuilder data = getSmeeAndFordBuiltData(cases);
 
         personalisation.put(PERSONALISATION_SMEE_AND_FORD_NAME, getSubject(fromDate, toDate));
-        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
+        personalisation.put(PERSONALISATION_CASE_DATA, removeLastNewLine(data.toString()));
 
         return personalisation;
     }
@@ -85,18 +85,16 @@ public class SmeeAndFordPersonalisationService {
                 data.append(SEP);
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfDeath()));
                 data.append(SEP);
-                data.append(getAddress(currentCaseData.getDeceasedAddress()));
+                data.append(getFullAddress(currentCaseData.getDeceasedAddress()));
+                data.append(getApplyingExecutorsDetails(currentCaseData.getAdditionalExecutorsApplying()));
+                data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(SEP);
-                data.append(getApplyingExecutorDetails(currentCaseData.getAdditionalExecutorsApplying()));
-                data.append(SEP);
-                data.append(getPrimaryApplicantDetails(currentCaseData));
-                data.append(SEP);
+                data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
                 data.append(currentCaseData.getIhtGrossValue().toString());
                 data.append(SEP);
                 data.append(currentCaseData.getIhtNetValue().toString());
                 data.append(SEP);
                 data.append(getSolicitorDetails(currentCaseData));
-                data.append(SEP);
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
                 data.append(SEP);
                 data.append(hasCodicil(currentCaseData));
@@ -158,35 +156,36 @@ public class SmeeAndFordPersonalisationService {
         String sol = "";
         if (SOLICITOR.equals(data.getApplicationType())) {
             sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName());
-            sol = sol + SPACE + ifNotEmpty(getAddress(data.getSolsSolicitorAddress()));
-            sol = sol + SPACE + ifNotEmpty(data.getSolsSolicitorAppReference());
+            sol = sol + SEP;
+            sol = sol + getAddress(data.getSolsSolicitorAddress());
+            sol = sol + SEP;
+            sol = sol + ifNotEmpty(data.getSolsSolicitorAppReference());
+            sol = sol + SEP;
+        } else {
+            sol = sol + SEP;
+            sol = sol + SEP;
+            sol = sol + SEP;
         }
         
         return sol;
     }
 
-    private String getPrimaryApplicantDetails(CaseData data) {
+    private String getPrimaryApplicantName(CaseData data) {
         String primary = "";
-        primary = primary + ifNotEmpty(data.getPrimaryApplicantForenames());
-        primary = primary + SPACE + ifNotEmpty(data.getPrimaryApplicantSurname());
-        primary = primary + SPACE + ifNotEmpty(data.getPrimaryApplicantAlias());
-        primary = primary + SPACE + ifNotEmpty(getAddress(data.getPrimaryApplicantAddress()));
+        primary = primary + ifNotEmptyWithSpace(data.getPrimaryApplicantForenames());
+        primary = primary + ifNotEmptyWithSpace(data.getPrimaryApplicantSurname());
+        primary = primary + ifNotEmpty(data.getPrimaryApplicantAlias());
         
         return primary;
     }
 
-    private String getApplyingExecutorDetails(List<CollectionMember<AdditionalExecutorApplying>> 
+    private String getApplyingExecutorsDetails(List<CollectionMember<AdditionalExecutorApplying>> 
                                                   additionalExecutorsApplying) {
         int execCount = 0;
         StringBuilder allExecs = new StringBuilder();
         if (additionalExecutorsApplying != null) {
             for (CollectionMember<AdditionalExecutorApplying> applying : additionalExecutorsApplying) {
-                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorName()));
-                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorFirstName()));
-                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorLastName()));
-                allExecs.append(SPACE + ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
-                allExecs.append(SPACE + ifNotEmpty(getAddress(applying.getValue().getApplyingExecutorAddress())));
-                allExecs.append(SEP);
+                allExecs.append(getApplyingExecutorDetails(applying));
                 execCount++;
                 if (execCount > 3) {
                     break;
@@ -195,31 +194,101 @@ public class SmeeAndFordPersonalisationService {
 
         }
         while (execCount < 3) {
-            allExecs.append(SEP);
+            for (int i = 0; i < 6; i++) {
+                allExecs.append(SEP);
+            }
             execCount++;
         }
 
         String execsData = allExecs.toString();
-        execsData = removeLastSeparator(execsData);
         return execsData;
     }
 
+    private String getApplyingExecutorDetails(CollectionMember<AdditionalExecutorApplying> applying) {
+        StringBuilder allExecs = new StringBuilder();
+        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
+        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
+        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
+        allExecs.append(ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
+        allExecs.append(SEP);
+        
+        allExecs.append(ifNotEmpty(getFullAddress(applying.getValue().getApplyingExecutorAddress())));
+        return allExecs.toString();
+    }
+
+    private String getFullAddress(SolsAddress address) {
+        StringBuilder addBuilder = new StringBuilder();
+        if (address != null) {
+            addBuilder.append(getAddress(address));
+            addBuilder.append(SEP);
+            addBuilder.append(getPostTown(address));
+            addBuilder.append(SEP);
+            addBuilder.append(getCounty(address));
+            addBuilder.append(SEP);
+            addBuilder.append(getPostCode(address));
+            addBuilder.append(SEP);
+            addBuilder.append(getCountry(address));
+            addBuilder.append(SEP);
+        }
+        return addBuilder.toString();
+    }
+    
     private String getAddress(SolsAddress address) {
         StringBuilder addBuilder = new StringBuilder();
         if (address != null) {
-            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine1()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine2()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getAddressLine3()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getCounty()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getPostTown()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getPostCode()));
-            addBuilder.append(SPACE + ifNotEmpty(address.getCountry()));
+            addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine1()));
+            addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
+            addBuilder.append(ifNotEmpty(address.getAddressLine3()));
         }
         
         return addBuilder.toString();
     }
 
+    private String getCounty(SolsAddress address) {
+        StringBuilder addBuilder = new StringBuilder();
+        if (address != null) {
+            addBuilder.append(ifNotEmpty(address.getCounty()));
+        }
+
+        return addBuilder.toString();
+    }
+
+    private String getPostTown(SolsAddress address) {
+        StringBuilder addBuilder = new StringBuilder();
+        if (address != null) {
+            addBuilder.append(ifNotEmpty(address.getPostTown()));
+        }
+
+        return addBuilder.toString();
+    }
+
+    private String getPostCode(SolsAddress address) {
+        StringBuilder addBuilder = new StringBuilder();
+        if (address != null) {
+            addBuilder.append(ifNotEmpty(address.getPostCode()));
+        }
+
+        return addBuilder.toString();
+    }
+
+    private String getCountry(SolsAddress address) {
+        StringBuilder addBuilder = new StringBuilder();
+        if (address != null) {
+            addBuilder.append(ifNotEmpty(address.getCountry()));
+        }
+
+        return addBuilder.toString();
+    }
+
     private String ifNotEmpty(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return "";
+        } else {
+            return value;
+        }
+    }
+
+    private String ifNotEmptyWithSpace(String value) {
         if (StringUtils.isEmpty(value)) {
             return "";
         } else {
@@ -231,20 +300,31 @@ public class SmeeAndFordPersonalisationService {
         StringBuilder aliases = new StringBuilder();
         if (data.getDeceasedAliasNameList() != null)  {
             for (CollectionMember<ProbateAliasName> alias : data.getDeceasedAliasNameList()) {
-                aliases.append(ifNotEmpty(alias.getValue().getForenames()) + SPACE 
-                    + ifNotEmpty(alias.getValue().getLastName()));
+                aliases.append(ifNotEmptyWithSpace(
+                    ifNotEmptyWithSpace(alias.getValue().getForenames())
+                    + ifNotEmpty(alias.getValue().getLastName())));
             }
         }
-        return aliases.toString();
+        return removeAnyLastSpace(aliases.toString());
     }
 
     private String getDeceasedNameWithHonours(CaseData data) {
-        return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmpty(data.getDeceasedSurname()) 
-            + SPACE + ifNotEmpty(data.getBoDeceasedHonours());
+        return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmptyWithSpace(data.getDeceasedSurname()) 
+            + ifNotEmpty(data.getBoDeceasedHonours());
+    }
+    
+    private String removeAnyLastSpace(String data) {
+        if (data.indexOf(SPACE) <= 0) {
+            return data;
+        }
+        return data.substring(0, data.lastIndexOf(SPACE));
     }
 
-    private String removeLastSeparator(String data) {
-        return data.substring(0, data.lastIndexOf(SEP));
+    private String removeLastNewLine(String data) {
+        if (data.indexOf(NEW_LINE) <= 0) {
+            return data;
+        }
+        return data.substring(0, data.lastIndexOf(NEW_LINE));
     }
 
 }
