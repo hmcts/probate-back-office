@@ -190,7 +190,7 @@ public class SmeeAndFordPersonalisationService {
             for (CollectionMember<AdditionalExecutorApplying> applying : additionalExecutorsApplying) {
                 allExecs.append(getApplyingExecutorDetails(applying));
                 execCount++;
-                if (execCount > 3) {
+                if (execCount == 3) {
                     break;
                 }
             }
