@@ -38,7 +38,7 @@ public class PBARetrievalConsumerTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     public static final String ORGANISATION_EMAIL = "someemailaddress@organisation.com";
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
-    public static final String EMAIL_KEY = "email";
+    public static final String EMAIL_KEY = "UserEmail";
 
     @Autowired
     ObjectMapper objectMapper;
