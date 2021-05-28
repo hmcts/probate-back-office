@@ -75,7 +75,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
                 + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-                + "<font color=\"#505a5f\">These steps are to be completed by the probate "
+                + "<font color=\"#505a5f\">These steps are to be completed by the Probate "
                 + "practitioner.</font></p></div>"
                 + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m "
