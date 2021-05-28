@@ -91,7 +91,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div><a href=\""
             + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
