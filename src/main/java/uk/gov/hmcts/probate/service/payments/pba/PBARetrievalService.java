@@ -56,7 +56,7 @@ public class PBARetrievalService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
-        headers.add("email", email);
+        headers.add("UserEmail", email);
         return new HttpEntity<>(headers);
     }
 

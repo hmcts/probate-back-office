@@ -207,7 +207,7 @@ curl -X POST \
             "method": "GET",
             "url": "/refdata/external/v1/organisations/pbas",
             "headers": {
-              "email": {
+              "UserEmail": {
                 "equalTo": "probatesolicitor1@gmail.com"
               }
             }
@@ -250,7 +250,7 @@ curl -X POST \
             "method": "GET",
             "url": "/refdata/external/v1/organisations/pbas",
             "headers": {
-              "email": {
+              "UserEmail": {
                 "equalTo": "probatesolicitor2@gmail.com"
               }
             }
