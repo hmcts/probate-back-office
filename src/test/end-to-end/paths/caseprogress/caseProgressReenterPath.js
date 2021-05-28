@@ -79,7 +79,7 @@ Scenario('02 BO Case Progress E2E - Reenter Deceased Details', async function ({
             numCompleted: 0,
             numInProgress: 4,
             numNotStarted: 0,
-            linkText: 'Add probate practitioner details',
+            linkText: 'Add Probate practitioner details',
             linkUrl: '/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1',
             goToNextStep: true});
 

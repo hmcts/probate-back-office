@@ -1426,7 +1426,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertFalse(response
                 .contains("Jim Smith (executor)"));
         assertTrue(response
-                .contains("Jim Smith (probate practitioner and executor)"));
+                .contains("Jim Smith (Probate practitioner and executor)"));
         assertTrue(response.split("Jim Smith").length == 5);
     }
 }
