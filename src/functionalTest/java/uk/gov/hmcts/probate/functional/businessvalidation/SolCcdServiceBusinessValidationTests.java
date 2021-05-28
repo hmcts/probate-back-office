@@ -190,6 +190,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyRequestCheckListAnswerEqualsYesAndCheckQAState() {
+        final ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String state = jsonPath.get("data.state");
+
+        assertEquals("BOCaseQA", state);
+    }
+
+    @Test
     public void verifyRequestCheckListAnswerEqualsYes() {
         validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
     }
