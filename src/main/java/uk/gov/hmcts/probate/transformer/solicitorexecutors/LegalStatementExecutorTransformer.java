@@ -90,7 +90,6 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         formatDates(caseData);
         formatNames(caseData);
         caseData.setSingularProfitSharingTextForLegalStatement(getSingularProfitSharingTextForLegalStatement(caseData));
-        caseData.setPluralProfitSharingTextForLegalStatement(getPluralProfitSharingTextForLegalStatement(caseData));
     }
 
     private void formatDates(CaseData caseData) {
@@ -124,10 +123,6 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
 
     private String getSingularProfitSharingTextForLegalStatement(CaseData caseData) {
         return getPluralProfitSharingTextForLegalStatement(caseData, false);
-    }
-
-    private String getPluralProfitSharingTextForLegalStatement(CaseData caseData) {
-        return getPluralProfitSharingTextForLegalStatement(caseData, true);
     }
 
     private String getPluralProfitSharingTextForLegalStatement(CaseData caseData, boolean forPlural) {
