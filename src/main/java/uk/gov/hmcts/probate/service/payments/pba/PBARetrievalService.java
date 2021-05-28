@@ -37,8 +37,8 @@ public class PBARetrievalService {
 
     public List<String> getPBAs(String authToken) {
         String emailId = idamAuthenticateUserService.getEmail(authToken);
-        URI uri = buildUri(emailId);
-        HttpEntity<HttpHeaders> request = buildRequest(authToken);
+        URI uri = buildUri();
+        HttpEntity<HttpHeaders> request = buildRequest(authToken, emailId);
 
         ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
             request, PBAOrganisationResponse.class);
@@ -47,7 +47,7 @@ public class PBARetrievalService {
         return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
     }
 
-    private HttpEntity<HttpHeaders> buildRequest(String authToken) {
+    private HttpEntity<HttpHeaders> buildRequest(String authToken, String email) {
         HttpHeaders headers = new HttpHeaders();
         if (!authToken.matches("^Bearer .+")) {
             throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
@@ -56,12 +56,12 @@ public class PBARetrievalService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
+        headers.add("email", email);
         return new HttpEntity<>(headers);
     }
 
-    private URI buildUri(String emailId) {
+    private URI buildUri() {
         return fromHttpUrl(pbaUri + pbaApi)
-            .queryParam("email", emailId)
             .build().toUri();
     }
 }

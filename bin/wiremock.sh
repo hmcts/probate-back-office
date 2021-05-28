@@ -205,7 +205,12 @@ curl -X POST \
 --data '{
           "request": {
             "method": "GET",
-            "url": "/refdata/external/v1/organisations/pbas?email=probatesolicitor1@gmail.com"
+            "url": "/refdata/external/v1/organisations/pbas",
+            "headers": {
+              "email": {
+                "equalTo": "probatesolicitor1@gmail.com"
+              }
+            }
           },
           "response": {
             "status": 200,
@@ -243,7 +248,12 @@ curl -X POST \
 --data '{
           "request": {
             "method": "GET",
-            "url": "/refdata/external/v1/organisations/pbas?email=probatesolicitor2@gmail.com"
+            "url": "/refdata/external/v1/organisations/pbas",
+            "headers": {
+              "email": {
+                "equalTo": "probatesolicitor2@gmail.com"
+              }
+            }
           },
           "response": {
             "status": 200,

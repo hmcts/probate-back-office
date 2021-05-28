@@ -38,6 +38,7 @@ public class PBARetrievalConsumerTest {
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     public static final String ORGANISATION_EMAIL = "someemailaddress@organisation.com";
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String EMAIL_KEY = "email";
 
     @Autowired
     ObjectMapper objectMapper;
@@ -59,10 +60,9 @@ public class PBARetrievalConsumerTest {
             .given("Pbas organisational data exists for identifier " + ORGANISATION_EMAIL)
             .uponReceiving("a request for information for that organisation's pbas")
             .path("/refdata/external/v1/organisations/pbas")
-            .query("email=" + ORGANISATION_EMAIL)
             .method("GET")
             .headers(HttpHeaders.AUTHORIZATION, SOME_AUTHORIZATION_TOKEN, SERVICE_AUTHORIZATION,
-                SOME_SERVICE_AUTHORIZATION_TOKEN)
+                SOME_SERVICE_AUTHORIZATION_TOKEN, EMAIL_KEY, ORGANISATION_EMAIL)
             .willRespondWith()
             .status(200)
             .headers(getHeadersMap())
