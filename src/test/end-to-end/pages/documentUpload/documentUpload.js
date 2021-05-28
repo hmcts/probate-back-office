@@ -69,6 +69,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '6');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
     assert.equal('Other', optText);
+    
     */
 
     await I.waitForVisible({css: `${documentUploadConfig.id}_1_DocumentLink`});

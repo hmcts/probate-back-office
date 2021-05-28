@@ -8,7 +8,7 @@ module.exports = async function (opts) {
     await I.waitForElement('a[aria-controls="caseProgressTab"][aria-selected=true]');
 
     // Check text on lhs side is all correct.
-    const texts = await I.grabTextFrom('markdown  p.govuk-body-s');
+    const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
     assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the probate practitioner.');
     assert (texts[1] === 'Add solicitor details');
@@ -75,7 +75,7 @@ module.exports = async function (opts) {
         await I.see(`Submitted on ${moment().format('DD MMM yyyy')}`);
     }
     if (opts.goToNextStep) {
-        await I.waitForNavigationToComplete('button[type="submit"]');
+        await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
         await I.waitForNavigationToComplete('#sign-out');

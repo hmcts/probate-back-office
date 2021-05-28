@@ -136,11 +136,11 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         return Headers.headers(
-                new Header("ServiceAuthorization", serviceToken),
-                new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization",
-                        serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
-                new Header("user-id", userId));
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization",
+                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("user-id", userId));
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
@@ -157,6 +157,15 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+
+        return parsePDFToString(document.getBody().asInputStream());
+    }
+
+    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
+        Response document = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
@@ -321,6 +330,20 @@ public class FunctionalTestUtils {
             "\"applicationID\": \"603\",\"" + attributeKey + "\": \"" + attributeValue + "\",");
     }
 
+    public String convertToWelsh(LocalDate dateToConvert) {
+        String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
+            "Hydref", "Tachwedd","Rhagfyr"};
+
+        if (dateToConvert == null) {
+            return null;
+        }
+        int day = dateToConvert.getDayOfMonth();
+        int year = dateToConvert.getYear();
+        int month = dateToConvert.getMonth().getValue();
+        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
+            Integer.toString(year));
+    }
+    
     public String formatDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;

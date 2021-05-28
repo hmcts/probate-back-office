@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.nextsteps;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -16,6 +17,11 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyAllDetailsInTheReturnedMarkdown() {
@@ -79,7 +85,8 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("success.nextsteps.json"))
@@ -94,7 +101,9 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
                                                              String errorMsg) {
-        Response response = given().relaxedHTTPSValidation()
+        Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(replaceString(oldString, replacingString))
             .post("/nextsteps/validate");
@@ -108,7 +117,9 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void verifyAll(String url, String jsonInput, int statusCode, String message, String fieldError) {
-        Response response = given().relaxedHTTPSValidation()
+        final Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(utils.getJsonFromFile(jsonInput))
             .post(url);

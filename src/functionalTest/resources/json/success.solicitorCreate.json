@@ -42,7 +42,6 @@
       "solsSolicitorNotApplyingReason": null,
       "solsSOTJobTitle": "job title",
       "otherExecutorExists": "Yes",
-      "applicationGrounds": "Grounds for application",
       "deceasedAddress": {
         "AddressLine1": "1",
         "AddressLine2": "1",
@@ -86,7 +85,16 @@
         "Country": "2"
       },
       "solsSolicitorEmail": "solicitor@probate-test.com",
-      "solsSolicitorPhoneNumber": "0208 863 98688",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "1000000",
       "extraCopiesOfGrant": 1,
@@ -124,44 +132,6 @@
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
       "solsSOTNeedToUpdate": "No"
-    },
-    "data_classification": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
-      "solsSolicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "security_classifications": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
-      "solsSolicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
     }
-  },
-  "event_id": "solicitorCreate"
+  }
 }
