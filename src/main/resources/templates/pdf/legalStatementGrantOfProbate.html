@@ -172,7 +172,7 @@
                 in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased. That power is reserved to the other profit-sharing
-                {% if case_details.case_data.otherPartnersApplyingAsExecutors != null and case_details.case_data.otherPartnersApplyingAsExecutors.size > 1 %}
+                {% if case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                 {% else %}
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
