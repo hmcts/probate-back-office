@@ -302,7 +302,7 @@
                 <li>the application will be rejected if {% if (multipleExecutors) %}we{% else %}I{% endif %} do not provide information (if asked)</li>
                 <li>proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant</li>
             </ul>
-            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise {{ case_details.case_data.solsSolicitorFirmName }}, as {% if (multipleExecutors) %}our{% else %}my{% endif %} appointed probate practitioner, to
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise {{ case_details.case_data.solsSolicitorFirmName }}, as {% if (multipleExecutors) %}our{% else %}my{% endif %} appointed Probate practitioner, to
                 submit this application on {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf.</p>
         </td>
     </tr>
@@ -339,7 +339,7 @@
             <p>Name:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (Probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
         </td>
     </tr>
     <tr>

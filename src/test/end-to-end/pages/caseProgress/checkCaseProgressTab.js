@@ -10,11 +10,11 @@ module.exports = async function (opts) {
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
     assert (texts.length === 17);
-    assert (texts[0] === 'These steps are to be completed by the probate practitioner.');
-    assert (texts[1] === 'Add probate practitioner details');
+    assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
+    assert (texts[1] === 'Add Probate practitioner details');
     assert (texts[2] === 'Add deceased details');
     assert (texts[3] === 'Add application details');
-    assert (texts[4] === 'These steps are to be completed by the probate practitioner.');
+    assert (texts[4] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[5] === 'Review and sign legal statement and submit application');
     assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
     assert (texts[7] === 'Send documents\n');

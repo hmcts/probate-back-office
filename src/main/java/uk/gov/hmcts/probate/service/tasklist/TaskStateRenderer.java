@@ -23,7 +23,7 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUB
 
 // Renders links / text and also the status tag - i.e. details varying by state
 public class TaskStateRenderer {
-    private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add probate practitioner details";
+    private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add Probate practitioner details";
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";

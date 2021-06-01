@@ -53,7 +53,7 @@
       "What best describes the title and clearing type?",
       "Name of trust corporation",
       "Address of trust corporation",
-      "Name of the probate practitioner's position within the trust corporation as per the resolution"
+      "Name of the Probate practitioner's position within the trust corporation as per the resolution"
     ],
     "dataKeys": [
       "page1_list1_registry_location",

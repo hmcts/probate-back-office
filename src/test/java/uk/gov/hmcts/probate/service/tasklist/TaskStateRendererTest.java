@@ -33,7 +33,7 @@ public class TaskStateRendererTest {
 
         final String expectedHtml = "<div><a href=\""
                 + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
-                + "\" class=\"govuk-link\">Add probate practitioner details</a></div>\n"
+                + "\" class=\"govuk-link\">Add Probate practitioner details</a></div>\n"
                 + "<div>Add deceased details</div>\n"
                 + "<div>Add application details</div>\n"
                 + "<div>Review and sign legal statement and submit application</div>\n"
@@ -91,7 +91,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div><a href=\""
             + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
@@ -150,7 +150,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
@@ -222,7 +222,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
@@ -287,7 +287,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY
@@ -353,7 +353,7 @@ public class TaskStateRendererTest {
             + "<p><status-examineApp/></p>\n"
             + "<p><status-issueGrant/></p>\n";
 
-        final String expectedHtml = "<div>Add probate practitioner details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL
