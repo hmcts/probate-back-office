@@ -356,5 +356,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintDocument", "Label": "Which document do you wish to reprint?",  "FieldType": "DynamicList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintNumberOfCopies", "Label": "How many copies are needed?", "FieldType": "Number", "Min": "0", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkScanEnvelopes", "Label": "Bulk Scan Envelopes", "FieldType": "Collection", "FieldTypeParameter": "BulkScanEnvelope", "SecurityClassification": "PUBLIC"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

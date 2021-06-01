@@ -322,5 +322,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
+    private String caseHandedOffToLegacySite;
 
 }
