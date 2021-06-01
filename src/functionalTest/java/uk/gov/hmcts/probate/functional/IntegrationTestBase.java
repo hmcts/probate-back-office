@@ -64,9 +64,9 @@ public abstract class IntegrationTestBase {
         RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
                 .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+                        .setParam("http.connection.timeout", 120000)
+                        .setParam("http.socket.timeout", 120000)
+                        .setParam("http.connection-manager.timeout", 120000));
     }
 
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
