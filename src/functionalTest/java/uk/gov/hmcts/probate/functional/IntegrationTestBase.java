@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.util.regex.Pattern;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertTrue;
 
