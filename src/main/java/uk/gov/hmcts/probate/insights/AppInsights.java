@@ -5,12 +5,9 @@ import com.microsoft.applicationinsights.TelemetryConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.logging.appinsights.AbstractAppInsights;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.util.Collections.singletonMap;
 
 @Component
 public class AppInsights implements EventRepository {
@@ -19,8 +16,8 @@ public class AppInsights implements EventRepository {
 
     @Autowired
     public AppInsights(@Value("${azure.application-insights.instrumentation-key}")
-                                          String instrumentationKey,
-                                      TelemetryClient telemetry) {
+                           String instrumentationKey,
+                       TelemetryClient telemetry) {
         TelemetryConfiguration.getActive().setInstrumentationKey(instrumentationKey);
         telemetry.getContext().getComponent().setVersion(getClass().getPackage().getImplementationVersion());
         this.telemetry = telemetry;
@@ -31,9 +28,9 @@ public class AppInsights implements EventRepository {
         telemetry.trackEvent(name, properties,null);
     }
 
-    private Map<String, String> trackingMap(String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String ,String>();
-        trackMap.put("url", propertyToTrack);
+    public Map<String, String> trackingMap(String propertyName, String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String, String>();
+        trackMap.put(propertyName, propertyToTrack);
         return trackMap;
     }
 }

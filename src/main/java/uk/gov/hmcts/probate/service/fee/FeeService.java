@@ -44,7 +44,7 @@ public class FeeService {
 
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap(uri.toString()));
+        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url",uri.toString()));
         ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
@@ -124,9 +124,9 @@ public class FeeService {
         return builder.build().encode().toUri();
     }
 
-    private Map<String, String> trackingMap(String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String ,String>();
-        trackMap.put("url", propertyToTrack);
+    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String, String>();
+        trackMap.put(propertyname, propertyToTrack);
         return trackMap;
     }
 }

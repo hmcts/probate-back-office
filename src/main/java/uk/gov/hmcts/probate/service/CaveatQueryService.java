@@ -26,8 +26,10 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
@@ -103,13 +105,19 @@ public class CaveatQueryService {
         try {
             returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(), trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url", uri.toString()));
         return returnedCaveats.getCaveats();
+    }
+
+    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String, String>();
+        trackMap.put(propertyname, propertyToTrack);
+        return trackMap;
     }
 }

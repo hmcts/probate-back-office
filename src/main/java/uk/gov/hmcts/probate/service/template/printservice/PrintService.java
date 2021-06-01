@@ -9,7 +9,9 @@ import uk.gov.hmcts.probate.model.template.DocumentResponse;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -23,19 +25,14 @@ public class PrintService {
 
     private static final String DOCUMENT_NAME = "Print Case Details";
     private static final String DOCUMENT_TYPE = "HTML";
-
+    private final AppInsights appInsights;
+    private final FileSystemResourceService fileSystemResourceService;
     @Value("${printservice.templatesDirectory}")
     private String templatesDirectory;
-
     @Value("${printservice.host}")
     private String printServiceHost;
-
     @Value("${printservice.path}")
     private String printServicePath;
-
-    private final AppInsights appInsights;
-
-    private final FileSystemResourceService fileSystemResourceService;
 
     public String getSolicitorCaseDetailsTemplateForPrintService() {
         return getFileAsString(TEMPLATE_CASE_DETAILS_SOL);
@@ -59,10 +56,16 @@ public class PrintService {
         String urlTemplate = printServiceHost + printServicePath + applicationTypeCode;
         String url = String.format(urlTemplate, caseId);
 
-        appInsights.trackEvent(REQUEST_SENT, url);
+        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url", url));
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);
 
         return Collections.singletonList(documentResponse);
+    }
+
+    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
+        HashMap<String, String> trackMap = new HashMap<String, String>();
+        trackMap.put(propertyname, propertyToTrack);
+        return trackMap;
     }
 }

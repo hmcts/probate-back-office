@@ -26,8 +26,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -80,7 +78,7 @@ public class CaveatQueryServiceTest {
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
 
-        doNothing().when(appInsights).trackEvent(any(), anyString());
+        //doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test
