@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -76,6 +77,11 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String EXPIRY_DATE_WELSH_KEY = "EXPIRY_DATE_WELSH_KEY";
     private static final String EMAIL_NOTIFICATION_URL =
         "data.notificationsGenerated[0].value.DocumentLink.document_binary_url";
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyCaveatRaisedShouldReturnOkResponseCode() {
@@ -462,6 +468,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private Response postJson(String jsonAsString, String caveatConfirmation) {
         return RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -489,6 +496,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private String generateDocument(String jsonFileName, String path, int placeholder) {
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))

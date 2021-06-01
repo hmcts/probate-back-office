@@ -63,7 +63,7 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
@@ -151,6 +151,7 @@ services:
       MICROSERVICEKEYS_BULK_SCAN_ORCHESTRATOR: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_PROBATE_BACKEND: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_PROBATE_FRONTEND: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_XUI_WEBAPP: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
@@ -455,6 +456,8 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+      LAUNCHDARKLY_KEY: "${LD_SDK_BO_KEY}"
+      LD_USER_KEY: "${LD_BO_USER_KEY}"
     ports:
       - 4104:4104
     depends_on:
@@ -477,6 +480,9 @@ services:
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
+      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
+
     ports:
       - 3000:3000
 
@@ -571,48 +577,44 @@ services:
       - service-auth-provider-api
 
  # complete the XUI setup for probate-back-office - this has just been added as a starting point    
-  xui:
-    image: "hmctspublic.azurecr.io/xui/webapp:latest"
+  xui-manage-cases:
+    image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
     environment:
+      FEATURE_APP_INSIGHTS_ENABLED: "true"
+      FEATURE_SECURE_COOKIE_ENABLED: "false"
+      FEATURE_REDIS_ENABLED: "false"
+      JURISDICTIONS: PROBATE
       MICROSERVICE: xui_webapp
       PROTOCOL: http
       XUI_ENV: local
 
-      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
-      SERVICES_CCD_DATA_STORE_API: http://localhost:4452
       SERVICES_DOCUMENTS_API: http://dm-store:8080
-      SERVICES_S2S: http://service-auth-provider-api:8080
-      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
-      SERVICES_IDAM_API_URL: http://idam-api:5000
-      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
-      SERVICES_IDAM_CLIENT_ID: xui_webapp
-      SERVICES_PAYMENTS_URL: http://wiremock:8080
-      SERVICES_CCD_CASE_ASSIGNMENT_API: http://wiremock:8080
-      SERVICES_PRD_API: http://wiremock:8080
-
+      SERVICES_PAYMENTS_URL: http://payments-api:8080
       SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
+      SERVICES_IDAM_API_URL: http://sidam-api:5000
+      SERVICES_IDAM_CLIENT_ID: xui_webapp
+      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
+      SERVICES_IDAM_INDEX_URL: /
+      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
+      SERVICES_S2S: http://service-auth-provider-api:8080
+      SYSTEM_USER_NAME: "dummy"
+      SYSTEM_USER_PASSWORD: "dummy"
       REDISCLOUD_URL: http://dummyrediscloudurl
+      HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
+      HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
 
-      #real LAUNCH_DARKLY_CLIENT_ID must be set to enable share a case functionality
-      #LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_CLIENT_ID:-dummy}"
-
-      FEATURE_REDIS_ENABLED: "false"
-      FEATURE_APP_INSIGHTS_ENABLED: "false"
-      FEATURE_SECURE_COOKIE_ENABLED: "false"
-      APPINSIGHTS_INSTRUMENTATIONKEY: fake
-
-      #S2S_SECRET:  "${IDAM_KEY_XUI_WEBAPP}"
-      #IDAM_SECRET: "${OAUTH2_CLIENT_XUI}"
-
-      #JURISDICTIONS: PUBLICLAW
-
+      APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
+      IDAM_SECRET: xui_webapp_secret
+      S2S_SECRET: "AAAAAAAAAAAAAAAA"
+      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
     ports:
-      - 3333:3000
+      - 3455:3000
     depends_on:
-      - idam-web-public
+      - ccd-api-gateway
       - ccd-data-store-api
-      - ccd-api-gateway    
-      
+
 volumes:
   ccd-docker-azure-blob-data:
   esdata1:

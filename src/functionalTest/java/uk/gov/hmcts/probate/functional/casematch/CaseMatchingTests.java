@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -27,7 +28,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String CAVEAT_LEGACY_SEARCH_JSON = "casematch/caveatLegacySearch.json";
     public static final String WILL_LODGEMENT_LEGACY_SEARCH_JSON = "casematch/willLodgementLegacySearch.json";
     public static final String STANDING_SEARCH_LEGACY_SEARCH_JSON = "casematch/standingSearchLegacySearch.json";
-    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayoad.json";
+    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayload.json";
     private static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     private static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
     private static final String WILL_LODGEMENT_MATCH_CASE_JSON = "casematch/willLodgementMatchCase.json";
@@ -46,13 +47,18 @@ public class CaseMatchingTests extends IntegrationTestBase {
     private static final String IMPORT_LEGACY_WILL_LODGEMENT_SEARCH =
         "/case-matching/import-legacy-from-will-lodgement-flow";
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
+
     @Test
     public void shouldReturnMatchingCaseWhenGOPSearchFlow() {
         createCase();
         final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dob"), is(equalTo(DATE_OF_BIRTH)));
@@ -93,7 +99,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
@@ -195,6 +201,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     private Response search(String path) {
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(modifyDODInJson())

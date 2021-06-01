@@ -43,3 +43,4 @@ bin/contractTest
 bin/testCaseCreator
 bin/testFunctional
 bin/testSmoke
+/src/main/build/
