@@ -8,7 +8,7 @@ public class AppStoppedHtmlTemplate {
         + "You will need to apply for a grant of representation using a <paperformLink/>.</p>\n"
         + "<p><guidanceLink/></p>\n"
         + "<p>If having read this guidance you're sure that the online service should handle your application, "
-        + "contact <probatefeedback@justice.gov.uk/> "
+        + "contact <probatefeedback@justice.co.uk/> "
         + "with the broad details of your application and we will help to progress your application.</p>";
 
     private AppStoppedHtmlTemplate() {
