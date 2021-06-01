@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -25,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -392,7 +394,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse) {
+    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
+                                                          PaymentResponse paymentResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         String feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -400,12 +403,25 @@ public class CallbackResponseTransformer {
         String totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (paymentResponse != null) {
+            paymentsList = new ArrayList<>();
+            Payment payment = Payment.builder()
+                .reference(paymentResponse.getReference())
+                .status(paymentResponse.getStatus())
+                .method("pba")
+                .build();
+            paymentsList.add(new CollectionMember<Payment>(payment));
+        }
+        
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
+            .payments(paymentsList)
             .build();
 
         return transformResponse(responseCaseData);

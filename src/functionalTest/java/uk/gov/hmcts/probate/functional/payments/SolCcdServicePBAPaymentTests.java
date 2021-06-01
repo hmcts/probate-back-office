@@ -6,6 +6,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static junit.framework.TestCase.assertFalse;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
@@ -26,19 +27,17 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     public void shouldValidateDefaultPBAs() {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}", 
-            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}");
-    }
-
-    @Test
-    public void shouldValidateDefaultPBAPaymentsWithFee() {
-        validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
-            "\"solsNeedsPBAPayment\":\"Yes\"");
+            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
+            "\"solsNeedsPBAPayment\":\"Yes\"",
+            "\"payments\": [");
     }
 
     @Test
     public void shouldValidateDefaultPBAPaymentsNoFee() {
-        validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbateNoPaymentFee.json",
+        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-pba", 
+            "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
+        assertFalse(responseBody.contains("\"payments\": ["));
     }
 
     @Pending
@@ -63,7 +62,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
             "have insufficient funds available");
     }
 
-    private void validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
+    private String validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
 
         String body = given().headers(utils.getHeadersWithSolicitorUser())
             .relaxedHTTPSValidation()
@@ -73,6 +72,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
         for (String expectedValue : expectedValues) {
             assertThat(body, containsString(expectedValue));
         }
+        return body;
     }
     
     private void validatePostRequestSuccessForPBAsForSolicitor2(String path, String fileName,

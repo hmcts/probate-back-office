@@ -101,13 +101,13 @@ public class NextStepsController {
                         paymentResponse, creditAccountPaymentValidationRule);
                 if (creditPaymentResponse.getErrors().isEmpty()) {
                     callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse);
+                        feesResponse, paymentResponse);
                 } else {
                     callbackResponse = creditPaymentResponse;
                 }
             } else {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                    feesResponse);
+                    feesResponse, null);
             }
         }
 

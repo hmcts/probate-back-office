@@ -121,7 +121,8 @@ public class NextStepsUnitTest {
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
             .thenReturn(creditAccountPaymentMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock)).thenReturn(callbackResponseMock);
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock))
+            .thenReturn(callbackResponseMock);
         
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
@@ -138,7 +139,7 @@ public class NextStepsUnitTest {
             .thenReturn(creditAccountPaymentMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock))
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock))
             .thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -159,6 +160,9 @@ public class NextStepsUnitTest {
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
+        when(callbackResponseTransformerMock
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null))
+            .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
             bindingResultMock, httpServletRequestMock);
