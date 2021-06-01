@@ -153,6 +153,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
+    private static final String SOLE_PRIN = "solicitorSoleFirmPartner.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
 
     @Before
@@ -1417,6 +1418,13 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
+        assertTrue(response.split("Fred Smith").length == 4);
+    }
+
+    @Test
+    public void verifySoTSolePartnerWording() {
+        final String response = generatePdfDocument(SOLE_PRIN, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm fdgfg, at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
     }
 
