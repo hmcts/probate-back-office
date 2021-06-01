@@ -1109,6 +1109,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldNotSelectForQA() {
+        caseDataBuilder.boExaminationChecklistRequestQA(null);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn("CurrentStateId");
+
+        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
+
+        assertEquals("CurrentStateId", response.getData().getState());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
