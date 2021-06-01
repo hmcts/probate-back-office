@@ -1424,7 +1424,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySoTSolePartnerWording() {
         final String response = generatePdfDocument(SOLE_PRIN, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm fdgfg, at the date of death"));
+        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
+            + "fdgfg, at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
     }
 
