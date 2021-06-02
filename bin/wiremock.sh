@@ -24,7 +24,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9996",
+                "reference": "RC-1590-6786-1063-9991",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Success",
                 "payment_group_reference": "2020-1590678609071",
@@ -62,7 +62,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-              "reference": "RC-1599-4778-4711-5958",
+              "reference": "RC-1590-6786-1063-9992",
               "date_created": "2020-09-07T11:24:07.160+0000",
               "status": "failed",
               "payment_group_reference": "2020-1599477846961",
@@ -102,7 +102,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9997",
+                "reference": "RC-1590-6786-1063-9993",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",
@@ -142,7 +142,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9998",
+                "reference": "RC-1590-6786-1063-9994",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",
@@ -182,7 +182,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9999",
+                "reference": "RC-1590-6786-1063-9995",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",
