@@ -27,6 +27,7 @@
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "cheque", "ListElement": "Cheque"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "online", "ListElement": "Online"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "card", "ListElement": "Credit/debit card"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "pba", "ListElement": "Credit/debit card"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Success", "ListElement": "Success"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Initiated", "ListElement": "Initiated"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Failed", "ListElement": "Failed"},

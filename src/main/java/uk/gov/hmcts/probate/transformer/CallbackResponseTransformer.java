@@ -406,8 +406,15 @@ public class CallbackResponseTransformer {
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
 
         List<CollectionMember<Payment>> paymentsList = null;
-        if (paymentResponse != null) {
+        if (callbackRequest.getCaseDetails().getData().getPayments() != null) {
             paymentsList = new ArrayList<>();
+            paymentsList.addAll(callbackRequest.getCaseDetails().getData().getPayments());
+        }
+
+        if (paymentResponse != null) {
+            if (paymentsList == null) {
+                paymentsList = new ArrayList<>();
+            }
             Payment payment = Payment.builder()
                 .reference(paymentResponse.getReference())
                 .status(paymentResponse.getStatus())

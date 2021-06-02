@@ -100,6 +100,9 @@ public class NextStepsController {
                     eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
                         paymentResponse, creditAccountPaymentValidationRule);
                 if (creditPaymentResponse.getErrors().isEmpty()) {
+                    if (feesResponse.getTotalAmount().doubleValue() > 0) {
+                        throw new RuntimeException("break the flow before completing to ccd");
+                    }
                     callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                         feesResponse, paymentResponse);
                 } else {

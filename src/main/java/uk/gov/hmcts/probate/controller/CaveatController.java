@@ -161,7 +161,7 @@ public class CaveatController {
             eventValidationService.validateCaveatPaymentResponse(caveatCallbackRequest.getCaseDetails(),
                 paymentResponse, creditAccountPaymentValidationRule);
         if (creditPaymentResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+            caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponse);
         } else {
             caveatCallbackResponse = creditPaymentResponse;
         }

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -79,5 +80,7 @@ public class ResponseCaveatData {
     private String pcqId;
 
     private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
+
+    private final List<CollectionMember<Payment>> payments;
 
 }

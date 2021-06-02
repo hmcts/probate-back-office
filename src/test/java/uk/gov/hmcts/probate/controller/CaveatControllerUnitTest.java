@@ -86,6 +86,8 @@ public class CaveatControllerUnitTest {
     private CreditAccountPayment creditAccountPaymentMock;
     @Mock
     private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
+    @Mock
+    private PaymentResponse paymentResponseMock;
 
     @Before
     public void setUp() {
@@ -105,10 +107,10 @@ public class CaveatControllerUnitTest {
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
             .thenReturn(creditAccountPaymentMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(PaymentResponse.builder().build());
+            .thenReturn(paymentResponseMock);
         when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
             .thenReturn(caveatCallbackResponse);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest))
+        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponseMock))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
             bindingResultMock);
@@ -132,7 +134,7 @@ public class CaveatControllerUnitTest {
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
             .thenReturn(creditAccountPaymentMock);
         when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(PaymentResponse.builder().build());
+            .thenReturn(paymentResponseMock);
         when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
             .thenReturn(caveatCallbackResponse);
         when(caveatCallbackResponse.getErrors()).thenReturn(Arrays.asList("Error"));

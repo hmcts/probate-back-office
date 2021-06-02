@@ -203,6 +203,13 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyCaveatRaisedSolicitorWithPayment() {
+        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
+        assertTrue(responseBody.asString().contains("payments"));
+        assertTrue(responseBody.asString().contains("RC-"));
+    }
+
+    @Test
     public void verifyCaveatRaisedSolicitorPaperEmailContentsWelsh() {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();

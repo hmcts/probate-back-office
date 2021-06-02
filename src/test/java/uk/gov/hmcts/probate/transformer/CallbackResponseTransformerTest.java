@@ -787,7 +787,40 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountNpPayment() {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndExistingPayments() {
+        List<CollectionMember<Payment>> payments = new ArrayList<>();
+        Payment payment = Payment.builder().reference("RC1").method("something").status("Other").build();
+        payments.add(new CollectionMember<Payment>(payment));
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .payments(payments)
+            .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(paymentResponseMock.getReference()).thenReturn("RC-1234");
+        when(paymentResponseMock.getStatus()).thenReturn("Success");
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+            paymentResponseMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertCommonAdditionalExecutors(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+
+        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+        assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
+        assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertEquals("RC1", callbackResponse.getData().getPayments().get(0).getValue().getReference());
+        assertEquals("Other", callbackResponse.getData().getPayments().get(0).getValue().getStatus());
+        assertEquals("something", callbackResponse.getData().getPayments().get(0).getValue().getMethod());
+        assertEquals("RC-1234", callbackResponse.getData().getPayments().get(1).getValue().getReference());
+        assertEquals("Success", callbackResponse.getData().getPayments().get(1).getValue().getStatus());
+        assertEquals("pba", callbackResponse.getData().getPayments().get(1).getValue().getMethod());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountNoPayment() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .payments(null)
