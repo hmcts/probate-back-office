@@ -103,6 +103,7 @@ public class CallbackResponseTransformer {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -410,7 +411,7 @@ public class CallbackResponseTransformer {
             Payment payment = Payment.builder()
                 .reference(paymentResponse.getReference())
                 .status(paymentResponse.getStatus())
-                .method("pba")
+                .method(PBA_PAYMENT_METHOD)
                 .build();
             paymentsList.add(new CollectionMember<Payment>(payment));
         }

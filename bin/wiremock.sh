@@ -102,7 +102,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9996",
+                "reference": "RC-1590-6786-1063-9997",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",
@@ -120,7 +120,7 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
-# pba account on hold
+# pba insufficient payments
 curl -X POST \
 --data '{
           "request": {
@@ -142,7 +142,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9996",
+                "reference": "RC-1590-6786-1063-9998",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",
@@ -182,7 +182,7 @@ curl -X POST \
               "Content-Type": "application/json"
             },
             "jsonBody": {
-                "reference": "RC-1590-6786-1063-9996",
+                "reference": "RC-1590-6786-1063-9999",
                 "date_created": "2020-05-28T15:10:10.694+0000",
                 "status": "Failed",
                 "payment_group_reference": "2020-1590678609071",

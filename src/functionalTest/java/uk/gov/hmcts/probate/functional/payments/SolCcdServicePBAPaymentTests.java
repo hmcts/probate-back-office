@@ -28,8 +28,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}", 
             "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
-            "\"solsNeedsPBAPayment\":\"Yes\"",
-            "\"payments\": [");
+            "\"solsNeedsPBAPayment\":\"Yes\"");
     }
 
     @Test
@@ -38,6 +37,19 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
             "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
         assertFalse(responseBody.contains("\"payments\": ["));
+    }
+
+    @Test
+    public void shouldValidatePBAPayment() {
+        validatePostRequestSuccessForPBAs("/nextsteps/validate", "solicitorPDFPayloadProbateAccountSuccess.json",
+            "\"payments\":[", "\"reference\":\"RC-", "\"method\":\"pba\"");
+    }
+
+    @Test
+    public void shouldValidatePBAPaymentNoFees() {
+        String responseBody = validatePostRequestSuccessForPBAs("/nextsteps/validate",
+            "solicitorPDFPayloadProbateAccountSuccessNoFees.json");
+        assertFalse(responseBody.contains("\"payments\":["));
     }
 
     @Pending
