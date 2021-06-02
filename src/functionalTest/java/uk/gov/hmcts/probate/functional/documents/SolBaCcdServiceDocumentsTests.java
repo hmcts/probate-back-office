@@ -1272,7 +1272,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
-                + "stakeholder in the firm Successor firm, at the date of death of the deceased.."));
+                + "stakeholder in the firm Successor firm, at the date of death of the deceased."));
 
     }
 
