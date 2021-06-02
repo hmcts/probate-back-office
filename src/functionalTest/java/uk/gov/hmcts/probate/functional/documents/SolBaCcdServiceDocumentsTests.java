@@ -154,6 +154,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+    private static final String EXEC_WITH_ALIAS = "solicitorExecutorAliasNameLegalStatement.json";
 
     @Before
     public void setUp() {
@@ -1418,6 +1419,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
+    }
+
+    @Test
+    public void verifySoTAliasNameForExec() {
+        final String response = generatePdfDocument(EXEC_WITH_ALIAS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Carlos Juan otherwise known as Karakiozis of"));
     }
 
     @Test
