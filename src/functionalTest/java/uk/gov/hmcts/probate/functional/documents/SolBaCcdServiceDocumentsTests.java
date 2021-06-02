@@ -1271,8 +1271,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Power Reserved Exec, is a profit-sharing partner and "
-                + "stakeholder in the firm Successor firm, at the date of death of the deceased."));
+        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
+                + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
 
     }
 
