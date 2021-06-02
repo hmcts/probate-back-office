@@ -1416,7 +1416,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
                 .contains("The executor believes that all the information stated in the legal statement is true."));
-        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
+        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
+            + "fdgfg, at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
     }
 
