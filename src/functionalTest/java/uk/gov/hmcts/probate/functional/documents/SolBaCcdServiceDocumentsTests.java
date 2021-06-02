@@ -1417,7 +1417,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
-            + ", at the date of death"));
+            + "fdgfg, at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
     }
 
