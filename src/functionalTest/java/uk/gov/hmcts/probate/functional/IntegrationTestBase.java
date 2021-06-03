@@ -162,7 +162,6 @@ public abstract class IntegrationTestBase {
             expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
         }
 
-        log.info("assertExpectedContentsWithExpectedReplacement.responseBody.asString():" + responseBody.asString());
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
