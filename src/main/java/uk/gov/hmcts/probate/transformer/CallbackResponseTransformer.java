@@ -354,8 +354,8 @@ public class CallbackResponseTransformer {
     public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getBoExaminationChecklistRequestQA()
-            .equalsIgnoreCase(ANSWER_YES)) {
+        if (ANSWER_YES.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
+                .getBoExaminationChecklistRequestQA())) {
             responseCaseDataBuilder.state(QA_CASE_STATE);
         }
         return transformResponse(responseCaseDataBuilder.build());
@@ -719,7 +719,8 @@ public class CallbackResponseTransformer {
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
-            .iht217(caseData.getIht217());
+            .iht217(caseData.getIht217())
+            .deathRecords(caseData.getDeathRecords());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

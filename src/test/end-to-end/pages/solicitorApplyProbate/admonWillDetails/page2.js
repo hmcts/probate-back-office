@@ -5,6 +5,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (updateAddressManually) {
     const I = this;
+    await I.waitForText('First name(s)');
     await I.runAccessibilityTest();
 
     await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
