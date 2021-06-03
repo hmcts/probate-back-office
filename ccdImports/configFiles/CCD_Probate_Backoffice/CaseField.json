@@ -367,5 +367,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Deceased", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecordSystemNumber", "Label": "System number from death certificate", "FieldType": "Number",  "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecord", "Label": "Deceased", "FieldType": "DeathRecord", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecord", "Label": "Deceased", "FieldType": "DeathRecord", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfDeathRecords", "Label": "Number of death records", "FieldType": "Number",  "SecurityClassification": "Public"}
 ]
