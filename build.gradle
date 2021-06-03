@@ -165,7 +165,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : '1.2.0',
+        probateCommonsVersion           : '1.2.2',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -205,7 +205,7 @@ dependencyManagement {
 
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
-
+    
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.3.8.RELEASE') {
       entry 'spring-security-config'
@@ -254,6 +254,7 @@ dependencies {
   compile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  compile group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -302,7 +303,9 @@ dependencies {
   testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-   
+  testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
+  testImplementation 'org.awaitility:awaitility:4.1.0'
+  
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
