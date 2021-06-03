@@ -79,6 +79,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -1554,7 +1555,22 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
+    
+    @Test
+    public void shouldPreserveDeathRecordList() {
 
+        final List mockList = mock(List.class);
+
+        caseDataBuilder.deathRecords(mockList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertSame(mockList, callbackResponse.getData().getDeathRecords());
+    }
+    
     @Test
     public void shouldTransformCaseForWhenCaseTypeIsNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
