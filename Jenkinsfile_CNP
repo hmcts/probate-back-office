@@ -47,6 +47,14 @@ def secrets = [
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
                 secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
                 secret('launchdarklyUserkeyBackend', 'LD_USER_KEY'),
+                secret('levPublicCertificate', 'LEV_PUBLIC_CERTIFICATE'),
+                secret('levPrivateKey', 'LEV_PRIVATE_KEY'),
+                secret('levAccessTokenUri', 'LEV_ACCESS_TOKEN_URI'),
+                secret('levClientId', 'LEV_CLIENT_ID'),
+                secret('levClientSecret', 'LEV_CLIENT_SECRET'),
+                secret('levUsername', 'LEV_USERNAME'),
+                secret('levPassword', 'LEV_PASSWORD'),
+                secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('probate-site-id','PAYMENT_SITEID')
         ],
         's2s-${env}'      : [
@@ -60,7 +68,6 @@ def secrets = [
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
-
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
     secretType: 'Secret',
