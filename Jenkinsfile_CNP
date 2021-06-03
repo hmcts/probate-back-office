@@ -42,8 +42,15 @@ def secrets = [
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
                 secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
-                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY')
-
+                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY'),
+                secret('levPublicCertificate', 'LEV_PUBLIC_CERTIFICATE'),
+                secret('levPrivateKey', 'LEV_PRIVATE_KEY'),
+                secret('levAccessTokenUri', 'LEV_ACCESS_TOKEN_URI'),
+                secret('levClientId', 'LEV_CLIENT_ID'),
+                secret('levClientSecret', 'LEV_CLIENT_SECRET'),
+                secret('levUsername', 'LEV_USERNAME'),
+                secret('levPassword', 'LEV_PASSWORD'),
+                secret('levDeathUrl', 'LEV_DEATH_URL')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
