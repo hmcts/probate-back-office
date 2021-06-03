@@ -39,6 +39,8 @@ import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_ERROR_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
@@ -146,7 +148,7 @@ public class LifeEventServiceTest {
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
     }
-
+    
     @Test
     public void shouldUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
@@ -167,6 +169,21 @@ public class LifeEventServiceTest {
         assertSame(capturedDeathRecords, mappedRecords);
     }
 
+    @Test
+    public void shouldUpdateCCDWhenError() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
+            "Test exception"));
+        lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
+        verify(ccdClientApi, timeout(100))
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                grantOfRepresentationDataCaptor.capture(),
+                eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_ERROR_SUMMARY));
+    }
+    
     @Test
     public void shouldLookupDeathRecordById() {
         Integer id = 12345;
@@ -198,4 +215,32 @@ public class LifeEventServiceTest {
         assertEquals("Test exception", exception.getMessage());
     }
 
+    @Test
+    public void shouldPropagateExceptionWhenSearchingByNameAndDate() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
+            "Test exception"));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        });
+
+        assertEquals("Test exception", exception.getMessage());
+    }
+    
+    @Test
+    public void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenReturn(emptyList());
+        Exception exception = assertThrows(BusinessValidationException.class, () -> {
+            lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        });
+
+        assertEquals("No death records found", exception.getMessage());
+    }
+
+
+    @Test
+    public void shouldSearchByNameAndDate() {
+        lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
+        verify(deathRecordService).mapDeathRecordsCCD(eq(deathRecords));
+    }
 }

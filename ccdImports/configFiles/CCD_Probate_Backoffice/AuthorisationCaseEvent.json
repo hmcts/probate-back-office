@@ -796,5 +796,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "verifyDeathRecordWithSystemNumber", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "levSelectFromMultipleRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "levSelectFromMultipleRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "levSelectFromMultipleRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "levSelectFromMultipleRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manuallyVerifyDeathRecord", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manuallyVerifyDeathRecord", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manuallyVerifyDeathRecord", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
