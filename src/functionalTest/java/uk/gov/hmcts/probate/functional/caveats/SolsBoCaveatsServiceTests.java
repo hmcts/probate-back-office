@@ -203,13 +203,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatRaisedSolicitorWithPayment() {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
-        assertTrue(responseBody.asString().contains("payments"));
-        assertTrue(responseBody.asString().contains("RC-"));
-    }
-
-    @Test
     public void verifyCaveatRaisedSolicitorPaperEmailContentsWelsh() {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
@@ -240,6 +233,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
+        assertTrue(responseBody.asString().contains("payments"));
+        assertTrue(responseBody.asString().contains("RC-"));
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
