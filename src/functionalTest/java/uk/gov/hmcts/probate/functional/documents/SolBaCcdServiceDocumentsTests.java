@@ -154,6 +154,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+    private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
+    private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
 
     @Before
     public void setUp() {
@@ -1418,6 +1420,23 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 .contains("The executor believes that all the information stated in the legal statement is true."));
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm , at the date of death"));
         assertTrue(response.split("Fred Smith").length == 4);
+    }
+
+    @Test
+    public void verifySoTPartAllRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
+                + " Firmname will at the date of death of the deceased have renounced probate."));
+    }
+
+    @Test
+    public void verifySoTPartSuccAllRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
+                + " Firmname will that had succeeded to and carried on the practice of the Successor firm at the "
+                + "date of death of the deceased have renounced probate."));
     }
 
     @Test
