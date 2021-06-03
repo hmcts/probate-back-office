@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.controller;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,18 +19,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,8 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LifeEventCCDIntegrationTest {
 
     private static WireMockServer wireMockServer;
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(9400);
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,34 +50,48 @@ public class LifeEventCCDIntegrationTest {
     private AppInsights appInsights;
     @Autowired
     private WebApplicationContext webApplicationContext;
-    @Captor
-    private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
+
+
+    @BeforeClass
+    public static void start() {
+        wireMockServer = new WireMockServer(WireMockConfiguration.options().port(9400));
+        wireMockServer.start();
+    }
+
+    @AfterClass
+    public static void shutDown() {
+        wireMockServer.stop();
+    }
 
     @Before
     public void setup() {
+
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        wireMockRule.stubFor(post(urlEqualTo("/token"))
+        wireMockServer.stubFor(post(urlEqualTo("/token"))
             .willReturn(okJson("{ \"access_token\": \"dummyToken\"}")));
 
-        wireMockRule.stubFor(post(urlEqualTo("/idam/lease"))
+        wireMockServer.stubFor(post(urlEqualTo("/idam/lease"))
             .willReturn(ok("idamToken")));
 
-        wireMockRule.stubFor(get(urlPathMatching("/ccd/citizens/jurisdictions/.*"))
+        wireMockServer.stubFor(get(urlPathMatching("/ccd/citizens/jurisdictions/.*"))
             .willReturn(okJson("{ \"token\": \"dummyCcdToken\"}")));
 
-        wireMockRule.stubFor(post(urlPathMatching("/ccd/citizens/.*"))
+        wireMockServer.stubFor(post(urlPathMatching("/ccd/citizens/.*"))
             .willReturn(aResponse()
                 .withStatus(200)
             )
         );
     }
 
+    @After
+    public void reset() {
+        wireMockServer.resetAll();
+    }
 
     @Test
     public void shouldUpdateCCDIfSingleRecordReturned() throws Exception {
-
-        wireMockRule.stubFor(get(urlPathMatching("/api/.*"))
+        wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
                 "[\n"
                     + "    {\n"
@@ -95,47 +106,47 @@ public class LifeEventCCDIntegrationTest {
                     + "]"))
         );
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .post("/lifeevent/update")
-            .content(testUtils.getStringFromFile("lifeEventPayload.json"))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        postPayloadToLifeEventEndpoint();
 
         await()
             .atMost(2, SECONDS)
             .untilAsserted(() ->
-                verify(postRequestedFor(urlEqualTo(
+                wireMockServer.verify(postRequestedFor(urlEqualTo(
                     "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
 
+
+        wireMockServer.verify(getRequestedFor(urlEqualTo(
+            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+                + "-triggers/deathRecordVerified/token")));
     }
 
     @Test
-    public void shouldNotUpdateCCDIfNoRecordsReturned() throws Exception {
-
-        wireMockRule.stubFor(get(urlPathMatching("/api/.*"))
+    public void shouldUpdateCCDWithDeathRecordVerificationFailedNoRecordsReturned() throws Exception {
+        wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
                 "[]"))
         );
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .post("/lifeevent/update")
-            .content(testUtils.getStringFromFile("lifeEventPayload.json"))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        postPayloadToLifeEventEndpoint();
 
-        await().during(2, SECONDS)
+        await()
+            .atMost(2, SECONDS)
             .untilAsserted(() ->
-                verify(0, postRequestedFor(urlEqualTo(
-                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/"
-                        + "cases/1621002468661478/events?ignore-warning=false"))));
+                wireMockServer.verify(postRequestedFor(urlEqualTo(
+                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
+                        + "/cases/1621002468661478/events?ignore-warning=false"))));
+
+        wireMockServer.verify(getRequestedFor(urlEqualTo(
+            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+                + "-triggers/deathRecordVerificationFailed/token")));
 
     }
 
     @Test
     public void shouldNotUpdateCCDIfMultipleRecordsReturned() throws Exception {
 
-        wireMockRule.stubFor(get(urlPathMatching("/api/.*"))
+        wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
                 "[\n"
                     + "    {\n"
@@ -159,16 +170,21 @@ public class LifeEventCCDIntegrationTest {
                     + "]"))
         );
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/lifeevent/update")
-            .content(testUtils.getStringFromFile("lifeEventPayload.json"))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        postPayloadToLifeEventEndpoint();
 
         await().during(2, SECONDS)
             .untilAsserted(() ->
-                verify(0, postRequestedFor(
+                wireMockServer.verify(0, postRequestedFor(
                     urlEqualTo("/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
 
+    }
+
+    private void postPayloadToLifeEventEndpoint() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+            .post("/lifeevent/update")
+            .content(testUtils.getStringFromFile("lifeEventPayload.json"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
     }
 }
