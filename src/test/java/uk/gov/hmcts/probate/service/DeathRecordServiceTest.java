@@ -30,9 +30,8 @@ public class DeathRecordServiceTest {
         assert (collectionMembers.isEmpty());
     }
 
-
     @Test
-    public void mapDeathRecordsShouldHandleListWilthNullElement() {
+    public void mapDeathRecordsShouldHandleListWithNullElement() {
         ArrayList list = new ArrayList();
         list.add(null);
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(list);
@@ -84,5 +83,6 @@ public class DeathRecordServiceTest {
         final List<CollectionMember<DeathRecord>> deathRecordCollectionMembers = deathRecordService
                 .mapDeathRecords(asList(v1Death));
         assertEquals(deathRecordCollectionMembers.size(), 1);
+        final DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
     }
 }

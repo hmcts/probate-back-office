@@ -23,18 +23,18 @@ public class DeathRecordService {
 
     public List<CollectionMember<DeathRecord>> mapDeathRecords(List<V1Death> deathRecords) {
         return Optional.ofNullable(deathRecords)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .filter(Objects::nonNull)
-                .map(this::mapCollectionMember)
-                .flatMap(Optional::stream)
-                .collect(Collectors.toList());
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(Objects::nonNull)
+            .map(this::mapCollectionMember)
+            .flatMap(Optional::stream)
+            .collect(Collectors.toList());
     }
 
     private Optional<CollectionMember<DeathRecord>> mapCollectionMember(@NotNull V1Death v1Death) {
         return Optional.of(v1Death)
-                .map(this::mapDeathRecord)
-                .map(d -> new CollectionMember<>(null, d));
+            .map(this::mapDeathRecord)
+            .map(d -> new CollectionMember<>(null, d));
     }
 
     @SuppressWarnings("squid:S2583")

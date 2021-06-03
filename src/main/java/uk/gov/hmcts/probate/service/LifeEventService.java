@@ -9,13 +9,18 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableAsync
 public class LifeEventService {
-    
+
     private DeathService deathService;
     private DeathRecordCCDService deathRecordCCDService;
 
@@ -41,5 +46,29 @@ public class LifeEventService {
         }
 
         return deathRecordCCDService.mapDeathRecord(record);
+    }
+
+    public List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
+    getDeathRecordsByNamesAndDate(final CaseDetails caseDetails) {
+        final CaseData caseData = caseDetails.getData();
+        final String deceasedForenames = caseData.getDeceasedForenames();
+        final String deceasedSurname = caseData.getDeceasedSurname();
+        final LocalDate deceasedDateOfDeath = caseData.getDeceasedDateOfDeath();
+        log.info("Trying LEV call");
+        List<V1Death> records;
+        try {
+            records = deathService.searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname,
+                deceasedDateOfDeath);
+        } catch (Exception e) {
+            log.error("Error during LEV call", e);
+            throw e;
+        }
+
+        if (records.isEmpty()) {
+            String message = "No death records found";
+            throw new BusinessValidationException(message, message);
+        }
+
+        return deathRecordCCDService.mapDeathRecords(records);
     }
 }

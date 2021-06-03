@@ -35,6 +35,17 @@ public class LifeEventController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
+    @PostMapping(path = "/manualUpdateAboutToStart")
+    public ResponseEntity<CallbackResponse> manualUpdateAboutToStart(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordsByNamesAndDate(request));
+    }
+    
+    @PostMapping(path = "/manualUpdate")
+    public ResponseEntity<CallbackResponse> manualUpdate(@RequestBody CallbackRequest request) {
+        lifeEventValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
+
     @PostMapping(path = "/updateWithSystemNumber")
     public ResponseEntity<CallbackResponse> updateWithSystemNumber(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordById(request));

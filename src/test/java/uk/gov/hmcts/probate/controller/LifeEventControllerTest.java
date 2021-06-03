@@ -114,8 +114,8 @@ public class LifeEventControllerTest {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
         
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
-            .content(payload)
-            .contentType(MediaType.APPLICATION_JSON))
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         verify(lifeEventCallbackResponseService).setNumberOfDeathRecords(callbackRequestArgumentCaptor.capture());
@@ -125,6 +125,44 @@ public class LifeEventControllerTest {
     
     @Test
     public void shouldValidate() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
+
+        mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+        
+        verify(lifeEventValidationRule).validate(any());
+    }
+
+    @Test
+    public void shouldLookupDeathRecordByNameAndDate() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventPayload.json");
+        
+        mockMvc.perform(post("/lifeevent/manualUpdateAboutToStart")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        verify(lifeEventCallbackResponseService).getDeathRecordsByNamesAndDate(callbackRequestArgumentCaptor.capture());
+        final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
+        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+    }
+
+    @Test
+    public void shouldValidateManualUpdate() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
+
+        mockMvc.perform(post("/lifeevent/manualUpdate")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        verify(lifeEventValidationRule).validate(any());
+    }
+    
+    @Test
+    public void shouldValidateSelectFromMultipleRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")

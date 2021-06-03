@@ -36,6 +36,8 @@ import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
@@ -163,6 +165,21 @@ public class LifeEventCCDServiceTest {
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
             .getValue().getDeathRecords();
         assertSame(capturedDeathRecords, mappedRecords);
+    }
+
+    @Test
+    public void shouldUpdateCCDWhenError() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
+            "Test exception"));
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        verify(ccdClientApi, timeout(100))
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                grantOfRepresentationDataCaptor.capture(),
+                eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_ERROR_SUMMARY));
     }
 
 }

@@ -22,12 +22,13 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.time.LocalDate;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = LifeEventService.class)
 public class LifeEventServiceTest {
@@ -64,7 +65,7 @@ public class LifeEventServiceTest {
         v1Death = new V1Death();
         v1Death.setDeceased(deceased);
     }
-
+    
     @Test
     public void shouldLookupDeathRecordById() {
         Integer id = 12345;
@@ -94,5 +95,34 @@ public class LifeEventServiceTest {
         });
 
         assertEquals("Test exception", exception.getMessage());
+    }
+
+    @Test
+    public void shouldPropagateExceptionWhenSearchingByNameAndDate() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
+            "Test exception"));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        });
+
+        assertEquals("Test exception", exception.getMessage());
+    }
+    
+    @Test
+    public void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenReturn(emptyList());
+        Exception exception = assertThrows(BusinessValidationException.class, () -> {
+            lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        });
+
+        assertEquals("No death records found", exception.getMessage());
+    }
+
+
+    @Test
+    public void shouldSearchByNameAndDate() {
+        lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
+        verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
+        verify(deathRecordCCDService).mapDeathRecords(eq(deathRecords));
     }
 }
