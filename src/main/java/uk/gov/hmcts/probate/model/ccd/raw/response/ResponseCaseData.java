@@ -323,6 +323,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
-    private final List<CollectionMember<DeathRecord>> deathRecords;
-
+    private List<CollectionMember<DeathRecord>> deathRecords;
+    private Integer deathRecordSystemNumber;
+    private DeathRecord deathRecord;
 }

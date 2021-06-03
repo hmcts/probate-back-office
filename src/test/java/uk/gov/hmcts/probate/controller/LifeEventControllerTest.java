@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -23,10 +24,15 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -79,5 +85,32 @@ public class LifeEventControllerTest {
         assertThat(data.getDeceasedSurname()).isEqualTo("Cook");
         assertThat(data.getDeceasedDateOfDeath().toString()).isEqualTo("2006-11-16");
         verify(securityUtils).getSecurityDTO();
+    }
+
+    @Test
+    public void shouldLookupDeathRecord() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventUpdateWithSystemNumberPayload.json");
+        DeathRecord deathRecord = DeathRecord.builder().systemNumber(500035096).build();
+        when(lifeEventService.getDeathRecordById(eq(500035096))).thenReturn(deathRecord);
+
+        mockMvc.perform(post("/lifeevent/updateWithSystemNumber")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.deathRecord", notNullValue()));
+        
+        verify(lifeEventService).getDeathRecordById(eq(500035096));
+    }
+
+
+    @Test
+    public void shouldCopyDeathRecord() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventUpdateWithSystemNumber2Payload.json");
+
+        mockMvc.perform(post("/lifeevent/updateWithSystemNumber2")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.deathRecords", hasSize(1)));
     }
 }
