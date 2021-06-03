@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -56,6 +57,9 @@ public class LifeEventControllerTest {
 
     @MockBean
     private SecurityUtils securityUtils;
+    
+    @MockBean
+    private LifeEventValidationRule lifeEventValidationRule;
 
     @Captor
     private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
@@ -103,4 +107,32 @@ public class LifeEventControllerTest {
         assertThat(callbackRequest.getCaseDetails().getData().getDeathRecordSystemNumber()).isEqualTo(500035096);
 
     }
+
+
+    @Test
+    public void shouldCountDeathRecords() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
+        
+        mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        verify(lifeEventCallbackResponseService).setNumberOfDeathRecords(callbackRequestArgumentCaptor.capture());
+        final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
+        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+    }
+    
+    @Test
+    public void shouldValidate() throws Exception {
+        String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
+
+        mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+        
+        verify(lifeEventValidationRule).validate(any());
+    }
+
 }

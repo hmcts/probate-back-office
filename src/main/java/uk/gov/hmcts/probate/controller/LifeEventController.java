@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
 @Slf4j
 @Controller
@@ -25,6 +26,7 @@ public class LifeEventController {
     private final LifeEventCCDService lifeEventCCDService;
     private final LifeEventCallbackResponseService lifeEventCallBackResponseService;
     private final SecurityUtils securityUtils;
+    private final LifeEventValidationRule lifeEventValidationRule;
 
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
@@ -36,5 +38,16 @@ public class LifeEventController {
     @PostMapping(path = "/updateWithSystemNumber")
     public ResponseEntity<CallbackResponse> updateWithSystemNumber(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordById(request));
+    }
+    
+    @PostMapping(path = "/selectFromMultipleRecordsAboutToStart")
+    public ResponseEntity<CallbackResponse> countRecords(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(lifeEventCallBackResponseService.setNumberOfDeathRecords(request));
+    } 
+
+    @PostMapping(path = "/selectFromMultipleRecords")
+    public ResponseEntity<CallbackResponse> selectFromMultipleRecords(@RequestBody CallbackRequest request) {
+        lifeEventValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

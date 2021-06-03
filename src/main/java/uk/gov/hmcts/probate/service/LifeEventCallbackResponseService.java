@@ -37,4 +37,11 @@ public class LifeEventCallbackResponseService {
         response.getData().setDeathRecords(List.of(new CollectionMember<>(null, deathRecord)));
         return response;
     }
+    
+    public CallbackResponse setNumberOfDeathRecords(CallbackRequest request) {
+        final List<CollectionMember<DeathRecord>> deathRecords = request.getCaseDetails().getData().getDeathRecords();
+        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
+        response.getData().setNumberOfDeathRecords(deathRecords == null ? null : deathRecords.size());
+        return response;
+    }
 }

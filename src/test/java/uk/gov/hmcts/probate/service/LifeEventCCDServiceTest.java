@@ -35,8 +35,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION;
@@ -143,17 +144,25 @@ public class LifeEventCCDServiceTest {
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
     }
-
+    
     @Test
-    public void shouldNotUpdateCCDWhenMultipleRecordsFound() {
+    public void shouldUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(deathRecords);
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        verify(ccdClientApi, timeout(100))
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                grantOfRepresentationDataCaptor.capture(),
+                eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY));
 
-        verify(deathService, timeout(1000))
-            .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
-        verifyNoInteractions(deathRecordService);
-        verifyNoInteractions(ccdClientApi);
+        final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
+            .getValue().getDeathRecords();
+        assertSame(capturedDeathRecords, mappedRecords);
     }
+
 }

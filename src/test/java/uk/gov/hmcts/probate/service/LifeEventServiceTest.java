@@ -28,12 +28,13 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = LifeEventService.class)
 public class LifeEventServiceTest {
 
     final Long caseId = 1234L;
+    final String firstName = "Wibble";
+    final String lastName = "Wobble";
     @Autowired
     LifeEventService lifeEventService;
     @MockBean
@@ -54,18 +55,16 @@ public class LifeEventServiceTest {
 
     @Before
     public void setup() {
-        final String firstName = "Wibble";
-        final String lastName = "Wobble";
         localDate = LocalDate.of(1900, 1, 1);
 
         final Deceased deceased = new Deceased();
-        deceased.setForenames("Firstname");
-        deceased.setSurname("LastName");
+        deceased.setForenames(firstName);
+        deceased.setSurname(lastName);
         deceased.setSex(Deceased.SexEnum.INDETERMINATE);
         v1Death = new V1Death();
         v1Death.setDeceased(deceased);
     }
-    
+
     @Test
     public void shouldLookupDeathRecordById() {
         Integer id = 12345;
@@ -82,7 +81,7 @@ public class LifeEventServiceTest {
         Exception exception = assertThrows(BusinessValidationException.class, () -> {
             lifeEventService.getDeathRecordById(id);
         });
-        
+
         assertEquals("No death record found with system number 12345", exception.getMessage());
     }
 

@@ -327,4 +327,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private List<CollectionMember<DeathRecord>> deathRecords;
     private final Integer deathRecordSystemNumber;
     private DeathRecord deathRecord;
+    private Integer numberOfDeathRecords;
 }
