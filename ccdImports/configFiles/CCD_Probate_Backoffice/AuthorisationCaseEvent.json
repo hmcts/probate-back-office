@@ -786,5 +786,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker-probate-issuer", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "caseworker", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "verifyDeathRecordWithSystemNumber", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "verifyDeathRecordWithSystemNumber", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "verifyDeathRecordWithSystemNumber", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]

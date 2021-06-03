@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
+import com.github.hmcts.lifeevents.client.model.Deceased;
+import com.github.hmcts.lifeevents.client.model.V1Death;
+import com.github.hmcts.lifeevents.client.service.DeathService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.github.hmcts.lifeevents.client.model.Deceased;
-import com.github.hmcts.lifeevents.client.model.V1Death;
-import com.github.hmcts.lifeevents.client.service.DeathService;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -28,7 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -37,9 +40,10 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL;
-import static uk.gov.hmcts.probate.service.LifeEventService.REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
 
 
 @RunWith(SpringRunner.class)
@@ -89,7 +93,7 @@ public class LifeEventServiceTest {
         when(caseData.getDeceasedDateOfDeath()).thenReturn(localDate);
         when(caseDetails.getId()).thenReturn(caseId);
         when(deathService.searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate)))
-                .thenReturn(deathRecords);
+            .thenReturn(deathRecords);
 
         mappedRecords = mock(List.class);
 
@@ -101,28 +105,26 @@ public class LifeEventServiceTest {
         lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
 
         verify(deathService, timeout(1000))
-                .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
+            .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
     }
 
     @Test
     public void shouldConvertReturnedDeathRecords() {
         lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
-        verify(deathRecordService, timeout(1000))
-                .mapDeathRecords(same(deathRecords));
-
+        verify(deathRecordService, timeout(1000)).mapDeathRecords(same(deathRecords));
     }
 
     @Test
-    public void shouldUpdateCCD() {
+    public void shouldUpdateCCDWhenOneRecordFound() {
         lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
         verify(ccdClientApi, timeout(100))
-                .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
-                        eq(caseId.toString()),
-                        grantOfRepresentationDataCaptor.capture(),
-                        eq(EventId.DEATH_RECORD_VERIFIED),
-                        eq(securityDTO),
-                        eq(LIFE_EVENT_VERIFICATION_SUCCESSFUL),
-                        eq(REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS));
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                grantOfRepresentationDataCaptor.capture(),
+                eq(EventId.DEATH_RECORD_VERIFIED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY));
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
@@ -130,27 +132,64 @@ public class LifeEventServiceTest {
     }
 
     @Test
-    public void shouldNotUpdateCCDWhenNoRecordsFound() {
+    public void shouldUpdateCCDWhenDeathRecordVerificationUnsuccessful() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
-                .thenReturn(emptyList());
+            .thenReturn(emptyList());
         lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
+        verify(ccdClientApi, timeout(100))
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                eq(null),
+                eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
-        verify(deathService, timeout(1000))
-                .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
-        verifyNoInteractions(deathRecordService);
-        verifyNoInteractions(ccdClientApi);
     }
 
     @Test
     public void shouldNotUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
-                .thenReturn(deathRecords);
+            .thenReturn(deathRecords);
         lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
 
         verify(deathService, timeout(1000))
-                .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
+            .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
         verifyNoInteractions(deathRecordService);
         verifyNoInteractions(ccdClientApi);
     }
+
+
+    @Test
+    public void shouldLookupDeathRecordById() {
+        Integer id = 12345;
+        when(deathService.getDeathRecordById(eq(id))).thenReturn(v1Death);
+        lifeEventService.getDeathRecordById(id);
+        verify(deathService).getDeathRecordById(id);
+        verify(deathRecordService).mapDeathRecordCCD(v1Death);
+    }
+
+    @Test
+    public void shouldThowBusinessValidationExceptionWhenDeathRecordNotFound() {
+        Integer id = 12345;
+        when(deathService.getDeathRecordById(eq(id))).thenReturn(null);
+        Exception exception = assertThrows(BusinessValidationException.class, () -> {
+            lifeEventService.getDeathRecordById(id);
+        });
+        
+        assertEquals("No death record found with system number 12345", exception.getMessage());
+    }
+
+    @Test
+    public void shouldPropagateException() {
+        Integer id = 12345;
+        when(deathService.getDeathRecordById(eq(id))).thenThrow(new RuntimeException("Test exception"));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            lifeEventService.getDeathRecordById(id);
+        });
+
+        assertEquals("Test exception", exception.getMessage());
+    }
+
 }

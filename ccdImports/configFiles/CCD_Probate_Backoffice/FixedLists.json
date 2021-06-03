@@ -67,6 +67,7 @@
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "NotEntitled", "ListElement": "Not entitled to make application", "DisplayOrder":  "22"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DocumentsRequired", "ListElement": "Documents required", "DisplayOrder":  "23"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DuplicateEmailAddresses", "ListElement": "Duplicate email addresses", "DisplayOrder":  "24"},
+  {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "LEVNoRecordsFound", "ListElement": "No records found, request system number", "DisplayOrder":  "25"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrant", "ListElement": "Digital Grant"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraft", "ListElement": "Digital Grant Draft"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "legalStatement", "ListElement": "Legal Statement"},
