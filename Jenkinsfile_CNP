@@ -63,7 +63,6 @@ def secrets = [
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
-
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
     secretType: 'Secret',
