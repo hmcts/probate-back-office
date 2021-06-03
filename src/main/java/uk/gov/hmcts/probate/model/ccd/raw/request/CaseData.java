@@ -532,6 +532,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<DeathRecord>> deathRecords;
     private final Integer deathRecordSystemNumber;
     private final DeathRecord deathRecord;
+    private final Integer numberOfDeathRecords;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
