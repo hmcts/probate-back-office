@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
@@ -40,6 +40,26 @@ public class DeathRecordService {
     @SuppressWarnings("squid:S2583")
     private DeathRecord mapDeathRecord(V1Death v1Death) {
         final DeathRecord.DeathRecordBuilder builder = DeathRecord.builder().systemNumber(v1Death.getId());
+        final Deceased deceased = v1Death.getDeceased();
+
+        if (nonNull(deceased)) {
+            builder.name(String.format("%s %s", deceased.getForenames(), deceased.getSurname()))
+                .dateOfBirth(deceased.getDateOfBirth())
+                .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
+                .address(deceased.getAddress())
+                .dateOfDeath(deceased.getDateOfDeath());
+        }
+
+        return builder.build();
+    }
+
+    @SuppressWarnings("squid:S2583")
+    public uk.gov.hmcts.probate.model.ccd.raw.DeathRecord mapDeathRecordCCD(V1Death v1Death) {
+        if (null == v1Death) {
+            return null;
+        }
+        final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord.DeathRecordBuilder builder
+            = uk.gov.hmcts.probate.model.ccd.raw.DeathRecord.builder().systemNumber(v1Death.getId());
         final Deceased deceased = v1Death.getDeceased();
 
         if (nonNull(deceased)) {
