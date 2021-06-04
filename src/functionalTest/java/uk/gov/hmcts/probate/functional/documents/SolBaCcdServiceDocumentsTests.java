@@ -1285,7 +1285,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
                 + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
-                + "stakeholders in the firm Firmname will is renouncing their right to probate."));
+                + "stakeholders in the firm Firmname will are renouncing their right to probate."));
 
     }
 
@@ -1297,7 +1297,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
                 + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
-                + "stakeholders in the firm Firmname will is renouncing their right to probate."));
+                + "stakeholders in the firm Firmname will are renouncing their right to probate."));
 
     }
 

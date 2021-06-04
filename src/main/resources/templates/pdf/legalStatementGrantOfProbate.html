@@ -172,7 +172,11 @@
                 in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased. That power is reserved to the other profit-sharing
+                {% if case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
+                {% else %}
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
+                {% endif %}
                 in the {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}successor {% endif %} firm.
             </p>
             {% endif %}
@@ -194,7 +198,7 @@
                 at the date of death of the deceased. The remaining profit-sharing
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                 in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                {% if morePartners %} are {% else %} is {% endif %} renouncing their right to probate.
+                are renouncing their right to probate.
             </p>
             {% endif %}
 
