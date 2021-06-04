@@ -893,7 +893,8 @@ public class CallbackResponseTransformer {
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
-            .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication());
+            .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
+            .deathRecords(caseData.getDeathRecords());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

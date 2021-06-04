@@ -1,0 +1,203 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "iht217": "Yes",
+      "caseType": "gop",
+      "taskList": "",
+      "totalFee": "15500",
+      "ihtFormId": "IHT205",
+      "paperForm": "No",
+      "willExists": "Yes",
+      "appointExec": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "casePrinted": "Yes",
+      "englishWill": "Yes",
+      "ihtNetValue": "19000000",
+      "solsSOTName": "Fred Smith",
+      "willDispose": "Yes",
+      "solsWillType": "WillLeft",
+      "ihtGrossValue": "20500000",
+      "schemaVersion": "2.0.0",
+      "applicationFee": "15500",
+      "feeForUkCopies": "0",
+      "solsSOTSurname": "Smith",
+      "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "Wilts",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Swindon",
+        "AddressLine1": "1 High St",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedSurname": "Jones",
+      "willHasCodicils": "Yes",
+      "paragraphDetails": [],
+      "registryLocation": "ctsc",
+      "solsSOTForenames": "Fred",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "Terry",
+      "executorsApplying": [],
+      "feeForNonUkCopies": "0",
+      "dispenseWithNotice": "Yes",
+      "solsPaymentMethods": "fee account",
+      "solsSolicitorEmail": "vleholt@yahoo.co.uk",
+      "willAccessOriginal": "Yes",
+      "deceasedDateOfBirth": "1978-01-10",
+      "deceasedDateOfDeath": "2021-01-10",
+      "otherExecutorExists": "Yes",
+      "solsSOTNeedToUpdate": "No",
+      "solsSolicitorIsExec": "No",
+      "codicilAddedDateList": [{
+        "id": "78dce55b-7a58-4bc0-8b88-baa5cc9a2e87",
+        "value": {
+          "dateCodicilAdded": "1992-10-10"
+        }
+      }],
+      "executorsNotApplying": [{
+        "id": "4ef60e4c-b613-4033-a365-0625e95b0e26",
+        "value": {
+          "notApplyingExecutorName": "Jim Smith",
+          "notApplyingExecutorReason": "PowerReserved",
+          "notApplyingExecutorNotified": null,
+          "notApplyingExecutorNameOnWill": null,
+          "notApplyingExecutorDispenseWithNotice": "Yes",
+          "notApplyingExecutorNameDifferenceComment": null,
+          "notApplyingExecutorDispenseWithNoticeLeaveGiven": "Yes",
+          "notApplyingExecutorDispenseWithNoticeLeaveGivenDate": "1956-09-10"
+        }
+      },
+        {
+          "id": "5361a490-8537-4314-a9c3-36f09ce62610",
+          "value": {
+            "notApplyingExecutorName": "Keith Jones",
+            "notApplyingExecutorReason": "DiedBefore",
+            "notApplyingExecutorNotified": null,
+            "notApplyingExecutorNameOnWill": null,
+            "notApplyingExecutorDispenseWithNotice": null,
+            "notApplyingExecutorNameDifferenceComment": null,
+            "notApplyingExecutorDispenseWithNoticeLeaveGiven": null,
+            "notApplyingExecutorDispenseWithNoticeLeaveGivenDate": null
+          }
+        }
+      ],
+      "solsFeeAccountNumber": "001234",
+      "solsSolicitorAddress": {
+        "County": "Glos",
+        "Country": "United Kingdom",
+        "PostCode": "GL52 6UW",
+        "PostTown": "Cheltenham",
+        "AddressLine1": "1 Woodmeade Close",
+        "AddressLine2": "Charlton Kings",
+        "AddressLine3": null
+      },
+      "titleAndClearingType": "TCTSolePrin",
+      "deceasedAnyOtherNames": "No",
+      "nameOfFirmNamedInWill": "fdgfg",
+      "solsSolicitorFirmName": "GGG",
+      "ihtFormCompletedOnline": "No",
+      "originalWillSignedDate": "1981-10-10",
+      "primaryApplicantAddress": {
+        "County": "Glos",
+        "Country": "United Kingdom",
+        "PostCode": "GL52 6UW",
+        "PostTown": "Cheltenham",
+        "AddressLine1": "1 Woodmeade Close",
+        "AddressLine2": "Charlton Kings",
+        "AddressLine3": null
+      },
+      "primaryApplicantSurname": "Smith",
+      "solsSolicitorIsApplying": "Yes",
+      "addressOfFirmNamedInWill": {
+        "County": "Wilts",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Swindon",
+        "AddressLine1": "1 Commercial Rd",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "anyOtherApplyingPartners": "No",
+      "applicationSubmittedDate": "2021-05-04",
+      "primaryApplicantHasAlias": "No",
+      "solsSolicitorPhoneNumber": "07740189346",
+      "solsSolicitorWillSignSOT": "Yes",
+      "primaryApplicantForenames": "Fred",
+      "probateDocumentsGenerated": [],
+      "solsSolicitorAppReference": "HKHFHhg",
+      "whoSharesInCompanyProfits": [
+        "partner"
+      ],
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsAdditionalExecutorList": [],
+      "solsLegalStatementDocument": {
+        "document_url": "http://dm-store:8080/documents/b392e5b0-b0b5-48a1-b15d-6ffad8306122",
+        "document_filename": "legalStatementGrantOfProbate.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/b392e5b0-b0b5-48a1-b15d-6ffad8306122/binary"
+      },
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "dispenseWithNoticeLeaveGiven": "Yes",
+      "probateSotDocumentsGenerated": [],
+      "solsAmendLegalStatmentSelect": {
+        "value": {
+          "code": "SolAppCreatedSolicitorDtls",
+          "label": "Probate practitioner details"
+        },
+        "list_items": [{
+          "code": "SolAppCreatedSolicitorDtls",
+          "label": "Probate practitioner details"
+        },
+          {
+            "code": "SolAppCreatedDeceasedDtls",
+            "label": "Deceased details"
+          },
+          {
+            "code": "WillLeft",
+            "label": "Probate details"
+          }
+        ]
+      },
+      "boCaveatStopEmailNotification": "No",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [],
+      "boEmailGrantIssuedNotification": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boEmailGrantReissuedNotification": "Yes",
+      "dispenseWithNoticeLeaveGivenDate": "1956-09-10",
+      "dispenseWithNoticeOtherExecsList": [],
+      "morePartnersHoldingPowerReserved": "Yes",
+      "grantAwaitingDocumentationNotificationDate": "2021-06-08"
+    }
+  }
+}
