@@ -155,6 +155,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
     private static final String SOLE_PRIN = "solicitorSoleFirmPartner.json";
     private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+    private static final String EXEC_WITH_ALIAS = "solicitorExecutorAliasNameLegalStatement.json";
     private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
     private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
 
@@ -1425,6 +1426,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySoTAliasNameForExec() {
+        final String response = generatePdfDocument(EXEC_WITH_ALIAS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Carlos Juan otherwise known as Karakiozis of"));
+    }
+    
     public void verifySoTSolePartnerWording() {
         final String response = generatePdfDocument(SOLE_PRIN, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
