@@ -153,13 +153,6 @@ public class DocumentController {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
-
-        if (NO.equalsIgnoreCase(caseData.getEvidenceHandled())) {
-            caseData.setEvidenceHandled(NO);
-        } else {
-            caseData.setEvidenceHandled(YES);
-        }
-
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
