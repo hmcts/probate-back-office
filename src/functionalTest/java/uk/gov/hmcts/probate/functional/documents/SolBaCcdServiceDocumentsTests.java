@@ -1068,11 +1068,31 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyDefaultEvidenceToYes() {
+    public void verifyDefaultEvidenceToYesFromNull() {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD))
+                .when().post(GENERATE_GRANT).andReturn();
+        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
+    }
+
+    @Test
+    public void verifyDefaultEvidenceToYesFromNo() {
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("evidenceHandledNo.json"))
+                .when().post(GENERATE_GRANT).andReturn();
+        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
+    }
+
+    @Test
+    public void verifyDefaultEvidenceToYesFromYes() {
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("evidenceHandledYes.json"))
                 .when().post(GENERATE_GRANT).andReturn();
         assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
     }
