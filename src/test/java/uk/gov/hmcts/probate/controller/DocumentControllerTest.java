@@ -707,7 +707,7 @@ public class DocumentControllerTest {
 
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
     }
 
     private Matcher<String> doesNotContainString(String s) {
