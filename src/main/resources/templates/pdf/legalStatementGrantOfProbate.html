@@ -169,8 +169,8 @@
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTPartPowerRes" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased. That power is reserved to the other profit-sharing
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                 in the {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}successor {% endif %} firm.
