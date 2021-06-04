@@ -3845,19 +3845,4 @@ public class CallbackResponseTransformerTest {
         verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
     }
-
-    @Test
-    public void shouldForceEvidenceHandledToYes() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
-        caseDataBuilder.ihtFormCompletedOnline(NO);
-        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
-        caseDataBuilder.caseType(CASE_TYPE_GRANT_OF_PROBATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
-    }
 }
