@@ -352,6 +352,7 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistRequestQA;
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private final String evidenceHandled;
     private final String caseType;
     private final String paperForm;
     private final String languagePreferenceWelsh;
@@ -531,7 +532,6 @@ public class CaseData extends CaseDataParent {
     private String registryAddress;
     private String registryEmailAddress;
     private final List<CollectionMember<DeathRecord>> deathRecords;
-    private final String evidenceHandled;
 
     public String solicitorIsMainApplicant() {
         return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
