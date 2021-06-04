@@ -158,6 +158,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String EXEC_WITH_ALIAS = "solicitorExecutorAliasNameLegalStatement.json";
     private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
     private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
+    private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
 
     @Before
     public void setUp() {
@@ -1452,6 +1453,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
                 + " Firmname will that had succeeded to and carried on the practice of the Successor firm at the "
                 + "date of death of the deceased have renounced probate."));
+    }
+
+    @Test
+    public void verifySoTPartOthersRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_OTHERS_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
+                + "Firmname will, at the date of death of the deceased."));
     }
 
     @Test
