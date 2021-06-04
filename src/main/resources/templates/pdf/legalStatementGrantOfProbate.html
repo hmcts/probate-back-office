@@ -184,8 +184,8 @@
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }}{% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                in the firm {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased.
             </p>
             {% endif %}
