@@ -684,19 +684,28 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldHandleEvidenceToYes() throws Exception {
+    public void shouldHandleEvidenceToYesFromNull() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledYesFromNull.json");
+
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
 
-        String payloadYes = testUtils.getStringFromFile("evidenceHandledYes.json");
-        mockMvc.perform(post("/document/generate-grant").content(payloadYes).contentType(MediaType.APPLICATION_JSON))
+    @Test
+    public void shouldHandleEvidenceToYes() throws Exception {
+        String payload = testUtils.getStringFromFile("evidenceHandledYes.json");
+
+        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
 
-        String payloadNo = testUtils.getStringFromFile("evidenceHandledNo.json");
-        mockMvc.perform(post("/document/generate-grant").content(payloadNo).contentType(MediaType.APPLICATION_JSON))
+    @Test
+    public void shouldHandleEvidenceToNo() throws Exception {
+        String payload = testUtils.getStringFromFile("evidenceHandledNo.json");
+
+        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
     }
