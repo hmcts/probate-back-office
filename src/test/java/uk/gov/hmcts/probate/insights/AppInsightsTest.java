@@ -34,7 +34,7 @@ public class AppInsightsTest {
 
     @Test
     public void trackRequest() {
-        classUnderTest.trackEvent(REQUEST_SENT.toString(), trackingMap("uri", "http://testurl.com"));
+        classUnderTest.trackEvent(REQUEST_SENT.toString(), classUnderTest.trackingMap("uri", "http://testurl.com"));
     }
 
     @Test
@@ -49,11 +49,4 @@ public class AppInsightsTest {
 
         Assert.isInstanceOf(AppInsights.class, appInsights);
     }
-
-    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<>();
-        trackMap.put(propertyname, propertyToTrack);
-        return trackMap;
-    }
-
 }
