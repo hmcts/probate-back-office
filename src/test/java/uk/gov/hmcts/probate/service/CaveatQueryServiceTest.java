@@ -77,8 +77,6 @@ public class CaveatQueryServiceTest {
         ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
-
-        //doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test
