@@ -31,6 +31,7 @@ def secrets = [
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
+                secret('smeeAndFordEmail', 'SMEE_AND_FORD_EMAIL'),
                 secret('ftpSignature', 'FTP_SIGNATURE'),
                 secret('ftpEnv', 'FTP_ENV'),
                 secret('probate-bo-grantSignatureKey', 'PDF_SERVICE_GRANTSIGNATURESECRETKEY'),
@@ -40,7 +41,16 @@ def secrets = [
                 secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL'),
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
-                secret('launchdarkly-key', 'LAUNCHDARKLY_KEY')
+                secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
+                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY'),
+                secret('levPublicCertificate', 'LEV_PUBLIC_CERTIFICATE'),
+                secret('levPrivateKey', 'LEV_PRIVATE_KEY'),
+                secret('levAccessTokenUri', 'LEV_ACCESS_TOKEN_URI'),
+                secret('levClientId', 'LEV_CLIENT_ID'),
+                secret('levClientSecret', 'LEV_CLIENT_SECRET'),
+                secret('levUsername', 'LEV_USERNAME'),
+                secret('levPassword', 'LEV_PASSWORD'),
+                secret('levDeathUrl', 'LEV_DEATH_URL')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -53,7 +63,6 @@ def secrets = [
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
-
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
     secretType: 'Secret',

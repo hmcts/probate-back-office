@@ -28,8 +28,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -515,6 +517,8 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     private String pcqId;
+    @Builder.Default
+    private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
     private DynamicList solsAmendLegalStatmentSelect;
@@ -527,6 +531,7 @@ public class CaseData extends CaseDataParent {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
+    private final List<CollectionMember<DeathRecord>> deathRecords;
 
     public String solicitorIsMainApplicant() {
         return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
