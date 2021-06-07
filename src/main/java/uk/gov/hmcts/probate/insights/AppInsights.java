@@ -29,7 +29,7 @@ public class AppInsights implements EventRepository {
     }
 
     public Map<String, String> trackingMap(String propertyName, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String, String>();
+        HashMap<String, String> trackMap = new HashMap<>();
         trackMap.put(propertyName, propertyToTrack);
         return trackMap;
     }

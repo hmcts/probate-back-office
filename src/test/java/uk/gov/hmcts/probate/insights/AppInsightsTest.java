@@ -51,7 +51,7 @@ public class AppInsightsTest {
     }
 
     private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String, String>();
+        HashMap<String, String> trackMap = new HashMap<>();
         trackMap.put(propertyname, propertyToTrack);
         return trackMap;
     }

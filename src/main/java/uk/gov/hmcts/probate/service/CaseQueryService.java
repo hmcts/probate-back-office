@@ -30,9 +30,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
@@ -219,16 +217,10 @@ public class CaseQueryService {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url", uri.toString()));
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
-    }
-
-    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String, String>();
-        trackMap.put(propertyname, propertyToTrack);
-        return trackMap;
     }
 
 }

@@ -17,8 +17,6 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -44,7 +42,7 @@ public class FeeService {
 
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url",uri.toString()));
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
@@ -122,11 +120,5 @@ public class FeeService {
         }
 
         return builder.build().encode().toUri();
-    }
-
-    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String, String>();
-        trackMap.put(propertyname, propertyToTrack);
-        return trackMap;
     }
 }

@@ -15,8 +15,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
@@ -46,18 +44,13 @@ public class ElasticSearchService {
         try {
             matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(), trackingMap("exception", e.getMessage()));
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
+                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT.toString(), trackingMap("url", uri.toString()));
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         return matchedCases;
-    }
-
-    private Map<String, String> trackingMap(String propertyname, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<String, String>();
-        trackMap.put(propertyname, propertyToTrack);
-        return trackMap;
     }
 }
