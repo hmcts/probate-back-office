@@ -1400,7 +1400,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             + "appointed them for the purpose of applying for probate"
             + " of the will or for grants of probate on its behalf."));
 
-        assertTrue(response.contains("Exfn1 Exln1 is acting on behalf of Firmname will trust corporation. "
+        assertTrue(response.contains("Exfn1 Exln1 is acting on behalf of Trust_Corporation_pls trust corporation. "
             + "They hold the position of Solicitor as per the resolution."));
     }
 
