@@ -3,7 +3,8 @@ package uk.gov.hmcts.probate.changerule;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -13,10 +14,26 @@ public class SolsExecutorRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return (!GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())
+
+        if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())
             && YES.equals(caseData.getSolsSolicitorIsExec())
             && NO.equals(caseData.getSolsSolicitorIsApplying())
-            && caseData.getSolsSolicitorNotApplyingReason().matches("PowerReserved"));
+            && caseData.getSolsSolicitorNotApplyingReason().matches("Renunciation")) {
+            return false;
+
+        } else if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())
+            && NO.equals(caseData.getSolsSolicitorIsExec())
+            && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+            return false;
+            
+        } else if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())
+            && NO.equals(caseData.getSolsSolicitorIsExec())
+            && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+            return false;
+
+        } else {
+            return true;
+        }
     }
 
     @Override
