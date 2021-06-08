@@ -398,4 +398,8 @@ ld:
     key: ${LD_USER_KEY:off}
     firstName: Probate
     lastName: Backend
-    
+
+azure:
+  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+  application-insights:
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
