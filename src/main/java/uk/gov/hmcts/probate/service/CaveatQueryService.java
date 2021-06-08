@@ -103,13 +103,14 @@ public class CaveatQueryService {
         try {
             returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
+                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
         return returnedCaveats.getCaveats();
     }
 }
