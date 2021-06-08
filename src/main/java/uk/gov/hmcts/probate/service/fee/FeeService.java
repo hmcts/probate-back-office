@@ -55,7 +55,7 @@ public class FeeService {
 
     public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return buildZeroValueFee();
@@ -92,7 +92,7 @@ public class FeeService {
 
     public FeeResponse getCaveatFeesData() {
         URI uri = buildUri(FEE_API_EVENT_TYPE_CAVEAT, "0");
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return buildZeroValueFee();
