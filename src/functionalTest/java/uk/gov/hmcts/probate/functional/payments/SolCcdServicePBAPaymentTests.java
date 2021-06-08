@@ -55,6 +55,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     @Pending
     @Test
     public void shouldValidatePaymentAountOnHold() {
+        //this test cannot be automated on a deployed env - leaving it for local checking
         validatePostRequestSuccessForPBAsForSolicitor2("/nextsteps/validate",
             "solicitorPDFPayloadProbateAccountOnHold.json",
             "Your account is on hold");

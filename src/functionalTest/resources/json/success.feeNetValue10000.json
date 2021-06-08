@@ -13,7 +13,6 @@
       8,
       695000000
     ],
-    "security_classification": "PUBLIC",
     "case_data": {
       "solsPaymentMethods": "fee account",
       "solsPBANumber": {
