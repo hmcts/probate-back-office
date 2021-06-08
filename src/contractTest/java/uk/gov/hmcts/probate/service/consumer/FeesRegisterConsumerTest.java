@@ -1,25 +1,25 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
@@ -29,20 +29,19 @@ import java.math.BigDecimal;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "feeRegister_lookUp", port = "4411")
+@PactFolder("pacts")
 @SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 public class FeesRegisterConsumerTest {
-
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("feeRegister_lookUp", "localhost", 4411, this);
 
     @Autowired
     FeeService feeService;
 
     @MockBean
     AppInsights appInsights;
-
     @MockBean
     FeatureToggleService featureToggleServiceMock;
 
@@ -52,7 +51,7 @@ public class FeesRegisterConsumerTest {
     private static final String USER_ID = "user-id";
     private static final String DOCUMENT_ID = "12345";
 
-    @Before
+    @BeforeEach
     public void setUpTest() {
         when(featureToggleServiceMock.isNewFeeRegisterCodeEnabled()).thenReturn(Boolean.TRUE);
     }
@@ -120,13 +119,18 @@ public class FeesRegisterConsumerTest {
             .matchQuery("keyword", "GrantWill", "GrantWill")
             .willRespondWith()
             .matchHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .status(HttpStatus.SC_NO_CONTENT)
+            .status(HttpStatus.SC_OK)
+            .body(new PactDslJsonBody()
+                .stringType("code", "FEE0544")
+                .stringType("description", "Copy of a document (for each copy)")
+                .numberType("version", 7)
+                .numberType("fee_amount", 0)
+            )
             .toPact();
     }
 
-
     @Test
-    @PactVerification(fragment = "createApplicationFeeFragmentSA")
+    @PactTestFor(pactMethod = "createApplicationFeeFragmentSA")
     public void verifyApplicationFeeServicePact() throws JSONException {
 
         FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
@@ -135,7 +139,7 @@ public class FeesRegisterConsumerTest {
     }
 
     @Test
-    @PactVerification(fragment = "createCopiesFeeFragment")
+    @PactTestFor(pactMethod = "createCopiesFeeFragment")
     public void verifyCopiesFeeServicePact() throws JSONException {
         FeeResponse result = feeService.getCopiesFeeResponse(3L);
         Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
@@ -143,7 +147,7 @@ public class FeesRegisterConsumerTest {
     }
 
     @Test
-    @PactVerification(fragment = "createCopiesNoFeeFragment")
+    @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
     public void verifyCopiesNoFeeServicePact() throws JSONException {
         FeeResponse result = feeService.getCopiesFeeResponse(0L);
         Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
