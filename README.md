@@ -528,5 +528,18 @@ Here are some other functionalities it provides:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
+# e2e Testing
+To run Probate Practitioner  tests on ExUI locally do the following:
+    1. Update the config.js file
+        TestBackOfficeUrl -  http://localhost:3455
+        TestEnvProfUser - ProbateSolicitorXui1@gmail.com
+        TestEnvProfPassword - Pa55word11
+        TestForXUI: true
 
+To run Caseworker  tests on CCD locally do the following:
+    1. Update the config.js file
+        TestBackOfficeUrl -  http://localhost:3451
+        TestEnvUser - ProbateSolCW1@gmail.com
+        TestEnvPassword - Pa55word11
+        TestForXUI: true
     
