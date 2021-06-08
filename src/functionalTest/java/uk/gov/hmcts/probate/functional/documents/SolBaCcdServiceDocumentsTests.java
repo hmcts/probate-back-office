@@ -294,6 +294,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGoPChangesForGopGenerate() {
+        final CaseData caseData = CaseData.builder().build();
+        final String response = generateDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
+    public void verifySuccessForGoPChangesForGopGenerateDraft() {
+        final CaseData caseData = CaseData.builder().build();
+        final String response = generateDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
