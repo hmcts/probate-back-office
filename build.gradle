@@ -143,16 +143,6 @@ task caseCreator(type: Test) {
   finalizedBy aggregate
 }
 
-
-task contract(type: Test) {
-  group = 'Delivery pipeline'
-  description = 'Runs the consumer Pact tests'
-  jvmArgs '--enable-preview'
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-  systemProperty 'pact.rootDir', "pacts"
-}
-
 gitProperties {
   gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
   keys = ['git.commit.id','git.commit.time']
@@ -179,7 +169,8 @@ def versions = [
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.0'
+        pact_version                    : '4.1.7',
+        probatePactCommonsVersion       : '1.0.1',
 ]
 
 jacocoTestReport {
@@ -348,14 +339,21 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version : '2.9.8'
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-  contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit_2.12', version: '3.5.25'
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.1")
+  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+  contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  contractTestCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
@@ -387,17 +385,18 @@ run {
 }
 
 project.ext {
-  pactVersion = getCheckedOutGitCommitHash()
+  pacticipant = "probate_backOffice"
+  pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
 task runAndPublishConsumerPactTests(type: Test){
-  logger.lifecycle("Runs pact Tests")
+  logger.lifecycle("Runs consumer pact tests")
+  systemProperty 'pact.rootDir', "pacts"
+  useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
 }
-
-runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
@@ -406,10 +405,12 @@ def getCheckedOutGitCommitHash() {
 }
 
 pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
   publish {
     pactDirectory = 'pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
     tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
-    version = project.pactVersion
+    version = project.pacticipantVersion
   }
 }
