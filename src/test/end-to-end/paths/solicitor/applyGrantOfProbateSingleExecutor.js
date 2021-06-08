@@ -26,7 +26,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function ({
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase('xui');
+    await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorExecutor, isSolicitorMainApplicant);
