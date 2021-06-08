@@ -29,14 +29,43 @@ public class SolsExecutorRuleTest {
     public void shouldNeedChangeSolIsExecAndIntestacy() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNeedChangeSolIsExecAndIntestacyYesNo() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+
+        assertTrue(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNeedChangeSolIsExecAndIntestacyNoYes() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
+
+        assertTrue(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNotNeedChangeSolIsExecAndIntestacyNoNo() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldNeedChangeSolIsExecAndAdmonWill() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
@@ -62,8 +91,19 @@ public class SolsExecutorRuleTest {
     public void shouldNotNeedChangeIfSolIsNOTExecAndAdmonWill() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNeedChangeIfSolIsNOTExecAndAdmonWillYesNoPowerReserved() {
+        when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("PowerReserved");
+
+        assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
