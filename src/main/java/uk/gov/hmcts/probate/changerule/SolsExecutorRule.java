@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -12,7 +13,10 @@ public class SolsExecutorRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return !GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && YES.equals(caseData.getSolsSolicitorIsExec());
+        return (!GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())
+            && YES.equals(caseData.getSolsSolicitorIsExec())
+            && NO.equals(caseData.getSolsSolicitorIsApplying())
+            && caseData.getSolsSolicitorNotApplyingReason().matches("PowerReserved"));
     }
 
     @Override
