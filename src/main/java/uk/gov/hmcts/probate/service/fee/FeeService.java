@@ -42,7 +42,7 @@ public class FeeService {
 
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {

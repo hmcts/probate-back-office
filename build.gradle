@@ -156,7 +156,7 @@ def versions = [
         serenityreporter                : '2.1.4',
         springBootVersion               : '2.3.4.RELEASE',
         springBootStarterHateoas        : '2.3.4.RELEASE',
-        hmctsJavaLogging                : '5.1.1',
+        hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
         commonsIO                       : '2.8.0',
