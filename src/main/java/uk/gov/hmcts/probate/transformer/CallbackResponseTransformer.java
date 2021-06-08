@@ -252,6 +252,8 @@ public class CallbackResponseTransformer {
                     .bulkPrintPdfSize(String.valueOf(pdfSize))
                     .grantIssuedDate(grantIssuedDate);
 
+            responseCaseDataBuilder.evidenceHandled(YES);
+
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
