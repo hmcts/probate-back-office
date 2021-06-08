@@ -18,21 +18,36 @@ public class SolsExecutorRule implements ChangeRule {
         if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())
             && YES.equals(caseData.getSolsSolicitorIsExec())
             && NO.equals(caseData.getSolsSolicitorIsApplying())
-            && caseData.getSolsSolicitorNotApplyingReason().matches("Renunciation")) {
-            return false;
+            && caseData.getSolsSolicitorNotApplyingReason().matches("PowerReserved")) {
+            return true;
 
         } else if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())
+            && YES.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            return true;
+
+        }  else if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())
             && NO.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            return true;
+
+        }  else if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())
+            && YES.equals(caseData.getSolsSolicitorIsExec())
             && NO.equals(caseData.getSolsSolicitorIsApplying())) {
-            return false;
-            
-        } else if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())
+            return true;
+
+        }  else if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())
             && NO.equals(caseData.getSolsSolicitorIsExec())
-            && NO.equals(caseData.getSolsSolicitorIsApplying())) {
-            return false;
+            && YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            return true;
+
+        }  else if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())
+            && YES.equals(caseData.getSolsSolicitorIsExec())
+            && YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            return true;
 
         } else {
-            return true;
+            return false;
         }
     }
 

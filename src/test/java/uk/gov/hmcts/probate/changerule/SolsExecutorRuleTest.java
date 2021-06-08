@@ -53,6 +53,7 @@ public class SolsExecutorRuleTest {
     public void shouldNotNeedChangeIfSolIsNOTExecAndIntestacy() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
