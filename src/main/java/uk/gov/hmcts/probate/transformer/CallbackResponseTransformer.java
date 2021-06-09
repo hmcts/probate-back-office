@@ -248,6 +248,8 @@ public class CallbackResponseTransformer {
                 .bulkPrintPdfSize(String.valueOf(pdfSize))
                 .grantIssuedDate(grantIssuedDate);
 
+            responseCaseDataBuilder.evidenceHandled(YES);
+
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -736,7 +738,8 @@ public class CallbackResponseTransformer {
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
-            .iht217(caseData.getIht217());
+            .iht217(caseData.getIht217())
+            .deathRecords(caseData.getDeathRecords());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

@@ -2616,5 +2616,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintDocument", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintNumberOfCopies", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
