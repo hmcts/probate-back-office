@@ -8,14 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import static junit.framework.TestCase.assertTrue;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
-    private final FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
     private static final String PA_STOP_DETAILS = "PA stop details";
     private static final String SOLS_STOP_DETAILS = "SOLS stop details";
 
