@@ -8,13 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import static junit.framework.TestCase.assertTrue;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
+    private final FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
     private static final String PA_STOP_DETAILS = "PA stop details";
     private static final String SOLS_STOP_DETAILS = "SOLS stop details";
 
@@ -70,6 +71,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGrantReissueDocumentAppNameWithApostrophe() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
+    public void verifyGrantReissueDocumentAppNameDoubleBarrelled() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameDoubleBarrelled.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
     public void verifyWelshGrantReissueDocumentAndEmail() {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
             "expectedPersonalDocumentWelshGrantReissued.txt",
@@ -88,6 +105,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
             "expectedPersonalDocumentWelshAdmonWillReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshGrantReissueDocumentAppNameWithApostrophe() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadWelshGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameWithApostrophe.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
+    public void verifyWelshGrantReissueDocumentAppNameDoubleBarrelled() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadWelshGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameDoubleBarrelled.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
     }
 
     @Test
