@@ -39,12 +39,4 @@
         <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch@.*$</packageUrl>
         <vulnerabilityName>CVE-2021-22134</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-         Suppressing as it's a false positive
-        ]]></notes>
-        <filePath regex="true">.*spring-(aop|aspects|beans|context|expression|jcl|jdbc|orm|oxm|tx|webmvc|web|core)-5\.2\.9\.RELEASE\.jar</filePath>
-        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
-        <cve>CVE-2021-22118</cve>
-    </suppress>
 </suppressions>
