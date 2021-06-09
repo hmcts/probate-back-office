@@ -1469,7 +1469,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the Successor firm at the "
+                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
                 + "date of death of the deceased have renounced probate."));
     }
 
