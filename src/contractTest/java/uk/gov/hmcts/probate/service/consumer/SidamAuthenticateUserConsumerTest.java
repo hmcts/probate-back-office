@@ -1,22 +1,23 @@
 package uk.gov.hmcts.probate.service.consumer;
 
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.BusinessRulesValidationApplication;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
@@ -26,8 +27,12 @@ import java.io.IOException;
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties = "auth.provider.client.user=http://localhost:8861")
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "idamApi_users", port = "8861")
+@PactFolder("pacts")
+@SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamAuthenticateUserConsumerTest {
 
@@ -38,10 +43,6 @@ public class SidamAuthenticateUserConsumerTest {
     private static final String CLIENT_ID = "auth.provider.client.id";
     private static final String REDIRECT_URL = "auth.provider.client.redirect";
 
-
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("idamApi_users", "localhost", 8861, this);
 
     @After
     public void teardown() {
@@ -66,7 +67,7 @@ public class SidamAuthenticateUserConsumerTest {
     }
 
     @Test
-    @PactVerification(fragment = "generatePactFragmentGetOAuth2Token")
+    @PactTestFor(pactMethod = "generatePactFragmentGetOAuth2Token")
     public void verifyIdamAuthoriseUserPact() {
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(AUTH_TOKEN,
             RESPONSE_TYPE, CLIENT_ID,

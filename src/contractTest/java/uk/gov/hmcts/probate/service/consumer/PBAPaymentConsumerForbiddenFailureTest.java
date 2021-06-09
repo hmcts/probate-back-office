@@ -1,21 +1,22 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Executor;
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -25,8 +26,12 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"payment.url=http://localhost:8889"})
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "payment_creditAccountPayment", port = "8889")
+@PactFolder("pacts")
+@SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 public class PBAPaymentConsumerForbiddenFailureTest extends BasePBAPaymentTest {
 
     @Autowired
@@ -37,10 +42,6 @@ public class PBAPaymentConsumerForbiddenFailureTest extends BasePBAPaymentTest {
     BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("payment_creditAccountPayment", "localhost", 8889, this);
 
     @After
     public void teardown() {
@@ -65,7 +66,7 @@ public class PBAPaymentConsumerForbiddenFailureTest extends BasePBAPaymentTest {
 
 
     @Test
-    @PactVerification(fragment = "generatePactFragmentFail")
+    @PactTestFor(pactMethod = "generatePactFragmentFail")
     public void verifyPBAPaymentPactFail() {
         verifyForbiddenRequest(BigDecimal.valueOf(1500));
     }
