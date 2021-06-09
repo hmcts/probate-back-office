@@ -214,7 +214,7 @@ dependencyManagement {
       entry 'spring-security-web'
     }
 
-    //CVE-2021-22112
+    //CVE-2021-22118
     dependencySet(group: 'org.springframework', version: '5.2.9.RELEASE') {
       entry 'spring-aop'
       entry 'spring-aspects'
