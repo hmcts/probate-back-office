@@ -1284,16 +1284,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
-                + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased."));
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm "
+                    + "Successor firm that had succeeded to and carried on the practice of the firm Firmname will, "
+                    + "at the date of death of the deceased."));
 
     }
 
     @Test
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
+        assertTrue(response.contains("The executor Partner Exec, is the only profit-sharing partner and "
                 + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
 
     }
@@ -1380,7 +1380,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm"
                 + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
