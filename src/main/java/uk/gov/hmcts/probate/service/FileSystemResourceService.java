@@ -20,16 +20,22 @@ public class FileSystemResourceService {
 
         return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
                 .map(in -> {
+                    FileOutputStream out = null;
                     try {
                         File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".html");
                         tempFile.deleteOnExit();
-                        FileOutputStream out = new FileOutputStream(tempFile);
+                        out = new FileOutputStream(tempFile);
                         IOUtils.copy(in, out);
                         return new FileSystemResource(tempFile);
                     } catch (IOException e) {
                         log.warn("File system [ {} ] could not be found", resourcePath, e);
                         return null;
+                    } finally {
+                        if (out != null) {
+                            safeClose(out);
+                        }
                     }
+
                 });
     }
 
@@ -46,4 +52,15 @@ public class FileSystemResourceService {
         }
     }
 
+    private void safeClose(FileOutputStream out) {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                log.error("Error occurred during closing FileOutStream", e);
+            }
+        }
+    }
+
 }
+
