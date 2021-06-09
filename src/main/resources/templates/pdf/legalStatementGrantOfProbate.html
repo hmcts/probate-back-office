@@ -45,6 +45,12 @@
 <body>
 <table>
     {% set multipleExecutors = case_details.case_data.executorsApplyingLegalStatement|length > 1 %}
+    {% set multipleOtherPartners = 0 %}
+    {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes"
+    and (case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin") %}
+    {% set multipleOtherPartners = multipleOtherPartners + 1 %} {% endif %}
+    {% if case_details.case_data.otherPartnersApplyingAsExecutors|length >= 1 %}
+    {% set multipleOtherPartners = multipleOtherPartners + case_details.case_data.otherPartnersApplyingAsExecutors|length %} {% endif %}
     {% set numberOfCodicils = case_details.case_data.codicilAddedDateList|length %}
     {% set currentCodicil = 1 %}
     <thead>
@@ -183,15 +189,6 @@
             </p>
             {% endif %}
 
-            {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
-            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased.
-            </p>
-            {% endif %}
-
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
@@ -227,14 +224,26 @@
             {% endif %}
 
             {% endfor %}
-            <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}<p>
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
                 The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
                 The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                that had succeeded to and carried on the practice of the {{ case_details.case_data.nameOfSucceededFirm }}
-                at the date of death of the deceased have renounced probate.{% endif %}</p>
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                at the date of death of the deceased have renounced probate.</p>{% endif %}
+
+            {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
+            <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
+                {{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }},{% endif %}
+                {% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}{{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}, {% endfor %}
+                {% if multipleOtherPartners > 1%}are the profit-sharing{% else %}is the only profit-sharing{% endif %}
+                {% if multipleOtherPartners > 1%}{{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}{% else %}{{ case_details.case_data.singularProfitSharingTextForLegalStatement }}{% endif %}
+                in the firm {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                at the date of death of the deceased.
+            </p>
+            {% endif %}
         </td>
     </tr>
     <tr>
