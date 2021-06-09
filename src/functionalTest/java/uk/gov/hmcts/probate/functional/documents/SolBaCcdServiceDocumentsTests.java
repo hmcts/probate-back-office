@@ -159,6 +159,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
     private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
     private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS = "solicitorSolPartner.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
 
     @Before
     public void setUp() {
@@ -1477,6 +1479,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response
             .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
                 + "Firmname will, at the date of death of the deceased."));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWording() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
+                + "stakeholders in the firm "));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWordingSingleExec() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS_SINGLE, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executor Partner Exec, is the only profit-sharing partner and "
+                + "stakeholder in the firm "));
     }
 
     @Test
