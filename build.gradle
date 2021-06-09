@@ -170,7 +170,7 @@ def versions = [
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
         pact_version                    : '4.1.7',
-        probatePactCommonsVersion       : '1.0.1',
+        probatePactCommonsVersion       : '1.0.2',
 ]
 
 jacocoTestReport {
@@ -353,7 +353,7 @@ dependencies {
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  contractTestCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
+  contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
