@@ -232,6 +232,18 @@ public class ExecutorsTransformer {
         caseData.setSolsPrimaryExecutorNotApplyingReason(null);
     }
 
+    protected void mapExecutorToPrimaryApplicantFieldsNotApplying(CaseData caseData) {
+        caseData.setPrimaryApplicantForenames(caseData.getSolsSOTForenames());
+        caseData.setPrimaryApplicantSurname(caseData.getSolsSOTSurname());
+        caseData.setPrimaryApplicantEmailAddress(caseData.getSolsSolicitorEmail());
+        caseData.setPrimaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber());
+        caseData.setPrimaryApplicantAddress(caseData.getSolsSolicitorAddress());
+        caseData.setPrimaryApplicantAlias(null);
+        caseData.setPrimaryApplicantHasAlias(NO);
+        caseData.setPrimaryApplicantIsApplying(NO);
+        caseData.setSolsPrimaryExecutorNotApplyingReason(null);
+    }
+
     public void setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(CaseData caseData) {
         if (!isSolicitorNamedInWillAsAnExecutor(caseData)) {
             caseData.setSolsSolicitorNotApplyingReason(null);

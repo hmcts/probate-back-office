@@ -10,6 +10,9 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Component
 @Slf4j
 // Handles some casedata mappings for when a solicitor application becomes a case
@@ -35,6 +38,9 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         if (isSolicitorApplying(caseData)) {
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
             mapExecutorToPrimaryApplicantFields(execsApplying.get(0).getValue(), caseData);
+        }
+        else if(!isSolicitorApplying(caseData) && isSolicitorNamedInWillAsAnExecutor(caseData)){
+            mapExecutorToPrimaryApplicantFieldsNotApplying(caseData);
         }
         formatFields(caseData);
         mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
