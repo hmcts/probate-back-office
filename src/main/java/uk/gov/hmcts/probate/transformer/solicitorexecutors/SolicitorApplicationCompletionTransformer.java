@@ -10,9 +10,6 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
 @Component
 @Slf4j
 // Handles some casedata mappings for when a solicitor application becomes a case
