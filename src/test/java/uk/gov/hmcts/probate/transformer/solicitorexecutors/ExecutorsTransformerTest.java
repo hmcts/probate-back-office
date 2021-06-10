@@ -566,7 +566,7 @@ public class ExecutorsTransformerTest {
         et.mapExecutorToPrimaryApplicantFieldsNotApplying(caseDetailsMock.getData());
 
         assertEquals("Fred", cd.getPrimaryApplicantForenames());
-        assertEquals("Bassett" ,cd.getPrimaryApplicantSurname());
+        assertEquals("Bassett", cd.getPrimaryApplicantSurname());
         assertEquals(SOLICITOR_ADDRESS, cd.getPrimaryApplicantAddress());
         assertEquals("No", cd.getPrimaryApplicantIsApplying());
         assertEquals("No",cd.getPrimaryApplicantHasAlias());
