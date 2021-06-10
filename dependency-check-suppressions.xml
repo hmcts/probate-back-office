@@ -9,6 +9,13 @@
         <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
+        <notes>
+         Suppressing CVE-2021-22112</notes>
+        <filePath regex="true">.*spring-security-(core)-5\.3\.8\.RELEASE\.jar</filePath>
+        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+        <cve>CVE-2021-22112</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[
    file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
    ]]></notes>
