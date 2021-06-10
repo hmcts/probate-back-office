@@ -100,8 +100,17 @@ public class NextStepsController {
                     eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
                         paymentResponse, creditAccountPaymentValidationRule);
                 if (creditPaymentResponse.getErrors().isEmpty()) {
-                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, paymentResponse);
+                    if (ccdData.getFee().getExtraCopiesOfGrant() == 10) {
+                        //dont complete the event in ccd - pay succesful in PAY
+                        throw new RuntimeException("break the flow before completing to ccd");
+                    } else  if (ccdData.getFee().getExtraCopiesOfGrant() == 20) {
+                        //complete event without RC details in ccd - pay succesful in PAY
+                        callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                            feesResponse, null);
+                    } else {
+                        callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                            feesResponse, paymentResponse);
+                    }
                 } else {
                     callbackResponse = creditPaymentResponse;
                 }
