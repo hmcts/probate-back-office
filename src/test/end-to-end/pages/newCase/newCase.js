@@ -7,6 +7,6 @@ module.exports = async function () {
 
     const I = this;
 
-    await I.waitForText('Create case', testConfig.TestTimeToWaitForText);
+    await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
     await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator, 120);
 };
