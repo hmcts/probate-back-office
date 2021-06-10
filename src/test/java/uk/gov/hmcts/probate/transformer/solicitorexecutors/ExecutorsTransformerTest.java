@@ -529,7 +529,7 @@ public class ExecutorsTransformerTest {
     @Test
     public void shouldNotSetPrimaryApplicantFields_ApplicantExecsListEmpty() {
         caseDataBuilder
-                .primaryApplicantForenames(EXEC_FIRST_NAME);
+            .primaryApplicantForenames(EXEC_FIRST_NAME);
 
         final CaseData cd = caseDataBuilder.build();
 
@@ -544,6 +544,33 @@ public class ExecutorsTransformerTest {
         assertNull(cd.getPrimaryApplicantAlias());
         assertNull(cd.getPrimaryApplicantHasAlias());
         assertNull(cd.getPrimaryApplicantIsApplying());
+        assertNull(cd.getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void mapExecutorToPrimaryApplicantFieldsNotApplyingTest() {
+        caseDataBuilder
+            .solsSolicitorIsExec(YES)
+            .solsSolicitorIsApplying(NO)
+            .solsSOTForenames("Fred")
+            .solsSOTSurname("Bassett")
+            .solsSolicitorEmail("email@gmail.com")
+            .solsSolicitorPhoneNumber("075232323")
+            .solsSolicitorAddress(SOLICITOR_ADDRESS);
+
+        final CaseData cd = caseDataBuilder.build();
+
+        when(caseDetailsMock.getData()).thenReturn(cd);
+
+        ExecutorsTransformer et = new ExecutorsTransformer(new ExecutorListMapperService());
+        et.mapExecutorToPrimaryApplicantFieldsNotApplying(caseDetailsMock.getData());
+
+        assertEquals("Fred", cd.getPrimaryApplicantForenames());
+        assertEquals("Bassett" ,cd.getPrimaryApplicantSurname());
+        assertEquals(SOLICITOR_ADDRESS, cd.getPrimaryApplicantAddress());
+        assertEquals("No", cd.getPrimaryApplicantIsApplying());
+        assertEquals("No",cd.getPrimaryApplicantHasAlias());
+        assertNull(cd.getPrimaryApplicantAlias());
         assertNull(cd.getSolsPrimaryExecutorNotApplyingReason());
     }
 
