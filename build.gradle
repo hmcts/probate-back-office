@@ -207,7 +207,7 @@ dependencyManagement {
     dependency group: 'junit', name: 'junit', version: '4.13.2'
     
     //CVE-2021-22112
-    dependencySet(group: 'org.springframework.security', version: '5.3.8.RELEASE') {
+    dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
       entry 'spring-security-config'
       entry 'spring-security-core'
       entry 'spring-security-crypto'
