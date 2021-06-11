@@ -41,7 +41,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock
+    @Mock   
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
