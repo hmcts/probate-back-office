@@ -1,6 +1,9 @@
 package uk.gov.hmcts.probate.controller;
 
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -93,6 +96,12 @@ public class CaseDataTestBuilder {
                 .build();
     }
 
+    private static Document getSolsCoverSheet() {
+        return Document.builder().documentType(DocumentType.SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
+            .build();
+    }
+
     public static CaseData.CaseDataBuilder withDefaultsAndNoPrimaryApplicantEmailAddress() {
 
         SolsAddress solsAddress = getSolsAddress();
@@ -150,7 +159,8 @@ public class CaseDataTestBuilder {
             .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
             .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
             .deceasedForeignDeathCertInEnglish(DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH)
-            .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION);
+            .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION)
+            .solsCoversheetDocument(getSolsCoverSheet().getDocumentLink());
     }
 
 }

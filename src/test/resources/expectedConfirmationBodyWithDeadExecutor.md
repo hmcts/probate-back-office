@@ -39,7 +39,7 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   the printed version of this page which will be used as your cover letter to us
+*   the printed <a href="#" target="_blank">coversheet</a> or your reference number 1 written on a sheet of paper
 *   the inheritance tax form IHT207
 *   death certificate for Bob Martin
 *   a photocopy of the signed legal statement and declaration
