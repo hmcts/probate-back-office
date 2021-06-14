@@ -131,7 +131,6 @@ ccd.gateway:
 
 ccd.data.store.api:
   host: http://localhost:4452
-  caseMatchingPath: /searchCases
 
 spring:
   jackson:

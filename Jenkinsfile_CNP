@@ -75,6 +75,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 // Vars for Kubernetes
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
+// Configure branches to sync with master branch
+def branchesToSync = ['demo', 'ithc', 'perftest']
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
@@ -84,6 +87,7 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+  syncBranchesWithMaster(branchesToSync)
 
   after('test') {
     junit 'build/test-results/test/**/*.xml'
@@ -116,6 +120,9 @@ withPipeline("java", product, component) {
   }
 
   onMaster() {
+    enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+  }
+  onPR() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 }
