@@ -324,6 +324,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
     private List<CollectionMember<DeathRecord>> deathRecords;
-    private Integer deathRecordSystemNumber;
+    private final Integer deathRecordSystemNumber;
     private DeathRecord deathRecord;
 }
