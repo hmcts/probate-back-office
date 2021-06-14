@@ -874,14 +874,41 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Further Evidence", jsonPath.get("data.furtherEvidenceForApplication"));
     }
 
+    @Test
+    public void shouldTransformAliasNamesCorrectlyOtherNamesYes() {
+        final String response = transformCase("success.SolicitorAddDeceasedEstateDetails.json",
+                TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        final String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
+
+        assertEquals("decalias1", alias);
+    }
+
+    @Test
+    public void shouldTransformAliasNamesCorrectlyOtherNamesNo() {
+        String payload = getJsonFromFile("success.SolicitorAddDeceasedEstateDetails.json");
+        payload = replaceAllInString(payload, "\"deceasedAnyOtherNames\": \"Yes\",",
+                "\"deceasedAnyOtherNames\": \"No\",");
+
+        final String response = transformCaseFromPayload(payload, TRANSFORM_URL);
+
+        final JsonPath jsonPath = JsonPath.from(response);
+        assertNull(jsonPath.get("data.solsDeceasedAliasNamesList"));
+    }
+
 
     private String transformCase(String jsonFileName, String path) {
+        return transformCaseFromPayload(utils.getJsonFromFile(jsonFileName), path);
+    }
+
+    private String transformCaseFromPayload(String jsonPayload, String path) {
         final Response jsonResponse = RestAssured.given()
-            .config(config)
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path).andReturn();
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(jsonPayload)
+                .when().post(path).andReturn();
 
         return jsonResponse.getBody().asString();
     }
