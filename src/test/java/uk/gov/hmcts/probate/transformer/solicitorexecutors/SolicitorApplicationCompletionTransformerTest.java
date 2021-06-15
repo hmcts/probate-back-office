@@ -178,24 +178,4 @@ public class SolicitorApplicationCompletionTransformerTest {
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
-
-    @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
-        caseDataBuilder
-            .primaryApplicantIsApplying(NO)
-            .solsSolicitorIsApplying(NO)
-            .solsSolicitorIsExec(YES);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-            caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
-            ADDITIONAL_EXECUTOR_NOT_APPLYING));
-
-        CaseData caseData = caseDetailsMock.getData();
-        solicitorApplicationCompletionTransformerMock.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
-
-        assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
-        assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
-    }
-
 }
