@@ -366,6 +366,12 @@ public class CallbackResponseTransformerTest {
         .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
         .build();
 
+    private static final List<CollectionMember<AliasName>> aliasListOneName = Arrays.asList(
+            new CollectionMember<AliasName>("id",
+            AliasName.builder()
+            .solsAliasname("James Dean")
+                .build()));
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -3237,5 +3243,47 @@ public class CallbackResponseTransformerTest {
         assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
         verify(solicitorExecutorTransformerMock, times(1))
                 .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
+    }
+
+    @Test
+    public void shouldTransformAliasCorrectlyForDeceasedDetailsOtherNamesNo() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .caseType(GRANT_OF_PROBATE_NAME)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSOTForenames("Fred")
+                .solsSOTSurname("Bassett")
+                .solsSOTName("Fred Bassett")
+                .solsSolicitorIsExec("Yes")
+                .solsSolicitorIsApplying("Yes")
+                .deceasedAnyOtherNames("No")
+                .solsDeceasedAliasNamesList(aliasListOneName);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
+
+        assertEquals(null, callbackResponse.getData().getSolsDeceasedAliasNamesList());
+    }
+
+    @Test
+    public void shouldTransformAliasCorrectlyForDeceasedDetailsOtherNamesYes() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .caseType(GRANT_OF_PROBATE_NAME)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSOTForenames("Fred")
+                .solsSOTSurname("Bassett")
+                .solsSOTName("Fred Bassett")
+                .solsSolicitorIsExec("Yes")
+                .solsSolicitorIsApplying("Yes")
+                .deceasedAnyOtherNames("Yes")
+                .solsDeceasedAliasNamesList(aliasListOneName);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse =
+                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
+
+        assertEquals(aliasListOneName, callbackResponse.getData().getSolsDeceasedAliasNamesList());
     }
 }
