@@ -41,16 +41,7 @@ public class LifeEventController {
         final DeathRecord deathRecord = lifeEventService.getDeathRecordById(systemNumber);
         final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
         response.getData().setDeathRecord(deathRecord);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/updateWithSystemNumber2")
-    public ResponseEntity<CallbackResponse> updateWithSystemNumber2(@RequestBody CallbackRequest request) {
-        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
-        final DeathRecord deathRecord = request.getCaseDetails().getData().getDeathRecord();
-        if (null != deathRecord && null != deathRecord.getSystemNumber()) {
-            response.getData().setDeathRecords(List.of(new CollectionMember<>(null, deathRecord)));
-        }
+        response.getData().setDeathRecords(List.of(new CollectionMember<>(null, deathRecord)));
         return ResponseEntity.ok(response);
     }
 }

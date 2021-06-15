@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -100,17 +99,5 @@ public class LifeEventControllerTest {
             .andExpect(jsonPath("$.data.deathRecord", notNullValue()));
         
         verify(lifeEventService).getDeathRecordById(eq(500035096));
-    }
-
-
-    @Test
-    public void shouldCopyDeathRecord() throws Exception {
-        String payload = testUtils.getStringFromFile("lifeEventUpdateWithSystemNumber2Payload.json");
-
-        mockMvc.perform(post("/lifeevent/updateWithSystemNumber2")
-            .content(payload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.deathRecords", hasSize(1)));
     }
 }
