@@ -458,9 +458,10 @@ public class CallbackResponseTransformer {
         return response;
     }
 
-    public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
+    public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest,
+                                                               boolean nullParentFields) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false, false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), false, nullParentFields);
 
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
                 callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
@@ -877,9 +878,8 @@ public class CallbackResponseTransformer {
             .addressOfFirmNamedInWill(caseData.getAddressOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
             .addressOfSucceededFirm(caseData.getAddressOfSucceededFirm())
-            .anyOtherApplyingPartners(nullifyParentFields == true ? null :
-                caseData.getAnyOtherApplyingPartners())
-            .anyOtherApplyingPartnersTrustCorp(nullifyParentFields == true ? null :
+            .anyOtherApplyingPartners(nullifyParentFields ? null : caseData.getAnyOtherApplyingPartners())
+            .anyOtherApplyingPartnersTrustCorp(nullifyParentFields ? null :
                 caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())

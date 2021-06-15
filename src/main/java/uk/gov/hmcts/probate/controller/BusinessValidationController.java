@@ -174,7 +174,7 @@ public class BusinessValidationController {
 
         if (response.getErrors().isEmpty()) {
             caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
-            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest, false);
         }
 
         return ResponseEntity.ok(response);
@@ -193,7 +193,7 @@ public class BusinessValidationController {
                 gopPage1ValidationRules);
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest, true);
         }
 
         return ResponseEntity.ok(response);
