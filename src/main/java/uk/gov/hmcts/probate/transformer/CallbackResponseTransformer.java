@@ -1331,9 +1331,9 @@ public class CallbackResponseTransformer {
     }
 
     private boolean shouldNullifyAliasNamesList(CaseData caseData) {
-        return (caseData.getDeceasedAliasNameList() == null ||
-                caseData.getDeceasedAliasNameList().isEmpty()) &&
-                !YES.equals(caseData.getDeceasedAnyOtherNames());
+        return (caseData.getDeceasedAliasNameList() == null
+                || caseData.getDeceasedAliasNameList().isEmpty())
+                && !YES.equals(caseData.getDeceasedAnyOtherNames());
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
