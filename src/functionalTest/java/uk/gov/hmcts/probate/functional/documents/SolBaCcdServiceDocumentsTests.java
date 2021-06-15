@@ -159,6 +159,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
     private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
     private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS = "solicitorSolPartner.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
 
@@ -1311,16 +1313,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
-                + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased."));
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm "
+                    + "Successor firm that had succeeded to and carried on the practice of the firm Firmname will, "
+                    + "at the date of death of the deceased."));
 
     }
 
     @Test
     public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
         final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is a profit-sharing partner and "
+        assertTrue(response.contains("The executor Partner Exec, is the only profit-sharing partner and "
                 + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
 
     }
@@ -1407,7 +1409,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm"
                 + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
                 + " at the date of death of the deceased."));
 
@@ -1496,7 +1498,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generatePdfDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the Successor firm at the "
+                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
                 + "date of death of the deceased have renounced probate."));
     }
 
@@ -1506,6 +1508,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response
             .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
                 + "Firmname will, at the date of death of the deceased."));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWording() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
+                + "stakeholders in the firm "));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWordingSingleExec() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS_SINGLE, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executor Partner Exec, is the only profit-sharing partner and "
+                + "stakeholder in the firm "));
     }
 
     @Test
