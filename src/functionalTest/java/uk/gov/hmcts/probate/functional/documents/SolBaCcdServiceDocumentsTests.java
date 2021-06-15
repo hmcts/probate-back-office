@@ -159,6 +159,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
     private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
     private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
+    private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
+    private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
 
     @Before
     public void setUp() {
@@ -296,10 +298,37 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGoPChangesForGopGenerate() {
-        final CaseData caseData = CaseData.builder().build();
         final String response = generateDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantDraftAddresses() {
+        final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantAddresses() {
+        final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT);
+
+        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantAddressesFirm() {
+        final String response = generateDocument(CW_PART, GENERATE_GRANT);
+
+        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantDraftAddressesFirm() {
+        final String response = generateDocument(CW_PART, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
     }
 
     @Test
