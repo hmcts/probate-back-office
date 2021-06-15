@@ -47,20 +47,20 @@ public class LifeEventService {
 
     public DeathRecord getDeathRecordById(final Integer systemNumber) {
         log.info("Trying LEV call");
-        V1Death v1Death;
+        V1Death record;
         try {
-            v1Death = deathService.getDeathRecordById(systemNumber);
+            record = deathService.getDeathRecordById(systemNumber);
         } catch (Exception e) {
             log.error("Error during LEV call", e);
             throw e;
         }
 
-        if (null == v1Death) {
+        if (null == record) {
             String message = String.format("No death record found with system number %s", systemNumber);
             throw new BusinessValidationException(message, message);
         }
 
-        return deathRecordService.mapDeathRecordCCD(v1Death);
+        return deathRecordService.mapDeathRecordCCD(record);
     }
 
     @Async
