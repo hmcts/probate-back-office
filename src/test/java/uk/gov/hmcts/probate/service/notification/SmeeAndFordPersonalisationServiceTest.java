@@ -41,7 +41,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock
+    @Mock   
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
@@ -92,7 +92,6 @@ public class SmeeAndFordPersonalisationServiceTest {
                     .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "" + i, true)));
             }
         }
-        SolsAddress primaryAddress = buildAddress("Prim");
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
             .registryLocation("Registry Address")
             .grantIssuedDate("2021-12-31")
@@ -108,7 +107,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .primaryApplicantForenames("PrimaryFN")
             .primaryApplicantSurname("PrimarySN1 PrimarySN2")
             .primaryApplicantAlias("PrimaryAlias")
-            .primaryApplicantAddress(primaryAddress)
+            .primaryApplicantAddress(applicationType == SOLICITOR ? null : buildAddress("Prim"))
             .ihtGrossValue(GROSS)
             .ihtNetValue(NET)
             .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))

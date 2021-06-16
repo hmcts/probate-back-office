@@ -222,7 +222,7 @@ public class SmeeAndFordPersonalisationService {
         allExecs.append(replaceDelimeters(execNames.toString()));
         allExecs.append(DELIMITER);
         
-        allExecs.append(ifNotEmpty(getFullAddress(applying.getValue().getApplyingExecutorAddress())));
+        allExecs.append(getFullAddress(applying.getValue().getApplyingExecutorAddress()));
         return allExecs.toString();
     }
 
@@ -238,6 +238,12 @@ public class SmeeAndFordPersonalisationService {
             addBuilder.append(getPostCode(address));
             addBuilder.append(DELIMITER);
             addBuilder.append(getCountry(address));
+            addBuilder.append(DELIMITER);
+        } else {
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
             addBuilder.append(DELIMITER);
         }
         return addBuilder.toString();
