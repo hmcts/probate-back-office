@@ -41,7 +41,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock
+    @Mock   
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
@@ -59,18 +59,18 @@ public class SmeeAndFordPersonalisationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
-            .thenReturn("Registry name,Date of Issue,Case reference number,Full name of deceased,All names which the " 
-                + "deceased was otherwise known as,Type of Grant,Date of death,Deceased Address,Deceased Town," 
-                + "Deceased County,Deceased Postcode,Deceased Country,Applying executor 1 Name,Applying executor 1 " 
-                + "Address,Applying executor 1 Town,Applying executor 1 County,Applying executor 1 Postcode,Applying " 
-                + "executor 1 Country,Applying executor 2 Name,Applying executor 2 Address,Applying executor 2 Town," 
-                + "Applying executor 2 County,Applying executor 2 Postcode,Applying executor 2 Country,Applying " 
-                + "executor 3 Name,Applying executor 3 Address,Applying executor 3 Town,Applying executor 3 County," 
-                + "Applying executor 3 Postcode,Applying executor 3 Country,Primary applicant Name,Primary applicant " 
-                + "Address,Primary applicant Town,Primary applicant County,Primary applicant Postcode,Primary " 
-                + "applicant Country,Gross,Net,Solicitor Name,Solicitor Reference,Solicitor Address,Solicitor Town," 
-                + "Solicitor County,Solicitor Postcode,Solicitor Country,date of birth,Field which alerts us to " 
-                + "Codicil being present,pdf file name field for Wills,pdf for Digital Grant");
+            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the " 
+                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|" 
+                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 " 
+                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying " 
+                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|" 
+                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying " 
+                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|" 
+                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant " 
+                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary " 
+                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|" 
+                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to " 
+                + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
@@ -92,7 +92,6 @@ public class SmeeAndFordPersonalisationServiceTest {
                     .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "" + i, true)));
             }
         }
-        SolsAddress primaryAddress = buildAddress("Prim");
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
             .registryLocation("Registry Address")
             .grantIssuedDate("2021-12-31")
@@ -108,7 +107,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .primaryApplicantForenames("PrimaryFN")
             .primaryApplicantSurname("PrimarySN1 PrimarySN2")
             .primaryApplicantAlias("PrimaryAlias")
-            .primaryApplicantAddress(primaryAddress)
+            .primaryApplicantAddress(applicationType == SOLICITOR ? null : buildAddress("Prim"))
             .ihtGrossValue(GROSS)
             .ihtNetValue(NET)
             .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))
@@ -206,6 +205,26 @@ public class SmeeAndFordPersonalisationServiceTest {
 
         assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedData.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+            true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false,
+            true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataWithDelimeters.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
     }
