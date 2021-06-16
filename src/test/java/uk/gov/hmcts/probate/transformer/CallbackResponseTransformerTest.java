@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -77,11 +76,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
@@ -193,10 +194,10 @@ public class CallbackResponseTransformerTest {
         <uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplying>>
         BSP_ADDITIONAL_EXEC_LIST_NOT_APP = emptyList();
     private static final List<CollectionMember<AliasName>> DECEASED_ALIAS_NAMES_LIST = emptyList();
-    private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final Address BSP_APPLICANT_ADDRESS = Mockito.mock(Address.class);
-    private static final Address BSP_DECEASED_ADDRESS = Mockito.mock(Address.class);
+    private static final SolsAddress DECEASED_ADDRESS = mock(SolsAddress.class);
+    private static final SolsAddress EXEC_ADDRESS = mock(SolsAddress.class);
+    private static final Address BSP_APPLICANT_ADDRESS = mock(Address.class);
+    private static final Address BSP_DECEASED_ADDRESS = mock(Address.class);
     private static final List<CollectionMember<AliasName>> ALIAS_NAMES = emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
@@ -1109,6 +1110,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldNotSelectForQA() {
+        caseDataBuilder.boExaminationChecklistRequestQA(null);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn("CurrentStateId");
+
+        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
+
+        assertEquals("CurrentStateId", response.getData().getState());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
@@ -2001,7 +2013,22 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
+    
+    @Test
+    public void shouldPreserveDeathRecordList() {
 
+        final List mockList = mock(List.class);
+
+        caseDataBuilder.deathRecords(mockList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertSame(mockList, callbackResponse.getData().getDeathRecords());
+    }
+    
     @Test
     public void shouldTransformCaseForWhenCaseTypeIsNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);

@@ -26,6 +26,9 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,11 +43,6 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 @Slf4j
 public class CaseQueryService {
-    @Value("${data-extract.exela.size}")
-    protected String dataExtractExelaSize;
-    @Value("${data-extract.hmrc.size}")
-    protected String dataExtractHmrcSize;
-
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
@@ -68,6 +66,7 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_exela.json";
     private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_hmrc.json";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -75,6 +74,12 @@ public class CaseQueryService {
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final FileSystemResourceService fileSystemResourceService;
+    @Value("${data-extract.block.size}")
+    protected int dataExtractBlockSize;
+    @Value("${data-extract.block.numDaysInclusive}")
+    protected int numDaysBlock;
+    @Value("${data-extract.smee-and-ford.size}")
+    protected int dataExtractSmeeAndFordSize;
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaseQueryService");
@@ -93,21 +98,48 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_EXELA)
-            .replace(":size", dataExtractExelaSize)
-            .replace(":fromDate", startDate)
-            .replace(":toDate", endDate);
-
-        return runQuery(jsonQuery);
+        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(GRANT_RANGE_QUERY_HMRC)
-            .replace(":size", dataExtractHmrcSize)
-            .replace(":fromDate", startDate)
-            .replace(":toDate", endDate);
+        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+    }
 
-        return runQuery(jsonQuery);
+    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
+        return findCaseStateWithinDateRange(dataExtractSmeeAndFordSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+    }
+
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(int size, String qry, String startDate,
+                                                                   String endDate) {
+        List<ReturnedCaseDetails> allCases = new ArrayList<>();
+        LocalDate end = LocalDate.parse(endDate, DATE_FORMAT);
+        LocalDate counter = LocalDate.parse(startDate, DATE_FORMAT);
+        while (!counter.isAfter(end)) {
+            String stBlock = counter.format(DATE_FORMAT);
+            LocalDate endCounter = counter.plusDays(numDaysBlock);
+            if (endCounter.isAfter(end)) {
+                endCounter = end;
+            }
+            String endBlock = endCounter.format(DATE_FORMAT);
+            log.info("findCaseStateWithinDateRange stBlock:" + stBlock + " endBlock:" + endBlock + " days:"
+                + (counter.datesUntil(endCounter).count() + 1));
+            String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
+                .replace(":size", "" + size)
+                .replace(":fromDate", stBlock)
+                .replace(":toDate", endBlock);
+            List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery);
+            if (blockCases.size() == size) {
+                String message = "Number of cases returned during data range query at max block size for "
+                    + stBlock + " to " + endBlock;
+                log.info(message);
+                throw new ClientDataException(message);
+            }
+            allCases.addAll(blockCases);
+
+            counter = endCounter.plusDays(1);
+        }
+
+        return allCases;
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
@@ -178,15 +210,17 @@ public class CaseQueryService {
             log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
             log.error("CaseMatchingException on CaseQueryService, message=" + e.getMessage());
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(), appInsights.trackingMap("exception",
+                e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
     }
+
 }

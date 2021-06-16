@@ -1,18 +1,19 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.google.common.collect.Maps;
 import org.json.JSONException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
@@ -20,13 +21,13 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import java.io.IOException;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "em_dm_store", port = "8892")
+@PactFolder("pacts")
 @SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 public class DocumentStoreClientConsumerTest {
-
-
-    @Rule
-    public PactHttpsProviderRuleMk2 provider = new PactHttpsProviderRuleMk2("em_dm_store", "localhost", 8892, this);
 
     @Autowired
     DocumentStoreClient documentStoreClient;
@@ -56,7 +57,7 @@ public class DocumentStoreClientConsumerTest {
 
 
     @Test
-    @PactVerification(fragment = "createFragment")
+    @PactTestFor(pactMethod = "createFragment")
     public void verifyDownloadDocumentPact() throws IOException, JSONException {
 
         byte[] bytes = documentStoreClient.retrieveDocument(Document.builder().documentGeneratedBy(USER_ID)
