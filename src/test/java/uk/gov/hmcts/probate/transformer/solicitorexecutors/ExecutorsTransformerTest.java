@@ -554,6 +554,7 @@ public class ExecutorsTransformerTest {
             .solsSolicitorIsApplying(NO)
             .solsSOTForenames("Fred")
             .solsSOTSurname("Bassett")
+            .isSolThePrimaryApplicant("Yes")
             .solsSolicitorEmail("email@gmail.com")
             .solsSolicitorPhoneNumber("075232323")
             .solsSolicitorAddress(SOLICITOR_ADDRESS);
