@@ -70,8 +70,8 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             {locator: {css: '#primaryApplicantAddress_PostTown'}, text: caseProgressConfig.solAddrTown},
             {locator: {css: '#primaryApplicantAddress_PostCode'}, text: caseProgressConfig.solAddrPostcode},
             {locator: {css: '#primaryApplicantAddress_Country'}, text: caseProgressConfig.solAddrCountry},
-            {locator: {css: '#otherExecutorExists-No'}},
-            /* {locator: {css: '#soleTraderOrLimitedCompany-Yes'}} */]);
+            {locator: {css: '#otherExecutorExists-No'}}
+        ]);
 
         await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
