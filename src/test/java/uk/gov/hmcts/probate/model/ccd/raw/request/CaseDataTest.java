@@ -713,6 +713,7 @@ public class CaseDataTest {
             .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress")
             .registrySequenceNumber("registrySequenceNumber")
             .dispenseWithNotice("Yes")
+            .isSolThePrimaryApplicant("Yes")
             .originalWillSignedDateFormatted("1st January 2020")
             .titleAndClearingType("TCTTrustCorpResWithApp")
             .registrySequenceNumber("registrySequenceNumber")
@@ -725,6 +726,7 @@ public class CaseDataTest {
         assertEquals("solsAmendLegalStatmentSelect", caseData.getSolsAmendLegalStatmentSelect().getValue().getCode());
         assertEquals("1000", caseData.getIhtGrossValueField());
         assertEquals("Yes", caseData.getDeclarationCheckbox());
+        assertEquals("Yes", caseData.getIsSolThePrimaryApplicant());
         assertEquals("900", caseData.getIhtNetValueField());
         assertEquals(Long.valueOf(1), caseData.getNumberOfExecutors());
         assertEquals(Long.valueOf(2), caseData.getNumberOfApplicants());

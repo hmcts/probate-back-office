@@ -50,6 +50,7 @@ public class ResponseCaseDataParent {
     protected SolsAddress trustCorpAddress;
     protected final List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList;
     protected final String lodgementDate;
+    protected final String isSolThePrimaryApplicant;
     protected final String lodgementAddress;
     protected final String nameOfFirmNamedInWill;
     protected SolsAddress addressOfFirmNamedInWill;

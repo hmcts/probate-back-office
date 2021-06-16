@@ -36,6 +36,7 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
             List<CollectionMember<AdditionalExecutorApplying>> execsApplying = createCaseworkerApplyingList(caseData);
             mapExecutorToPrimaryApplicantFields(execsApplying.get(0).getValue(), caseData);
         } else if (!isSolicitorApplying(caseData) && isSolicitorNamedInWillAsAnExecutor(caseData)) {
+            createCaseworkerApplyingList(caseData);
             mapExecutorToPrimaryApplicantFieldsNotApplying(caseData);
         }
         formatFields(caseData);

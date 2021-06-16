@@ -40,6 +40,7 @@ public class CaseDataParent {
     protected SolsAddress addressOfFirmNamedInWill;
     protected final String nameOfSucceededFirm;
     protected SolsAddress addressOfSucceededFirm;
+    protected String isSolThePrimaryApplicant;
     protected final String anyOtherApplyingPartners;
     protected final String anyOtherApplyingPartnersTrustCorp;
     protected final String furtherEvidenceForApplication;
