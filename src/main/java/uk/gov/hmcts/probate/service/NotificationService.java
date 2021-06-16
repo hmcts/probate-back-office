@@ -420,8 +420,6 @@ public class NotificationService {
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
-                log.info("Preparing to send caveat email for case: {}, to email address: {}", caveatDetails.getId(),
-                    getEmailEncodedBase64(emailAddress));
                 response =
                     notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
                 break;
