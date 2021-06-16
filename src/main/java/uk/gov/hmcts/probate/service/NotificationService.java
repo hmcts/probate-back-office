@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -127,7 +128,8 @@ public class NotificationService {
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
-        log.info("Personlisation complete now get the email repsonse");
+        log.info("Personalisation complete now get the email response, for case: {}, to email address: {}",
+            caseDetails.getId(), getEmailEncodedBase64(emailAddress));
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -150,7 +152,8 @@ public class NotificationService {
         String emailReplyToId = registry.getEmailReplyToId();
 
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
-
+        log.info("Personalisation complete now get the email response, for case: {}, to email address: {}",
+            caseDetails.getId(), getEmailEncodedBase64(emailAddress));
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -178,6 +181,8 @@ public class NotificationService {
 
         SendEmailResponse response;
 
+        log.info("Preparing to send caveat email for case: {}, to email address: {}", caveatDetails.getId(),
+            getEmailEncodedBase64(emailAddress));
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         log.info("Sent email with template {} for case ", templateId, caveatDetails.getId());
 
@@ -208,6 +213,8 @@ public class NotificationService {
 
         SendEmailResponse response;
 
+        log.info("Preparing to send excela email to email address: {}",
+            getEmailEncodedBase64(emailAddresses.getExcelaEmail()));
         response =
             notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
         log.info("Excela email reference response: {}", response.getReference());
@@ -224,6 +231,8 @@ public class NotificationService {
             smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails, fromDate, toDate);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
+        log.info("Preparing to send smee and ford email to email address: {}",
+            getEmailEncodedBase64(emailAddresses.getSmeeAndFordEmail()));
         SendEmailResponse response =
             notificationClient.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(), personalisation, reference);
         log.info("Smee And Ford email reference response: {}", response.getReference());
@@ -254,6 +263,8 @@ public class NotificationService {
 
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
 
+        log.info("Personalisation complete now get the email response, for case: {}, to email address: {}",
+            caseDetails.getId(), getEmailEncodedBase64(executor.getEmail()));
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference);
 
@@ -307,6 +318,8 @@ public class NotificationService {
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
+        log.info("Preparing to send grant notification email for case: {}, to email address: {}", caseDetails.getId(),
+            getEmailEncodedBase64(emailAddress));
         SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
@@ -407,6 +420,8 @@ public class NotificationService {
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
+                log.info("Preparing to send caveat email for case: {}, to email address: {}", caveatDetails.getId(),
+                    getEmailEncodedBase64(emailAddress));
                 response =
                     notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
                 break;
@@ -428,6 +443,10 @@ public class NotificationService {
             default:
                 throw new BadRequestException("Unsupported application type");
         }
+    }
+
+    private byte[] getEmailEncodedBase64(String emailAddress) {
+        return Base64.getEncoder().encode(emailAddress.getBytes());
     }
 
 }
