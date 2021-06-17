@@ -19,4 +19,12 @@ public class BusinessValidationMessageService {
             .message(businessValidationMessageRetriever.getMessage(code, null, Locale.UK))
             .build();
     }
+
+    public FieldErrorResponse generateError(String param, String code, String[] args) {
+        return FieldErrorResponse.builder()
+            .param(param)
+            .code(code)
+            .message(businessValidationMessageRetriever.getMessage(code, args, Locale.UK))
+            .build();
+    }
 }
