@@ -27,8 +27,7 @@ public class CreditAccountPaymentTransformer {
     @Value("${payment.currency}")
     private String currency;
 
-    @Value("${payment.siteId}")
-    private String siteId;
+    private String siteId = "ABA6";
 
     @Value("${payment.service}")
     private String service;
