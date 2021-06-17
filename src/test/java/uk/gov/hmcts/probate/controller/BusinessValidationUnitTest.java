@@ -240,7 +240,8 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(changedState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState,
+            false))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateProbate(callbackRequestMock,
@@ -281,7 +282,8 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(changedState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState,
+            false))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIntestacy(callbackRequestMock,
@@ -322,7 +324,8 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(changedState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState,
+            false))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateAdmon(callbackRequestMock,

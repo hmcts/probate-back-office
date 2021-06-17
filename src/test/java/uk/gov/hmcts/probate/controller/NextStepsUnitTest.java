@@ -139,7 +139,7 @@ public class NextStepsUnitTest {
     public void shouldValidateWithNoErrorsForStateChange() {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState, true))
             .thenReturn(callbackResponseMock);
 
 

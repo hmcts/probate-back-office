@@ -122,12 +122,12 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
-                                                                Optional<String> newState) {
+                                                                Optional<String> newState, boolean nullify) {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
 
-        ResponseCaseData responseCaseData = getResponseCaseData(cd, false, false)
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, false, nullify)
                 // set here again to make life easier mocking
                 .state(newState.orElse(null))
                 .build();
@@ -439,7 +439,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForDeceasedDetails(CallbackRequest callbackRequest, Optional<String> newState) {
-        CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState);
+        CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState, true);
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false, false);
@@ -878,7 +878,8 @@ public class CallbackResponseTransformer {
             .addressOfFirmNamedInWill(caseData.getAddressOfFirmNamedInWill())
             .nameOfSucceededFirm(caseData.getNameOfSucceededFirm())
             .addressOfSucceededFirm(caseData.getAddressOfSucceededFirm())
-            .anyOtherApplyingPartners(nullifyParentFields ? null : caseData.getAnyOtherApplyingPartners())
+            .anyOtherApplyingPartners(nullifyParentFields ? null :
+                caseData.getAnyOtherApplyingPartners())
             .anyOtherApplyingPartnersTrustCorp(nullifyParentFields ? null :
                 caseData.getAnyOtherApplyingPartnersTrustCorp())
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())

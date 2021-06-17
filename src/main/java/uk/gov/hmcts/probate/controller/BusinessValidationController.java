@@ -378,7 +378,7 @@ public class BusinessValidationController {
         Optional<String> state =
             stateChangeService.getRedeclarationComplete(callbackRequest.getCaseDetails().getData());
         return ResponseEntity
-            .ok(callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, state));
+            .ok(callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, state, false));
     }
 
 
@@ -411,7 +411,7 @@ public class BusinessValidationController {
         CallbackRequest callbackRequest, Optional<String> newState, DocumentType documentType, String caseType) {
         CallbackResponse response;
         if (newState.isPresent()) {
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState, false);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
             response = callbackResponseTransformer.transform(callbackRequest, document, caseType);

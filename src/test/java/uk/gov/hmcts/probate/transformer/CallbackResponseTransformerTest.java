@@ -703,7 +703,7 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
         CallbackResponse callbackResponse =
-            underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
+            underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, true);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -715,7 +715,7 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanWithNoStateChange() {
         CallbackResponse callbackResponse =
-            underTest.transformWithConditionalStateChange(callbackRequestMock, ORIGINAL_STATE);
+            underTest.transformWithConditionalStateChange(callbackRequestMock, ORIGINAL_STATE, true);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -3162,7 +3162,7 @@ public class CallbackResponseTransformerTest {
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
+        underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"), true);
         verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
     }
