@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -129,6 +128,7 @@ public class NotificationService {
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
+        log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -151,6 +151,7 @@ public class NotificationService {
         String emailReplyToId = registry.getEmailReplyToId();
 
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
+
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -222,6 +223,7 @@ public class NotificationService {
         Map<String, String> personalisation =
             smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails, fromDate, toDate);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
+
         SendEmailResponse response =
             notificationClientService.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(),
                 personalisation, reference);
@@ -410,7 +412,6 @@ public class NotificationService {
                 response =
                     notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, reference, emailReplyToId);
-
                 break;
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
@@ -431,4 +432,5 @@ public class NotificationService {
                 throw new BadRequestException("Unsupported application type");
         }
     }
+
 }
