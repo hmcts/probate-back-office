@@ -35,6 +35,7 @@ public class ResponseCaseDataParentTest {
             .registrySequenceNumber("registrySequenceNumber")
             .deceasedDeathCertificate("deathCertificate")
             .deceasedDiedEngOrWales("Yes")
+            .isSolThePrimaryApplicant("Yes")
             .deceasedForeignDeathCertInEnglish("Yes")
             .deceasedForeignDeathCertTranslation("Yes")
             .iht217("Yes")
@@ -45,6 +46,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("solsAmendLegalStatmentSelect",
             responseCaseDataParent.getSolsAmendLegalStatmentSelect().getValue().getCode());
         assertEquals("Yes", responseCaseDataParent.getDeclarationCheckbox());
+        assertEquals("Yes", responseCaseDataParent.getIsSolThePrimaryApplicant());
         assertEquals("1000", responseCaseDataParent.getIhtGrossValueField());
         assertEquals("900", responseCaseDataParent.getIhtNetValueField());
         assertEquals(Long.valueOf(1), responseCaseDataParent.getNumberOfExecutors());

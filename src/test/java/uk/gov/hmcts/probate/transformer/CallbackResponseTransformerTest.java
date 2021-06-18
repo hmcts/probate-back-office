@@ -2350,6 +2350,7 @@ public class CallbackResponseTransformerTest {
                 .furtherEvidenceForApplication("Further evidence")
                 .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
                 .lodgementAddress("London")
+                .isSolThePrimaryApplicant("Yes")
                 .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2359,6 +2360,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", callbackResponse.getData().getTitleAndClearingType());
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
+        assertEquals("Yes", callbackResponse.getData().getIsSolThePrimaryApplicant());
         assertEquals("Trust corp name", callbackResponse.getData().getTrustCorpName());
         assertEquals(trustCorpAddress, callbackResponse.getData().getTrustCorpAddress());
         assertEquals(addressOfSucceededFirm, callbackResponse.getData().getAddressOfSucceededFirm());

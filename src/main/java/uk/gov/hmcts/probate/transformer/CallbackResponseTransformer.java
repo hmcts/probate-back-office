@@ -785,6 +785,7 @@ public class CallbackResponseTransformer {
             .solsDiedOrNotApplying(caseData.getSolsDiedOrNotApplying())
             .solsEntitledMinority(caseData.getSolsEntitledMinority())
             .solsLifeInterest(caseData.getSolsLifeInterest())
+            .isSolThePrimaryApplicant(caseData.getIsSolThePrimaryApplicant())
             .solsResiduary(caseData.getSolsResiduary())
             .solsResiduaryType(caseData.getSolsResiduaryType())
 
