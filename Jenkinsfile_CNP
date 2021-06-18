@@ -28,6 +28,10 @@ def secrets = [
                 secret('cwUserId', 'CW_USER_ID'),
                 secret('cwUserEmail', 'CW_USER_EMAIL'),
                 secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
+                secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
+                secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
+                secret('solicitor2UserPass', 'SOL2_USER_PASSWORD'),
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
@@ -50,7 +54,8 @@ def secrets = [
                 secret('levClientSecret', 'LEV_CLIENT_SECRET'),
                 secret('levUsername', 'LEV_USERNAME'),
                 secret('levPassword', 'LEV_PASSWORD'),
-                secret('levDeathUrl', 'LEV_DEATH_URL')
+                secret('levDeathUrl', 'LEV_DEATH_URL'),
+                secret('probate-site-id','PAYMENT_SITEID')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -122,6 +127,7 @@ withPipeline("java", product, component) {
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
+  
   onPR() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
