@@ -81,7 +81,7 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
       templateName: FL-PRB-EML-ENG-00086.doc
-    statementOfTruth:
+    legalStatementGrantOfProbate:
       templateName: FL-PRB-SOT-ENG-00090.doc
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00234.doc

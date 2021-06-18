@@ -206,7 +206,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 14, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 15, "CaseFieldID": "reissueReason", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 15, "CaseFieldID": "orderNeeded", "TabFieldDisplayOrder": 2},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 16, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 16, "CaseFieldID": "statementOfTruthDocument", "TabFieldDisplayOrder": 2},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 16, "CaseFieldID": "probateSotDocumentsGenerated", "TabFieldDisplayOrder": 3}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "Legal Statement", "TabDisplayOrder": 16, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "Legal Statement", "TabDisplayOrder": 16, "CaseFieldID": "statementOfTruthDocument", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "Legal Statement", "TabDisplayOrder": 16, "CaseFieldID": "probateSotDocumentsGenerated", "TabFieldDisplayOrder": 3}
 ]
