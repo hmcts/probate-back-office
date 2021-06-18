@@ -234,28 +234,30 @@
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
             </p>
             {% if case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithApp" and case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithSDJ" %}
-                {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-                <p>{% for executor in case_details.case_data.executorsApplying %}
-                    {% if loop.first %}
-                    <span style="text-transform: capitalize;"><strong>
+            {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
+            <p>{% for executor in case_details.case_data.executorsApplying %}
+                {% if loop.first %}
+                <span style="text-transform: capitalize;"><strong>
                         {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                    </strong></span>
-                    of <span class="camelCase"><strong>
-                    {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
-                    {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
-                    </strong></span>
+                of <span class="camelCase"><strong>
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine1 != null and case_details.case_data.addressOfSucceededFirm.AddressLine1 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine2 != null and case_details.case_data.addressOfSucceededFirm.AddressLine2 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine3 != null and case_details.case_data.addressOfSucceededFirm.AddressLine3 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostTown != null and case_details.case_data.addressOfSucceededFirm.PostTown != "" %}{{ case_details.case_data.addressOfSucceededFirm.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.County != null and case_details.case_data.addressOfSucceededFirm.County != "" %}{{ case_details.case_data.addressOfSucceededFirm.County }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostCode != null and case_details.case_data.addressOfSucceededFirm.PostCode != ""%}{{ case_details.case_data.addressOfSucceededFirm.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.Country != null and case_details.case_data.addressOfSucceededFirm.Country != ""%}{{ case_details.case_data.addressOfSucceededFirm.Country }}{% endif %}
+                    {% elseif case_details.case_data.titleAndClearingType == "TCTPartPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrin" or case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostTown != null and case_details.case_data.addressOfFirmNamedInWill.PostTown != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.County != null and case_details.case_data.addressOfFirmNamedInWill.County != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.County }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostCode != null and case_details.case_data.addressOfFirmNamedInWill.PostCode != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.Country != null and case_details.case_data.addressOfFirmNamedInWill.Country != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.Country }}{% endif %}
                     {% else %}
-                    <br/>
-                    <span>and </span>
-                    <span style="text-transform: capitalize;"><strong>
-                        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
-                   </strong></span>
-                    of <span class="camelCase"><strong>
                     {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
@@ -263,31 +265,100 @@
                     {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
-                    </strong></span>
                     {% endif %}
-                    {% endfor %}
-                </p>
+                    </strong></span>
                 {% else %}
-                <p>
-                    <strong>
-                        <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
-                    </strong> of
-                    <strong>
-                        <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1}}{% endif %}
+                <br/>
+                <span>and </span>
+                <span style="text-transform: capitalize;"><strong>
+                        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                   </strong></span>
+                of <span class="camelCase"><strong>
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine1 != null and case_details.case_data.addressOfSucceededFirm.AddressLine1 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine2 != null and case_details.case_data.addressOfSucceededFirm.AddressLine2 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine3 != null and case_details.case_data.addressOfSucceededFirm.AddressLine3 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostTown != null and case_details.case_data.addressOfSucceededFirm.PostTown != "" %}{{ case_details.case_data.addressOfSucceededFirm.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.County != null and case_details.case_data.addressOfSucceededFirm.County != "" %}{{ case_details.case_data.addressOfSucceededFirm.County }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostCode != null and case_details.case_data.addressOfSucceededFirm.PostCode != ""%}{{ case_details.case_data.addressOfSucceededFirm.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.Country != null and case_details.case_data.addressOfSucceededFirm.Country != ""%}{{ case_details.case_data.addressOfSucceededFirm.Country }}{% endif %}
+                    {% elseif case_details.case_data.titleAndClearingType == "TCTPartPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrin" or case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostTown != null and case_details.case_data.addressOfFirmNamedInWill.PostTown != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.County != null and case_details.case_data.addressOfFirmNamedInWill.County != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.County }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostCode != null and case_details.case_data.addressOfFirmNamedInWill.PostCode != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.Country != null and case_details.case_data.addressOfFirmNamedInWill.Country != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.Country }}{% endif %}
+                    {% else %}
+                    {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
+                    {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                    {% endif %}
+                    </strong></span>
+                {% endif %}
+                {% endfor %}
+            </p>
+            {% else %}
+            <p>
+                <strong>
+                    <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
+                </strong> of
+                <span class="camelCase"><strong>
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine1 != null and case_details.case_data.addressOfSucceededFirm.AddressLine1 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine2 != null and case_details.case_data.addressOfSucceededFirm.AddressLine2 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine3 != null and case_details.case_data.addressOfSucceededFirm.AddressLine3 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostTown != null and case_details.case_data.addressOfSucceededFirm.PostTown != "" %}{{ case_details.case_data.addressOfSucceededFirm.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.County != null and case_details.case_data.addressOfSucceededFirm.County != "" %}{{ case_details.case_data.addressOfSucceededFirm.County }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostCode != null and case_details.case_data.addressOfSucceededFirm.PostCode != ""%}{{ case_details.case_data.addressOfSucceededFirm.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.Country != null and case_details.case_data.addressOfSucceededFirm.Country != ""%}{{ case_details.case_data.addressOfSucceededFirm.Country }}{% endif %}
+                    {% elseif case_details.case_data.titleAndClearingType == "TCTPartPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrin" or case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostTown != null and case_details.case_data.addressOfFirmNamedInWill.PostTown != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.County != null and case_details.case_data.addressOfFirmNamedInWill.County != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.County }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostCode != null and case_details.case_data.addressOfFirmNamedInWill.PostCode != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.Country != null and case_details.case_data.addressOfFirmNamedInWill.Country != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.Country }}{% endif %}
+                    {% else %}
+{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1}}{% endif %}
                         {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %} {{case_details.case_data.primaryApplicantAddress.AddressLine2}}{% endif %}
                         {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %} {{case_details.case_data.primaryApplicantAddress.AddressLine3}}{% endif %}
                         {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %} {{case_details.case_data.primaryApplicantAddress.PostTown}}{% endif %}
                         {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %} {{case_details.case_data.primaryApplicantAddress.County}}{% endif %}
                         {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%} {{case_details.case_data.primaryApplicantAddress.PostCode}}{% endif %}
-                        {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%} {{case_details.case_data.primaryApplicantAddress.Country}}{% endif %}</span>
-                    </strong>
-                    {% for executor in case_details.case_data.executorsApplying %}
-                    <br/>
-                    <span>and </span>
-                    <span style="text-transform: capitalize;"><strong>
+                        {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%} {{case_details.case_data.primaryApplicantAddress.Country}}{% endif %}
+                    {% endif %}
+                   </strong></span>
+                {% for executor in case_details.case_data.executorsApplying %}
+                <br/>
+                <span>and </span>
+                <span style="text-transform: capitalize;"><strong>
                         {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                    </strong></span>
-                    of <span class="camelCase"><strong>
+                of <span class="camelCase"><strong>
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine1 != null and case_details.case_data.addressOfSucceededFirm.AddressLine1 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine2 != null and case_details.case_data.addressOfSucceededFirm.AddressLine2 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.AddressLine3 != null and case_details.case_data.addressOfSucceededFirm.AddressLine3 != "" %}{{ case_details.case_data.addressOfSucceededFirm.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostTown != null and case_details.case_data.addressOfSucceededFirm.PostTown != "" %}{{ case_details.case_data.addressOfSucceededFirm.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.County != null and case_details.case_data.addressOfSucceededFirm.County != "" %}{{ case_details.case_data.addressOfSucceededFirm.County }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.PostCode != null and case_details.case_data.addressOfSucceededFirm.PostCode != ""%}{{ case_details.case_data.addressOfSucceededFirm.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfSucceededFirm.Country != null and case_details.case_data.addressOfSucceededFirm.Country != ""%}{{ case_details.case_data.addressOfSucceededFirm.Country }}{% endif %}
+                    {% elseif case_details.case_data.titleAndClearingType == "TCTPartPowerRes" or case_details.case_data.titleAndClearingType == "TCTSolePrin" or case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine1 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine2 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != null and case_details.case_data.addressOfFirmNamedInWill.AddressLine3 != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostTown != null and case_details.case_data.addressOfFirmNamedInWill.PostTown != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.PostTown }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.County != null and case_details.case_data.addressOfFirmNamedInWill.County != "" %}{{ case_details.case_data.addressOfFirmNamedInWill.County }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.PostCode != null and case_details.case_data.addressOfFirmNamedInWill.PostCode != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.PostCode }}{% endif %}
+                    {% if case_details.case_data.addressOfFirmNamedInWill.Country != null and case_details.case_data.addressOfFirmNamedInWill.Country != ""%}{{ case_details.case_data.addressOfFirmNamedInWill.Country }}{% endif %}
+                    {% else %}
                     {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
@@ -295,10 +366,11 @@
                     {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
                     {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                    {% endif %}
                     </strong></span>
-                    {% endfor %}
-                </p>
-                {% endif %}
+                {% endfor %}
+            </p>
+            {% endif %}
             {% else %}
             <strong>
                 <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
