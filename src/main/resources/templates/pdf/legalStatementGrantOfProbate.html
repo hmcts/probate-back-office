@@ -289,8 +289,8 @@
                 {{ case_details.case_data.solsSolicitorFirmName }} to send on
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
                 {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
-                true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with {% else %}, and {% endif %}codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessOriginal == "No" %}, as contained in a notarial/official copy{% endif %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %}, and{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
                 {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
