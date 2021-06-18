@@ -28,6 +28,10 @@ def secrets = [
                 secret('cwUserId', 'CW_USER_ID'),
                 secret('cwUserEmail', 'CW_USER_EMAIL'),
                 secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
+                secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
+                secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
+                secret('solicitor2UserPass', 'SOL2_USER_PASSWORD'),
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
@@ -42,8 +46,16 @@ def secrets = [
                 secret('schedulerCaseWorkerUser','SCHEDULER_CASEWORKER_USERNAME'),
                 secret('schedulerCaseWorkerPass','SCHEDULER_CASEWORKER_PASSWORD'),
                 secret('launchdarkly-key', 'LAUNCHDARKLY_KEY'),
-                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY')
-
+                secret('launchdarklyUserkeyBackend', 'LD_USER_KEY'),
+                secret('levPublicCertificate', 'LEV_PUBLIC_CERTIFICATE'),
+                secret('levPrivateKey', 'LEV_PRIVATE_KEY'),
+                secret('levAccessTokenUri', 'LEV_ACCESS_TOKEN_URI'),
+                secret('levClientId', 'LEV_CLIENT_ID'),
+                secret('levClientSecret', 'LEV_CLIENT_SECRET'),
+                secret('levUsername', 'LEV_USERNAME'),
+                secret('levPassword', 'LEV_PASSWORD'),
+                secret('levDeathUrl', 'LEV_DEATH_URL'),
+                secret('probate-site-id','PAYMENT_SITEID')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -56,7 +68,6 @@ def secrets = [
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
-
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
     secretType: 'Secret',
@@ -69,6 +80,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 // Vars for Kubernetes
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
+// Configure branches to sync with master branch
+def branchesToSync = ['demo', 'ithc', 'perftest']
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
@@ -78,6 +92,7 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+  syncBranchesWithMaster(branchesToSync)
 
   after('test') {
     junit 'build/test-results/test/**/*.xml'
@@ -110,6 +125,10 @@ withPipeline("java", product, component) {
   }
 
   onMaster() {
+    enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+  }
+  
+  onPR() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 }

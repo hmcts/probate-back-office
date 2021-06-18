@@ -4,7 +4,16 @@
     "jurisdiction": "PROBATE",
     "state": "SolDraftCase",
     "case_type_id": "GrantOfRepresentation",
-    "last_modified": null,
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
     "security_classification": "PUBLIC",
     "case_data": {
       "deceasedDateOfDeath": "2017-09-11",
@@ -25,28 +34,6 @@
       "ihtGrossValue": 11000,
       "numberOfCopiesUK": 1,
       "numberOfCopiesOutsideOfUK": 1
-    },
-    "data_classification": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solicitorFirmPostcode": "PUBLIC",
-      "solicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "security_classifications": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solicitorFirmPostcode": "PUBLIC",
-      "solicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
     }
-  },
-  "event_id": "solicitorCreate"
+  }
 }

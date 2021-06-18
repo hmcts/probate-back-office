@@ -143,16 +143,6 @@ task caseCreator(type: Test) {
   finalizedBy aggregate
 }
 
-
-task contract(type: Test) {
-  group = 'Delivery pipeline'
-  description = 'Runs the consumer Pact tests'
-  jvmArgs '--enable-preview'
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-  systemProperty 'pact.rootDir', "pacts"
-}
-
 gitProperties {
   gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
   keys = ['git.commit.id','git.commit.time']
@@ -166,7 +156,7 @@ def versions = [
         serenityreporter                : '2.1.4',
         springBootVersion               : '2.3.4.RELEASE',
         springBootStarterHateoas        : '2.3.4.RELEASE',
-        hmctsJavaLogging                : '5.1.1',
+        hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
         commonsIO                       : '2.8.0',
@@ -175,11 +165,12 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : '1.2.0',
+        probateCommonsVersion           : '1.2.2',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.0'
+        pact_version                    : '4.1.7',
+        probatePactCommonsVersion       : '1.0.2',
 ]
 
 jacocoTestReport {
@@ -214,13 +205,30 @@ dependencyManagement {
 
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
-
+    
     //CVE-2021-22112
-    dependencySet(group: 'org.springframework.security', version: '5.3.8.RELEASE') {
+    dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
       entry 'spring-security-config'
       entry 'spring-security-core'
       entry 'spring-security-crypto'
       entry 'spring-security-web'
+    }
+
+    //CVE-2021-22118
+    dependencySet(group: 'org.springframework', version: '5.2.9.RELEASE') {
+      entry 'spring-aop'
+      entry 'spring-aspects'
+      entry 'spring-beans'
+      entry 'spring-context'
+      entry 'spring-core'
+      entry 'spring-expression'
+      entry 'spring-jcl'
+      entry 'spring-jdbc'
+      entry 'spring-orm'
+      entry 'spring-oxm'
+      entry 'spring-tx'
+      entry 'spring-web'
+      entry 'spring-webmvc'
     }
   }
 }
@@ -263,6 +271,7 @@ dependencies {
   compile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  compile group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -311,7 +320,9 @@ dependencies {
   testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-   
+  testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
+  testImplementation 'org.awaitility:awaitility:4.1.0'
+  
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
@@ -345,14 +356,21 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version : '2.9.8'
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-  contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit_2.12', version: '3.5.25'
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.1")
+  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+  contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
@@ -384,17 +402,18 @@ run {
 }
 
 project.ext {
-  pactVersion = getCheckedOutGitCommitHash()
+  pacticipant = "probate_backOffice"
+  pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
 task runAndPublishConsumerPactTests(type: Test){
-  logger.lifecycle("Runs pact Tests")
+  logger.lifecycle("Runs consumer pact tests")
+  systemProperty 'pact.rootDir', "pacts"
+  useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
 }
-
-runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
@@ -403,10 +422,12 @@ def getCheckedOutGitCommitHash() {
 }
 
 pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
   publish {
     pactDirectory = 'pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
     tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
-    version = project.pactVersion
+    version = project.pacticipantVersion
   }
 }

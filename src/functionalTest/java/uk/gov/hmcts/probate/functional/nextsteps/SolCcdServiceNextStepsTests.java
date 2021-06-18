@@ -2,9 +2,13 @@ package uk.gov.hmcts.probate.functional.nextsteps;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
@@ -14,49 +18,16 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
-    @Test
-    public void verifyDeceasedFirstNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName");
+    @Before
+    public void setUp() {
+        initialiseConfig();
     }
 
     @Test
-    public void verifyDeceasedLastNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("deceasedLastName");
-    }
-
-    @Test
-    public void verifyDODInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("01/01/2018");
-    }
-
-    @Test
-    public void verifySolReferenceInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("refCYA2");
-    }
-
-    @Test
-    public void verifyIHTFormIdInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("IHT205");
-    }
-
-    @Test
-    public void verifySolicitorFirmNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("SolicitorFirmName");
-    }
-
-    @Test
-    public void verifySolicitorSOTNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("Solicitor_fn Solicitor_ln");
-    }
-
-    @Test
-    public void verifySolicitorSOTJobTitleInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTJobTitle");
-    }
-
-    @Test
-    public void verifySolicitorSolicitorFirmPostcodeInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("firmpc");
+    public void verifyAllDetailsInTheReturnedMarkdown() {
+        validatePostRequestSuccessForLegalStatement(Arrays.asList("deceasedFirstName", "deceasedLastName",
+            "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "TestSOTJobTitle",
+            "firmpc", "appref-PAY1"));
     }
 
     @Test
@@ -113,22 +84,27 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
-    private void validatePostRequestSuccessForLegalStatement(String validationString) {
-        Response response = given()
+    private void validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("success.nextsteps.json"))
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(validationString));
+        for (String validationString : validationStrings) {
+            assertTrue(response.getBody().asString().contains(validationString));
+        }
 
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,
                                                              String errorMsg) {
-        Response response = given().relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+        Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithCaseworkerUser())
             .body(replaceString(oldString, replacingString))
             .post("/nextsteps/validate");
         assertEquals(400, response.getStatusCode());
@@ -141,8 +117,10 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void verifyAll(String url, String jsonInput, int statusCode, String message, String fieldError) {
-        Response response = given().relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+        final Response response = given()
+            .config(config)
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithCaseworkerUser())
             .body(utils.getJsonFromFile(jsonInput))
             .post(url);
         assertEquals(statusCode, response.getStatusCode());

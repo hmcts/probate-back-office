@@ -30,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CaseQueryServiceTest {
@@ -87,8 +86,6 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases = new ReturnedCases(caseList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-
-        doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test

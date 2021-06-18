@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -19,8 +20,6 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CaseMatchingTests extends IntegrationTestBase {
-
-
     public static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
     public static final String NAME = "Ned Stark";
     public static final String DATE_OF_BIRTH = "1900-01-01";
@@ -29,7 +28,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     public static final String CAVEAT_LEGACY_SEARCH_JSON = "casematch/caveatLegacySearch.json";
     public static final String WILL_LODGEMENT_LEGACY_SEARCH_JSON = "casematch/willLodgementLegacySearch.json";
     public static final String STANDING_SEARCH_LEGACY_SEARCH_JSON = "casematch/standingSearchLegacySearch.json";
-    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayoad.json";
+    private static final String GRANT_OF_PROBATE_JSON = "casematch/applyForGrantPayload.json";
     private static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     private static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
     private static final String WILL_LODGEMENT_MATCH_CASE_JSON = "casematch/willLodgementMatchCase.json";
@@ -48,13 +47,18 @@ public class CaseMatchingTests extends IntegrationTestBase {
     private static final String IMPORT_LEGACY_WILL_LODGEMENT_SEARCH =
         "/case-matching/import-legacy-from-will-lodgement-flow";
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
+
     @Test
     public void shouldReturnMatchingCaseWhenGOPSearchFlow() {
         createCase();
-        Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
+        final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
         assertThat(jsonPath.get("data.caseMatches[0].value.dod"), is(equalTo(DATE_OF_DEATH)));
@@ -62,18 +66,18 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnNoMatchingCaseWhenGOPSearchFlow() {
-        Response response = search(SEARCH_GRANT_FLOW);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final Response response = search(SEARCH_GRANT_FLOW);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() {
         createCase();
-        Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
+        final Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
@@ -82,19 +86,18 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() {
-
-        Response response = search(SEARCH_FROM_CAVEAT_FLOW);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final Response response = search(SEARCH_FROM_CAVEAT_FLOW);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
     public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws InterruptedException {
         createCase();
-        Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
+        final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
@@ -103,18 +106,18 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnNoMatchingCaseWhenStandingSearchFlow() {
-        Response response = search(SEARCH_FROM_STANDING_SEARCH_FLOW);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final Response response = search(SEARCH_FROM_STANDING_SEARCH_FLOW);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
     public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws InterruptedException {
         createCase();
-        Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
+        final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0]"), notNullValue());
         assertThat(jsonPath.get("data.caseMatches[0].value.fullName"), is(equalTo(NAME)));
@@ -123,38 +126,37 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() {
-        Response response = search(SEARCH_FROM_WILL_LODGEMENT_FLOW);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final Response response = search(SEARCH_FROM_WILL_LODGEMENT_FLOW);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
     public void shouldReturnSucessWhenNoCaseMatchInLegacyGrantFlow() {
-        Response response = search(CAVEAT_MATCH_CASE_JSON, IMPORT_LEGACY_GRANT_FLOW);
+        final Response response = search(CAVEAT_MATCH_CASE_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyGrantFlowImport() {
-
-        Response response = search(PROBATE_LEGACY_SEARCH_JSON, IMPORT_LEGACY_GRANT_FLOW);
+        final Response response = search(PROBATE_LEGACY_SEARCH_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     @Test
     public void shouldReturnSucessWhenNoCaseMatchInLegacyCaveatFlowImport() {
-        Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
+        final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test
     public void shouldReturnErrorWheNoCaseMatchInLegacyCaveatFlowImport() {
-        Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
+        final Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
@@ -163,38 +165,39 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     @Test
     public void shouldReturnSucessWhenNoCaseMatchInLegacyWillLodgementImport() {
-        Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
+        final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyWillLodgementImport() {
-        Response response = search(WILL_LODGEMENT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
+        final Response response = search(WILL_LODGEMENT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     @Test
     public void shouldReturSucessWhenNoCaseMatchInLegacyStandingSearchImport() {
-        Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, IMPORT_LEGACY_STANDING_SEARCH);
+        final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test
     public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyStandingSearchImport() {
-        Response response = search(STANDING_SEARCH_LEGACY_SEARCH_JSON, IMPORT_LEGACY_STANDING_SEARCH);
+        final Response response = search(STANDING_SEARCH_LEGACY_SEARCH_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
     private Response search(String path) {
-        Response response = RestAssured.given()
+        final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(modifyDODInJson())
@@ -222,19 +225,19 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     public void createCase() {
         //Create Case
-        String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
-        String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARAMETER, APPLY_GRANT_EVENT);
-        String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, APPLY_GRANT_EVENT);
-        JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
-        String caseId = jsonPathApply.get("id").toString();
+        final String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
+        final String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARAMETER, APPLY_GRANT_EVENT);
+        final String applyForGrantCase = utils.createCaseAsCaseworker(applyForGrantyCaseJson, APPLY_GRANT_EVENT);
+        final JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
+        final String caseId = jsonPathApply.get("id").toString();
         log.info("createCase : caseId {} ", caseId);
         assertThat(caseId, is(notNullValue()));
         log.info("CaseMatchingTests : createCase : caseId {} ", caseId);
         //Update Case
         //Move PAAppCreated to createCase state
-        String updateToken = utils.startUpdateCaseAsCaseworker(caseId, CREATE_CASE_EVENT);
+        final String updateToken = utils.startUpdateCaseAsCaseworker(caseId, CREATE_CASE_EVENT);
         String updateBaseCase = utils.replaceAttribute(baseCaseJson, TOKEN_PARM, updateToken);
         updateBaseCase = utils.replaceAttribute(updateBaseCase, EVENT_PARAMETER, CREATE_CASE_EVENT);
-        String updateResponse = utils.continueUpdateCaseAsCaseworker(updateBaseCase, caseId);
+        utils.continueUpdateCaseAsCaseworker(updateBaseCase, caseId);
     }
 }

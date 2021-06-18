@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.fee.Fee;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.math.BigDecimal;
@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FeeServiceTest {
@@ -37,10 +39,10 @@ public class FeeServiceTest {
     private RestTemplate restTemplate;
 
     @Mock
-    private ResponseEntity<Fee> responseEntity;
+    private ResponseEntity<FeeResponse> responseEntity;
 
     @Mock
-    private Fee fee;
+    private FeeResponse feeResponse;
 
     @Mock
     private FeeServiceConfiguration feeServiceConfiguration;
@@ -49,115 +51,140 @@ public class FeeServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        when(responseEntity.getBody()).thenReturn(fee);
-        when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(responseEntity);
+        when(responseEntity.getBody()).thenReturn(feeResponse);
+        when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(responseEntity);
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookup");
     }
 
     @Test
     public void issueFeeShouldReturnPositiveValue() {
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
-        BigDecimal issueFee = feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
 
-        assertEquals(BigDecimal.ONE, issueFee);
+        assertEquals(BigDecimal.ONE, issueFee.getFeeAmount());
     }
 
     @Test
     public void issueFeeShouldReturnZeroValue() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
 
-        BigDecimal issueFee = feeService.getApplicationFee(BigDecimal.valueOf(1000));
+        FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(1000));
 
-        assertEquals(BigDecimal.ZERO, issueFee);
+        assertEquals(BigDecimal.ZERO, issueFee.getFeeAmount());
     }
 
     @Test
     public void copiesFeeShouldReturnZeroValue() {
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ZERO);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
-        BigDecimal copiesFee = feeService.getCopiesFee(5L);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(5L);
 
-        assertEquals(BigDecimal.ZERO, copiesFee);
+        assertEquals(BigDecimal.ZERO, copiesFee.getFeeAmount());
     }
 
     @Test
     public void copiesFeeEqualsZero() {
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ZERO);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
-        BigDecimal copiesFee = feeService.getCopiesFee(null);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(null);
 
-        assertEquals(BigDecimal.ZERO, copiesFee);
+        assertEquals(BigDecimal.ZERO, copiesFee.getFeeAmount());
     }
 
     @Test
-    public void copiesFeeEqualsNonZero() {
+    public void copiesFeeEqualsNonZeroNewFeeToggledOff() {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
         when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
                 + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
-            eq(Fee.class))).thenReturn(responseEntity);
+            eq(FeeResponse.class))).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
-        BigDecimal copiesFee = feeService.getCopiesFee(1L);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(false);
 
-        assertEquals(BigDecimal.ONE, copiesFee);
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(1L);
+
+        assertEquals(BigDecimal.ONE, copiesFee.getFeeAmount());
+        verify(feeServiceConfiguration, times(1)).getKeyword();
     }
 
+    @Test
+    public void copiesFeeEqualsNonZeroNewFeeToggledOn() {
+
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
+        when(restTemplate.getForEntity("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
+                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee",
+            FeeResponse.class)).thenReturn(responseEntity);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+
+        FeeResponse copiesFee = feeService.getCopiesFeeResponse(1L);
+
+        assertEquals(BigDecimal.ONE, copiesFee.getFeeAmount());
+        verify(feeServiceConfiguration, times(1)).getNewCopiesFeeKeyword();
+    }
+    
     @Test
     public void getTotalFee() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
 
-        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+        FeesResponse feesResponse = feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feesResponse.getApplicationFeeResponse().getFeeAmount());
+        assertEquals(BigDecimal.ONE, feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+        assertEquals(BigDecimal.ONE, feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
     }
 
     @Test
-    public void getTotalFeeWithNewKeyword() {
+    public void getApplicationFeeWithOldKeywordGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
-        when(feeServiceConfiguration.getKeyword()).thenReturn("GrantWill");
+        when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
         when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        BigDecimal expectedFee = BigDecimal.valueOf(5001);
+        when(feeResponse.getFeeAmount()).thenReturn(expectedFee);
 
-        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+        FeesResponse feesResponse = feeService.getAllFeesData(BigDecimal.valueOf(5001), 0L, 0L);
+        assertEquals(expectedFee, feesResponse.getApplicationFeeResponse().getFeeAmount());
+
+        verify(feeServiceConfiguration, times(1)).getNewIssuesFeeKeyword();
+        verify(feeServiceConfiguration, times(0)).getNewIssuesFee5kKeyword();
     }
 
     @Test
-    public void getTotalFeeWithOldKeyword() {
+    public void getApplicationFeeWithOldKeywordNotGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
-        when(feeServiceConfiguration.getKeyword()).thenReturn("NewFee");
+        when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
         when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        BigDecimal mockedFeeAmtForAllFees = BigDecimal.valueOf(5000);
+        when(feeResponse.getFeeAmount()).thenReturn(mockedFeeAmtForAllFees);
 
-        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
-        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+        FeesResponse feesResponse = feeService.getAllFeesData(BigDecimal.valueOf(5000), 1L, 1L);
+        assertEquals(mockedFeeAmtForAllFees, feesResponse.getApplicationFeeResponse().getFeeAmount());
+
+        verify(feeServiceConfiguration, times(1)).getNewIssuesFee5kKeyword();
+        verify(feeServiceConfiguration, times(0)).getNewIssuesFeeKeyword();
     }
 
     @Test(expected = ClientDataException.class)
     public void testExceptionIfRestTemplateReturnsNull() {
-        when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
-        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(null);
+        feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
     }
 
     @Test(expected = ClientDataException.class)
     public void testExceptionIfResponseEntityGetBodyReturnsNull() {
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
         when(responseEntity.getBody()).thenReturn(null);
-        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
     }
 
     @Test(expected = ClientDataException.class)
@@ -167,10 +194,40 @@ public class FeeServiceTest {
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
         when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
                 + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
-            eq(Fee.class))).thenReturn(responseEntity);
+            eq(FeeResponse.class))).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getBody()).thenReturn(null);
-        feeService.getCopiesFee(1L);
+        feeService.getCopiesFeeResponse(1L);
     }
+
+    @Test
+    public void caveatFeeShouldReturnPositiveValue() {
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+
+        FeeResponse issueFee = feeService.getCaveatFeesData();
+
+        assertEquals(BigDecimal.ONE, issueFee.getFeeAmount());
+    }
+
+    @Test
+    public void caveatFeeShouldReturnZeroValue() {
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+
+        FeeResponse issueFee = feeService.getCaveatFeesData();
+
+        assertEquals(BigDecimal.ZERO, issueFee.getFeeAmount());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionIfCaveatResponseEntityGetBodyReturnsNull() {
+        when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(responseEntity.getBody()).thenReturn(null);
+        
+        feeService.getCaveatFeesData();
+    }
+
+
 }

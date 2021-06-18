@@ -1,7 +1,7 @@
 'use strict';
 
 // This test is in the caseworker folder, as although it alternates between caseworker
-// and solicitor (prof user), the test is to be run on the CCD ui, which the caseworker forlder is actually for
+// and solicitor (prof user), the test is to be run on the CCD ui, which the caseworker folder is actually for
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
@@ -9,7 +9,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressAppSto
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Case Progress E2E - application stopped path', async function (I) {
+Scenario('01 BO Case Progress E2E - application stopped path', async function ({I}) {
     // IDAM
     /* eslint-disable no-console */
     try {
@@ -50,7 +50,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function (I
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias-No'}},
             {locator: {css: '#primaryApplicantIsApplying-No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: '1: MentallyIncapable'},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: 'They lack capacity to act as executor'},
             {locator: {css: '#otherExecutorExists-No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
