@@ -44,8 +44,10 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
     public void shouldTransformAppCreatedStateCorrectly() {
         final String response = postSolJson("caseprogress/01-appCreated.json",
             TASKLIST_UPDATE_URL);
+        final String expectedHtmlFile = "expected-html/gop/application-created.html";
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
+        /*
         final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
             + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\">"
             + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
@@ -139,7 +141,8 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "The grant will be delivered in the post a few days after issuing.</font></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
-
+*/
+        final String expected = utils.getStringFromFile(expectedHtmlFile);
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
@@ -265,6 +268,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             TASKLIST_UPDATE_URL);
         final JsonPath jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
+
         final String expectedHtml = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
             + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\">"
             + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
