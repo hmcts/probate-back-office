@@ -37,17 +37,17 @@ module.exports = async function (crud, unique_deceased_user) {
 
         await I.fillField('#deceasedTypeOfDeath', createWillLodgementConfig.page2_typeOfDeath);
 
-        await I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2_hasAliasYes}`);
+        await I.click(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`);
 
         /* eslint-disable no-await-in-loop */
         let idx = 0;
         const keys = Object.keys(createWillLodgementConfig);
-        for (let i=0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
             const propName = keys[i];
             if (propName.includes('page2_alias_')) {
                 await I.click(createWillLodgementConfig.page2_addAliasButton);
                 await I.wait(0.5); // implicit wait needed
-                const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
+                const locator = { css: `#deceasedFullAliasNameList_${idx}_FullAliasName` };
                 if (!testConfig.TestAutoDelayEnabled) {
                     // only valid for local dev where we need it to run as fast as poss to minimise
                     // lost dev time
@@ -66,13 +66,13 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user);
 
         await I.click(createWillLodgementConfig.UKpostcodeLink);
-        await I.fillField('#deceasedAddress_AddressLine1', createWillLodgementConfig.address_line1);
-        await I.fillField('#deceasedAddress_AddressLine2', createWillLodgementConfig.address_line2);
-        await I.fillField('#deceasedAddress_AddressLine3', createWillLodgementConfig.address_line3);
-        await I.fillField('#deceasedAddress_PostTown', createWillLodgementConfig.address_town);
-        await I.fillField('#deceasedAddress_County', createWillLodgementConfig.address_county);
-        await I.fillField('#deceasedAddress_PostCode', createWillLodgementConfig.address_postcode);
-        await I.fillField('#deceasedAddress_Country', createWillLodgementConfig.address_country);
+        await I.fillField('#deceasedAddress__detailAddressLine1', createWillLodgementConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAddressLine2', createWillLodgementConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAddressLine3', createWillLodgementConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailPostTown', createWillLodgementConfig.address_town);
+        await I.fillField('#deceasedAddress__detailCounty', createWillLodgementConfig.address_county);
+        await I.fillField('#deceasedAddress__detailPostCode', createWillLodgementConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailCountry', createWillLodgementConfig.address_country);
         await I.fillField('#deceasedEmailAddress', createWillLodgementConfig.page2_email);
     }
 

@@ -20,19 +20,19 @@ module.exports = async function (crud) {
         }
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine2', createGrantOfProbateConfig.address_line2);
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(0.25);
         }
 
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_Country', createGrantOfProbateConfig.address_country);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailCountry', createGrantOfProbateConfig.address_country);
 
         await I.click(`#mentalCapacity-${createGrantOfProbateConfig.page7_mentalCapacityYes}`);
         await I.click(`#courtOfProtection-${createGrantOfProbateConfig.page7_courtOfProtectionYes}`);

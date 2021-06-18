@@ -19,7 +19,7 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfBirth-month', applicationDetailsConfig.page2_dateOfBirth_month);
     await I.fillField('#deceasedDateOfBirth-year', applicationDetailsConfig.page2_dateOfBirth_year);
 
-    await I.click(`#deceasedAnyOtherNames-${applicationDetailsConfig.page2_hasAliasYes}`);
+    await I.click(`#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`);
     if (!testConfig.TestAutoDelayEnabled) {
         // only valid for local dev where we need it to run as fast as poss to minimise
         // lost dev time
@@ -29,7 +29,7 @@ module.exports = async function () {
     let idx = 0;
     /* eslint-disable no-await-in-loop */
     const keys = Object.keys(applicationDetailsConfig);
-    for (let i=0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const propName = keys[i];
         if (propName.includes('page2_alias_')) {
             await I.click(applicationDetailsConfig.page2_addAliasButton);
@@ -38,7 +38,7 @@ module.exports = async function () {
                 // lost dev time
                 await I.wait(0.25);
             }
-            const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
+            const locator = { css: `#deceasedFullAliasNameList_${idx}_FullAliasName` };
             await I.waitForVisible(locator);
             await I.fillField(locator, applicationDetailsConfig[propName]);
             idx += 1;
@@ -46,13 +46,13 @@ module.exports = async function () {
     }
 
     await I.click(applicationDetailsConfig.UKpostcodeLink);
-    await I.fillField('#deceasedAddress_AddressLine1', applicationDetailsConfig.address_line1);
-    await I.fillField('#deceasedAddress_AddressLine2', applicationDetailsConfig.address_line2);
-    await I.fillField('#deceasedAddress_AddressLine3', applicationDetailsConfig.address_line3);
-    await I.fillField('#deceasedAddress_PostTown', applicationDetailsConfig.address_town);
-    await I.fillField('#deceasedAddress_County', applicationDetailsConfig.address_county);
-    await I.fillField('#deceasedAddress_PostCode', applicationDetailsConfig.address_postcode);
-    await I.fillField('#deceasedAddress_Country', applicationDetailsConfig.address_country);
+    await I.fillField('#deceasedAddress__detailAddressLine1', applicationDetailsConfig.address_line1);
+    await I.fillField('#deceasedAddress__detailAddressLine2', applicationDetailsConfig.address_line2);
+    await I.fillField('#deceasedAddress__detailAddressLine3', applicationDetailsConfig.address_line3);
+    await I.fillField('#deceasedAddress__detailPostTown', applicationDetailsConfig.address_town);
+    await I.fillField('#deceasedAddress__detailCounty', applicationDetailsConfig.address_county);
+    await I.fillField('#deceasedAddress__detailPostCode', applicationDetailsConfig.address_postcode);
+    await I.fillField('#deceasedAddress__detailCountry', applicationDetailsConfig.address_country);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

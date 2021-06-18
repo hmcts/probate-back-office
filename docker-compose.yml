@@ -590,7 +590,7 @@ services:
 
  # complete the XUI setup for probate-back-office - this has just been added as a starting point    
   xui-manage-cases:
-    image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
+    image: hmctspublic.azurecr.io/xui/webapp:pr-944-4c0e5766
     environment:
       FEATURE_APP_INSIGHTS_ENABLED: "true"
       FEATURE_SECURE_COOKIE_ENABLED: "false"
@@ -611,6 +611,7 @@ services:
       SERVICES_IDAM_INDEX_URL: /
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
       SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_PRD_API_URL: http://wiremock:8080
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
       REDISCLOUD_URL: http://dummyrediscloudurl
