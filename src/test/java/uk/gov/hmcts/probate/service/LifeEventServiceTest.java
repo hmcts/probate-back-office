@@ -40,11 +40,12 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION;
 import static uk.gov.hmcts.probate.service.LifeEventService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
-
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = LifeEventService.class)
@@ -79,8 +80,8 @@ public class LifeEventServiceTest {
         localDate = LocalDate.of(1900, 1, 1);
 
         final Deceased deceased = new Deceased();
-        deceased.setForenames("Firstname");
-        deceased.setSurname("LastName");
+        deceased.setForenames(firstName);
+        deceased.setSurname(lastName);
         deceased.setSex(Deceased.SexEnum.INDETERMINATE);
         v1Death = new V1Death();
         v1Death.setDeceased(deceased);
@@ -146,7 +147,39 @@ public class LifeEventServiceTest {
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
     }
+    
+    @Test
+    public void shouldUpdateCCDWhenMultipleRecordsFound() {
 
+        final String firstName = "Wibble";
+        final String lastName = "Wobble";
+        localDate = LocalDate.of(1900, 1, 1);
+
+        final Deceased deceased = new Deceased();
+        deceased.setForenames("Firstname2");
+        deceased.setSurname("LastName2");
+        deceased.setSex(Deceased.SexEnum.INDETERMINATE);
+        v1Death = new V1Death();
+        v1Death.setDeceased(deceased);
+        deathRecords.add(v1Death);
+        
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
+            .thenReturn(deathRecords);
+        lifeEventService.verifyDeathRecord(caseDetails, securityDTO);
+        verify(ccdClientApi, timeout(100))
+            .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                eq(caseId.toString()),
+                grantOfRepresentationDataCaptor.capture(),
+                eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                eq(securityDTO),
+                eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION),
+                eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY));
+
+        final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
+            .getValue().getDeathRecords();
+        assertSame(capturedDeathRecords, mappedRecords);
+    }
+    
     @Test
     public void shouldNotUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
