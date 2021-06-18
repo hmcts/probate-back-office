@@ -182,7 +182,7 @@ public class CaseQueryService {
 
     @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
-        log.info("CaseQueryService runQuery: " + jsonQuery);
+        log.debug("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())

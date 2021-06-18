@@ -1,6 +1,7 @@
 {
   "page1_payment_type": "Fee account",
-  "page1_pay_account_num": "1234",
+  "page1_pBAANumber": "PBA0082126",
+  "page1_paymentReference": "E2E PBA Caveat Payment Reference",
 
   "page2_waitForText":"Submit application",
 
@@ -8,7 +9,8 @@
   "page3_app_ref": "SOL-123-456",
   "page3_application_fee": "Application fee £3.00",
   "page3_pay_method": "Payment method fee account",
-  "page3_pay_ref": "Payment reference number Fee account PBA-1234",
+  "page3_pBA_Account": "Selected PBA account PBA0082126",
+  "page3_customer_Reference": "Customer reference E2E PBA Caveat Payment Reference",
   "caveat_expiry_date": "XX XXX XXXX",
 
   "notification_sent_email": "Sent Email",
