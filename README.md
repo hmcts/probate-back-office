@@ -123,6 +123,12 @@ docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
 
+# to clear out all images
+npx @hmcts/probate-dev-env --destroy
+docker container rm $(docker container ls -a -q)
+docker image rm $(docker image ls -a -q)
+docker volume rm $(docker volume ls -q)
+
 ```
 
 If you would like to test a new CCD config locally, you should run:
@@ -131,6 +137,13 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
+
+To enable PBA payments for solicitors run this after startup of everything
+```
+docker-compose up -d wiremock
+./bin/wiremock.sh
+```
+
 
 ## Full setup
 

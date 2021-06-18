@@ -35,5 +35,6 @@
     "IHTNet": "150000",
     "JobTitle": "Solicitor",
     "FeeAccount": "1: fee account",
-    "FeeAccountNumber": "001234"
+    "PBAANumber": "PBA0082126",
+    "PaymentReference": "E2E Case Progress PBA Payment Reference"
 }

@@ -1,0 +1,15 @@
+{
+  "reference": "RC-1599-4778-4711-5958",
+  "date_created": "2020-09-07T11:24:07.160+0000",
+  "status": "failed",
+  "payment_group_reference": "2020-1599477846961",
+  "status_histories": [
+    {
+      "status": "failed",
+      "error_code": "CA-E0004",
+      "error_message": "Your account is deleted",
+      "date_created": "2020-09-07T11:24:07.169+0000",
+      "date_updated": "2020-09-07T11:24:07.169+0000"
+    }
+  ]
+}

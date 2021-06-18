@@ -24,7 +24,9 @@ Payment summary
 
 **Payment method** fee account
 
-**Payment reference number** Fee account PBA-12345
+**Selected PBA account** PBA-12345
+
+**Customer reference** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
