@@ -1,6 +1,24 @@
 {
   "case_details": {
     "case_data": {
+      "solsPaymentMethods": "fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
       "solsSolicitorFirmName": "Firm Name",
       "solsSolicitorAddress": {
         "AddressLine1": "Test Road",

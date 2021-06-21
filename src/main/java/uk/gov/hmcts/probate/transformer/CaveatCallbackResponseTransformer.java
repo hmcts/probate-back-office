@@ -14,11 +14,14 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,10 +46,13 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
+    private static final String PBA_PAYMENT_METHOD = "pba";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
 
-    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents,
+    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, 
+                                               PaymentResponse paymentResponse, List<Document> documents,
                                                String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
@@ -55,8 +61,27 @@ public class CaveatCallbackResponseTransformer {
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
 
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (caveatData.getPayments() != null) {
+            paymentsList = new ArrayList<>();
+            paymentsList.addAll(caveatData.getPayments());
+        }
+        
         if (caveatData.getApplicationType() != null) {
+            if (SOLICITOR.equals(caveatData.getApplicationType()) && paymentResponse != null) {
+                if (paymentsList == null) {
+                    paymentsList = new ArrayList<>();
+                }
+                Payment payment = Payment.builder()
+                    .reference(paymentResponse.getReference())
+                    .status(paymentResponse.getStatus())
+                    .method(PBA_PAYMENT_METHOD)
+                    .build();
+                paymentsList.add(new CollectionMember<Payment>(payment));
+            }
+
             responseCaveatDataBuilder
+                .payments(paymentsList)
                 .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
                 .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
         } else {
@@ -195,6 +220,8 @@ public class CaveatCallbackResponseTransformer {
 
             .solsPaymentMethods(caveatData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caveatData.getSolsFeeAccountNumber())
+            .solsPBANumber(caveatData.getSolsPBANumber())
+            .solsPBAPaymentReference(caveatData.getSolsPBAPaymentReference())
 
             .caveatorForenames(caveatData.getCaveatorForenames())
             .caveatorSurname(caveatData.getCaveatorSurname())
@@ -222,7 +249,8 @@ public class CaveatCallbackResponseTransformer {
             .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
             .autoClosedExpiry(caveatData.getAutoClosedExpiry())
             .pcqId(caveatData.getPcqId())
-            .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes());
+            .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
+            .payments(caveatData.getPayments());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -256,6 +284,16 @@ public class CaveatCallbackResponseTransformer {
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+    }
+
+    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest, 
+                                                                      String authToken) {
+        ResponseCaveatDataBuilder responseCaseDataBuilder = 
+            getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(), 
+            responseCaseDataBuilder, authToken);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private String transformToString(LocalDate dateValue) {

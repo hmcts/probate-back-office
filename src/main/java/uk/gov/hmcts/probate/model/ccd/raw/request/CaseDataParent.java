@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -74,4 +75,9 @@ public class CaseDataParent {
 
     protected String singularProfitSharingTextForLegalStatement;
     protected String pluralProfitSharingTextForLegalStatement;
+    private final DynamicList solsPBANumber;
+    private final String solsPBAPaymentReference;
+    private final String solsOrgHasPBAs;
+    private final String solsNeedsPBAPayment;
+
 }

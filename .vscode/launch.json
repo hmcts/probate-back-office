@@ -27,7 +27,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "Mocha test end-end",
             "request": "launch",
@@ -63,7 +63,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },     
+        },
         {
             "name": "caseProgressReenter e2e",
             "request": "launch",
@@ -75,7 +75,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },             
+        },
         {
             "name": "caseProgressAppStopped e2e",
             "request": "launch",
@@ -87,7 +87,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },             
+        },
         {
             "name": "caveat e2e",
             "request": "launch",
@@ -147,7 +147,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "Caseworker GoP (Solicitor) e2e",
             "request": "launch",
@@ -219,7 +219,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Solicitor not named, applying Gop e2e",
             "request": "launch",

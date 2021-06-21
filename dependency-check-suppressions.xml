@@ -60,5 +60,12 @@
         <filePath regex="true">.*spring-security-(core)-5\.3\.8\.RELEASE\.jar</filePath>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2021-22112</cve>
-    </suppress>    
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.3.8.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+    </suppress>
 </suppressions>

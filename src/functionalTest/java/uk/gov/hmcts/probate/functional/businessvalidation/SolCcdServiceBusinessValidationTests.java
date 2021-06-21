@@ -17,6 +17,10 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import java.util.HashMap;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -682,7 +686,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestInTestacySuccessForDefaultNext() {
-        final ResponseBody body = validatePostSuccess("solicitorPDFPayloadIntestacy.json", DEFAULT_SOLS_NEXT_STEP);
+        final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile("solicitorPDFPayloadIntestacy" 
+                + ".json"), DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String willExist = jsonPath.get("data.willExists");
@@ -694,14 +699,33 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() {
-        final ResponseBody body = validatePostSuccess("solicitorPDFPayloadProbateSingleExecutor.json",
-                DEFAULT_SOLS_NEXT_STEP);
+        final ResponseBody body = validatePostSuccessForPayload(
+                utils.getJsonFromFile("solicitorPDFPayloadProbateSingleExecutor.json"),
+                DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String willExist = jsonPath.get("data.willExists");
         final String errors = jsonPath.get("data.errors");
 
         assertEquals(willExist, "Yes");
         assertNull(errors);
+    }
+
+    @Test()
+    public void verifyRequestProbateSuccessForDefaultingPBAsOnNextSteps() {
+        final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile(
+                "solicitorPDFPayloadProbate.json"),
+                DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String errors = jsonPath.get("data.errors");
+        final HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");
+
+        assertNull(errors);
+        assertNotNull(solsPBANumbers);
+        List<HashMap> listItems = ((List<HashMap>)solsPBANumbers.get("list_items"));
+        assertEquals(2, ((List)solsPBANumbers.get("list_items")).size());
+        String allPBAs = listItems.get(0).get("code") + "," + listItems.get(1).get("code");
+        assertThat(allPBAs, containsString("PBA0082126"));
+        assertThat(allPBAs, containsString("PBA0083372"));
     }
 
     @Test

@@ -27,8 +27,8 @@ module.exports = async function () {
     await I.waitForText(deceasedDetailsConfig.page2_solsIHT400421FormLabel);
     await I.waitForText(deceasedDetailsConfig.page2_solsIHTDNUFormLabel);
     await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
-    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
+    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

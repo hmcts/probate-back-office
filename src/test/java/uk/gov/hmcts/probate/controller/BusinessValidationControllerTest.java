@@ -22,6 +22,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -31,6 +33,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -135,6 +138,8 @@ public class BusinessValidationControllerTest {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
+    private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
+    private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -182,6 +187,8 @@ public class BusinessValidationControllerTest {
     @MockBean
     private NotificationService notificationService;
 
+    @MockBean
+    private PBARetrievalService pbaRetrievalService;
 
     @Before
     public void setup() {
@@ -230,6 +237,7 @@ public class BusinessValidationControllerTest {
             .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
             .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
             .solsPaymentMethods(PAYMENT_METHOD)
+            .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code("PBA1234").build()).build())
             .applicationFee(APPLICATION_FEE)
             .feeForUkCopies(FEE_FOR_UK_COPIES)
             .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
@@ -988,7 +996,8 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForProbateCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1011,7 +1020,8 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForIntestacyCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1034,7 +1044,8 @@ public class BusinessValidationControllerTest {
     public void shouldDefaultLegalStatementAmendOptionsForAdmonCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
 
-        mockMvc.perform(post("/case/default-sols-next-steps")
+        mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
+            .header("Authorization", "Auth")
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

@@ -23,6 +23,7 @@ spring:
         idamRedirectUrl: auth.provider.client.redirect
         schedulerCaseWorkerUser: SCHEDULER_CASEWORKER_USERNAME
         schedulerCaseWorkerPass: SCHEDULER_CASEWORKER_PASSWORD
+        probate-site-id: payment.siteId
         launchdarkly-key: ld.sdk_key
         launchdarklyUserkeyBackend: ld.user.key
         levPublicCertificate: lev.ssl.publicCertificate

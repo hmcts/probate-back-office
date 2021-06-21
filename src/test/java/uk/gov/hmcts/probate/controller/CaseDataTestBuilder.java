@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -21,6 +23,7 @@ public class CaseDataTestBuilder {
     public static final String FORNAME = "Andy";
     public static final String SURANME = "Michael";
     public static final String SOLICITOR_APP_REFERENCE = "Reff";
+    public static final String SOLICITOR_PAY_REFERENCE = "PayRef";
     public static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     public static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
@@ -32,6 +35,7 @@ public class CaseDataTestBuilder {
     private static final String SOLICITOR_APPLYING = "Yes";
     public static final String IHT_FORM = "IHT207";
     public static final String PAYMENT_METHOD = "fee account";
+    public static final String SOLS_PBA_NUMBER = "PBA1234";
     public static final String WILL_HAS_CODICLIS = "Yes";
     public static final String NUMBER_OF_CODICLIS = "1";
     public static final BigDecimal NET = BigDecimal.valueOf(1000f);
@@ -124,7 +128,6 @@ public class CaseDataTestBuilder {
         .willExists(WILL_EXISTS)
         .willAccessOriginal(WILL_ACCESS_ORIGINAL)
         .ukEstate(UK_ESTATE)
-        // .applicationGrounds(APPLICATION_GROUNDS)  - commented for dtsb-904 as likely to be reinstated
         .ihtNetValue(NET)
         .ihtGrossValue(GROSS)
         .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
@@ -139,6 +142,9 @@ public class CaseDataTestBuilder {
         .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
         .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
         .solsPaymentMethods(PAYMENT_METHOD)
+        .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code(SOLS_PBA_NUMBER).build())
+                .build())
+        .solsPBAPaymentReference(SOLICITOR_APP_REFERENCE)
         .applicationFee(APPLICATION_FEE)
         .feeForUkCopies(FEE_FOR_UK_COPIES)
         .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)

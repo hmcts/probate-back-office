@@ -109,7 +109,18 @@
       "extraCopiesOfGrant": null,
       "outsideUKGrantCopies": null,
       "solsPaymentMethods": null,
-      "solsFeeAccountNumber": null,
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA1111",
+          "label": "PBA1111"
+        },
+        "list_items": [
+          {
+            "code": "PBA1111",
+            "label": "PBA1111"
+          }
+        ]
+      },
       "casePrinted": null,
       "boCaseStopReasonList": null,
       "applicationFee": null,

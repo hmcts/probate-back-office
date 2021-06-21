@@ -80,4 +80,8 @@ public class ResponseCaseDataParent {
     protected final LocalDate originalWillSignedDate;
     protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
     protected final String furtherEvidenceForApplication;
+    protected DynamicList solsPBANumber;
+    protected String solsPBAPaymentReference;
+    protected String solsOrgHasPBAs;
+    protected String solsNeedsPBAPayment;
 }

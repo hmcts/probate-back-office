@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -54,7 +55,7 @@ public class CaveatNotificationService {
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
@@ -109,12 +110,13 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, null, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest,
+                                                  PaymentResponse paymentResponse)
         throws NotificationClientException {
 
         Document document;
@@ -129,7 +131,7 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null);
         }
         return caveatCallbackResponse;
     }

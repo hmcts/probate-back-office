@@ -1696,7 +1696,7 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
         final Response jsonResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getSolicitorHeadersWithUserId())
+                .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path)
             .andReturn();

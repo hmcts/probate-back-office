@@ -41,7 +41,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
@@ -172,10 +175,10 @@ public class CallbackResponseTransformerTest {
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
     private static final String FEE_ACCT_NUMBER = "1234";
-    private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-    private static final BigDecimal feeForNonUkCopies = new BigDecimal(11);
-    private static final BigDecimal feeForUkCopies = new BigDecimal(22);
-    private static final BigDecimal applicationFee = new BigDecimal(33);
+
+    private static final FeeResponse feeForNonUkCopies = FeeResponse.builder().feeAmount(new BigDecimal(11)).build();
+    private static final FeeResponse feeForUkCopies = FeeResponse.builder().feeAmount(new BigDecimal(22)).build();
+    private static final FeeResponse applicationFee = FeeResponse.builder().feeAmount(new BigDecimal(33)).build();
     private static final BigDecimal totalFee = new BigDecimal(66);
     private static final String DOC_BINARY_URL = "docBinaryUrl";
     private static final String DOC_URL = "docUrl";
@@ -419,6 +422,9 @@ public class CallbackResponseTransformerTest {
     private FeeServiceResponse feeServiceResponseMock;
 
     @Mock
+    private FeesResponse feesResponse;
+
+    @Mock
     private DocumentLink documentLinkMock;
 
     @Mock
@@ -432,6 +438,12 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
+    @Mock
+    private SolicitorPBADefaulter solicitorPBADefaulter;
+    @Mock
+    private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    @Mock
+    private PaymentResponse paymentResponseMock;
 
     @Mock
     private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
@@ -694,10 +706,14 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeForNonUkCopies);
+        when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeForUkCopies);
+        when(feesResponse.getApplicationFeeResponse()).thenReturn(applicationFee);
+        when(feesResponse.getTotalAmount()).thenReturn(totalFee);
+
         when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
                 any(ResponseCaseData.ResponseCaseDataBuilder.class)))
                 .thenAnswer(invocation -> invocation.getArgument(1));
-
     }
 
     @Test
@@ -775,21 +791,18 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() throws JsonProcessingException {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .payments(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(paymentResponseMock.getReference()).thenReturn("RC-1234");
+        when(paymentResponseMock.getStatus()).thenReturn("Success");
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                paymentResponseMock);
 
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
-        CallbackResponse callbackResponse =
-            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
-
-        assertCommon(callbackResponse);
+        assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
 
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
@@ -801,21 +814,16 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
-            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
-            .solsLegalStatementUpload(legalStatementUploadMock)
-            .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
-            .build();
+                .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+                .solsLegalStatementUpload(legalStatementUploadMock)
+                .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
+                .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                paymentResponseMock);
 
-        CallbackResponse callbackResponse =
-            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
-
-        assertCommon(callbackResponse);
+        assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
 
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
@@ -825,25 +833,82 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSchemaVersionCorrectly() throws JsonProcessingException {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndExistingPayments() {
+        List<CollectionMember<Payment>> payments = new ArrayList<>();
+        Payment payment = Payment.builder().reference("RC1").method("something").status("Other").build();
+        payments.add(new CollectionMember<Payment>(payment));
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .payments(payments)
+            .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        when(paymentResponseMock.getReference()).thenReturn("RC-1234");
+        when(paymentResponseMock.getStatus()).thenReturn("Success");
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+            paymentResponseMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertCommonAdditionalExecutors(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+
+        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+        assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
+        assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertEquals("RC1", callbackResponse.getData().getPayments().get(0).getValue().getReference());
+        assertEquals("Other", callbackResponse.getData().getPayments().get(0).getValue().getStatus());
+        assertEquals("something", callbackResponse.getData().getPayments().get(0).getValue().getMethod());
+        assertEquals("RC-1234", callbackResponse.getData().getPayments().get(1).getValue().getReference());
+        assertEquals("Success", callbackResponse.getData().getPayments().get(1).getValue().getStatus());
+        assertEquals("pba", callbackResponse.getData().getPayments().get(1).getValue().getMethod());
+    }
+
+    @Test
+    public void shouldSetSchemaVersionCorrectly() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feeServiceResponseMock);
+                feesResponse, paymentResponseMock);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
 
     @Test
-    public void shouldTestForNullDOB() throws JsonProcessingException {
+    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountNoPayment() {
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .payments(null)
+            .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        paymentResponseMock = null;
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+            paymentResponseMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertCommonAdditionalExecutors(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+
+        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+        assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
+        assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertNull(callbackResponse.getData().getPayments());
+    }
+    
+    @Test
+    public void shouldTestForNullDOB() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse =
-            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+            paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -854,8 +919,8 @@ public class CallbackResponseTransformerTest {
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse =
-            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+            paymentResponseMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -863,18 +928,19 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
-            .build();
+                .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-        CallbackResponse callbackResponse =
-            underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                paymentResponseMock);
 
-        assertCommon(callbackResponse);
+        assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertCommonAdditionalExecutors(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+
         assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
@@ -2391,6 +2457,23 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldCallSolsPBATransformer() {
+        underTest.transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        verify(solicitorPBADefaulter).defaultFeeAccounts(any(CaseData.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class),
+            any(String.class));
+        verify(solicitorPBAPaymentDefaulter).defaultPageFlowForPayments(any(CaseData.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void shouldCallSolsPBAPaymentsTransformer() {
+        underTest.transformCaseForSolicitorPBATotalPayment(callbackRequestMock);
+        verify(solicitorPBAPaymentDefaulter).defaultPageFlowForPayments(any(CaseData.class),
+            any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
     public void shouldCallReprintTransformer() {
         underTest.transformCaseForReprint(callbackRequestMock);
         verify(reprintTransformer)
@@ -2773,6 +2856,7 @@ public class CallbackResponseTransformerTest {
 
     private void assertCommon(CallbackResponse callbackResponse) {
         assertCommonDetails(callbackResponse);
+        assertCommonPayments(callbackResponse);
         assertLegacyInfo(callbackResponse);
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
@@ -2838,7 +2922,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
 
-        assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
@@ -2862,6 +2945,16 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
+    }
+
+    private void assertCommonAdditionalExecutors(CallbackResponse callbackResponse) {
+        assertEquals(emptyList(), callbackResponse.getData().getSolsAdditionalExecutorList());
+        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsNotApplying());
+    }
+
+    private void assertCommonPayments(CallbackResponse callbackResponse) {
+        assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
