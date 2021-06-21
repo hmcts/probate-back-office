@@ -12,7 +12,7 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
         await I.click(`#willExists-${createGrantOfProbateConfig.page5_willExistsYes}`);
         await I.click(`#willDatedBeforeApril-${createGrantOfProbateConfig.page5_willDatedBeforeAprilYes}`);
-        await I.click(`#willAccessOriginal-${createGrantOfProbateConfig.page5_willAccessOriginalYes}`);
+        await I.click(`#willAccessOriginal_${createGrantOfProbateConfig.page5_willAccessOriginalYes}`);
         await I.click(`#willHasCodicils-${createGrantOfProbateConfig.page5_willHasCodicilsYes}`);
         await I.fillField('#willNumberOfCodicils', createGrantOfProbateConfig.page5_willNumberOfCodicils);
         await I.click(`#willsOutsideOfUK-${createGrantOfProbateConfig.page5_willsOutsideOfUKYes}`);

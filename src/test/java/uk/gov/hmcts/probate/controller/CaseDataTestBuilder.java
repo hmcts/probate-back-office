@@ -19,7 +19,7 @@ public class CaseDataTestBuilder {
     public static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     public static final LocalDate DOD = LocalDate.of(2017, 4, 4);
     public static final Long ID = 1L;
-    public static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    public static final String[] LAST_MODIFIED = { "2018", "1", "1", "0", "0", "0", "0" };
     public static final String FORNAME = "Andy";
     public static final String SURANME = "Michael";
     public static final String SOLICITOR_APP_REFERENCE = "Reff";
@@ -76,12 +76,8 @@ public class CaseDataTestBuilder {
     public static final String DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH = "Yes";
     public static final String DECEASED_FOREIGN_DEATH_CERT_TRANSLATION = "Yes";
 
-    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
-            new CollectionMember<>(null,
-                    EstateItem.builder()
-                            .item("Item")
-                            .value("999.99")
-                            .build()));
+    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays
+            .asList(new CollectionMember<>(null, EstateItem.builder().item("Item").value("999.99").build()));
 
     public static CaseData.CaseDataBuilder withDefaults() {
 
@@ -91,10 +87,7 @@ public class CaseDataTestBuilder {
     }
 
     private static SolsAddress getSolsAddress() {
-        return SolsAddress.builder()
-                .addressLine1(SOLICITOR_FIRM_LINE1)
-                .postCode(SOLICITOR_FIRM_POSTCODE)
-                .build();
+        return SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).postCode(SOLICITOR_FIRM_POSTCODE).build();
     }
 
     public static CaseData.CaseDataBuilder withDefaultsAndNoPrimaryApplicantEmailAddress() {
@@ -105,59 +98,32 @@ public class CaseDataTestBuilder {
     }
 
     private static CaseData.CaseDataBuilder getCaseDataBuilder(SolsAddress solsAddress,
-                                                               String primaryApplicantEmailAddress) {
-        return CaseData.builder()
-            .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-            .solsSolicitorAddress(solsAddress)
-            .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
-            .deceasedDateOfBirth(DOB)
-            .deceasedDateOfDeath(DOD)
-            .deceasedForenames(FORNAME)
-            .deceasedSurname(SURANME)
-            .deceasedAddress(DECEASED_ADDRESS)
-            .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
-            .deceasedDomicileInEngWales(DECEASED_DOM_UK)
-            .primaryApplicantForenames(PRIMARY_FORENAMES)
-            .primaryApplicantSurname(PRIMARY_SURNAME)
-            .primaryApplicantAddress(PRIMARY_ADDRESS)
-            .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
-            .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
-            .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
-            .otherExecutorExists(OTHER_EXEC_EXISTS)
-            .solsWillType(WILL_TYPE)
-            .willExists(WILL_EXISTS)
-            .willAccessOriginal(WILL_ACCESS_ORIGINAL)
-            .ukEstate(UK_ESTATE)
-            .applicationGrounds(APPLICATION_GROUNDS)
-            .ihtNetValue(NET)
-            .ihtGrossValue(GROSS)
-            .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
-            .willHasCodicils(WILL_HAS_CODICLIS)
-            .willNumberOfCodicils(NUMBER_OF_CODICLIS)
-            .ihtFormId(IHT_FORM)
-            .solsSOTNeedToUpdate(NEED_TO_UPDATE)
-            .solsSOTForenames(SOLICITOR_FORENAME)
-            .solsSOTSurname(SOLICITOR_SURNAME)
-            .solsSolicitorIsExec(SOLICITOR_APPLYING)
-            .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
-            .solsSolicitorIsApplying(SOLICITOR_APPLYING)
-            .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
-            .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
-            .solsPaymentMethods(PAYMENT_METHOD)
-            .solsPBANumber(DynamicList.builder().value(DynamicListItem.builder().code(SOLS_PBA_NUMBER).build())
-                .build())
-            .solsPBAPaymentReference(SOLICITOR_APP_REFERENCE)
-            .applicationFee(APPLICATION_FEE)
-            .feeForUkCopies(FEE_FOR_UK_COPIES)
-            .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
-            .extraCopiesOfGrant(EXTRA_UK)
-            .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-            .totalFee(TOTAL_FEE)
-            .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER)
-            .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
-            .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
-            .deceasedForeignDeathCertInEnglish(DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH)
-            .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION);
+            String primaryApplicantEmailAddress) {
+        return CaseData.builder().solsSolicitorFirmName(SOLICITOR_FIRM_NAME).solsSolicitorAddress(solsAddress)
+                .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE).deceasedDateOfBirth(DOB).deceasedDateOfDeath(DOD)
+                .deceasedForenames(FORNAME).deceasedSurname(SURANME).deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(DECEASED_OTHER_NAMES).deceasedDomicileInEngWales(DECEASED_DOM_UK)
+                .primaryApplicantForenames(PRIMARY_FORENAMES).primaryApplicantSurname(PRIMARY_SURNAME)
+                .primaryApplicantAddress(PRIMARY_ADDRESS).primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
+                .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
+                .primaryApplicantEmailAddress(primaryApplicantEmailAddress).otherExecutorExists(OTHER_EXEC_EXISTS)
+                .solsWillType(WILL_TYPE).willExists(WILL_EXISTS).willAccessOriginal(WILL_ACCESS_ORIGINAL)
+                .ukEstate(UK_ESTATE).applicationGrounds(APPLICATION_GROUNDS).ihtNetValue(NET).ihtGrossValue(GROSS)
+                .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE).willHasCodicils(WILL_HAS_CODICLIS)
+                .willNumberOfCodicils(NUMBER_OF_CODICLIS).ihtFormId(IHT_FORM).solsSOTNeedToUpdate(NEED_TO_UPDATE)
+                .solsSOTForenames(SOLICITOR_FORENAME).solsSOTSurname(SOLICITOR_SURNAME)
+                .solsSolicitorIsExec(SOLICITOR_APPLYING).solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
+                .solsSolicitorIsApplying(SOLICITOR_APPLYING).solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
+                .solsSOTJobTitle(SOLICITOR_JOB_TITLE).solsPaymentMethods(PAYMENT_METHOD)
+                .solsPBANumber(
+                        DynamicList.builder().value(DynamicListItem.builder().code(SOLS_PBA_NUMBER).build()).build())
+                .solsPBAPaymentReference(SOLICITOR_APP_REFERENCE).applicationFee(APPLICATION_FEE)
+                .feeForUkCopies(FEE_FOR_UK_COPIES).feeForNonUkCopies(FEE_FOR_NON_UK_COPIES).extraCopiesOfGrant(EXTRA_UK)
+                .outsideUKGrantCopies(EXTRA_OUTSIDE_UK).totalFee(TOTAL_FEE)
+                .registrySequenceNumber(REGISTRY_SEQUENCE_NUMBER).deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
+                .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
+                .deceasedForeignDeathCertInEnglish(DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH)
+                .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION);
     }
 
 }
