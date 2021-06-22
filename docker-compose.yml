@@ -493,7 +493,7 @@ services:
 
 
   probate-orchestrator:
-    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:pr-563-0d25fd8-20210621142520
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
@@ -510,7 +510,7 @@ services:
       - probate-back-office
 
   probate-submit-service:
-    image: hmctspublic.azurecr.io/probate/submit-service:latest
+    image: hmctspublic.azurecr.io/probate/submit-service:pr-513-a7572ae-20210621141158
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
@@ -525,7 +525,7 @@ services:
       - service-auth-provider-api
 
   probate-business-service:
-    image: hmctspublic.azurecr.io/probate/business-service:latest
+    image: hmctspublic.azurecr.io/probate/business-service:pr-562-8d36eca-20210621145233
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - SERVER_PORT=8081
