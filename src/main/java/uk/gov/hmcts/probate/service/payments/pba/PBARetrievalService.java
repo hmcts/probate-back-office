@@ -51,8 +51,8 @@ public class PBARetrievalService {
 
             return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
         } catch (Exception e) {
-            log.info("Exception when looking up PBAs for user={}",
-                new String(Base64.getEncoder().encode(emailId.getBytes())));
+            log.info("Exception when looking up PBAs for user={} for exception {}",
+                new String(Base64.getEncoder().encode(emailId.getBytes())), e.getMessage());
             return Collections.emptyList();
         }
     }
