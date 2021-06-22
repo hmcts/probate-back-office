@@ -1,23 +1,23 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.Document;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
@@ -31,17 +31,19 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "8486")
+@PactFolder("pacts")
 @SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 public class SendLetterServiceConsumerTest {
 
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private final String someServiceAuthToken = "someServiceAuthToken";
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider =
-        new PactHttpsProviderRuleMk2("rpeSendLetterService_SendLetterController", "localhost", 8486, this);
+
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -66,9 +68,9 @@ public class SendLetterServiceConsumerTest {
     }
 
     @Test
-    @PactVerification(fragment = "createSendLetterServiceFragment")
+    @PactTestFor(pactMethod = "createSendLetterServiceFragment")
     public void verifySendLetterPact() throws IOException, JSONException, URISyntaxException {
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(someServiceAuthToken, buildLetter());
+        sendLetterApi.sendLetter(someServiceAuthToken, buildLetter());
     }
 
     private LetterV3 buildLetter() throws IOException, URISyntaxException {

@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 
 import java.time.LocalDate;
 
@@ -36,6 +38,8 @@ public class CaveatDataTransformerTest {
     private static final String REGISTRY_LOCATION = "registryLocation";
     private static final String SOL_APP_REF = "solsSolicitorAppReference";
     private static final String SOL_PAY_METHODS = "solsPaymentMethods";
+    private static final String SOL_SELECTED_PBA = "selectedPBA";
+    private static final String SOL_PAY_REF = "solsPayRef";
     private static final String SOL_PAY_FEE_ACCT_NUMBER = "solsFeeAccountNumber";
 
     @Before
@@ -75,6 +79,10 @@ public class CaveatDataTransformerTest {
         when(caveatDeatilsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
         when(caveatDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS);
         when(caveatDataMock.getSolsFeeAccountNumber()).thenReturn(SOL_PAY_FEE_ACCT_NUMBER);
+        when(caveatDataMock.getSolsPBAPaymentReference()).thenReturn(SOL_PAY_REF);
+        when(caveatDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
+            .value(DynamicListItem.builder().code(SOL_SELECTED_PBA).label(SOL_SELECTED_PBA).build())
+            .build());
 
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
 
@@ -83,7 +91,9 @@ public class CaveatDataTransformerTest {
         assertEquals(SOL_APP_REF, caveatData.getSolsSolicitorAppReference());
         assertEquals(APP_SUBMITTED_DATE, caveatData.getApplicationSubmittedDate());
         assertEquals(SOL_PAY_METHODS, caveatData.getSolsPaymentMethods());
+        assertEquals(SOL_SELECTED_PBA, caveatData.getSolsPBANumber().getValue().getCode());
         assertEquals(SOL_PAY_FEE_ACCT_NUMBER, caveatData.getSolsFeeAccountNumber());
+        assertEquals(SOL_PAY_REF, caveatData.getSolsPBAPaymentReference());
     }
 
     @Test

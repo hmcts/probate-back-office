@@ -12,7 +12,7 @@ const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgress
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
+Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
     try {
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);
@@ -108,7 +108,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         console.info('Check progress tab for Case stopped');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case stopped');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         console.info('Escalate case to registrar');
@@ -121,7 +121,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         console.info('Check progress tab for Case escalated');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Registrar escalation');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
 
         console.info('Find matches (Issue grant)');
@@ -136,7 +136,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         console.info('Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case Matching (Issue grant)');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -155,7 +155,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function (I) {
         console.info('Check progress tab for Issue grant');
         // log back in as solicitor & check all sections completed
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Grant issued');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 0,

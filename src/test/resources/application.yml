@@ -34,11 +34,25 @@ pdf.service:
   grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
+payment:
+  url: ${PAYMENT_URL:http://localhost:8991}
+  api: /credit-account-payments
+  currency: GBP
+  siteId: ABA6
+  service: PROBATE
+
+pba:
+  retrieval:
+    url: ${PRD_API_URL:http://localhost:8991}
+    health.url: ${pba.retrieval.url}/health
+    api: /refdata/external/v1/organisations/pbas
+
+
 docmosis:
   service:
-    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
-    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
@@ -126,6 +140,7 @@ notifications:
           grantReissued: "pa-grant-reissued"
           generalCaveatMessage: "pa-general-caveat-message"
           excelaData: "pa-excela-data"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "pa-grant-raised"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan"
           caveatRaised: "pa-caveat-raised"
@@ -145,6 +160,7 @@ notifications:
           grantReissued: "sol-grant-reissued"
           generalCaveatMessage: "sol-general-caveat-message"
           excelaData: "pa-excela-data"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "sol-grant-raised"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan"
           caveatRaised: "sols-caveat-raised"
@@ -165,6 +181,7 @@ notifications:
           grantReissued: "pa-grant-reissued-welsh"
           generalCaveatMessage: "pa-general-caveat-message-welsh"
           excelaData: "pa-excela-data-welsh"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
@@ -183,6 +200,7 @@ notifications:
           grantReissued: "sol-grant-reissued-welsh"
           generalCaveatMessage: "sol-general-caveat-message-welsh"
           excelaData: "pa-excela-data-welsh"
+          smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
@@ -364,7 +382,15 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: excela@probate-test.com
+smeeAndFordEmail: smeeAndFord@probate-test.com
 
+data-extract:
+  block:
+    size: 3000
+    numDaysInclusive: 2
+  smee-and-ford:
+    size: 2000
+    
 welsh:
   months:
     1: "Ionawr"
@@ -386,3 +412,8 @@ ld:
     key: ${LD_USER_KEY:off}
     firstName: Probate
     lastName: Backend
+
+azure:
+  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+  application-insights:
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}

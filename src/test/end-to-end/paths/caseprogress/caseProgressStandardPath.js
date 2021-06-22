@@ -9,7 +9,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('03 BO Case Progress E2E - standard path', async function (I) {
+Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
     /* eslint-disable no-console */
     try {
         // IDAM
@@ -126,7 +126,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         console.info('Check progress tab for Find matches (Examining)');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case Matching (Examining)');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -144,7 +144,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         console.info('Check progress tab for Examine case');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Examining');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -166,7 +166,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         console.info('Check progress tab for Mark as ready to issue');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Ready to issue');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -187,7 +187,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         console.info('Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Case Matching (Issue grant)');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -206,7 +206,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function (I) {
         console.info('Check progress tab for Issue grant');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, true);
-        await I.caseProgressNavigateToCaseSolicitor(caseRef, 'Grant issued');
+        await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 0,

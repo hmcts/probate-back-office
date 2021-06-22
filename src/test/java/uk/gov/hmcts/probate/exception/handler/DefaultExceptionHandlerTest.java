@@ -130,6 +130,21 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
+    public void shouldReturnBusinessValidationExceptionWithMultipleErrors() {
+        when(businessValidationException.getUserMessage()).thenReturn(EXCEPTION_MESSAGE);
+        String[] arr = {"message1", "message2", "message3"};
+        when(businessValidationException.getAdditionalMessages()).thenReturn(arr);
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(businessValidationException);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
+        assertEquals("message1", response.getBody().getErrors().get(1));
+        assertEquals("message2", response.getBody().getErrors().get(2));
+        assertEquals("message3", response.getBody().getErrors().get(3));
+    }
+
+    @Test
     public void shouldReturnNotFoundException() {
         when(notFoundException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 

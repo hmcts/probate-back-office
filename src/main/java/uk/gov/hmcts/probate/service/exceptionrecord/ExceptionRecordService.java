@@ -76,17 +76,17 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
-            log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getId());
+            log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
 
             // Add bulkScanReferenceId
-            caveatData.setBulkScanCaseReference(erRequest.getId());
+            caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
-                .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
+                .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
 
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
@@ -112,18 +112,19 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
-            log.info("About to map Grant of Representation OCR fields to CCD for case: {}", erRequest.getId());
+            log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
+                    erRequest.getExceptionRecordId());
             GrantOfRepresentationData grantOfRepresentationData =
-                erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
+                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             // Add bulkScanReferenceId
-            grantOfRepresentationData.setBulkScanCaseReference(erRequest.getId());
+            grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
-                .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
+                .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
 
             // Add grant type
@@ -153,7 +154,8 @@ public class ExceptionRecordService {
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         ExceptionRecordCaveatDetails exceptionRecordCaveatDetails = erCaseUpdateRequest.getCaveatDetails();
         CaveatDetails caveatDetails =
-            new CaveatDetails(exceptionRecordCaveatDetails.getData(), null, exceptionRecordCaveatDetails.getId());
+                new CaveatDetails(exceptionRecordCaveatDetails.getData(), null,
+                        exceptionRecordCaveatDetails.getExceptionRecordId());
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         List<OCRField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;
@@ -163,7 +165,7 @@ public class ExceptionRecordService {
         });
 
         try {
-            log.info("About to update Caveat expiry date extention for case: {}", erRequest.getId());
+            log.info("About to update Caveat expiry date extention for case: {}", erRequest.getExceptionRecordId());
 
             if (StringUtils.isNotBlank(ocrFieldValues.get(CAVEAT_EXTEND_CASE_REFERENCE_KEY))
                 && (StringUtils.isNotBlank(caveatDetails.getId().toString()))) {
@@ -183,8 +185,10 @@ public class ExceptionRecordService {
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
-                mergeScannedDocuments(caveatData.getScannedDocuments(), erRequest.getScannedDocuments(),
-                    erRequest.getId()));
+                    mergeScannedDocuments(
+                            caveatData.getScannedDocuments(),
+                            erRequest.getScannedDocuments(),
+                            erRequest.getExceptionRecordId()));
 
             Assert.isTrue(
                 originalScannedNumber < caveatDetails.getData().getScannedDocuments().size(),

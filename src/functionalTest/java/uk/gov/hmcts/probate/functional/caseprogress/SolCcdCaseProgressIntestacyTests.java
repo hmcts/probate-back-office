@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -35,6 +36,11 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase {
     private static final String CASE_MATCHING_READY_TO_ISSUE_URL = "/case/validateCheckListDetails";
     private static final String GENERATE_GRANT_URL = "/document/generate-grant";
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
@@ -1577,8 +1583,8 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase {
     }
 
     private String postCwJson(String jsonFileName, String path) {
-
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -1589,10 +1595,10 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase {
     }
 
     private String postSolJson(String jsonFileName, String path) {
-
-        Response jsonResponse = RestAssured.given()
+        final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getSolicitorHeadersWithUserId())
+                .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path)
             .andReturn();
@@ -1602,6 +1608,7 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase {
 
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
