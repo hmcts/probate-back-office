@@ -44,7 +44,7 @@ public class PBARetrievalService {
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken, emailId);
 
-        try{
+        try {
             ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
                 request, PBAOrganisationResponse.class);
             PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
