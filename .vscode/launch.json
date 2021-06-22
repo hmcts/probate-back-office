@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Set up Wiremocks Win10",
+            "request": "launch",
+            "runtimeArgs": [
+                "setup-wiremocks-win",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },        
+        {
             "name": "full functional",
             "request": "launch",
             "runtimeArgs": [
