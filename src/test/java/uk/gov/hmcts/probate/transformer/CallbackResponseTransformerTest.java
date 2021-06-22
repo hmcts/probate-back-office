@@ -419,9 +419,6 @@ public class CallbackResponseTransformerTest {
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
 
     @Mock
-    private FeeServiceResponse feeServiceResponseMock;
-
-    @Mock
     private FeesResponse feesResponse;
 
     @Mock
@@ -2945,6 +2942,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
+    }
+    
+    private void assertCommonPayments(CallbackResponse callbackResponse) {
+        assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
 
     private void assertCommonAdditionalExecutors(CallbackResponse callbackResponse) {
