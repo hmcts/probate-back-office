@@ -5,7 +5,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -244,9 +243,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
             replacements);
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
-    @Ignore
     public void verifySolicitorCaveatRaisedEmailContentsNoDOB() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB,
                 CAVEAT_VALIDATE);
@@ -391,9 +388,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
     }
 
-    // temporarily ignored - failing after PBA merge
     @Test
-    @Ignore
     public void verifyCaveatValidateShouldReturnOKResponseCode() {
         final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON_2, CAVEAT_VALIDATE);
         final JsonPath jsonPath = JsonPath.from(response.asString());
