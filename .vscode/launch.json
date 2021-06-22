@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Set up Wiremocks Win10",
+            "name": "Set up Wiremocks",
             "request": "launch",
             "runtimeArgs": [
                 "setup-wiremocks",
