@@ -10,13 +10,13 @@ module.exports = async function () {
 
     await I.fillField('#solsSolicitorFirmName', applyCaveatConfig.page2_firm_name);
     await I.click(applyCaveatConfig.UKpostcodeLink);
-    await I.fillField('#caveatorAddress_AddressLine1', applyCaveatConfig.address_line1);
-    await I.fillField('#caveatorAddress_AddressLine2', applyCaveatConfig.address_line2);
-    await I.fillField('#caveatorAddress_AddressLine3', applyCaveatConfig.address_line3);
-    await I.fillField('#caveatorAddress_PostTown', applyCaveatConfig.address_town);
-    await I.fillField('#caveatorAddress_County', applyCaveatConfig.address_county);
-    await I.fillField('#caveatorAddress_PostCode', applyCaveatConfig.address_postcode);
-    await I.fillField('#caveatorAddress_Country', applyCaveatConfig.address_country);
+    await I.fillField('#caveatorAddress__detailAddressLine1', applyCaveatConfig.address_line1);
+    await I.fillField('#caveatorAddress__detailAddressLine2', applyCaveatConfig.address_line2);
+    await I.fillField('#caveatorAddress__detailAddressLine3', applyCaveatConfig.address_line3);
+    await I.fillField('#caveatorAddress__detailPostTown', applyCaveatConfig.address_town);
+    await I.fillField('#caveatorAddress__detailCounty', applyCaveatConfig.address_county);
+    await I.fillField('#caveatorAddress__detailPostCode', applyCaveatConfig.address_postcode);
+    await I.fillField('#caveatorAddress__detailCountry', applyCaveatConfig.address_country);
 
     await I.fillField('#solsSolicitorAppReference', applyCaveatConfig.page2_app_ref);
     await I.fillField('#caveatorEmailAddress', applyCaveatConfig.page2_caveator_email);

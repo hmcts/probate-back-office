@@ -46,13 +46,13 @@ module.exports = async function () {
     }
 
     await I.click(applicationDetailsConfig.UKpostcodeLink);
-    await I.fillField('#deceasedAddress_AddressLine1', applicationDetailsConfig.address_line1);
-    await I.fillField('#deceasedAddress_AddressLine2', applicationDetailsConfig.address_line2);
-    await I.fillField('#deceasedAddress_AddressLine3', applicationDetailsConfig.address_line3);
-    await I.fillField('#deceasedAddress_PostTown', applicationDetailsConfig.address_town);
-    await I.fillField('#deceasedAddress_County', applicationDetailsConfig.address_county);
-    await I.fillField('#deceasedAddress_PostCode', applicationDetailsConfig.address_postcode);
-    await I.fillField('#deceasedAddress_Country', applicationDetailsConfig.address_country);
+    await I.fillField('#deceasedAddress__detailAddressLine1', applicationDetailsConfig.address_line1);
+    await I.fillField('#deceasedAddress__detailAddressLine2', applicationDetailsConfig.address_line2);
+    await I.fillField('#deceasedAddress__detailAddressLine3', applicationDetailsConfig.address_line3);
+    await I.fillField('#deceasedAddress__detailPostTown', applicationDetailsConfig.address_town);
+    await I.fillField('#deceasedAddress__detailCounty', applicationDetailsConfig.address_county);
+    await I.fillField('#deceasedAddress__detailPostCode', applicationDetailsConfig.address_postcode);
+    await I.fillField('#deceasedAddress__detailCountry', applicationDetailsConfig.address_country);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
