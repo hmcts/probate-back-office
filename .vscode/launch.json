@@ -8,7 +8,7 @@
             "name": "Set up Wiremocks Win10",
             "request": "launch",
             "runtimeArgs": [
-                "setup-wiremocks-win",
+                "setup-wiremocks",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

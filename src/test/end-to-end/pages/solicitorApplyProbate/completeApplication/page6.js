@@ -8,8 +8,6 @@ module.exports = async function () {
     await I.waitForElement('#solsPaymentMethods');
     await I.runAccessibilityTest();
     await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page6_paymentType);
-    await I.fillField('#solsFeeAccountNumber', completeApplicationConfig.page6_payAccountNum);
-    await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page6_paymentType);
     await I.selectOption('#solsPBANumber', completeApplicationConfig.page6_pBAANumber);
     await I.fillField('#solsPBAPaymentReference', completeApplicationConfig.page6_paymentReference);
 

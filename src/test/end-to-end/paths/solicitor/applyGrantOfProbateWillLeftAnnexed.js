@@ -90,7 +90,7 @@ Scenario('04 - Solicitor - Apply Grant of probate (Will left annexed)', async fu
     await I.completeApplicationPage6();
     await I.completeApplicationPage7();
     await I.completeApplicationPage8();
-
+    
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);

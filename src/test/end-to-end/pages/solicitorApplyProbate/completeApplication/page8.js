@@ -12,6 +12,9 @@ module.exports = async function () {
     await I.see(completeApplicationConfig.page8_additionalCopiesFee);
     await I.see(completeApplicationConfig.page8_feeForCertifiedCopies);
     await I.see(completeApplicationConfig.page8_totalFeeAmount);
+    await I.see(completeApplicationConfig.page8_paymentMethod);
+    await I.see(completeApplicationConfig.page8_pBAAccount);
+    await I.see(completeApplicationConfig.page8_customerReference);
 
     await I.waitForNavigationToComplete(commonConfig.goButton);
 };

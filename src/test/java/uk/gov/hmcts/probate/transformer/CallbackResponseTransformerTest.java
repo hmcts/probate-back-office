@@ -2954,10 +2954,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
 
-    private void assertCommonPayments(CallbackResponse callbackResponse) {
-        assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
-    }
-
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
         assertEquals(RECORD_ID, callbackResponse.getData().getRecordId());
         assertEquals(LEGACY_CASE_TYPE, callbackResponse.getData().getLegacyType());

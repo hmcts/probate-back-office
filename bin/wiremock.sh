@@ -313,6 +313,8 @@ curl -X POST \
                   "email": "superuser@probate-test.com"
                 },
                 "paymentAccount": [
+                  "PBA0082126",
+                  "PBA0083372"                  
                 ],
                 "contactInformation": null
               }
