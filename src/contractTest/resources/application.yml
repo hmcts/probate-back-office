@@ -118,7 +118,8 @@ payment:
   url: http://localhost:8886
   api: /credit-account-payments
   currency: GBP
-  siteId: ABA6
+  pba:
+    siteId: ABA6
   service: PROBATE
 
 pba:
