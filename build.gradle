@@ -204,9 +204,9 @@ dependencyManagement {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 
     //CVE-2020-15250
-    // dependency group: 'junit', name: 'junit', version: '4.13.2'
+    dependency group: 'junit', name: 'junit', version: '4.13.2'
     
-    dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
+    // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
 
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
