@@ -18,9 +18,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
         initialiseConfig();
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
-    @Ignore
     public void verifyThatWithCorrectAuthorizationWeReceiveSuccess() {
         given()
             .config(config)
