@@ -1262,6 +1262,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CAVEATOR_NAME,
+            solicitorCaveatRaisedCaseData.getData().getCaveatorFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
             solicitorCaveatRaisedCaseData.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
