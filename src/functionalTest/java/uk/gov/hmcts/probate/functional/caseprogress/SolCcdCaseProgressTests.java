@@ -42,107 +42,17 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
-        final String response = postSolJson("caseprogress/01-appCreated.json",
-            TASKLIST_UPDATE_URL);
-        final String expectedHtmlFile = "expected-html/gop/application-created.html";
-        final JsonPath jsonPath = JsonPath.from(response);
+        final var response = postSolJson("caseprogress/01-appCreated.json", TASKLIST_UPDATE_URL);
+        final var expectedHtmlFile = "/expected-html/gop/application-created.html";
+        final var jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
-        /*
-        final String expected = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
-            + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
-            + "These steps are to be completed by the probate practitioner.</font></p></div>"
-            + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\">"
-            + "<p><img align=\"right\" width=\"114px\" height=\"31px\" "
-            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-            + TaskState.CODE_BRANCH
-            + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" "
-            + "title=\"COMPLETED\" /></p>\n</div></div>"
-            + "\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\"><a href=\""
-            + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338")
-            + "\" class=\"govuk-link\">Add deceased details</a></p></div><div class=\"govuk-grid-column-one-third\">"
-            + "<p><img align=\"right\" width=\"114px\" height=\""
-            + "31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-            + TaskState.CODE_BRANCH
-            + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" "
-            + "title=\"NOT STARTED\" /></p>\n</div></div>"
-            + "\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Add application details</p></div>"
-            + "<div class=\"govuk-grid-column-one-third\"></div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
-            + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div>"
-            + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m "
-            + "govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div>"
-            + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
-            + "The legal statement is generated. You can review, change any details, then sign and "
-            + "submit your application."
-            + "</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Send documents<br/></p>"
-            + "</div><div class=\"govuk-grid-column-one-third\"></div></div>\n"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n"
-            + "<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
-            + "These steps are completed by HM Courts and Tribunals Service staff. "
-            + "It can take a few weeks before the review starts."
-            + "</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "<hr class=\"govuk-section-break "
-            + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div>"
-            + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">We will authenticate your documents and match "
-            + "them with your application.</font></p></div>"
-            + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
-            + "govuk-section-break--m "
-            + "govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\">Examine application</p></div>"
-            + "<div class=\"govuk-grid-column-one-third\"></div></div>\n"
-            + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">We review your application for incomplete information or problems "
-            + "and validate it against other "
-            + "cases or caveats. After the review we prepare the grant.</font></p></div>"
-            + "<div class=\"govuk-grid-column-one-third\">&nbsp;"
-            + "</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\""
-            + "><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">Your application will update through any of these case states "
-            + "as it is reviewed by our team:</font>"
-            + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul "
-            + "class=\"govuk-list govuk-list--bullet\">\n"
-            + "<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for "
-            + "Quality Assurance</li>\n<li>Ready to issue</li>\n</ul>"
-            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
-            + "<h2 class=\"govuk-heading-l\">"
-            + "4. Grant of representation</h2>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\">"
-            + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals "
-            + "Service staff.</font>"
-            + "</p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "<hr class=\"govuk-section-break "
-            + "govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation"
-            + "</p></div>"
-            + "<div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\">"
-            + "<div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">"
-            + "The grant will be delivered in the post a few days after issuing.</font></p></div>"
-            + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
-            + "govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n";
-*/
-        final String expected = utils.getStringFromFile(expectedHtmlFile);
+
+        var expected = utils.getStringFromFile(expectedHtmlFile);
+        expected = replaceAllInString(utils.getStringFromFile(expectedHtmlFile),
+                "{code-branch}", TaskState.CODE_BRANCH);
+        expected = replaceAllInString(expected, "{deceased-dtls-url}",
+            UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338"));
+
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
@@ -150,10 +60,11 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformAppUpdatedStateCorrectly() {
-        final String response = postSolJson("caseprogress/02-appUpdated.json",
-            SOLS_VALIDATE_PROBATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
+        final var response = postSolJson("caseprogress/02-appUpdated.json", SOLS_VALIDATE_PROBATE_URL);
+        final var expectedHtmlFile = "/expected-html/gop/application-updated.html";
+        final var jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
+        /*
         final String expected = "<div class=\"govuk-grid-row\">"
             + "<div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">"
             + "1. Enter application "
@@ -258,6 +169,13 @@ public class SolCcdCaseProgressTests extends IntegrationTestBase {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break "
             + "govuk-section-break--m "
             + "govuk-section-break--visible\">\n\n</div>\n</div>\n";
+        */
+
+        var expected = utils.getStringFromFile(expectedHtmlFile);
+        expected = replaceAllInString(utils.getStringFromFile(expectedHtmlFile),
+           "{code-branch}", TaskState.CODE_BRANCH);
+        expected = replaceAllInString(expected, "{review-or-submit-url}",
+            UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338"));
 
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
