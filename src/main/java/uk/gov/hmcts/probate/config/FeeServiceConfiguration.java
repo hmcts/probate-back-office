@@ -20,5 +20,6 @@ public class FeeServiceConfiguration {
     private String newCopiesFeeKeyword;
     private String newIssuesFee5kKeyword;
     private String newIssuesFeeKeyword;
+    private String newCaveat;
     private double ihtMinAmt;
 }
