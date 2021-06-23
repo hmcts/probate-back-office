@@ -323,7 +323,8 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
-#PBA NO accounts
+#PBA accounts ON HOLD
+
 curl -X POST \
 --data '{
           "request": {
