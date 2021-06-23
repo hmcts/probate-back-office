@@ -203,9 +203,6 @@ dependencyManagement {
     //CVE-2020-26939
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 
-    //CVE-2020-15250
-    dependency group: 'junit', name: 'junit', version: '4.13.2'
-    
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
       entry 'spring-security-config'
@@ -315,11 +312,11 @@ dependencies {
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-  testCompile "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testCompile "org.junit.jupiter:junit-jupiter-api:5.7.2"
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
-  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.7.2"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.2"
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   
@@ -361,9 +358,9 @@ dependencies {
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.1")
-  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.2")
+  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.2')
   contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
@@ -374,6 +371,7 @@ dependencies {
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
+  compile 'org.junit.jupiter:junit-jupiter-api:5.7.2'
 }
 
 tasks.withType(JavaCompile) {
