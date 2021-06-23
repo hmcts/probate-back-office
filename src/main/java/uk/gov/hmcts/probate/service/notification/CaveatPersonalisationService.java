@@ -92,6 +92,7 @@ public class CaveatPersonalisationService {
         HashMap<String, String> personalisation = new HashMap<>();
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, "Sir/Madam");
+        personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, caveatData.getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
