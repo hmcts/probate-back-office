@@ -204,8 +204,10 @@ dependencyManagement {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 
     //CVE-2020-15250
-    dependency group: 'junit', name: 'junit', version: '4.13.2'
+    // dependency group: 'junit', name: 'junit', version: '4.13.2'
     
+    dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
+
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
       entry 'spring-security-config'
@@ -367,8 +369,13 @@ dependencies {
   contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
-  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-  contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+    exclude group: 'org.junit.vintage'
+  }
+
+  contractTestRuntime (group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+    exclude group: 'org.junit.vintage'
+  }
 
   contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
