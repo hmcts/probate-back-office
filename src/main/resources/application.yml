@@ -503,7 +503,7 @@ welsh:
     12: "Rhagfyr"
 
 ld:
-  sdk_key: ${LAUNCHDARKLY_KEY:sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844}
+  sdk_key: ${LAUNCHDARKLY_KEY:dummy}
   user:
     key: ${LD_USER_KEY:dummy_key}
     firstName: Probate
