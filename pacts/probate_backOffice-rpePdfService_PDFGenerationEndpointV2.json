@@ -1,0 +1,152 @@
+{
+  "provider": {
+    "name": "rpePdfService_PDFGenerationEndpointV2"
+  },
+  "consumer": {
+    "name": "probate_backOffice"
+  },
+  "interactions": [
+    {
+      "description": "A request to generate a Probate PDF document",
+      "request": {
+        "method": "POST",
+        "path": "/pdfs",
+        "headers": {
+          "ServiceAuthorization": "someServiceAuthToken",
+          "Content-Type": "application/vnd.uk.gov.hmcts.pdf-service.v2+json; charset=UTF-8"
+        },
+        "body": {
+          "template": "<!DOCTYPE html>\n<html xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\">\n<head>\n    <title th:remove=\"all\" th:text=\"${title}\">Will Lodgement Deposit Receipt</title>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n    <style type=\"text/css\">\n\n        body {\n            font-family: \"Times New Roman\", sans-serif;\n        }\n\n        .table-content {\n            display: block;\n            padding-top: 8px;\n        }\n\n        .legal-header {\n            font-size: 13pt;\n            text-align: center;\n        }\n\n        .legal-subheader {\n            font-size: 12pt;\n            text-align: center;\n        }\n\n        .legal-body {\n            font-size: 11pt;\n            text-align: left;\n        }\n\n        .camelCase {\n            text-transform: capitalize;\n        }\n\n        .upperCase {\n            text-transform: uppercase;\n        }\n\n        .circle {\n            border-radius: 50%;\n            border: 1px solid black;\n            height: 200px;\n            width: 200px;\n            float: right;\n        }\n\n        .indent {\n            padding-left: 55px;\n        }\n\n    </style>\n</head>\n<body>\n<table>\n    <tbody class=\"table-content\">\n\n    <tr>\n        <td colspan=\"2\" class=\"legal-header\">\n            <p>\n                <Strong>IN THE HIGH COURT OF JUSTICE<br/>\n                FAMILY DIVISION<br/>\n                    <span style=\"font-size: 11pt;\">(PROBATE)</span></Strong>\n            </p>\n        </td>\n    </tr>\n    <tr/>\n    <tr>\n        <td colspan=\"2\" class=\"legal-subheader\">\n            <p><strong><u>CERTIFICATE OF DEPOSIT OF WILL</u></strong></p><br/>\n        </td>\n    </tr>\n    <tr>\n        <td colspan=\"2\" class=\"legal-body\">\n            <p>It is hereby certified that the Will dated {{case_details.case_data.willDateFormatted}}<br />\n            of {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}<br />\n            <span class=\"indent\">of {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != \"\" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != \"\" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != \"\" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != \"\" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != \"\" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != \"\"%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}\n                {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != \"\"%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</span>\n            <br/>in which\n                    {% if case_details.case_data.executorForenames != null and case_details.case_data.executorForenames != \"\"%}{{case_details.case_data.executorForenames}}{% endif %} {% if case_details.case_data.executorSurname != null and case_details.case_data.executorSurname != \"\"%}{{case_details.case_data.executorSurname}}{% endif %}<br />\n                <span class=\"indent\"> of {% if case_details.case_data.executorAddress.AddressLine1 != null and case_details.case_data.executorAddress.AddressLine1 != \"\" %}{{ case_details.case_data.executorAddress.AddressLine1}}{% endif %}\n                {% if case_details.case_data.executorAddress.AddressLine2 != null and case_details.case_data.executorAddress.AddressLine2 != \"\" %} {{case_details.case_data.executorAddress.AddressLine2}}{% endif %}\n                {% if case_details.case_data.executorAddress.AddressLine3 != null and case_details.case_data.executorAddress.AddressLine3 != \"\" %} {{case_details.case_data.executorAddress.AddressLine3}}{% endif %}\n                {% if case_details.case_data.executorAddress.PostTown != null and case_details.case_data.executorAddress.PostTown != \"\" %} {{case_details.case_data.executorAddress.PostTown}}{% endif %}\n                {% if case_details.case_data.executorAddress.County != null and case_details.case_data.executorAddress.County != \"\" %} {{case_details.case_data.executorAddress.County}}{% endif %}\n                {% if case_details.case_data.executorAddress.PostCode != null and case_details.case_data.executorAddress.PostCode != \"\"%} {{case_details.case_data.executorAddress.PostCode}}{% endif %}\n                {% if case_details.case_data.executorAddress.Country != null and case_details.case_data.executorAddress.Country != \"\"%} {{case_details.case_data.executorAddress.Country}}{% endif %}</span>\n\n                {% for executor in case_details.case_data.additionalExecutorList %}\n                <br />\n                and {% if executor.value.executorForenames != null and executor.value.executorForenames != \"\"%}{{executor.value.executorForenames}}{% endif %} {% if executor.value.executorSurname != null and executor.value.executorSurname != \"\"%}{{executor.value.executorSurname}}{% endif %}<br />\n                <span class=\"indent\">\n                {% if executor.value.executorAddress.AddressLine1 != null and executor.value.executorAddress.AddressLine1 != \"\" %}of {{ executor.value.executorAddress.AddressLine1 }}{% endif %}\n                {% if executor.value.executorAddress.AddressLine2 != null and executor.value.executorAddress.AddressLine2 != \"\" %}{{ executor.value.executorAddress.AddressLine2 }}{% endif %}\n                {% if executor.value.executorAddress.AddressLine3 != null and executor.value.executorAddress.AddressLine3 != \"\" %}{{ executor.value.executorAddress.AddressLine3 }}{% endif %}\n                {% if executor.value.executorAddress.PostTown != null and executor.value.executorAddress.PostTown != \"\" %}{{ executor.value.executorAddress.PostTown }}{% endif %}\n                {% if executor.value.executorAddress.County != null and executor.value.executorAddress.County != \"\" %}{{ executor.value.executorAddress.County }}{% endif %}\n                {% if executor.value.executorAddress.PostCode != null and executor.value.executorAddress.PostCode != \"\"%}{{ executor.value.executorAddress.PostCode }}{% endif %}\n                {% if executor.value.executorAddress.Country != null and executor.value.executorAddress.Country != \"\"%}{{ executor.value.executorAddress.Country }}{% endif %}</span>\n\n                {% endfor %}\n            </p>\n            {% if case_details.case_data.registryLocation == \"Cardiff\" %}\n            <p>are appointed executors has been lodged at Probate Registry of Wales for deposit in the Principal Registry of the Family Division, {{case_details.londonRegistryAddress}} for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>\n            {% else %}\n            <p>are appointed executors has been lodged at {{case_details.case_data.registryLocation}} District Probate Registry for deposit in the Principal Registry of the Family Division, {{case_details.londonRegistryAddress}} for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>\n            {% endif %}\n            <p>Except by leave of the District Judge of the Principal Registry the will may not be given out during the lifetime of the testator </p>\n        </td>\n    </tr>\n    <tr>\n        <td> Dated {{case_details.case_data.currentDateFormatted}}</td>\n    </tr>\n    <tr>\n        <img src=\"data:image/png;base64,{{case_details.grantSignatureBase64}}\" align=\"right\"/>\n    </tr>\n    <tr>\n        <td style=\"text-align: right\"><p>REGISTRAR/DISTRICT JUDGE</p></td>\n    </tr>\n    <tr>\n        <td>\n            <p><U>NOTE TO TESTATOR:</U></p>\n            <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the deposited will.</p>\n        </td>\n    </tr>\n    <tr>\n        <td>\n            <p>Record Keep Reference - {{case_details.id}}</p>\n        </td>\n    </tr>\n    </tbody>\n</table>\n</body>\n</html>",
+          "values": {
+            "case_details": {
+              "id": 1542274092932452,
+              "jurisdiction": "PROBATE",
+              "case_type_id": "WillLodgement",
+              "state": "createWillLodgment",
+              "created_date": "2018-11-15T09:28:12.992",
+              "last_modified": [
+                2018,
+                6,
+                7,
+                10,
+                8,
+                8,
+                695000000
+              ],
+              "security_classification": "PUBLIC",
+              "case_data": {
+                "applicationType": "Personal",
+                "registryLocation": "Leeds",
+                "lodgementType": "safeCustody",
+                "lodgedDate": "2017-12-31",
+                "willDate": "2017-12-31",
+                "codicilDate": "2017-12-31",
+                "numberOfCodicils": "2",
+                "jointWill": "No",
+                "deceasedForenames": "df name 2",
+                "deceasedSurname": "dl name 2",
+                "deceasedGender": "Male",
+                "deceasedDateOfDeath": "2017-12-31",
+                "deceasedDateOfBirth": "2016-12-31",
+                "deceasedTypeOfDeath": "Dead",
+                "deceasedAnyOtherNames": "Yes",
+                "deceasedAddress": {
+                  "AddressLine1": "address line one",
+                  "AddressLine2": "address line two",
+                  "AddressLine3": "address line three",
+                  "County": "county",
+                  "PostTown": "town",
+                  "PostCode": "postcode",
+                  "Country": "country"
+                },
+                "deceasedEmailAddress": "deceased@probate-test.com",
+                "executorTitle": "Professor",
+                "executorForenames": "Ex1 First Name",
+                "executorSurname": "Ex2 last name",
+                "executorAddress": {
+                  "AddressLine1": "address line one",
+                  "AddressLine2": "address line two",
+                  "AddressLine3": "address line three",
+                  "County": "county",
+                  "PostTown": "town",
+                  "PostCode": "postcode",
+                  "Country": "country"
+                },
+                "executorEmailAddress": "executor@probate-test.com",
+                "additionalExecutorList": [
+                  {
+                    "value": {
+                      "executorTitle": "Professor",
+                      "executorForenames": "ex2 first name",
+                      "executorSurname": "ex2 last name",
+                      "executorAddress": {
+                        "AddressLine1": "address line one",
+                        "AddressLine2": "address line two",
+                        "AddressLine3": "address line three",
+                        "County": "county",
+                        "PostTown": "town",
+                        "PostCode": "postcode",
+                        "Country": "country"
+                      },
+                      "executorEmailAddress": "executor2@probate-test.com"
+                    },
+                    "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+                  }
+                ],
+                "withdrawReason": "Test",
+                "documentsGenerated": [
+                  {
+                    "id": "6f6d159b-b5ce-49de-9974-4fda82ddd926",
+                    "value": {
+                      "DocumentLink": {
+                        "document_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a",
+                        "document_filename": "willLodgementDepositReceipt.pdf",
+                        "document_binary_url": "http://localhost:8080/documents/94c4316b-a523-4df1-aa2b-3135d6f81a2a/binary"
+                      },
+                      "DocumentType": "willLodgementDepositReceipt",
+                      "DocumentFileName": null,
+                      "DocumentDateAdded": "2019-01-22",
+                      "DocumentGeneratedBy": "32"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/pdf"
+        },
+        "matchingRules": {
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/pdf"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "A request to generate a Probate PDF document"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.1.7"
+    }
+  }
+}
