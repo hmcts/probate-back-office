@@ -229,6 +229,7 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBootVersion
   compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   compile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
 
