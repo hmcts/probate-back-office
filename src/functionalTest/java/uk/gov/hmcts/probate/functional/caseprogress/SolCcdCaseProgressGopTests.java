@@ -4,6 +4,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
@@ -18,37 +19,37 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformAppCreatedStateCorrectly() {
         verifyCaseProgressHtmlSolPost("caseprogress/01-appCreated.json", TASKLIST_UPDATE_URL,
-           "gop/application-created-html.txt", getDeceasedDtlsUrl());
+           "/application-created-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test
     public void shouldTransformAppUpdatedStateCorrectly() {
         verifyCaseProgressHtmlSolPost("caseprogress/02-appUpdated.json", SOLS_VALIDATE_PROBATE_URL,
-            "gop/application-updated-html.txt", getReviewOrSubmitUrl());
+            "/application-updated-html.txt", getReviewOrSubmitUrl());
     }
 
     @Test
     public void shouldTransformAppCreatedStateReenterDetailsCorrectly() {
         verifyCaseProgressHtmlSolPost("caseprogress/02a-appCreated-update-app.json", TASKLIST_UPDATE_URL,
-            "gop/application-created-update-app-html.txt", getDeceasedDtlsUrl());
+            "/application-created-update-app-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test
     public void shouldTransformAppUpdatedStateReenterDetailsCorrectly() {
         verifyCaseProgressHtmlSolPost("caseprogress/02b-appUpdated-update-app.json", SOLS_VALIDATE_PROBATE_URL,
-                "gop/application-updated-update-app-html.txt", getReviewOrSubmitUrl());
+            "/application-updated-update-app-html.txt", getReviewOrSubmitUrl());
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
         verifyCaseProgressHtmlSolPost("caseprogress/03-probateCreated.json", SOLS_VALIDATE_URL,
-                "gop/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
+            "/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
     }
 
     @Test
     public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
         verifyCaseProgressHtmlSolPost("caseprogress/04-caseCreated.json", CASE_PRINTED_URL,
-                "gop/case-created-html.txt");
+            "/case-created-html.txt");
     }
 
     @Test
@@ -56,48 +57,53 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         verifyCaseProgressHtmlSolPost("caseprogress/05-caseMarkAsReadyForExam.json", CASE_DOCS_RECEIVED_URL,
-                "gop/case-ready-for-exam-html.txt");
+            "/case-ready-for-exam-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenStopped() {
         verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json", CASE_STOPPED_URL,
-                "gop/case-stopped-html.txt");
+            "/case-stopped-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenEscalated() {
         verifyCaseProgressHtmlSolPost("caseprogress/07-caseEscalated.json", CASE_ESCALATED_URL,
-                "gop/case-escalated-html.txt");
+            "/case-escalated-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         verifyCaseProgressHtmlSolPost("caseprogress/08-caseMatchingExamining.json", CASE_MATCHING_EXAMINING_URL,
-                "gop/case-matching-examining-html.txt");
+            "/case-matching-examining-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenExamining() {
         verifyCaseProgressHtmlSolPost("caseprogress/09-examineCase.json", TASKLIST_UPDATE_URL,
-                "gop/examine-case-html.txt");
+            "/examine-case-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogress/10-caseMatchingReadyToIssue.json", CASE_MATCHING_READY_TO_ISSUE_URL,
-                "gop/case-matching-ready-to-issue-html.txt");
+            "/case-matching-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogress/11-markReadyToIssue.json", CASE_MATCHING_EXAMINING_URL,
-                "gop/case-mark-ready-to-issue-html.txt");
+            "/case-mark-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogress/12-issueGrant.json", GENERATE_GRANT_URL,
-                "gop/generate-grant-html.txt");
+            "/generate-grant-html.txt");
+    }
+
+    private String getAddApplicationDetailsUrl() {
+        return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
+                "1528365719153338");
     }
 }

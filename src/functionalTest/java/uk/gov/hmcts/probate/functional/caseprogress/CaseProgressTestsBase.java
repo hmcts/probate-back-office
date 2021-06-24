@@ -73,7 +73,7 @@ public class CaseProgressTestsBase extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
-    private String postCwJson(String jsonFileName, String path) {
+    protected String postCwJson(String jsonFileName, String path) {
         final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()
@@ -91,10 +91,5 @@ public class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected String getReviewOrSubmitUrl() {
         return UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338");
-    }
-
-    protected String getAddApplicationDetailsUrl() {
-        return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
-                "1528365719153338");
     }
 }
