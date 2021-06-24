@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.caseprogress;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -1587,16 +1585,5 @@ public class SolCcdCaseProgressIntestacyTests extends IntegrationTestBase {
             .andReturn();
 
         return jsonResponse.getBody().asString();
-    }
-
-    public void validatePostRequestSuccessCYAForBeforeSignSOT() {
-        Response response = given()
-            .config(config)
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
-            .when().post("/nextsteps/validate");
-
-        TestCase.assertEquals(200, response.getStatusCode());
     }
 }
