@@ -381,8 +381,14 @@ public class CallbackResponseTransformer {
             case READY_FOR_EXAMINATION:
                 responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
                 break;
-            default:
+            case EXAMINING:
                 responseCaseDataBuilder.state(EXAMINING);
+                break;
+            case READY_TO_ISSUE:
+                responseCaseDataBuilder.state(READY_TO_ISSUE);
+                break;
+            default:
+                responseCaseDataBuilder.state(READY_TO_ISSUE);
                 break;
         }
         return transformResponse(responseCaseDataBuilder.build());

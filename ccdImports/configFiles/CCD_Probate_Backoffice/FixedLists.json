@@ -170,6 +170,7 @@
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOReadyForExamination", "ListElement": "Ready for examination"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOExamining", "ListElement": "Examining"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue"},
   {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "officialError", "ListElement": "Official error"},
   {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "customerError", "ListElement": "Customer error"},
   {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "duplicate", "ListElement": "Duplicate"},
