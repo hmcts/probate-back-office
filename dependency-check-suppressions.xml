@@ -72,4 +72,26 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: selenium-opera-driver-3.141.59.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium\-opera\-driver@.*$</packageUrl>
+        <cve>CVE-2003-1561</cve>
+        <cve>CVE-2008-1761</cve>
+        <cve>CVE-2008-1764</cve>
+        <cve>CVE-2008-3079</cve>
+        <cve>CVE-2008-3172</cve>
+        <cve>CVE-2008-4293</cve>
+        <cve>CVE-2008-4695</cve>
+        <cve>CVE-2008-4696</cve>
+        <cve>CVE-2008-4794</cve>
+        <cve>CVE-2008-4795</cve>
+        <cve>CVE-2008-5679</cve>
+        <cve>CVE-2009-0915</cve>
+        <cve>CVE-2010-5227</cve>
+        <cve>CVE-2015-8960</cve>
+        <cve>CVE-2019-19788</cve>
+        <cve>CVE-2020-6159</cve>
+    </suppress>
 </suppressions>
