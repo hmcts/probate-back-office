@@ -282,6 +282,9 @@ dependencies {
     exclude module: 'slf4j-simple'
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
+  compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+  compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.141.59'
+
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
