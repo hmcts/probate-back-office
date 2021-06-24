@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 
-public class CaseProgressTestsBase extends IntegrationTestBase {
+public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected static final String TASKLIST_UPDATE_URL = "/tasklist/update";
     protected static final String CASE_PRINTED_URL = "/case/casePrinted";
