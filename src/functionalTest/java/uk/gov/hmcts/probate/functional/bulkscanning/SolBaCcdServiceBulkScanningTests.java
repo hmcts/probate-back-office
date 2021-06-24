@@ -58,7 +58,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .then().assertThat().statusCode(200)
             .and().body("warnings", hasSize(warningSize))
             .and().body("warnings[" + warningItem + "]", equalTo(warningMessage))
-            .and().contentType(containsString(containsText));
+            .and().body(containsString(containsText));
     }
 
     private void validateOCRDataPostError(String bodyText) {
@@ -79,7 +79,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(200)
-            .and().contentType(containsString(containsText));
+            .and().body(containsString(containsText));
     }
 
     private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
@@ -90,7 +90,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .body(bodyText)
             .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(422)
-            .and().contentType(containsString(containsText));
+            .and().body(containsString(containsText));
     }
 
     private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) throws IOException {
@@ -603,7 +603,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(422)
-            .and().contentType(containsString(containsText));
+            .and().body(containsString(containsText));
     }
 
     private void transformExceptionPostForbidden(String bodyText) {
