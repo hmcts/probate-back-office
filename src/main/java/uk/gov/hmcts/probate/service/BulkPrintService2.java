@@ -76,7 +76,7 @@ public class BulkPrintService2 {
                     pdfs,
                     caseId,
                     caseId,
-                    grantDocument.getDocumentType().getTemplateName());
+                    getLetterType(coverSheet, grantDocument));
 
             printLetterResponse = printLetterApi
                     .printLetter(BEARER + authHeaderValue, printLetterRequest);
@@ -154,7 +154,7 @@ public class BulkPrintService2 {
                     pdfs,
                     caseId,
                     caseId,
-                    "PROBATE_DOC");
+                    getLetterType(coverSheet, grantDocument));
 
             printLetterResponse = printLetterApi
                     .printLetter(BEARER + authHeaderValue, printLetterRequest);
@@ -301,4 +301,8 @@ public class BulkPrintService2 {
         return extraCopiesOfGrant;
     }
 
+    private String getLetterType(Document cover, Document content) {
+        return cover.getDocumentType().getTemplateName() + "-" +
+                content.getDocumentType().getTemplateName();
+    }
 }
