@@ -26,7 +26,8 @@ public class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String CASE_MATCHING_EXAMINING_URL = "/case-matching/import-legacy-from-grant-flow";
     protected static final String CASE_MATCHING_READY_TO_ISSUE_URL = "/case/validateCheckListDetails";
     protected static final String GENERATE_GRANT_URL = "/document/generate-grant";
-    protected static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+
+    private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
 
     protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile) {
         verifyCaseProgressHtml(jsonFile, postUrl, expectedHtmlFile, true, null);
@@ -61,7 +62,7 @@ public class CaseProgressTestsBase extends IntegrationTestBase {
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
-    protected String postSolJson(String jsonFileName, String path) {
+    private String postSolJson(String jsonFileName, String path) {
         final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()
@@ -73,7 +74,7 @@ public class CaseProgressTestsBase extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
-    protected String postCwJson(String jsonFileName, String path) {
+    private String postCwJson(String jsonFileName, String path) {
         final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()
