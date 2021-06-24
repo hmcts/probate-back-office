@@ -388,7 +388,7 @@ smeeAndFordEmail: smeeAndFord@probate-test.com
 data-extract:
   block:
     size: 3000
-    numDaysInclusive: 2
+    numDaysInclusive: 0
   smee-and-ford:
     size: 2000
     
