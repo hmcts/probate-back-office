@@ -1,10 +1,6 @@
 buildscript {
-  ext {
-    springBootVersion = '2.5.1'
-  }
-
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:2.5.1")
     classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
     classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
