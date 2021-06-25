@@ -34,7 +34,7 @@ targetCompatibility = 11
 
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
-ext['selenium.version']='3.8.1'
+ext['selenium.version']='3.141.59'
 
 jacoco {
   toolVersion = '0.8.2'
