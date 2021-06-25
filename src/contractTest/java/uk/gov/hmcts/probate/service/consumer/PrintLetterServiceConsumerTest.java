@@ -15,15 +15,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.util.StreamUtils;
+import uk.gov.hmcts.probate.service.consumer.util.ResourceLoader;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintRequest;
 import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -44,7 +42,7 @@ public class PrintLetterServiceConsumerTest {
 
     @Pact(provider = "rpePrintLetterService_PrintLetterController", consumer = "probate_backOffice")
     public RequestResponsePact createPrintLetterServiceFragment(PactDslWithProvider builder)
-        throws IOException {
+            throws Exception {
         return builder
             .given("A valid send letter request is received")
             .uponReceiving("a request to send that letter")
@@ -62,18 +60,16 @@ public class PrintLetterServiceConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createPrintLetterServiceFragment")
-    public void verifyPrintLetterPact() throws IOException, JSONException {
+    public void verifyPrintLetterPact() throws Exception {
         printLetterApiProxy.print(SOME_SERVICE_AUTH_TOKEN, uuid, buildLetter());
     }
 
-    private PrintRequest buildLetter() throws IOException {
-        var json = StreamUtils.copyToString(
-                new ClassPathResource("json/print_job.json").getInputStream(),
-                StandardCharsets.UTF_8);
+    private PrintRequest buildLetter() throws Exception {
+        var json = ResourceLoader.loadJson("json/print_job.json");
         return objectMapper.readValue(json, PrintRequest.class);
     }
 
-    private String createJsonObject(Object obj) throws JSONException, IOException {
+    protected String createJsonObject(Object obj) throws JSONException, IOException {
         return objectMapper.writeValueAsString(obj);
     }
 }
