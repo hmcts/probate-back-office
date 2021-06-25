@@ -48,7 +48,7 @@ public class PrintLetterServiceConsumerTest {
         return builder
             .given("A valid send letter request is received")
             .uponReceiving("a request to send that letter")
-            .path("/print-jobs/"+uuid)
+            .path("/print-jobs/" + uuid)
             .method("PUT")
             .headers(SERVICE_AUTHORIZATION_HEADER, SOME_SERVICE_AUTH_TOKEN)
             .body(createJsonObject(buildLetter()), "application/json")
