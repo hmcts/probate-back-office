@@ -1,0 +1,16 @@
+{
+  "type": "PRO001",
+  "documents": [
+    {
+      "file_name": "1.pdf",
+      "copies_required": 2
+    },
+    {
+      "file_name": "2.pdf",
+      "copies_required": 1
+    }
+  ],
+  "case_id": "123e4567-e89b-12d3-a456-556642440000",
+  "case_ref": "123e4567-e89b-12d3-a456-556642440000",
+  "letter_type": "first-contact-pack"
+}
