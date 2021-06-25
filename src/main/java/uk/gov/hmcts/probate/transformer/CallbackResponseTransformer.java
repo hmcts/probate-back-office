@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -24,7 +25,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -100,12 +102,15 @@ public class CallbackResponseTransformer {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState) {
@@ -232,6 +237,8 @@ public class CallbackResponseTransformer {
                 .bulkPrintPdfSize(String.valueOf(pdfSize))
                 .grantIssuedDate(grantIssuedDate);
 
+            responseCaseDataBuilder.evidenceHandled(YES);
+
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -340,8 +347,8 @@ public class CallbackResponseTransformer {
     public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (callbackRequest.getCaseDetails().getData().getBoExaminationChecklistRequestQA()
-            .equalsIgnoreCase(ANSWER_YES)) {
+        if (ANSWER_YES.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
+                .getBoExaminationChecklistRequestQA())) {
             responseCaseDataBuilder.state(QA_CASE_STATE);
         }
         return transformResponse(responseCaseDataBuilder.build());
@@ -376,20 +383,41 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest,
-                                                          FeeServiceResponse feeServiceResponse) {
-        String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
-        String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
-        String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
-        String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
+    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
+                                                          PaymentResponse paymentResponse) {
+        String feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
+            .getFeeAmount());
+        String feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+        String applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
+        String totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
         String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (callbackRequest.getCaseDetails().getData().getPayments() != null) {
+            paymentsList = new ArrayList<>();
+            paymentsList.addAll(callbackRequest.getCaseDetails().getData().getPayments());
+        }
+
+        if (paymentResponse != null) {
+            if (paymentsList == null) {
+                paymentsList = new ArrayList<>();
+            }
+            Payment payment = Payment.builder()
+                .reference(paymentResponse.getReference())
+                .status(paymentResponse.getStatus())
+                .method(PBA_PAYMENT_METHOD)
+                .build();
+            paymentsList.add(new CollectionMember<Payment>(payment));
+        }
+        
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
             .applicationFee(applicationFee)
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
+            .payments(paymentsList)
             .build();
 
         return transformResponse(responseCaseData);
@@ -489,6 +517,29 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), 
+            doTransform);
+        solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
+            authToken);
+
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForSolicitorPBATotalPayment(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            doTransform);
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     private boolean doTransform(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         return caseData.getApplicationType() == ApplicationType.SOLICITOR
@@ -556,6 +607,8 @@ public class CallbackResponseTransformer {
 
             .solsPaymentMethods(caseData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
+            .solsPBANumber(caseData.getSolsPBANumber())
+            .solsPBAPaymentReference(caseData.getSolsPBAPaymentReference())
 
             .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
             .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
@@ -698,7 +751,9 @@ public class CallbackResponseTransformer {
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
             .deceasedDeathCertificate(caseData.getDeceasedDeathCertificate())
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
-            .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation());
+            .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
+            .iht217(caseData.getIht217())
+            .deathRecords(caseData.getDeathRecords());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

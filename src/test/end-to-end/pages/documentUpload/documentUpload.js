@@ -20,6 +20,9 @@ module.exports = async function (caseType, caseRef, documentUploadConfig) {
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentType);
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentType);
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(2)`});
+
+    // TODO - resolve!
+
     assert.equal(caseType === 'gop' ? 'Will' : 'Email', optText);
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '3');
     optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(3)`});
@@ -41,6 +44,10 @@ module.exports = async function (caseType, caseRef, documentUploadConfig) {
         optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
         assert.equal('Other', optText);
     }
+    optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(7)`});
+    assert.equal('Other', optText);
+    
+
     await I.waitForVisible({css: `${documentUploadConfig.id}_1_DocumentLink`});
     await I.attachFile(`${documentUploadConfig.id}_1_DocumentLink`, documentUploadConfig.fileToUploadUrl);
     await I.waitForValue({css: `${documentUploadConfig.id}_1_Comment`}, documentUploadConfig.comment);

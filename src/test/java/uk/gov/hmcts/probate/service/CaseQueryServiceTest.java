@@ -30,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CaseQueryServiceTest {
@@ -87,8 +86,6 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases = new ReturnedCases(caseList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-
-        doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test
@@ -145,6 +142,18 @@ public class CaseQueryServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         List<ReturnedCaseDetails> cases = caseQueryService
             .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+        caseQueryService.dataExtractSmeeAndFordSize = 10000;
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertThat(cases.get(0).getId(), is(1L));

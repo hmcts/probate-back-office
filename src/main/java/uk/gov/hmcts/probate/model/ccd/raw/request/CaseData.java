@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -293,7 +294,6 @@ public class CaseData extends CaseDataParent {
         "{outsideUKGrantCopiesIsNegative}")
     private final Long outsideUKGrantCopies;
 
-    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
     private final String solsPaymentMethods;
 
     private final String solsFeeAccountNumber;
@@ -524,6 +524,7 @@ public class CaseData extends CaseDataParent {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
+    private final List<CollectionMember<DeathRecord>> deathRecords;
 
     public String solicitorIsMainApplicant() {
         return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;

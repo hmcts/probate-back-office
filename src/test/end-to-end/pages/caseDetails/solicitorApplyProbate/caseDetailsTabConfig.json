@@ -9,7 +9,7 @@
     "Please state the title and clearing for making the application, limitations and any information in support"
   ],
   "dataKeys": [
-    "page2_solsIHTFormValue",
+    "page2_solsIHT400421FormLabel",
     "page2_ihtGrossValueDisplay",
     "page2_ihtNetValueDisplay",
     "optionNo",

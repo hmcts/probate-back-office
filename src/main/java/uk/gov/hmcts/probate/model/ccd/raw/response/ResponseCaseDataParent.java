@@ -36,4 +36,12 @@ public class ResponseCaseDataParent {
     protected String registryAddress;
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
+    protected String taskList;
+    protected String escalatedDate;
+    protected String authenticatedDate;
+    protected String iht217;
+    protected DynamicList solsPBANumber;
+    protected String solsPBAPaymentReference;
+    protected String solsOrgHasPBAs;
+    protected String solsNeedsPBAPayment;
 }

@@ -17,10 +17,70 @@
             "type": "pwa-node"
         },
         {
+            "name": "Mocha test CW end-end full functional",
+            "request": "launch",
+            "runtimeArgs": [
+                "test:fullfunctional-cw",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "name": "Mocha test end-end",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStandard",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStandard",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressStopEscalateIssue",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressStopEscalateIssue",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressReenterDeceasedDetails",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressReenterDeceasedDetails",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Mocha test end-end caseProgressAppStopped",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-caseProgressAppStopped",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -87,7 +147,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "Mocha test end-end Caseworker grantOfProbate",
             "request": "launch",
@@ -111,7 +171,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Mocha test end-end Solicitor grantOfProbate",
             "request": "launch",
@@ -123,7 +183,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Mocha test end-end Solicitor multi grantOfProbate",
             "request": "launch",

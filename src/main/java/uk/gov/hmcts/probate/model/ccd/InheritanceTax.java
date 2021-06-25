@@ -2,10 +2,12 @@ package uk.gov.hmcts.probate.model.ccd;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Slf4j
 @Data
 @Builder
 public class InheritanceTax implements Serializable {

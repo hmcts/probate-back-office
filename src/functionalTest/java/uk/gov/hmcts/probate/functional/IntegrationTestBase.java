@@ -1,9 +1,13 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Rule;
@@ -14,12 +18,16 @@ import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertTrue;
 
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
 public abstract class IntegrationTestBase {
+
+    protected RestAssuredConfig config;
 
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -54,8 +62,29 @@ public abstract class IntegrationTestBase {
 
     }
 
+    protected void initialiseConfig() {
+        RestAssured.useRelaxedHTTPSValidation();
+        config = RestAssured.config()
+                .httpClient(HttpClientConfig.httpClientConfig()
+                        .setParam("http.connection.timeout", 60000)
+                        .setParam("http.socket.timeout", 60000)
+                        .setParam("http.connection-manager.timeout", 60000));
+    }
+
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
-        return request.replaceAll(originalAttr, updatedAttr);
+        return request.replaceAll(Pattern.quote(originalAttr), updatedAttr);
+    }
+
+    protected String removeCarriageReturns(String text) {
+        return text.replaceAll(Pattern.quote("\r"), "");
+    }
+
+    protected String removeLineFeeds(String text) {
+        return text.replaceAll(Pattern.quote("\n"), "");
+    }
+
+    protected String removeCrLfs(String text) {
+        return removeLineFeeds(removeCarriageReturns(text));
     }
 
     protected String getJsonFromFile(String jsonFileName) {
@@ -63,9 +92,14 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
+
+        return validatePostSuccessForPayload(payload, path, utils.getHeadersWithUserId());
+    }
+
+    protected ResponseBody validatePostSuccessForPayload(String payload, String path, Headers headers) {
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
+            .headers(headers)
             .body(payload)
             .when().post(path)
             .andReturn();
@@ -75,11 +109,26 @@ public abstract class IntegrationTestBase {
         return response.getBody();
     }
 
-    protected ResponseBody validatePostSuccess(String jsonFileName, String path) {
+    protected ResponseBody validatePostSuccessForQueryParms(String path, HashMap<String, String> queryParms) {
+        final Response response = RestAssured.given()
+            .config(config)
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .queryParams(queryParms)
+            .when().post(path)
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
+    protected final ResponseBody validatePostSuccess(String jsonFileName, String path) {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
-    protected ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr,
+    protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path,
+                                                                        String originalAttr,
                                                                   String updatedAttr) {
         String request = getJsonFromFile(jsonFileName);
         request = replaceAllInString(request, originalAttr, updatedAttr);
@@ -88,35 +137,40 @@ public abstract class IntegrationTestBase {
 
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
                                           ResponseBody responseBody) {
-        String expectedText = getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+        assertTrue(response.contains(expectedText));
+    }
+
+    protected void assertExpectedContentsForHeaders(String expectedResponseFile, String responseDocumentUrl,
+                                                    ResponseBody responseBody, Headers headers) {
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers));
         assertTrue(response.contains(expectedText));
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
         String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
-        String expectedText = getJsonFromFile(expectedResponseFile);
-        expectedText = expectedText.replace("\n", "").replace("\r", "");
+        String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
         for (String key : expectedKeyValuerelacements.keySet()) {
             expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
         }
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        response = response.replace("\n", "").replace("\r", "");
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
         assertTrue(response.contains(expectedText));
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        String documentUrl = jsonPath.get(expectedContentMissing);
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(expectedContentMissing);
         assertTrue(documentUrl == null);
     }
-
 }
