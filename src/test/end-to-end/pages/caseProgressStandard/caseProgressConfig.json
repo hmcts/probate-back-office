@@ -26,11 +26,16 @@
     "deceasedAddrCounty": "Wilts",
     "deceasedAddrCountry": "UK",
     "deceasedAddrPostcode": "CN12JU",
+    "IHT205Label":"IHT205 - there was no inheritance tax to pay",
+    "IHT2207Label":"IHT207 - the person who died lived abroad and there was no inheritance tax to pay",
+    "IHT400Label":"IHT400 and IHT421",
+    "IHTDNULabel":"Not applicable - DO NOT USE",
     "IHTOption": "IHT205",
     "IHTGross": "175000",
     "IHTNet": "140000",
     "JobTitle": "Lawyer",
     "FeeAccount": "1: fee account",
-    "FeeAccountNumber": "001234"
+    "PBAANumber": "PBA0082126",
+    "PaymentReference": "E2E Case Progress PBA Payment Reference"
 }
 

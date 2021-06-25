@@ -20,8 +20,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
@@ -34,7 +39,10 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,7 +52,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final ApplicationType CAV_APPLICATION_TYPE =
         CaveatCallbackResponseTransformer.DEFAULT_APPLICATION_TYPE;
-    private static final ApplicationType CAV_APPLICATION_TYPE_SOLS = ApplicationType.SOLICITOR;
+    private static final ApplicationType CAV_APPLICATION_TYPE_SOLS = SOLICITOR;
     private static final String CAV_REGISTRY_LOCATION = CaveatCallbackResponseTransformer.DEFAULT_REGISTRY_LOCATION;
     private static final RegistryLocation BULK_SCAN_CAV_REGISTRY_LOCATION
         = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_REGISTRY_LOCATION;
@@ -93,14 +101,21 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String SOLS_PAYMENT_METHOD = "fee account";
     private static final String SOLS_FEE_ACC = "1234";
+    private static final String SOLS_SELECTED_PBA = "PBA1234";
+    private static final String SOLS_PBA_PAY_REF = "PBA1234-AAA";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
+    private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
+            BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
 
     @Mock
     private CaveatCallbackRequest caveatCallbackRequestMock;
+
+    @Mock
+    private PaymentResponse paymentResponseMock;
 
     @Mock
     private Document document;
@@ -110,6 +125,9 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private CaveatDetails caveatDetailsMock;
+    
+    @Mock
+    private SolicitorPBADefaulter solicitorPBADefaulterMock;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -146,7 +164,12 @@ public class CaveatCallbackResponseTransformerTest {
             .legacyType(CAV_LEGACY_CASE_TYPE)
             .solsPaymentMethods(SOLS_PAYMENT_METHOD)
             .solsFeeAccountNumber(SOLS_FEE_ACC)
+            .solsPBANumber(DynamicList.builder()
+                .value(DynamicListItem.builder().code(SOLS_SELECTED_PBA).label(SOLS_SELECTED_PBA).build())
+                .build())
+            .solsPBAPaymentReference(SOLS_PBA_PAY_REF)
             .pcqId(CAV_SOLICITOR_APP_REFERENCE);
+
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
             .registryLocation(BULK_SCAN_CAV_REGISTRY_LOCATION)
@@ -162,6 +185,7 @@ public class CaveatCallbackResponseTransformerTest {
             .caveatorAddress(CAV_BSP_CAVEATOR_ADDRESS)
             .applicationSubmittedDate(CAV_SUBMISSION_DATE)
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -175,6 +199,64 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.CAVEAT_RAISED)
+            .build();
+        documents.add(0, document);
+        when(paymentResponseMock.getReference()).thenReturn("ref");
+        caveatDataBuilder.applicationType(SOLICITOR);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        String letterId = "123-456";
+
+        CaveatCallbackResponse caveatCallbackResponse =
+            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+
+        assertCommonDetails(caveatCallbackResponse);
+        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
+        assertPaperForm(caveatCallbackResponse, NO);
+        
+        assertEquals("pba",
+            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.CAVEAT_RAISED)
+            .build();
+        documents.add(0, document);
+        when(paymentResponseMock.getReference()).thenReturn("RC2");
+        List<CollectionMember<Payment>> payments = new ArrayList<>();
+        Payment payment = Payment.builder().reference("RC1").method("something").build();
+        payments.add(new CollectionMember<Payment>(payment));
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.payments(payments);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        String letterId = "123-456";
+
+        CaveatCallbackResponse caveatCallbackResponse =
+            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+
+        assertCommonDetails(caveatCallbackResponse);
+        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
+        assertPaperForm(caveatCallbackResponse, NO);
+
+        assertEquals("RC1",
+            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getReference());
+        assertEquals("something",
+            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
+        assertEquals("RC2",
+            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getReference());
+        assertEquals("pba",
+            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getMethod());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -184,7 +266,7 @@ public class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -202,7 +284,7 @@ public class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -221,7 +303,7 @@ public class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -371,6 +453,15 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldCovertSolsPBANumbers() {
+        CaveatCallbackResponse caveatCallbackResponse =
+            underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
+
+        assertCommon(caveatCallbackResponse);
+        verify(solicitorPBADefaulterMock).defaultCaveatFeeAccounts(any(), any(), any());
+    }
+    
+    @Test
     public void shouldExtendCaveatExpiry() {
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
@@ -400,6 +491,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
         assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
         assertEquals(BULK_SCAN_REFERENCE, caveatData.getBulkScanCaseReference());
+        assertEquals(BULK_SCAN_ENVELOPES, caveatData.getBulkScanEnvelopes());
 
         assertFalse(caveatData.getDeceasedAnyOtherNames());
         assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());
@@ -450,11 +542,18 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods());
         assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
+        assertEquals(SOLS_SELECTED_PBA, caveatCallbackResponse.getCaveatData().getSolsPBANumber().getValue().getCode());
 
         assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
         assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());
     }
 
+    private void assertCaveatPayment(CaveatCallbackResponse caveatCallbackResponse) {
+        assertEquals("pba",
+            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
+
+    }
+    
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse,
                                        ApplicationType cavApplicationType) {
         assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getApplicationType());

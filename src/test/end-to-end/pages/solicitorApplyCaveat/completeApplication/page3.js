@@ -13,7 +13,8 @@ module.exports = async function () {
     await I.see(completeApplicationConfig.page3_app_ref);
     await I.see(completeApplicationConfig.page3_application_fee);
     await I.see(completeApplicationConfig.page3_pay_method);
-    await I.see(completeApplicationConfig.page3_pay_ref);
+    await I.see(completeApplicationConfig.page3_pBA_Account);
+    await I.see(completeApplicationConfig.page3_customer_Reference);
 
     await I.waitForNavigationToComplete(commonConfig.goButton);
 };

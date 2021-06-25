@@ -16,7 +16,7 @@ module.exports = async function (caseProgressConfig) {
         await I.click(locator);
         if (!caseProgressConfig.solIsApplying) {
             await I.waitForVisible({css: '#solsSolicitorNotApplyingReason'});
-            await I.selectOption({css: '#solsSolicitorNotApplyingReason'}, '6: MentallyIncapable');
+            await I.selectOption({css: '#solsSolicitorNotApplyingReason'}, 'They lack capacity to act as executor');
         }
     }
     await I.click('#solsSolicitorAddress_solsSolicitorAddress a');

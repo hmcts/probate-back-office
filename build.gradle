@@ -18,7 +18,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'org.springframework.boot' version '2.3.4.RELEASE'
   id 'uk.gov.hmcts.java' version '0.12.2'
-  id 'com.github.ben-manes.versions' version '0.15.0'
+  id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.3.0'
   id 'jacoco'
@@ -143,16 +143,6 @@ task caseCreator(type: Test) {
   finalizedBy aggregate
 }
 
-
-task contract(type: Test) {
-  group = 'Delivery pipeline'
-  description = 'Runs the consumer Pact tests'
-  jvmArgs '--enable-preview'
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-  systemProperty 'pact.rootDir', "pacts"
-}
-
 gitProperties {
   gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
   keys = ['git.commit.id','git.commit.time']
@@ -166,20 +156,21 @@ def versions = [
         serenityreporter                : '2.1.4',
         springBootVersion               : '2.3.4.RELEASE',
         springBootStarterHateoas        : '2.3.4.RELEASE',
-        hmctsJavaLogging                : '5.1.1',
+        hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
-        commonsIO                       : '2.6',
+        commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : '1.1.0.2',
+        probateCommonsVersion           : '1.2.2',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.0'
+        pact_version                    : '4.1.7',
+        probatePactCommonsVersion       : '1.0.2',
 ]
 
 jacocoTestReport {
@@ -195,14 +186,63 @@ repositories {
   mavenLocal()
   mavenCentral()
   jcenter()
-  maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
   maven { url "https://repo.maven.apache.org/maven2" }
+  maven { url "https://jitpack.io" }
+
 }
 
 
 processResources {
   from ('src/lib/AI-Agent.xml') {
     into 'lib'
+  }
+}
+
+dependencyManagement {
+  dependencies {
+    //CVE-2020-26939
+    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
+
+    //CVE-2020-15250
+    dependency group: 'junit', name: 'junit', version: '4.13.2'
+    
+    //CVE-2021-22112
+    dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
+      entry 'spring-security-config'
+      entry 'spring-security-core'
+      entry 'spring-security-crypto'
+      entry 'spring-security-web'
+    }
+
+    //CVE-2021-22118
+    dependencySet(group: 'org.springframework', version: '5.2.9.RELEASE') {
+      entry 'spring-aop'
+      entry 'spring-aspects'
+      entry 'spring-beans'
+      entry 'spring-context'
+      entry 'spring-core'
+      entry 'spring-expression'
+      entry 'spring-jcl'
+      entry 'spring-jdbc'
+      entry 'spring-orm'
+      entry 'spring-oxm'
+      entry 'spring-tx'
+      entry 'spring-web'
+      entry 'spring-webmvc'
+    }
+  }
+}
+
+configurations.all {
+  resolutionStrategy {
+    eachDependency { DependencyResolveDetails details ->
+      if (details.requested.group in ['org.apache.tomcat.embed']) {
+        details.useVersion '9.0.43'
+      }
+      if (details.requested.group in ['org.hibernate']) {
+        details.useVersion '5.4.25.Final'
+      }
+    }
   }
 }
 
@@ -213,25 +253,27 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-  compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+  compile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
     force = true
   }
 
+  compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
+  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  compile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  compile group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -242,12 +284,14 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
 
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.9.2'
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.9.2'
-  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.9.2'
-  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.10.2'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.10.2'
+  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.10.2'
+  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
   compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
   compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
@@ -256,14 +300,14 @@ dependencies {
 
   compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   compile ('org.springframework.boot:spring-boot-starter-data-jpa')
-  compile ('org.postgresql:postgresql:42.2.5') {
+  compile ('org.postgresql:postgresql:42.2.18') {
     exclude module: 'slf4j-simple'
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+  testCompile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
@@ -276,7 +320,9 @@ dependencies {
   testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-   
+  testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
+  testImplementation 'org.awaitility:awaitility:4.1.0'
+  
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
@@ -289,7 +335,7 @@ dependencies {
   testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  testFunctionalCompile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -310,14 +356,21 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version : '2.9.8'
+  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
   contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-  contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit_2.12', version: '3.5.25'
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.1")
+  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+  contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
   contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
@@ -349,17 +402,18 @@ run {
 }
 
 project.ext {
-  pactVersion = getCheckedOutGitCommitHash()
+  pacticipant = "probate_backOffice"
+  pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
 task runAndPublishConsumerPactTests(type: Test){
-  logger.lifecycle("Runs pact Tests")
+  logger.lifecycle("Runs consumer pact tests")
+  systemProperty 'pact.rootDir', "pacts"
+  useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
 }
-
-runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
@@ -368,10 +422,12 @@ def getCheckedOutGitCommitHash() {
 }
 
 pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
   publish {
     pactDirectory = 'pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
     tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
-    version = project.pactVersion
+    version = project.pacticipantVersion
   }
 }
