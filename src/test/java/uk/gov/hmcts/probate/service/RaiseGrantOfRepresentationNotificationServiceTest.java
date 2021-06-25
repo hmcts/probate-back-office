@@ -24,7 +24,7 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -91,7 +91,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
 
-        SendLetterResponse letterResponse = new SendLetterResponse(UUID.randomUUID());
+        PrintLetterResponse letterResponse = new PrintLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(), any()))
             .thenReturn(letterResponse);
     }

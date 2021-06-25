@@ -35,7 +35,7 @@ import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -98,9 +98,6 @@ public class DocumentControllerTest {
 
     @MockBean
     private AppInsights appInsights;
-
-    @Mock
-    private SendLetterResponse sendLetterResponseMock;
 
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
@@ -172,9 +169,9 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(true))).thenReturn(letter);
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
-            any(Document.class))).thenReturn(sendLetterResponse);
+            any(Document.class))).thenReturn(printLetterResponse);
 
         when(bulkPrintService.optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
             any(Document.class), eq(true))).thenReturn(LETTER_UUID);

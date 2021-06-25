@@ -19,7 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +78,8 @@ public class ReprintServiceTest {
 
         setupGeneratedDocs();
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(printLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -104,8 +104,8 @@ public class ReprintServiceTest {
 
         setupGeneratedDocs();
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(printLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -130,8 +130,8 @@ public class ReprintServiceTest {
 
         setupGeneratedDocs();
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(printLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -156,8 +156,8 @@ public class ReprintServiceTest {
 
         setupSOTDoc();
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(printLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -176,13 +176,13 @@ public class ReprintServiceTest {
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
         when(caseData.getReprintNumberOfCopies()).thenReturn("10");
 
-        Document coversheet = Document.builder().build();
+        Document coversheet = Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
             .thenReturn(coversheet);
 
         setupScannedDocs();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(printLetterResponse);
 
         reprintService.reprintSelectedDocument(callbackRequest);
 
@@ -282,7 +282,7 @@ public class ReprintServiceTest {
     }
 
     private void setupSOTDoc() {
-        List<CollectionMember<Document>> collectionMemberList = new ArrayList();
+        List<CollectionMember<Document>> collectionMemberList = new ArrayList<>();
         Document sot = Document.builder()
             .documentType(DocumentType.STATEMENT_OF_TRUTH)
             .documentFileName("SOTFileName")

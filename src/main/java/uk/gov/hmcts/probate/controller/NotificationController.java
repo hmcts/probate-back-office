@@ -37,10 +37,10 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -145,10 +145,10 @@ public class NotificationController {
             if (caseData.isCaveatStopSendToBulkPrintRequested()) {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-                SendLetterResponse sendLetterResponse =
+                PrintLetterResponse printLetterResponse =
                     bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
-                letterId = sendLetterResponse != null
-                    ? sendLetterResponse.letterId.toString()
+                letterId = printLetterResponse != null
+                    ? printLetterResponse.letterId.toString()
                     : null;
                 response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
             }

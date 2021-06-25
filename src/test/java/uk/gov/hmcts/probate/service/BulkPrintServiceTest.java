@@ -27,9 +27,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
-import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterApi;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
+import uk.gov.hmcts.reform.printletter.api.exception.PrintResponseException;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -56,9 +57,9 @@ public class BulkPrintServiceTest {
 
     @InjectMocks
     private BulkPrintService bulkPrintService;
-
+    
     @Mock
-    private SendLetterApi sendLetterApiMock;
+    private PrintLetterApi printLetterApiMock;
 
     @Mock
     private EventValidationService eventValidationService;
@@ -84,7 +85,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintWithNoExtraCopies() {
+    public void testSuccessfulSendToBulkPrintWithNoExtraCopies() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -112,13 +113,15 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, grant, coverSheet);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, grant, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
@@ -126,7 +129,7 @@ public class BulkPrintServiceTest {
 
 
     @Test
-    public void testSuccessfulSendToBulkPrintWithSixExtraCopies() {
+    public void testSuccessfulSendToBulkPrintWithSixExtraCopies() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -155,23 +158,25 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.DIGITAL_GRANT))
             .thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
 
     @Test
-    public void testHttpClientException() {
+    public void testHttpClientException() throws PrintResponseException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -204,14 +209,14 @@ public class BulkPrintServiceTest {
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "StatusText", "Body".getBytes(),
              Charset.defaultCharset()))
-            .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+            .when(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
         assertNull(response);
     }
 
     @Test
-    public void shouldThrowException() {
+    public void shouldThrowException() throws PrintResponseException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
             .postCode("EC2")
@@ -243,8 +248,8 @@ public class BulkPrintServiceTest {
             .build();
 
         doThrow(new RuntimeException("Some exception"))
-            .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+                .when(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
         assertNull(response);
     }
@@ -331,7 +336,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowCaveatsException() throws IOException {
+    public void shouldThrowCaveatsException() throws PrintResponseException {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
             .proAddressLine2("Address 2")
@@ -364,15 +369,15 @@ public class BulkPrintServiceTest {
             .build();
 
         doThrow(new RuntimeException("SomeException"))
-            .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+            .when(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
         assertNull(response);
     }
 
     @Test
-    public void testHttpClientExceptionCaveats() {
+    public void testHttpClientExceptionCaveats() throws PrintResponseException {
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
                 .proAddressLine2("Address 2")
                 .proPostCode("EC2")
@@ -405,14 +410,14 @@ public class BulkPrintServiceTest {
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "StatusText", "Body".getBytes(),
             Charset.defaultCharset()))
-            .when(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
+                .when(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
         assertNull(response);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintForCaveats() {
+    public void testSuccessfulSendToBulkPrintForCaveats() throws PrintResponseException {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
                 .proAddressLine2("Address 2")
@@ -442,65 +447,67 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrant() {
+    public void testSuccessfulSendToBulkPrintGrant() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrant() {
+    public void testSuccessfulSendToBulkPrintIntestacyGrant() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrant() {
+    public void testSuccessfulSendToBulkPrintAdmonWillGrant() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrantReissue() {
+    public void testSuccessfulSendToBulkPrintGrantReissue() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrantReissue() {
+    public void testSuccessfulSendToBulkPrintIntestacyGrantReissue() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissue() {
+    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissue() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrantReissueWelsh() {
+    public void testSuccessfulSendToBulkPrintGrantReissueWelsh() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_DIGITAL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrantReissueWelsh() {
+    public void testSuccessfulSendToBulkPrintIntestacyGrantReissueWelsh() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_INTESTACY_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() {
+    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() throws PrintResponseException {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE);
     }
 
     @Test
-    public void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException {
+    public void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException, PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -539,7 +546,7 @@ public class BulkPrintServiceTest {
                 .errors(errors)
                 .build();
 
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(null);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class))).thenReturn(null);
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
         when(businessValidationMessageService.generateError(any(), any()))
             .thenReturn(FieldErrorResponse.builder().build());
@@ -569,7 +576,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesWDG() {
+    public void sendToBulkPrintWith50ExtraCopiesWDG() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -598,24 +605,26 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(documentTransformer
             .hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_DIGITAL_GRANT))
             .thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesWIG() {
+    public void sendToBulkPrintWith50ExtraCopiesWIG() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -644,24 +653,26 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(documentTransformer
             .hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_INTESTACY_GRANT))
             .thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesAWDG() {
+    public void sendToBulkPrintWith50ExtraCopiesAWDG() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -690,27 +701,29 @@ public class BulkPrintServiceTest {
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
+                .documentType(DocumentType.GRANT_COVERSHEET)
                 .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(documentTransformer
             .hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_ADMON_WILL_GRANT))
             .thenReturn(true);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
 
     @Captor
-    private ArgumentCaptor<LetterV3> letterV3ArgumentCaptor;
+    private ArgumentCaptor<PrintLetterRequest> printLetterRequestArgumentCaptor;
 
     @Test
-    public void shouldSendToBulkPrintForReprint() {
+    public void shouldSendToBulkPrintForReprint() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
@@ -739,9 +752,10 @@ public class BulkPrintServiceTest {
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
             .documentLink(documentLink)
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
 
         List<String> errors = new ArrayList<>();
         CallbackResponse callbackResponse = CallbackResponse.builder()
@@ -749,21 +763,21 @@ public class BulkPrintServiceTest {
             .errors(errors)
             .build();
 
-        when(sendLetterApiMock.sendLetter(anyString(), letterV3ArgumentCaptor.capture()))
-            .thenReturn(sendLetterResponse);
+        when(printLetterApiMock.printLetter(anyString(), printLetterRequestArgumentCaptor.capture()))
+            .thenReturn(printLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
-        SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
 
-        assertEquals(sendLetterResponse, response);
-        assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
-        assertEquals(10, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
+        assertEquals(printLetterResponse, response);
+        assertEquals(1, printLetterRequestArgumentCaptor.getValue().documents.get(0).copies);
+        assertEquals(10, printLetterRequestArgumentCaptor.getValue().documents.get(1).copies);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
     }
 
     @Test
-    public void shouldSendToBulkPrintForReprintWillNullLetterId() {
+    public void shouldSendToBulkPrintForReprintWillNullLetterId() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
@@ -792,9 +806,10 @@ public class BulkPrintServiceTest {
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
             .documentLink(documentLink)
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
 
         List<String> errors = new ArrayList<>();
         CallbackResponse callbackResponse = CallbackResponse.builder()
@@ -803,17 +818,18 @@ public class BulkPrintServiceTest {
             .build();
 
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
 
-        SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
+        PrintLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
 
-        assertEquals(sendLetterResponse, response);
-        assertEquals(sendLetterResponse.letterId, response.letterId);
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        assertEquals(printLetterResponse, response);
+        assertEquals(printLetterResponse.letterId, response.letterId);
+        verify(printLetterApiMock).printLetter(anyString(), any(PrintLetterRequest.class));
     }
 
     @Test
-    public void shouldErrorOnSendToBulkPrintForReprint() {
+    public void shouldErrorOnSendToBulkPrintForReprint() throws PrintResponseException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
@@ -842,9 +858,10 @@ public class BulkPrintServiceTest {
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
             .documentLink(documentLink)
+            .documentType(DocumentType.GRANT_COVERSHEET)
             .build();
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
 
         List<String> errors = new ArrayList<>();
         errors.add("test error");
@@ -853,7 +870,8 @@ public class BulkPrintServiceTest {
             .errors(errors)
             .build();
 
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
         when(businessValidationMessageService.generateError(any(), any()))
@@ -864,7 +882,7 @@ public class BulkPrintServiceTest {
             .hasMessage("Bulk print send letter for reprint response is null for: 0");
     }
 
-    private void testSuccessfulSendToBulkPrintForDocumentType(DocumentType documentType) {
+    private void testSuccessfulSendToBulkPrintForDocumentType(DocumentType documentType) throws PrintResponseException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
             .postCode("EC2")
@@ -894,6 +912,7 @@ public class BulkPrintServiceTest {
             .documentGeneratedBy("test")
             .documentDateAdded(LocalDate.now())
             .documentLink(documentLink)
+            .documentType(documentType)
             .build();
 
         responseCaseData = ResponseCaseData.builder()
@@ -908,18 +927,19 @@ public class BulkPrintServiceTest {
             .build();
 
         UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        PrintLetterResponse printLetterResponse = new PrintLetterResponse(uuid);
+        when(printLetterApiMock.printLetter(anyString(), any(PrintLetterRequest.class)))
+                .thenReturn(printLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
         when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), documentType))
             .thenReturn(true);
 
         final String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coverSheet, document, true);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), letterV3ArgumentCaptor.capture());
+        verify(printLetterApiMock).printLetter(anyString(), printLetterRequestArgumentCaptor.capture());
 
-        assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
-        assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
+        assertEquals(1, printLetterRequestArgumentCaptor.getValue().documents.get(0).copies);
+        assertEquals(2, printLetterRequestArgumentCaptor.getValue().documents.get(1).copies);
 
         assertNotNull(letterId);
         assertThat(letterId, is(uuid.toString()));

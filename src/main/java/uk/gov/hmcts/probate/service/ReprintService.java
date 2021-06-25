@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterResponse;
 
 import java.util.Optional;
 
@@ -43,7 +43,7 @@ public class ReprintService {
         }
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         Document selectedDocument = findDocument(selectedDocumentItem, callbackRequest.getCaseDetails().getData());
-        SendLetterResponse response =
+        PrintLetterResponse response =
             bulkPrintService.sendDocumentsForReprint(callbackRequest, selectedDocument, coverSheet);
         String letterId = response != null ? response.letterId.toString() : null;
         String pdfSize =
