@@ -2,14 +2,18 @@
 
 <h2 class="govuk-heading-l">Case progress</h2>
 
-<div class="govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48">Case escalated to a Registrar</div>
+<div class="govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48">Case stopped</div>
 
 <h2 class="govuk-heading-l">What happens next</h2>
 
-<p class="govuk-body-s">The case was escalated on 24 Jun 2021.</p>
-<p class="govuk-body-s">The case will be reviewed by a Registrar and you will be notified by email if we need any information from you to progress the case.</p>
-<p class="govuk-body-s">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>
+<p class="govuk-body-s">The case was stopped on <today/> for one of two reasons:</p>
+<ul class="govuk-list govuk-list--bullet">
+<li>an internal review is needed</li>
+<li>further information from the applicant or solicitor is needed</li>
+</ul>
 
+<p class="govuk-body-s">You will be notified by email if we need any information from you to progress the case.</p>
+<p class="govuk-body-s">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>
 
 <h2 class="govuk-heading-l">Get help with your application</h2>
 

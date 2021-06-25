@@ -45,7 +45,7 @@
 
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Authenticate documents</p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div></div>
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p><strong>Authenticated on 24 Jun 2021</strong></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p><strong>Authenticated on <today/></strong></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">We will authenticate your documents and match them with your application.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 

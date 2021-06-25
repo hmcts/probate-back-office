@@ -52,7 +52,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         final var jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
 
-        var expected = utils.getStringFromFile("/expected-html/" + expectedHtmlFile);
+        var expected = utils.getStringFromFile("/expected-html/caseprogress" + expectedHtmlFile);
         expected = replaceAllInString(expected, "{code-branch}", TaskState.CODE_BRANCH);
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
