@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -77,7 +76,7 @@ public class BulkPrintService {
                     pdfs,
                     caseId,
                     caseId,
-                    getLetterType.apply(coverSheet, grantDocument));
+                    "PROBATE");
 
             printLetterResponse = printLetterApi
                     .printLetter(BEARER + authHeaderValue, printLetterRequest);
@@ -156,7 +155,7 @@ public class BulkPrintService {
                     pdfs,
                     caseId,
                     caseId,
-                    getLetterType.apply(coverSheet, grantDocument));
+                    "PROBATE");
 
             printLetterResponse = printLetterApi
                     .printLetter(BEARER + authHeaderValue, printLetterRequest);
@@ -292,9 +291,4 @@ public class BulkPrintService {
         }
         return extraCopiesOfGrant;
     }
-
-    private final BiFunction<Document, Document, String> getLetterType = (cover, content) ->
-            cover.getDocumentType().getTemplateName()
-                    + "-"
-                    + content.getDocumentType().getTemplateName();
 }
