@@ -258,7 +258,6 @@ dependencies {
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-  compile group: 'com.vladsch.flexmark', name: 'flexmark-util', version: '0.62.2'
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
