@@ -163,7 +163,6 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        validateEmailAddresses(caveatCallbackRequest);
         CaveatCallbackResponse caveatCallbackResponse;
 
         solicitorPaymentMethodValidationRule.validate(caveatCallbackRequest.getCaseDetails());
@@ -181,6 +180,7 @@ public class CaveatController {
         } else {
             caveatCallbackResponse = creditPaymentResponse;
         }
+        validateEmailAddresses(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
