@@ -101,6 +101,7 @@ public class CallbackResponseTransformer {
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
+    private static final String READY_TO_ISSUE = "BOReadyToIssue";
     private static final String EXAMINING = "BOExamining";
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
@@ -380,6 +381,12 @@ public class CallbackResponseTransformer {
                 break;
             case READY_FOR_EXAMINATION:
                 responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
+                break;
+            case EXAMINING:
+                responseCaseDataBuilder.state(EXAMINING);
+                break;
+            case READY_TO_ISSUE:
+                responseCaseDataBuilder.state(READY_TO_ISSUE);
                 break;
             default:
                 responseCaseDataBuilder.state(EXAMINING);
