@@ -56,8 +56,10 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNoErrors() throws Exception {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
+    public void shouldConfirmNextStepsWithNoErrorsWithPaymentMethodNull() throws Exception {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR)
+            .paperPaymentMethod(null)
+            .build();
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -65,6 +67,18 @@ public class NextStepsControllerTest {
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void shouldConfirmNextStepsWithNoErrors() throws Exception {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -163,24 +177,7 @@ public class NextStepsControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT job title cannot be empty"));
     }
-
-    @Test
-    public void shouldConfirmNextStepsWithPaymentMethodIsNullError() throws Exception {
-        caseDataBuilder.solsPaymentMethods(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsPaymentMethods"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-                .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Payment method cannot be empty. It must be one of fee account or cheque"));
-    }
-
+    
     @Test
     public void shouldConfirmNextStepsWithNullApplicationFeeError() throws Exception {
         caseDataBuilder.applicationFee(null);

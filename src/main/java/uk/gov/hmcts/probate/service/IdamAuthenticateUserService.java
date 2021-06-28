@@ -3,11 +3,14 @@ package uk.gov.hmcts.probate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
 import java.util.Base64;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -70,6 +73,12 @@ public class IdamAuthenticateUserService {
             log.error("Exception" + e.getMessage());
             throw e;
         }
+    }
+    
+    public String getEmail(String authToken) {
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authToken);
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        return result.get("email").toString().toLowerCase(); 
     }
 
 }
