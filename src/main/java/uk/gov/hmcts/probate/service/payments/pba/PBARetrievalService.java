@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.payments.pba;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -16,12 +17,15 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
@@ -40,11 +44,17 @@ public class PBARetrievalService {
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken, emailId);
 
-        ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
-            request, PBAOrganisationResponse.class);
-        PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
+        try {
+            ResponseEntity<PBAOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
+                request, PBAOrganisationResponse.class);
+            PBAOrganisationResponse pbaOrganisationResponse = Objects.requireNonNull(responseEntity.getBody());
 
-        return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
+            return pbaOrganisationResponse.getOrganisationEntityResponse().getPaymentAccount();
+        } catch (Exception e) {
+            log.info("Exception when looking up PBAs for user={} for exception {}",
+                new String(Base64.getEncoder().encode(emailId.getBytes())), e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
     private HttpEntity<HttpHeaders> buildRequest(String authToken, String email) {

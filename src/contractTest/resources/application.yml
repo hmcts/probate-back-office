@@ -118,7 +118,8 @@ payment:
   url: http://localhost:8886
   api: /credit-account-payments
   currency: GBP
-  siteId: ABA6
+  pba:
+    siteId: ABA6
   service: PROBATE
 
 pba:
@@ -446,7 +447,7 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 data-extract:
   block:
     size: 3000
-    numDaysInclusive: 2
+    numDaysInclusive: 0
   smee-and-ford:
     size: 10000
 
