@@ -54,8 +54,7 @@ def secrets = [
                 secret('levClientSecret', 'LEV_CLIENT_SECRET'),
                 secret('levUsername', 'LEV_USERNAME'),
                 secret('levPassword', 'LEV_PASSWORD'),
-                secret('levDeathUrl', 'LEV_DEATH_URL'),
-                secret('probate-site-id','PAYMENT_SITEID')
+                secret('levDeathUrl', 'LEV_DEATH_URL')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -127,6 +126,7 @@ withPipeline("java", product, component) {
   onMaster() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
+  
   onPR() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
