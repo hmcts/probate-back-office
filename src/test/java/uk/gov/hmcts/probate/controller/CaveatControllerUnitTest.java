@@ -98,8 +98,9 @@ public class CaveatControllerUnitTest {
 
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
-            confirmationResponseService, allCaveatorEmailAddressValidationRule, paymentsService, feeService, creditAccountPaymentTransformer,
-            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock);
+            confirmationResponseService, allCaveatorEmailAddressValidationRule, paymentsService, feeService,
+            creditAccountPaymentTransformer, creditAccountPaymentValidationRule,
+            solicitorPaymentMethodValidationRuleMock);
 
     }
 
