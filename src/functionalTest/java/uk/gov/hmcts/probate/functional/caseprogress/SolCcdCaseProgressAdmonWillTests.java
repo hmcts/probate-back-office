@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
@@ -99,17 +98,8 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
 
     @Test
     public void shouldTransformCaseCorrectlyWhenFailQa() {
-        final String response = postCwJson("caseprogressadmonwill/06-caseStopped.json", CASE_FAIL_QA_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
-        String expectedHtml = fileSystemResourceService
-            .getFileFromResourceAsString("json/caseprogressadmonwill/06a-caseStoppedAdmonWillExpectedHMTL");
-        expectedHtml = expectedHtml
-            .replaceAll(Pattern.quote("<today/>"), this.todaysDate)
-            .replaceAll("\\\\n", System.lineSeparator());
-
-        assertEquals(expectedHtml, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/06-caseStopped.json",
+            CASE_FAIL_QA_URL, "/case-stopped-html.txt");
     }
 
     @Test
