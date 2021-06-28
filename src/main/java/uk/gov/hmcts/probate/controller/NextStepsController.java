@@ -72,7 +72,7 @@ public class NextStepsController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-        validateEmailAddresses(callbackRequest);
+//        validateEmailAddresses(callbackRequest);
         CallbackResponse callbackResponse;
         Optional<String> newState =
             stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
