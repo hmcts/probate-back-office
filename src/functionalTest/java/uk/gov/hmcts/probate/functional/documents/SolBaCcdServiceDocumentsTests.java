@@ -1026,9 +1026,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertTrue(true);
-        //assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
-        //assertNull(jsonPath.get("data.errors"));
+        assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test
