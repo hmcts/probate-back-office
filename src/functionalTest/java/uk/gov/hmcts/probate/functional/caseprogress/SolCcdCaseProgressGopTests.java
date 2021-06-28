@@ -1,16 +1,10 @@
 package uk.gov.hmcts.probate.functional.caseprogress;
 
-import io.restassured.path.json.JsonPath;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-
-import java.util.regex.Pattern;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
