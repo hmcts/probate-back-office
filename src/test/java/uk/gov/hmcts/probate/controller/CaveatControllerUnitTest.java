@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
+import uk.gov.hmcts.probate.validator.CaveatorEmailAddressValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
@@ -88,6 +89,8 @@ public class CaveatControllerUnitTest {
     private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    private List<CaveatorEmailAddressValidationRule> allCaveatorEmailAddressValidationRule;
 
     @Before
     public void setUp() {
@@ -95,7 +98,7 @@ public class CaveatControllerUnitTest {
 
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
-            confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
+            confirmationResponseService, allCaveatorEmailAddressValidationRule, paymentsService, feeService, creditAccountPaymentTransformer,
             creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock);
 
     }
