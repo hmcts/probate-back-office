@@ -625,7 +625,9 @@ public class CallbackResponseTransformer {
                     + "statement of truth without an honest belief in its truth.\n";
 
             executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
+                        +  ", " + caseDetails.getData().getPrimaryApplicantForenames()
+                        + " " + caseDetails.getData().getPrimaryApplicantSurname() + ": ";
         } else {
             executorNames = "The applicant" + plural + " ";
 
