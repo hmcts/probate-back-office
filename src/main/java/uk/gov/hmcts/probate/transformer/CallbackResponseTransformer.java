@@ -593,20 +593,18 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
-        var plural = "";
-        var believePlural = "s";
+        String plural = "";
+        String believePlural = "s";
         if (listOfApplyingExecs.size() > 1) {
             plural = "s";
             believePlural = "";
         }
 
-        var executorNames = "";
-        var professionalName = caseDetails.getData().getSolsSOTName();
-        var confirmSOT = "";
+        String professionalName = caseDetails.getData().getSolsSOTName();
+        String confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
                 && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
-            executorNames = "The executor" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                     + " confirm the following:\n\n"
@@ -623,13 +621,7 @@ public class CallbackResponseTransformer {
                     + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                     + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                     + "statement of truth without an honest belief in its truth.\n";
-
-            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
-                        +  ", " + caseDetails.getData().getPrimaryApplicantForenames()
-                        + " " + caseDetails.getData().getPrimaryApplicantSurname() + ": ";
         } else {
-            executorNames = "The applicant" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                     + " confirm the following:\n\n"
@@ -646,14 +638,36 @@ public class CallbackResponseTransformer {
                     + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                     + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                     + "statement of truth without an honest belief in its truth.\n";
-
-            executorNames = executorNames + caseDetails.getData().getPrimaryApplicantForenames()
-                    + " " + caseDetails.getData().getPrimaryApplicantSurname();
         }
+
+        String executorNames = setExecutorNames(caseDetails, listOfApplyingExecs,
+            plural, professionalName);
 
         builder.solsReviewSOTConfirm(confirmSOT);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
+    }
+
+    public String setExecutorNames(CaseDetails caseDetails,
+                                List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
+                                String plural, String professionalName) {
+        String executorNames = "";
+        if (caseDetails.getData().getSolsWillType() != null
+            && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
+            executorNames = "The executor" + plural + " ";
+
+            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
+                    +  ", " + caseDetails.getData().getPrimaryApplicantForenames()
+                    + " " + caseDetails.getData().getPrimaryApplicantSurname() + ": ";
+            return executorNames;
+        } else {
+            executorNames = "The applicant" + plural + " ";
+
+            executorNames = executorNames + caseDetails.getData().getPrimaryApplicantForenames()
+                + " " + caseDetails.getData().getPrimaryApplicantSurname();
+            return executorNames;
+        }
     }
     
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {

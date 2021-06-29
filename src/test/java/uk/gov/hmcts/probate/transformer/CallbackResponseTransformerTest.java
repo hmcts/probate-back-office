@@ -2443,6 +2443,39 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void checkSolsReviewCheckBoxesText() {
+
+        caseDataBuilder
+            .dispenseWithNotice(YES)
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .trustCorpName("Trust corp name")
+            .furtherEvidenceForApplication("Further evidence")
+            .lodgementAddress("London")
+            .isSolThePrimaryApplicant("Yes")
+            .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+
+        String plural = "";
+        String believePlural = "s";
+        if (listOfApplyingExecs.size() > 1) {
+            plural = "s";
+            believePlural = "";
+        }
+
+        String professionalName = caseDetailsMock.getData().getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseDetailsMock, listOfApplyingExecs,
+            plural, professionalName);
+
+        assertEquals("The executor Andy Middlename Test: ", executorNames);
+    }
+
+    @Test
     public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
         caseDataBuilder.solsWillType("WillLeftAnnexed");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
