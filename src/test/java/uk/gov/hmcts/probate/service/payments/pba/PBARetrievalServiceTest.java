@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -69,21 +71,23 @@ public class PBARetrievalServiceTest {
         assertEquals(2, returnedPBAs.size());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorOnGetIdamUserDetails() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
-
-        pbaRetrievalService.getPBAs(AUTH_TOKEN);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorOnGetPBAOrganisation() {
+    @Test
+    public void shouldReturnNoPBAsForLookupForbidden() {
         when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
-            ResponseEntity.of(Optional.empty());
+            ResponseEntity.of(Optional.of(pbaOrganisationResponse));
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
-            any(HttpEntity.class), any(Class.class))).thenReturn(pbaOrganisationResponseResponseEntity);
+            any(HttpEntity.class), any(Class.class))).thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
+
+        List<String> returnedPBAs = pbaRetrievalService.getPBAs(AUTH_TOKEN);
+
+        assertEquals(0, returnedPBAs.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldErrorOnGetIdamUserDetails() {
+        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
 
         pbaRetrievalService.getPBAs(AUTH_TOKEN);
     }
