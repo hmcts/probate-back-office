@@ -59,26 +59,26 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         switch (jsonPath.get("data.caseType").toString()) {
             case "gop":
-                expected = expected.replaceAll(Pattern.quote("{willExists}"),
-                    "<li>the original will</li>")
-                    .replaceAll(Pattern.quote("<executorNotApplying1/>"),
-                    "Solicitor_fn Solicitor_ln")
-                    .replaceAll(Pattern.quote("<executorNotApplying2/>"),
-                    "exec2 Renounced")
-                    .replaceAll(Pattern.quote("<will/>"),
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                expected = replaceAllInString(expected,"<executorNotApplying1/>",
+                    "Solicitor_fn Solicitor_ln");
+                expected = replaceAllInString(expected,"<executorNotApplying2/>",
+                    "exec2 Renounced");
+                expected = replaceAllInString(expected,"<will/>",
                     "the original will and any codicils");
                 break;
             case "admonWill":
-                expected = expected.replaceAll(Pattern.quote("{willExists}"),
+                expected = replaceAllInString(expected,"{willExists}",
                     "<li>the original will</li>")
-                    .replaceAll(Pattern.quote("<will/>"),
+                expected = replaceAllInString(expected, "<will/>",
                     "the original will and any codicils");
                 break;
             case "intestacy":
-                expected = expected.replaceAll(Pattern.quote("{willExists}"), "");
+                expected = replaceAllInString(expected,"{willExists}", "");
                 break;
             default:
-                expected = expected.replaceAll(Pattern.quote("{willExists}"),
+                expected = replaceAllInString(expected,"{willExists}",
                     "<li>the original will</li>");
                 break;
         }
