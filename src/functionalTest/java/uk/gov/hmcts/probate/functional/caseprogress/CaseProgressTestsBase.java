@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
@@ -56,6 +57,31 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = replaceAllInString(expected, "{code-branch}", TaskState.CODE_BRANCH);
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
+
+        switch (jsonPath.get("data.caseType").toString()) {
+            case "gop":
+                expected = expected.replaceAll(Pattern.quote("{willExists}"),
+                    "<li>the original will</li>")
+                    .replaceAll(Pattern.quote("<executorNotApplying1/>"),
+                    "Solicitor_fn Solicitor_ln")
+                    .replaceAll(Pattern.quote("<executorNotApplying2/>"),
+                    "exec2 Renounced")
+                    .replaceAll(Pattern.quote("<will/>"),
+                    "the original will and any codicils");
+            case "admonWill":
+                expected = expected.replaceAll(Pattern.quote("{willExists}"),
+                    "<li>the original will</li>")
+                    .replaceAll(Pattern.quote("<will/>"),
+                    "the original will and any codicils");
+            case "intestacy":
+                expected = expected.replaceAll(Pattern.quote("{willExists}"), "");
+            default:
+                expected = expected.replaceAll(Pattern.quote("{willExists}"),
+                    "<li>the original will</li>");
+        }
+
+        expected = expected.replaceAll(Pattern.quote("<ihtForm/>"),
+            "the inheritance tax form IHT205 and IHT217");
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change

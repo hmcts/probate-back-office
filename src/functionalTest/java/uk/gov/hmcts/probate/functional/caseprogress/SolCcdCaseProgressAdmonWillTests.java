@@ -1,14 +1,11 @@
 package uk.gov.hmcts.probate.functional.caseprogress;
 
-import io.restassured.path.json.JsonPath;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
@@ -108,39 +105,20 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
 
     @Test
     public void shouldRenderSendDocumentsAdmonWill() {
-        final String response = postCwJson("caseprogressadmonwill/04-caseCreated.json", TASKLIST_UPDATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        String expected = fileSystemResourceService.getFileFromResourceAsString(
-            "json/caseprogressadmonwill/expectedHTML/04-caseCreated");
-        expected = expected.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
-        assertEquals(expected, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04-caseCreated");
     }
 
     @Test
     public void shouldRenderSendDocumentsWithCodicils() {
-        final String response = postCwJson("caseprogressadmonwill/04a-caseCreated.json", TASKLIST_UPDATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        String expected = fileSystemResourceService.getFileFromResourceAsString(
-            "json/caseprogressadmonwill/expectedHTML/04a-caseCreatedWillHasCodicils");
-        expected = expected
-            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
-            .replaceAll("<will/>", "the original will and any codicils");
-        assertEquals(expected, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04a-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04a-caseCreatedWillHasCodicils");
     }
 
     @Test
     public void shouldRenderSendDocumentsWithIht217() {
-        final String response = postCwJson("caseprogressadmonwill/04b-caseCreated.json", TASKLIST_UPDATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        String expected = fileSystemResourceService.getFileFromResourceAsString(
-            "json/caseprogressadmonwill/expectedHTML/04b-caseCreatedIHT217");
-        expected = expected
-            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
-            .replaceAll("<ihtForm/>", "the inheritance tax form IHT205 and IHT217");
-        assertEquals(expected, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04b-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04b-caseCreatedIHT217");
     }
 
     private String getUpdateAdmonWillDtlsUrl() {

@@ -104,39 +104,16 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
 
     @Test
     public void shouldRenderSendDocumentsIntestacy() {
-        final String response = postCwJson("caseprogressintestacy/04-caseCreated.json", TASKLIST_UPDATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        String expected = fileSystemResourceService.getFileFromResourceAsString(
-            "json/caseprogressintestacy/expectedHTML/04-caseCreated");
-        expected = expected.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
-        assertEquals(expected, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/intestacy/04-caseCreated");
     }
 
 
     @Test
     public void shouldRenderSendDocumentsWithIht217() {
-        final String response = postCwJson("caseprogressintestacy/04a-caseCreated.json", TASKLIST_UPDATE_URL);
-        final JsonPath jsonPath = JsonPath.from(response);
-        final String taskList = jsonPath.get("data.taskList");
-        String expected = fileSystemResourceService.getFileFromResourceAsString(
-            "json/caseprogressintestacy/expectedHTML/04a-caseCreatedIHT217");
-        expected = expected
-            .replaceAll("<BRANCH/>", TaskState.CODE_BRANCH)
-            .replaceAll("<ihtForm/>", "the inheritance tax form IHT205 and IHT217");
-        assertEquals(expected, taskList);
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04a-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/intestacy/04a-caseCreatedIHT217");
     }
-
-    private String postCwJson(String jsonFileName, String path) {
-        final Response jsonResponse = RestAssured.given()
-            .config(config)
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path)
-            .andReturn();
-
-        return jsonResponse.getBody().asString();
 
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY.replaceFirst("<CASE_ID>",
