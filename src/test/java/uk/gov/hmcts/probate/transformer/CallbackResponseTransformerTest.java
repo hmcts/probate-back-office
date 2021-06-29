@@ -345,6 +345,9 @@ public class CallbackResponseTransformerTest {
         .applyingExecutorName(SOLICITOR_SOT_NAME)
         .build();
 
+    private static final AdditionalExecutorApplying ADDITIONAL_EXECUTOR_APPLYING_SECOND =
+        AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build();
+
     private static final AdditionalExecutorNotApplying ADDITIONAL_EXECUTOR_NOT_APPLYING =
         AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorName(SOLICITOR_SOT_NAME)
@@ -2443,16 +2446,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesText() {
-
-        caseDataBuilder
-            .dispenseWithNotice(YES)
-            .titleAndClearingType("TCTTrustCorpResWithApp")
-            .trustCorpName("Trust corp name")
-            .furtherEvidenceForApplication("Further evidence")
-            .lodgementAddress("London")
-            .isSolThePrimaryApplicant("Yes")
-            .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
+    public void checkSolsReviewCheckBoxesTextSingleExec() {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -2460,18 +2454,45 @@ public class CallbackResponseTransformerTest {
             solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
 
         String plural = "";
-        String believePlural = "s";
         if (listOfApplyingExecs.size() > 1) {
             plural = "s";
-            believePlural = "";
         }
 
         String professionalName = caseDetailsMock.getData().getSolsSOTName();
 
-        String executorNames = underTest.setExecutorNames(caseDetailsMock, listOfApplyingExecs,
+        String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
             plural, professionalName);
 
         assertEquals("The executor Andy Middlename Test: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecs() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_NAME).build();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplying));
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
+        CaseData caseData = caseDataBuilder.build();
+
+
+        String plural = "";
+        if (additionalExecs.size() > 1) {
+            plural = "s";
+        }
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs,
+            plural, professionalName);
+
+        assertEquals("The executors Andy Middlename Test, James Smith, applicant forename applicant surname: ",
+            executorNames);
     }
 
     @Test

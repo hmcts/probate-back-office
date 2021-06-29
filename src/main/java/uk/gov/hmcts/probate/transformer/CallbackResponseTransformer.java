@@ -640,7 +640,7 @@ public class CallbackResponseTransformer {
                     + "statement of truth without an honest belief in its truth.\n";
         }
 
-        String executorNames = setExecutorNames(caseDetails, listOfApplyingExecs,
+        String executorNames = setExecutorNames(caseDetails.getData(), listOfApplyingExecs,
             plural, professionalName);
 
         builder.solsReviewSOTConfirm(confirmSOT);
@@ -648,24 +648,24 @@ public class CallbackResponseTransformer {
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
 
-    public String setExecutorNames(CaseDetails caseDetails,
+    public String setExecutorNames(CaseData caseData,
                                 List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
                                 String plural, String professionalName) {
         String executorNames = "";
-        if (caseDetails.getData().getSolsWillType() != null
-            && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
+        if (caseData.getSolsWillType() != null
+            && caseData.getSolsWillType().matches("WillLeft")) {
             executorNames = "The executor" + plural + " ";
 
             executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
                 executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
-                    +  ", " + caseDetails.getData().getPrimaryApplicantForenames()
-                    + " " + caseDetails.getData().getPrimaryApplicantSurname() + ": ";
+                    +  ", " + caseData.getPrimaryApplicantForenames()
+                    + " " + caseData.getPrimaryApplicantSurname() + ": ";
             return executorNames;
         } else {
             executorNames = "The applicant" + plural + " ";
 
-            executorNames = executorNames + caseDetails.getData().getPrimaryApplicantForenames()
-                + " " + caseDetails.getData().getPrimaryApplicantSurname();
+            executorNames = executorNames + caseData.getPrimaryApplicantForenames()
+                + " " + caseData.getPrimaryApplicantSurname();
             return executorNames;
         }
     }
