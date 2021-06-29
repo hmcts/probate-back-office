@@ -2454,7 +2454,6 @@ public class CallbackResponseTransformerTest {
             .isSolThePrimaryApplicant("Yes")
             .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
 
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
