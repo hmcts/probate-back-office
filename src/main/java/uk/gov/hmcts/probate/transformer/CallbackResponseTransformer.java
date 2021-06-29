@@ -593,15 +593,15 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
-        String plural = "";
-        String believePlural = "s";
+        var plural = "";
+        var believePlural = "s";
         if (listOfApplyingExecs.size() > 1) {
             plural = "s";
             believePlural = "";
         }
 
-        String professionalName = caseDetails.getData().getSolsSOTName();
-        String confirmSOT = "";
+        var professionalName = caseDetails.getData().getSolsSOTName();
+        var confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
                 && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
