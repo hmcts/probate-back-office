@@ -4,5 +4,6 @@
   "fileToUploadUrl":"uploadDocuments/test_file_for_document_upload.png",
   "filename": "test_file_for_document_upload.png",
   "comment": "test file to upload",
-  "id": "#documentsUploaded"
+  "id": "#documentsUploaded",
+  "docTypes": ["Email", "Correspondence", "Codicil", "Death Certificate", "Other"]
 }
