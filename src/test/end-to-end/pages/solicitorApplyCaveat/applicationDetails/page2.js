@@ -19,7 +19,7 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfBirth-month', applicationDetailsConfig.page2_dateOfBirth_month);
     await I.fillField('#deceasedDateOfBirth-year', applicationDetailsConfig.page2_dateOfBirth_year);
 
-    await I.click(`#deceasedAnyOtherNames-${applicationDetailsConfig.page2_hasAliasYes}`);
+    await I.click(`#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`);
     if (!testConfig.TestAutoDelayEnabled) {
         // only valid for local dev where we need it to run as fast as poss to minimise
         // lost dev time
