@@ -111,7 +111,7 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
 
     @Test
     public void shouldRenderSendDocumentsWithCodicils() {
-            verifyCaseProgressHtmlSolPost("caseprogress/04b-caseCreated.json", TASKLIST_UPDATE_URL,
+        verifyCaseProgressHtmlSolPost("caseprogress/04b-caseCreated.json", TASKLIST_UPDATE_URL,
             "/gop/04b-caseCreatedWillHasCodicils");
     }
 

@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
@@ -68,16 +67,20 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
                     "exec2 Renounced")
                     .replaceAll(Pattern.quote("<will/>"),
                     "the original will and any codicils");
+                break;
             case "admonWill":
                 expected = expected.replaceAll(Pattern.quote("{willExists}"),
                     "<li>the original will</li>")
                     .replaceAll(Pattern.quote("<will/>"),
                     "the original will and any codicils");
+                break;
             case "intestacy":
                 expected = expected.replaceAll(Pattern.quote("{willExists}"), "");
+                break;
             default:
                 expected = expected.replaceAll(Pattern.quote("{willExists}"),
                     "<li>the original will</li>");
+                break;
         }
 
         expected = expected.replaceAll(Pattern.quote("<ihtForm/>"),
