@@ -70,7 +70,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
                 break;
             case "admonWill":
                 expected = replaceAllInString(expected,"{willExists}",
-                    "<li>the original will</li>")
+                    "<li>the original will</li>");
                 expected = replaceAllInString(expected, "<will/>",
                     "the original will and any codicils");
                 break;
