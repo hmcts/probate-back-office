@@ -562,10 +562,16 @@ public class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
-    
+
+    @Test
+    public void shouldSetGrantStoppedDateAfterCaseFailQa() {
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
     @Test
     public void shouldDefaultPBAs() {
-        ResponseEntity<CallbackResponse> response = 
+        ResponseEntity<CallbackResponse> response =
             underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
             .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
