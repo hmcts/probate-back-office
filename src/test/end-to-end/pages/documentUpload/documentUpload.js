@@ -43,10 +43,26 @@ module.exports = async function (caseRef, documentUploadConfig) {
 
     await I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, '1');
 
+    /* add the following properties to documentUploadConfig.json once caseworker moves
+       from CCD UI to ExUI.
+       CCD UI currently seems to put options in ddl in a random order - differs from local setup to pipeline.
+
+       caveat:  "docTypes": ["Email", "Correspondence", "Codicil", "Death Certificate", "Warning", "Other"]
+       grantOfProbate: "docTypes": ["Will", "Email", "Correspondence", "Codicil", "Death Certificate", "Other"]
+       willLodgement: "docTypes": ["Email", "Correspondence", "Codicil", "Death Certificate", "Other"]
+    */
+
     if (documentUploadConfig.docTypes) {
         for (let i=0; i < documentUploadConfig.docTypes.length; i++) {
             // eslint-disable-next-line no-await-in-loop
             const optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(${i+2})`});
+            if (optText !== documentUploadConfig.docTypes[i]) {
+                console.info('document upload doc types not as expected.');
+                console.info(`expected: ${documentUploadConfig.docTypes[i]}, actual: ${optText}`);
+                console.info('doctype select html:');
+                // eslint-disable-next-line no-await-in-loop
+                console.info(await I.grabHTMLFrom ({css: `${documentUploadConfig.id}_1_DocumentType`}));
+            }
             assert(optText === documentUploadConfig.docTypes[i]);
         }
     }
