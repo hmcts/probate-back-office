@@ -47,6 +47,13 @@ module.exports = async function (caseRef, documentUploadConfig) {
         for (let i=0; i < documentUploadConfig.docTypes.length; i++) {
             // eslint-disable-next-line no-await-in-loop
             const optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(${i+2})`});
+            if (optText !== documentUploadConfig.docTypes[i]) {
+                console.info('document upload doc types not as expected.');
+                console.info(`expected: ${optText}, actual: ${documentUploadConfig.docTypes[i]}`);
+                console.info('doctype select html:');
+                // eslint-disable-next-line no-await-in-loop
+                console.info(await I.grabHtmlFrom ({css: `${documentUploadConfig.id}_1_DocumentType`}));
+            }
             assert(optText === documentUploadConfig.docTypes[i]);
         }
     }
