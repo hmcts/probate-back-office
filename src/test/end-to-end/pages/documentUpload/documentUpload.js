@@ -45,7 +45,8 @@ module.exports = async function (caseRef, documentUploadConfig) {
 
     if (documentUploadConfig.docTypes) {
         for (let i=0; i < documentUploadConfig.docTypes.length; i++) {
-            let optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(${i+2})`});
+            // eslint-disable-next-line no-await-in-loop
+            const optText = await I.grabTextFrom ({css: `${documentUploadConfig.id}_1_DocumentType option:nth-child(${i+2})`});
             assert(optText === documentUploadConfig.docTypes[i]);
         }
     }
