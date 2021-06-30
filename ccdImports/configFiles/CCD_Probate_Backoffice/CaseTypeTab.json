@@ -210,3 +210,4 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 16, "CaseFieldID": "statementOfTruthDocument", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 16, "CaseFieldID": "probateSotDocumentsGenerated", "TabFieldDisplayOrder": 3}
 ]
+

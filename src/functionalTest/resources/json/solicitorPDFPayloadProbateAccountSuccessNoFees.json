@@ -1,0 +1,129 @@
+{
+  "case_details": {
+    "id": 1512040945631888,
+    "jurisdiction": "PROBATE",
+    "state": "SolDraftCase",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "solsPaymentMethods": "fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
+      "solsSOTName": "Solicitor_fn Solicitor_ln",
+      "solsSOTForenames": "Solicitor_fn",
+      "solsSOTSurname": "Solicitor_ln",
+      "solsSolicitorIsExec": "No",
+      "solsSolicitorIsMainApplicant": null,
+      "solsSolicitorIsApplying": null,
+      "solsSolicitorNotApplyingReason": null,
+      "solsSOTJobTitle": "job title",
+      "otherExecutorExists": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "1",
+        "AddressLine2": "1",
+        "AddressLine3": "1",
+        "PostTown": "1",
+        "County": "1",
+        "PostCode": "1",
+        "Country": "1"
+      },
+      "deceasedAnyOtherNames": "Yes",
+      "solsSolicitorPhoneNumber": "07958995330",
+      "solsAdditionalInfo": "Additional Info",
+      "deceasedDateOfBirth": "1987-01-01",
+      "willHasCodicils": "Yes",
+      "solsDeceasedAliasNamesList": [
+        {
+          "value": {
+            "SolsAliasname": "decalias1"
+          },
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668"
+        }
+      ],
+      "willAccessOriginal": "Yes",
+      "solsSolicitorFirmName": "firmname",
+      "willExists": "Yes",
+      "solsWillType": "WillLeft",
+      "solsApplicantRelationshipToDeceased": null,
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": null,
+      "solsApplicantSiblings": null,
+      "deceasedDateOfDeath": "2018-01-01",
+      "primaryApplicantForenames": "Ex1fn",
+      "primaryApplicantAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "2",
+        "AddressLine3": "2",
+        "PostTown": "2",
+        "County": "2",
+        "PostCode": "2",
+        "Country": "2"
+      },
+      "solsSolicitorEmail": "solicitor@probate-test.com",
+      "solsSolicitorPhoneNumber": "0208 863 98688",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "500000",
+      "ihtGrossValue": "500100",
+      "extraCopiesOfGrant": 0,
+      "outsideUKGrantCopies": 0,
+      "deceasedSurname": "decln",
+      "solsAdditionalExecutorList": [
+        {
+          "value": {
+            "additionalExecForenames": "Ex2fn",
+            "additionalExecLastname": "Ex2ln",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "Wx2wn",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+      ],
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "firmpc",
+        "Country": "SolAddCo"
+      },
+      "deceasedForenames": "decfn",
+      "willNumberOfCodicils": "1",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "Yes",
+      "ihtFormId": "IHT205",
+      "ihtGrossValue": "100001",
+      "solsExecutorAliasNames": "ex1wn",
+      "primaryApplicantSurname": "Ex1ln",
+      "solsSolicitorAppReference": "appref",
+      "solsSOTNeedToUpdate":"No",
+      "applicationGrounds": "Grounds for application"
+    }
+  }
+}

@@ -10,8 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.fee.Fee;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import javax.annotation.Nullable;
@@ -26,6 +26,7 @@ public class FeeService {
 
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
+    private static final String FEE_API_EVENT_TYPE_CAVEAT = "miscellaneous";
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -40,55 +41,69 @@ public class FeeService {
         return result;
     }
 
-    public BigDecimal getApplicationFee(BigDecimal amountInPound) {
-        URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
-        ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
+    public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
+        FeeResponse applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
+        FeeResponse ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
+        FeeResponse nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
 
+        return FeesResponse.builder()
+            .applicationFeeResponse(applicationFeeResponse)
+            .ukCopiesFeeResponse(ukCopiesFeeResponse)
+            .overseasCopiesFeeResponse(nonUkCopiesFeeResponse)
+            .build();
+    }
+
+    public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
+        URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
+        ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
-            return BigDecimal.ZERO;
+            return buildZeroValueFee();
         }
 
-        Fee body = responseEntity.getBody();
+        FeeResponse body = responseEntity.getBody();
         if (body == null) {
             throw new ClientDataException("No Body in FeeService: getApplicationFee");
         } else {
-            return body.getFeeAmount();
+            return body;
         }
-
     }
 
-    public BigDecimal getCopiesFee(Long copies) {
+    public FeeResponse getCopiesFeeResponse(Long copies) {
         if (copies == null) {
-            return BigDecimal.ZERO;
+            return buildZeroValueFee();
         }
 
         URI uri = buildUri(FEE_API_EVENT_TYPE_COPIES, copies.toString());
 
-        ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
+        ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
-            return BigDecimal.ZERO;
+            return buildZeroValueFee();
         }
 
-        Fee body = responseEntity.getBody();
+        FeeResponse body = responseEntity.getBody();
         if (body == null) {
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
         } else {
-            return body.getFeeAmount();
+            return body;
         }
     }
 
-    public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
-        BigDecimal applicationFee = getApplicationFee(amountInPounds);
-        BigDecimal ukCopiesFee = getCopiesFee(ukCopies);
-        BigDecimal nonUkCopiesFee = getCopiesFee(nonUkCopies);
-        return FeeServiceResponse.builder()
-            .applicationFee(applicationFee)
-            .feeForUkCopies(ukCopiesFee)
-            .feeForNonUkCopies(nonUkCopiesFee)
-            .total(applicationFee.add(ukCopiesFee).add(nonUkCopiesFee))
-            .build();
+    public FeeResponse getCaveatFeesData() {
+        URI uri = buildUri(FEE_API_EVENT_TYPE_CAVEAT, "0");
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
+        ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
+        if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+            return buildZeroValueFee();
+        }
+
+        FeeResponse body = responseEntity.getBody();
+        if (body == null) {
+            throw new ClientDataException("No Body in FeeService: getApplicationFee");
+        } else {
+            return body;
+        }
     }
 
     private URI buildUri(String event, String amount) {
@@ -119,6 +134,15 @@ public class FeeService {
             }
         }
 
+        if (FEE_API_EVENT_TYPE_CAVEAT.equals(event)) {
+            builder.queryParam("keyword", feeServiceConfiguration.getNewCaveat());
+        }
+
         return builder.build().encode().toUri();
     }
+
+    private FeeResponse buildZeroValueFee() {
+        return FeeResponse.builder().feeAmount(BigDecimal.ZERO).build();
+    }
+
 }

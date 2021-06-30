@@ -22,8 +22,8 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile("success.solicitorCreate.json"))
+            .headers(utils.getHeadersWithCaseworkerUser())
+            .body(utils.getJsonFromFile("success.solicitorCorrectAuth.json"))
             .post("/nextsteps/validate")
             .then().assertThat().statusCode(200);
     }

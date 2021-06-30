@@ -28,6 +28,10 @@ def secrets = [
                 secret('cwUserId', 'CW_USER_ID'),
                 secret('cwUserEmail', 'CW_USER_EMAIL'),
                 secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
+                secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
+                secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
+                secret('solicitor2UserPass', 'SOL2_USER_PASSWORD'),
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
@@ -75,6 +79,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 // Vars for Kubernetes
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
+// Configure branches to sync with master branch
+def branchesToSync = ['demo', 'ithc', 'perftest']
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
@@ -84,6 +91,7 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+  syncBranchesWithMaster(branchesToSync)
 
   after('test') {
     junit 'build/test-results/test/**/*.xml'
@@ -116,6 +124,10 @@ withPipeline("java", product, component) {
   }
 
   onMaster() {
+    enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+  }
+  
+  onPR() {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 }

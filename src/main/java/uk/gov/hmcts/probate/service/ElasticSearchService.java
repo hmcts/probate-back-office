@@ -32,7 +32,7 @@ public class ElasticSearchService {
     private final HttpHeadersFactory headers;
 
     public MatchedCases runQuery(CaseType caseType, String jsonQuery) {
-        log.info("ElasticSearchService runQuery: " + jsonQuery);
+        log.debug("ElasticSearchService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, caseType.getCode())
@@ -44,11 +44,12 @@ public class ElasticSearchService {
         try {
             matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
+                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         return matchedCases;
     }
