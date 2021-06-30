@@ -151,7 +151,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"",
             "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
-
+    
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         final Response response = given()
