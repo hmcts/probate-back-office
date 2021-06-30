@@ -2453,11 +2453,6 @@ public class CallbackResponseTransformerTest {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
             solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
 
-        String plural = "";
-        if (listOfApplyingExecs.size() > 1) {
-            plural = "s";
-        }
-
         String professionalName = caseDetailsMock.getData().getSolsSOTName();
 
         String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
