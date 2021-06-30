@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
-
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
 
@@ -101,6 +100,12 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogress/12-issueGrant.json", GENERATE_GRANT_URL,
             "/generate-grant-html.txt");
+    }
+
+    @Test
+    public void shouldTransformCaseCorrectlyWhenFailQa() {
+        verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json",
+            CASE_FAIL_QA_URL, "/case-stopped-html.txt");
     }
 
     @Test
