@@ -29,7 +29,7 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  user: http://localhost:8887
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
@@ -114,6 +114,21 @@ fee.api:
   newIssuesFeeKeyword: SA
   ihtMinAmt: 5000.00
 
+payment:
+  url: http://localhost:8886
+  api: /credit-account-payments
+  currency: GBP
+  pba:
+    siteId: ABA6
+  service: PROBATE
+
+pba:
+  retrieval:
+    url: http://localhost:8887
+    health.url: ${pba.retrieval.url}/health
+    api: /refdata/external/v1/organisations/pbas
+
+
 markdown.templatesDirectory: templates/markdown/
 
 #dev deployment of ccd-print-service used for local
@@ -131,7 +146,6 @@ ccd.gateway:
 
 ccd.data.store.api:
   host: http://localhost:4452
-  caseMatchingPath: /searchCases
 
 spring:
   jackson:
@@ -433,7 +447,7 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 data-extract:
   block:
     size: 3000
-    numDaysInclusive: 2
+    numDaysInclusive: 0
   smee-and-ford:
     size: 10000
 

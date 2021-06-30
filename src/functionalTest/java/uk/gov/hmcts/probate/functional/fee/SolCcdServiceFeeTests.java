@@ -1,20 +1,26 @@
 package uk.gov.hmcts.probate.functional.fee;
 
 
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
-
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyNetValue10000() {
@@ -23,17 +29,17 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyFeeForUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForUKCopies.json", "feeForUkCopies", "150");
     }
 
     @Test
     public void verifyFeeForNonUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForNonUKCopies.json", "feeForNonUkCopies", "150");
     }
 
     @Test
     public void verifyTotal() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
+        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "15800");
     }
 
     @Test
@@ -68,22 +74,23 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
-        given().headers(utils.getHeaders())
-                .relaxedHTTPSValidation()
-                .body(utils.getJsonFromFile(fileName))
-                .contentType(JSON)
-                .when().post("/nextsteps/validate")
-                .then().assertThat()
-                .statusCode(200)
-                .and().body("data." + param, equalToIgnoringCase(expectedValue));
+
+        given().headers(utils.getHeadersWithCaseworkerUser())
+            .relaxedHTTPSValidation()
+            .body(utils.getJsonFromFile(fileName))
+            .contentType(JSON)
+            .when().post("/nextsteps/validate")
+            .then().assertThat()
+            .statusCode(200)
+            .and().body("data." + param, equalToIgnoringCase(expectedValue));
     }
 
     private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
-        given().headers(utils.getHeaders())
-                .relaxedHTTPSValidation()
-                .body(utils.getJsonFromFile(fileName))
-                .when().post("/nextsteps/validate").then()
-                .statusCode(400)
-                .and().body(containsString(errorMessage));
+        given().headers(utils.getHeadersWithCaseworkerUser())
+            .relaxedHTTPSValidation()
+            .body(utils.getJsonFromFile(fileName))
+            .when().post("/nextsteps/validate").then()
+            .statusCode(400)
+            .and().body(containsString(errorMessage));
     }
 }

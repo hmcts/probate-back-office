@@ -44,4 +44,22 @@ public class BusinessValidationMessageServiceTest {
         assertThat(error.getCode(), is(code));
         assertThat(error.getMessage(), is(message));
     }
+    
+    @Test
+    public void shouldValidateFormWithArgsWithNoErrors() {
+        String code = "dobIsNull";
+        String param = "someParam";
+        String message = "Date of birth cannot be empty";
+        String[] args = {"arg1", "arg2"};
+
+        Mockito.when(
+            businessValidationMessageRetrieverMock.getMessage(code, args, Locale.UK)
+        ).thenReturn(message);
+
+        FieldErrorResponse error = underTest.generateError(param, code, args);
+
+        assertThat(error.getParam(), is(param));
+        assertThat(error.getCode(), is(code));
+        assertThat(error.getMessage(), is(message));
+    }
 }

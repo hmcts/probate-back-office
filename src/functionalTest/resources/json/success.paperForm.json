@@ -39,7 +39,6 @@
       "ihtGrossValue": "300000",
       "primaryApplicantForenames": "fname",
       "primaryApplicantSurname": "lname",
-      "primaryApplicantEmailAddress": null,
       "primaryApplicantHasAlias": "No",
       "primaryApplicantAlias": null,
       "primaryApplicantAliasReason": null,

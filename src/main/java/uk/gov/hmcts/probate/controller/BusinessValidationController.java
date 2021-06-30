@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
@@ -327,6 +328,15 @@ public class BusinessValidationController {
 
         return ResponseEntity
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
+    }
+
+    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> defaultSolicitorNextStepsForPBANumbers(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest callbackRequest) {
+
+        return ResponseEntity.ok(callbackResponseTransformer
+            .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
