@@ -102,6 +102,12 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
             "/generate-grant-html.txt");
     }
 
+    @Test
+    public void shouldTransformCaseCorrectlyWhenFailQa() {
+        verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json",
+            CASE_FAIL_QA_URL, "/case-stopped-html.txt");
+    }
+
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
                 "1528365719153338");
