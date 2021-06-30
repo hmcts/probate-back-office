@@ -20,6 +20,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     protected static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     protected static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    protected static final String CASE_FAIL_QA_URL = "/case/fail-qa";
 
     protected static final String CASE_STOPPED_URL = "/case/case-stopped";
     protected static final String CASE_ESCALATED_URL = "/case/case-escalated";

@@ -49,7 +49,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/03-probateCreated.json", SOLS_VALIDATE_URL,
-             "/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
+            "/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
     }
 
     @Test
@@ -108,8 +108,14 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
             "/generate-grant-html.txt");
     }
 
+    @Test
+    public void shouldTransformCaseCorrectlyWhenFailQa() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/06-caseStopped.json",
+            CASE_FAIL_QA_URL, "/case-stopped-html.txt");
+    }
+
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY.replaceFirst("<CASE_ID>",
-                "1528365719153338");
+            "1528365719153338");
     }
 }
