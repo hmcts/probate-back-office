@@ -2461,7 +2461,7 @@ public class CallbackResponseTransformerTest {
         String professionalName = caseDetailsMock.getData().getSolsSOTName();
 
         String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
-            plural, professionalName);
+            professionalName);
 
         assertEquals("The executor Andy Middlename Test: ", executorNames);
     }
@@ -2480,16 +2480,9 @@ public class CallbackResponseTransformerTest {
 
         CaseData caseData = caseDataBuilder.build();
 
-
-        String plural = "";
-        if (additionalExecs.size() > 1) {
-            plural = "s";
-        }
-
         String professionalName = caseData.getSolsSOTName();
 
-        String executorNames = underTest.setExecutorNames(caseData, additionalExecs,
-            plural, professionalName);
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
 
         assertEquals("The executors Andy Middlename Test, James Smith, applicant forename applicant surname: ",
             executorNames);
