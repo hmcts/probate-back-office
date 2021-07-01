@@ -530,6 +530,7 @@ public class CaseData extends CaseDataParent {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
+    private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
 
     public String solicitorIsMainApplicant() {
