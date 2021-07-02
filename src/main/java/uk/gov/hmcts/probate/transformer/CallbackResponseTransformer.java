@@ -971,6 +971,7 @@ public class CallbackResponseTransformer {
             .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
+            .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
             .deathRecords(caseData.getDeathRecords());
 
         if (transform) {

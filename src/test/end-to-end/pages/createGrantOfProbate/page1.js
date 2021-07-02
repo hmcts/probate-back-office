@@ -39,6 +39,8 @@ module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
         }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
+        await I.click({css: `#caseHandedOffToLegacySite-${createGrantOfProbateConfig.page1_optionNo}`});
+
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
