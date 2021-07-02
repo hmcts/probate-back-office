@@ -90,8 +90,8 @@
       "solsSolicitorAddress": {
         "County": "",
         "Country": "",
-        "PostCode": "wefew",
-        "PostTown": "wefew",
+        "PostCode": "London",
+        "PostTown": "London",
         "AddressLine1": "123",
         "AddressLine2": "",
         "AddressLine3": ""
@@ -116,8 +116,8 @@
       "primaryApplicantAddress": {
         "County": "",
         "Country": "",
-        "PostCode": "wefew",
-        "PostTown": "wefew",
+        "PostCode": "London",
+        "PostTown": "London",
         "AddressLine1": "123",
         "AddressLine2": "",
         "AddressLine3": ""
