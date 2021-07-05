@@ -40,7 +40,7 @@ Print a copy of this page for your records.
  
 You now need to send us:
 {{originalWill}}
-*   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
+*   the printed <a href="{{coversheetUrl}}" target="_blank">coversheet</a> or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
 {{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}
 
 Where to send us your documents

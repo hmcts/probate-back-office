@@ -4,25 +4,6 @@ const testConfig = require('src/test/config.js');
 
 class JSWait extends codecept_helper {
 
-    async navByClick (text, locator, webDriverWait) {
-        const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
-        const helperIsPuppeteer = this.helpers.Puppeteer;
-
-        if (helperIsPuppeteer) {
-            await Promise.all([
-                helper.page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle0']}),
-                locator ? helper.click(text, locator) : helper.click(text)
-            ]);
-            return;
-        }
-        // non Puppeteer
-        return Promise.all([
-            locator ? helper.click(text, locator) : helper.click(text),
-            // needs to be combined with amOnLoadedPage in the next page really as it may be more than 3 secs
-            helper.wait(webDriverWait ? webDriverWait : 3)
-        ]);
-    }
-
     _finishTest() {
         if (!testConfig.TestForAccessibility) {
             return;

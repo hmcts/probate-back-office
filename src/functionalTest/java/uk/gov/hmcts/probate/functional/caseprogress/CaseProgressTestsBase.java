@@ -58,6 +58,35 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
 
+        switch (jsonPath.get("data.caseType").toString()) {
+            case "gop":
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                expected = replaceAllInString(expected,"<executorNotApplying1/>",
+                    "Solicitor_fn Solicitor_ln");
+                expected = replaceAllInString(expected,"<executorNotApplying2/>",
+                    "exec2 Renounced");
+                expected = replaceAllInString(expected,"<will/>",
+                    "the original will and any codicils");
+                break;
+            case "admonWill":
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                expected = replaceAllInString(expected, "<will/>",
+                    "the original will and any codicils");
+                break;
+            case "intestacy":
+                expected = replaceAllInString(expected,"{willExists}", "");
+                break;
+            default:
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                break;
+        }
+
+        expected = expected.replaceAll(Pattern.quote("<ihtForm/>"),
+            "the inheritance tax form IHT205 and IHT217");
+
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));

@@ -108,6 +108,19 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
             CASE_FAIL_QA_URL, "/case-stopped-html.txt");
     }
 
+    @Test
+    public void shouldRenderSendDocumentsIntestacy() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/intestacy/04-caseCreated");
+    }
+
+
+    @Test
+    public void shouldRenderSendDocumentsWithIht217() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04a-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/intestacy/04a-caseCreatedIHT217");
+    }
+
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY.replaceFirst("<CASE_ID>",
             "1528365719153338");

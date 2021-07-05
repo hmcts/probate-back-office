@@ -254,6 +254,10 @@ public class ConfirmationResponseService {
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
+        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
+        keyValue.put("{{coversheetUrl}}", ccdData.getSolsCoversheetDocument().getDocumentBinaryUrl() == null ? "#" :
+            ccdData.getSolsCoversheetDocument().getDocumentBinaryUrl());
+        keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
 
         String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";
