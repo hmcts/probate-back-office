@@ -59,7 +59,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "softStop", "Label": "Soft Stop", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorFirmName", "Label": "Firm name", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 100},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorAddress", "Label": "Firm address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorEmail", "Label": "Solicitor email address", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorEmail", "Label": "Solicitor email address", "FieldType": "Text", "RegularExpression": "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorPhoneNumber", "Label": "Solicitor phone number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorAppReference", "Label": "Your reference", "FieldType": "Text", "SecurityClassification": "Public", "Max": 100},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorIsExec", "Label": "Is the solicitor named in the will as an executor?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
