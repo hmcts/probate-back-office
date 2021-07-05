@@ -11,6 +11,7 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
+      "caseType": "admonWill",
       "solsSolicitorAppReference":"firmReference",
       "solsSolicitorEmail":"rebecca.baker@hmcts.net",
       "solsSolicitorPhoneNumber":null,

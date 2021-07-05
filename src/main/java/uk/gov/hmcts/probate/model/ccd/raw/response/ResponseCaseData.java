@@ -98,6 +98,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final DocumentLink statementOfTruthDocument;
+    private final DocumentLink solsCoversheetDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> probateNotificationsGenerated;
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
