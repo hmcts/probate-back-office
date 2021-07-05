@@ -232,6 +232,7 @@
             </p>
             {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
             <p>{% for executor in case_details.case_data.executorsApplying %}
+                {% if executor.value.applyingExecutorType != "TrustCorporation" %}
                 {% if loop.first %}
                 <span style="text-transform: capitalize;"><strong>
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
@@ -247,7 +248,6 @@
                 </strong></span>
                 {% else %}
                 <br/>
-                <span>and </span>
                 <span style="text-transform: capitalize;"><strong>
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                </strong></span>
@@ -261,10 +261,17 @@
                 {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
                 </strong></span>
                 {% endif %}
+                {% endif %}
                 {% endfor %}
             </p>
             {% else %}
             <p>
+                {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
+                {% set showProbatePractitioner = false %}
+                {% else %}
+                {% set showProbatePractitioner = true %}
+                {% endif %}
+                {% if (case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithApp" or case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithSDJ") and showProbatePractitioner %}
                 <strong>
                     <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
                 </strong> of
@@ -277,9 +284,10 @@
                     {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%} {{case_details.case_data.primaryApplicantAddress.PostCode}}{% endif %}
                     {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%} {{case_details.case_data.primaryApplicantAddress.Country}}{% endif %}</span>
                 </strong>
+                {% endif %}
                 {% for executor in case_details.case_data.executorsApplying %}
+                {% if executor.value.applyingExecutorType != "TrustCorporation" %}
                 <br/>
-                <span>and </span>
                 <span style="text-transform: capitalize;"><strong>
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                </strong></span>
@@ -292,6 +300,7 @@
                 {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
                 {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
                 </strong></span>
+                {% endif %}
                 {% endfor %}
             </p>
             {% endif %}
