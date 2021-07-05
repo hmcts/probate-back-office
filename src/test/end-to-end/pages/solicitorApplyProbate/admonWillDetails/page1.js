@@ -8,12 +8,12 @@ module.exports = async function () {
     const I = this;
     await I.waitForElement('#willAccessOriginal');
     await I.runAccessibilityTest();
-    await I.click({css: '#willAccessOriginal-No'});
+    await I.click({css: '#willAccessOriginal_No'});
     await I.waitForVisible('#willAccessOriginalHintText');
     await I.waitForVisible('#noOriginalWillAccessReason');
     await I.waitForText(admonWillDetailsConfig.page1_noAccessOriginalWillLabel);
 
-    await I.click({css: `#willAccessOriginal-${admonWillDetailsConfig.optionYes}`});
+    await I.click({css: `#willAccessOriginal_${admonWillDetailsConfig.optionYes}`});
     await I.waitForInvisible({css: '#willAccessOriginalHintText'});
     await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
 
@@ -22,7 +22,7 @@ module.exports = async function () {
     await I.fillField({css: '#originalWillSignedDate-year'}, admonWillDetailsConfig.page1_originalWillSignedDate_year);
     await I.click(`#willAccessOriginal-${admonWillDetailsConfig.optionYes}`);
 
-    await I.click({css: `#willHasCodicils-${admonWillDetailsConfig.optionYes}`});
+    await I.click({css: `#willHasCodicils_${admonWillDetailsConfig.optionYes}`});
     const addBtn = {css: '#codicilAddedDateList button'};
     await I.waitForVisible(addBtn);
     await I.scrollTo(addBtn);

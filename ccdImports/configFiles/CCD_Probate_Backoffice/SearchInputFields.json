@@ -12,5 +12,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDateOfDeath", "Label": "Deceased date of death", "DisplayOrder": 11},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 12},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "Label": "Case type", "DisplayOrder": 13},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "latestGrantReissueDate", "Label": "Last grant reissue date", "DisplayOrder": 14}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "latestGrantReissueDate", "Label": "Last grant reissue date", "DisplayOrder": 14},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "DisplayOrder": 15}
 ]

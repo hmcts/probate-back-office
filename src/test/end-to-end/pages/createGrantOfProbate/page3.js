@@ -54,7 +54,7 @@ module.exports = async function (crud) {
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
-            await I.wait(testConfig.ManualDelayShort);
+            await I.wait(testConfig.ManualDelayMedium);
         }
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page3_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page3_name_difference);

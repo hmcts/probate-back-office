@@ -345,6 +345,9 @@ public class CallbackResponseTransformerTest {
         .applyingExecutorName(SOLICITOR_SOT_NAME)
         .build();
 
+    private static final AdditionalExecutorApplying ADDITIONAL_EXECUTOR_APPLYING_SECOND =
+        AdditionalExecutorApplying.builder().applyingExecutorName("James Smith").build();
+
     private static final AdditionalExecutorNotApplying ADDITIONAL_EXECUTOR_NOT_APPLYING =
         AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorName(SOLICITOR_SOT_NAME)
@@ -2440,6 +2443,44 @@ public class CallbackResponseTransformerTest {
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextSingleExec() {
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+
+        String professionalName = caseDetailsMock.getData().getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
+            professionalName);
+
+        assertEquals("The executor Andy Middlename Test: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecs() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_NAME).build();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplying));
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
+        CaseData caseData = caseDataBuilder.build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executors Andy Middlename Test, James Smith, applicant forename applicant surname: ",
+            executorNames);
     }
 
     @Test

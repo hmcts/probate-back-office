@@ -9,7 +9,7 @@ module.exports = async function () {
     await I.waitForElement({css: '#willAccessOriginal'});
     await I.runAccessibilityTest();
 
-    await I.click({css: '#willAccessOriginal-No'});
+    await I.click({css: '#willAccessOriginal_No'});
     await I.waitForVisible({css: '#willAccessOriginalHintText'});
     await I.waitForVisible({css: '#noOriginalWillAccessReason'});
     await I.waitForText(grantOfProbateConfig.page1_noAccessOriginalWillLabel);
@@ -22,7 +22,7 @@ module.exports = async function () {
     await I.fillField({css: '#originalWillSignedDate-month'}, grantOfProbateConfig.page1_originalWillSignedDate_month);
     await I.fillField({css: '#originalWillSignedDate-year'}, grantOfProbateConfig.page1_originalWillSignedDate_year);
 
-    await I.click({css: `#willHasCodicils-${grantOfProbateConfig.optionYes}`});
+    await I.click({css: `#willHasCodicils_${grantOfProbateConfig.optionYes}`});
     const addBtn = {css: '#codicilAddedDateList button'};
     await I.waitForVisible(addBtn);
     await I.scrollTo(addBtn);

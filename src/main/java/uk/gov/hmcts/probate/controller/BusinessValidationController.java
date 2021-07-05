@@ -281,6 +281,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/fail-qa", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> caseFailQa(@RequestBody CallbackRequest callbackRequest) {
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
+    }
+
+
     @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> caseEscalated(
             @RequestBody CallbackRequest callbackRequest,
