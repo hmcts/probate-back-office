@@ -41,7 +41,7 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   the printed <a href="#" target="_blank">coversheet</a> or your reference number 1 written on a sheet of paper
+*   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
 *   the inheritance tax form IHT207
 *   renunciation form for Tim Smith
 *   renunciation form for John Smith
