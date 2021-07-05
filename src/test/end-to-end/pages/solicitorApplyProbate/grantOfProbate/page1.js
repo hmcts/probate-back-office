@@ -8,8 +8,8 @@ module.exports = async function () {
     await I.waitForElement('#willAccessOriginal');
     await I.runAccessibilityTest();
 
-    await I.click(`#willAccessOriginal-${grantOfProbateConfig.optionYes}`);
-    await I.click(`#willHasCodicils-${grantOfProbateConfig.optionNo}`);
+    await I.click(`#willAccessOriginal_${grantOfProbateConfig.optionYes}`);
+    await I.click(`#willHasCodicils_${grantOfProbateConfig.optionNo}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

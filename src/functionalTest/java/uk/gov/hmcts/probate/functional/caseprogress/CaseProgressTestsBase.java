@@ -20,6 +20,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     protected static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     protected static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    protected static final String CASE_FAIL_QA_URL = "/case/fail-qa";
 
     protected static final String CASE_STOPPED_URL = "/case/case-stopped";
     protected static final String CASE_ESCALATED_URL = "/case/case-escalated";
@@ -56,6 +57,35 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = replaceAllInString(expected, "{code-branch}", TaskState.CODE_BRANCH);
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
+
+        switch (jsonPath.get("data.caseType").toString()) {
+            case "gop":
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                expected = replaceAllInString(expected,"<executorNotApplying1/>",
+                    "Solicitor_fn Solicitor_ln");
+                expected = replaceAllInString(expected,"<executorNotApplying2/>",
+                    "exec2 Renounced");
+                expected = replaceAllInString(expected,"<will/>",
+                    "the original will and any codicils");
+                break;
+            case "admonWill":
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                expected = replaceAllInString(expected, "<will/>",
+                    "the original will and any codicils");
+                break;
+            case "intestacy":
+                expected = replaceAllInString(expected,"{willExists}", "");
+                break;
+            default:
+                expected = replaceAllInString(expected,"{willExists}",
+                    "<li>the original will</li>");
+                break;
+        }
+
+        expected = expected.replaceAll(Pattern.quote("<ihtForm/>"),
+            "the inheritance tax form IHT205 and IHT217");
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
