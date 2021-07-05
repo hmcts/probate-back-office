@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -112,6 +113,7 @@ public class CallbackResponseTransformer {
     private final TaskListUpdateService taskListUpdateService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
+    private final PDFManagementService pdfManagementService;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
@@ -431,7 +433,7 @@ public class CallbackResponseTransformer {
                 .build();
             paymentsList.add(new CollectionMember<Payment>(payment));
         }
-        
+
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             .feeForNonUkCopies(feeForNonUkCopies)
             .feeForUkCopies(feeForUkCopies)
@@ -453,7 +455,21 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
             responseCaseDataBuilder.caseType(caseType);
         }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
 
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document, Document coversheet,
+                                      String caseType) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+            getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+            responseCaseDataBuilder.caseType(caseType);
+        }
+
+        responseCaseDataBuilder.solsCoversheetDocument(coversheet.getDocumentLink());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -540,7 +556,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
         boolean doTransform = doTransform(callbackRequest);
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), 
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             doTransform);
         solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
             authToken);
@@ -640,6 +656,7 @@ public class CallbackResponseTransformer {
             .totalFee(transformToString(caseData.getTotalFee()))
 
             .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
+            .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .casePrinted(caseData.getCasePrinted())
             .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
             .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())

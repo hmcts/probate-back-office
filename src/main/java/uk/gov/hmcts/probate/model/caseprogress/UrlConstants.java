@@ -19,6 +19,8 @@ public class UrlConstants {
     public static final String REVIEW_OR_SUBMIT_URL_TEMPLATE = URL_PREFIX
         + "<CASE_ID>/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1";
 
+    public static final String TL_COVERSHEET_URL_TEMPLATE = "<DOCUMENT_LINK>";
+
     private UrlConstants() {
         throw new IllegalStateException("Utility class");
     }

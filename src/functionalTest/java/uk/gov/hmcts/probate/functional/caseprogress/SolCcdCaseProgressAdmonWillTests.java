@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
+
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
 
@@ -106,6 +107,24 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogressadmonwill/12-issueGrant.json", GENERATE_GRANT_URL,
             "/generate-grant-html.txt");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsAdmonWill() {
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04-caseCreated");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithCodicils() {
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04a-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04a-caseCreatedWillHasCodicils");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithIht217() {
+        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04b-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/admonwill/04b-caseCreatedIHT217");
     }
 
     private String getUpdateAdmonWillDtlsUrl() {
