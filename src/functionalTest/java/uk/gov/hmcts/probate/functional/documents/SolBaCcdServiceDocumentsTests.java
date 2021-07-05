@@ -946,8 +946,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
