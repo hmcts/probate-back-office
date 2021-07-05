@@ -593,41 +593,36 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
-        var plural = "";
         var believePlural = "s";
-        if (listOfApplyingExecs.size() > 1) {
-            plural = "s";
+        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
             believePlural = "";
         }
 
-        var executorNames = "";
         var professionalName = caseDetails.getData().getSolsSOTName();
         var confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
                 && caseDetails.getData().getSolsWillType().matches("WillLeft")) {
-            executorNames = "The executor" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                     + " confirm the following:\n\n"
-                    + "I, " + professionalName + ", have provided a copy of this application to the executor" + plural
-                    + " named below.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"  + plural
-                    + " that in signing the statement of truth I am confirming that the executor"  + plural
+                    + "I, " + professionalName + ", have provided a copy of this application to the executor"
+                    + returnPlural(listOfApplyingExecs) + " named below.\n\n"
+                    + "I, " + professionalName + ", have informed the executor"  + returnPlural(listOfApplyingExecs)
+                    + " that in signing the statement of truth I am confirming that the executor"
+                    + returnPlural(listOfApplyingExecs)
                     + " believe"  + believePlural + " the facts set out in this legal statement are true.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"   + plural
-                    + " of the consequences if it should subsequently appear that the executor"  + plural
+                    + "I, " + professionalName + ", have informed the executor"   + returnPlural(listOfApplyingExecs)
+                    + " of the consequences if it should subsequently appear that the executor"
+                    + returnPlural(listOfApplyingExecs)
                     + " did not have an honest belief in the facts set out in the legal statement.\n\n"
-                    + "I, " + professionalName + ", have been authorised by the executor"  + plural
+                    + "I, " + professionalName + ", have been authorised by the executor"
+                    + returnPlural(listOfApplyingExecs)
                     + " to sign the statement of truth.\n\n"
                     + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                     + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                     + "statement of truth without an honest belief in its truth.\n";
-
-            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
         } else {
-            executorNames = "The applicant" + plural + " ";
 
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                     + " confirm the following:\n\n"
@@ -644,14 +639,43 @@ public class CallbackResponseTransformer {
                     + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                     + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
                     + "statement of truth without an honest belief in its truth.\n";
-
-            executorNames = executorNames + caseDetails.getData().getPrimaryApplicantForenames()
-                    + " " + caseDetails.getData().getPrimaryApplicantSurname();
         }
+
+        String executorNames = setExecutorNames(caseDetails.getData(), listOfApplyingExecs, professionalName);
 
         builder.solsReviewSOTConfirm(confirmSOT);
         builder.solsReviewSOTConfirmCheckbox1Names(executorNames);
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
+    }
+
+    private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs) {
+        var plural = "";
+        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
+            plural = "s";
+        }
+        return plural;
+    }
+
+    public String setExecutorNames(CaseData caseData,
+                                List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
+                                String professionalName) {
+        String executorNames = "";
+        if (caseData.getSolsWillType() != null
+            && caseData.getSolsWillType().matches("WillLeft")) {
+            executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
+
+            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
+                    +  ", " + caseData.getPrimaryApplicantForenames()
+                    + " " + caseData.getPrimaryApplicantSurname() + ": ";
+            return executorNames;
+        } else {
+            executorNames = "The applicant" + returnPlural(listOfApplyingExecs) + " ";
+
+            executorNames = executorNames + caseData.getPrimaryApplicantForenames()
+                + " " + caseData.getPrimaryApplicantSurname();
+            return executorNames;
+        }
     }
     
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
@@ -947,6 +971,7 @@ public class CallbackResponseTransformer {
             .noOriginalWillAccessReason(caseData.getNoOriginalWillAccessReason())
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
+            .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
             .deathRecords(caseData.getDeathRecords());
 
         if (transform) {

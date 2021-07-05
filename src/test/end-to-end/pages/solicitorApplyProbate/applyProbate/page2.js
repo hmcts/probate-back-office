@@ -18,19 +18,19 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
 
     if (isSolicitorNamedExecutor) {
-        await I.click({css: '#solsSolicitorIsExec-Yes'});
+        await I.click({css: '#solsSolicitorIsExec_Yes'});
         await I.waitForVisible({css: '#applyForProbatePageHint1'});
 
         if (isSolicitorApplyingExecutor) {
-            await I.click({css: '#solsSolicitorIsApplying-Yes'});
+            await I.click({css: '#solsSolicitorIsApplying_Yes'});
             await I.waitForVisible({css: '#applyForProbatePageHint1'});
         } else {
-            await I.click({css: '#solsSolicitorIsApplying-No'});
+            await I.click({css: '#solsSolicitorIsApplying_No'});
             await I.waitForVisible({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
             await I.click({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
         }
     } else {
-        await I.click({css: '#solsSolicitorIsExec-No'});
+        await I.click({css: '#solsSolicitorIsExec_No'});
         await I.click({css: `#solsSolicitorIsApplying-${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
         if (isSolicitorApplyingExecutor) {
             await I.waitForVisible({css: '#applyForProbatePageHint2'});
@@ -40,13 +40,13 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
 
     await I.click(applyProbateConfig.UKpostcodeLink);
-    await I.fillField('#solsSolicitorAddress_AddressLine1', applyProbateConfig.address_line1);
-    await I.fillField('#solsSolicitorAddress_AddressLine2', applyProbateConfig.address_line2);
-    await I.fillField('#solsSolicitorAddress_AddressLine3', applyProbateConfig.address_line3);
-    await I.fillField('#solsSolicitorAddress_PostTown', applyProbateConfig.address_town);
-    await I.fillField('#solsSolicitorAddress_County', applyProbateConfig.address_county);
-    await I.fillField('#solsSolicitorAddress_PostCode', applyProbateConfig.address_postcode);
-    await I.fillField('#solsSolicitorAddress_Country', applyProbateConfig.address_country);
+    await I.fillField('#solsSolicitorAddress__detailAddressLine1', applyProbateConfig.address_line1);
+    await I.fillField('#solsSolicitorAddress__detailAddressLine2', applyProbateConfig.address_line2);
+    await I.fillField('#solsSolicitorAddress__detailAddressLine3', applyProbateConfig.address_line3);
+    await I.fillField('#solsSolicitorAddress__detailPostTown', applyProbateConfig.address_town);
+    await I.fillField('#solsSolicitorAddress__detailCounty', applyProbateConfig.address_county);
+    await I.fillField('#solsSolicitorAddress__detailPostCode', applyProbateConfig.address_postcode);
+    await I.fillField('#solsSolicitorAddress__detailCountry', applyProbateConfig.address_country);
 
     await I.fillField('#solsSolicitorEmail', applyProbateConfig.page2_sol_email);
     await I.fillField('#solsSolicitorPhoneNumber', applyProbateConfig.page2_phone_num);
