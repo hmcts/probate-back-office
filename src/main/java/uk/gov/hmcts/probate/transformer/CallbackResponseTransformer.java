@@ -780,6 +780,7 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertInEnglish(caseData.getDeceasedForeignDeathCertInEnglish())
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .iht217(caseData.getIht217())
+            .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
             .deathRecords(caseData.getDeathRecords());
 
         if (transform) {
