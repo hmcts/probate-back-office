@@ -49,9 +49,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
-    private static final String ADD_EXEC_ONE = "and Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_ONE = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
-    private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
+    private static final String ADD_EXEC_TWO = "Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
     private static final String IHT_NET = "8,000.00";
     private static final String IHT_GROSS = "10,000.00";
@@ -931,8 +931,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                         GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(DIED_ON_OR_BEFORE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
