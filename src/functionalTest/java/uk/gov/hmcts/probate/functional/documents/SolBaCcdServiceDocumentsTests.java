@@ -962,9 +962,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -979,9 +979,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -996,9 +996,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
@@ -1013,9 +1013,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
