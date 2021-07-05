@@ -10,7 +10,7 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.waitForText(applyProbateConfig.page2_subheading);
     await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
 
-    await I.click(`#solsSolicitorWillSignSOT-${applyProbateConfig.page2_optionNo}`);
+    await I.click(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
     await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
     await I.fillField('#solsSurname', applyProbateConfig.page2_sol_surname);
 
@@ -31,7 +31,7 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
         }
     } else {
         await I.click({css: '#solsSolicitorIsExec_No'});
-        await I.click({css: `#solsSolicitorIsApplying-${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
+        await I.click({css: `#solsSolicitorIsApplying_${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
         if (isSolicitorApplyingExecutor) {
             await I.waitForVisible({css: '#applyForProbatePageHint2'});
         }

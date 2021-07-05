@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
 const testConfig = require('src/test/config.js');
 
 module.exports = async function (optName) {
@@ -22,7 +23,7 @@ module.exports = async function (optName) {
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
     const morePartnersHoldingPowerReservedVisible = (await I.grabNumberOfVisibleElements ({css: '#morePartnersHoldingPowerReserved'})) > 0;
-    const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners-Yes'})) > 0;
+    const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners_Yes'})) > 0;
     const practitionersPosnInTrustVisible = (await I.grabNumberOfVisibleElements ({css: '#probatePractitionersPositionInTrust'})) > 0;
 
     assert(isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);

@@ -7,7 +7,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
     await I.runAccessibilityTest();
-    const dispNoticeLocator = {css: `#dispenseWithNotice-${grantOfProbateConfig.page2_dispenseWithNotice}`};
+    const dispNoticeLocator = {css: `#dispenseWithNotice_${grantOfProbateConfig.page2_dispenseWithNotice}`};
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayMedium);
     }
@@ -25,19 +25,19 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {
-        await I.scrollTo('#titleAndClearingType_TCTNoT');
+        await I.scrollTo('#titleAndClearingType-TCTNoT');
     }
 
-    await I.waitForClickable({css: '#titleAndClearingType_TCTNoT'});
-    await I.click({css: '#titleAndClearingType_TCTNoT'});
+    await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
+    await I.click({css: '#titleAndClearingType-TCTNoT'});
 
-    await I.waitForClickable({css: '#titleAndClearingType_TCTTrustCorpResWithApp'});
-    await I.click({css: '#titleAndClearingType_TCTTrustCorpResWithApp'});
+    await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.dontSeeElement({css: '#anyOtherApplyingPartners_Yes'});
     await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
 
-    await I.click({css: '#titleAndClearingType_TCTPartOthersRenouncing'});
+    await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
 
     await I.scrollTo({css: '#anyOtherApplyingPartners_Yes'});
     await I.click({css: '#anyOtherApplyingPartners_Yes'});
@@ -45,22 +45,22 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.click({css: '#anyOtherApplyingPartners_No'});
     await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'});
 
-    await I.scrollTo({css: '#titleAndClearingType_TCTTrustCorpResWithApp'});
-    await I.click({css: '#titleAndClearingType_TCTTrustCorpResWithApp'});
+    await I.scrollTo({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.waitForElement('#trustCorpName');
     await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
     await I.click(grantOfProbateConfig.page2_trustCorpPostcodeLink);
-    await I.fillField('#trustCorpAddress__AddressLine1', grantOfProbateConfig.address_line1);
-    await I.fillField('#trustCorpAddress__AddressLine2', grantOfProbateConfig.address_line2);
-    await I.fillField('#trustCorpAddress__AddressLine3', grantOfProbateConfig.address_line3);
-    await I.fillField('#trustCorpAddress__PostTown', grantOfProbateConfig.address_town);
-    await I.fillField('#trustCorpAddress__County', grantOfProbateConfig.address_county);
-    await I.fillField('#trustCorpAddress__PostCode', grantOfProbateConfig.address_postcode);
-    await I.fillField('#trustCorpAddress__Country', grantOfProbateConfig.address_country);
+    await I.fillField('#trustCorpAddress__detailAddressLine1', grantOfProbateConfig.address_line1);
+    await I.fillField('#trustCorpAddress__detailAddressLine2', grantOfProbateConfig.address_line2);
+    await I.fillField('#trustCorpAddress__detailAddressLine3', grantOfProbateConfig.address_line3);
+    await I.fillField('#trustCorpAddress__detailPostTown', grantOfProbateConfig.address_town);
+    await I.fillField('#trustCorpAddress__detailCounty', grantOfProbateConfig.address_county);
+    await I.fillField('#trustCorpAddress__detailPostCode', grantOfProbateConfig.address_postcode);
+    await I.fillField('#trustCorpAddress__detailCountry', grantOfProbateConfig.address_country);
 
     await I.waitForText(grantOfProbateConfig.page2_waitForAnyOtherTcPartners);
-    await I.click({css: '#anyOtherApplyingPartnersTrustCorp-Yes'});
+    await I.click({css: '#anyOtherApplyingPartnersTrustCorp_Yes'});
 
     await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
     await I.click('#additionalExecutorsTrustCorpList > div > button');

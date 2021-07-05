@@ -2,12 +2,14 @@
 
 const grantOfProbateConfig = require('./grantOfProbate');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForClickable({css: `#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`});
+
+    await I.waitForEnabled({css: `#dispenseWithNoticeLeaveGiven_${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`});
     await I.runAccessibilityTest();
-    await I.click(`#dispenseWithNoticeLeaveGiven-${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`);
+    await I.click(`#dispenseWithNoticeLeaveGiven_${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`);
 
     await I.fillField('#dispenseWithNoticeOverview', grantOfProbateConfig.page3_dispenseWithNoticeOverview);
     await I.fillField('#dispenseWithNoticeSupportingDocs', grantOfProbateConfig.page3_dispenseWithNoticeSupportingDocs);
