@@ -369,7 +369,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -380,7 +380,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -402,7 +402,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("oxfordGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -413,7 +413,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -424,7 +424,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("leedsGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -435,7 +435,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("liverpoolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -446,7 +446,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("brightonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -457,7 +457,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("londonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -468,7 +468,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("newcastleGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -479,7 +479,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -490,7 +490,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
