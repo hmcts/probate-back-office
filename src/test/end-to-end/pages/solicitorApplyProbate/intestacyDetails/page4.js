@@ -10,5 +10,5 @@ module.exports = async function () {
 
     await I.fillField('#solsAdditionalInfo', intestacyDetailsConfig.page3_applicationNotes);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

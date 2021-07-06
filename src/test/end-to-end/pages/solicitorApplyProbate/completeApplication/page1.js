@@ -21,5 +21,5 @@ module.exports = async function (willType = 'WillLeft') {
 
     await I.click(`#solsSOTNeedToUpdate_${completeApplicationConfig.optionNo}`);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

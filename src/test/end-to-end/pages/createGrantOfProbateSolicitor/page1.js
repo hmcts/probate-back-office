@@ -54,6 +54,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
+        await I.waitForEnabled({css: `#caseHandedOffToLegacySite-No`});
+        await I.click('#caseHandedOffToLegacySite-No');
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

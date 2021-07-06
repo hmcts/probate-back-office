@@ -35,24 +35,24 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+    await I.selectNewCase(true);
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, true);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.cyaPage();
 
     await I.seeEndState(endState);
 
-    const caseRef = await I.getCaseRefFromUrl();
+    const caseRef = await I.getCaseRefFromUrl(true);
 
-    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
+    await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig, null, null, true);
 
     endState = 'Grant of probate created';
 
     console.info('Deceased details');
 
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepName, true);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
     await I.deceasedDetailsPage3();
@@ -60,9 +60,9 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.cyaPage();
 
     await I.seeEndState(endState);
-    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
-    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
+    await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig, null, null, true);
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig, null, null, true);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
@@ -70,7 +70,7 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepName, true);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2(false, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.grantOfProbatePage3();
@@ -80,23 +80,23 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.cyaPage();
 
     await I.seeEndState(endState);
-    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
 
     const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
-    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
-    await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls, null, null, true);
+    await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls, null, null, true);
 
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true, true);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
-    await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig, false, true);
+    await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig, null, null, true);
 
     console.info('Complete application');
 
     nextStepName = 'Complete application';
     endState = 'Case created';
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepName, true);
     await I.completeApplicationPage1();
     await I.completeApplicationPage2();
     await I.completeApplicationPage3();
@@ -107,15 +107,15 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
     await I.completeApplicationPage8();
 
     await I.seeEndState(endState);
-    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
+    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
+    await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig, null, null, true);
 
     console.info('Sign out and login as case worker');
 
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', true);
 
     // IdAM - Caseworker
-    await I.authenticateWithIdamIfAvailable(false, true);
+    await I.authenticateWithIdamIfAvailable(false);
     await I.navigateToCaseCaseworker(caseRef);
     console.info('Amend details');
     nextStepName = 'Amend case details';

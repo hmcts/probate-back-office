@@ -11,5 +11,5 @@ module.exports = async function () {
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayMedium);
     }
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

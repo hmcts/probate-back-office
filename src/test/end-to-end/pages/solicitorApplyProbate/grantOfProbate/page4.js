@@ -64,5 +64,5 @@ module.exports = async function (isSolicitorApplying = false) {
 
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

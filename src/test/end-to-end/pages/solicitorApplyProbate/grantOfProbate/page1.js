@@ -37,5 +37,5 @@ module.exports = async function () {
     await I.fillField({css: '#dateCodicilAdded-month'}, grantOfProbateConfig.page1_codicilDate_month);
     await I.fillField({css: '#dateCodicilAdded-year'}, grantOfProbateConfig.page1_codicilDate_year);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

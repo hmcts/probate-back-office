@@ -1,7 +1,6 @@
 'use strict';
 
 const assert = require('assert');
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
 const testConfig = require('src/test/config.js');
 
 module.exports = async function (optName) {

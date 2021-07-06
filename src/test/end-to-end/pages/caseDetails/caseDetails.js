@@ -2,12 +2,12 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
+module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, forXui = testConfig.TestForXUI) {
     const I = this;
 
     if (tabConfigFile.tabName) {
         let tabXPath;
-        if (testConfig.TestForXUI) {
+        if (forXui) {
             tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
         } else {
             tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
@@ -18,7 +18,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
 
-    await I.clickTab(tabConfigFile.tabName);
+    await I.clickTab(tabConfigFile.tabName, forXui);
     await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {

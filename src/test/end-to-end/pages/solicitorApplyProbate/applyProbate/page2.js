@@ -10,6 +10,7 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.waitForText(applyProbateConfig.page2_subheading);
     await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
 
+    await I.waitForElement(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
     await I.click(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
     await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
     await I.fillField('#solsSurname', applyProbateConfig.page2_sol_surname);
@@ -52,5 +53,5 @@ module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorAp
     await I.fillField('#solsSolicitorPhoneNumber', applyProbateConfig.page2_phone_num);
     await I.fillField('#solsSolicitorAppReference', applyProbateConfig.page2_app_ref);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

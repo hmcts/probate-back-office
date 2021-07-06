@@ -2,7 +2,6 @@
 
 const grantOfProbateConfig = require('./grantOfProbate');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
@@ -17,5 +16,5 @@ module.exports = async function () {
     await I.click('#dispenseWithNoticeOtherExecsList > div > button');
     await I.fillField('#dispenseWithNoticeOtherExecsList_0_notApplyingExecutorName', grantOfProbateConfig.page3_dispenseWithNoticeName);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
