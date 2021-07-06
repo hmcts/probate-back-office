@@ -35,7 +35,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
         await I.caseProgressStopEscalateIssueDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -47,15 +47,15 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
 
         console.info('Add application details');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#willAccessOriginal-Yes'}},
+            {locator: {css: '#willAccessOriginal_Yes'}},
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
-            {locator: {css: '#willHasCodicils-No'}}]);
+            {locator: {css: '#willHasCodicils_No'}}]);
 
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#dispenseWithNotice-No'}},
+            {locator: {css: '#dispenseWithNotice_No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
         ]);
 

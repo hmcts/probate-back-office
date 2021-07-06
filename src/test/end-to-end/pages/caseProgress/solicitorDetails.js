@@ -6,7 +6,7 @@ module.exports = async function (caseProgressConfig) {
     const I = this;
     await I.waitForElement('#solsSolicitorFirmName');
     await I.fillField('#solsSolicitorFirmName', caseProgressConfig.solFirmName);
-    await I.click('#solsSolicitorWillSignSOT-Yes');
+    await I.click('#solsSolicitorWillSignSOT_Yes');
     await I.fillField('#solsSOTForenames', caseProgressConfig.solFirstname);
     await I.fillField('#solsSOTSurname', caseProgressConfig.solSurname);
     await I.click('#solsSolicitorIsExec-Yes');

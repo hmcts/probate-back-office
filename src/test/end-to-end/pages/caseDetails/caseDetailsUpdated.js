@@ -2,12 +2,12 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication) {
+module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication, forXui = testConfig.TestForXUI) {
 
     const I = this;
 
     await I.see(caseRef);
-    await I.clickTab(tabConfigFile.tabName);
+    await I.clickTab(tabConfigFile.tabName, forXui);
     await I.runAccessibilityTest();
 
     if (tabUpdates) {

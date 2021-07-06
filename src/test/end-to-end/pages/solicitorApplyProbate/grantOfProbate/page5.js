@@ -9,5 +9,5 @@ module.exports = async function () {
     await I.runAccessibilityTest();
     await I.fillField('#furtherEvidenceForApplication', grantOfProbateConfig.page5_applicationNotes);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

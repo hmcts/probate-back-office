@@ -20,7 +20,7 @@ module.exports = async function () {
     await I.fillField({css: '#originalWillSignedDate-day'}, admonWillDetailsConfig.page1_originalWillSignedDate_day);
     await I.fillField({css: '#originalWillSignedDate-month'}, admonWillDetailsConfig.page1_originalWillSignedDate_month);
     await I.fillField({css: '#originalWillSignedDate-year'}, admonWillDetailsConfig.page1_originalWillSignedDate_year);
-    await I.click(`#willAccessOriginal-${admonWillDetailsConfig.optionYes}`);
+    await I.click(`#willAccessOriginal_${admonWillDetailsConfig.optionYes}`);
 
     await I.click({css: `#willHasCodicils_${admonWillDetailsConfig.optionYes}`});
     const addBtn = {css: '#codicilAddedDateList button'};
@@ -32,9 +32,10 @@ module.exports = async function () {
         await I.wait(testConfig.ManualDelayShort);
     }
 
-    await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-day'}, admonWillDetailsConfig.page1_codicilDate_day);
-    await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
-    await I.fillField({css: '#codicilAddedDateList_0_dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
+    // exui bug - generating multiple elements with same id
+    await I.fillField({css: '#dateCodicilAdded-day'}, admonWillDetailsConfig.page1_codicilDate_day);
+    await I.fillField({css: '#dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
+    await I.fillField({css: '#dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

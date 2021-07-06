@@ -1,8 +1,10 @@
 module.exports = {
-    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3451',
+    // use for when we know we want to use xui, e.g. when swapping between xui and ccd
+    TestXuiUrl: process.env.TEST_XUI_E2E_URL || 'http://localhost:3455',
+    TestCcdUrl: process.env.TEST_CCD_E2E_URL || 'http://localhost:3451',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
-    TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
+    TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',

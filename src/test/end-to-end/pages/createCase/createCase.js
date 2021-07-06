@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const createCaseConfig = require('./createCaseConfig');
 
-module.exports = async function (jurisdiction, caseType, event) {
+module.exports = async function (jurisdiction, caseType, event, forXui = testConfig.TestForXUI) {
 
     const I = this;
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
@@ -20,5 +20,5 @@ module.exports = async function (jurisdiction, caseType, event) {
     await I.retry(5).selectOption('#cc-event', event);
 
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
-    await I.waitForNavigationToComplete(createCaseConfig.startButton);
+    await I.waitForNavigationToComplete(createCaseConfig.startButton, forXui);
 };

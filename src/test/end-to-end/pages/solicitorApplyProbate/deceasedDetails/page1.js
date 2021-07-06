@@ -18,5 +18,5 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
     await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
