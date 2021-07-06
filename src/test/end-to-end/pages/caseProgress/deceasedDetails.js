@@ -15,5 +15,5 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField('#deceasedDateOfDeath-month', caseProgressConfig.deathMonth);
     await I.fillField('#deceasedDateOfDeath-year', caseProgressConfig.deathYear);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

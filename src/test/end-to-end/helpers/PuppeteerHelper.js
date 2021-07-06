@@ -24,6 +24,7 @@ class PuppeteerHelper extends Helper {
         }
 
         if (locator) {
+            await page.waitForSelector(locator);
             promises.push(page.click(locator));
         }
         await Promise.all(promises);

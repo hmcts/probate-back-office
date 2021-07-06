@@ -1,7 +1,7 @@
 'use strict';
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function () {
+module.exports = async function (forXui) {
     const I = this;
     await I.waitForElement({css: '#next-step'});
 
@@ -9,5 +9,5 @@ module.exports = async function () {
     await I.selectOption({css: '#next-step'}, penultimateOpt);
     await I.waitForEnabled({css: commonConfig.goButton});
 
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.goButton, forXui);
 };

@@ -12,5 +12,5 @@ module.exports = async function (elementLocators) {
         await I.click(elementLocators[i]);
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

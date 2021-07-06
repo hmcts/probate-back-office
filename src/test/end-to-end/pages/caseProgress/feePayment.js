@@ -9,5 +9,5 @@ module.exports = async function (caseProgressConfig) {
     await I.selectOption('select', caseProgressConfig.FeeAccount);
     await I.selectOption('#solsPBANumber', caseProgressConfig.PBAANumber);
     await I.fillField('#solsPBAPaymentReference', caseProgressConfig.PaymentReference);
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

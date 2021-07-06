@@ -15,8 +15,8 @@ module.exports = async function (caseProgressConfig) {
     await I.waitForClickable(locator);
     await I.click(locator);
     if (!caseProgressConfig.solIsApplying) {
-        await I.waitForVisible('#solsSolicitorNotApplyingReason_PowerReserved');
-        await I.click('#solsSolicitorNotApplyingReason_PowerReserved');
+        await I.waitForVisible('#solsSolicitorNotApplyingReason-PowerReserved');
+        await I.click('#solsSolicitorNotApplyingReason-PowerReserved');
     }
 
     await I.click('#solsSolicitorAddress_solsSolicitorAddress a');

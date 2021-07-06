@@ -2,9 +2,9 @@ module.exports = {
     // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestXuiUrl: process.env.TEST_XUI_E2E_URL || 'http://localhost:3455',
     TestCcdUrl: process.env.TEST_CCD_E2E_URL || 'http://localhost:3451',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
-    TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
+    TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
@@ -21,5 +21,6 @@ module.exports = {
     ManualDelayShort: 0.25,
     ManualDelayMedium: 0.5,
     ManualDelayLong: 0.75,
-    XuiSignoutCssSelector: 'nav.hmcts-header__navigation ul li:last-child a'
+    XuiSignoutCssSelector: 'nav.hmcts-header__navigation ul li:last-child a',
+    CcdSignoutCssSelector: '#sign-out'
 };

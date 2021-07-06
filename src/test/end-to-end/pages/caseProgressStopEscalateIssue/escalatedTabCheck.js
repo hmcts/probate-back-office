@@ -1,5 +1,6 @@
 'use strict';
 const moment = require('moment');
+const testConfig = require('src/test/config.js');
 
 // Solicitor - navigate back to case
 module.exports = async function () {
@@ -13,5 +14,5 @@ module.exports = async function () {
 
     await I.waitForText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`);
 
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.waitForNavigationToComplete(testConfig.XuiSignoutCssSelector, true);
 };

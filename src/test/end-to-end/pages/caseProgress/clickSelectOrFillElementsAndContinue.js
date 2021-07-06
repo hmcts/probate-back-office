@@ -1,7 +1,7 @@
 'use strict';
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (elementLocators) {
+module.exports = async function (elementLocators, forXui) {
     const I = this;
 
     /* eslint-disable no-await-in-loop */
@@ -19,5 +19,5 @@ module.exports = async function (elementLocators) {
         }
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, forXui);
 };

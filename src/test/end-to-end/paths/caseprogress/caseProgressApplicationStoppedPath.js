@@ -15,7 +15,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
     try {
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase(true);
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, true);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, true);
         await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 
         console.info('Initial application entry');
@@ -33,7 +33,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-No'}, {css: '#appointExecNo-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_No'}, {css: '#appointExecNo_No'}]);
         await I.caseProgressStandardDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -49,13 +49,13 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
-            {locator: {css: '#willHasCodicils_No'}}]);
+            {locator: {css: '#willHasCodicils_No'}}], true);
 
         console.info('Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#dispenseWithNotice_No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
-        ]);
+        ], true);
 
         console.info('Remaining application details');
 
@@ -64,8 +64,8 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias_No'}},
             {locator: {css: '#primaryApplicantIsApplying_No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason_MentallyIncapable'}},
-            {locator: {css: '#otherExecutorExists_No'}}]);
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
+            {locator: {css: '#otherExecutorExists_No'}}], true);
 
         await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');

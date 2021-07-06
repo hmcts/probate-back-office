@@ -1,5 +1,6 @@
 'use strict';
 const caseProgressConfig = require('./caseProgressConfig');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
@@ -9,5 +10,5 @@ module.exports = async function () {
 
     await I.waitForText(caseProgressConfig.AppStoppedTabCheckText);
 
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.waitForNavigationToComplete(testConfig.XuiSignoutCssSelector, true);
 };

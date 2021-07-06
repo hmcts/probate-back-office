@@ -15,5 +15,5 @@ module.exports = async function () {
     assert (formHtml.includes(caseProgressConfig.deceasedAddrTown));
     assert (formHtml.includes(caseProgressConfig.deceasedAddrPostcode));
     assert (formHtml.includes(caseProgressConfig.deceasedAddrCountry));
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
