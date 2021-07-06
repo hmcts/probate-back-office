@@ -113,8 +113,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
-    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
-
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
     private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
