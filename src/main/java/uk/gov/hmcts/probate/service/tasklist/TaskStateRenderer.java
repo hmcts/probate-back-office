@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -26,9 +26,9 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
-import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
@@ -235,17 +235,17 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            data.getExecutorsNotApplyingForLegalStatement() == null ? "" : getRenouncingExecutors(data
-            .getExecutorsNotApplyingForLegalStatement()));
+            data.getExecutorsNotApplyingLegalStatement() == null ? "" : getRenouncingExecutors(data
+            .getExecutorsNotApplyingLegalStatement()));
         return keyValue;
     }
 
-    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutor>> executors) {
+    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         return executors.stream()
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getAdditionalExecReasonNotApplying()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getAdditionalExecForenames()
-                + " " + executor.getValue().getAdditionalExecLastname() + "</li>")
+                .getNotApplyingExecutorReason()))
+            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
+                 + "</li>")
             .collect(Collectors.joining());
     }
 }
