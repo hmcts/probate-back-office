@@ -164,7 +164,7 @@ public class CaseDataTestBuilder {
         .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
         .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
         .deceasedForeignDeathCertInEnglish(DECEASED_FOREIGN_DEATH_CERT_IN_ENGLISH)
-        .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION);
+        .deceasedForeignDeathCertTranslation(DECEASED_FOREIGN_DEATH_CERT_TRANSLATION)
         .solsCoversheetDocument(getSolsCoverSheet().getDocumentLink());
     }
 
