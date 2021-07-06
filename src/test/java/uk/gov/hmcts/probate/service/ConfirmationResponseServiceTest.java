@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -26,6 +27,8 @@ import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -739,6 +742,7 @@ public class ConfirmationResponseServiceTest {
         executorsList.add(deadAfterExecutorMock);
         when(ccdDataMock.getExecutors()).thenReturn(executorsList);
         when(ccdDataMock.getSolicitor().getFirmAddress()).thenReturn(solsAddressMock);
+        when(ccdDataMock.getSolsCoversheetDocument()).thenReturn(createSolsCoverSheet().getDocumentLink());
 
         return ccdDataMock;
     }
@@ -768,5 +772,11 @@ public class ConfirmationResponseServiceTest {
         when(caveatDataMock.getSolsPBAPaymentReference()).thenReturn("Sol Pay Ref");
 
         return caveatDataMock;
+    }
+
+    private Document createSolsCoverSheet() {
+        return Document.builder().documentType(DocumentType.SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
+            .build();
     }
 }

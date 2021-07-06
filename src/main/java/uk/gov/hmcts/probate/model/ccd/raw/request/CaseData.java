@@ -263,6 +263,8 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    private final DocumentLink solsCoversheetDocument;
+
     @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
