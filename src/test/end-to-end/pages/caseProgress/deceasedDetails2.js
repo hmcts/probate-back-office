@@ -9,11 +9,11 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField({css: '#applicationGrounds'}, caseProgressConfig.groundsForApplication);
     await I.click({css: '#deceasedDomicileInEngWales-Yes'});
     await I.click({css: 'a.manual-link'});
-    await I.fillField({css: '#deceasedAddress_AddressLine1'}, caseProgressConfig.deceasedAddr1);
-    await I.fillField({css: '#deceasedAddress_PostTown'}, caseProgressConfig.deceasedAddrTown);
-    await I.fillField({css: '#deceasedAddress_County'}, caseProgressConfig.deceasedAddrCounty);
-    await I.fillField({css: '#deceasedAddress_PostCode'}, caseProgressConfig.deceasedAddrPostcode);
-    await I.fillField({css: '#deceasedAddress_Country'}, caseProgressConfig.deceasedAddrCountry);
+    await I.fillField({css: '#deceasedAddress__detailAddressLine1'}, caseProgressConfig.deceasedAddr1);
+    await I.fillField({css: '#deceasedAddress__detailPostTown'}, caseProgressConfig.deceasedAddrTown);
+    await I.fillField({css: '#deceasedAddress__detailCounty'}, caseProgressConfig.deceasedAddrCounty);
+    await I.fillField({css: '#deceasedAddress__detailPostCode'}, caseProgressConfig.deceasedAddrPostcode);
+    await I.fillField({css: '#deceasedAddress__detailCountry'}, caseProgressConfig.deceasedAddrCountry);
     await I.click({css: '#deceasedAnyOtherNames-No'});
     await I.waitForText(caseProgressConfig.IHT205Label);
     await I.waitForText(caseProgressConfig.IHT2207Label);

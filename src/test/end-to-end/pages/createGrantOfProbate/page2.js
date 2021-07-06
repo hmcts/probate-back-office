@@ -30,13 +30,13 @@ module.exports = async function (crud) {
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
         await I.waitForVisible({css: '#primaryApplicantAddress_AddressLine1'});
-        await I.fillField('#primaryApplicantAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#primaryApplicantAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#primaryApplicantAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#primaryApplicantAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.fillField('#primaryApplicantAddress__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#primaryApplicantAddress__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#primaryApplicantAddress__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#primaryApplicantAddress__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#primaryApplicantAddress__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#primaryApplicantAddress__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#primaryApplicantAddress__detailCountry', createGrantOfProbateConfig.address_country);
     }
 
     if (crud === 'update') {

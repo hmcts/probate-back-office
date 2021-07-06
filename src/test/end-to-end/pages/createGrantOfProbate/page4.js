@@ -21,14 +21,14 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
 
-        await I.waitForVisible({css: '#deceasedAddress_AddressLine1'});
-        await I.fillField('#deceasedAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#deceasedAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#deceasedAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#deceasedAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#deceasedAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#deceasedAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#deceasedAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible({css: '#deceasedAddress__detailAddressLine1'});
+        await I.fillField('#deceasedAddress__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#deceasedAddress__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#deceasedAddress__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailCountry', createGrantOfProbateConfig.address_country);
 
         await I.selectOption({css: '#dateOfDeathType'}, createGrantOfProbateConfig.page4_dateOfDeathType);
         await I.fillField({css: '#deceasedDateOfBirth-day'}, createGrantOfProbateConfig.page4_deceasedDob_day);

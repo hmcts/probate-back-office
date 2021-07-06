@@ -28,7 +28,7 @@ module.exports = async function (crud) {
         await I.fillField('#totalFeePaperForm', createGrantOfProbateConfig.page1_totalFee);
 
         await I.selectOption('#paperPaymentMethod', createGrantOfProbateConfig.page1_list4_payment_method);
-        await I.click({css: `#languagePreferenceWelsh-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#languagePreferenceWelsh_${createGrantOfProbateConfig.page1_optionNo}`});
     }
 
     if (crud === 'update') {
