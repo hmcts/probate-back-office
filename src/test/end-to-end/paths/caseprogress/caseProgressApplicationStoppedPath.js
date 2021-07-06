@@ -14,9 +14,9 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
     /* eslint-disable no-console */
     try {
         await I.authenticateWithIdamIfAvailable(true);
-        await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.selectNewCase(true);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, true);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 
         console.info('Initial application entry');
         await I.caseProgressSolicitorDetails(caseProgressConfig);

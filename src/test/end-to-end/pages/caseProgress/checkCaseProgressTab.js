@@ -1,3 +1,5 @@
+'use strict';
+const testConfig = require('src/test/config');
 const assert = require('assert');
 const moment = require('moment');
 
@@ -78,7 +80,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete(testConfig.XuiSignoutCssSelector, true);
     }
 
     return caseRef.replace('#', '');

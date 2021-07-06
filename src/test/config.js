@@ -4,7 +4,7 @@ module.exports = {
     TestCcdUrl: process.env.TEST_CCD_E2E_URL || 'http://localhost:3451',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
-    TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
+    TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
@@ -20,5 +20,6 @@ module.exports = {
     // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
     ManualDelayShort: 0.25,
     ManualDelayMedium: 0.5,
-    ManualDelayLong: 0.75
+    ManualDelayLong: 0.75,
+    XuiSignoutCssSelector: 'nav.hmcts-header__navigation ul li:last-child a'
 };

@@ -17,5 +17,5 @@ module.exports = async function (caseProgressConfig, htmlToCheck) {
         const formHtml = await I.grabAttributeFrom('form', 'outerHTML');
         assert(I.htmlEquals(formHtml, htmlToCheck));
     }
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

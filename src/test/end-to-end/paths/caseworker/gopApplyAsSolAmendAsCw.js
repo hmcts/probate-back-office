@@ -112,7 +112,7 @@ Scenario('09 - Solicitor - Apply Grant of probate Single Executor', async functi
 
     console.info('Sign out and login as case worker');
 
-    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', true);
+    await I.waitForNavigationToComplete(testConfig.XuiSignoutCssSelector, true);
 
     // IdAM - Caseworker
     await I.authenticateWithIdamIfAvailable(false);
