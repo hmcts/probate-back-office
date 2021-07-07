@@ -466,6 +466,7 @@ public class CallbackResponseTransformerTest {
             .solsDeceasedAliasNamesList(ALIAS_NAMES)
             .solsSolicitorAppReference(APP_REF)
             .solsAdditionalInfo(ADDITIONAL_INFO)
+            .caseType(CASE_TYPE_GRANT_OF_PROBATE)
             .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
             .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
             .boEmailGrantReissuedNotification(YES)
