@@ -6,7 +6,6 @@ import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -236,8 +235,8 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            data.getAdditionalExecutorsNotApplying().size() > 0 ? getRenouncingExecutors(data
-                .getAdditionalExecutorsNotApplying()) : "");
+            (data.getAdditionalExecutorsNotApplying() != null) && (data.getAdditionalExecutorsNotApplying().size() > 0)
+                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
@@ -246,7 +245,7 @@ public class TaskStateRenderer {
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
                 .getNotApplyingExecutorReason()))
             .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-                 + "</li>")
+                + "</li>")
             .collect(Collectors.joining());
     }
 }
