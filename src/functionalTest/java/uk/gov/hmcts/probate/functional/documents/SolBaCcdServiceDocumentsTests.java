@@ -33,6 +33,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String REGISTRY_ADDRESS =
         "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull "
             + "StreetBirminghamB4 6DU0300 303 0648";
+    private static final String REGISTRY_ADDRESS_HARLOW =
+        "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
+        + "HarlowCM20 9QE";
     private static final String LONDON_REGISTRY_ADDRESS =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
             + " HolbornLondonWC1V 6NP0300 303 0648 ";
@@ -107,6 +110,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
+
+    private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
+
+    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of John Smith "
+        + "(An official copy of which is available from the Court)";
+    private static String MULTI_EXEC_TC_ADD_EXEC_NAME = "Peter TcExec";
+
+    private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
+        + "granted by this court to the following Executors";
+    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  MyTc"
+        + "19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
+
+
+
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
@@ -663,20 +680,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
         final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(PA));
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-        assertTrue(response.contains(PRESUMED_DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+
 
     }
 
