@@ -38,7 +38,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField({css: '#deceasedDateOfDeath-month'}, createGrantOfProbateConfig.page4_deceasedDod_month);
         await I.fillField({css: '#deceasedDateOfDeath-year'}, createGrantOfProbateConfig.page4_deceasedDod_year);
 
-        await I.click(`#deceasedAnyOtherNames-${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
+        await I.click(`#deceasedAnyOtherNames_${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
         await I.click('#solsDeceasedAliasNamesList > div > button');
         await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);

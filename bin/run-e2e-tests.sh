@@ -20,9 +20,9 @@ export TEST_USER_EMAIL="probatebackoffice@gmail.com"
 export TEST_USER_PASSWORD="Monday01"
 
 
-export PROF_USER_EMAIL="probatesolicitorpreprod@gmail.com"
-export PROF_USER_PASSWORD="Monday01"
-export TESTS_FOR_XUI_SERVICE='false'
+export PROF_USER_EMAIL="probatesolicitortestorgtest1@gmail.com"
+export PROF_USER_PASSWORD="Probate123"
+export TESTS_FOR_XUI_SERVICE='true'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 

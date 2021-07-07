@@ -26,7 +26,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
 
     if (numOfElements > 0) {
         await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
-        await I.waitForVisible({css: '#caseMatches_0_valid-Yes'}, testConfig.TestTimeToWaitForText);
+        await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.TestTimeToWaitForText);
     }
     // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */
@@ -65,11 +65,11 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.5);
         }
-        await I.scrollTo({css: 'input[id$="valid-Yes"]'});
-        await I.waitForElement({css: 'input[id$="valid-Yes"]'});
-        await I.click({css: 'input[id$="valid-Yes"]'});
-        await I.waitForElement({css: 'input[id$="doImport-No"]'});
-        await I.click({css: 'input[id$="doImport-No"]'});
+        await I.scrollTo({css: 'input[id$="valid_Yes"]'});
+        await I.waitForElement({css: 'input[id$="valid_Yes"]'});
+        await I.click({css: 'input[id$="valid_Yes"]'});
+        await I.waitForElement({css: 'input[id$="doImport_No"]'});
+        await I.click({css: 'input[id$="doImport_No"]'});
     }
 
     await I.waitForElement(commonConfig.continueButton);

@@ -10,8 +10,8 @@ module.exports = async function (crud) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
-        await I.seeElement('#otherExecutorExists-Yes');
-        await I.seeElement('#otherExecutorExists-No');
+        await I.seeElement('#otherExecutorExists_Yes');
+        await I.seeElement('#otherExecutorExists_No');
         await I.click(`#otherExecutorExists-${createGrantOfProbateConfig.page3_otherExecutorExistsYes}`);
         await I.waitForText(createGrantOfProbateConfig.page3_waitForText2, testConfig.TestTimeToWaitForText);
         await I.click({type: 'button'}, '#executorsApplying>div');

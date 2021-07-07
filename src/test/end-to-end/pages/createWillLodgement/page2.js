@@ -37,7 +37,7 @@ module.exports = async function (crud, unique_deceased_user) {
 
         await I.fillField('#deceasedTypeOfDeath', createWillLodgementConfig.page2_typeOfDeath);
 
-        await I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2_hasAliasYes}`);
+        await I.click(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`);
 
         /* eslint-disable no-await-in-loop */
         let idx = 0;

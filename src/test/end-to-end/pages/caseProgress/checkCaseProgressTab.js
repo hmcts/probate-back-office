@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = async function (opts) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('a[aria-controls="caseProgressTab"][aria-selected=true]');
+    await I.waitForElement('.caseProgressTab');
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
@@ -78,7 +78,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete('a[href*="/cases/case-details/"]');
     }
 
     return caseRef.replace('#', '');

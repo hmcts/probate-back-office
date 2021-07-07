@@ -33,7 +33,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-No'}, {css: '#appointExecNo-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_No'}, {css: '#appointExecNo_No'}]);
         await I.caseProgressStandardDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -44,14 +44,14 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal_Yes'}, {css: '#willHasCodicils_No'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
-            {locator: {css: '#primaryApplicantHasAlias-No'}},
-            {locator: {css: '#primaryApplicantIsApplying-No'}},
+            {locator: {css: '#primaryApplicantHasAlias_No'}},
+            {locator: {css: '#primaryApplicantIsApplying_No'}},
             {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: 'They lack capacity to act as executor'},
-            {locator: {css: '#otherExecutorExists-No'}}]);
+            {locator: {css: '#otherExecutorExists_No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 

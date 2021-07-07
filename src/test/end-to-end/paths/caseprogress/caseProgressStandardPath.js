@@ -33,7 +33,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_Yes'}]);
         await I.caseProgressStandardDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -44,8 +44,8 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal_Yes'}, {css: '#willHasCodicils_No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists_No'}]);
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         // More extensive checks already performed at this stage for stop/escalate issue
         await I.caseProgressCheckYourAnswers();
@@ -58,7 +58,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
             goToNextStep: true});
 
         console.info('Confirm application');
-        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate_No'}]);
         await I.caseProgressConfirmApplication();
 
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
@@ -100,7 +100,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Mark as ready for examination');
-        await I.caseProgressClickElementsAndContinue([{css: '#boEmailDocsReceivedNotification-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#boEmailDocsReceivedNotification_No'}]);
         await I.caseProgressClickGoAndSignOut();
 
         console.info('Check progress tab for Mark as ready for examination');
@@ -158,9 +158,9 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Mark as ready to issue');
         await I.caseProgressClickElementsAndContinue([
-            {css: '#boExaminationChecklistQ1-Yes'},
-            {css: '#boExaminationChecklistQ2-Yes'},
-            {css: '#boExaminationChecklistRequestQA-No'}]);
+            {css: '#boExaminationChecklistQ1_Yes'},
+            {css: '#boExaminationChecklistQ2_Yes'},
+            {css: '#boExaminationChecklistRequestQA_No'}]);
         await I.caseProgressClickGoAndSignOut();
 
         console.info('Check progress tab for Mark as ready to issue');
@@ -200,7 +200,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(false, true);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Issue grant');
-        await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressClickGoAndSignOut();
 
         console.info('Check progress tab for Issue grant');

@@ -10,7 +10,7 @@ module.exports = async function (crud) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
+        await I.click(`#deceasedDomicileInEngWales_${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
         await I.fillField('#domicilityCountry', createGrantOfProbateConfig.page8_domicilityCountry);
         await I.click('#ukEstate > div > button:nth-child(2)');
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page8_ukEstate_0_item);
