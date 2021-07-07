@@ -16,7 +16,7 @@ module.exports = async function (crud) {
         await I.fillField('#applicationSubmittedDate-day', createGrantOfProbateConfig.page1_applicationSubmittedDate_day);
         await I.fillField('#applicationSubmittedDate-month', createGrantOfProbateConfig.page1_applicationSubmittedDate_month);
         await I.fillField('#applicationSubmittedDate-year', createGrantOfProbateConfig.page1_applicationSubmittedDate_year);
-        await I.click({css: `#paperForm-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#paperForm_${createGrantOfProbateConfig.page1_optionNo}`});
 
         await I.selectOption('#caseType', createGrantOfProbateConfig.page1_list3_case_type);
 
@@ -37,8 +37,8 @@ module.exports = async function (crud) {
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForEnabled({css: '#boWillMessage'});
         await I.fillField({css: '#boWillMessage'}, createGrantOfProbateConfig.page1_boWillMessage);
-        await I.waitForEnabled({css: `#caseHandedOffToLegacySite-${createGrantOfProbateConfig.page1_optionNo}`});
-        await I.click({css: `#caseHandedOffToLegacySite-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.waitForEnabled({css: `#caseHandedOffToLegacySite_${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#caseHandedOffToLegacySite_${createGrantOfProbateConfig.page1_optionNo}`});
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

@@ -74,4 +74,5 @@ module.exports = async function (caseRef, documentUploadConfig) {
 
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.wait(5);
 };
