@@ -166,6 +166,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
+    private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
 
     @Before
     public void setUp() {
@@ -640,6 +641,27 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() {
         final String response = generateDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PA));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(PRESUMED_DIED_ON));
+
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(ADMIN_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(POWER_RESERVED));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
+        final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
