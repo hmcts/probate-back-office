@@ -1128,8 +1128,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldSetGrantIssuedDateForEdgeCase() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-        .caseType("edgeCase");
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL).caseType("edgeCase");
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(DIGITAL_GRANT)
