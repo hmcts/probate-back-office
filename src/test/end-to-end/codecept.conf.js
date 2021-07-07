@@ -18,6 +18,7 @@ exports.config = {
                 },
                 args: [
                     // '--headless',
+                    // '--disable-web-security',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
