@@ -38,13 +38,13 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField({css: '#deceasedDateOfDeath-month'}, createGrantOfProbateConfig.page4_deceasedDod_month);
         await I.fillField({css: '#deceasedDateOfDeath-year'}, createGrantOfProbateConfig.page4_deceasedDod_year);
 
-        await I.click(`#deceasedAnyOtherNames-${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
+        await I.click(`#deceasedAnyOtherNames_${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
         await I.click('#solsDeceasedAliasNamesList > div > button');
         await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);
         await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatusCode}`);
 
-        await I.click(`#foreignAsset-${createGrantOfProbateConfig.page4_foreignAssetYes}`);
+        await I.click(`#foreignAsset_${createGrantOfProbateConfig.page4_foreignAssetYes}`);
         await I.waitForVisible('#foreignAssetEstateValue');
         await I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page4_foreignAssetEstateValue);
     }
