@@ -9,7 +9,7 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Executor;
 import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
