@@ -68,6 +68,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
@@ -255,6 +256,10 @@ public class CallbackResponseTransformer {
 
             responseCaseDataBuilder.evidenceHandled(YES);
 
+        } else if (caseData.getCaseType().matches("edgeCase")) {
+            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
+
+            responseCaseDataBuilder.grantIssuedDate(grantIssuedDate);
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(

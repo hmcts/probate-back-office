@@ -1127,6 +1127,24 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetGrantIssuedDateForEdgeCase() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+        .caseType("edgeCase");
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DIGITAL_GRANT)
+            .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String grantIssuedDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(document), null, null);
+        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+    }
+
+    @Test
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
