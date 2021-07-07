@@ -235,7 +235,7 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            (data.getAdditionalExecutorsNotApplying() != null) && (data.getAdditionalExecutorsNotApplying().size() > 0)
+            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
