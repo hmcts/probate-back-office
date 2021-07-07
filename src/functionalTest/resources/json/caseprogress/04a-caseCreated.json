@@ -115,11 +115,18 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
-      "additionalExecutorsNotApplying": [
+      "executorsNotApplying": [
         {
           "id": "solicitor",
           "value": {
-            "notApplyingExecutorName": "solfn solsn",
+            "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
+            "notApplyingExecutorReason": "Renunciation"
+          }
+        },
+        {
+          "id": "solicitor",
+          "value": {
+            "notApplyingExecutorName": "exec2 Renounced",
             "notApplyingExecutorReason": "Renunciation"
           }
         }
