@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -240,12 +241,21 @@ public class TaskStateRenderer {
         return keyValue;
     }
 
-    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
+//    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
+//        return executors.stream()
+//            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
+//                .getNotApplyingExecutorReason()))
+//            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
+//                 + "</li>")
+//            .collect(Collectors.joining());
+//    }
+
+    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutor>> executors) {
         return executors.stream()
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getNotApplyingExecutorReason()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-                 + "</li>")
+                .getAdditionalExecReasonNotApplying()))
+            .map(executor -> "<li>renunciation form for " + executor.getValue().getAdditionalExecForenames()
+                + " " + executor.getValue().getAdditionalExecLastname() + "</li>")
             .collect(Collectors.joining());
     }
 }
