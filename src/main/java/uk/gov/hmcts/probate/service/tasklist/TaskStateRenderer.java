@@ -236,26 +236,17 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            data.getExecutorsNotApplyingLegalStatement() == null ? "" : getRenouncingExecutors(data
-            .getExecutorsNotApplyingLegalStatement()));
+            data.getAdditionalExecutorsNotApplying().size() > 0 ? getRenouncingExecutors(data
+                .getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
-//    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
-//        return executors.stream()
-//            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-//                .getNotApplyingExecutorReason()))
-//            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-//                 + "</li>")
-//            .collect(Collectors.joining());
-//    }
-
-    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutor>> executors) {
+    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         return executors.stream()
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getAdditionalExecReasonNotApplying()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getAdditionalExecForenames()
-                + " " + executor.getValue().getAdditionalExecLastname() + "</li>")
+                .getNotApplyingExecutorReason()))
+            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
+                 + "</li>")
             .collect(Collectors.joining());
     }
 }
