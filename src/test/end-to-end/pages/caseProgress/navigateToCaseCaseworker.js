@@ -7,5 +7,8 @@ module.exports = async function (caseRef) {
 
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
-    await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef, '-', '')}`);
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`);
+    if (testConfig.TestForXUI) {
+        await I.wait(5);
+    }
 };

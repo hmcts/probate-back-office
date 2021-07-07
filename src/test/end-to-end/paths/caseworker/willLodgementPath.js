@@ -133,6 +133,6 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
 
-    await I.click('#sign-out');
+    await I.click('nav.hmcts-header__navigation ul li:last-child a');
 
 }).retry(testConfig.TestRetryScenarios);

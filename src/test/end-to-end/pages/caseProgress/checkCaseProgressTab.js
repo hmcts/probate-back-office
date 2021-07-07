@@ -1,3 +1,5 @@
+'use strict';
+const testConfig = require('src/test/config');
 const assert = require('assert');
 const moment = require('moment');
 
@@ -5,7 +7,7 @@ const moment = require('moment');
 module.exports = async function (opts) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('.caseProgressTab');
+    await I.waitForText('Case Progress');
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
@@ -78,7 +80,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('a[href*="/cases/case-details/"]');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', true);
     }
 
     return caseRef.replace('#', '');

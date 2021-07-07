@@ -17,6 +17,9 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
     await I.waitForNavigationToComplete('input[type="submit"]');
 
     
+    if (testConfig.TestForXUI) {
+        await I.wait(2);
+    }
     const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements({css: 'body exui-root xuilib-cookie-banner'});
     if (numVisibleCookieBannerEls > 0) {
         //check to see we can still click
@@ -27,5 +30,8 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
             await I.waitForEnabled(rejectLocator);
             await I.click(rejectLocator);
         }
+    }
+    if (testConfig.TestForXUI) {
+        await I.wait(5);
     }
 };

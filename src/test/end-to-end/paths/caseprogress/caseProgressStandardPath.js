@@ -120,8 +120,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Find matches (Examining)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Examining)', false, null, true);
-        await I.waitForElement({css: '#sign-out'});
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
 
         console.info('Check progress tab for Find matches (Examining)');
         // log back in as solicitor
@@ -181,8 +180,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressCaseworkerChangeState('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
 
-        await I.waitForVisible({css: '#sign-out'});
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
 
         console.info('Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor
