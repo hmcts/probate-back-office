@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "payment_creditAccountPayment", port = "8889")
 @PactFolder("pacts")
-@SpringBootTest
+@SpringBootTest({"payment.url: http://localhost:8889"})
 @TestPropertySource(locations = {"/application.properties"})
 public class PBAPaymentConsumerForbiddenFailureTest extends BasePBAPaymentTest {
 
