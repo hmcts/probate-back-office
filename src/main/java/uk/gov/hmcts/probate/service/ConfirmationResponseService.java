@@ -21,8 +21,6 @@ import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -284,7 +282,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
         keyValue.put("{{additionalInfo}}", additionalInfo);
-        keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getAdditionalExecutorsNotApplying()));
+        keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
@@ -310,11 +308,11 @@ public class ConfirmationResponseService {
         return value == null ? "" : value + ", ";
     }
 
-    private String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
+    private String getRenouncingExecutors(List<Executor> executors) {
         String renouncingExecutors = executors.stream()
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getNotApplyingExecutorReason()))
-            .map(executor -> "*   renunciation form for " + executor.getValue().getNotApplyingExecutorName())
+            .filter(executor -> !executor.isApplying())
+            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
+            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
         return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
     }

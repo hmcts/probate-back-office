@@ -60,7 +60,6 @@ public class CCDDataTransformer {
             .codicilAddedDateList(getCodicilAddedDates(caseData))
             .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
             .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
-            .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
             .build();
     }
 

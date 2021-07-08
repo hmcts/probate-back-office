@@ -2,9 +2,7 @@ package uk.gov.hmcts.probate.model.ccd;
 
 import lombok.Builder;
 import lombok.Data;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 
 import java.io.Serializable;
@@ -24,7 +22,6 @@ public class CCDData implements Serializable {
     private final String solsAdditionalInfo;
     private final LocalDate caseSubmissionDate;
     private final List<Executor> executors;
-    private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String applicationType;
