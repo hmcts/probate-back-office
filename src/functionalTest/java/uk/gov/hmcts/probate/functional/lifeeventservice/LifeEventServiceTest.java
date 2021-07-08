@@ -76,6 +76,48 @@ public class LifeEventServiceTest extends IntegrationTestBase {
         final Integer deathRecordSystemNumber = callbackRequest.getCaseDetails().getData().getDeathRecordSystemNumber();
         assertEquals("No death record found with system number " + deathRecordSystemNumber, errors.get(0));
     }
+
+    @Test
+    public void shouldAddDeathRecordWhenmanualUpdateAboutToStart() throws JsonProcessingException {
+        final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        final CallbackRequest callbackRequest = objectMapper.readValue(jsonFromFile, CallbackRequest.class);
+        final CallbackResponse callbackResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(callbackRequest)
+            .when().post("/lifeevent/manualUpdateAboutToStart")
+            .then()
+            .statusCode(200)
+            .extract()
+            .as(CallbackResponse.class);
+
+        final ResponseCaseData caseData = callbackResponse.getData();
+        assertEquals(1, caseData.getDeathRecords().size());
+        final CollectionMember<DeathRecord> collectionMember = caseData.getDeathRecords().get(0);
+    }
+
+    @Test
+    public void shouldReturnErrormanualUpdateAboutToStart() throws JsonProcessingException {
+        final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        final CallbackRequest callbackRequest = objectMapper.readValue(jsonFromFile, CallbackRequest.class);
+        final CallbackResponse callbackResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(callbackRequest)
+            .when().post("/lifeevent/manualUpdateAboutToStart")
+            .then()
+            .statusCode(200)
+            .extract()
+            .as(CallbackResponse.class);
+
+        final List<String> errors = callbackResponse.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals("No death records found", errors.get(0));
+    }
 }
 
 

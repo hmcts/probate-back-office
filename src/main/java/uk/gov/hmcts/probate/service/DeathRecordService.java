@@ -23,18 +23,18 @@ public class DeathRecordService {
 
     public List<CollectionMember<DeathRecord>> mapDeathRecords(List<V1Death> deathRecords) {
         return Optional.ofNullable(deathRecords)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .filter(Objects::nonNull)
-                .map(this::mapCollectionMember)
-                .flatMap(Optional::stream)
-                .collect(Collectors.toList());
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(Objects::nonNull)
+            .map(this::mapCollectionMember)
+            .flatMap(Optional::stream)
+            .collect(Collectors.toList());
     }
 
     private Optional<CollectionMember<DeathRecord>> mapCollectionMember(@NotNull V1Death v1Death) {
         return Optional.of(v1Death)
-                .map(this::mapDeathRecord)
-                .map(d -> new CollectionMember<>(null, d));
+            .map(this::mapDeathRecord)
+            .map(d -> new CollectionMember<>(null, d));
     }
 
     @SuppressWarnings("squid:S2583")
@@ -53,6 +53,25 @@ public class DeathRecordService {
         return builder.build();
     }
 
+    public List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
+        mapDeathRecordsCCD(List<V1Death> deathRecords) {
+        return Optional.ofNullable(deathRecords)
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(Objects::nonNull)
+            .map(this::mapCollectionMemberCCD)
+            .flatMap(Optional::stream)
+            .collect(Collectors.toList());
+    }
+
+    private Optional<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>
+        >
+        mapCollectionMemberCCD(@NotNull V1Death v1Death) {
+        return Optional.of(v1Death)
+            .map(this::mapDeathRecordCCD)
+            .map(d -> new uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<>(null, d));
+    }
+
     @SuppressWarnings("squid:S2583")
     public uk.gov.hmcts.probate.model.ccd.raw.DeathRecord mapDeathRecordCCD(V1Death v1Death) {
         if (null == v1Death) {
@@ -64,10 +83,10 @@ public class DeathRecordService {
 
         if (nonNull(deceased)) {
             builder.name(String.format("%s %s", deceased.getForenames(), deceased.getSurname()))
-                    .dateOfBirth(deceased.getDateOfBirth())
-                    .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
-                    .address(deceased.getAddress())
-                    .dateOfDeath(deceased.getDateOfDeath());
+                .dateOfBirth(deceased.getDateOfBirth())
+                .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
+                .address(deceased.getAddress())
+                .dateOfDeath(deceased.getDateOfDeath());
         }
 
         return builder.build();
