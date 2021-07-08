@@ -312,8 +312,8 @@ public class ConfirmationResponseService {
 
     private String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         String renouncingExecutors = executors.stream()
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue().
-                getNotApplyingExecutorReason()))
+            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
+                .getNotApplyingExecutorReason()))
             .map(executor -> "*   renunciation form for " + executor.getValue().getNotApplyingExecutorName())
             .collect(Collectors.joining("\n"));
         return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
