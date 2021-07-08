@@ -36,6 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "caseType": "admonWill",
       "paperForm": "no",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
@@ -69,7 +70,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "solsSolicitorEmail": "testsolicitor@probate-test.com",
       "applicationGrounds": "application grounds",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",

@@ -35,8 +35,10 @@ module.exports = async function (crud) {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-        await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
-
+        await I.waitForEnabled({css: '#boWillMessage'});
+        await I.fillField({css: '#boWillMessage'}, createGrantOfProbateConfig.page1_boWillMessage);
+        await I.waitForEnabled({css: `#caseHandedOffToLegacySite-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#caseHandedOffToLegacySite-${createGrantOfProbateConfig.page1_optionNo}`});
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

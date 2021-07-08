@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
@@ -36,7 +37,7 @@ public class SmeeAndFordPersonalisationService {
     private static final String PERSONALISATION_SMEE_AND_FORD_NAME = "smeeAndFordName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String COLDICILS_FLAG = "Codicils";
-    private static final String SEP = ",";
+    private static final String DELIMITER = "|";
     private static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
     private static final String PDF_EXT = ".pdf";
@@ -72,45 +73,49 @@ public class SmeeAndFordPersonalisationService {
             CaseData currentCaseData = retCase.getData();
             try {
                 data.append(currentCaseData.getRegistryLocation());
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(CONTENT_DATE.format(LocalDate.parse(currentCaseData.getGrantIssuedDate())));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(retCase.getId().toString());
-                data.append(SEP);
-                data.append(getDeceasedNameWithHonours(currentCaseData));
-                data.append(SEP);
-                data.append(getDeceasedAliasNames(currentCaseData));
-                data.append(SEP);
+                data.append(DELIMITER);
+                data.append(replaceDelimeters(getDeceasedNameWithHonours(currentCaseData)));
+                data.append(DELIMITER);
+                data.append(replaceDelimeters(getDeceasedAliasNames(currentCaseData)));
+                data.append(DELIMITER);
                 data.append(getCaseType(currentCaseData));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfDeath()));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getDeceasedAddress()));
                 data.append(getApplyingExecutorsDetails(currentCaseData.getAdditionalExecutorsApplying()));
                 data.append(getPrimaryApplicantName(currentCaseData));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
                 data.append(currentCaseData.getIhtGrossValue().toString());
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(currentCaseData.getIhtNetValue().toString());
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(hasCodicil(currentCaseData));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(getWillFileName(currentCaseData));
-                data.append(SEP);
+                data.append(DELIMITER);
                 data.append(getGrantFileName(currentCaseData));
                 data.append(NEW_LINE);
             } catch (Exception e) {
                 data.append(retCase.getId().toString());
-                data.append(", ");
+                data.append(DELIMITER);
                 data.append(e.toString());
                 data.append(NEW_LINE);
             }
         }
         return data;
+    }
+
+    private String replaceDelimeters(String value) {
+        return value.replaceAll(Pattern.quote(DELIMITER), SPACE);
     }
 
     private void addHeaderRow(StringBuilder data) {
@@ -155,19 +160,19 @@ public class SmeeAndFordPersonalisationService {
     private String getSolicitorDetails(CaseData data) {
         String sol = "";
         if (SOLICITOR.equals(data.getApplicationType())) {
-            sol = sol + ifNotEmpty(data.getSolsSolicitorFirmName());
-            sol = sol + SEP;
-            sol = sol + ifNotEmpty(data.getSolsSolicitorAppReference());
-            sol = sol + SEP;
+            sol = sol + ifNotEmpty(replaceDelimeters(data.getSolsSolicitorFirmName()));
+            sol = sol + DELIMITER;
+            sol = sol + ifNotEmpty(replaceDelimeters(data.getSolsSolicitorAppReference()));
+            sol = sol + DELIMITER;
             sol = sol + getFullAddress(data.getSolsSolicitorAddress());
         } else {
-            sol = sol + SEP;
-            sol = sol + SEP;
-            sol = sol + SEP;
-            sol = sol + SEP;
-            sol = sol + SEP;
-            sol = sol + SEP;
-            sol = sol + SEP;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
+            sol = sol + DELIMITER;
         }
         
         return sol;
@@ -179,7 +184,7 @@ public class SmeeAndFordPersonalisationService {
         primary = primary + ifNotEmptyWithSpace(data.getPrimaryApplicantSurname());
         primary = primary + ifNotEmpty(data.getPrimaryApplicantAlias());
         
-        return primary;
+        return replaceDelimeters(primary);
     }
 
     private String getApplyingExecutorsDetails(List<CollectionMember<AdditionalExecutorApplying>> 
@@ -198,7 +203,7 @@ public class SmeeAndFordPersonalisationService {
         }
         while (execCount < 3) {
             for (var i = 0; i < 6; i++) {
-                allExecs.append(SEP);
+                allExecs.append(DELIMITER);
             }
             execCount++;
         }
@@ -207,14 +212,17 @@ public class SmeeAndFordPersonalisationService {
     }
 
     private String getApplyingExecutorDetails(CollectionMember<AdditionalExecutorApplying> applying) {
-        var allExecs = new StringBuilder();
-        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
-        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
-        allExecs.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
-        allExecs.append(ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
-        allExecs.append(SEP);
+        var execNames = new StringBuilder();
+        execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
+        execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
+        execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
+        execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
         
-        allExecs.append(ifNotEmpty(getFullAddress(applying.getValue().getApplyingExecutorAddress())));
+        var allExecs = new StringBuilder();
+        allExecs.append(replaceDelimeters(execNames.toString()));
+        allExecs.append(DELIMITER);
+        
+        allExecs.append(getFullAddress(applying.getValue().getApplyingExecutorAddress()));
         return allExecs.toString();
     }
 
@@ -222,15 +230,21 @@ public class SmeeAndFordPersonalisationService {
         var addBuilder = new StringBuilder();
         if (address != null) {
             addBuilder.append(getAddress(address));
-            addBuilder.append(SEP);
+            addBuilder.append(DELIMITER);
             addBuilder.append(getPostTown(address));
-            addBuilder.append(SEP);
+            addBuilder.append(DELIMITER);
             addBuilder.append(getCounty(address));
-            addBuilder.append(SEP);
+            addBuilder.append(DELIMITER);
             addBuilder.append(getPostCode(address));
-            addBuilder.append(SEP);
+            addBuilder.append(DELIMITER);
             addBuilder.append(getCountry(address));
-            addBuilder.append(SEP);
+            addBuilder.append(DELIMITER);
+        } else {
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
+            addBuilder.append(DELIMITER);
         }
         return addBuilder.toString();
     }
@@ -241,7 +255,7 @@ public class SmeeAndFordPersonalisationService {
         addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
         addBuilder.append(ifNotEmpty(address.getAddressLine3()));
         
-        return addBuilder.toString();
+        return replaceDelimeters(addBuilder.toString());
     }
 
     private String getCounty(SolsAddress address) {
@@ -255,14 +269,14 @@ public class SmeeAndFordPersonalisationService {
         var addBuilder = new StringBuilder();
         addBuilder.append(ifNotEmpty(address.getPostTown()));
 
-        return addBuilder.toString();
+        return replaceDelimeters(addBuilder.toString());
     }
 
     private String getPostCode(SolsAddress address) {
         var addBuilder = new StringBuilder();
         addBuilder.append(ifNotEmpty(address.getPostCode()));
 
-        return addBuilder.toString();
+        return replaceDelimeters(addBuilder.toString());
     }
 
     private String getCountry(SolsAddress address) {
@@ -271,7 +285,7 @@ public class SmeeAndFordPersonalisationService {
             addBuilder.append(ifNotEmpty(address.getCountry()));
         }
 
-        return addBuilder.toString();
+        return replaceDelimeters(addBuilder.toString());
     }
 
     private String ifNotEmpty(String value) {

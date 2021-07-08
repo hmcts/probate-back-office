@@ -38,7 +38,7 @@
 				"AddressLine2": "",
 				"AddressLine3": ""
 			},
-			"caseType": "gop",
+			"caseType": "admonWill",
 			"deceasedAnyOtherNames": "No",
 			"solsFeeAccountNumber": "1234",
 			"willHasCodicils": "No",
@@ -70,7 +70,7 @@
 				"AddressLine2": "",
 				"AddressLine3": ""
 			},
-			"solsSolicitorEmail": "probBackosol@gmail.com",
+			"solsSolicitorEmail": "testsolicitor@probate-test.com",
 			"applicationGrounds": "Grounds for application",
 			"ukEstate": [
 				{
