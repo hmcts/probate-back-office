@@ -11,8 +11,7 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "idamApi_users", port = "8861")
 @PactFolder("pacts")
-@SpringBootTest
+@SpringBootTest({"auth.provider.client.user: http://localhost:8861"})
 @TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamAuthenticateUserConsumerTest {

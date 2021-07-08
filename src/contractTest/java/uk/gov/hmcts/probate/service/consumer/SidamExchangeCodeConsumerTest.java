@@ -12,8 +12,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "idamApi_users", port = "8863")
 @PactFolder("pacts")
-@SpringBootTest
+@SpringBootTest({"auth.provider.client.user: http://localhost:8863"})
 @TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamExchangeCodeConsumerTest {
