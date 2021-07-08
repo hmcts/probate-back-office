@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class LifeEventController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final LifeEventService lifeEventService;
     private final SecurityUtils securityUtils;
+    private final LifeEventValidationRule lifeEventValidationRule;
 
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
@@ -43,5 +45,19 @@ public class LifeEventController {
         response.getData().setDeathRecord(deathRecord);
         response.getData().setDeathRecords(List.of(new CollectionMember<>(null, deathRecord)));
         return ResponseEntity.ok(response);
+    }
+    
+    @PostMapping(path = "/selectFromMultipleRecordsAboutToStart")
+    public ResponseEntity<CallbackResponse> countRecords(@RequestBody CallbackRequest request) {
+        final List<CollectionMember<DeathRecord>> deathRecords = request.getCaseDetails().getData().getDeathRecords();
+        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
+        response.getData().setNumberOfDeathRecords(deathRecords == null ? null : deathRecords.size());
+        return ResponseEntity.ok(response);
+    } 
+
+    @PostMapping(path = "/selectFromMultipleRecords")
+    public ResponseEntity<CallbackResponse> selectFromMultipleRecords(@RequestBody CallbackRequest request) {
+        lifeEventValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

@@ -2662,5 +2662,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecordSystemNumber", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
-]
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "numberOfDeathRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "numberOfDeathRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "numberOfDeathRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}]

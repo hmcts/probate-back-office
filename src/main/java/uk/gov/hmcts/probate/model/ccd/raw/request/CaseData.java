@@ -536,6 +536,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<DeathRecord>> deathRecords;
     private final Integer deathRecordSystemNumber;
     private final DeathRecord deathRecord;
+    private final Integer numberOfDeathRecords;
 
     public String solicitorIsMainApplicant() {
         return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;

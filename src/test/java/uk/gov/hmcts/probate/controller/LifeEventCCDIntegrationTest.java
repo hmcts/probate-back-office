@@ -144,7 +144,7 @@ public class LifeEventCCDIntegrationTest {
     }
 
     @Test
-    public void shouldNotUpdateCCDIfMultipleRecordsReturned() throws Exception {
+    public void shouldUpdateCCDIfMultipleRecordsReturned() throws Exception {
 
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
@@ -172,11 +172,16 @@ public class LifeEventCCDIntegrationTest {
 
         postPayloadToLifeEventEndpoint();
 
-        await().during(2, SECONDS)
+        await()
+            .atMost(2, SECONDS)
             .untilAsserted(() ->
-                wireMockServer.verify(0, postRequestedFor(
-                    urlEqualTo("/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
+                wireMockServer.verify(postRequestedFor(urlEqualTo(
+                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
+
+        wireMockServer.verify(getRequestedFor(urlEqualTo(
+            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+                + "-triggers/deathRecordVerificationFailed/token")));
 
     }
 
