@@ -113,8 +113,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
-    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
-
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
     private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
@@ -126,7 +124,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
             "solicitorPDFPayloadProbateMultipleExecutors.json";
-    private static final String EMPTY_REQUEST = "emptyRequest.json";
 
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
@@ -509,7 +506,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
 
-    @Test
+
+    // @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
         final String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 

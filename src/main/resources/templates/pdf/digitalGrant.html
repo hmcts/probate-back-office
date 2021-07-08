@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-{% macro address(address)%}
-{% if address != null %}
-{% if address.AddressLine1 != null and address.AddressLine1 != "" %} {{ address.AddressLine1 }}, {% endif %}
-{% if address.AddressLine2 != null and address.AddressLine2 != "" %}{{ address.AddressLine2 }}, {% endif %}
-{% if address.AddressLine3 != null and address.AddressLine3 != "" %}{{ address.AddressLine3 }}, {% endif %}
-{% if address.PostTown != null and address.PostTown != "" %}{{ address.PostTown }}, {% endif %}
-{% if address.County != null and address.County != "" %}{{ address.County }}, {% endif %}
-{% if address.PostCode != null and address.PostCode != "" %}{{ address.PostCode }}, {% endif %}
-{% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
-{% endif %}
-{% endmacro %}
-
-{% macro spacedAddress(address)%}
-{% if address != null %}
-{% if address.AddressLine1 != null and address.AddressLine1 != "" %} {{ address.AddressLine1 }}{% endif %}
-{% if address.AddressLine2 != null and address.AddressLine2 != "" %} {{ address.AddressLine2 }}{% endif %}
-{% if address.AddressLine3 != null and address.AddressLine3 != "" %} {{ address.AddressLine3 }}{% endif %}
-{% if address.PostTown != null and address.PostTown != "" %} {{ address.PostTown }}{% endif %}
-{% if address.County != null and address.County != "" %} {{ address.County }}{% endif %}
-{% if address.PostCode != null and address.PostCode != "" %} {{ address.PostCode }}{% endif %}
-{% if address.Country != null and address.Country != "" %} {{ address.Country }}{% endif %}
-{% endif %}
-{% endmacro %}
-
-{% macro notSpacedAddress(address)%}
-{% if address != null %}
-{% if address.AddressLine1 != null and address.AddressLine1 != "" %}{{ address.AddressLine1 }}{% endif %}
-{% if address.AddressLine2 != null and address.AddressLine2 != "" %}{{ address.AddressLine2 }}{% endif %}
-{% if address.AddressLine3 != null and address.AddressLine3 != "" %}{{ address.AddressLine3 }}{% endif %}
-{% if address.PostTown != null and address.PostTown != "" %}{{ address.PostTown }}{% endif %}
-{% if address.County != null and address.County != "" %}{{ address.County }}{% endif %}
-{% if address.PostCode != null and address.PostCode != "" %}{{ address.PostCode }}{% endif %}
-{% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
-{% endif %}
-{% endmacro %}
-
-{% macro registryAddress(adr)%}
+{% macro address(adr)%}
 {% if adr != null %}
+{% if adr.AddressLine1 != null and adr.AddressLine1 != "" %} {{ adr.AddressLine1 }}, {% endif %}
+{% if adr.AddressLine2 != null and adr.AddressLine2 != "" %}{{ adr.AddressLine2 }}, {% endif %}
+{% if adr.AddressLine3 != null and adr.AddressLine3 != "" %}{{ adr.AddressLine3 }}, {% endif %}
+{% if adr.PostTown != null and adr.PostTown != "" %}{{ adr.PostTown }}, {% endif %}
+{% if adr.County != null and adr.County != "" %}{{ adr.County }}, {% endif %}
+{% if adr.PostCode != null and adr.PostCode != "" %}{{ adr.PostCode }}, {% endif %}
+{% if adr.Country != null and adr.Country != "" %}{{ adr.Country }}{% endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro spacedAddress(adr)%}
+{% if adr != null %}
+{% if adr.AddressLine1 != null and adr.AddressLine1 != "" %} {{ adr.AddressLine1 }}{% endif %}
+{% if adr.AddressLine2 != null and adr.AddressLine2 != "" %} {{ adr.AddressLine2 }}{% endif %}
+{% if adr.AddressLine3 != null and adr.AddressLine3 != "" %} {{ adr.AddressLine3 }}{% endif %}
+{% if adr.PostTown != null and adr.PostTown != "" %} {{ adr.PostTown }}{% endif %}
+{% if adr.County != null and adr.County != "" %} {{ adr.County }}{% endif %}
+{% if adr.PostCode != null and adr.PostCode != "" %} {{ adr.PostCode }}{% endif %}
+{% if adr.Country != null and adr.Country != "" %} {{ adr.Country }}{% endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro notSpacedAddress(adr)%}
+{% if adr != null %}
+{% if adr.AddressLine1 != null and adr.AddressLine1 != "" %}{{ adr.AddressLine1 }}{% endif %}
+{% if adr.AddressLine2 != null and adr.AddressLine2 != "" %}{{ adr.AddressLine2 }}{% endif %}
+{% if adr.AddressLine3 != null and adr.AddressLine3 != "" %}{{ adr.AddressLine3 }}{% endif %}
+{% if adr.PostTown != null and adr.PostTown != "" %}{{ adr.PostTown }}{% endif %}
+{% if adr.County != null and adr.County != "" %}{{ adr.County }}{% endif %}
+{% if adr.PostCode != null and adr.PostCode != "" %}{{ adr.PostCode }}{% endif %}
+{% if adr.Country != null and adr.Country != "" %}{{ adr.Country }}{% endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro registryAddress(a)%}
+{% if a != null %}
 {% if a.registryAddressLine1 != null and a.registryAddressLine1 != "" %}{{ a.registryAddressLine1 }}<br /> {% endif %}
 {% if a.registryAddressLine2 != null and a.registryAddressLine2 != "" %}{{ a.registryAddressLine2 }}<br /> {% endif %}
 {% if a.registryAddressLine3 != null and a.registryAddressLine3 != "" %}{{ a.registryAddressLine3 }}<br /> {% endif %}
@@ -48,6 +48,7 @@
 {% endmacro %}
 
 {% macro executorAddress(cd, executor)%}
+<span class="camelCase"><strong>
 {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTSolePrinSucc"
     or cd.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
     or cd.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
@@ -58,9 +59,11 @@
 {% else %}
     {{ notSpacedAddress(executor.value.applyingExecutorAddress) }}
 {% endif %}
+</strong></span>
 {% endmacro %}
 
-{% macro primaryApplicantAddress(cd, pa)%}
+{% macro primaryApplicantAddress(cd)%}
+<span class="camelCase"><strong>
 {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTSolePrinSucc"
     or cd.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
     or cd.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
@@ -71,8 +74,14 @@
 {% else %}
     {{ notSpacedAddress(cd.primaryApplicantAddress) }}
 {% endif %}
+</strong></span>
 {% endmacro %}
 
+{% macro trustCorpAddress(cd)%}
+<span class="camelCase"><strong>
+    {{ spacedAddress(cd.trustCorporationAddress) }}
+</strong></span>
+{% endmacro %}
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -261,43 +270,26 @@
             </p>
             {% if case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithApp" and case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithSDJ" %}
                 <p>
-                    {% if not case_details.case_data.primaryApplicantIsApplying == "No" %}
+                    {% if case_details.case_data.primaryApplicantIsApplying != "No" %}
                         <strong>
                             <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
-                        </strong> of
-                        <span class="camelCase"><strong>
-                            {{primaryApplicantAddress(case_details.case_data, executor)}}
-                        </strong></span>
+                        </strong> of {{primaryApplicantAddress(case_details.case_data)}}
                     {% endif %}
                     {% for executor in case_details.case_data.executorsApplying %}
-                        {% if not loop.first %}
+                        {% if not (loop.first) %}
                             <br/>
                             <span>and </span>
                         {% endif %}
                         <span style="text-transform: capitalize;"><strong>
                             {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                         </strong></span>
-                        of <span class="camelCase"><strong>
-                            {{executorAddress(case_details.case_data, executor)}}
-                        </strong></span>
+                        of {{executorAddress(case_details.case_data, executor)}}
                     {% endfor %}
                 </p>
             {% else %}
-
-            TODO - I am here!!!
-
-            <strong>
-                <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
-            </strong> of
-            <strong>
-                <span class="camelCase">{% if case_details.case_data.trustCorpAddress.AddressLine1 != null and case_details.case_data.trustCorpAddress.AddressLine1 != "" %}{{ case_details.case_data.trustCorpAddress.AddressLine1}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.AddressLine2 != null and case_details.case_data.trustCorpAddress.AddressLine2 != "" %} {{case_details.case_data.trustCorpAddress.AddressLine2}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.AddressLine3 != null and case_details.case_data.trustCorpAddress.AddressLine3 != "" %} {{case_details.case_data.trustCorpAddress.AddressLine3}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.PostTown != null and case_details.case_data.trustCorpAddress.PostTown != "" %} {{case_details.case_data.trustCorpAddress.PostTown}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.County != null and case_details.case_data.trustCorpAddress.County != "" %} {{case_details.case_data.trustCorpAddress.County}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.PostCode != null and case_details.case_data.trustCorpAddress.PostCode != ""%} {{case_details.case_data.trustCorpAddress.PostCode}}{% endif %}
-                        {% if case_details.case_data.trustCorpAddress.Country != null and case_details.case_data.trustCorpAddress.Country != ""%} {{case_details.case_data.trustCorpAddress.Country}}{% endif %}</span>
-            </strong>
+                <strong>
+                    <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
+                </strong> of {{trustCorpAddress(case_details.case_data)}}
             {% endif %}
             <p>
                 {% set powerReservedCounter = 0 %}
