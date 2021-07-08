@@ -534,6 +534,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyCaseHandedOffToLegacySite() {
+        final ResponseBody body = validatePostSuccess("success.caseHandedOffToLegacySite.json",
+            VALIDATE_CASE_AMEND_URL);
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String caseHasBeenHandedOffToLegacySite = jsonPath.get("data.caseHandedOffToLegacySite");
+        assertEquals(caseHasBeenHandedOffToLegacySite, "Yes");
+    }
+
+    @Test
+    public void verifyCaseNotHandedToLegacySite() {
+        final ResponseBody body = validatePostSuccess("success.caseNotHandedOffToLegacySite.json",
+            VALIDATE_CASE_AMEND_URL);
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String caseHasBeenHandedOffToLegacySite = jsonPath.get("data.caseHandedOffToLegacySite");
+        assertEquals(caseHasBeenHandedOffToLegacySite, "No");
+    }
+
+    @Test
     public void shouldTransformCasePADeceasedAliasOneField() {
         final String response = transformCase("personalPayloadNotifications.json", TRANSFORM_URL);
 

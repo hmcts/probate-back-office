@@ -232,6 +232,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/fail-qa", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> caseFailQa(@RequestBody CallbackRequest callbackRequest) {
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
+    }
+
+
     @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> caseEscalated(
             @RequestBody CallbackRequest callbackRequest,
@@ -358,7 +365,9 @@ public class BusinessValidationController {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
+            Document coversheet = pdfManagementService
+                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            response = callbackResponseTransformer.transform(callbackRequest, document, coversheet, caseType);
         }
         return response;
     }
