@@ -115,11 +115,18 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
-      "additionalExecutorsNotApplying": [
+      "executorsNotApplying": [
         {
           "id": "solicitor",
           "value": {
-            "notApplyingExecutorName": "solfn solsn",
+            "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
+            "notApplyingExecutorReason": "Renunciation"
+          }
+        },
+        {
+          "id": "solicitor",
+          "value": {
+            "notApplyingExecutorName": "exec2 Renounced",
             "notApplyingExecutorReason": "Renunciation"
           }
         }
@@ -144,25 +151,19 @@
           }
         }
       ],
-      "executorsNotApplyingForLegalStatement": [
+      "executorsNotApplyingLegalStatement": [
         {
           "id": "solicitor",
           "value": {
-            "additionalExecForenames": "solfn",
-            "additionalExecLastname": "solsn",
-            "additionalExecNameOnWill": "No",
-            "additionalApplying": "No",
-            "additionalExecReasonNotApplying": "Renunciation"
+            "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
+            "notApplyingExecutorReason": "Renunciation"
           }
         },
         {
-          "id": "149ebc69-c8be-4d90-94dd-f00715526779",
+          "id": "solicitor",
           "value": {
-            "additionalExecForenames": "exec2",
-            "additionalExecLastname": "Renounced",
-            "additionalExecNameOnWill": "No",
-            "additionalApplying": "No",
-            "additionalExecReasonNotApplying": "Renunciation"
+            "notApplyingExecutorName": "exec2 Renounced",
+            "notApplyingExecutorReason": "Renunciation"
           }
         }
       ],

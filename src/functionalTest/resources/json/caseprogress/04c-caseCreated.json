@@ -54,7 +54,7 @@
       "solsSolicitorIsExec": "Yes",
       "solsSolicitorIsMainApplicant": "No",
       "solsSolicitorIsApplying": "No",
-      "solsSolicitorNotApplyingReason": "Renunciation",
+      "solsSolicitorNotApplyingReason": "DiedAfter",
       "willDispose": "Yes",
       "englishWill": "Yes",
       "appointExec": "Yes",
