@@ -82,6 +82,7 @@ public class NotificationService {
     private final TemplateService templateService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final DocumentStoreClient documentStoreClient;
+    private final NotificationClientService notificationClientService;
     @Autowired
     private BusinessValidationMessageService businessValidationMessageService;
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -177,9 +178,9 @@ public class NotificationService {
         String reference = caveatDetails.getId().toString();
 
         SendEmailResponse response;
-
-        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
-        log.info("Sent email with template {} for case ", templateId, caveatDetails.getId());
+        response = notificationClientService.sendEmail(caveatDetails.getId(), templateId, emailAddress,
+            personalisation, reference);
+        log.info("Sent email with template {} for caveat number {}", templateId, caveatDetails.getId());
 
         DocumentType documentType;
         switch (state) {
@@ -207,9 +208,8 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response;
-
-        response =
-            notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
+        response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
+            personalisation, reference);
         log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
@@ -225,7 +225,8 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response =
-            notificationClient.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(), personalisation, reference);
+            notificationClientService.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(),
+                personalisation, reference);
         log.info("Smee And Ford email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getSmeeAndFordEmail(), SENT_EMAIL);
@@ -307,7 +308,8 @@ public class NotificationService {
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
-        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
+            personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
@@ -408,12 +410,13 @@ public class NotificationService {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
                 response =
-                    notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+                    notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, reference, emailReplyToId);
                 break;
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
             default:
-                response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+                response = notificationClientService.sendEmail(templateId, emailAddress, personalisation, reference);
         }
         log.info("Return the SendEmailResponse");
         return response;
