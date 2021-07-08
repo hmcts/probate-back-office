@@ -27,7 +27,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "Mocha test end-end",
             "request": "launch",
@@ -63,7 +63,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },     
+        },
         {
             "name": "Mocha test end-end caseProgressReenterDeceasedDetails",
             "request": "launch",
@@ -75,7 +75,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },             
+        },
         {
             "name": "Mocha test end-end caseProgressAppStopped",
             "request": "launch",
@@ -87,7 +87,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },             
+        },
         {
             "name": "Mocha test end-end caveat",
             "request": "launch",
@@ -147,7 +147,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "Mocha test end-end Caseworker grantOfProbate",
             "request": "launch",
@@ -171,7 +171,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Mocha test end-end Solicitor grantOfProbate",
             "request": "launch",
@@ -183,7 +183,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Mocha test end-end Solicitor multi grantOfProbate",
             "request": "launch",

@@ -56,6 +56,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -80,6 +81,8 @@ public class BusinessValidationUnitTest {
     private CaseData caseDataMock;
     @Mock
     private Document documentMock;
+    @Mock
+    private Document solsCoversheetMock;
     @Mock
     private BindingResult bindingResultMock;
     @Mock
@@ -200,7 +203,10 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "gop"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "gop"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateProbate(callbackRequestMock,
@@ -241,7 +247,10 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "intestacy"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "intestacy"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIntestacy(callbackRequestMock,
@@ -282,7 +291,10 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "admonWill"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "admonWill"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateAdmon(callbackRequestMock,
@@ -562,4 +574,20 @@ public class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    public void shouldSetGrantStoppedDateAfterCaseFailQa() {
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldDefaultPBAs() {
+        ResponseEntity<CallbackResponse> response =
+            underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
 }

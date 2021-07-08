@@ -37,3 +37,9 @@ node_modules/
 
 src/test/end-to-end/functional-output/
 /src/main/build/
+
+
+/bin/contractTest
+/bin/main
+/bin/test
+/bin/testFunctional

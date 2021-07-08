@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
@@ -227,6 +228,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/fail-qa", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> caseFailQa(@RequestBody CallbackRequest callbackRequest) {
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
+    }
+
+
     @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> caseEscalated(
             @RequestBody CallbackRequest callbackRequest,
@@ -329,6 +337,15 @@ public class BusinessValidationController {
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
     }
 
+    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> defaultSolicitorNextStepsForPBANumbers(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest callbackRequest) {
+
+        return ResponseEntity.ok(callbackResponseTransformer
+            .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
+    }
+
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
@@ -343,7 +360,9 @@ public class BusinessValidationController {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
+            Document coversheet = pdfManagementService
+                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            response = callbackResponseTransformer.transform(callbackRequest, document, coversheet, caseType);
         }
         return response;
     }
