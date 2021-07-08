@@ -365,7 +365,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
-        String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantForCardiffResponse.txt"));
+        final String expectedTextWithLinebreaks = utils.getJsonFromFile("gopGrantForCardiffResponse.txt");
+        String expectedText = removeCrLfs(expectedTextWithLinebreaks);
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));

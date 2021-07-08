@@ -23,41 +23,33 @@
 {% endif %}
 {% endmacro %}
 
-{% macro notSpacedAddress(adr)%}
-{% if adr != null %}
-{% if adr.AddressLine1 != null and adr.AddressLine1 != "" %}{{ adr.AddressLine1 }}{% endif %}
-{% if adr.AddressLine2 != null and adr.AddressLine2 != "" %}{{ adr.AddressLine2 }}{% endif %}
-{% if adr.AddressLine3 != null and adr.AddressLine3 != "" %}{{ adr.AddressLine3 }}{% endif %}
-{% if adr.PostTown != null and adr.PostTown != "" %}{{ adr.PostTown }}{% endif %}
-{% if adr.County != null and adr.County != "" %}{{ adr.County }}{% endif %}
-{% if adr.PostCode != null and adr.PostCode != "" %}{{ adr.PostCode }}{% endif %}
-{% if adr.Country != null and adr.Country != "" %}{{ adr.Country }}{% endif %}
+{% macro registryAddress(cd)%}
+{% if cd != null %}
+{% if cd.registryAddressLine1 != null and cd.registryAddressLine1 != "" %}{{ cd.registryAddressLine1 }}<br /> {% endif %}
+{% if cd.registryAddressLine2 != null and cd.registryAddressLine2 != "" %}{{ cd.registryAddressLine2 }}<br /> {% endif %}
+{% if cd.registryAddressLine3 != null and cd.registryAddressLine3 != "" %}{{ cd.registryAddressLine3 }}<br /> {% endif %}
+{% if cd.registryAddressLine4 != null and cd.registryAddressLine4 != "" %}{{ cd.registryAddressLine4 }}<br /> {% endif %}
+{% if cd.registryTown != null and cd.registryTown != "" %}{{ cd.registryTown }}<br /> {% endif %}
+{% if cd.registryPostcode != null and cd.registryPostcode != "" %}{{ cd.registryPostcode }}<br /> {% endif %}
+{% if cd.registryTelephone != null and cd.registryTelephone != "" %}{{ cd.registryTelephone }}{% endif %}
 {% endif %}
 {% endmacro %}
 
-{% macro registryAddress(a)%}
-{% if a != null %}
-{% if a.registryAddressLine1 != null and a.registryAddressLine1 != "" %}{{ a.registryAddressLine1 }}<br /> {% endif %}
-{% if a.registryAddressLine2 != null and a.registryAddressLine2 != "" %}{{ a.registryAddressLine2 }}<br /> {% endif %}
-{% if a.registryAddressLine3 != null and a.registryAddressLine3 != "" %}{{ a.registryAddressLine3 }}<br /> {% endif %}
-{% if a.registryAddressLine4 != null and a.registryAddressLine4 != "" %}{{ a.registryAddressLine4 }}<br /> {% endif %}
-{% if a.registryTown != null and a.registryTown != "" %}{{ a.registryTown }}<br /> {% endif %}
-{% if a.registryPostCode != null and a.registryPostCode != "" %}{{ a.registryPostCode }}<br /> {% endif %}
-{% if a.registryTelephone != null and a.registryTelephone != "" %}{{ a.registryTelephone }}{% endif %}
-{% endif %}
+{% macro deceasedName(cd)%}
+{% if cd.boDeceasedTitle != null and cd.boDeceasedTitle != "" %}{{ cd.boDeceasedTitle }}{% endif %} <strong>{{cd.deceasedForenames}} {{cd.deceasedSurname}}</strong> {% if cd.boDeceasedHonours != null and cd.boDeceasedHonours != "" %}{{ cd.boDeceasedHonours }}{% endif %}{% if cd.solsDeceasedAliasNamesList != null and cd.solsDeceasedAliasNamesList != "" %}{% for alias in cd.solsDeceasedAliasNamesList %}{% if loop.first %} otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
 {% endmacro %}
 
 {% macro executorAddress(cd, executor)%}
 <span class="camelCase"><strong>
 {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTSolePrinSucc"
-    or cd.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
+    or cd.titleAndClearingType == "TCTPartSuccAllRenouncing"
     or cd.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-    {{ notSpacedAddress(cd.addressOfSucceededFirm) }}
+    {{ spacedAddress(cd.addressOfSucceededFirm) }}
 {% elseif cd.titleAndClearingType == "TCTPartPowerRes" or cd.titleAndClearingType == "TCTSolePrin"
     or cd.titleAndClearingType == "TCTPartAllRenouncing" or cd.titleAndClearingType == "TCTPartOthersRenouncing" %}
-    {{ notSpacedAddress(cd.addressOfFirmNamedInWill) }}
+    {{ spacedAddress(cd.addressOfFirmNamedInWill) }}
 {% else %}
-    {{ notSpacedAddress(executor.value.applyingExecutorAddress) }}
+    {{ spacedAddress(executor.value.applyingExecutorAddress) }}
 {% endif %}
 </strong></span>
 {% endmacro %}
@@ -65,14 +57,14 @@
 {% macro primaryApplicantAddress(cd)%}
 <span class="camelCase"><strong>
 {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTSolePrinSucc"
-    or cd.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
+    or cd.titleAndClearingType == "TCTPartSuccAllRenouncing"
     or cd.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-    {{ notSpacedAddress(cd.addressOfSucceededFirm) }}
+    {{ spacedAddress(cd.addressOfSucceededFirm) }}
 {% elseif cd.titleAndClearingType == "TCTPartPowerRes" or cd.titleAndClearingType == "TCTSolePrin"
     or cd.titleAndClearingType == "TCTPartAllRenouncing" or cd.titleAndClearingType == "TCTPartOthersRenouncing" %}
-    {{ notSpacedAddress(cd.addressOfFirmNamedInWill) }}
+    {{ spacedAddress(cd.addressOfFirmNamedInWill) }}
 {% else %}
-    {{ notSpacedAddress(cd.primaryApplicantAddress) }}
+    {{ spacedAddress(cd.primaryApplicantAddress) }}
 {% endif %}
 </strong></span>
 {% endmacro %}
@@ -245,8 +237,7 @@
     <tr>
         <td colspan="3" class="text-leftAligned">
             <p>
-                {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}{% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %} otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %} of <strong>
-                {{spacedAddress(case_details.case_data.deceasedAddress)}}</strong>
+                {{deceasedName(case_details.case_data)}} of <strong>{{spacedAddress(case_details.case_data.deceasedAddress)}}</strong>
 
                 <br />{% if case_details.case_data.dateOfDeathType == null %}
                 Died on
@@ -281,7 +272,7 @@
                             <span>and </span>
                         {% endif %}
                         <span style="text-transform: capitalize;"><strong>
-                            {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                            {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != "" %}{{executor.value.applyingExecutorName}}{% endif %}
                         </strong></span>
                         of {{executorAddress(case_details.case_data, executor)}}
                     {% endfor %}
