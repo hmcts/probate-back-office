@@ -18,7 +18,7 @@
       "deceasedSurname":"lastName",
       "deceasedDateOfDeath":"2018-01-01",
       "deceasedDateOfBirth":"1990-01-01",
-      "willExists":"Yes",
+      "willExists": "No",
       "solsWillType": "NoWill",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
@@ -138,7 +138,7 @@
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
       "boExaminationChecklistRequestQA" : "yes",
-      "caseType" : "gop",
+      "caseType" : "intestacy",
       "scannedDocuments": []
     },
     "last_modified":[
