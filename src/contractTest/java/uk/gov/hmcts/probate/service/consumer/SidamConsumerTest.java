@@ -66,7 +66,6 @@ public class SidamConsumerTest {
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetUserDetails")
-    @Ignore
     public void verifyIdamUserDetailsRolesPact() {
         ResponseEntity<Map<String, Object>> userMapResponse = idamApi.getUserDetails(AUTH_TOKEN);
         assertEquals("User is not Admin", "joe.bloggs@hmcts.net", userMapResponse.getBody().get("email"));

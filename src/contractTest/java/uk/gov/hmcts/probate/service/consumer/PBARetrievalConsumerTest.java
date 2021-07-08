@@ -73,7 +73,6 @@ public class PBARetrievalConsumerTest {
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePbaRetrievalPactFragment")
-    @Ignore
     public void verifyPbaRetrievePact() {
 
         when(idamAuthenticateUserService.getEmail(SOME_AUTHORIZATION_TOKEN)).thenReturn(ORGANISATION_EMAIL);

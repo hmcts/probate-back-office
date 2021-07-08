@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

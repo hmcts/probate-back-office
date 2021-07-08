@@ -51,7 +51,6 @@ public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTes
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "submitEventForCaseWorkerFragment")
-    @Ignore
     public void submitEventForCaseWorker() throws Exception {
 
         CaseDataContent caseDataContent = getCaseDataContent(PAYMENT_SUCCESS_APP, BASECASE_PAYLOAD_PATH);

@@ -69,7 +69,6 @@ public class SidamAuthenticateUserConsumerTest {
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetOAuth2Token")
-    @Ignore
     public void verifyIdamAuthoriseUserPact() {
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(AUTH_TOKEN,
             RESPONSE_TYPE, CLIENT_ID,

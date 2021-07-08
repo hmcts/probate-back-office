@@ -73,7 +73,6 @@ public class SidamExchangeCodeConsumerTest {
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentExchangeCode")
-    @Ignore
     public void verifyIdamExchangeCodePact() {
         TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(CODE, GRANT_TYPE, REDIRECT_URL,
             CLIENT_ID, CLIENT_SECRET);
