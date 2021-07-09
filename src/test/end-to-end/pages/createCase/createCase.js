@@ -7,13 +7,17 @@ module.exports = async function (jurisdiction, caseType, event) {
 
     const I = this;
     if (testConfig.TestForXUI) {
-        await I.wait(0.5);
+        await I.wait(2);
     }
     await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
     //In saucelabs this page is not able to load so waiting for more time
     if (testConfig.TestForCrossBrowser) {
         await I.wait(5);
     }
+    if (testConfig.TestForXUI) {
+        await I.wait(2);
+    }
+    await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.TestTimeToWaitForText || 60);
     await I.selectOption('#cc-jurisdiction', jurisdiction);

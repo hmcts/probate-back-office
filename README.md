@@ -112,6 +112,13 @@ Bring up the environment:
 # build the jar
 ./gradlew assemble
 
+# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+XUI_LD_ID
+LD_SDK_BO_KEY
+LD_BO_USER_KEY
+LD_SDK_FE_KEY
+LD_FE_USER_KEY
+
 # first time only
 npx @hmcts/probate-dev-env --create
 

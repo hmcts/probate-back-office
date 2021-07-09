@@ -66,12 +66,17 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
 
+    if (testConfig.TestForXUI) {
+        await I.wait(5);
+    }
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
         .pop()
         .match(/.{4}/g)
         .join('-');
 
+    console.info('case ref '+caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
