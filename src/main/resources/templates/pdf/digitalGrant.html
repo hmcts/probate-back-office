@@ -289,8 +289,6 @@
                 {% for executor in case_details.case_data.executorsApplying %}
                 {% if executor.value.applyingExecutorType != "TrustCorporation" %}
                 <br/>
-                {% for executor in case_details.case_data.executorsApplying %}
-                <br/>
                 <span>and </span>
                 <span style="text-transform: capitalize;"><strong>
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
