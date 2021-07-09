@@ -156,7 +156,7 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
                 is applying for Letters of Administration (with will annexed) and is named in the
-                {% if case_details.case_data.willHasCodicils == "No" %} will{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} will and/or codicil{% else %} will and/or codicils{% endif %} as
+                {% if case_details.case_data.willHasCodicils == "No" %} will{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} will and/or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} will and/or codicil{% else %} will and/or codicils{% endif %} as
                 {% if case_details.case_data.solsResiduaryType == "Legatee" %} the residuary legatee.
                 {% elseif case_details.case_data.solsResiduaryType == "Devisee" %} the residuary devisee.
                 {% else %} the residuary legatee and devisee.

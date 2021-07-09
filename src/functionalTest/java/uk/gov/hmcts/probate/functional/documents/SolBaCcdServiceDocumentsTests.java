@@ -328,28 +328,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForDigitalGrantDraftAddresses() {
         final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantAddresses() {
         final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantAddressesFirm() {
         final String response = generateDocument(CW_PART, GENERATE_GRANT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantDraftAddressesFirm() {
         final String response = generateDocument(CW_PART, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
