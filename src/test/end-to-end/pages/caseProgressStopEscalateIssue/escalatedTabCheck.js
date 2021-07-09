@@ -7,7 +7,7 @@ module.exports = async function () {
 
     // If this hangs, then case progress tab has not been generated / not been generated correctly and test fails.
     // Make sure case stopped text is shown as inset
-    await I.waitForText('Case escalated to a Registrar', 2, {css: 'div.govuk-inset-text'});
+    await I.waitForText('Case escalated to a Registrar', 5);
 
     // Check date format
 

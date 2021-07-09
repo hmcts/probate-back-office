@@ -32,6 +32,6 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
         }
     }
     if (testConfig.TestForXUI) {
-        await I.wait(5);
+        await I.wait(2);
     }
 };

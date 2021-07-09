@@ -20,7 +20,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     } else {
         // This was set to 60 for pipeline which seems overkill, perhaps
         // we had a problem one time with ES? Now set back to 6
-        await I.wait(6);
+        await I.wait(10);
     }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
@@ -33,7 +33,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
         await I.scrollTo(btnLocatorLastChild);
-        await I.wait(0.25);
+        await I.wait(0.5);
 
         await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
@@ -41,9 +41,9 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Only necessary where we have no auto delay (local dev).
 
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(0.5);
         }
-        await I.wait(0.5);
+        await I.wait(1);
 
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
