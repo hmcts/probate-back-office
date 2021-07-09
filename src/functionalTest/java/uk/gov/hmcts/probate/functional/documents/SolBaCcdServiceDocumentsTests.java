@@ -52,9 +52,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
-    private static final String ADD_EXEC_ONE = "and Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_ONE = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
-    private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
+    private static final String ADD_EXEC_TWO = "Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
     private static final String IHT_NET = "8,000.00";
     private static final String IHT_GROSS = "10,000.00";
@@ -346,28 +346,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForDigitalGrantDraftAddresses() {
         final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantAddresses() {
         final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantAddressesFirm() {
         final String response = generateDocument(CW_PART, GENERATE_GRANT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
     public void verifySuccessForDigitalGrantDraftAddressesFirm() {
         final String response = generateDocument(CW_PART, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains("Probate Practitioner 123 Denzil Road Gu2"));
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
@@ -406,7 +406,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -417,7 +417,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -439,7 +439,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("oxfordGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -450,7 +450,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -461,7 +461,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("leedsGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -472,7 +472,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("liverpoolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -483,7 +483,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("brightonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -494,7 +494,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("londonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -505,7 +505,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("newcastleGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -516,7 +516,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -527,7 +527,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -981,8 +981,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                         GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(DIED_ON_OR_BEFORE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
@@ -996,8 +996,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
@@ -1012,9 +1012,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -1029,9 +1029,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -1046,9 +1046,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
@@ -1063,9 +1063,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));

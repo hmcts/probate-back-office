@@ -11,8 +11,7 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "idamApi_users", port = "8862")
 @PactFolder("pacts")
-@SpringBootTest
+@SpringBootTest({"auth.provider.client.user: http://localhost:8862"})
 @TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamConsumerTest {
@@ -67,7 +66,6 @@ public class SidamConsumerTest {
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetUserDetails")
-    @Ignore
     public void verifyIdamUserDetailsRolesPact() {
         ResponseEntity<Map<String, Object>> userMapResponse = idamApi.getUserDetails(AUTH_TOKEN);
         assertEquals("User is not Admin", "joe.bloggs@hmcts.net", userMapResponse.getBody().get("email"));

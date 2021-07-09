@@ -7,6 +7,7 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
     const I = this;
     if (!isAlreadyAtSignOnPage) {
         await I.amOnLoadedPage(useProfessionalUser ? `${testConfig.TestXuiUrl}/` : `${testConfig.TestCcdUrl}/`);
+        await I.wait(testConfig.ManualDelayMedium);
     }
 
     await I.waitForText('Sign in', 240000);

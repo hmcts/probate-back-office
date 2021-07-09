@@ -235,8 +235,8 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            data.getExecutorsNotApplyingLegalStatement() == null ? "" : getRenouncingExecutors(data
-            .getExecutorsNotApplyingLegalStatement()));
+            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
+                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
@@ -245,7 +245,7 @@ public class TaskStateRenderer {
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
                 .getNotApplyingExecutorReason()))
             .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-                 + "</li>")
+                + "</li>")
             .collect(Collectors.joining());
     }
 }

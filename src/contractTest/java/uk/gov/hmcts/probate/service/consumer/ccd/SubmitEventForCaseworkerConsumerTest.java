@@ -5,8 +5,7 @@ import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import org.apache.http.HttpStatus;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
@@ -52,7 +51,6 @@ public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTes
     // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "submitEventForCaseWorkerFragment")
-    @Ignore
     public void submitEventForCaseWorker() throws Exception {
 
         CaseDataContent caseDataContent = getCaseDataContent(PAYMENT_SUCCESS_APP, BASECASE_PAYLOAD_PATH);

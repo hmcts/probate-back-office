@@ -7,5 +7,5 @@ module.exports = async function (caseRef) {
 
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
-    await I.amOnPage(`${testConfig.TestCcdUrl}/v2/case/${await I.replaceAll(caseRef, '-', '')}`);
+    await I.amOnLoadedPage(`${testConfig.TestCcdUrl}/v2/case/${await I.replaceAll(caseRef, '-', '')}`);
 };
