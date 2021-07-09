@@ -23,5 +23,5 @@ module.exports = async function () {
     await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.applicant_phone);
     await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.applicant_email);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

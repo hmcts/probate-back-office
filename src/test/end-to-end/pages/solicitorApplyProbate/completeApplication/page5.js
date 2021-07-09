@@ -10,5 +10,5 @@ module.exports = async function () {
     await I.fillField('#extraCopiesOfGrant', completeApplicationConfig.page5_extraCopiesUK);
     await I.fillField('#outsideUKGrantCopies', completeApplicationConfig.page5_outsideUKGrantCopies);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

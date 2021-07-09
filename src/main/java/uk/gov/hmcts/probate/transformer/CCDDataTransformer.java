@@ -37,6 +37,7 @@ public class CCDDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         return CCDData.builder()
+            .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
             .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
@@ -58,6 +59,7 @@ public class CCDDataTransformer {
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .codicilAddedDateList(getCodicilAddedDates(caseData))
             .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
+            .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .build();
     }
 

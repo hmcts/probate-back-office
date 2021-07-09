@@ -432,7 +432,9 @@ public class BusinessValidationController {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
+            Document coversheet = pdfManagementService
+                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            response = callbackResponseTransformer.transform(callbackRequest, document, coversheet, caseType);
         }
         return response;
     }

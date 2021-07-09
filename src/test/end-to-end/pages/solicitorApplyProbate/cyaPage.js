@@ -10,5 +10,5 @@ module.exports = async function () {
     await I.runAccessibilityTest();
     await I.wait(testConfig.ManualDelayMedium);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

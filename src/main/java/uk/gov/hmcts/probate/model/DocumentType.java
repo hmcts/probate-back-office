@@ -26,6 +26,9 @@ public enum DocumentType {
     @JsonProperty("grantCover")
     GRANT_COVER("grantCover"),
 
+    @JsonProperty("solicitorCoverSheet")
+    SOLICITOR_COVERSHEET("solicitorCoverSheet"),
+
     @JsonProperty("blank")
     BLANK("blank"),
 

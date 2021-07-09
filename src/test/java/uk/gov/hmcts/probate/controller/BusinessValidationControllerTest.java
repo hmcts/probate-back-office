@@ -58,6 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -621,6 +622,80 @@ public class BusinessValidationControllerTest {
             .andExpect(
                 jsonPath("$.data.solsLegalStatementDocument.document_filename")
                         .value("legalStatementAdmon.pdf"));
+    }
+
+    @Test
+    public void shouldGenerateSolCoverSheet_Gop() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
+            .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+            .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                jsonPath("$.data.solsCoversheetDocument.document_filename")
+                    .value("solicitorCoverSheet.pdf"));
+    }
+
+    @Test
+    public void shouldGenerateSolCoverSheet_AdmonWill() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+        caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
+        caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
+        caseDataBuilder.solsResiduary(RESIDUARY);
+        caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
+        caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.solsSolicitorIsExec(NO);
+        caseDataBuilder.solsSolicitorIsApplying(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
+            .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+            .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                jsonPath("$.data.solsCoversheetDocument.document_filename")
+                    .value("solicitorCoverSheet.pdf"));
+    }
+
+    @Test
+    public void shouldGenerateSolCoverSheet_Intestacy() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
+        caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
+        caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
+        caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
+        caseDataBuilder.solsSolicitorIsExec(NO);
+        caseDataBuilder.solsSolicitorIsApplying(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
+            .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+            .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                jsonPath("$.data.solsCoversheetDocument.document_filename")
+                    .value("solicitorCoverSheet.pdf"));
     }
 
     @Test

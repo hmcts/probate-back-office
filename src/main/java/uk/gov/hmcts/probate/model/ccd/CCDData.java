@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.List;
 @Builder
 public class CCDData implements Serializable {
 
+    private final Long caseId;
     private final String solicitorReference;
     private final Solicitor solicitor;
     private final Deceased deceased;
@@ -36,4 +38,5 @@ public class CCDData implements Serializable {
     private final LocalDate originalWillSignedDate;
     private final List<CodicilAddedDate> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;
+    private final DocumentLink solsCoversheetDocument;
 }

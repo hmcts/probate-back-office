@@ -11,5 +11,5 @@ module.exports = async function () {
     await I.selectOption('#solsPBANumber', completeApplicationConfig.page6_pBAANumber);
     await I.fillField('#solsPBAPaymentReference', completeApplicationConfig.page6_paymentReference);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

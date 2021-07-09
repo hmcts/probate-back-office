@@ -114,6 +114,24 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
             CASE_FAIL_QA_URL, "/case-stopped-html.txt");
     }
 
+    @Test
+    public void shouldRenderSendDocumentsWithRenouncingExecutors() {
+        verifyCaseProgressHtmlSolPost("caseprogress/04a-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/gop/04a-caseCreatedRenouncingExecutors");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithCodicils() {
+        verifyCaseProgressHtmlSolPost("caseprogress/04b-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/gop/04b-caseCreatedWillHasCodicils");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithIht217() {
+        verifyCaseProgressHtmlSolPost("caseprogress/04c-caseCreated.json", TASKLIST_UPDATE_URL,
+            "/gop/04c-caseCreatedIHT217");
+    }
+
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
                 "1528365719153338");

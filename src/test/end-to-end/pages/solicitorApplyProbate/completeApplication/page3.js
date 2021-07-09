@@ -9,5 +9,5 @@ module.exports = async function () {
     const I = this;
     await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
     await I.runAccessibilityTest();
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.goButton, true);
 };
