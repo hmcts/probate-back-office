@@ -68,4 +68,12 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
     </suppress>
+        <suppress>
+        <notes><![CDATA[
+            Suppressing CVE-2021-27568 - Isha to look into resolving 
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/net.minidev/json-smart@2.3$</packageUrl>
+        <cpe>cpe:2.3:a:json_smart_project:json_smart:2.3:*:*:*:*:*:*:*</cpe>
+        <vulnerabilityName>CVE-2021-27568</vulnerabilityName>
+    </suppress>
 </suppressions>
