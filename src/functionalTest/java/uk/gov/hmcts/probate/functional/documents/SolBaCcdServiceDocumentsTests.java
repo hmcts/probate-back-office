@@ -113,16 +113,13 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
 
-    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of John Smith "
-        + "(An official copy of which is available from the Court)";
-    private static String MULTI_EXEC_TC_ADD_EXEC_NAME = "Peter TcExec";
+    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of which is available from the Court) was John Smith";
 
     private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
-    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  MyTc"
-        + "19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
-
-
+    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  "
+        + "Tony Stark 7 Ashley Avenue Burnham-on-Sea Somerset Sn2 2JU United Kingdomof  "
+        + "MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -676,7 +673,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-    // In progess
     @Test
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
         final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
@@ -685,7 +681,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(GOP));
 
         assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
-//        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_ADD_EXEC));
+        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_NAME));
     }
 
     @Test

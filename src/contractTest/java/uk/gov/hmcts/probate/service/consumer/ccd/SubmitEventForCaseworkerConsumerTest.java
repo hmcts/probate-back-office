@@ -48,7 +48,6 @@ public class SubmitEventForCaseworkerConsumerTest extends AbstractCcdConsumerTes
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "submitEventForCaseWorkerFragment")
     public void submitEventForCaseWorker() throws Exception {

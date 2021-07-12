@@ -66,7 +66,6 @@ public class SidamAuthenticateUserConsumerTest {
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetOAuth2Token")
     public void verifyIdamAuthoriseUserPact() {

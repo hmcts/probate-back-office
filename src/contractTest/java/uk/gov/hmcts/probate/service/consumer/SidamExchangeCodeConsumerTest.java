@@ -70,7 +70,6 @@ public class SidamExchangeCodeConsumerTest {
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentExchangeCode")
     public void verifyIdamExchangeCodePact() {
