@@ -16,7 +16,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     if (!testConfig.TestAutoDelayEnabled) {
         // just a small delay - occasionally we get issues.
         // Only necessary where we have no auto delay (local dev).
-        await I.wait(0.5);
+        await I.wait(2);
     } else {
         // This was set to 60 for pipeline which seems overkill, perhaps
         // we had a problem one time with ES? Now set back to 6
@@ -41,7 +41,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Only necessary where we have no auto delay (local dev).
 
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.5);
+            await I.wait(2);
         }
         await I.wait(1);
 
@@ -51,7 +51,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(2);
         }
     }
 
@@ -63,7 +63,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.5);
+            await I.wait(2);
         }
         await I.scrollTo({css: 'input[id$="valid_Yes"]'});
         await I.waitForElement({css: 'input[id$="valid_Yes"]'});
@@ -90,7 +90,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25);
+            await I.wait(2);
         }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
     }

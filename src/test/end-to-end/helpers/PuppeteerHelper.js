@@ -14,8 +14,8 @@ class PuppeteerHelper extends Helper {
     }
 
     async delay(time) {
-        return new Promise(function(resolve) {
-            setTimeout(resolve, time*1000)
+        return new Promise(function (resolve) {
+            setTimeout(resolve, time * 1000)
         });
     }
 
@@ -105,15 +105,22 @@ class PuppeteerHelper extends Helper {
 
         runAccessibility(url, page);
     }
-    
+
     async printPageAsScreenshot() {
         const page = this.helpers[helperName].page;
-        await page.setViewport({ width: 1280, height: 960 });
+        await page.setViewport({width: 1280, height: 960});
         await page.screenshot({
             path: "./screenshot.jpg",
             type: "jpeg",
             fullPage: true
         });
     }
+
+    async randomIntBetween(min, max) {
+        return Math.floor(
+            Math.random() * (max - min + 1) + min
+        )
+    }
 }
+
 module.exports = PuppeteerHelper;

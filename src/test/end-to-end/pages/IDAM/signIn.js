@@ -16,7 +16,6 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
 
     await I.waitForNavigationToComplete('input[type="submit"]');
 
-    
     if (testConfig.TestForXUI) {
         await I.wait(2);
     }
