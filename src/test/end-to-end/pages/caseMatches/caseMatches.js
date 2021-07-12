@@ -72,12 +72,18 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         await I.click({css: 'input[id$="doImport_No"]'});
     }
 
+    if (testConfig.TestForXUI) {
+        await I.wait(1);
+    }
     await I.waitForElement(commonConfig.continueButton);
     await I.scrollTo({css: commonConfig.continueButton});
     await I.waitForClickable(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     if (skipMatchingInfo) {
+        if (testConfig.TestForXUI) {
+            await I.wait(3);
+        }
         await I.waitForElement({css: '#field-trigger-summary'});
         await I.waitForElement(commonConfig.continueButton);
         await I.waitForClickable(commonConfig.continueButton);

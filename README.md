@@ -125,7 +125,14 @@ npx @hmcts/probate-dev-env --create
 # spin up the docker containers
 npx @hmcts/probate-dev-env
 
-# use local probate backoffice
+# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+# To enable PBA payments for solicitors run this after startup of everything
+```
+docker-compose up -d wiremock
+./bin/wiremock.sh
+```
+
+# to use local probate backoffice
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
@@ -143,12 +150,6 @@ If you would like to test a new CCD config locally, you should run:
 ```
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
-```
-
-To enable PBA payments for solicitors run this after startup of everything
-```
-docker-compose up -d wiremock
-./bin/wiremock.sh
 ```
 
 

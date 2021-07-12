@@ -135,7 +135,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
 
         console.info('Examine case ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Examine case');
         await I.caseProgressClickGoAndSignOut();
