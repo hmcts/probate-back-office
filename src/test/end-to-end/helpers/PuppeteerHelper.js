@@ -106,11 +106,11 @@ class PuppeteerHelper extends Helper {
         runAccessibility(url, page);
     }
 
-    async printPageAsScreenshot() {
+    async printPageAsScreenshot(fileName) {
         const page = this.helpers[helperName].page;
         await page.setViewport({width: 1280, height: 960});
         await page.screenshot({
-            path: './screenshot.jpg',
+            path: './functional-output/' + fileName + '.jpg',
             type: 'jpeg',
             fullPage: true
         });

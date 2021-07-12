@@ -6,7 +6,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (stateOptionText) {
     const I = this;
     if (testConfig.TestForXUI) {
-        await I.wait(5);
+        await I.wait(1);
     }
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement({css: '#next-step'});
@@ -20,4 +20,7 @@ module.exports = async function (stateOptionText) {
         await I.wait(1);
     }
     await I.click({css: commonConfig.goButton});
+    if (testConfig.TestForXUI) {
+        await I.wait(3);
+    }
 };

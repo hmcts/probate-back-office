@@ -11,7 +11,7 @@ module.exports = async function (caseProgressConfig) {
     await I.fillField('#solsSOTSurname', caseProgressConfig.solSurname);
     await I.click(`#solsSolicitorIsMainApplicant_${caseProgressConfig.solIsMainApplicant ? 'Yes' : 'No'}`);
     if (!caseProgressConfig.solIsMainApplicant) {
-        const locator = {css: `#solsSolicitorIsApplying-${caseProgressConfig.solIsApplying ? 'Yes' : 'No'}`};
+        const locator = {css: `#solsSolicitorIsApplying_${caseProgressConfig.solIsApplying ? 'Yes' : 'No'}`};
         await I.waitForClickable(locator);
         await I.click(locator);
         if (!caseProgressConfig.solIsApplying) {
