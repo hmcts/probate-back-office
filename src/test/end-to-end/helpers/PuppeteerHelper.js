@@ -13,6 +13,12 @@ class PuppeteerHelper extends Helper {
         await page.goBack();
     }
 
+    async delay(time) {
+        await new Promise(function (resolve) {
+            setTimeout(resolve, time * 1000);
+        });
+    }
+
     async waitForNavigationToComplete(locator) {
         const page = this.helpers[helperName].page;
         const promises = [];
@@ -24,6 +30,7 @@ class PuppeteerHelper extends Helper {
             promises.push(page.click(locator));
         }
         await Promise.all(promises);
+        await this.delay(1);
     }
 
     async clickTab(tabTitle) {
@@ -98,5 +105,16 @@ class PuppeteerHelper extends Helper {
 
         runAccessibility(url, page);
     }
+
+    async printPageAsScreenshot(jpgFileName) {
+        const page = this.helpers[helperName].page;
+        await page.setViewport({width: 1280, height: 960});
+        await page.screenshot({
+            path: './functional-output/' + jpgFileName + '.jpg',
+            type: 'jpeg',
+            fullPage: true
+        });
+    }
 }
+
 module.exports = PuppeteerHelper;

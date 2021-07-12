@@ -10,7 +10,7 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
-    await I.click(`#evidenceHandled-${handleEvidenceConfig.checkbox}`);
+    await I.click(`#evidenceHandled_${handleEvidenceConfig.checkbox}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

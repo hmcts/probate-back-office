@@ -14,10 +14,11 @@ Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
     try {
+        console.info('04 BO Case Progress E2E - stop/escalate/issue');
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         /* eslint-disable no-console */
         console.info('Initial application entry');
@@ -35,7 +36,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_Yes'}]);
         await I.caseProgressStopEscalateIssueDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -46,8 +47,8 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal_Yes'}, {css: '#willHasCodicils_No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists_No'}]);
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         await I.caseProgressCheckYourAnswers(solCheckAnswersHtmlCheck.htmlCheck);
         await I.caseProgressCheckCaseProgressTab({
@@ -59,7 +60,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             goToNextStep: true});
 
         console.info('Confirm application');
-        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate_No'}]);
         await I.caseProgressConfirmApplication();
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
         await I.caseProgressCompleteApplication();
@@ -77,17 +78,17 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             numNotStarted: 0,
             signOut: true});
 
-        console.info('Print case');
+        console.info('Print case ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Print the case');
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
         await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Print case');
+        console.info('Check progress tab for Print case ' + caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 4,
@@ -95,47 +96,45 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             numNotStarted: 0,
             signOut: true});
 
-        console.info('Stop case');
+        console.info('Stop case ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Stop case');
         await I.caseProgressStopEscalateIssueAddCaseStoppedReason();
         await I.caseProgressContinueWithoutChangingAnything();
-        await I.waitForVisible({css: '#sign-out'});
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
 
-        console.info('Check progress tab for Case stopped');
+        console.info('Check progress tab for Case stopped ' + caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
-        console.info('Escalate case to registrar');
+        console.info('Escalate case to registrar ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Escalate to registrar');
         await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Case escalated');
+        console.info('Check progress tab for Case escalated ' + caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
 
-        console.info('Find matches (Issue grant)');
+        console.info('Find matches (Issue grant) ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
-        await I.waitForVisible({css: '#sign-out'});
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
 
-        console.info('Check progress tab for Case Matching (Issue grant)');
+        console.info('Check progress tab for Case Matching (Issue grant) ' + caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
@@ -144,17 +143,17 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             checkSubmittedDate: true,
             signOut: true});
 
-        console.info('Issue grant');
+        console.info('Issue grant ' + caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, true);
+        await I.authenticateWithIdamIfAvailable(false, false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChangeState('Issue grant');
-        await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Issue grant');
+        console.info('Check progress tab for Issue grant ' + caseRef);
         // log back in as solicitor & check all sections completed
-        await I.authenticateWithIdamIfAvailable(true, true);
+        await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
@@ -163,7 +162,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             checkSubmittedDate: true,
             signOut: true});
 
-        console.info('04 BO Case Progress E2E - stop/escalate/issue: complete');
+        console.info('04 BO Case Progress E2E - stop/escalate/issue: complete ' + caseRef);
     } catch (e) {
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);
         return Promise.reject(e);

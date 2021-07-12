@@ -6,7 +6,7 @@ module.exports = async function (willType = 'WillLeft') {
     const I = this;
     await I.waitForElement('#solsWillType');
     await I.runAccessibilityTest();
-    await I.click(`#solsWillType-${willType}`);
+    await I.click(`#solsWillType_${willType}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

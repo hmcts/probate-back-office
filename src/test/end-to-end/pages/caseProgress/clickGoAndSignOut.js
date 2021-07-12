@@ -5,8 +5,8 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function () {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement({css: '#field-trigger-summary'});
+    //await I.waitForElement({css: '#field-trigger-summary'});
     await I.waitForElement({css: commonConfig.goButton});
     await I.waitForNavigationToComplete(commonConfig.goButton);
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
 };

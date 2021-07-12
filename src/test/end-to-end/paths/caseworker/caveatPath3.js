@@ -128,6 +128,6 @@ Scenario('03 BO Caveat E2E - Caveat expired', async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
-    await I.click('#sign-out');
+    await I.click('nav.hmcts-header__navigation ul li:last-child a');
 
 }).retry(testConfig.TestRetryScenarios);
