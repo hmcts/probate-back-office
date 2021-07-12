@@ -106,20 +106,14 @@ class PuppeteerHelper extends Helper {
         runAccessibility(url, page);
     }
 
-    async printPageAsScreenshot(fileName) {
+    async printPageAsScreenshot(jpgFileName) {
         const page = this.helpers[helperName].page;
         await page.setViewport({width: 1280, height: 960});
         await page.screenshot({
-            path: './functional-output/' + fileName + '.jpg',
+            path: './functional-output/' + jpgFileName + '.jpg',
             type: 'jpeg',
             fullPage: true
         });
-    }
-
-    async randomIntBetween(min, max) {
-        await Math.floor(
-            (Math.random() * (max - min + 1)) + min
-        );
     }
 }
 

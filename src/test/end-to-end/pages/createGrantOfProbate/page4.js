@@ -42,7 +42,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click('#solsDeceasedAliasNamesList > div > button');
         await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);
-        await I.click(`#deceasedMaritalStatus_${createGrantOfProbateConfig.page4_deceasedMaritalStatusCode}`);
+        await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatusCode}`);
 
         await I.click(`#foreignAsset_${createGrantOfProbateConfig.page4_foreignAssetYes}`);
         await I.waitForVisible('#foreignAssetEstateValue');
