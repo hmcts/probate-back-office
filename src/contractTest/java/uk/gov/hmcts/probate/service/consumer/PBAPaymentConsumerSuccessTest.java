@@ -69,10 +69,8 @@ public class PBAPaymentConsumerSuccessTest extends BasePBAPaymentTest {
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentSuccess")
-    @Ignore
     public void verifyPBAPaymentPactSuccess() {
         PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN,
             getPaymentRequest(BigDecimal.TEN));
