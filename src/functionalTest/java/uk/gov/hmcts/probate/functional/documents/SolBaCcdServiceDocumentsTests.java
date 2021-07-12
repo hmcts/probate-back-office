@@ -113,7 +113,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
 
-    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of which is available from the Court) was John Smith";
+    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
+        + "which is available from the Court) was John Smith";
 
     private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
