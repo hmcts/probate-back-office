@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
-import java.util.HashMap;
 import java.util.regex.Pattern;
+import java.util.HashMap;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -66,9 +66,9 @@ public abstract class IntegrationTestBase {
         RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
                 .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+                        .setParam("http.connection.timeout", 120000)
+                        .setParam("http.socket.timeout", 120000)
+                        .setParam("http.connection-manager.timeout", 120000));
     }
 
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {

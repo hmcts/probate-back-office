@@ -1,5 +1,10 @@
 package uk.gov.hmcts.probate.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public final class Constants {
 
     public static final String YES = "Yes";
@@ -29,7 +34,63 @@ public final class Constants {
     public static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     public static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     public static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
-    public static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
+    public static final String STATE_GRANT_TYPE_CREATED_SOLICITOR_DTLS = "SolAppCreatedSolicitorDtls";
+    public static final String STATE_GRANT_TYPE_CREATED_DECEASED_DTLS = "SolAppCreatedDeceasedDtls";
+
+    public static final String EXECUTOR_TYPE_PROFESSIONAL = "Professional";
+    public static final String EXECUTOR_TYPE_TRUST_CORP = "TrustCorporation";
+    public static final String EXECUTOR_TYPE_NAMED = "Named";
+
+    public static final String EXECUTOR_NOT_APPLYING_REASON = "PowerReserved";
+
+    public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
+    public static final String TITLE_AND_CLEARING_PARTNER_POWER_RESERVED = "TCTPartPowerRes";
+    public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR = "TCTSolePrinSucc";
+    public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE = "TCTSolePrin";
+    public static final String TITLE_AND_CLEARING_TRUST_CORP_SDJ = "TCTTrustCorpResWithSDJ";
+    public static final String TITLE_AND_CLEARING_TRUST_CORP = "TCTTrustCorpResWithApp";
+    public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING = "TCTPartSuccOthersRenouncing";
+    public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
+    public static final String TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING = "TCTPartSuccAllRenouncing";
+    public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
+    public static final String EMPTY_STRING = "";
+    public static final String SOLICITOR_ID = "solicitor";
+   
+    public static List<String> getNonTrustPtnrTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING));
+    }
+
+    public static List<String> getNonTrustPtnrNotAllRenouncingTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_PARTNER_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING));
+    }
+
+    public static List<String> getTrustCorpTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_TRUST_CORP_SDJ,
+                TITLE_AND_CLEARING_TRUST_CORP));
+    }
+
+    public static List<String> getSuccessorTitleClearingTypes() {
+        return new ArrayList<>(asList(
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,
+                TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR,
+                TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
+                TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING));
+    }
 
     private Constants() {
     }

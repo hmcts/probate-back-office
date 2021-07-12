@@ -1,0 +1,37 @@
+{
+  "provider": {
+    "name": "em_dm_store"
+  },
+  "consumer": {
+    "name": "probate_backOffice"
+  },
+  "interactions": [
+    {
+      "description": "a request for download the document",
+      "request": {
+        "method": "GET",
+        "path": "/documents/5c3c3906-2b51-468e-8cbb-a4002eded075/binary",
+        "headers": {
+          "user-id": "id1",
+          "ServiceAuthorization": "ServiceToken"
+        }
+      },
+      "response": {
+        "status": 200
+      },
+      "providerStates": [
+        {
+          "name": "I have existing document"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.1.7"
+    }
+  }
+}

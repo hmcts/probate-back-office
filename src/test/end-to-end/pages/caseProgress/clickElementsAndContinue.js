@@ -7,6 +7,7 @@ module.exports = async function (elementLocators) {
     /* eslint-disable no-await-in-loop */
     for (let i=0; i < elementLocators.length; i++) {
         await I.waitForElement(elementLocators[i]);
+        await I.scrollTo(elementLocators[i]);
         await I.waitForClickable(elementLocators[i]);
         await I.click(elementLocators[i]);
     }

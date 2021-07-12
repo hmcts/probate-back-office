@@ -588,7 +588,6 @@ services:
       - shared-database
       - service-auth-provider-api
 
- # complete the XUI setup for probate-back-office - this has just been added as a starting point    
   xui-manage-cases:
     image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
     environment:

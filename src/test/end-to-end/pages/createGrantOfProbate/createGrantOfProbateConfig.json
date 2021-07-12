@@ -86,8 +86,7 @@
     "page4_deceasedDod_long_update": "1 Jan 2019",
     "page4_deceasedAnyOtherNamesYes": "Yes",
     "page4_deceasedAlias": "deceased_alias",
-    "page4_deceasedMaritalStatusCode": "neverMarried",
-    "page4_deceasedMaritalStatus": "Never married",
+    "page4_deceasedMaritalStatus": "neverMarried",
     "page4_foreignAssetYes": "Yes",
     "page4_foreignAssetEstateValue": "500",
     "page4_list1_update_option": "Deceased, IHT and Estate Details",
@@ -146,8 +145,7 @@
     "page8_waitForText": "Foreign domicile",
     "page8_amend_waitForText": "Amend case details",
     "page8_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage8",
-    "page8_deceasedDomicileInEngWalesYes": "Yes",
-    "page8_deceasedDomicileInEngWalesNo": "No",
+    "page8_deceasedDomicileInEngWales": "Yes",
     "page8_domicilityCountry": "Country",
     "page8_ukEstate_0_item": "Item",
     "page8_ukEstate_0_value": "999",
@@ -171,5 +169,9 @@
     "address_country": "United Kingdom",
     "address_postcode": "SW1A 1AA",
 
-    "UKpostcodeLink": ".manual-link"
+    "UKpostcodeLink": ".manual-link",
+
+    "amendCaseDetails_waitForText": "Amend case details",
+    "amendApplicantDetails_update_option": "Applicant Details",
+    "domAndAssets_update_option": "Domicility and Assets"
 }

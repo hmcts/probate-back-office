@@ -35,7 +35,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
         await I.caseProgressStopEscalateIssueDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -46,8 +46,34 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#willAccessOriginal_Yes'}},
+            {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
+            {locator: {css: '#willHasCodicils_No'}}]);
+
+        console.info('Dispense with notice and clearing type');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#dispenseWithNotice_No'}},
+            {locator: {css: '#titleAndClearingType-TCTNoT'}},
+        ]);
+
+        console.info('Remaining application details');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
+            {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
+            {locator: {css: '#primaryApplicantHasAlias-No'}},
+            {locator: {css: '#primaryApplicantIsApplying-Yes'}},
+            {locator: {css: createCaseConfig.UKpostcodeLink}},
+            {locator: {css: '#primaryApplicantAddress_AddressLine1'}, text: caseProgressConfig.solAddr1},
+            {locator: {css: '#primaryApplicantAddress_PostTown'}, text: caseProgressConfig.solAddrTown},
+            {locator: {css: '#primaryApplicantAddress_PostCode'}, text: caseProgressConfig.solAddrPostcode},
+            {locator: {css: '#primaryApplicantAddress_Country'}, text: caseProgressConfig.solAddrCountry},
+            {locator: {css: '#otherExecutorExists-No'}}
+        ]);
+
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
         await I.caseProgressCheckYourAnswers(solCheckAnswersHtmlCheck.htmlCheck);
         await I.caseProgressCheckCaseProgressTab({
@@ -60,9 +86,13 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
-        await I.caseProgressConfirmApplication();
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
-        await I.caseProgressCompleteApplication();
+        await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
+
+        await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
+            {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
+
+        // extra copies
+        await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);

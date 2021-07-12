@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DR
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
@@ -64,6 +66,7 @@ public class DocumentGeneratorService {
     private final GenericMapperService genericMapperService;
     private final PreviewLetterService previewLetterService;
     private final DocumentTemplateService documentTemplateService;
+    private final CaseDataTransformer caseDataTransformer;
 
     private Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status,
                                    DocumentIssueType issueType) {
@@ -159,25 +162,27 @@ public class DocumentGeneratorService {
     }
 
     public Document generateSoT(CallbackRequest callbackRequest) {
-        Document statementOfTruth;
+        final Document statementOfTruth;
         DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
+        final var cd = callbackRequest.getCaseDetails();
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
-                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                // Transform case data into expected format for legal statement
+                caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
+                log.info("Initiate call to generate SoT for case id: {}", cd.getId());
                 statementOfTruth = generateSolicitorSoT(callbackRequest);
-                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                log.info("Successful response for SoT for case id: {}", cd.getId());
                 break;
             case PERSONAL:
             default:
-                CaseDetails caseDetails = callbackRequest.getCaseDetails();
-                log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
-                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-                if (caseDetails.getData().isLanguagePreferenceWelsh()) {
+                log.info("Initiate call to generate SoT for case id: {}", cd.getId());
+                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(cd);
+                if (cd.getData().isLanguagePreferenceWelsh()) {
                     placeholderDecorator.decorate(placeholders);
                     documentType = DocumentType.WELSH_STATEMENT_OF_TRUTH;
                 }
                 statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, documentType);
-                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                log.info("Successful response for SoT for case id: {}", cd.getId());
                 break;
         }
 
@@ -210,7 +215,11 @@ public class DocumentGeneratorService {
                 break;
             case GRANT_OF_PROBATE:
             default:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_PROBATE);
+                String schemaVersion = callbackRequest.getCaseDetails().getData().getSchemaVersion();
+                // Set document version to newer trust corp legal statement for cases with 2.0.0 schema version
+                DocumentType legalStatementVersion = schemaVersion != null && schemaVersion.equals("2.0.0")
+                        ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
+                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, legalStatementVersion);
                 break;
         }
         return statementOfTruth;

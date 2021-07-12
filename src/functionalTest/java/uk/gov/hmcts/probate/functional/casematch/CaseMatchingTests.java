@@ -94,7 +94,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenStandingSearchFlow() {
         createCase();
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
@@ -115,7 +115,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws InterruptedException {
+    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() {
         createCase();
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.prettyPrint();
@@ -163,7 +163,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
     }
 
@@ -214,6 +214,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
 
     private Response search(String jsonFileName, String path) {
         return RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(getJsonFromFile(jsonFileName))

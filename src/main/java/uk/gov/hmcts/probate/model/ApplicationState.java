@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ApplicationState {
     APP_CREATED("PAAppCreated", "PA application created"),
-    SOL_APP_CREATED("SolAppCreated","Application created"),
+    SOL_APP_CREATED_SOLICITOR_DTLS("SolAppCreatedSolicitorDtls","Application created (solicitor details)"),
+    SOL_APP_CREATED_DECEASED_DTLS("SolAppCreatedDeceasedDtls","Application created (deceased details)"),
     SOL_APP_UPDATED("SolAppUpdated", "Application updated"),
     SOL_PROBATE_CREATED("SolProbateCreated", "Grant of probate created"),
     SOL_INTESTACY_CREATED("SolIntestacyCreated", "Intestacy grant created"),

@@ -17,9 +17,15 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     // Note - expected html filenames need to be .txt to stop intellij auto-formatting
 
     @Test
-    public void shouldTransformAppCreatedStateCorrectly() {
-        verifyCaseProgressHtmlSolPost("caseprogress/01-appCreated.json", TASKLIST_UPDATE_URL,
-            "/application-created-html.txt", getDeceasedDtlsUrl());
+    public void shouldTransformAppCreatedSolDtlsStateCorrectly() {
+        verifyCaseProgressHtmlSolPost("caseprogress/01-appCreatedSolDtls.json", TASKLIST_UPDATE_URL,
+            "/application-created-sol-dtls-html.txt", getSolicitorDtlsUrl());
+    }
+
+    @Test
+    public void shouldTransformAppCreatedDeceasedDtlsStateCorrectly() {
+        verifyCaseProgressHtmlSolPost("caseprogress/01a-appCreatedDeceasedDtls.json", TASKLIST_UPDATE_URL,
+                "/application-created-dcsd-dtls-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test

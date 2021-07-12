@@ -33,7 +33,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose-Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill-Yes'}, {css: '#appointExec-Yes'}]);
         await I.caseProgressStandardDeceasedDetailsCheck();
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
@@ -44,9 +44,25 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#willAccessOriginal_Yes'}},
+            {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
+            {locator: {css: '#willHasCodicils_No'}}]);
+
+        console.info('Dispense with notice and clearing type');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#dispenseWithNotice-No'}},
+            {locator: {css: '#titleAndClearingType-TCTNoT'}},
+        ]);
+
+        console.info('Remaining application details');
         await I.caseProgressClickElementsAndContinue([{css: '#otherExecutorExists-No'}]);
+
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
+
         // More extensive checks already performed at this stage for stop/escalate issue
         await I.caseProgressCheckYourAnswers();
         await I.caseProgressCheckCaseProgressTab({
@@ -59,10 +75,13 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
 
         console.info('Confirm application');
         await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
-        await I.caseProgressConfirmApplication();
+        await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
 
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#solsSOTJobTitle'}, text: caseProgressConfig.JobTitle}]);
-        await I.caseProgressCompleteApplication();
+        await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
+            {css: '#solsReviewSOTConfirmCheckbox2-BelieveTrue'}]);
+
+        // extra copies
+        await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
         console.info('Payment');
         await I.caseProgressFeePayment(caseProgressConfig);

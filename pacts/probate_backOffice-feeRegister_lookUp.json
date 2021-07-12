@@ -1,0 +1,337 @@
+{
+  "provider": {
+    "name": "feeRegister_lookUp"
+  },
+  "consumer": {
+    "name": "probate_backOffice"
+  },
+  "interactions": [
+    {
+      "description": "a request for Probate copies fees",
+      "request": {
+        "method": "GET",
+        "path": "/fees-register/fees/lookup",
+        "query": {
+          "service": [
+            "probate"
+          ],
+          "channel": [
+            "default"
+          ],
+          "jurisdiction2": [
+            "probate registry"
+          ],
+          "event": [
+            "copies"
+          ],
+          "keyword": [
+            "GrantWill"
+          ],
+          "jurisdiction1": [
+            "family"
+          ],
+          "applicant_type": [
+            "all"
+          ],
+          "amount_or_volume": [
+            "0"
+          ]
+        },
+        "matchingRules": {
+          "query": {
+            "service": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "probate"
+                }
+              ],
+              "combine": "AND"
+            },
+            "jurisdiction1": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "family"
+                }
+              ],
+              "combine": "AND"
+            },
+            "jurisdiction2": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "probate registry"
+                }
+              ],
+              "combine": "AND"
+            },
+            "channel": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "default"
+                }
+              ],
+              "combine": "AND"
+            },
+            "applicant_type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "all"
+                }
+              ],
+              "combine": "AND"
+            },
+            "event": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "copies"
+                }
+              ],
+              "combine": "AND"
+            },
+            "amount_or_volume": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "0"
+                }
+              ],
+              "combine": "AND"
+            },
+            "keyword": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "GrantWill"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "fee_amount": 0,
+          "code": "FEE0544",
+          "description": "Copy of a document (for each copy)",
+          "version": 7
+        },
+        "matchingRules": {
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "body": {
+            "$.code": {
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ],
+              "combine": "AND"
+            },
+            "$.description": {
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ],
+              "combine": "AND"
+            },
+            "$.version": {
+              "matchers": [
+                {
+                  "match": "number"
+                }
+              ],
+              "combine": "AND"
+            },
+            "$.fee_amount": {
+              "matchers": [
+                {
+                  "match": "number"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "Copies fee exist for Probate"
+        }
+      ]
+    },
+    {
+      "description": "a request for Probate fees",
+      "request": {
+        "method": "GET",
+        "path": "/fees-register/fees/lookup",
+        "query": {
+          "service": [
+            "probate"
+          ],
+          "channel": [
+            "default"
+          ],
+          "jurisdiction2": [
+            "probate registry"
+          ],
+          "event": [
+            "issue"
+          ],
+          "keyword": [
+            "SA"
+          ],
+          "jurisdiction1": [
+            "family"
+          ],
+          "applicant_type": [
+            "all"
+          ],
+          "amount_or_volume": [
+            "250000.00"
+          ]
+        },
+        "matchingRules": {
+          "query": {
+            "service": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "probate"
+                }
+              ],
+              "combine": "AND"
+            },
+            "jurisdiction1": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "family"
+                }
+              ],
+              "combine": "AND"
+            },
+            "jurisdiction2": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "probate registry"
+                }
+              ],
+              "combine": "AND"
+            },
+            "channel": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "default"
+                }
+              ],
+              "combine": "AND"
+            },
+            "applicant_type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "all"
+                }
+              ],
+              "combine": "AND"
+            },
+            "event": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "issue"
+                }
+              ],
+              "combine": "AND"
+            },
+            "amount_or_volume": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "250000.00"
+                }
+              ],
+              "combine": "AND"
+            },
+            "keyword": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "SA"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "fee_amount": 200
+        },
+        "matchingRules": {
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "body": {
+            "$.fee_amount": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "Fees exist for Probate"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.1.7"
+    }
+  }
+}

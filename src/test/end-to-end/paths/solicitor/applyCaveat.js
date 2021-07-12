@@ -23,7 +23,7 @@ const {
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Caveat', async function ({I}) {
+Scenario('01 - Solicitor - Apply Caveat', async function ({I}) {
 
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);

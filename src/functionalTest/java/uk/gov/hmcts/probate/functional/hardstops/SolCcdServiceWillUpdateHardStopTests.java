@@ -10,8 +10,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
@@ -71,9 +71,9 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))
             .post(VALIDATE_PROBATE_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
+            .and().body("data.state", equalToIgnoringCase("SolDraftCase"))
             .and().body("data.willExists", equalToIgnoringCase("Yes"))
             .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
@@ -84,25 +84,25 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalAdmon.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalAdmon.json"))
             .post(VALIDATE_ADMON_URL).then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("Stopped"))
+            .and().body("data.state", equalToIgnoringCase("SolDraftCase"))
             .and().body("data.willExists", equalToIgnoringCase("Yes"))
             .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
     }
 
+    // We no longer stop these
     @Test
     public void validateHardMessageWithNoOriginalWill() {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("hardStop.noWillAccessOriginalProbate.json"))
+            .body(utils.getJsonFromFile("noHardStop.noWillAccessOriginalProbate.json"))
             .post(CASE_STOP_CONFIRMATION);
         assertEquals(200, response.getStatusCode());
-        assertTrue(response.getBody().asString().contains(
+        assertFalse(response.getBody().asString().contains(
             "You can't currently use this service if you do not have the original will.\\n\\nFollow your existing "
                 + "process for applying for probate for this client.\\n"));
     }
-
 }

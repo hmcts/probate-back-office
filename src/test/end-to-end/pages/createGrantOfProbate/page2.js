@@ -20,9 +20,16 @@ module.exports = async function (crud) {
         await I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
 
         await I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
+
         const aliasLocator = {css: '#primaryApplicantAlias'};
         await I.waitForVisible(aliasLocator);
         await I.fillField(aliasLocator, createGrantOfProbateConfig.page2_alias);
+
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(testConfig.ManualDelayShort);
+        }
 
         await I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
 

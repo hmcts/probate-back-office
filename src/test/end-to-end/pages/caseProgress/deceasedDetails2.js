@@ -5,8 +5,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (caseProgressConfig) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement({css: '#applicationGrounds'});
-    await I.fillField({css: '#applicationGrounds'}, caseProgressConfig.groundsForApplication);
+    await I.waitForElement({css: '#deceasedDomicileInEngWales-Yes'});
     await I.click({css: '#deceasedDomicileInEngWales-Yes'});
     await I.click({css: 'a.manual-link'});
     await I.fillField({css: '#deceasedAddress_AddressLine1'}, caseProgressConfig.deceasedAddr1);

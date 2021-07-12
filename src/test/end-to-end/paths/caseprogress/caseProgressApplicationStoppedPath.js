@@ -44,15 +44,30 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
             goToNextStep: true});
 
         console.info('Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal-Yes'}, {css: '#willHasCodicils-No'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#willAccessOriginal_Yes'}},
+            {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
+            {locator: {css: '#willHasCodicils_No'}}]);
+
+        console.info('Dispense with notice and clearing type');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#dispenseWithNotice_No'}},
+            {locator: {css: '#titleAndClearingType-TCTNoT'}},
+        ]);
+
+        console.info('Remaining application details');
+
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
-            {locator: {css: '#primaryApplicantHasAlias-No'}},
-            {locator: {css: '#primaryApplicantIsApplying-No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: 'They lack capacity to act as executor'},
-            {locator: {css: '#otherExecutorExists-No'}}]);
+            {locator: {css: '#primaryApplicantHasAlias_No'}},
+            {locator: {css: '#primaryApplicantIsApplying_No'}},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason_MentallyIncapable'}},
+            {locator: {css: '#otherExecutorExists_No'}}]);
 
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue

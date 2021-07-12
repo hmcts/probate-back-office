@@ -3,7 +3,7 @@ This probate application has now been submitted
 
 {{solsSolicitorFirmName}}, {{solsSolicitorAddress}}
 
-{{solicitorName}}, {{solicitorJobRole}}
+{{solicitorName}}
 
 **Probate registry reference:**
 {{deceasedLastname}}, {{deceasedFirstname}}, died {{deceasedDateOfDeath}}

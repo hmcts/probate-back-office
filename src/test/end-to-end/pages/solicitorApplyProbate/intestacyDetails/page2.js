@@ -13,5 +13,5 @@ module.exports = async function () {
     await I.click(`#deceasedMaritalStatus-${intestacyDetailsConfig.page2_maritalstatus}`);
     await I.click(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

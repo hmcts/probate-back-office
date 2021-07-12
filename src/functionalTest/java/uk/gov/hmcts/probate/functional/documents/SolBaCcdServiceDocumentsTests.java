@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -30,13 +31,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, "
             + "SolAddCo";
     private static final String REGISTRY_ADDRESS =
-        "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull "
+        "High Court of Justice England and WalesBirmingham District Probate Registry The Priory Courts33 Bull "
             + "StreetBirminghamB4 6DU0300 303 0648";
+    private static final String REGISTRY_ADDRESS_HARLOW =
+        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
+        + "HarlowCM20 9QE";
     private static final String LONDON_REGISTRY_ADDRESS =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
             + " HolbornLondonWC1V 6NP0300 303 0648 ";
     private static final String CTSC_REGISTRY_ADDRESS =
-        "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box "
+        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box "
             + "12625HarlowCM20 9QE0300 303 0648";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
@@ -48,9 +52,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
-    private static final String ADD_EXEC_ONE = "and Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_ONE = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
-    private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
+    private static final String ADD_EXEC_TWO = "Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
     private static final String IHT_NET = "8,000.00";
     private static final String IHT_GROSS = "10,000.00";
@@ -69,11 +73,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
+    private static final String FURTHER_EVIDENCE = "Further evidence";
+    private static final String DOMICILITY_SENTENCE_UK = "The gross value for the estate in the United Kingdom amounts";
+    private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
+    private static final String FIRM_AUTHORISATION = "They have authorised Firm Name to sign a statement";
+    private static final String WILL_NO_CODICILS = "and is named in the will as";
+    private static final String SIGNED_DATE = ", signed and dated 1st January 2021";
     private static final String POSTCODE = "CM20 9QE";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
         "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
             + "provided is deliberately untruthful or dishonest, as well as revocation of the grant";
+    private static final String CODICIL_DATES = " with codicil signed and dated 3rd March 2020, and codicil signed"
+        + " and dated 5th March 2020, and codicil signed and dated 6th March 2020";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC =
         "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful "
             + "or dishonest";
@@ -83,18 +95,39 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_DIED_ON = "died on";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
-        "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
+        "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
+
+    // doesn't lowercase the names before then capitalising first letter
+    private static final String PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA =
+            "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
+
+    private static final String APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA =
+            "We, FirstName LastName of 123 Street, Town, Postcode, UK and Exfn3 Exln3 of addressline 1, "
+                    + "addressline 2, addressline 3, posttown, county, postcode, country and FirstName3 LastName3"
+                    + " of addressline 1, addressline 2, addressline 3, posttown, county, postcode, country";
+
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
+
+    private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
+
+    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
+        + "which is available from the Court) was John Smith";
+
+    private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
+        + "granted by this court to the following Executors";
+    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  "
+        + "Tony Stark 7 Ashley Avenue Burnham-on-Sea Somerset Sn2 2JU United Kingdomof  "
+        + "MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU";
+
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
-
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
     private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
@@ -108,9 +141,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
 
     private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbate.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
+    private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
+            "solicitorPDFPayloadProbateMultipleExecutors.json";
+    private static final String EMPTY_REQUEST = "emptyRequest.json";
+
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
+    private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
+        "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
     private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
@@ -128,7 +168,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
+    private static final String TRUST_CORPS_GOP_PAYLOAD = "solicitorPayloadTrustCorpsTransformed.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
+    private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
+    private static final String SOLE_PRIN = "solicitorSoleFirmPartner.json";
+    private static final String SOL_NOT_REPEATED = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+    private static final String EXEC_WITH_ALIAS = "solicitorExecutorAliasNameLegalStatement.json";
+    private static final String PART_ALL_RENOUNCING = "solicitorPartAllRenouncing.json";
+    private static final String PART_ALL_SUCC_RENOUNCING = "solicitorPartSuccAllRenouncing.json";
+    private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS = "solicitorSolPartner.json";
+    private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
+    private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
+    private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
+    private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
 
     @Before
     public void setUp() {
@@ -182,9 +235,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
+    @Test
+    public void verifyTrustCorpsShouldReturnOkResponseCode() {
+        validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
+    }
+
     private String generateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -216,6 +275,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private String generateNonProbateDocument(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
@@ -229,11 +289,17 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generatePdfDocument(String jsonFileName, String path) {
 
+        return generatePdfDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path);
+    }
+
+    private String generatePdfDocumentFromPayload(String payload, String path) {
+
         final Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(jsonFileName))
-            .when().post(path).andReturn();
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(payload)
+                .when().post(path).andReturn();
 
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
@@ -254,7 +320,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
-
     }
 
     @Test
@@ -266,6 +331,49 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifySuccessForGoPChangesForGopGenerate() {
+        final String response = generateDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantDraftAddresses() {
+        final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantAddresses() {
+        final String response = generateDocument(CW_PART_SUCC, GENERATE_GRANT);
+
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantAddressesFirm() {
+        final String response = generateDocument(CW_PART, GENERATE_GRANT);
+
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
+    }
+
+    @Test
+    public void verifySuccessForDigitalGrantDraftAddressesFirm() {
+        final String response = generateDocument(CW_PART, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Probate Practitioner 123 London London"));
+    }
+
+    @Test
+    public void verifySuccessForGoPChangesForGopGenerateDraft() {
+        final CaseData caseData = CaseData.builder().build();
+        final String response = generateDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains("Trust Corporation Name 1 High St"));
     }
 
     @Test
@@ -296,7 +404,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -307,7 +415,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt"));
-        expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -329,7 +437,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("oxfordGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -340,7 +448,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -351,7 +459,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("leedsGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -362,7 +470,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("liverpoolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -373,7 +481,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("brightonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -384,7 +492,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("londonGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -395,7 +503,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("newcastleGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -406,7 +514,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -417,7 +525,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateDocument(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
-        expectedText = expectedText.replaceAll("3rd December 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -437,14 +545,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() {
-        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() {
+        final String response = generatePdfDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() {
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
         assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
@@ -456,11 +578,57 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceAdmonWill() {
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_NO_CODICILS));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() {
+        final String response = generatePdfDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_NO_CODICILS));
+        assertTrue(response.contains(SIGNED_DATE));
+        assertTrue(response.contains(CODICIL_DATES));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceIntestacy() {
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(FURTHER_EVIDENCE));
+    }
+
+    @Test
+    public void verifySuccessForCodicilsIntestacy() {
+        final String response = generatePdfDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+    }
+
+    @Test
+    public void verifySuccessForFurtherEvidenceTrustCorpProbate() {
+        final String response = generatePdfDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(SIGNED_DATE));
+        assertTrue(response.contains("1st January 2021"));
+        assertTrue(response.contains(FURTHER_EVIDENCE));
     }
 
     @Test
@@ -504,6 +672,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(!response.contains(TITLE));
         assertTrue(!response.contains(HONOURS));
 
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
+        final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
+        assertTrue(response.contains(GOP));
+
+        assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_ADD_EXEC));
+        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_NAME));
     }
 
     @Test
@@ -798,8 +979,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                         GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(DIED_ON_OR_BEFORE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
@@ -813,8 +994,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
@@ -829,9 +1010,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -846,9 +1027,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
@@ -863,9 +1044,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
@@ -880,9 +1061,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(ADD_EXEC_ONE));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
 
+        assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
@@ -996,6 +1177,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyAssembleLetterShouldReturnIHTReferenceNumber() {
         final String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1025,6 +1207,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -1054,6 +1237,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("/document/generateLetter.json"))
@@ -1079,6 +1263,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorRePrintReturnBadResponseCode() {
         final Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .body(getJsonFromFile("/document/rePrint.json"))
@@ -1089,6 +1274,316 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySoTDomiciledInEnglandAndWales() {
+        final String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Main Applicant of Test, Test, A1 2BC, UK make the following"
+                + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
+                + " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
+    }
+
+    @Test
+    public void verifySoTIndividualExecutorPowerReserved() {
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor4_name, another executor named in the will,"
+                + " is not making this application but reserves power to do so at a later date."));
+    }
+
+    @Test
+    public void verifySoTIndividualExecutorRenunciation() {
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("executor3_name, another executor named in the will, "
+                + "has renounced probate and letters "
+                + "of administration with will annexed"));
+    }
+
+    @Test
+    public void verifySoTExecutorDiedBeforeAndAfterDeceased() {
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "executor1_name, another executor named in the will, has died in the lifetime of the deceased."));
+        assertTrue(response.contains(
+                "executor2_name, another executor named in the will, has survived the deceased and died since."));
+    }
+
+    @Test
+    public void verifySoTExecutorLacksMentalCapacity() {
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "executor5_name, another executor named in the will, lacks capacity to manage their"
+                        + " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
+    }
+
+    @Test
+    public void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() {
+        final String response = generatePdfDocument("solicitorPayloadDispenseNotGiven.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Notice of this application has on the 10th October 2010 "
+                + "been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules "
+                + "1987 to executor1_name to whom power is to be reserved."));
+    }
+
+    @Test
+    public void verifySoTExecutorConcurrentApplication() {
+        final String response = generatePdfDocument("solicitorExecutorsNotApplyingReasons.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("We are concurrently applying for notice of this application"
+                + " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules"
+                + " 1987 to executor6_name to whom power is to be reserved."));
+    }
+
+    @Test
+    public void verifySoTFirstParagraphPersonWhoDiedForClearingOne() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
+                + "domiciled in England and Wales. The will appoints an executor."));
+    }
+
+    @Test
+    public void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() {
+        final String response = generatePdfDocument("solicitorPayloadPartnersInFirm.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
+                + "domiciled in England and Wales. The will appoints an executor."));
+    }
+
+
+    @Test
+    public void verifySecondParagraphFirmSuccessionForClearingThree() {
+        final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm "
+                    + "Successor firm that had succeeded to and carried on the practice of the firm Firmname will, "
+                    + "at the date of death of the deceased."));
+
+    }
+
+    @Test
+    public void verifySoTSecondParagraphFirmSuccessionForClearingFour() {
+        final String response = generatePdfDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("The executor Partner Exec, is the only profit-sharing partner and "
+                + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
+
+    }
+
+    @Test
+    public void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
+                + " that had succeeded to and carried on the practice of the "
+                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
+                + "stakeholders in the firm Firmname will are renouncing their right to probate."));
+
+    }
+
+    @Test
+    public void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
+                + " that had succeeded to and carried on the practice of the "
+                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
+                + "stakeholders in the firm Firmname will are renouncing their right to probate."));
+
+    }
+
+    @Test
+    public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
+                GENERATE_LEGAL_STATEMENT);
+        // all partners are renouncing, so other partners in the collection are ignored, and wording is
+        // 'the executor named in the will' as opposed to 'an executor named in the will'
+        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
+    }
+
+    @Test
+    public void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() {
+        final String response = generatePdfDocument("solicitorPayloadPartnersAllRenounce.json",
+                GENERATE_LEGAL_STATEMENT);
+        // all partners are renouncing, so other partners in the collection are ignored, and wording is
+        // 'the executor named in the will' as opposed to 'an executor named in the will'
+        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
+    }
+
+    @Test
+    public void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() {
+        final String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor named in the will has by a resolution, which has been filed with the "
+                + "Senior District Judge or Registry,"
+                + " in which Exfn1 Exln1 identified by the position they hold and which is still in force, "
+                + "appointed them "
+                + "for the purpose of applying for probate of the will or for grants of probate on its behalf."));
+
+    }
+
+    @Test
+    public void verifySoTFifthParagraphLodgedApplicationClearingEight() {
+        final String response = generatePdfDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("The executor named in the will has by a resolution, certified copy"
+                + " of which is lodged with this application, in which Exfn1 Exln1 identified by the position"
+                + " they hold and which is still in force, appointed them for the purpose of applying for probate"
+                + " of the will or for grants of probate on its behalf."));
+
+    }
+
+
+    @Test
+    public void verifySoTFirstParagraphClearancePartnerSucceeded() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
+                + " at the date of death of the deceased."));
+
+    }
+
+    @Test
+    public void verifySoTSecondParagraphSoleSucceeded() {
+        final String response = generatePdfDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm"
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
+                + " at the date of death of the deceased."));
+
+    }
+
+    @Test
+    public void verifySoTThirdParagraphPartnerRenounceSucceeded() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmRenounce.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the "
+                + "firm Successor firm that had succeeded to and carried on the practice of the firm Firmname "
+                + "will, at the date of death of the deceased."));
+
+    }
+
+    @Test
+    public void verifySoTFourthParagraphPartnerAllRenounceSucceeded() {
+        final String response = generatePdfDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
+    }
+
+    @Test
+    public void verifySoTFifthParagraphJudgeSeniorDistrict() {
+        final String response = generatePdfDocument("solicitorPayloadJudgeSeniorDistrict.json",
+                GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
+                + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
+                + "Somerset, BA5 2PA, United Kingdom make the following statement:"));
+
+        assertTrue(response.contains("The executor named in the will has by a resolution,"
+            + " which has been filed with the Senior District Judge or Registry, in which Exfn1 Exln1 identified by"
+            + " the position they hold and which is still in force, "
+            + "appointed them for the purpose of applying for probate"
+            + " of the will or for grants of probate on its behalf."));
+
+        assertTrue(response.contains("Exfn1 Exln1 is acting on behalf of Trust_Corporation_pls trust corporation. "
+            + "They hold the position of Solicitor as per the resolution."));
+    }
+
+    @Test
+    public void verifySoTSixthParagraphTrustCorpResolutionLodged() {
+        final String response = generatePdfDocument("verifySolPayloadTrustCorpResolutionLodged.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("The executor named in the will has by a resolution, "
+                + "certified copy of which is lodged"
+                + " with this application, in which Exfn1 Exln1 identified by the position they hold and which"
+                + " is still in force, appointed them for the purpose of applying for probate of "
+                + "the will or for grants of probate on its behalf."));
+    }
+
+    @Test
+    public void verifySoTNoDuplicateSolExecutors() {
+        final String response = generatePdfDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+                .contains("The executor believes that all the information stated in the legal statement is true."));
+        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
+            + "fdgfg, at the date of death"));
+        assertTrue(response.split("Fred Smith").length == 4);
+    }
+
+    @Test
+    public void verifySoTAliasNameForExec() {
+        final String response = generatePdfDocument(EXEC_WITH_ALIAS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Carlos Juan otherwise known as Karakiozis of"));
+    }
+    
+    public void verifySoTSolePartnerWording() {
+        final String response = generatePdfDocument(SOLE_PRIN, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
+            + "fdgfg, at the date of death"));
+        assertTrue(response.split("Fred Smith").length == 4);
+    }
+    
+    public void verifySoTPartAllRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
+                + " Firmname will at the date of death of the deceased have renounced probate."));
+    }
+
+    @Test
+    public void verifySoTPartSuccAllRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
+                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
+                + "date of death of the deceased have renounced probate."));
+    }
+
+    @Test
+    public void verifySoTPartOthersRenouncingWording() {
+        final String response = generatePdfDocument(PART_ALL_OTHERS_RENOUNCING, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
+                + "Firmname will, at the date of death of the deceased."));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWording() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
+                + "stakeholders in the firm "));
+    }
+
+    @Test
+    public void verifySoTSolPartnersWordingSingleExec() {
+        final String response = generatePdfDocument(SOLE_PRIN_OTHER_PARTNERS_SINGLE, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response
+            .contains("The executor Partner Exec, is the only profit-sharing partner and "
+                + "stakeholder in the firm "));
+    }
+
+    @Test
+    public void verifySoTSolNotRepeated() {
+        final String response = generatePdfDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
+        assertFalse(response
+                .contains("Jim Smith (executor)"));
+        assertTrue(response
+                .contains("Jim Smith (Probate practitioner and executor)"));
+        assertTrue(response.split("Jim Smith").length == 5);
+    }
+    
     public void verifyDefaultEvidenceToYesFromNull() {
         Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()

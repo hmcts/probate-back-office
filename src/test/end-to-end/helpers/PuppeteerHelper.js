@@ -13,10 +13,13 @@ class PuppeteerHelper extends Helper {
         await page.goBack();
     }
 
-    async waitForNavigationToComplete(locator) {
+    async waitForNavigationToComplete(locator, forXui = testConfig.TestForXUI) {
         const page = this.helpers[helperName].page;
+
         const promises = [];
-        if (!testConfig.TestForXUI) {
+        if (forXui) {
+            promises.push(page.waitForNavigation());
+        } else {
             promises.push(page.waitForNavigation({timeout: 240000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
         }
 
@@ -26,9 +29,9 @@ class PuppeteerHelper extends Helper {
         await Promise.all(promises);
     }
 
-    async clickTab(tabTitle) {
+    async clickTab(tabTitle, forXui = testConfig.TestForXUI) {
         const helper = this.helpers[helperName];
-        if (testConfig.TestForXUI) {
+        if (forXui) {
             const tabXPath = `//div[text()='${tabTitle}']`;
 
             // wait for element defined by XPath appear in page

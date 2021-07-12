@@ -281,6 +281,50 @@ curl -X POST \
 http://localhost:8991/__admin/mappings/new
 
 #PBA NO accounts
+#remove probatesolicitor1@gmail.com when exui testing all working ok
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "url": "/refdata/external/v1/organisations/pbas",
+            "headers": {
+              "UserEmail": {
+                "equalTo": "probatesolicitor1@gmail.com"
+              }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationEntityResponse" : {
+                "organisationIdentifier": "0UFUG4Z",
+                "name": "ia-legal-rep-org",
+                "status": "ACTIVE",
+                "sraId": null,
+                "sraRegulated": false,
+                "companyNumber": null,
+                "companyUrl": null,
+                "superUser": {
+                  "firstName": "legalrep",
+                  "lastName": "orgcreator",
+                  "email": "superuser@probate-test.com"
+                },
+                "paymentAccount": [
+                  "PBA0082126",
+                  "PBA0083372"                  
+                ],
+                "contactInformation": null
+              }
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
+#PBA accounts ON HOLD
+
 curl -X POST \
 --data '{
           "request": {
@@ -312,6 +356,7 @@ curl -X POST \
                   "email": "superuser@probate-test.com"
                 },
                 "paymentAccount": [
+                  "PBA0083374"
                 ],
                 "contactInformation": null
               }

@@ -2,25 +2,31 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile) {
+module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication, forXui = testConfig.TestForXUI) {
 
     const I = this;
 
     await I.see(caseRef);
-    await I.clickTab(tabConfigFile.tabName);
+    await I.clickTab(tabConfigFile.tabName, forXui);
     await I.runAccessibilityTest();
 
     if (tabUpdates) {
         const updatedConfig = tabConfigFile[tabUpdates];
-
-        for (let i = 0; i < updatedConfig.fields.length; i++) {
-            // eslint-disable-next-line
-            await I.waitForText(updatedConfig.fields[i]);
+        let fields = updatedConfig.fields;
+        let keys = updatedConfig.dataKeys;
+        if (forUpdateApplication) {
+            fields = fields.concat(updatedConfig.updateAppFields);
+            keys = keys.concat(updatedConfig.updateAppDataKeys);
         }
 
-        for (let i = 0; i < updatedConfig.dataKeys.length; i++) {
+        for (let i = 0; i < fields.length; i++) {
             // eslint-disable-next-line
-            await I.waitForText(tabUpdatesConfigFile[updatedConfig.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(fields[i]);
+        }
+
+        for (let i = 0; i < keys.length; i++) {
+            // eslint-disable-next-line
+            await I.waitForText(tabUpdatesConfigFile[keys[i]], testConfig.TestTimeToWaitForText || 60);
         }
     }
 };

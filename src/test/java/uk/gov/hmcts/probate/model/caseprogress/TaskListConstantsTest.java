@@ -10,8 +10,10 @@ public class TaskListConstantsTest {
     @Test
     public void testConstantsMapCorrectly() {
         assertEquals(TL_STATE_ADD_SOLICITOR_DETAILS, TaskListState.mapCaseState(null));
+        assertEquals(TL_STATE_ADD_SOLICITOR_DETAILS,
+                TaskListState.mapCaseState(StateConstants.STATE_SOL_APP_CREATED_SOLICITOR_DTLS));
         assertEquals(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
-                TaskListState.mapCaseState(StateConstants.STATE_SOL_APP_CREATED));
+                TaskListState.mapCaseState(StateConstants.STATE_SOL_APP_CREATED_DECEASED_DTLS));
         assertEquals(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 TaskListState.mapCaseState(StateConstants.STATE_SOL_PROBATE_CREATED));
         assertEquals(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,

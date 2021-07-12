@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -66,6 +67,7 @@ public class DocumentGeneratorServiceTest {
 
     private CallbackRequest callbackRequest;
     private CallbackRequest callbackRequestSolsGop;
+    private CallbackRequest callbackRequestTrustCorpSolsGop;
     private CallbackRequest callbackRequestSolsAdmon;
     private CallbackRequest callbackRequestSolsIntestacy;
     private Map<String, Object> expectedMap;
@@ -90,6 +92,9 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private DocumentTemplateService documentTemplateService;
+
+    @Mock
+    private CaseDataTransformer caseDataTransformer;
 
     @Mock
     private PlaceholderDecorator placeholderDecorator;
@@ -126,6 +131,17 @@ public class DocumentGeneratorServiceTest {
             .solsSolicitorFirmName("firmName").build(),
             LAST_MODIFIED, CASE_ID);
         callbackRequestSolsGop = new CallbackRequest(caseDetailsSolsGop);
+
+        CaseDetails caseDetailsSolsTrustCorpGop = new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .schemaVersion("2.0.0")
+                .registryLocation("Bristol")
+                .applicationType(ApplicationType.SOLICITOR)
+                .solsSolicitorAddress(SolsAddress.builder().build())
+                .solsSolicitorFirmName("firmName").build(),
+                LAST_MODIFIED, CASE_ID);
+        callbackRequestTrustCorpSolsGop = new CallbackRequest(caseDetailsSolsTrustCorpGop);
+
 
         CaseDetails caseDetailsSolsAdmon = new CaseDetails(CaseData.builder()
             .caseType("admonWill")
@@ -719,6 +735,15 @@ public class DocumentGeneratorServiceTest {
         assertEquals(DocumentType.EDGE_CASE,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT)
                 .getDocumentType());
+    }
+
+    @Test
+    public void testGenerateTrustCorpsProbateLegalStatementForSchema2() {
+        when(pdfManagementService.generateAndUpload(callbackRequestTrustCorpSolsGop,
+                DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
+                .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS).build());
+        assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS).build(),
+                documentGeneratorService.generateSoT(callbackRequestTrustCorpSolsGop));
     }
 
 }

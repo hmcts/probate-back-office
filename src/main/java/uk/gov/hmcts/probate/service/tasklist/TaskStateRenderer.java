@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -28,11 +28,12 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATI
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
 public class TaskStateRenderer {
-    private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add solicitor details";
+    private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add Probate practitioner details";
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
@@ -185,7 +186,7 @@ public class TaskStateRenderer {
     private static String getLinkUrlTemplate(TaskListState taskListState, String willType) {
         switch (taskListState) {
             case TL_STATE_ADD_SOLICITOR_DETAILS:
-                return null;
+                return SOLICITOR_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_DECEASED_DETAILS:
                 return DECEASED_DETAILS_URL_TEMPLATE;
             case TL_STATE_ADD_APPLICATION_DETAILS:
@@ -234,17 +235,17 @@ public class TaskStateRenderer {
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
         keyValue.put("renouncingExecutors",
-            data.getExecutorsNotApplyingForLegalStatement() == null ? "" : getRenouncingExecutors(data
-            .getExecutorsNotApplyingForLegalStatement()));
+            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
+                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
-    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutor>> executors) {
+    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         return executors.stream()
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getAdditionalExecReasonNotApplying()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getAdditionalExecForenames()
-                + " " + executor.getValue().getAdditionalExecLastname() + "</li>")
+                .getNotApplyingExecutorReason()))
+            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
+                + "</li>")
             .collect(Collectors.joining());
     }
 }

@@ -116,6 +116,11 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
+    protected String getSolicitorDtlsUrl() {
+        return UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
+            .replaceFirst("<CASE_ID>", "1528365719153338");
+    }
+
     protected String getDeceasedDtlsUrl() {
         return UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338");
     }
