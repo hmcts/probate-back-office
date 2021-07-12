@@ -97,6 +97,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -466,7 +467,6 @@ public class CallbackResponseTransformerTest {
             .solsDeceasedAliasNamesList(ALIAS_NAMES)
             .solsSolicitorAppReference(APP_REF)
             .solsAdditionalInfo(ADDITIONAL_INFO)
-            .caseType(CASE_TYPE_GRANT_OF_PROBATE)
             .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
             .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
             .boEmailGrantReissuedNotification(YES)
@@ -1129,10 +1129,9 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldSetGrantIssuedDateForEdgeCase() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL).caseType("edgeCase");
         Document document = Document.builder()
             .documentLink(documentLinkMock)
-            .documentType(DIGITAL_GRANT)
+            .documentType(EDGE_CASE)
             .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

@@ -61,6 +61,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
@@ -255,7 +256,7 @@ public class CallbackResponseTransformer {
 
             responseCaseDataBuilder.evidenceHandled(YES);
 
-        } else if (caseData.getCaseType().matches("edgeCase")) {
+        } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
 
             responseCaseDataBuilder.grantIssuedDate(grantIssuedDate);
