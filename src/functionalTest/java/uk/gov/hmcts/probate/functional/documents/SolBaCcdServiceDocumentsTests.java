@@ -31,13 +31,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, "
             + "SolAddCo";
     private static final String REGISTRY_ADDRESS =
-        "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull "
+        "High Court of Justice England and WalesBirmingham District Probate Registry The Priory Courts33 Bull "
             + "StreetBirminghamB4 6DU0300 303 0648";
+    private static final String REGISTRY_ADDRESS_HARLOW =
+        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
+        + "HarlowCM20 9QE";
     private static final String LONDON_REGISTRY_ADDRESS =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
             + " HolbornLondonWC1V 6NP0300 303 0648 ";
     private static final String CTSC_REGISTRY_ADDRESS =
-        "High Court of Justice England and Wales Principal Registry of the Family DivisionHMCTS ProbatePO Box "
+        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box "
             + "12625HarlowCM20 9QE0300 303 0648";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
@@ -107,6 +110,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
+
+    private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
+
+    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
+        + "which is available from the Court) was John Smith";
+
+    private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
+        + "granted by this court to the following Executors";
+    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  "
+        + "Tony Stark 7 Ashley Avenue Burnham-on-Sea Somerset Sn2 2JU United Kingdomof  "
+        + "MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU";
+
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
@@ -166,6 +181,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
+    private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
 
     @Before
     public void setUp() {
@@ -656,6 +672,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(!response.contains(TITLE));
         assertTrue(!response.contains(HONOURS));
 
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
+        final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
+        assertTrue(response.contains(GOP));
+
+        assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_ADD_EXEC));
+        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_NAME));
     }
 
     @Test

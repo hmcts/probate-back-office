@@ -70,7 +70,6 @@ public class PBARetrievalConsumerTest {
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePbaRetrievalPactFragment")
     public void verifyPbaRetrievePact() {

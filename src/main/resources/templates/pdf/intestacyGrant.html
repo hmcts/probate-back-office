@@ -130,7 +130,7 @@
         </td>
         <td colspan="3" class="text-leftAligned" style="padding-left: 60px;">
             {% if case_details.case_data.registryLocation == "ctsc" %}
-            High Court of Justice England and Wales <br />
+            High Court of Justice England and Wales<br />
             {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
             {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
             {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
@@ -161,7 +161,7 @@
             {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
 
             {% else %}
-            High Court of Justice England and Wales <br />
+            High Court of Justice England and Wales<br />
             {{case_details.case_data.registryLocation}} District Probate Registry <br />
             {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
             {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}

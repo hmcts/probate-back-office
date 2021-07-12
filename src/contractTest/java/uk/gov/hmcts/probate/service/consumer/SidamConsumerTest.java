@@ -63,7 +63,6 @@ public class SidamConsumerTest {
             .toPact();
     }
 
-    // currently failing - Isha looking into it
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetUserDetails")
     public void verifyIdamUserDetailsRolesPact() {
