@@ -53,7 +53,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
             assert(optText === documentUploadConfig.docTypes[i]);
         }
     }
-    
+
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
     await I.wait(5);
