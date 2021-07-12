@@ -65,24 +65,19 @@ not (cd.solsSolicitorIsExec == "No" and cd.solsSolicitorIsApplying == "Yes") %}
 {% endif %}
 {% endmacro %}
 
-{% macro executorAnd(cd, isLoopFirstItem) %}
-{% if (not (isLoopFirstItem)) or
-(not (cd.primaryApplicantIsApplying == "No") and
-(cd.titleAndClearingType != "TCTTrustCorpResWithApp" or cd.titleAndClearingType != "TCTTrustCorpResWithSDJ") and
-not (cd.solsSolicitorIsExec == "No" and cd.solsSolicitorIsApplying == "Yes")) %}
-<br/>
-<span>and </span>
-{% endif %}
+{% macro executorAnd(cd) %}
+    <br/>
+    <span>and </span>
 {% endmacro %}
 
-{% macro executor(cd, executor, isLoopFirstItem) %}
-{% if executor.value.applyingExecutorType != "TrustCorporation" %}
-{{executorAnd(cd, isLoopFirstItem)}}
+{% macro executor(cd, executor, addAnd) %}
+{% if addAnd == true %}
+    {{executorAnd(cd)}}
+{% endif %}
 <strong>
         <span style="text-transform: capitalize;">
-            {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}              </span>
+            {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}                                         </span>
 </strong> of {{executorAddress(executor)}}
-{% endif %}
 {% endmacro %}
 
 {% macro diedOn(cd) %}
@@ -276,14 +271,29 @@ Died on
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %} </p>
             {{primaryApplicantNameAndAddress(case_details.case_data)}}
             <p>
+                {% set addAnd = false %}
+                {% set atLeastOneExecAdded = false %}
                 {% for executor in case_details.case_data.executorsApplying %}
-                    {{ executor(case_details.case_data, executor, loop.first) }}
+                    {% if executor.value.applyingExecutorType != "TrustCorporation" %}
+                        {% if atLeastOneExecAdded == true or
+                            (not (case_details.case_data.primaryApplicantIsApplying == "No") and
+                            (case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithApp" or case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithSDJ") and
+                            not (case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes"))
+                        %}
+                            {% set addAnd = true %}
+                        {% endif %}
+                        {{ executor(case_details.case_data, executor, addAnd) }}
+                        {% set atLeastOneExecAdded = true %}
+                    {% endif %}
                 {% endfor %}
             </p>
             {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" or case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %}
-            <strong>
-                <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
-            </strong> of {{trustCorpAddress(case_details.case_data)}}
+                {% if atLeastOneExecAdded == true %}
+                    {{executorAnd(case_details.case_data)}}
+                {% endif %}
+                <strong>
+                    <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
+                </strong> of {{trustCorpAddress(case_details.case_data)}}
             {% endif %}
             <p>
                 {% set powerReservedCounter = 0 %}
