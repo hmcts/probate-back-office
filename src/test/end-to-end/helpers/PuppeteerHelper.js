@@ -19,7 +19,7 @@ class PuppeteerHelper extends Helper {
         });
     }
 
-    async waitForNavigationToComplete(locator) {
+    async waitForNavigationToComplete(locator, delay=3) {
         const page = this.helpers[helperName].page;
         const promises = [];
         if (!testConfig.TestForXUI) {
@@ -30,7 +30,7 @@ class PuppeteerHelper extends Helper {
             promises.push(page.click(locator));
         }
         await Promise.all(promises);
-        await this.delay(1);
+        await this.delay(delay);
     }
 
     async clickTab(tabTitle) {

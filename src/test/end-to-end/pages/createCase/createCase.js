@@ -30,7 +30,4 @@ module.exports = async function (jurisdiction, caseType, event) {
 
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
-    if (testConfig.TestForXUI) {
-        await I.wait(5);
-    }
 };

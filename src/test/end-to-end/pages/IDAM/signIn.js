@@ -9,16 +9,13 @@ module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
         await I.amOnLoadedPage('/');
     }
 
-    await I.waitForText('Sign in', 240000);
+    await I.waitForText('Sign in', 10);
 
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
 
-    await I.waitForNavigationToComplete('input[type="submit"]');
+    await I.waitForNavigationToComplete('input[type="submit"]', 10);
 
-    if (testConfig.TestForXUI) {
-        await I.wait(2);
-    }
     const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements({css: 'body exui-root xuilib-cookie-banner'});
     if (numVisibleCookieBannerEls > 0) {
         //check to see we can still click

@@ -219,7 +219,7 @@ Scenario('02 BO Case Progress E2E - Reenter Deceased Details', async function ({
         await I.caseProgressCaseworkerChangeState('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
 
-        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
 
         console.info('Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor

@@ -165,6 +165,6 @@ Scenario('02 BO Caveat E2E - Request appearance', async function ({I}) {
     endState = 'Caveat closed';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    await I.click('nav.hmcts-header__navigation ul li:last-child a');
+    await I.click('nav.hmcts-header__navigation ul li:last-child a', 10);
 
 }).retry(testConfig.TestRetryScenarios);
