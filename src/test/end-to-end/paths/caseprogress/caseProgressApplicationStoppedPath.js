@@ -68,6 +68,7 @@ Scenario('01 BO Case Progress E2E - application stopped path', async function ({
         console.info('01 BO Case Progress E2E - application stopped: complete');
 
     } catch (e) {
+        //  await I.printPageAsScreenshot('cpaps');
         console.error(`case progress error:${e.message}\nStack:${e.stack}`);
         return Promise.reject(e);
     }

@@ -15,7 +15,7 @@ module.exports = async function (jurisdiction, caseType, event) {
         await I.wait(5);
     }
     if (testConfig.TestForXUI) {
-        await I.wait(5);
+        await I.wait(10);
     }
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
     if (testConfig.TestForXUI) {

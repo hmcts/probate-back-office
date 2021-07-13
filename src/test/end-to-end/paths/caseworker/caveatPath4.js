@@ -131,6 +131,6 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
-    await I.click('nav.hmcts-header__navigation ul li:last-child a');
+    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
 
 }).retry(testConfig.TestRetryScenarios);
