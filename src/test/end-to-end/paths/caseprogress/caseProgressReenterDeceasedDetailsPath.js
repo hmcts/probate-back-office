@@ -15,7 +15,7 @@ Scenario('02 BO Case Progress E2E - Reenter Deceased Details', async function ({
     try {
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor, 0);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         console.info('Initial application entry');

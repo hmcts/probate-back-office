@@ -8,4 +8,5 @@ module.exports = async function () {
     await I.waitForElement('#confirmation-body');
     I.see('This probate application has now been submitted');
     await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.wait(5);
 };
