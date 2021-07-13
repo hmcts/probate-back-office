@@ -22,7 +22,7 @@ plugins {
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.3.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.1.10'
+  id 'au.com.dius.pact' version '4.2.6'
 }
 
 apply plugin: 'project-report'
@@ -171,6 +171,7 @@ def versions = [
         serviceAuthVersion              : '3.0.0',
         pact_version                    : '4.1.7',
         probatePactCommonsVersion       : '1.0.2',
+        elasticSearchVersion            : '7.12.0'
 ]
 
 jacocoTestReport {
@@ -230,6 +231,9 @@ dependencyManagement {
       entry 'spring-web'
       entry 'spring-webmvc'
     }
+
+    //CVE-2021-27568
+    dependency group: 'json-smart', name: 'json-smart', version: '2.3'
   }
 }
 
@@ -284,9 +288,9 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
 
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.10.2'
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.10.2'
-  compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.10.2'
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
+  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
+  compile group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
@@ -371,7 +375,7 @@ dependencies {
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
   contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
-
+  testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 }
