@@ -22,7 +22,6 @@
       55,
       335000000
     ],
-    "security_classification": "PUBLIC",
     "case_data": {
       "otherExecutorExists": "Yes",
       "deceasedAddress": {
@@ -91,6 +90,23 @@
       "deceasedDomicileInEngWales": "Yes",
       "outsideUKGrantCopies": 1,
       "solsPaymentMethods": "fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
       "extraCopiesOfGrant": 1,
       "ihtNetValue": "90009",
       "deceasedSurname": "deceasedLastName",
@@ -144,7 +160,12 @@
       "ihtFormId": "IHT205",
       "solsExecutorAliasNames": "TestPrimaryExecutorAliasName",
       "primaryApplicantSurname": "TestPrimaryExecutorLastName",
-      "solsSolicitorAppReference": "refCYA2"
+      "solsSolicitorAppReference": "refCYA2",
+      "solsCoversheetDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "solicitorCoverSheet.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      }
     }
   }
 }

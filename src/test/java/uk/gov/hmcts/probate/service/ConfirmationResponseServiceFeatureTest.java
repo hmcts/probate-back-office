@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -15,6 +16,10 @@ import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -56,10 +61,12 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000f);
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
-    private static final String SOLS_FEE_ACC = "12345";
+    private static final String SOLS_FEE_PBA = "PBA-12345";
+    private static final String SOLS_PBA_PAY_REF = "Fee account PBA-12345";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
+    public static final Long ID = 1L;
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
@@ -222,7 +229,9 @@ public class ConfirmationResponseServiceFeatureTest {
             .fee(createFee())
             .executors(new ArrayList<>())
             .solsAdditionalInfo(ADDITIONAL_INFO)
-            .solsWillType(WILL_TYPE_PROBATE);
+            .solsWillType(WILL_TYPE_PROBATE)
+            .solsCoversheetDocument(createSolsCoverSheet().getDocumentLink())
+            .caseId(ID);
     }
 
     private CaveatData.CaveatDataBuilder createCaveatDataBuilder() {
@@ -230,7 +239,9 @@ public class ConfirmationResponseServiceFeatureTest {
             .solsSolicitorAppReference(SOLICITOR_REFERENCE)
             .applicationSubmittedDate(LocalDate.of(2018, 1, 1))
             .solsPaymentMethods(PAYMENT_METHOD)
-            .solsFeeAccountNumber(SOLS_FEE_ACC);
+            .solsPBANumber(DynamicList.builder()
+                .value(DynamicListItem.builder().code(SOLS_FEE_PBA).label(SOLS_FEE_PBA).build()).build())
+            .solsPBAPaymentReference(SOLS_PBA_PAY_REF);
     }
 
     private Fee createFee() {
@@ -240,7 +251,8 @@ public class ConfirmationResponseServiceFeatureTest {
             .paymentMethod(PAYMENT_METHOD)
             .amount(TOTAL_FEE)
             .applicationFee(APPLICATION_FEE)
-            .solsFeeAccountNumber(SOLS_FEE_ACC)
+            .solsPBANumber(SOLS_FEE_PBA)
+            .solsPBAPaymentReference(SOLS_PBA_PAY_REF)
             .feeForUkCopies(FEE_UK)
             .feeForNonUkCopies(FEE_NON_UK)
             .build();
@@ -289,6 +301,12 @@ public class ConfirmationResponseServiceFeatureTest {
             .forename(forename)
             .lastname(lastname)
             .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
+            .build();
+    }
+
+    private Document createSolsCoverSheet() {
+        return Document.builder().documentType(DocumentType.SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
             .build();
     }
 }

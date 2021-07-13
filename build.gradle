@@ -22,7 +22,7 @@ plugins {
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.3.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.1.10'
+  id 'au.com.dius.pact' version '4.2.6'
 }
 
 apply plugin: 'project-report'
@@ -165,7 +165,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : '1.2.2',
+        probateCommonsVersion           : '1.2.3',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -371,7 +371,7 @@ dependencies {
   contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
   contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
-
+  testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 }

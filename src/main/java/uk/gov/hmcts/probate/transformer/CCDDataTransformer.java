@@ -36,6 +36,7 @@ public class CCDDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         return CCDData.builder()
+            .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
             .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
@@ -54,6 +55,7 @@ public class CCDDataTransformer {
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
             .iht217(caseData.getIht217())
+            .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .build();
     }
 
@@ -105,7 +107,10 @@ public class CCDDataTransformer {
             .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
             .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
             .paymentMethod(caseData.getSolsPaymentMethods())
-            .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
+            .solsPBANumber(caseData.getSolsPBANumber() == null 
+                || caseData.getSolsPBANumber().getValue() == null ? null :
+                caseData.getSolsPBANumber().getValue().getCode())
+            .solsPBAPaymentReference(caseData.getSolsPBAPaymentReference())
             .applicationFee(caseData.getApplicationFee())
             .amount(caseData.getTotalFee())
             .feeForUkCopies(caseData.getFeeForUkCopies())

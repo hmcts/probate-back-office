@@ -8,9 +8,9 @@ module.exports = async function () {
     await I.waitForElement('#willDispose');
     await I.runAccessibilityTest();
 
-    await I.click(`#willDispose-${deceasedDetailsConfig.optionYes}`);
-    await I.click(`#englishWill-${deceasedDetailsConfig.optionYes}`);
-    await I.click(`#appointExec-${deceasedDetailsConfig.optionYes}`);
+    await I.click(`#willDispose_${deceasedDetailsConfig.optionYes}`);
+    await I.click(`#englishWill_${deceasedDetailsConfig.optionYes}`);
+    await I.click(`#appointExec_${deceasedDetailsConfig.optionYes}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

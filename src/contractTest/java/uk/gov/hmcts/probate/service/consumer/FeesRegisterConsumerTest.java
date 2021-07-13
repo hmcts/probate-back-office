@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 
@@ -43,6 +44,12 @@ public class FeesRegisterConsumerTest {
     AppInsights appInsights;
     @MockBean
     FeatureToggleService featureToggleServiceMock;
+
+    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+
+    public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
+    private static final String USER_ID = "user-id";
+    private static final String DOCUMENT_ID = "12345";
 
     @BeforeEach
     public void setUpTest() {
@@ -126,24 +133,24 @@ public class FeesRegisterConsumerTest {
     @PactTestFor(pactMethod = "createApplicationFeeFragmentSA")
     public void verifyApplicationFeeServicePact() throws JSONException {
 
-        BigDecimal result = feeService.getApplicationFee(new BigDecimal("250000.00"));
-        Assert.assertTrue(new BigDecimal("200").equals(result));
+        FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
+        Assert.assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
 
     }
 
     @Test
     @PactTestFor(pactMethod = "createCopiesFeeFragment")
     public void verifyCopiesFeeServicePact() throws JSONException {
-        BigDecimal result = feeService.getCopiesFee(3L);
-        Assert.assertTrue(new BigDecimal("3.5").equals(result));
+        FeeResponse result = feeService.getCopiesFeeResponse(3L);
+        Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
 
     }
 
     @Test
     @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
     public void verifyCopiesNoFeeServicePact() throws JSONException {
-        BigDecimal result = feeService.getCopiesFee(0L);
-        Assert.assertTrue(new BigDecimal("0").equals(result));
+        FeeResponse result = feeService.getCopiesFeeResponse(0L);
+        Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
     }
 
 }
