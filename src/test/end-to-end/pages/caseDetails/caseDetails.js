@@ -8,7 +8,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     if (tabConfigFile.tabName) {
         let tabXPath;
         if (testConfig.TestForXUI) {
-            tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
+            tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
         } else {
             tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
         }
