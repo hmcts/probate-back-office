@@ -17,8 +17,10 @@ module.exports = async function (jurisdiction, caseType, event) {
     if (testConfig.TestForXUI) {
         await I.wait(5);
     }
-    await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
+    if (testConfig.TestForXUI) {
+        await I.wait(2);
+    }
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.TestTimeToWaitForText || 60);
     await I.selectOption('#cc-jurisdiction', jurisdiction);
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);

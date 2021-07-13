@@ -6,4 +6,5 @@ module.exports = async function () {
 
     await I.waitForElement({css: commonConfig.continueButton});
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.wait(2);
 };

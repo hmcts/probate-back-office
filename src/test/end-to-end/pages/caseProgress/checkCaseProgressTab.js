@@ -82,7 +82,7 @@ module.exports = async function (opts) {
     if (opts.signOut) {
         await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', true);
         if (testConfig.TestForXUI) {
-            await I.wait(2);
+            await I.wait(10);
         }
     }
 

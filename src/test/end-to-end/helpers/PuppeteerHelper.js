@@ -110,7 +110,7 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
         await page.setViewport({width: 1280, height: 960});
         await page.screenshot({
-            path: './functional-output/' + jpgFileName + '.jpg',
+            path: testConfig.TestOutputDir + '/' + jpgFileName + '.jpg',
             type: 'jpeg',
             fullPage: true
         });
