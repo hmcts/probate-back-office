@@ -44,7 +44,10 @@ class PuppeteerHelper extends Helper {
             // evaluate XPath expression of the target selector (it return array of ElementHandle)
             const clickableTab = await helper.page.$x(tabXPath);
 
-            await helper.page.evaluate(el => el.click(), clickableTab[0]);
+            /* eslint-disable no-await-in-loop */
+            for (let i=0; i < clickableTab.length; i++) {
+                await helper.page.evaluate(el => el.click(), clickableTab[i]);
+            }
         } else {
             await helper.click(tabTitle);
         }
