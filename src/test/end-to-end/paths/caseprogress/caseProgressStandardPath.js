@@ -9,9 +9,10 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
+Scenario('Case Progress - standard path', async function ({I}) {
     /* eslint-disable no-console */
     try {
+        console.info('Login as Solicitor');
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
@@ -85,7 +86,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
         await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Print case');
+        console.info('Check progress tab for Print case' + caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
@@ -103,7 +104,7 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.caseProgressClickElementsAndContinue([{css: '#boEmailDocsReceivedNotification_No'}]);
         await I.caseProgressClickGoAndSignOut();
 
-        console.info('Check progress tab for Mark as ready for examination');
+        console.info('Check progress tab for Mark as ready for examination' + caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, false);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);

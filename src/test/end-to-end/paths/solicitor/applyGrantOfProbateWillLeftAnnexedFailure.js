@@ -18,11 +18,14 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeftAnnexed';
 
+    console.info('Login as solicitor');
     // IdAM
+    console.info('New case');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    console.info('New case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
@@ -38,6 +41,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
 
     endState = 'Admon will grant created';
 
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -52,6 +56,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed) - Stopped', asy
 
     nextStepName = 'Admon will details';
     endState = 'Stopped';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.admonWillDetailsPage1();
     await I.admonWillDetailsPage2();

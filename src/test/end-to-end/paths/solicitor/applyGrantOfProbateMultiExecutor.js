@@ -20,6 +20,7 @@ Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures
 Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I}) {
 
     const willType = 'WillLeft';
+    console.info('Login as solicitor');
     // IdAM
     await I.authenticateWithIdamIfAvailable(true);
 
@@ -35,6 +36,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     const caseRef = await I.getCaseRefFromUrl();
 
+    console.info(nextStepName + ':' + caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
@@ -54,6 +56,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2();
@@ -67,6 +70,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
     await I.completeApplicationPage2();

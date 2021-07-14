@@ -34,7 +34,7 @@ const {
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
+Scenario('Caseworker Caveat1 - Order summons', async function ({I}) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
@@ -47,6 +47,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';
+    console.info(nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -57,6 +58,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
 
     // SECOND case - the main test case
 
+    console.info(nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -87,6 +89,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat raised'
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.emailCaveator(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -97,6 +100,7 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat match';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -105,12 +109,14 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat not matched';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload document';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -119,36 +125,42 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Await caveat resolution';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting caveat resolution';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Warning requested';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Warning validation';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Issue caveat warning';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting warning response';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Order summons';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Summons ordered';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend caveat details';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterCaveatPage1('update');
     await I.enterCaveatPage2('update', unique_deceased_user);
@@ -163,11 +175,13 @@ Scenario('01 BO Caveat E2E - Order summons', async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
 
     nextStepName = 'Withdraw caveat';
+    console.info(nextStepName + ':' + caseRef);
     await I.chooseNextStep(nextStepName);
     await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
 
     endState = 'Caveat closed';
+    console.info(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);

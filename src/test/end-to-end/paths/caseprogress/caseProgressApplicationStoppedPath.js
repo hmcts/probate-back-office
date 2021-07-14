@@ -9,10 +9,11 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressAppSto
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Case Progress E2E - application stopped path', async function ({I}) {
+Scenario('Case Progress - application stopped path', async function ({I}) {
     // IDAM
     /* eslint-disable no-console */
     try {
+        console.info('Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);

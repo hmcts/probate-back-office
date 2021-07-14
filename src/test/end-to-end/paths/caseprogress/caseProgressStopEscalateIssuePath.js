@@ -12,10 +12,11 @@ const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgress
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
+Scenario('Case Progress - stop/escalate/issue', async function ({I}) {
     try {
-        console.info('04 BO Case Progress E2E - stop/escalate/issue');
+        console.info('Case Progress - stop/escalate/issue');
         // IDAM
+        console.info('Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);

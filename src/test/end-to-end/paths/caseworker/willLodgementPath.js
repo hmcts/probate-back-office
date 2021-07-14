@@ -33,7 +33,7 @@ const {
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Will Lodgement E2E - Withdraw will', async function ({I}) {
+Scenario('Caseworker Will Lodgement - Withdraw will', async function ({I}) {
 
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 
