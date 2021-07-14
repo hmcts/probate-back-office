@@ -19,6 +19,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
 
     await I.clickTab(tabConfigFile.tabName);
+    await I.wait(3);
     await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {
@@ -28,9 +29,9 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-            await I.waitForText(tabConfigFile.fields[i]);
+            //await I.waitForText(tabConfigFile.fields[i]);
+            await I.see(tabConfigFile.fields[i]);
         }
-        // await I.see(tabConfigFile.fields[i]);
     }
 
     const dataConfigKeys = tabConfigFile.dataKeys;

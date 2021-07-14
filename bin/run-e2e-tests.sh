@@ -11,6 +11,6 @@ export E2E_AUTO_DELAY_ENABLED='true'
 export TESTS_FOR_XUI_SERVICE='true'
 export TESTS_FOR_ACCESSIBILITY='true'
 export E2E_OUTPUT_DIR='./functional-output/xui'
-export BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT=10
-export RETRY_SCENARIOS=0
+export BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT=20
+export RETRY_SCENARIOS=2
 yarn test:functional

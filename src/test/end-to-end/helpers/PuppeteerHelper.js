@@ -19,7 +19,7 @@ class PuppeteerHelper extends Helper {
         });
     }
 
-    async waitForNavigationToComplete(locator, delay=3) {
+    async waitForNavigationToComplete(locator, delay=1) {
         const page = this.helpers[helperName].page;
         const promises = [];
         if (!testConfig.TestForXUI) {

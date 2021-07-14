@@ -142,7 +142,7 @@ Scenario('01 BO Grant of Representation E2E - Grant issued', async function ({I}
     await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
-    await I.chooseNextStep(nextStepName, 10);
+    await I.chooseNextStep(nextStepName);
     await I.markForExamination(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready for examination';
