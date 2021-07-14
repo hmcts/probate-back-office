@@ -112,15 +112,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String HMCTS_VALUE = "HMCTS";
 
     private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
-
     private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
         + "which is available from the Court) was John Smith";
-
-    private static String MULTI_EXEC_TC_ADD_EXEC = "The Administration of 's estate is John Smith"
+    private static String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
-    private static String MULTI_EXEC_TC_TRUST_CORP_NAME = "granted by this court to the following Executorsof  "
-        + "Tony Stark 7 Ashley Avenue Burnham-on-Sea Somerset Sn2 2JU United Kingdomof  "
-        + "MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU";
+    private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
+    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS = "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -182,6 +179,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
+    private static final String NOT_NAMED_TC_PAYLOAD = "solicitorPayloadTrustCorpsNotNamed.json";
 
     @Before
     public void setUp() {
@@ -683,8 +681,45 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_ADD_EXEC));
-        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_NAME));
+        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_DETAILS));
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSolTc() {
+        final String response = generateDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
+        assertTrue(response.contains(GOP));
+
+        assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_DETAILS));
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantWithNotNamedSolTc() {
+        final String response = generateDocument(NOT_NAMED_TC_PAYLOAD, GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
+        assertTrue(response.contains(GOP));
+        assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS));
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTc() {
+        final String response = generateDocument(NOT_NAMED_TC_PAYLOAD, GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
+        assertTrue(response.contains(GOP));
+        assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS));
     }
 
     @Test
