@@ -8,5 +8,6 @@ module.exports = async function () {
     //await I.waitForElement({css: '#field-trigger-summary'});
     await I.waitForElement({css: commonConfig.goButton});
     await I.waitForNavigationToComplete(commonConfig.goButton);
-    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 5);
+    await I.wait(5);
+    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
 };

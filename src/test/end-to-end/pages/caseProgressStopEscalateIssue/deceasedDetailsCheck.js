@@ -6,7 +6,7 @@ module.exports = async function () {
     const I = this;
     await I.waitForElement('form.check-your-answers');
     const formHtml = await I.grabAttributeFrom('form.check-your-answers', 'outerHTML');
-    assert (formHtml.includes('Caseprogress3333'));
+    assert (formHtml.includes('Caseprogress4444'));
     assert (formHtml.includes('Surname'));
     assert (formHtml.includes('10 Oct 2020'));
     assert (formHtml.includes('10 Oct 1967'));

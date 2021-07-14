@@ -79,7 +79,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 5);
+        await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
     }
 
     return caseRef.replace('#', '');
