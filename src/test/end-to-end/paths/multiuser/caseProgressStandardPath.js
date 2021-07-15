@@ -199,6 +199,7 @@ Scenario(scenarioName, async function ({I}) {
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
+        await I.wait(5);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressclickSubmitAndSignOut();

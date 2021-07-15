@@ -9,6 +9,6 @@ module.exports = async function (caseRef) {
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`);
     if (testConfig.TestForXUI) {
-        await I.wait(5);
+        await I.wait(2);
     }
 };
