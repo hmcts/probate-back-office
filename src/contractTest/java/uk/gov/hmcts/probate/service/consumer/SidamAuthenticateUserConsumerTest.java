@@ -11,6 +11,7 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,6 +67,7 @@ public class SidamAuthenticateUserConsumerTest {
             .toPact();
     }
 
+    @Ignore
     @Test
     @PactTestFor(pactMethod = "generatePactFragmentGetOAuth2Token")
     public void verifyIdamAuthoriseUserPact() {
