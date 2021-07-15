@@ -122,23 +122,23 @@ public class GrantNotificationService {
         CaseDetails caseDetails =
             ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
                 securityUtils.getUserAndServiceSecurityDTO());
-//        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
-//            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-//                || (caseDetails.getData().get(DELAY_SENT_KEY) != null
-//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
-//            ) {
-//                return true;
-//            }
-//        } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
-//            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-//                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
-//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
-//            ) {
-//                return true;
-//            }
-//        }
+        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
+            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
+                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(DELAY_SENT_KEY) != null
+                && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
+            ) {
+                return true;
+            }
+        } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
+            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
+                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
+                && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
+            ) {
+                return true;
+            }
+        }
         return false;
     }
 

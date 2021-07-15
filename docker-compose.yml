@@ -493,7 +493,7 @@ services:
 
 
   probate-orchestrator:
-    image: hmctspublic.azurecr.io/probate/orchestrator-service:pr-581-7d39778-20210715130519
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
