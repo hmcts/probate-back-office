@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
@@ -27,6 +28,8 @@ import java.util.List;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
 
@@ -122,23 +125,23 @@ public class GrantNotificationService {
         CaseDetails caseDetails =
             ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
                 securityUtils.getUserAndServiceSecurityDTO());
-        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-                || (caseDetails.getData().get(DELAY_SENT_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
-            ) {
-                return true;
-            }
-        } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
-                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
-                && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
-            ) {
-                return true;
-            }
-        }
+//        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
+//            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
+//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+//                || (caseDetails.getData().get(DELAY_SENT_KEY) != null
+//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
+//            ) {
+//                return true;
+//            }
+//        } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
+//            if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
+//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+//                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null
+//                && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
+//            ) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

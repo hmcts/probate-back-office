@@ -212,7 +212,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
-  grantAwaitingDocumentationNotificationPeriodDays: 35
+  grantAwaitingDocumentationNotificationPeriodDays: 0
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -261,7 +261,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
-          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
       welsh:
         personal:
           applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
@@ -304,7 +304,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
-          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
 
 documents:
   templates:

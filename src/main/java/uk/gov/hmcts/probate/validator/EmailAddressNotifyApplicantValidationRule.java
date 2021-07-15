@@ -23,7 +23,7 @@ public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNo
     private final BusinessValidationMessageService businessValidationMessageService;
 
     @Override
-    public List<FieldErrorResponse> validate(CCDData ccdData) {
+    public List<FieldErrorResponse>  validate(CCDData ccdData) {
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL))
