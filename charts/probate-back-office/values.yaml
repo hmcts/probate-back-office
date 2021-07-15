@@ -47,6 +47,7 @@ java:
         - authTokenEmail
         - authTokenPassword
         - excelaEmail
+        - smeeAndFordEmail
         - ftpSignature
         - ftpEnv
         - probate-bo-grantSignatureKey
@@ -57,5 +58,12 @@ java:
         - idam-secret-probate
         - idamRedirectUrl
         - launchdarkly-key
-        - probate-site-id
         - launchdarklyUserkeyBackend
+        - levPublicCertificate
+        - levPrivateKey
+        - levAccessTokenUri
+        - levClientId
+        - levClientSecret
+        - levUsername
+        - levPassword
+        - levDeathUrl

@@ -740,6 +740,33 @@ public class DocumentControllerTest {
             .andReturn();
     }
 
+    @Test
+    public void shouldHandleEvidenceToYesFromNull() throws Exception {
+        String payload = testUtils.getStringFromFile("evidenceHandledYesFromNull.json");
+
+        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
+
+    @Test
+    public void shouldHandleEvidenceToYes() throws Exception {
+        String payload = testUtils.getStringFromFile("evidenceHandledYes.json");
+
+        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
+
+    @Test
+    public void shouldHandleEvidenceToNo() throws Exception {
+        String payload = testUtils.getStringFromFile("evidenceHandledNo.json");
+
+        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

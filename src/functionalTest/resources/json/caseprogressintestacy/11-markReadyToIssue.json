@@ -38,13 +38,13 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "caseType": "gop",
+      "caseType": "intestacy",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
-      "willExists": "Yes",
+      "willExists": "No",
       "solsWillType": "NoWill",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
@@ -70,7 +70,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "solsSolicitorEmail": "testsolicitor@probate-test.com",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {
@@ -353,7 +353,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "solsSolicitorEmail": "testsolicitor@probate-test.com",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {

@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
@@ -17,7 +18,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
@@ -27,6 +27,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String DOC_NAME = "success.beforeLegalStatement.checkYourAnswersPayload.json";
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
@@ -41,19 +46,19 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void verifyAddressInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
-                + "\nAddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
+                + "AddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName \ndeceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("deceasedFirstName deceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeceasedDobInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("01/01\n/1987", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -115,7 +120,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyIncorrectInputReturns400() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
@@ -144,10 +151,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"",
             "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
-
+    
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json"))
@@ -172,14 +180,16 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json").replace("primaryApplicantForenames", ""))
+            .body(utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json")
+                    .replace("primaryApplicantForenames", ""))
             .when()
             .post(VALIDATE_INTESTACY_URL)
             .andReturn();
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
 
         assertEquals(400, response.getStatusCode());
         assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
@@ -188,14 +198,15 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() {
-        Response response = given()
+        final Response response = given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWill.json").replace("Main", ""))
             .when().post(VALIDATE_ADMON_URL)
             .andReturn();
 
-        JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
+        final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertEquals(400, response.getStatusCode());
         assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
         assertEquals(jsonPath.get("message"), "Invalid payload");
@@ -203,7 +214,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeLegalStatement() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
@@ -213,7 +226,9 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeSigningSOT() {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
@@ -221,13 +236,13 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
     }
 
-    private String replaceString(String oldJson, String newJson) {
+    private String replaceStringInCheckYourAnswersPayload(String oldJson, String newJson) {
         return utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")
             .replace(oldJson, newJson);
     }
 
     private String textContentOf(byte[] pdfData) throws IOException {
-        PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(pdfData));
+        final PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(pdfData));
         try {
             return new PDFTextStripper().getText(pdfDocument);
         } finally {
@@ -236,7 +251,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString, String fileName, String url) {
-        Response response = given()
+        final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(fileName))
@@ -248,35 +263,39 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg,
                                                              String postURL) {
-        given().relaxedHTTPSValidation()
+        given()
+            .config(config)
+            .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(replaceString(oldString, replacingString))
+            .body(replaceStringInCheckYourAnswersPayload(oldString, replacingString))
             .when().post(postURL).then().statusCode(400)
             .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
             .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
 
     private String extractDocumentId(Response response) {
-        String bodyString = response.body().asString();
-        JsonPath jsonPath = JsonPath.from(bodyString);
-        String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
-        String[] url = urlNode.split("/");
+        final String bodyString = response.body().asString();
+        final JsonPath jsonPath = JsonPath.from(bodyString);
+        final String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
+        final String[] url = urlNode.split("/");
         return url[4];
     }
 
     private void downloadPdfAndVerifyString(String documentId, String validationString) {
         IntegrationTestBase.setEvidenceManagementUrlAsBaseUri();
         try {
-            ValidatableResponse response2 = given()
+            final ValidatableResponse response2 = given()
+                .config(config)
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/documents/" + documentId + "/binary")
                 .then().assertThat().statusCode(200);
 
-            String textContent = textContentOf(response2.extract().body().asByteArray());
-            assertTrue(textContent.replace("\r", "").contains(validationString.replace("\r", "")));
-            String contentType = response2.extract().contentType();
-            assertEquals(contentType, "application/pdf");
+            final String textContent = removeCrLfs(textContentOf(response2.extract().body().asByteArray()));
+            validationString = removeCrLfs(validationString);
+            assertTrue(textContent.contains(validationString));
+
+            assertEquals(response2.extract().contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();
         }

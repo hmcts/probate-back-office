@@ -14,7 +14,7 @@ class WebDriverHelper extends Helper {
     /**
      * waits for naigation to complete, optionally provide a button to click
      * to start the navigation
-     * @param {object} locator - a locator to a button to click, or null 
+     * @param {object} locator - a locator to a button to click, or null
      * @param {number} webDriverWait - optional - a wait time - defaults to 3 if not provided
      * @returns {object} - Promise
      */
