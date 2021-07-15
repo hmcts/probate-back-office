@@ -172,7 +172,7 @@ public class CaseQueryService {
         query.must(awaitingDocsStateChecks);
         query.must(matchQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE, queryDate));
         query.must(matchQuery(KEY_PAPER_FORM, NO));
-//        query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
+        query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
         query.mustNot(existsQuery(KEY_EVIDENCE_HANDLED));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();

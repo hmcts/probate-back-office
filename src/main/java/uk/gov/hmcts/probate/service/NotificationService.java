@@ -296,7 +296,6 @@ public class NotificationService {
         String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
             .get(caseDetails.getData().getApplicationType())
             .getGrantAwaitingDocumentation();
-        log.info("templateId: {}", templateId);
         return sendGrantNotificationEmail(caseDetails, templateId);
     }
 
@@ -308,10 +307,7 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
-        log.info("application type: {}", caseDetails.getData().getApplicationType());
-        String emailAddress =  caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL) ?
-            caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
-        log.info("email address: {}", emailAddress);
+        String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
         SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
             personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
