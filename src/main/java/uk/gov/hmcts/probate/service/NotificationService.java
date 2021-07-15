@@ -306,8 +306,8 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
-        String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL) ?
-            caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
+        String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL)
+            ? caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
         SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
