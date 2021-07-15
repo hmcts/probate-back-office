@@ -359,7 +359,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains("Trust Corporation Name 1 High St"));
     }
-//
+
     @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
         final CaseData caseData = CaseData.builder().build();
