@@ -57,17 +57,13 @@
 {% endmacro %}
 
 {% macro primaryApplicantNameAndAddress(cd) %}
-{% if not (cd.primaryApplicantIsApplying == "No") and
-    (cd.titleAndClearingType != "TCTTrustCorpResWithApp" or cd.titleAndClearingType != "TCTTrustCorpResWithSDJ") and 
-    not (cd.solsSolicitorIsExec == "No" and cd.solsSolicitorIsApplying == "Yes") %}
-    <strong>
-        <span class="capitalize">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
-{% endif %}
+<strong>
+    <span class="capitalize">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
 {% endmacro %}
 
 {% macro executorAnd(cd) %}
-    <br/>
-    <span>and </span>
+<br/>
+<span>and </span>
 {% endmacro %}
 
 {% macro executor(cd, executor, addAnd) %}
@@ -76,7 +72,8 @@
 {% endif %}
 <strong>
     <span style="text-transform: capitalize;">
-        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}                         </span>
+        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+    </span>
 </strong> of {{executorAddress(executor)}}
 {% endmacro %}
 
@@ -98,6 +95,69 @@ Died on
 
 {% macro domicilityCountry(cd) %}
 <strong>{{cd.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if cd.domicilityCountry != null and cd.domicilityCountry != "" %}{{cd.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
+{% endmacro %}
+
+{% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
+<p>The Last Will and Testament <strong><span class="lowerCase">
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</span></strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 0 %}s{% endif %} </p>
+{% endmacro %}
+
+{% macro trustCorp(cd, primaryApplicantApplying) %}
+{% if primaryApplicantApplying == true %}
+    {{ executorAnd(cd) }}
+{% endif %}
+<strong>
+    <span style="text-transform: capitalize;">{{ cd.trustCorpName }}</span>
+</strong> of {{ trustCorpAddress(cd) }}
+{% endmacro %}
+
+{% macro applyingExecutors(cd, primaryApplicantApplying, isTc) %}
+<p>
+    {% set addAnd = false %}
+    {% set atLeastOneExecAdded = false %}
+    {% for executor in cd.executorsApplying %}
+        {% if executor.value.applyingExecutorType != "TrustCorporation" %}
+            {% if atLeastOneExecAdded == true or primaryApplicantApplying == true or isTc == true %}
+                {% set addAnd = true %}
+            {% endif %}
+            {{ executor(cd, executor, addAnd) }}
+            {% set atLeastOneExecAdded = true %}
+        {% endif %}
+    {% endfor %}
+</p>
+{% endmacro %}
+
+{% macro powerReserved(cd, primaryApplicantApplying) %}
+<p>
+    {% set powerReservedCounter = 0 %}
+    {% if cd.executorsNotApplying != null %}
+        {% for executor in cd.executorsNotApplying %}
+            {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
+                {% set powerReservedCounter = powerReservedCounter + 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if cd.primaryApplicantIsApplying == "No" and cd.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
+        {% set powerReservedCounter = powerReservedCounter + 1 %}
+    {% endif %}
+
+    {% if powerReservedCounter == 1 %}Power reserved to another Executor<br/>
+    {% elseif powerReservedCounter > 1 %}Power reserved to other Executors<br/>
+    {% endif %}
+
+    {% if cd.boExecutorLimitation != null and cd.boExecutorLimitation != "" %}
+        {{ cd.boExecutorLimitation }}<br/>
+    {%endif %}
+
+    {% if cd.boAdminClauseLimitation != null and cd.boAdminClauseLimitation != "" %}
+        {{ cd.boAdminClauseLimitation}}<br/>
+    {% endif %}
+
+    {% if cd.boLimitationText != null and cd.boLimitationText != "" %}
+        {{ cd.boLimitationText }}
+    {% endif %}
+</p>
 {% endmacro %}
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
@@ -227,9 +287,9 @@ Died on
             {% if case_details.case_data.registryLocation == "Cardiff" %}
                 Probate Registry of Wales<br />
             {% elseif case_details.case_data.registryLocation != "ctsc" and case_details.case_data.registryLocation != "London" %}
-                {{case_details.case_data.registryLocation}} District Probate Registry <br />
+                {{ case_details.case_data.registryLocation }} District Probate Registry <br />
             {% endif %}
-            {{registryAddress(case_details)}}
+            {{ registryAddress(case_details) }}
         </td>
     </tr>
     <tr>
@@ -248,8 +308,8 @@ Died on
     </tr>
     <tr>
         <td colspan="3" class="text-rightAligned">
-            Case Reference: {{case_details.id}}<br />
-            Date of Issue: {{case_details.case_data.currentDateFormatted}}
+            Case Reference: {{ case_details.id }}<br />
+            Date of Issue: {{ case_details.case_data.currentDateFormatted }}
             <br/>
             <br/>
         </td>
@@ -257,73 +317,35 @@ Died on
     <tr>
         <td colspan="3" class="text-leftAligned">
             <p>
-                {{deceasedNameAndAddress(case_details.case_data)}}
-                {{diedOn(case_details.case_data)}} {{domicilityCountry(case_details.case_data)}}
+                {{ deceasedNameAndAddress(case_details.case_data) }}
+                {{ diedOn(case_details.case_data)}} {{ domicilityCountry(case_details.case_data) }}
             </p>
-            <p>The Last Will and Testament <strong><span class="lowerCase">
-                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}</span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
-                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following Executor{% set applyingExecCounter = 0 %}{% for executor
-                in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
-                endfor %}{% if applyingExecCounter > 0 %}s{% endif %} </p>
-            {{primaryApplicantNameAndAddress(case_details.case_data)}}
-            <p>
-                {% set addAnd = false %}
-                {% set atLeastOneExecAdded = false %}
-                {% for executor in case_details.case_data.executorsApplying %}
-                    {% if executor.value.applyingExecutorType != "TrustCorporation" %}
-                        {% if atLeastOneExecAdded == true or
-                            (not (case_details.case_data.primaryApplicantIsApplying == "No") and
-                            (case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithApp" or case_details.case_data.titleAndClearingType != "TCTTrustCorpResWithSDJ") and
-                            not (case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes"))
-                        %}
-                            {% set addAnd = true %}
-                        {% endif %}
-                        {{ executor(case_details.case_data, executor, addAnd) }}
-                        {% set atLeastOneExecAdded = true %}
-                    {% endif %}
-                {% endfor %}
-            </p>
+            {% set isTc = false %}
             {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" or case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %}
-                {% if atLeastOneExecAdded == true %}
-                    {{executorAnd(case_details.case_data)}}
-                {% endif %}
-                <strong>
-                    <span style="text-transform: capitalize;">{{case_details.case_data.trustCorpName}}</span>
-                </strong> of {{trustCorpAddress(case_details.case_data)}}
+                {% set isTc = true %}
             {% endif %}
-            <p>
-                {% set powerReservedCounter = 0 %}
-                {% if case_details.case_data.executorsNotApplying != null %}
-                    {% for executor in case_details.case_data.executorsNotApplying %}
-                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
-                            {% set powerReservedCounter = powerReservedCounter + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                {% if case_details.case_data.primaryApplicantIsApplying == "No" and case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
-                    {% set powerReservedCounter = powerReservedCounter + 1 %}
-                {% endif %}
-
-                {% if powerReservedCounter == 1 %}Power reserved to another Executor<br/> %}
-                {% elseif powerReservedCounter > 1 %}Power reserved to other Executors<br/> %}
-                {% endif %}
-
-                {% if case_details.case_data.boExecutorLimitation != null and case_details.case_data.boExecutorLimitation != "" %}
-                    {{ case_details.case_data.boExecutorLimitation }}<br/>
-                {%endif %}
-
-                {% if case_details.case_data.boAdminClauseLimitation != null and case_details.case_data.boAdminClauseLimitation != "" %}
-                    {{ case_details.case_data.boAdminClauseLimitation}}<br/>
-                {% endif %}
-
-                {% if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText != "" %}
-                    {{ case_details.case_data.boLimitationText }}
-                {% endif %}
-            </p>
+            {% set primaryApplicantApplying = false %}
+            {% set applyingExecCounter = 0 %}
+            {% if (case_details.case_data.primaryApplicantIsApplying == "Yes" and isTc == false) or
+                (isTc == true and case_details.case_data.solsSolicitorIsExec == "Yes" and case_details.case_data.solsSolicitorIsApplying == "Yes") %}
+                {% set primaryApplicantApplying = true %}
+                {% set applyingExecCounter = 1 %}
+            {% endif %}
+            {% for executor in case_details.case_data.executorsApplying %}
+                {% set applyingExecCounter = applyingExecCounter + 1 %}
+            {% endfor %}
+            {{ lastWillAndTestamentParagraph(case_details.case_data, applyingExecCounter) }}
+            {% if primaryApplicantApplying == true %}
+                {{ primaryApplicantNameAndAddress(case_details.case_data) }}
+            {% endif %}
+            {% if isTc == true %}
+                {{ trustCorp(case_details.case_data, primaryApplicantApplying) }}
+            {% endif %}
+            {{ applyingExecutors(case_details.case_data, primaryApplicantApplying, isTc) }}
+            {{ powerReserved(case_details.case_data) }}
             <p>The application has stated that the gross value of the estate in England and Wales amounts to
-                &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.00")}} and the net value amounts to
-                &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.00")}}
+                &#163;{{ (case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.00") }} and the net value amounts to
+                &#163;{{ (case_details.case_data.ihtNetValue / 100) | numberformat("###,###.00") }}
             </p>
         </td>
     </tr>
@@ -341,10 +363,10 @@ Died on
             <span class="line-bottom"></span>
             <p>Extracted {% if
                 case_details.case_data.applicationType != "Personal"%}
-                by {{case_details.case_data.solsSolicitorFirmName}} (Ref:
-                {{case_details.case_data.solsSolicitorAppReference}})
-                {{address(case_details.case_data.solsSolicitorAddress)}} {% else %}personally{% endif %}<br />
-                If you wish to validate the information contained within this document please call {{case_details.ctscTelephone}}</p>
+                by {{ case_details.case_data.solsSolicitorFirmName }} (Ref:
+                {{ case_details.case_data.solsSolicitorAppReference }})
+                {{ address(case_details.case_data.solsSolicitorAddress) }} {% else %}personally{% endif %}<br />
+                If you wish to validate the information contained within this document please call {{ case_details.ctscTelephone }}</p>
         </td>
     </tr>
     </tbody>
