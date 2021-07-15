@@ -681,7 +681,7 @@ public class CallbackResponseTransformer {
             executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
 
             if (caseData.getSolsSolicitorIsExec().matches(YES) && caseData.getSolsSolicitorIsApplying().matches(YES)
-            || (caseData.getTitleAndClearingType().matches("TCTTrustCorpResWithSDJ")
+                || (caseData.getTitleAndClearingType().matches("TCTTrustCorpResWithSDJ")
                 || caseData.getTitleAndClearingType().matches("TCTTrustCorpResWithApp"))) {
                 executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
                     executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
