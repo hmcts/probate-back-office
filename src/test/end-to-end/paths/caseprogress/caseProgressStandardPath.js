@@ -13,6 +13,7 @@ const scenarioName = 'Case Progress - standard path';
 Scenario(scenarioName, async function ({I}) {
     /* eslint-disable no-console */
     try {
+        const unique_deceased_user = Date.now();
         await I.logInfo(scenarioName, 'Login as Solicitor');
         // IDAM
         await I.authenticateWithIdamIfAvailable(true);
@@ -32,11 +33,11 @@ Scenario(scenarioName, async function ({I}) {
             goToNextStep: true});
 
         await I.logInfo(scenarioName, 'Deceased details');
-        await I.caseProgressDeceasedDetails(caseProgressConfig);
-        await I.caseProgressDeceasedDetails2(caseProgressConfig);
+        await I.caseProgressDeceasedDetails(caseProgressConfig, unique_deceased_user);
+        await I.caseProgressDeceasedDetails2(caseProgressConfig, unique_deceased_user);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
         await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_Yes'}]);
-        await I.caseProgressStandardDeceasedDetailsCheck();
+        await I.caseProgressStandardDeceasedDetailsCheck(unique_deceased_user);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
             numInProgress: 0,

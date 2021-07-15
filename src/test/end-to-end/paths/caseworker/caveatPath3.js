@@ -67,11 +67,7 @@ Scenario(scenarioName, async function ({I}) {
     let endState = 'Caveat raised';
     await I.logInfo(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/')
-        .pop()
-        .match(/.{4}/g)
-        .join('-');
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);

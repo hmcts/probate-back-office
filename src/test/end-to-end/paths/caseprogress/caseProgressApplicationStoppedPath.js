@@ -14,6 +14,8 @@ Scenario(scenarioName, async function ({I}) {
     // IDAM
     /* eslint-disable no-console */
     try {
+        // get unique suffix for names - in order to match only against 1 case
+        const unique_deceased_user = Date.now();
         await I.logInfo(scenarioName, 'Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
@@ -32,11 +34,11 @@ Scenario(scenarioName, async function ({I}) {
             goToNextStep: true});
 
         await I.logInfo(scenarioName, 'Deceased details');
-        await I.caseProgressDeceasedDetails(caseProgressConfig);
-        await I.caseProgressDeceasedDetails2(caseProgressConfig);
+        await I.caseProgressDeceasedDetails(caseProgressConfig, unique_deceased_user);
+        await I.caseProgressDeceasedDetails2(caseProgressConfig, unique_deceased_user);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
         await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_No'}, {css: '#appointExecNo_No'}]);
-        await I.caseProgressStandardDeceasedDetailsCheck();
+        await I.caseProgressStandardDeceasedDetailsCheck(unique_deceased_user);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,
             numInProgress: 0,

@@ -8,6 +8,8 @@ module.exports = async function (useProfessionalUser) {
     await I.amOnLoadedPage('/');
 
     await I.waitForText('Sign in', 30);
+    await I.waitForText('Email address', 30);
+    await I.waitForText('Password', 30);
 
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
