@@ -116,8 +116,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         + "which is available from the Court) was John Smith";
     private static String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
-    private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS = "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
+    private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos "
+        + "Sn2 2JU United Kingdom";
+    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS = "Executorsof  MyTc 19 Curtis Street Charlton Kings "
+        + "Swindon Glos Sn2 2JU United Kingdom";
     private static String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
     private static String EXTRANEOUS_CURLY_START_BRACE = "{";
     private static String EXTRANEOUS_CURLY_END_BRACE = "}";
@@ -193,7 +195,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private static final String GRANT_DOC_NAME = "probateDocumentsGenerated[0].value.DocumentLink";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
-    private static final String NON_PROBATE_DOC_NAME= "documentsGenerated[0].value.DocumentLink";
+    private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
 
     @Before
     public void setUp() {
@@ -776,7 +778,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertFalse(response.contains(EXTRANEOUS_CURLY_END_BRACE));
     }
 
-        @Test
+    @Test
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() {
         final String response = generateGrantDocument("solicitorPayloadNotificationsMultipleExecutors.json",
                 GENERATE_GRANT);
