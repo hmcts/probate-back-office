@@ -49,39 +49,59 @@ Scenario(scenarioName, async function ({I}) {
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'PA1P/PA1A/Solicitors';
-    await I.logInfo(scenarioName, nextStepName);
+    await I.logInfo(scenarioName, nextStepName + ' - first case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.enterGrantOfProbatePage1('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
     await I.enterGrantOfProbatePage2('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage3');
     await I.enterGrantOfProbatePage3('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage4');
     await I.enterGrantOfProbatePage4('create', unique_deceased_user);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage5');
     await I.enterGrantOfProbatePage5('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage6');
     await I.enterGrantOfProbatePage6('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage7');
     await I.enterGrantOfProbatePage7('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage8');
     await I.enterGrantOfProbatePage8('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage9');
     await I.enterGrantOfProbatePage9();
     await I.checkMyAnswers(nextStepName);
     let endState;
 
     // SECOND case - the main test case
 
+    await I.logInfo(scenarioName, nextStepName + ' - Second case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.enterGrantOfProbatePage1('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
     await I.enterGrantOfProbatePage2('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage3');
     await I.enterGrantOfProbatePage3('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage4');
     await I.enterGrantOfProbatePage4('create', unique_deceased_user);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage5');
     await I.enterGrantOfProbatePage5('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage6');
     await I.enterGrantOfProbatePage6('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage7');
     await I.enterGrantOfProbatePage7('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage8');
     await I.enterGrantOfProbatePage8('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage9');
     await I.enterGrantOfProbatePage9();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
     const caseRef = await I.getCaseRefFromUrl();
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
@@ -98,27 +118,35 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Amend case details';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.enterGrantOfProbatePage1('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
     await I.enterGrantOfProbatePage2('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage3');
     await I.enterGrantOfProbatePage3('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage4');
     await I.enterGrantOfProbatePage4('update', unique_deceased_user);
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage5');
     await I.enterGrantOfProbatePage5('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage6');
     await I.enterGrantOfProbatePage6('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage7');
     await I.enterGrantOfProbatePage7('update');
     await I.checkMyAnswers(nextStepName);
     await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, 'enterGrantOfProbatePage8');
     await I.enterGrantOfProbatePage8('update');
     await I.checkMyAnswers(nextStepName);
 
