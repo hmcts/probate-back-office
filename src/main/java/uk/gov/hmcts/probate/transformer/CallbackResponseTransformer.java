@@ -680,10 +680,17 @@ public class CallbackResponseTransformer {
             && caseData.getSolsWillType().matches("WillLeft")) {
             executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
 
-            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
-                    +  ", " + caseData.getPrimaryApplicantForenames()
-                    + " " + caseData.getPrimaryApplicantSurname() + ": ";
+            if (caseData.getSolsSolicitorIsExec().matches(YES) && caseData.getSolsSolicitorIsApplying().matches(YES)
+            || (caseData.getTitleAndClearingType().matches("TCTTrustCorpResWithSDJ")
+                || caseData.getTitleAndClearingType().matches("TCTTrustCorpResWithApp"))) {
+                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
+            } else {
+                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
+                        + ", " + caseData.getPrimaryApplicantForenames()
+                        + " " + caseData.getPrimaryApplicantSurname() + ": ";
+            }
             return executorNames;
         } else {
             executorNames = "The applicant" + returnPlural(listOfApplyingExecs) + " ";
