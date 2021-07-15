@@ -15,11 +15,10 @@ module.exports = async function (stateOptionText) {
         await I.wait(1);
     }
     await I.selectOption({css: '#next-step'}, stateOptionText);
-    console.info('Changed state to: ' + stateOptionText);
     if (testConfig.TestForXUI) {
         await I.wait(1);
     }
-    await I.click({css: commonConfig.goButton});
+    await I.click({css: commonConfig.submitButton});
     if (testConfig.TestForXUI) {
         await I.wait(3);
     }

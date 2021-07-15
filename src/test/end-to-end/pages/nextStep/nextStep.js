@@ -9,7 +9,7 @@ module.exports = async function (nextStep) {
 
     await I.waitForEnabled({css: '#next-step'}, testConfig.TestTimeToWaitForText || 60);
     await I.selectOption('#next-step', nextStep);
-    await I.waitForEnabled(commonConfig.goButton, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForEnabled(commonConfig.submitButton, testConfig.TestTimeToWaitForText || 60);
     await I.wait(3);
-    await I.waitForNavigationToComplete(commonConfig.goButton, 2);
+    await I.waitForNavigationToComplete(commonConfig.submitButton, 2);
 };
