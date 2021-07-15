@@ -2,12 +2,10 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser, isAlreadyAtSignOnPage) {
+module.exports = async function (useProfessionalUser) {
 
     const I = this;
-    if (!isAlreadyAtSignOnPage) {
-        await I.amOnLoadedPage('/');
-    }
+    await I.amOnLoadedPage('/');
 
     await I.waitForText('Sign in', 30);
 

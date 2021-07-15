@@ -13,5 +13,5 @@ module.exports = async function () {
 
     await I.waitForText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`);
 
-    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
+    await I.signOut();
 };

@@ -30,7 +30,8 @@ const {
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
+const scenarioName = 'Caseworker Caveat4 - Withdraw caveat';
+Scenario(scenarioName, async function ({I}) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Withdraw caveat
 
@@ -38,12 +39,13 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     const unique_deceased_user = Date.now();
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Caseworker');
+    await I.authenticateWithIdamIfAvailable(false);
 
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';
-    console.info(nextStepName);
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -56,7 +58,7 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     // SECOND case - the main test case
 
     nextStepName = 'Raise a caveat';
-    console.info(nextStepName);
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
@@ -81,7 +83,7 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -90,14 +92,14 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat not matched';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload document';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -106,14 +108,14 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Withdraw caveat';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
@@ -121,7 +123,7 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat closed'
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.emailCaveator(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -132,15 +134,15 @@ Scenario('Caseworker Caveat4 - Withdraw caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.reopenCaveat(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat raised';
-    console.info(endState);
+    await I.logInfo(scenarioName, endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
-    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
+    await I.signOut();
 
 }).retry(testConfig.TestRetryScenarios);

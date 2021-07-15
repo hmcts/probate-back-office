@@ -35,19 +35,21 @@ const {
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caseworker Grant of Representation - Grant issued', async function ({I}) {
+const scenarioName = 'Caseworker Grant of Representation - Grant issued';
+Scenario(scenarioName, async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Caseworker');
+    await I.authenticateWithIdamIfAvailable(false);
 
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'PA1P/PA1A/Solicitors';
-    console.info(nextStepName);
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.enterGrantOfProbatePage1('create');
@@ -87,14 +89,14 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend case details';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterGrantOfProbatePage1('update');
     await I.checkMyAnswers(nextStepName);
@@ -126,7 +128,7 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Print the case';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.printCase(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -134,13 +136,13 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Add Comment';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload Documents';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -148,7 +150,7 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.markForExamination(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -160,13 +162,13 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterGrantOfProbatePage4('update2orig');
     await I.checkMyAnswers(nextStepName);
 
     nextStepName = 'Find matches (Examining)';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -175,14 +177,14 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Examine case';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Examining';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Mark as ready to issue';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.markForIssue(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -190,7 +192,7 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -199,11 +201,11 @@ Scenario('Caseworker Grant of Representation - Grant issued', async function ({I
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Issue grant';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.issueGrant(caseRef);
     endState = 'Grant issued';
-    console.info(endState + ':' + caseRef);
+    await I.logInfo(scenarioName, endState, caseRef);
 
     //
     // This is as far as we can currently get locally due to bulk printing issue

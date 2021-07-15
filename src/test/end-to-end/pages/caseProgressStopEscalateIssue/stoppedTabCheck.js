@@ -12,5 +12,5 @@ module.exports = async function () {
 
     await I.waitForText(`The case was stopped on ${moment().format('DD MMM yyyy')} for one of two reasons:`);
 
-    await I.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a');
+    await I.signOut();
 };

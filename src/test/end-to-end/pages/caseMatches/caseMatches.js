@@ -94,4 +94,7 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
+    if (testConfig.TestForXUI) {
+        await I.wait(2);
+    }
 };

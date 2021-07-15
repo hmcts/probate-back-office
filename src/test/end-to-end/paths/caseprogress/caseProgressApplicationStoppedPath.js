@@ -9,17 +9,18 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressAppSto
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Case Progress - application stopped path', async function ({I}) {
+const scenarioName = 'Case Progress - application stopped path';
+Scenario(scenarioName, async function ({I}) {
     // IDAM
     /* eslint-disable no-console */
     try {
-        console.info('Login as Solicitor');
+        await I.logInfo(scenarioName, 'Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 
-        console.info('Initial application entry');
+        await I.logInfo(scenarioName, 'Initial application entry');
         await I.caseProgressSolicitorDetails(caseProgressConfig);
         await I.caseProgressSolicitorDetailsCheckAnswers(caseProgressConfig);
         await I.caseProgressCheckCaseProgressTab({
@@ -30,7 +31,7 @@ Scenario('Case Progress - application stopped path', async function ({I}) {
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
             goToNextStep: true});
 
-        console.info('Deceased details');
+        await I.logInfo(scenarioName, 'Deceased details');
         await I.caseProgressDeceasedDetails(caseProgressConfig);
         await I.caseProgressDeceasedDetails2(caseProgressConfig);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
@@ -44,7 +45,7 @@ Scenario('Case Progress - application stopped path', async function ({I}) {
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
             goToNextStep: true});
 
-        console.info('Add application details');
+        await I.logInfo(scenarioName, 'Add application details');
         await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal_Yes'}, {css: '#willHasCodicils_No'}]);
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
@@ -57,16 +58,16 @@ Scenario('Case Progress - application stopped path', async function ({I}) {
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue
-        console.info('Check answers');
+        await I.logInfo(scenarioName, 'Check answers');
         await I.caseProgressCheckYourAnswers();
 
-        console.info('App stopped details');
+        await I.logInfo(scenarioName, 'App stopped details');
         await I.caseProgressAppStoppedDetails();
 
-        console.info('App stopped tab check');
+        await I.logInfo(scenarioName, 'App stopped tab check');
         await I.caseProgressAppStoppedTabCheck();
 
-        console.info('01 BO Case Progress E2E - application stopped: complete');
+        await I.logInfo(scenarioName, '01 BO Case Progress E2E - application stopped: complete');
 
     } catch (e) {
         //  await I.printPageAsScreenshot('cpaps');

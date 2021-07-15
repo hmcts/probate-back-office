@@ -27,7 +27,16 @@ class PuppeteerHelper extends Helper {
         }
 
         if (locator) {
-            promises.push(page.click(locator));
+            if (Array.isArray(locator)) {
+                console.info('locator is array: ' + locator);
+                for (let i=0; i < locator.length; i++) {
+                    promises.push(page.click(locator[i]));
+                }
+            } else {
+                promises.push(page.click(locator));
+            }
+        } else {
+            console.info('cannot find locator: ' + locator);
         }
         await Promise.all(promises);
         await this.delay(delay);
@@ -107,6 +116,21 @@ class PuppeteerHelper extends Helper {
         const {page} = await this.helpers[helperName];
 
         runAccessibility(url, page);
+    }
+
+    async logInfo(scenarioName, log, caseRef) {
+        let ret = String (scenarioName);
+        if (log) {
+            ret = ret + ' : ' + log;
+        }
+        if (caseRef) {
+            ret = ret + ' : ' + caseRef;
+        }
+        await console.info(ret);
+    }
+
+    async signOut() {
+        await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 2);
     }
 
     // to help with local debugging

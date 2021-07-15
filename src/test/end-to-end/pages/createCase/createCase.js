@@ -34,9 +34,12 @@ module.exports = async function (jurisdiction, caseType, event) {
     await I.waitForEnabled({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 60);
     await I.retry(5).selectOption('#cc-event', event);
     if (testConfig.TestForXUI) {
-        await I.wait(1);
+        await I.wait(2);
     }
 
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
     await I.waitForNavigationToComplete(createCaseConfig.startButton);
+    if (testConfig.TestForXUI) {
+        await I.wait(1);
+    }
 };

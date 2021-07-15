@@ -17,18 +17,19 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async function ({I}) {
+const scenarioName = 'Solicitor - Apply Grant of probate (Will left annexed)';
+Scenario(scenarioName, async function ({I}) {
 
     const updateAddressManually = true;
     const willType = 'WillLeftAnnexed';
 
-    console.info('Login as solicitor');
     // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
-    console.info(nextStepName);
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
@@ -44,7 +45,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     endState = 'Admon will grant created';
 
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -59,7 +60,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     nextStepName = 'Admon will details';
     endState = 'Application updated';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.admonWillDetailsPage1();
     await I.admonWillDetailsPage2(updateAddressManually);
@@ -73,7 +74,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     nextStepName = 'Complete application';
     endState = 'Case created';
-    console.info(nextStepName + ':' + caseRef);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1(willType);
     await I.completeApplicationPage2();
