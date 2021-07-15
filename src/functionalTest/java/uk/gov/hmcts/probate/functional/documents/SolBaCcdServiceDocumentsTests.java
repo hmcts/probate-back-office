@@ -118,16 +118,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         + "granted by this court to the following Executors";
     private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos "
         + "Sn2 2JU United Kingdom";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street Charlton Kings "
-        + "Swindon Glos Sn2 2JU United Kingdom";
+    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
+        + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
     private static String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
     private static String EXTRANEOUS_CURLY_START_BRACE = "{";
     private static String EXTRANEOUS_CURLY_END_BRACE = "}";
     private static String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
-            + "granted by this court to the following Executorof";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street Charlton Kings "
-            + "Swindon Glos Sn2 2JU United Kingdom";
-
+        + "granted by this court to the following Executorof";
+    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
+        + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
