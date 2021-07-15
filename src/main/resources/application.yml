@@ -80,17 +80,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-1989.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
