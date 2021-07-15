@@ -506,6 +506,9 @@ public class CallbackResponseTransformerTest {
             .boCaveatStopNotificationRequested(CAVEAT_STOP_NOTIFICATION)
             .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
             .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
+            .solsSolicitorIsExec(YES)
+            .solsSolicitorIsApplying(NO)
+            .titleAndClearingType("TCTTrustCorpResWithApp")
             .boCaveatStopEmailNotificationRequested(CAVEAT_STOP_EMAIL_NOTIFICATION)
             .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
             .boCaseStopReasonList(STOP_REASONS_LIST)
@@ -2479,7 +2482,7 @@ public class CallbackResponseTransformerTest {
 
         String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
 
-        assertEquals("The executors Andy Middlename Test, James Smith, applicant forename applicant surname: ",
+        assertEquals("The executors Andy Middlename Test, James Smith",
             executorNames);
     }
 
