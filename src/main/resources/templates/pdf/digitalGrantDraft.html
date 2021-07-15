@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% macro address(adr)%}
+{% macro address(adr) %}
 {% if adr != null %}
 {% if adr.AddressLine1 != null and adr.AddressLine1 != "" %}{{ adr.AddressLine1 }}, {% endif %}
 {% if adr.AddressLine2 != null and adr.AddressLine2 != "" %}{{ adr.AddressLine2 }}, {% endif %}
