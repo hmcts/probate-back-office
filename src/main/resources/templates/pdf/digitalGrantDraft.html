@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-{% macro address(address)%}
-{% if address != null %}
-{% if address.AddressLine1 != null and address.AddressLine1 != "" %}{{ address.AddressLine1 }}, {% endif %}
-{% if address.AddressLine2 != null and address.AddressLine2 != "" %}{{ address.AddressLine2 }}, {% endif %}
-{% if address.AddressLine3 != null and address.AddressLine3 != "" %}{{ address.AddressLine3 }}, {% endif %}
-{% if address.PostTown != null and address.PostTown != "" %}{{ address.PostTown }}, {% endif %}
-{% if address.County != null and address.County != "" %}{{ address.County }}, {% endif %}
-{% if address.PostCode != null and address.PostCode != "" %}{{ address.PostCode }}, {% endif %}
-{% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
+{% macro address(adr)%}
+{% if adr != null %}
+{% if adr.AddressLine1 != null and adr.AddressLine1 != "" %}{{ adr.AddressLine1 }}, {% endif %}
+{% if adr.AddressLine2 != null and adr.AddressLine2 != "" %}{{ adr.AddressLine2 }}, {% endif %}
+{% if adr.AddressLine3 != null and adr.AddressLine3 != "" %}{{ adr.AddressLine3 }}, {% endif %}
+{% if adr.PostTown != null and adr.PostTown != "" %}{{ adr.PostTown }}, {% endif %}
+{% if adr.County != null and adr.County != "" %}{{ adr.County }}, {% endif %}
+{% if adr.PostCode != null and adr.PostCode != "" %}{{ adr.PostCode }}, {% endif %}
+{% if adr.Country != null and adr.Country != "" %}{{ adr.Country }}{% endif %}
 {% endif %}
 {% endmacro %}
 
