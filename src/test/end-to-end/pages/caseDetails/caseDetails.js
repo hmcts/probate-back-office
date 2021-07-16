@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = 1) {
+module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
     const I = this;
 
     if (tabConfigFile.tabName) {
@@ -14,7 +14,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
 
     await I.clickTab(tabConfigFile.tabName);
-    await I.wait(delay);
+    await I.wait(3);
     await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {

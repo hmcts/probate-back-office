@@ -13,5 +13,5 @@ module.exports = async function (caseRef) {
 
     await I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

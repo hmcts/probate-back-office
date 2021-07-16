@@ -2,14 +2,14 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser, cookieRejectDelay = 2) {
+module.exports = async function (useProfessionalUser, delay = 2) {
 
     const I = this;
     await I.amOnLoadedPage('/');
 
-    await I.waitForText('Sign in', 10);
-    await I.waitForText('Email address', 10);
-    await I.waitForText('Password', 10);
+    await I.waitForText('Sign in', 30);
+    await I.waitForText('Email address', 30);
+    await I.waitForText('Password', 30);
 
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
@@ -25,7 +25,8 @@ module.exports = async function (useProfessionalUser, cookieRejectDelay = 2) {
             const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
             await I.waitForEnabled(rejectLocator);
             await I.click(rejectLocator);
-            await I.wait(cookieRejectDelay);
+            await I.wait(delay);
         }
     }
+    await I.wait(delay);
 };

@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const createCaseConfig = require('./createCaseConfig');
 
-module.exports = async function (jurisdiction, caseType, event, delay = 1) {
+module.exports = async function (jurisdiction, caseType, event, delay = 2) {
 
     const I = this;
     await I.wait(delay);
@@ -26,6 +26,6 @@ module.exports = async function (jurisdiction, caseType, event, delay = 1) {
     await I.wait(delay);
 
     await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
-    await I.waitForNavigationToComplete(createCaseConfig.startButton, 1);
+    await I.waitForNavigationToComplete(createCaseConfig.startButton);
     await I.wait(delay);
 };
