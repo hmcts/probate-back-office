@@ -48,6 +48,8 @@
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "12345",
       "solsSolicitorIsExec": "No",
+      "solsSolicitorIsApplying": "No",
+      "titleAndClearingType": "TCTPartSuccPowerRes",
       "willDispose": "Yes",
       "englishWill": "Yes",
       "appointExec": "Yes",
