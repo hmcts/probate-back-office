@@ -74,4 +74,10 @@
    ]]></notes>
         <cve>CVE-2021-27568</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   Suppressing CVE-2021-33037
+   ]]></notes>
+        <cve>CVE-2021-33037</cve>
+    </suppress>
 </suppressions>
