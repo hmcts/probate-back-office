@@ -56,6 +56,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -680,10 +681,18 @@ public class CallbackResponseTransformer {
             && caseData.getSolsWillType().matches("WillLeft")) {
             executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
 
-            executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs)
-                    +  ", " + caseData.getPrimaryApplicantForenames()
-                    + " " + caseData.getPrimaryApplicantSurname() + ": ";
+            if (caseData.getSolsSolicitorIsApplying().matches(YES)
+                || getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
+            } else {
+                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
+                if (caseData.getPrimaryApplicantForenames() != null && caseData.getPrimaryApplicantSurname() != null) {
+                    executorNames = executorNames + ", " + caseData.getPrimaryApplicantForenames()
+                        + " " + caseData.getPrimaryApplicantSurname() + ": ";
+                }
+            }
             return executorNames;
         } else {
             executorNames = "The applicant" + returnPlural(listOfApplyingExecs) + " ";

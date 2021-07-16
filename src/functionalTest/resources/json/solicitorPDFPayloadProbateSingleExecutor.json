@@ -56,6 +56,8 @@
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": "12345",
       "solsSolicitorIsExec": "No",
+      "solsSolicitorIsApplying": "No",
+      "titleAndClearingType": "TCTPartAllRenouncing",
       "willDispose": "Yes",
       "englishWill": "Yes",
       "appointExec": "Yes",

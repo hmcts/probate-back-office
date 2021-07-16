@@ -14,6 +14,8 @@
       "solsSolicitorAppReference": "firmReference",
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": null,
+      "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsApplying": "No",
       "deceasedForenames": "firstName",
       "deceasedSurname": "lastName",
       "deceasedDateOfDeath": "2018-01-01",
@@ -118,6 +120,7 @@
       "solsSOTJobTitle": "solJob",
       "extraCopiesOfGrant": null,
       "outsideUKGrantCopies": null,
+      "titleAndClearingType": "TCTPartPowerRes",
       "solsPaymentMethods": "fee account",
       "solsFeeAccountNumber": "feeaccount",
       "solsPBANumber": {
