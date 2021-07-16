@@ -5,6 +5,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrNotAllRenouncingTitleClearingTypes;
+import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 
 @Component
 public class ExecutorsRule implements ChangeRule {
@@ -14,13 +16,16 @@ public class ExecutorsRule implements ChangeRule {
     public boolean isChangeNeeded(CaseData caseData) {
         long numApplying = 0;
 
-
-        if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
-            // Trust corp executors are applying executors
-            numApplying += caseData.getAdditionalExecutorsTrustCorpList().size();
-        } else if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
-            // Partner executors are applying executors
-            numApplying += caseData.getOtherPartnersApplyingAsExecutors().size();
+        if (getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
+                // Trust corp executors are applying executors
+                numApplying += caseData.getAdditionalExecutorsTrustCorpList().size();
+            }
+        } else if (getNonTrustPtnrNotAllRenouncingTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            if (caseData.getOtherPartnersApplyingAsExecutors() != null) {
+                // Partner executors are applying executors
+                numApplying += caseData.getOtherPartnersApplyingAsExecutors().size();
+            }
         }
 
         if (caseData.getSolsAdditionalExecutorList() != null) {
