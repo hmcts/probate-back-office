@@ -4,9 +4,33 @@
         <notes><![CDATA[
          Suppressing as it's a false positive (see: https://pivotal.io/security/cve-2018-1258)
         ]]></notes>
-        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.3\.8\.RELEASE\.jar</filePath>
+        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.3\.9\.RELEASE\.jar</filePath>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
+        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
+        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-cloud-security-2.2.5.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-security@.*$</packageUrl>
+        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
+        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-cloud-starter-security-2.2.5.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-security@.*$</packageUrl>
+        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
+        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -14,5 +38,26 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch@.*$</packageUrl>
         <vulnerabilityName>CVE-2021-22134</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+         Suppressing as it's a false positive
+        ]]></notes>
+        <filePath regex="true">.*spring-(aop|aspects|beans|context|expression|jcl|jdbc|orm|oxm|tx|webmvc|web|core)-5\.2\.9\.RELEASE\.jar</filePath>
+        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+        <cve>CVE-2021-22118</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.3.8.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: json-smart-2.3.jar
+   ]]></notes>
+        <cve>CVE-2021-27568</cve>
     </suppress>
 </suppressions>

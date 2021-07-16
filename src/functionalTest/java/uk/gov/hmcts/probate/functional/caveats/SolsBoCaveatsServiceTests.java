@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -61,6 +62,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_NO_EMAIL = "caveatPayloadNotificationsNoEmail.json";
     private static final String DEFAULT_PAYLOAD_CTSC_NO_EMAIL = "caveatPayloadNotificationsNoEmailCTSC.json";
     private static final String CAVEAT_CASE_CONFIRMATION_JSON = "/caveat/caveatCaseConfirmation.json";
+    private static final String CAVEAT_CASE_CONFIRMATION_JSON_2 = "/caveat/caveatCaseConfirmation2.json";
     private static final String CAVEAT_EXTEND_PAYLOAD = "/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
@@ -76,6 +78,11 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String EXPIRY_DATE_WELSH_KEY = "EXPIRY_DATE_WELSH_KEY";
     private static final String EMAIL_NOTIFICATION_URL =
         "data.notificationsGenerated[0].value.DocumentLink.document_binary_url";
+
+    @Before
+    public void setUp() {
+        initialiseConfig();
+    }
 
     @Test
     public void verifyCaveatRaisedShouldReturnOkResponseCode() {
@@ -226,6 +233,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
+        assertTrue(responseBody.asString().contains("payments"));
+        assertTrue(responseBody.asString().contains("RC-"));
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
@@ -280,6 +289,11 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final String confirmationText = jsonPath.get("confirmation_body");
 
         assertThat(confirmationText, containsString("This caveat application has now been submitted"));
+        assertThat(confirmationText, containsString("**Your reference:** REF1123"));
+        assertThat(confirmationText, containsString("**Application fee** &pound;3.00"));
+        assertThat(confirmationText, containsString("**Payment method** fee account"));
+        assertThat(confirmationText, containsString("**Selected PBA account** PBA0082126"));
+        assertThat(confirmationText, containsString("**Customer reference** appref-PAY1"));
     }
 
     @Test
@@ -375,7 +389,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatValidateShouldReturnOKResponseCode() {
-        final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_VALIDATE);
+        final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON_2, CAVEAT_VALIDATE);
         final JsonPath jsonPath = JsonPath.from(response.asString());
         final DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         final LocalDate today = LocalDate.now();
@@ -462,6 +476,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private Response postJson(String jsonAsString, String caveatConfirmation) {
         return RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(jsonAsString)
@@ -489,6 +504,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private String generateDocument(String jsonFileName, String path, int placeholder) {
         final Response jsonResponse = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))

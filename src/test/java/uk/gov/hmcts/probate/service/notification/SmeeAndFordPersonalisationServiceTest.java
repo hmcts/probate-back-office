@@ -41,7 +41,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock
+    @Mock   
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
@@ -59,11 +59,22 @@ public class SmeeAndFordPersonalisationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
-            .thenReturn("col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,"
-                + "col11,col12,col13,col14,col15,col16,col17,col18,col19");
+            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the " 
+                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|" 
+                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 " 
+                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying " 
+                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|" 
+                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying " 
+                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|" 
+                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant " 
+                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary " 
+                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|" 
+                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to " 
+                + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
     }
 
-    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType, boolean hasScanned,
+    private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
+                                                        int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
                                                         boolean hasDeceasedAlias, boolean hasDOD) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
@@ -73,11 +84,14 @@ public class SmeeAndFordPersonalisationServiceTest {
         }
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
-        additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "1", true)));
-        additionalExecsApplying
-            .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "2", false)));
-        SolsAddress primaryAddress = buildAddress("Prim");
+        if (numExecs == -1) {
+            additionalExecsApplying = null;
+        } else {
+            for (int i = 0; i < numExecs; i++) {
+                additionalExecsApplying
+                    .add(new CollectionMember<AdditionalExecutorApplying>(buildApplyingExec("Applying", "" + i, true)));
+            }
+        }
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
             .registryLocation("Registry Address")
             .grantIssuedDate("2021-12-31")
@@ -93,7 +107,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .primaryApplicantForenames("PrimaryFN")
             .primaryApplicantSurname("PrimarySN1 PrimarySN2")
             .primaryApplicantAlias("PrimaryAlias")
-            .primaryApplicantAddress(primaryAddress)
+            .primaryApplicantAddress(applicationType == SOLICITOR ? null : buildAddress("Prim"))
             .ihtGrossValue(GROSS)
             .ihtNetValue(NET)
             .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))
@@ -177,9 +191,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false, 
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false, 
             true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -195,10 +210,72 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, false, true, false, true, 
+    public void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+            true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false,
             true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, false, true, false, 
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataWithDelimeters.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
+            false,
+            true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNoExecs.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
+            false,
+            true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+            "fromDate", "toDate");
+
+        assertThat(personalisation.get("smeeAndFordName"), is("Smee And Ford Data extract from fromDate to toDate"));
+        String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataExtraExecs.txt");
+
+        assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
+            true, 
+            true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
+            false, 
             true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -215,9 +292,10 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             false).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, true, true, false, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+            false,
             false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();

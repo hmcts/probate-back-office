@@ -19,6 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -85,6 +87,10 @@ public class CaveatData {
     private String solsFeeAccountNumber;
     @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
     private String solsPaymentMethods;
+    private DynamicList solsPBANumber;
+    private String solsPBAPaymentReference;
+    private String solsOrgHasPBAs;
+    
     private String caveatRaisedEmailNotificationRequested;
     private String sendToBulkPrintRequested;
 
@@ -136,6 +142,8 @@ public class CaveatData {
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
+
+    private List<CollectionMember<Payment>> payments;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
