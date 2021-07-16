@@ -22,9 +22,7 @@ class PuppeteerHelper extends Helper {
     async waitForNavigationToComplete(locator, delay=1) {
         const page = this.helpers[helperName].page;
         const promises = [];
-        if (!testConfig.TestForXUI) {
-            promises.push(page.waitForNavigation({timeout: 240000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
-        }
+        await this.delay(delay);
 
         if (locator) {
             if (Array.isArray(locator)) {
@@ -44,21 +42,17 @@ class PuppeteerHelper extends Helper {
 
     async clickTab(tabTitle) {
         const helper = this.helpers[helperName];
-        if (testConfig.TestForXUI) {
-            const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
+        const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
 
-            // wait for element defined by XPath appear in page
-            await helper.page.waitForXPath(tabXPath);
+        // wait for element defined by XPath appear in page
+        await helper.page.waitForXPath(tabXPath);
 
-            // evaluate XPath expression of the target selector (it return array of ElementHandle)
-            const clickableTab = await helper.page.$x(tabXPath);
+        // evaluate XPath expression of the target selector (it return array of ElementHandle)
+        const clickableTab = await helper.page.$x(tabXPath);
 
-            /* eslint-disable no-await-in-loop */
-            for (let i=0; i < clickableTab.length; i++) {
-                await helper.page.evaluate(el => el.click(), clickableTab[i]);
-            }
-        } else {
-            await helper.click(tabTitle);
+        /* eslint-disable no-await-in-loop */
+        for (let i=0; i < clickableTab.length; i++) {
+            await helper.page.evaluate(el => el.click(), clickableTab[i]);
         }
     }
 
@@ -129,8 +123,8 @@ class PuppeteerHelper extends Helper {
         await console.info(ret);
     }
 
-    async signOut() {
-        await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 2);
+    async signOut(delay = 2) {
+        await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
     }
 
     // to help with local debugging

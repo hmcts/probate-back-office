@@ -20,7 +20,7 @@ module.exports = async function () {
             await I.click(rejectLocator);
         }
     }
-    await I.waitForEnabled({css: testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator});
+    await I.waitForEnabled({css: newCaseConfig.xuiCreateCaseLocator});
     await I.wait(2);
-    await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator, 5);
+    await I.waitForNavigationToComplete(newCaseConfig.xuiCreateCaseLocator, 5);
 };

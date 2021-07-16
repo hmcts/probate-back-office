@@ -18,9 +18,9 @@ Scenario(scenarioName, async function ({I}) {
         // IDAM
         const unique_deceased_user = Date.now();
         await I.logInfo(scenarioName, 'Login as Solicitor');
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 5);
         await I.waitForNavigationToComplete(commonConfig.continueButton, 5);
         /* eslint-disable no-console */
         await I.logInfo(scenarioName, 'Initial application entry');
@@ -82,7 +82,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo(scenarioName, 'Print case ', caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, 5);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Print the case');
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
@@ -90,7 +90,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo(scenarioName, 'Check progress tab for Print case ', caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 4,
@@ -100,7 +100,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo(scenarioName, 'Stop case ', caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, 5);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Stop case');
         await I.caseProgressStopEscalateIssueAddCaseStoppedReason();
@@ -109,26 +109,26 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo('Check progress tab for Case stopped ', caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         await I.logInfo('Escalate case to registrar ', caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, 5);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar');
         await I.caseProgressclickSubmitAndSignOut();
 
         await I.logInfo('Check progress tab for Case escalated ', caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
 
         await I.logInfo('Find matches (Issue grant) ', caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, 5);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
@@ -136,7 +136,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo('Check progress tab for Case Matching (Issue grant) ', caseRef);
         // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
@@ -147,7 +147,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo('Issue grant ', caseRef);
         // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false);
+        await I.authenticateWithIdamIfAvailable(false, 5);
         await I.caseProgressNavigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
@@ -155,7 +155,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo('Check progress tab for Issue grant ', caseRef);
         // log back in as solicitor & check all sections completed
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 5);
         await I.caseProgressNavigateToCaseSolicitor(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,

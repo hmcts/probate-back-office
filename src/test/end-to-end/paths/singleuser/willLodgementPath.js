@@ -69,9 +69,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
     endState = 'Will lodgement created';
 
-    if (testConfig.TestForXUI) {
-        await I.wait(5);
-    }
+    await I.wait(5);
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
         .pop()

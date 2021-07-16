@@ -79,7 +79,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.signOut();
+        await I.signOut(5);
     }
 
     return caseRef.replace('#', '');

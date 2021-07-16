@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser) {
+module.exports = async function (useProfessionalUser, delay = 2) {
 
     const I = this;
     await I.amOnLoadedPage('/');
@@ -25,9 +25,8 @@ module.exports = async function (useProfessionalUser) {
             const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
             await I.waitForEnabled(rejectLocator);
             await I.click(rejectLocator);
+            await I.wait(delay);
         }
     }
-    if (testConfig.TestForXUI) {
-        await I.wait(2);
-    }
+    await I.wait(delay);
 };

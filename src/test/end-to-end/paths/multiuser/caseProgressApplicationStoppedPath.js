@@ -17,9 +17,9 @@ Scenario(scenarioName, async function ({I}) {
         // get unique suffix for names - in order to match only against 1 case
         const unique_deceased_user = Date.now();
         await I.logInfo(scenarioName, 'Login as Solicitor');
-        await I.authenticateWithIdamIfAvailable(true);
+        await I.authenticateWithIdamIfAvailable(true, 10);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 0);
+        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 5);
         await I.waitForNavigationToComplete(commonConfig.continueButton, 5);
 
         await I.logInfo(scenarioName, 'Initial application entry');

@@ -8,9 +8,7 @@ module.exports = async function (caseRef, nextStepName) {
 
     const I = this;
 
-    if (testConfig.TestForXUI) {
-        await I.wait(5);
-    }
+    await I.wait(5);
 
     let eventSummaryPrefix = nextStepName;
 
