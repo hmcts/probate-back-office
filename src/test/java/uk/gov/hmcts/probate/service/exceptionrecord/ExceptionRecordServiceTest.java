@@ -50,6 +50,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @RunWith(SpringRunner.class)
 public class ExceptionRecordServiceTest {
@@ -151,6 +152,7 @@ public class ExceptionRecordServiceTest {
         assertEquals(RegistryLocation.CTSC, caveatDataResponse.getRegistryLocation());
         assertEquals(ApplicationType.PERSONAL, caveatDataResponse.getApplicationType());
         assertEquals("Jones", caveatDataResponse.getCaveatorSurname());
+        assertEquals(NO, caveatDataResponse.getAutomatedProcess());
     }
 
     @Test
@@ -272,6 +274,7 @@ public class ExceptionRecordServiceTest {
         assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("Smith", grantOfRepresentationDataResponse.getPrimaryApplicantSurname());
+        assertEquals(NO, grantOfRepresentationDataResponse.getAutomatedProcess());
     }
 
     public ObjectMapper getObjectMapper() {

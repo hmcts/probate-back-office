@@ -60,6 +60,7 @@ public class ResponseCaveatData {
 
     private final String sendToBulkPrintRequested;
     private final String sendToBulkPrint;
+    private final String automatedProcess;
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;

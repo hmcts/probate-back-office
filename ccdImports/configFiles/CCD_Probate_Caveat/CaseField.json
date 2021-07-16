@@ -58,5 +58,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "autoClosedExpiry", "Label": "Closed automatially due to expiry", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "pcqId", "Label": "PCQ ID", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "ID": "bulkScanEnvelopes", "Label": "Bulk Scan Envelopes", "FieldType": "Collection", "FieldTypeParameter": "BulkScanEnvelope", "SecurityClassification": "PUBLIC"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "ID": "automatedProcess", "Label": "Scanned case", "FieldType": "YesOrNo", "SecurityClassification": "PUBLIC"}
 ]

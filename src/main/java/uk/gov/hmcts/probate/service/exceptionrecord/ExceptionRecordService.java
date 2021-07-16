@@ -38,6 +38,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.stream.Collectors.toList;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Service
@@ -82,6 +84,12 @@ public class ExceptionRecordService {
             // Add bulkScanReferenceId
             caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
+            if (erRequest.getIsAutomatedProcess()) {
+                caveatData.setAutomatedProcess(YES);
+            } else {
+                caveatData.setAutomatedProcess(NO);
+            }
+
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
@@ -119,6 +127,11 @@ public class ExceptionRecordService {
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
+            if (erRequest.getIsAutomatedProcess()) {
+                grantOfRepresentationData.setAutomatedProcess(YES);
+            } else {
+                grantOfRepresentationData.setAutomatedProcess(NO);
+            }
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");

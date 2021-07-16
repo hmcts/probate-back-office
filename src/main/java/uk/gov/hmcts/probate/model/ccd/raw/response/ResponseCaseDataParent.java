@@ -37,6 +37,7 @@ public class ResponseCaseDataParent {
     protected String registryEmailAddress;
     protected String registrySequenceNumber;
     protected String taskList;
+    protected String automatedProcess;
     protected String escalatedDate;
     protected String authenticatedDate;
     protected String iht217;

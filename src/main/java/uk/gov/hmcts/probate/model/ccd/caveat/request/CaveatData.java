@@ -98,6 +98,8 @@ public class CaveatData {
 
     private LocalDate expiryDate;
 
+    private String automatedProcess;
+
     // EVENT = cavEmailCaveator
 
     private String messageContent;
