@@ -76,7 +76,7 @@ module.exports = async function (opts) {
         await I.see(`Submitted on ${moment().format('DD MMM yyyy')}`);
     }
     if (opts.goToNextStep) {
-        await I.caseProgressSelectPenultimateNextStepAndGo();
+        await I.caseProgressSelectPenultimateNextStepAndGo(2);
     }
     if (opts.signOut) {
         await I.signOut(5);

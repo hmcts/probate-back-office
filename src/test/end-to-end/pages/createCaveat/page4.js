@@ -17,5 +17,5 @@ module.exports = async function (crud) {
         await I.fillField('#expiryDate-year', createCaveatConfig.page4_caveatExpiryDate_year_update);
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, 2);
 };

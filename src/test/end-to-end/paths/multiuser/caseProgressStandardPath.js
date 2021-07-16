@@ -17,7 +17,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Login as Solicitor');
         // IDAM
         await I.authenticateWithIdamIfAvailable(true, 5);
-        await I.selectNewCase();
+        await I.selectNewCase(2);
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 5);
         await I.waitForNavigationToComplete(commonConfig.continueButton, 5);
 
