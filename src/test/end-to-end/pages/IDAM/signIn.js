@@ -27,6 +27,6 @@ module.exports = async function (useProfessionalUser, cookieRejectDelay = testCo
                 await I.click(rejectLocator);
                 await I.wait(cookieRejectDelay);
             }
-        }    
+        }
     }
 };

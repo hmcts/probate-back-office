@@ -23,7 +23,8 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
 
         await this.delay(delay);
-        promises.push(page.waitForNavigation());        
+        const promises = [];
+        promises.push(page.waitForNavigation());
         if (locator) {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
@@ -34,7 +35,7 @@ class PuppeteerHelper extends Helper {
             } else {
                 await page.waitForSelector(locator + ':enabled', {visible: true, timeout: 5000});
                 promises.push(page.click(locator));
-            }            
+            }
         }
         await Promise.all(promises);
         await this.delay(delay);
@@ -53,7 +54,7 @@ class PuppeteerHelper extends Helper {
         /* eslint-disable no-await-in-loop */
         for (let i=0; i < clickableTabs.length; i++) {
             await helper.page.evaluate(el => el.click(), clickableTabs[i]);
-        }        
+        }
     }
 
     replaceAll(string, search, replace) {
@@ -136,6 +137,6 @@ class PuppeteerHelper extends Helper {
             type: 'jpeg',
             fullPage: true
         });
-    }    
+    }
 }
 module.exports = PuppeteerHelper;
