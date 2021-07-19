@@ -33,7 +33,8 @@
     "test-e2e-caseProgressStopEscalateIssue": "E2E_TEST_PATH=./paths/caseprogress/caseProgressStopEscalateIssuePath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
     "test-e2e-caseProgressStandard": "E2E_TEST_PATH=./paths/caseprogress/caseProgressStandardPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
     "test-e2e-caseProgressReenterDeceasedDetails": "E2E_TEST_PATH=./paths/caseprogress/caseProgressReenterDeceasedDetailsPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
-    "test-e2e-caseProgressAppStopped": "E2E_TEST_PATH=./paths/caseprogress/caseProgressApplicationStoppedPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
+    "test-e2e-caseProgressAppStopped": "E2E_TEST_PATH=./paths/caseprogress/caseProgressApplicationStoppedPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome",
+    "highLevelDataSetup": "echo './aat/gradlew -p aat highLevelDataSetup --args=$1' > ./temp.sh && sh ./temp.sh"
   },
   "dependencies": {
     "@date-fns/upgrade": "^1.0.3",

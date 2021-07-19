@@ -12,6 +12,7 @@ output/
 /src/test/end-to-end/output/**
 /output/**
 functional-output/
+.env
 
 ### STS ###
 .apt_generated

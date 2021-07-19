@@ -311,6 +311,8 @@ dependencies {
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
+  testCompile group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.0.0'
+  testCompile group: 'com.github.hmcts', name: 'befta-fw', version: '8.0.6'
   testCompile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
@@ -434,4 +436,10 @@ pact {
     tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
     version = project.pacticipantVersion
   }
+task highLevelDataSetup(type: JavaExec) {
+    main = "uk.gov.hmcts.ccd.caseactivity.befta.HighLevelDataSetupApp"
+    classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
+    jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
 }
