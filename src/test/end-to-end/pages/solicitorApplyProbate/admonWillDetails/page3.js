@@ -15,5 +15,5 @@ module.exports = async function () {
     await I.selectOption('#solsResiduaryType', admonWillDetailsConfig.page3_legateeAndDevisee);
     await I.click(`#solsLifeInterest_${admonWillDetailsConfig.optionNo}`);
 
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.submitButton);
 };

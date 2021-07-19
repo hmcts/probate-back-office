@@ -9,7 +9,7 @@ module.exports = async function (crud, unique_deceased_user) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.WaitForTextTimeout);
         await I.waitForElement({css: '#boDeceasedTitle'});
         await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page5_bo_deceasedTitle);
 
@@ -21,14 +21,14 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
 
-        await I.waitForVisible({css: '#deceasedAddress_AddressLine1'});
-        await I.fillField('#deceasedAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#deceasedAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#deceasedAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#deceasedAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#deceasedAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#deceasedAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#deceasedAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible({css: '#deceasedAddress__detailAdressAddressLine1'});
+        await I.fillField('#deceasedAddress__detailAdressAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAdressAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAdressAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailAdressPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#deceasedAddress__detailAdressCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#deceasedAddress__detailAdressPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailAdressCountry', createGrantOfProbateConfig.address_country);
 
         await I.selectOption({css: '#dateOfDeathType'}, createGrantOfProbateConfig.page5_dateOfDeathType);
         await I.fillField({css: '#deceasedDateOfBirth-day'}, createGrantOfProbateConfig.page5_deceasedDob_day);
@@ -44,13 +44,13 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page5_deceasedAlias + '_' + unique_deceased_user);
 
         await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page5_deceasedMaritalStatus}`);
-        await I.click(`#foreignAsset-${createGrantOfProbateConfig.page5_foreignAssetYes}`);
+        await I.click(`#foreignAsset_${createGrantOfProbateConfig.page5_foreignAssetYes}`);
         await I.waitForVisible('#foreignAssetEstateValue');
         await I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page5_foreignAssetEstateValue);
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.WaitForTextTimeout);
 
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
@@ -73,7 +73,7 @@ module.exports = async function (crud, unique_deceased_user) {
     if (crud === 'update2orig') {
 
         // "reverting" update back to defaults - to enable case-match with matching case
-        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.WaitForTextTimeout);
 
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);

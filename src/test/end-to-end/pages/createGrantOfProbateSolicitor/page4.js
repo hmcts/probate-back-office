@@ -9,18 +9,18 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
-        await I.seeElement('#otherExecutorExists-Yes');
-        await I.seeElement('#otherExecutorExists-No');
-        await I.click(`#otherExecutorExists-${createGrantOfProbateConfig.page4_otherExecutorExistsYes}`);
-        await I.waitForText(createGrantOfProbateConfig.page4_waitForText2, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.WaitForTextTimeout);
+        await I.seeElement('#otherExecutorExists_Yes');
+        await I.seeElement('#otherExecutorExists_No');
+        await I.click(`#otherExecutorExists_${createGrantOfProbateConfig.page4_otherExecutorExistsYes}`);
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText2, testConfig.WaitForTextTimeout);
         await I.click({type: 'button'}, '#executorsApplying>div');
         if (!testConfig.TestAutoDelayEnabled) {
             // only valid for local dev where we need it to run as fast as poss to minimise
             // lost dev time
             await I.wait(testConfig.ManualDelayMedium);
         }
-        await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.WaitForTextTimeout);
 
         let numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
         assert (numEls === 0);
@@ -51,13 +51,13 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.selectOption('#executorsApplying_0_applyingExecutorOtherNamesReason', createGrantOfProbateConfig.page4_executor0_alias_reason);
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAdressCountry', createGrantOfProbateConfig.address_country);
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
         if (!testConfig.TestAutoDelayEnabled) {
@@ -76,10 +76,10 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameOnWill', createGrantOfProbateConfig.page4_executor1_alias);
         await I.fillField('#executorsNotApplying_0_notApplyingExecutorNameDifferenceComment', createGrantOfProbateConfig.page4_name_difference);
 
-        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes'});
+        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
         assert (numEls === 0);
 
-        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes'});
+        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
         assert (numEls === 0);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
@@ -88,19 +88,19 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.selectOption('#executorsNotApplying_0_notApplyingExecutorReason', createGrantOfProbateConfig.page4_not_applying_reason);
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes'});
 
-        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes'});
+        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
         assert (numEls === 0);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice-Yes');
-        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes'});
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
+        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-No');
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No');
 
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven-Yes');
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
@@ -136,7 +136,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');

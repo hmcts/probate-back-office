@@ -7,5 +7,5 @@ module.exports = async function () {
     await I.waitForElement('#confirmation-body');
     await I.runAccessibilityTest();
 
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.submitButton);
 };

@@ -9,7 +9,7 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createWillLodgementConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createWillLodgementConfig.page1_waitForText, testConfig.WaitForTextTimeout);
 
         await I.selectOption('#applicationType', createWillLodgementConfig.page1_list1_application_type);
         await I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location);
@@ -29,11 +29,11 @@ module.exports = async function (crud) {
 
         await I.fillField('#numberOfCodicils', createWillLodgementConfig.page1_numberOfCodicils);
 
-        await I.click(`#jointWill-${createWillLodgementConfig.page1_jointWill}`);
+        await I.click(`#jointWill_${createWillLodgementConfig.page1_jointWill}`);
     }
 
     if (crud === 'update') {
-        await I.waitForText(createWillLodgementConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createWillLodgementConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
 
         await I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location_update);
         await I.selectOption('#lodgementType', createWillLodgementConfig.page1_list3_lodgement_type_update);

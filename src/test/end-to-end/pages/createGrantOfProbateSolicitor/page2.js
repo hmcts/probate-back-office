@@ -13,7 +13,7 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page2_waitForText, testConfig.WaitForTextTimeout);
         await I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames);
         await I.fillField('#primaryApplicantSurname', createGrantOfProbateConfig.page2_lastnames);
 
@@ -29,29 +29,29 @@ module.exports = async function (crud) {
 
         await I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
 
-        await I.click(`#primaryApplicantHasAlias-${createGrantOfProbateConfig.page2_hasAliasYes}`);
+        await I.click(`#primaryApplicantHasAlias_${createGrantOfProbateConfig.page2_hasAliasYes}`);
 
         const aliasLocator = {css: '#primaryApplicantAlias'};
         await I.waitForVisible(aliasLocator);
         await I.fillField(aliasLocator, createGrantOfProbateConfig.page2_alias);
 
-        await I.click(`#primaryApplicantIsApplying-${createGrantOfProbateConfig.page2_applyingYes}`);
+        await I.click(`#primaryApplicantIsApplying_${createGrantOfProbateConfig.page2_applyingYes}`);
 
         const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
-        await I.waitForVisible({css: '#primaryApplicantAddress_AddressLine1'});
-        await I.fillField('#primaryApplicantAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#primaryApplicantAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#primaryApplicantAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#primaryApplicantAddress_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible({css: '#primaryApplicantAddress__detailAdressAddressLine1'});
+        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#primaryApplicantAddress__detailAdressPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#primaryApplicantAddress__detailAdressCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#primaryApplicantAddress__detailAdressPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#primaryApplicantAddress__detailAdressCountry', createGrantOfProbateConfig.address_country);
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page2_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page2_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames_update);

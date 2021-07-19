@@ -19,6 +19,17 @@ class PuppeteerHelper extends Helper {
         });
     }
 
+    // gets a locator from a locator which may be string or object with css property
+    async getEnabledCssLocator(locator) {
+        if (!locator) {
+            return null;
+        }
+        if (typeof locator === 'string') {
+            return locator + ':enabled';        
+        }
+        return locator.css +  ':enabled';
+    }
+
     async waitForNavigationToComplete(locator, delay = 0) {
         const page = this.helpers[helperName].page;
 
@@ -29,11 +40,11 @@ class PuppeteerHelper extends Helper {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
                     // eslint-disable-next-line no-await-in-loop
-                    await page.waitForSelector(locator[i] + ':enabled', {visible: true, timeout: 5000});
+                    await page.waitForSelector(this.getEnabledCssLocator(locator[i]), {visible: true, timeout: 5000});
                     promises.push(page.click(locator[i]));
                 }
             } else {
-                await page.waitForSelector(locator + ':enabled', {visible: true, timeout: 5000});
+                await page.waitForSelector(this.getEnabledCssLocator(locator), {visible: true, timeout: 5000});
                 promises.push(page.click(locator));
             }
         }
@@ -87,9 +98,9 @@ class PuppeteerHelper extends Helper {
 
     async uploadDocumentIfNotMicrosoftEdge() {
         const helper = this.helpers[helperName];
-        await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
+        await helper.waitForElement('.dz-hidden-input', testConfig.WaitForTextTimeout * testConfig.TestOneMilliSecond);
         await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
-        await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
+        await helper.waitForEnabled('#button', testConfig.WaitForTextTimeout);
     }
 
     async performAsyncActionForElements(locator, actionFunc) {

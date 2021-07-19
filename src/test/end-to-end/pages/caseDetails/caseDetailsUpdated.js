@@ -26,7 +26,7 @@ module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesC
 
         for (let i = 0; i < keys.length; i++) {
             // eslint-disable-next-line
-            await I.waitForText(tabUpdatesConfigFile[keys[i]], testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(tabUpdatesConfigFile[keys[i]], testConfig.WaitForTextTimeout || 60);
         }
     }
 };

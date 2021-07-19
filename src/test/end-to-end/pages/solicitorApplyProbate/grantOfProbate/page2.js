@@ -62,7 +62,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.waitForText(grantOfProbateConfig.page2_waitForAnyOtherTcPartners);
     await I.click({css: '#anyOtherApplyingPartnersTrustCorp_Yes'});
 
-    await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.TestTimeToWaitForText);
+    await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.WaitForTextTimeout);
     await I.click('#additionalExecutorsTrustCorpList > div > button');
     await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
     if (!testConfig.TestAutoDelayEnabled) {

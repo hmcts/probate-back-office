@@ -1,11 +1,12 @@
 const assert = require('assert');
 const moment = require('moment');
+const testConfig = require('src/test/config.js');
 
 // opts are numCompleted, numInProgress, numNotStarted, linkText, opts.linkUrl
 module.exports = async function (opts) {
     const I = this;
-    // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForElement('a[aria-controls="caseProgressTab"][aria-selected=true]');
+    // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails    
+    await I.waitForText('Case Progress', testConfig.WaitForTextTimeout || 60);
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
@@ -79,6 +80,7 @@ module.exports = async function (opts) {
     }
     if (opts.signOut) {
         await I.waitForNavigationToComplete('#sign-out');
+        await I.signout(testConfig.CaseProgressTabCheckDelay);    
     }
 
     return caseRef.replace('#', '');
