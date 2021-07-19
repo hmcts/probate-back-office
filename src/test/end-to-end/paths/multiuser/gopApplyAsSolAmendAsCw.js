@@ -31,11 +31,11 @@ Scenario(scenarioName, async function ({I}) {
     const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';
 
-    await I.logInfo(scenarioName, 'Login as Solicitor'); 
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
-    await I.logInfo(scenarioName,'Initial application details');
-            
+    await I.logInfo(scenarioName, 'Initial application details');
+
     let nextStepName = 'Deceased details';
     await I.logInfo(scenarioName, nextStepName);
 
@@ -56,7 +56,7 @@ Scenario(scenarioName, async function ({I}) {
 
     endState = 'Grant of probate created';
 
-    await I.logInfo(scenarioName,'Deceased details');
+    await I.logInfo(scenarioName, 'Deceased details');
 
     await I.chooseNextStep(nextStepName, true);
     await I.logInfo(scenarioName, nextStepName);
@@ -73,7 +73,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
-    await I.logInfo(scenarioName,'Grant of probate details');
+    await I.logInfo(scenarioName, 'Grant of probate details');
 
     nextStepName = 'Grant of probate details';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -106,7 +106,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig, false, true);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig, null, null, true);
 
-    await I.logInfo(scenarioName,'Complete application');
+    await I.logInfo(scenarioName, 'Complete application');
 
     nextStepName = 'Complete application';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -134,14 +134,14 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig, null, null, true);
 
-    await I.logInfo(scenarioName,'Sign out and login as case worker');
+    await I.logInfo(scenarioName, 'Sign out and login as case worker');
 
     await I.signOut();
 
     // IdAM - Caseworker
     await I.authenticateWithIdamIfAvailable(false);
     await I.navigateToCaseCaseworker(caseRef);
-    await I.logInfo(scenarioName,'Amend details', caseRef);
+    await I.logInfo(scenarioName, 'Amend details', caseRef);
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);
     await I.enterGrantOfProbatePage1('update', true);

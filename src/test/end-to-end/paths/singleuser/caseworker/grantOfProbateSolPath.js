@@ -118,7 +118,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.cwEnterSolsGoPPage1('update', createGrantOfProbateConfig);
     await I.checkMyAnswers(nextStepName);
-    if (createGrantOfProbateConfig.page1_solsSolicitorIsExec === 'No' && createGrantOfProbateConfig.page1_solsSolicitorIsApplying === 'No') {        
+    if (createGrantOfProbateConfig.page1_solsSolicitorIsExec === 'No' && createGrantOfProbateConfig.page1_solsSolicitorIsApplying === 'No') {
         await I.chooseNextStep(nextStepName);
         await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
         await I.cwEnterSolsGoPPage2('update', createGrantOfProbateConfig);

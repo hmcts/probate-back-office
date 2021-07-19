@@ -55,6 +55,8 @@ class PuppeteerHelper extends Helper {
         }
         await Promise.all(promises);
         await this.delay(delay);
+        const dummyTab = await this.helpers[helperName].browser.newPage();
+        await dummyTab.close();
     }
 
     async clickTab(tabTitle) {
@@ -142,6 +144,8 @@ class PuppeteerHelper extends Helper {
 
     async signOut(delay = testConfig.SignOutDelayDefault) {
         await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
+        const page = this.helpers[helperName].page;
+        await page.waitForSelector('#username');
     }
 
     // to help with local debugging

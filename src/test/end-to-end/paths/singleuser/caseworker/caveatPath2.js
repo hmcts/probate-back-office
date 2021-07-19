@@ -44,7 +44,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
 
-
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';

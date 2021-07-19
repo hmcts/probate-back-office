@@ -29,6 +29,8 @@ class JSWait extends codecept_helper {
             // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
             await helper.amOnPage(url, 60);
         }
+        const dummyTab = await helper.browser.newPage();
+        await dummyTab.close();
         await helper.waitInUrl(url, 60);
     }
 }

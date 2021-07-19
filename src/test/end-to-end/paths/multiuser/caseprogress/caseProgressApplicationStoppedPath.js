@@ -15,7 +15,7 @@ Scenario(scenarioName, async function ({I}) {
     try {
         // get unique suffix for names - in order to match only against 1 case
         const unique_deceased_user = Date.now();
-        await I.logInfo(scenarioName, 'Login as Solicitor');                
+        await I.logInfo(scenarioName, 'Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.solGor);
@@ -46,7 +46,7 @@ Scenario(scenarioName, async function ({I}) {
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
             goToNextStep: true});
 
-        await I.logInfo(scenarioName,'Add application details');
+        await I.logInfo(scenarioName, 'Add application details');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#willAccessOriginal_Yes'}},
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
@@ -54,13 +54,13 @@ Scenario(scenarioName, async function ({I}) {
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
             {locator: {css: '#willHasCodicils_No'}}]);
 
-        await I.logInfo(scenarioName,'Dispense with notice and clearing type');
+        await I.logInfo(scenarioName, 'Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#dispenseWithNotice_No'}},
             {locator: {css: '#titleAndClearingType-TCTNoT'}},
         ]);
 
-        await I.logInfo(scenarioName,'Remaining application details');
+        await I.logInfo(scenarioName, 'Remaining application details');
 
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
@@ -74,16 +74,16 @@ Scenario(scenarioName, async function ({I}) {
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue
-        await I.logInfo(scenarioName,'Check answers');
+        await I.logInfo(scenarioName, 'Check answers');
         await I.caseProgressCheckYourAnswers();
 
-        await I.logInfo(scenarioName,'App stopped details');
+        await I.logInfo(scenarioName, 'App stopped details');
         await I.caseProgressAppStoppedDetails();
 
-        await I.logInfo(scenarioName,'App stopped tab check');
+        await I.logInfo(scenarioName, 'App stopped tab check');
         await I.caseProgressAppStoppedTabCheck();
 
-        await I.logInfo(scenarioName,'01 BO Case Progress E2E - application stopped: complete');
+        await I.logInfo(scenarioName, '01 BO Case Progress E2E - application stopped: complete');
 
     } catch (e) {
         //  await I.printPageAsScreenshot('cpaps');

@@ -2,7 +2,7 @@
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const assert = require('assert');
 
-module.exports = async function (Surname) {
+module.exports = async function (uniqueDeceasedSuffix) {
     const I = this;
     await I.waitForElement('form.check-your-answers');
     const formHtml = await I.grabAttributeFrom('form.check-your-answers', 'outerHTML');

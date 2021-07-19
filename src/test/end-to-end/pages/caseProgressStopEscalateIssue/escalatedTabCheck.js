@@ -1,5 +1,6 @@
 'use strict';
 const moment = require('moment');
+const testConfig = require('src/test/config');
 
 // Solicitor - navigate back to case
 module.exports = async function () {

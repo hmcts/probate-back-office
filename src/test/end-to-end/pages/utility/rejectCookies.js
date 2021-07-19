@@ -4,7 +4,7 @@ const testConfig = require('src/test/config');
 module.exports = async function() {
     if (testConfig.RejectCookies) {
         try {
-            const I = this;            
+            const I = this;
             const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
             const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements(rejectLocator);
             if (numVisibleCookieBannerEls > 0) {
@@ -15,6 +15,6 @@ module.exports = async function() {
             }
         } catch (e) {
             console.error(`error trying to close cookie banner: ${e.message}`);
-        }    
+        }
     }
-}
+};
