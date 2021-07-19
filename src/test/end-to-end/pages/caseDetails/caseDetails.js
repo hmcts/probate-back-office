@@ -6,19 +6,16 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     const I = this;
 
     if (tabConfigFile.tabName) {
-        let tabXPath;
-        if (testConfig.TestForXUI) {
-            tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
-        } else {
-            tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
-        }
+        const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
         //Tabs are hidden when there are more tabs
         await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
     await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
 
+    await I.wait(3);
     await I.clickTab(tabConfigFile.tabName);
+    await I.wait(3);
     await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {
@@ -28,9 +25,9 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-            await I.waitForText(tabConfigFile.fields[i]);
+            //await I.waitForText(tabConfigFile.fields[i]);
+            await I.see(tabConfigFile.fields[i]);
         }
-        // await I.see(tabConfigFile.fields[i]);
     }
 
     const dataConfigKeys = tabConfigFile.dataKeys;

@@ -2,12 +2,12 @@
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 // deceased details
-module.exports = async function (caseProgressConfig) {
+module.exports = async function (caseProgressConfig, uniqueSuffix) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement('#deceasedForenames');
-    await I.fillField('#deceasedForenames', caseProgressConfig.deceasedFirstname);
-    await I.fillField('#deceasedSurname', caseProgressConfig.deceasedSurname);
+    await I.fillField('#deceasedForenames', caseProgressConfig.deceasedFirstname + uniqueSuffix);
+    await I.fillField('#deceasedSurname', caseProgressConfig.deceasedSurname + uniqueSuffix);
     await I.fillField('#deceasedDateOfDeath-day', caseProgressConfig.deathDay);
     await I.fillField('#deceasedDateOfDeath-month', caseProgressConfig.deathMonth);
     await I.fillField('#deceasedDateOfDeath-year', caseProgressConfig.deathYear);

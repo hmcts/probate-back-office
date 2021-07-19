@@ -118,6 +118,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsAdditionalInfo", "Label": "Notes for this application", "HintText": "Tell us anything we need to know to process this application, for example extra documents you are including", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsLegalStatementDocument", "Label": "Legal statement", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsNextStepsDocument", "Label": "Next Steps Document", "FieldType": "Document", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsCoversheetDocument", "Label": "Coversheet", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsWillType", "Label": "Application type", "FieldType": "FixedRadioList", "FieldTypeParameter": "solsWillTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willDispose", "Label": "Does the will dispose of the estate in England and Wales (or if will is in English, does it appoint an executor), or is the deceased a British National?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "noProofEntitlement", "Label": "The will is not entitled to proof in England and Wales.", "FieldType": "Label", "SecurityClassification": "Public"},
@@ -363,5 +364,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reprintNumberOfCopies", "Label": "How many copies are needed?", "FieldType": "Number", "Min": "0", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkScanEnvelopes", "Label": "Bulk Scan Envelopes", "FieldType": "Collection", "FieldTypeParameter": "BulkScanEnvelope", "SecurityClassification": "PUBLIC"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Deceased", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"}
 ]
