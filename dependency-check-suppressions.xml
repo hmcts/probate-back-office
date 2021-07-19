@@ -60,4 +60,15 @@
    ]]></notes>
         <cve>CVE-2021-27568</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2019-12402</cve>
+        <cve>CVE-2020-17521</cve>
+        <cve>CVE-2016-5394</cve>
+        <cve>CVE-2016-6798</cve>
+        <cve>CVE-2019-12415</cve>
+        <cve>CVE-2020-29243</cve>
+        <cve>CVE-2020-29242</cve>
+        <cve>CVE-2020-29245</cve>
+        <cve>CVE-2021-33037</cve>
+    </suppress>
 </suppressions>
