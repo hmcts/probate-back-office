@@ -16,7 +16,7 @@ public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
 
         return ParagraphRenderer.renderByReplace(
             EmailAddressRenderer.renderByReplace(AppStoppedHtmlTemplate.BASE_TEMPLATE,
-                "probatefeedback@justice.co.uk"))
+                "probatefeedback@justice.gov.uk"))
             .replaceFirst("<paperformLink/>",
                 LinkRenderer.renderOutside("paper form",
                     "https://www.gov.uk/government/collections/probate-forms"))
