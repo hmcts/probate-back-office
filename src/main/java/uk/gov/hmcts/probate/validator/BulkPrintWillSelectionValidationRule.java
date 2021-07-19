@@ -25,18 +25,20 @@ public class BulkPrintWillSelectionValidationRule implements CaseDetailsValidati
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
 
-        long numSelectedWills = caseData.getWillSelection().stream()
-            .map(CollectionMember::getValue)
-            .filter(willDocument -> willDocument.getDocumentSelected().contains(YES))
-            .count();
+        if (caseData.getWillSelection() != null) {
+            long numSelectedWills = caseData.getWillSelection().stream()
+                .map(CollectionMember::getValue)
+                .filter(willDocument -> willDocument.getDocumentSelected().contains(YES))
+                .count();
 
-        if (numSelectedWills != 1) {
-            String[] args = {caseDetails.getId().toString()};
-            String userMessage = businessValidationMessageRetriever
-                .getMessage(NO_SINGLE_WILL_SELECTION_MADE_FOR_GRANT_ISSUE, args, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                "No single will has been selected for Grant Issue for case id "
-                    + caseDetails.getId());
+            if (numSelectedWills != 1) {
+                String[] args = {caseDetails.getId().toString()};
+                String userMessage = businessValidationMessageRetriever
+                    .getMessage(NO_SINGLE_WILL_SELECTION_MADE_FOR_GRANT_ISSUE, args, Locale.UK);
+                throw new BusinessValidationException(userMessage,
+                    "No single will has been selected for Grant Issue for case id "
+                        + caseDetails.getId());
+            }
         }
     }
 }

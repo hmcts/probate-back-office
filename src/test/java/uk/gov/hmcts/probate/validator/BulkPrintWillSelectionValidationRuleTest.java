@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,6 +53,23 @@ public class BulkPrintWillSelectionValidationRuleTest {
         CollectionMember<WillDocument> will3 =
             new CollectionMember<>(WillDocument.builder().documentSelected(Arrays.asList("No")).build());
         List<CollectionMember<WillDocument>> willSelection = Arrays.asList(will1, will2, will3);
+        when(caseDataMock.getWillSelection()).thenReturn(willSelection);
+        bulkPrintWillSelectionValidationRule.validate(caseDetailsMock);
+
+        verify(businessValidationMessageRetriever, times(1)).getMessage(any(), any(), any());
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWillSelectionIsAuto() {
+        when(caseDataMock.getWillSelection()).thenReturn(null);
+        bulkPrintWillSelectionValidationRule.validate(caseDetailsMock);
+
+        verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
+    }
+
+    @Test(expected = BusinessValidationException.class)
+    public void shouldNotThrowExceptionWillSelectionIsAutoNoWills() {
+        List<CollectionMember<WillDocument>> willSelection = Collections.EMPTY_LIST;
         when(caseDataMock.getWillSelection()).thenReturn(willSelection);
         bulkPrintWillSelectionValidationRule.validate(caseDetailsMock);
 

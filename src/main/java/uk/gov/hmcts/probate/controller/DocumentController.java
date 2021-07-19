@@ -192,6 +192,10 @@ public class DocumentController {
 
         log.info("Number of willDocuments selected on case: {} for the caseId {}", willDocuments.size(), 
             callbackRequest.getCaseDetails().getId().toString());
+        for (Document willDoc : willDocuments) {
+            log.info("Will document(s) to be included: fileName:{}, docType:{}", willDoc.getDocumentFileName(),
+                willDoc.getDocumentType().toString());
+        }
 
         String letterId = null;
         String pdfSize = null;
