@@ -21,7 +21,7 @@ module.exports = async function (crud) {
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
 
         const locator = {css: `#deceasedDomicileInEngWales_${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`};
         await I.waitForElement(locator);

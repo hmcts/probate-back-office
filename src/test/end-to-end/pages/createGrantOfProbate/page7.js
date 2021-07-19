@@ -43,7 +43,7 @@ module.exports = async function (crud) {
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page7_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page7_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName_update);
     }
 

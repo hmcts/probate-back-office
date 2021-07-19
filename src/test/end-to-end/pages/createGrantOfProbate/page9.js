@@ -14,5 +14,5 @@ module.exports = async function () {
     await I.fillField('#ihtGrossValue', createGrantOfProbateConfig.page9_ihtGrossValue);
     await I.fillField('#ihtNetValue', createGrantOfProbateConfig.page9_ihtNetValue);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
 };

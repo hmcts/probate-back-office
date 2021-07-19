@@ -53,7 +53,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
 
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
 
         await I.waitForVisible('#deceasedForenames');
         await I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
@@ -76,7 +76,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
 
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
 
         await I.waitForVisible('#deceasedDateOfDeath-day');
         await I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day);
