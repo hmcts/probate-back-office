@@ -13,33 +13,46 @@ class PuppeteerHelper extends Helper {
         await page.goBack();
     }
 
-    async waitForNavigationToComplete(locator) {
+    async delay(time) {
+        await new Promise(function (resolve) {
+            setTimeout(resolve, time * 1000);
+        });
+    }
+
+    async waitForNavigationToComplete(locator, delay=1) {
         const page = this.helpers[helperName].page;
         const promises = [];
-        if (!testConfig.TestForXUI) {
-            promises.push(page.waitForNavigation({timeout: 240000, waitUntil: ['domcontentloaded', 'networkidle0']})); // The promise resolves after navigation has finished
-        }
+        await this.delay(delay);
 
         if (locator) {
-            promises.push(page.click(locator));
+            if (Array.isArray(locator)) {
+                console.info('locator is array: ' + locator);
+                for (let i=0; i < locator.length; i++) {
+                    promises.push(page.click(locator[i]));
+                }
+            } else {
+                promises.push(page.click(locator));
+            }
+        } else {
+            console.info('cannot find locator: ' + locator);
         }
         await Promise.all(promises);
+        await this.delay(delay);
     }
 
     async clickTab(tabTitle) {
         const helper = this.helpers[helperName];
-        if (testConfig.TestForXUI) {
-            const tabXPath = `//div[text()='${tabTitle}']`;
+        const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
 
-            // wait for element defined by XPath appear in page
-            await helper.page.waitForXPath(tabXPath);
+        // wait for element defined by XPath appear in page
+        await helper.page.waitForXPath(tabXPath);
 
-            // evaluate XPath expression of the target selector (it return array of ElementHandle)
-            const clickableTab = await helper.page.$x(tabXPath);
+        // evaluate XPath expression of the target selector (it return array of ElementHandle)
+        const clickableTab = await helper.page.$x(tabXPath);
 
-            await helper.page.evaluate(el => el.click(), clickableTab[0]);
-        } else {
-            await helper.click(tabTitle);
+        /* eslint-disable no-await-in-loop */
+        for (let i=0; i < clickableTab.length; i++) {
+            await helper.page.evaluate(el => el.click(), clickableTab[i]);
         }
     }
 
@@ -98,5 +111,32 @@ class PuppeteerHelper extends Helper {
 
         runAccessibility(url, page);
     }
+
+    async logInfo(scenarioName, log, caseRef) {
+        let ret = String (scenarioName);
+        if (log) {
+            ret = ret + ' : ' + log;
+        }
+        if (caseRef) {
+            ret = ret + ' : ' + caseRef;
+        }
+        await console.info(ret);
+    }
+
+    async signOut(delay = 2) {
+        await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
+    }
+
+    // to help with local debugging
+    async printPageAsScreenshot(jpgFileName) {
+        const page = this.helpers[helperName].page;
+        await page.setViewport({width: 1280, height: 960});
+        await page.screenshot({
+            path: testConfig.TestOutputDir + '/' + jpgFileName + '.jpg',
+            type: 'jpeg',
+            fullPage: true
+        });
+    }
 }
+
 module.exports = PuppeteerHelper;
