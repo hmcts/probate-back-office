@@ -20,14 +20,14 @@ class PuppeteerHelper extends Helper {
     }
 
     // gets a locator from a locator which may be string or object with css property
-    async getEnabledCssLocator(locator) {
+    getEnabledCssLocator(locator) {
         if (!locator) {
             return null;
         }
         if (typeof locator === 'string') {
-            return locator + ':enabled';        
+            return locator.indexOf('href') >= 0 ? locator : locator + ':enabled';        
         }
-        return locator.css +  ':enabled';
+        return locator.css.indexOf('href') >= 0 ? locator.css : locator.css + ':enabled';
     }
 
     async waitForNavigationToComplete(locator, delay = 0) {

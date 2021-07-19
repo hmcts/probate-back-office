@@ -1,7 +1,7 @@
 'use strict';
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (forXui = testConfig.TestForXUI) {
+module.exports = async function () {
     const I = this;
     await I.testConfig.GetCaseRefFromUrlDelay;
     let url = await I.grabCurrentUrl();
