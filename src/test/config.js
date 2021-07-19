@@ -1,7 +1,7 @@
 module.exports = {
     // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
