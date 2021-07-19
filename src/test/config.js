@@ -1,7 +1,7 @@
 module.exports = {
     // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
@@ -23,6 +23,7 @@ module.exports = {
     SignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     RejectCookies: true,
+    RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     CaseDetailsDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     // Running in the pipeline means a much slower response bringing back existing cases.
     // This is a blunt approach, would be be better if we used an implicit wait

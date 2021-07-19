@@ -19,15 +19,20 @@ class PuppeteerHelper extends Helper {
         });
     }
 
+    isXuiLink(locator) {
+        return locator.indexOf('href') >= 0 || locator.indexOf('navigation') >= 0;
+    }
+
+    adjustLocator(locator) {
+        return this.isXuiLink(locator) ? locator : `${locator}:enabled`;
+    }
+
     // gets a locator from a locator which may be string or object with css property
     getEnabledCssLocator(locator) {
         if (!locator) {
             return null;
         }
-        if (typeof locator === 'string') {
-            return locator.indexOf('href') >= 0 ? locator : locator + ':enabled';        
-        }
-        return locator.css.indexOf('href') >= 0 ? locator.css : locator.css + ':enabled';
+        return typeof locator === 'string' ? this.adjustLocator(locator) : this.adjustLocator(locator.css);
     }
 
     async waitForNavigationToComplete(locator, delay = 0) {

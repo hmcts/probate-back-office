@@ -5,7 +5,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     const I = this;
-    // await I.waitForElement('#solsApplyPage');
+    await I.waitForElement('#solsApplyPage');
     await I.runAccessibilityTest();
     await I.waitForText(applyProbateConfig.page2_subheading);
     await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
