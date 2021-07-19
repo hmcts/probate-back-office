@@ -165,7 +165,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '2.10.5',
         springSecurityVersion           : '5.3.5.RELEASE',
-        probateCommonsVersion           : 'DTSPB-1768-test3',
+        probateCommonsVersion           : 'DTSPB-1768-test4',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
