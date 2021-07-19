@@ -54,13 +54,13 @@ module.exports = async function (isSolcitorMainApplicant = false) {
             const addExecAddrLocator = {css: grantOfProbateConfig.UKpostcodeLink};
             await I.waitForVisible(addExecAddrLocator);
             await I.click(addExecAddrLocator);
-            await I.waitForVisible({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'});
-            await I.fillField({css: '#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine1'}, grantOfProbateConfig.page2_executorAddress_line1);
-            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine2', grantOfProbateConfig.page2_executorAddress_line2);
-            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_AddressLine3', grantOfProbateConfig.page2_executorAddress_line3);
-            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_PostTown', grantOfProbateConfig.page2_executorAddress_town);
-            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_PostCode', grantOfProbateConfig.page2_executorPostcode);
-            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_Country', grantOfProbateConfig.page2_executorAddress_country);
+            await I.waitForVisible({css: '#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine1'});
+            await I.fillField({css: '#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine1'}, grantOfProbateConfig.page2_executorAddress_line1);
+            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine2', grantOfProbateConfig.page2_executorAddress_line2);
+            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine3', grantOfProbateConfig.page2_executorAddress_line3);
+            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostTown', grantOfProbateConfig.page2_executorAddress_town);
+            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostCode', grantOfProbateConfig.page2_executorPostcode);
+            await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailCountry', grantOfProbateConfig.page2_executorAddress_country);
         } else {
             await I.retry(10).selectOption('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', grantOfProbateConfig.page2_executorAddress);
         }

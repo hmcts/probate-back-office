@@ -16,16 +16,19 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate Single Executor', async function ({I}) {
+const scenarioName = 'Solicitor - Apply Grant of probate Single Executor';
+Scenario(scenarioName, async function ({I}) {
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeft';
 
     // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
@@ -41,6 +44,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function ({
 
     endState = 'Grant of probate created';
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -56,6 +60,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function ({
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2(isSolicitorMainApplicant);
@@ -69,6 +74,7 @@ Scenario('Solicitor - Apply Grant of probate Single Executor', async function ({
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
     await I.completeApplicationPage2();

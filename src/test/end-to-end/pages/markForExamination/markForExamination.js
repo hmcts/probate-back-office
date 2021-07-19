@@ -11,7 +11,7 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
-    await I.click(`#boEmailDocsReceivedNotification-${markForExaminationConfig.list1_text}`);
+    await I.click(`#boEmailDocsReceivedNotification_${markForExaminationConfig.list1_text}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
