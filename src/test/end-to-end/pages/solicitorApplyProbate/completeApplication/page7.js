@@ -16,5 +16,5 @@ module.exports = async function () {
     await I.see(completeApplicationConfig.page7_pBAAccount);
     await I.see(completeApplicationConfig.page7_customerReference);
 
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.submitButton);
 };
