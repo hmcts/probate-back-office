@@ -23,13 +23,16 @@ const {
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Caveat', async function ({I}) {
+const scenarioName = 'Solicitor - Apply Caveat';
+Scenario(scenarioName, async function ({I}) {
 
     // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Application details';
     let endState = 'Caveat created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.applyCaveatPage1();
@@ -46,6 +49,7 @@ Scenario('Solicitor - Apply Caveat', async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, applyCaveatConfig);
 
     endState = 'Caveat updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.caveatApplicationDetailsPage1();
     await I.caveatApplicationDetailsPage2();
@@ -58,6 +62,7 @@ Scenario('Solicitor - Apply Caveat', async function ({I}) {
 
     nextStepName = 'Complete application';
     endState = 'Caveat raised';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
     await I.completeCaveatApplicationPage2();

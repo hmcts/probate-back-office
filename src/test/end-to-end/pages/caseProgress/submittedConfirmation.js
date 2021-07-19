@@ -7,5 +7,5 @@ module.exports = async function () {
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement('#confirmation-body');
     I.see('This probate application has now been submitted');
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.submitButton, 5);
 };

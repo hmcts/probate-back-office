@@ -29,7 +29,7 @@ module.exports = async function (crud) {
 
         await I.fillField('#numberOfCodicils', createWillLodgementConfig.page1_numberOfCodicils);
 
-        await I.click(`#jointWill-${createWillLodgementConfig.page1_jointWill}`);
+        await I.click(`#jointWill_${createWillLodgementConfig.page1_jointWill}`);
     }
 
     if (crud === 'update') {

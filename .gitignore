@@ -44,3 +44,4 @@ src/test/end-to-end/functional-output/
 /bin/main
 /bin/test
 /bin/testFunctional
+/src/main/generated/
