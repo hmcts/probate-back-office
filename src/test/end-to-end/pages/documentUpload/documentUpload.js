@@ -22,11 +22,16 @@ module.exports = async function (caseRef, documentUploadConfig) {
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev
     }
+    
+    const docLink = {css: `${documentUploadConfig.id}_0_DocumentLink`};
+
     await I.waitForValue({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
     await I.waitForVisible({css: `${documentUploadConfig.id}_0_DocumentType`});
     await I.selectOption({css: `${documentUploadConfig.id}_0_DocumentType`}, documentUploadConfig.documentType);
-    await I.waitForVisible({css: `${documentUploadConfig.id}_0_DocumentLink`});
-    await I.attachFile({css: `${documentUploadConfig.id}_0_DocumentLink`}, documentUploadConfig.fileToUploadUrl);
+    await I.scrollTo(docLink);
+    await I.waitForVisible(docLink);
+    await I.waitForEnabled(docLink);
+    await I.attachFile(docLink, documentUploadConfig.fileToUploadUrl);
     await I.wait(testConfig.DocumentUploadDelay);
 
     /* add the following properties to documentUploadConfig.json once caseworker moves

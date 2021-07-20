@@ -25,7 +25,7 @@ module.exports = async function (crud) {
         }
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1'});
+        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine1'});
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine1', createGrantOfProbateConfig.address_line1);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine2', createGrantOfProbateConfig.address_line2);
         if (!testConfig.TestAutoDelayEnabled) {
