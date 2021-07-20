@@ -44,7 +44,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'PA1P/PA1A/Solicitors';
     await I.logInfo(scenarioName, nextStepName + ' - first case');
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.cwEnterSolsGoPPage1('create', createGrantOfProbateConfig);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
@@ -72,7 +72,7 @@ Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.cwEnterSolsGoPPage1('create', createGrantOfProbateConfig);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');

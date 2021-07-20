@@ -18,7 +18,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Login as Solicitor');
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.solGor);
+        await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
         await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
         await I.logInfo(scenarioName, 'Initial application entry');

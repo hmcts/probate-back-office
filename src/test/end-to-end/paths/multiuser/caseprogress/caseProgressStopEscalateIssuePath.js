@@ -19,7 +19,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
 
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.solGor);
+        await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
         await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
         /* eslint-disable no-console */

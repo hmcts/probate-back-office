@@ -9,5 +9,5 @@ module.exports = async function () {
 
     await I.waitForText(caseProgressConfig.AppStoppedTabCheckText);
 
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.signOut();
 };

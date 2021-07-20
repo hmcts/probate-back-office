@@ -17,7 +17,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.selectNewCase();
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.solGor);
+        await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
         await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
         await I.logInfo(scenarioName, 'Initial application entry');
@@ -193,8 +193,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.navigateToCaseCaseworker(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Examining)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Examining)', false, null, true);
-        await I.waitForElement({css: '#sign-out'});
-        await I.waitForNavigationToComplete('#sign-out');
+        await I.signOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Find matches (Examining)', caseRef);
         // log back in as solicitor

@@ -42,7 +42,7 @@ Scenario(scenarioName, async function ({I}) {
     let endState = 'Application created';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase(true);
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, true);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, true);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await I.cyaPage();

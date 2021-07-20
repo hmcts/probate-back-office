@@ -79,8 +79,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.waitForNavigationToComplete('#sign-out');
-        await I.signout(testConfig.CaseProgressTabCheckDelay);
+        await I.signOut();
     }
 
     return caseRef.replace('#', '');

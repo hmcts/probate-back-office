@@ -6,8 +6,8 @@ module.exports = async function (caseProgressConfig, uniqueSuffix) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
     await I.waitForElement('#deceasedForenames');
-    await I.fillField('#deceasedForenames' + uniqueSuffix, caseProgressConfig.deceasedFirstname);
-    await I.fillField('#deceasedSurname' + uniqueSuffix, caseProgressConfig.deceasedSurname);
+    await I.fillField('#deceasedForenames', caseProgressConfig.deceasedFirstname + uniqueSuffix);
+    await I.fillField('#deceasedSurname', caseProgressConfig.deceasedSurname + uniqueSuffix);
     await I.fillField('#deceasedDateOfBirth-day', caseProgressConfig.deceasedDobDay);
     await I.fillField('#deceasedDateOfBirth-month', caseProgressConfig.deceasedDobMonth);
     await I.fillField('#deceasedDateOfBirth-year', caseProgressConfig.deceasedDobYear);

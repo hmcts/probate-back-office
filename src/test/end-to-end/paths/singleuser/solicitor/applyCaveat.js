@@ -32,7 +32,7 @@ Scenario(scenarioName, async function ({I}) {
     let endState = 'Caveat created';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.applyCaveatPage1();
     await I.applyCaveatPage2();
     await I.cyaPage();

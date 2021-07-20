@@ -49,7 +49,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'Create a will lodgement';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
@@ -59,7 +59,7 @@ Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');

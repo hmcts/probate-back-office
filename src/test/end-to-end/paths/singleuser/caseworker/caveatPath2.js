@@ -49,7 +49,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'Raise a caveat';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -61,7 +61,7 @@ Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
