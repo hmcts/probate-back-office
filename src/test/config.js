@@ -22,8 +22,8 @@ module.exports = {
     SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
-    RejectCookies: true,
-    RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
+    RejectCookies: false,
+    RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0.5,
     CaseDetailsDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     // Running in the pipeline means a much slower response bringing back existing cases.
     // This is a blunt approach, would be be better if we used an implicit wait
@@ -49,5 +49,6 @@ module.exports = {
     GetCaseRefFromUrlDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 4 : 0,
     CaseProgressSignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CreateCaseContinueDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    WillLodgementDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0
+    WillLodgementDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
+    FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.5
 };

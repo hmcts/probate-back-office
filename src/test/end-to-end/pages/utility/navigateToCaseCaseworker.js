@@ -8,6 +8,8 @@ module.exports = async function (caseRef) {
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]'};
     await I.waitForVisible(searchLinkLocator);
+    // apply a small wait to allow for javascript on page to load and wire up the link
+    await I.wait(testConfig.FindCasesDelay);    
     await I.click(searchLinkLocator);
     await I.waitForElement({css: 'exui-search-case'});
     await I.waitForEnabled({css: '#s-jurisdiction'});
@@ -27,6 +29,8 @@ module.exports = async function (caseRef) {
     const linkLocator = {css: `a.govuk-link[href="/cases/case-details/${caseRefNoDashes}"]`};
    
     await I.waitForVisible(linkLocator);
+    // apply a small wait to allow for javascript on page to load and wire up the link
+    await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
 
     /*
