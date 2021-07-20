@@ -40,13 +40,13 @@ module.exports = async function (crud) {
 
         await I.click(createWillLodgementConfig.UKpostcodeLink);
 
-        await I.fillField('#executorAddress__detailAddressAddressLine1', createWillLodgementConfig.address_line1);
-        await I.fillField('#executorAddress__detailAddressAddressLine2', createWillLodgementConfig.address_line2);
-        await I.fillField('#executorAddress__detailAddressAddressLine3', createWillLodgementConfig.address_line3);
-        await I.fillField('#executorAddress__detailAddressPostTown', createWillLodgementConfig.address_town);
-        await I.fillField('#executorAddress__detailAddressCounty', createWillLodgementConfig.address_county);
-        await I.fillField('#executorAddress__detailAddressPostCode', createWillLodgementConfig.address_postcode);
-        await I.fillField('#executorAddress__detailAddressCountry', createWillLodgementConfig.address_country);
+        await I.fillField('#executorAddress__detailAddressLine1', createWillLodgementConfig.address_line1);
+        await I.fillField('#executorAddress__detailAddressLine2', createWillLodgementConfig.address_line2);
+        await I.fillField('#executorAddress__detailAddressLine3', createWillLodgementConfig.address_line3);
+        await I.fillField('#executorAddress__detailPostTown', createWillLodgementConfig.address_town);
+        await I.fillField('#executorAddress__detailCounty', createWillLodgementConfig.address_county);
+        await I.fillField('#executorAddress__detailPostCode', createWillLodgementConfig.address_postcode);
+        await I.fillField('#executorAddress__detailCountry', createWillLodgementConfig.address_country);
 
         Object.keys(createWillLodgementConfig).forEach(function (value) {
             if (value.includes('page3_additional_executor')) {
@@ -70,14 +70,14 @@ module.exports = async function (crud) {
 
         await I.click(createWillLodgementConfig.UKpostcodeLink);
 
-        await I.waitForVisible(`#additionalExecutorList_${index}_executorAddress__detailAddressAddressLine1`);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressAddressLine1`, createWillLodgementConfig.address_line1);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressAddressLine2`, createWillLodgementConfig.address_line2);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressAddressLine3`, createWillLodgementConfig.address_line3);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressPostTown`, createWillLodgementConfig.address_town);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressCounty`, createWillLodgementConfig.address_county);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressPostCode`, createWillLodgementConfig.address_postcode);
-        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressCountry`, createWillLodgementConfig.address_country);
+        await I.waitForVisible(`#additionalExecutorList_${index}_executorAddress__detailAddressLine1`);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressLine1`, createWillLodgementConfig.address_line1);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressLine2`, createWillLodgementConfig.address_line2);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailAddressLine3`, createWillLodgementConfig.address_line3);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailPostTown`, createWillLodgementConfig.address_town);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailCounty`, createWillLodgementConfig.address_county);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailPostCode`, createWillLodgementConfig.address_postcode);
+        await I.fillField(`#additionalExecutorList_${index}_executorAddress__detailCountry`, createWillLodgementConfig.address_country);
 
         await I.fillField(`#additionalExecutorList_${index}_executorEmailAddress`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
     }

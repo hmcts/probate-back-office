@@ -18,17 +18,17 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.fillField({css: '#solsSOTForenames'}, createGrantOfProbateConfig.page1_solsSOTForenames);
         await I.fillField({css: '#solsSOTSurname'}, createGrantOfProbateConfig.page1_solsSOTSurname);
         await I.fillField({css: '#solsSolicitorFirmName'}, createGrantOfProbateConfig.page1_solsSolicitorFirmName);
-        await I.click({css: `#solsSolicitorIsExec-${createGrantOfProbateConfig.page1_solsSolicitorIsExec}`});
-        await I.click({css: `#solsSolicitorIsApplying-${createGrantOfProbateConfig.page1_solsSolicitorIsApplying}`});
+        await I.click({css: `#solsSolicitorIsExec_${createGrantOfProbateConfig.page1_solsSolicitorIsExec}`});
+        await I.click({css: `#solsSolicitorIsApplying_${createGrantOfProbateConfig.page1_solsSolicitorIsApplying}`});
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
 
-        await I.fillField('#solsSolicitorAddress__detailAdressAddressLine1', createGrantOfProbateConfig.page1_sols_address_line1);
-        await I.fillField('#solsSolicitorAddress__detailAdressAddressLine2', createGrantOfProbateConfig.page1_sols_address_line2);
-        await I.fillField('#solsSolicitorAddress__detailAdressPostTown', createGrantOfProbateConfig.page1_sols_address_town);
-        await I.fillField('#solsSolicitorAddress__detailAdressCounty', createGrantOfProbateConfig.page1_sols_address_county);
-        await I.fillField('#solsSolicitorAddress__detailAdressPostCode', createGrantOfProbateConfig.page1_sols_address_postcode);
-        await I.fillField('#solsSolicitorAddress__detailAdressCountry', createGrantOfProbateConfig.page1_sols_address_country);
+        await I.fillField('#solsSolicitorAddress__detailAddressLine1', createGrantOfProbateConfig.page1_sols_address_line1);
+        await I.fillField('#solsSolicitorAddress__detailAddressLine2', createGrantOfProbateConfig.page1_sols_address_line2);
+        await I.fillField('#solsSolicitorAddress__detailPostTown', createGrantOfProbateConfig.page1_sols_address_town);
+        await I.fillField('#solsSolicitorAddress__detailCounty', createGrantOfProbateConfig.page1_sols_address_county);
+        await I.fillField('#solsSolicitorAddress__detailPostCode', createGrantOfProbateConfig.page1_sols_address_postcode);
+        await I.fillField('#solsSolicitorAddress__detailCountry', createGrantOfProbateConfig.page1_sols_address_country);
 
         await I.fillField('#solsSolicitorAppReference', createGrantOfProbateConfig.page1_solsSolicitorAppReference);
         await I.fillField('#solsSolicitorEmail', createGrantOfProbateConfig.page1_solsSolicitorEmail);

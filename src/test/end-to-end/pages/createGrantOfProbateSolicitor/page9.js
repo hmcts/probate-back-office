@@ -18,7 +18,7 @@ module.exports = async function (crud) {
         }
         await I.fillField('#ukEstate_0_item', createGrantOfProbateConfig.page9_ukEstate_0_item);
         await I.fillField('#ukEstate_0_value', createGrantOfProbateConfig.page9_ukEstate_0_value);
-        const ihtLocator = {css: `#domicilityIHTCert-${createGrantOfProbateConfig.page9_domicilityIHTCertYes}`};
+        const ihtLocator = {css: `#domicilityIHTCert_${createGrantOfProbateConfig.page9_domicilityIHTCertYes}`};
         await I.waitForEnabled(ihtLocator);
         await I.click(ihtLocator);
     }

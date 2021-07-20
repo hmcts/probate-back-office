@@ -18,13 +18,13 @@ module.exports = async function (crud) {
         await I.fillField('#solsSolicitorAppReference', createCaveatConfig.page3_solAppReference);
 
         await I.click(createCaveatConfig.UKpostcodeLink);
-        await I.fillField('#caveatorAddress__detailAddressAddressLine1', createCaveatConfig.address_line1);
-        await I.fillField('#caveatorAddress__detailAddressAddressLine2', createCaveatConfig.address_line2);
-        await I.fillField('#caveatorAddress__detailAddressAddressLine3', createCaveatConfig.address_line3);
-        await I.fillField('#caveatorAddress__detailAddressPostTown', createCaveatConfig.address_town);
-        await I.fillField('#caveatorAddress__detailAddressCounty', createCaveatConfig.address_county);
-        await I.fillField('#caveatorAddress__detailAddressPostCode', createCaveatConfig.address_postcode);
-        await I.fillField('#caveatorAddress__detailAddressCountry', createCaveatConfig.address_country);
+        await I.fillField('#caveatorAddress__detailAddressLine1', createCaveatConfig.address_line1);
+        await I.fillField('#caveatorAddress__detailAddressLine2', createCaveatConfig.address_line2);
+        await I.fillField('#caveatorAddress__detailAddressLine3', createCaveatConfig.address_line3);
+        await I.fillField('#caveatorAddress__detailPostTown', createCaveatConfig.address_town);
+        await I.fillField('#caveatorAddress__detailCounty', createCaveatConfig.address_county);
+        await I.fillField('#caveatorAddress__detailPostCode', createCaveatConfig.address_postcode);
+        await I.fillField('#caveatorAddress__detailCountry', createCaveatConfig.address_country);
         await I.click(`#languagePreferenceWelsh_${createCaveatConfig.page3_langPrefNo}`);
     }
 

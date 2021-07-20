@@ -11,7 +11,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.waitForText(documentUploadConfig.waitForText, testConfig.WaitForTextTimeout);
 
     await I.see(caseRef);
-
+    
     await I.click({type: 'button'}, `${documentUploadConfig.id}>div`);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev
@@ -58,7 +58,8 @@ module.exports = async function (caseRef, documentUploadConfig) {
 
     await I.waitForValue({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
 
+    // small delay to allow hidden vars to be set
+    await I.wait(testConfig.DocumentUploadDelay);
     await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
-    await I.wait(testConfig.DocumentUploadDelay);
 };

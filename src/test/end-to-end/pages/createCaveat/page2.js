@@ -45,13 +45,13 @@ module.exports = async function (crud, unique_deceased_user) {
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(testConfig.ManualDelayShort); // implicit wait needed here
         }
-        await I.fillField('#deceasedAddress__detailAddressAddressLine1', createCaveatConfig.address_line1);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine2', createCaveatConfig.address_line2);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine3', createCaveatConfig.address_line3);
-        await I.fillField('#deceasedAddress__detailAddressPostTown', createCaveatConfig.address_town);
-        await I.fillField('#deceasedAddress__detailAddressCounty', createCaveatConfig.address_county);
-        await I.fillField('#deceasedAddress__detailAddressPostCode', createCaveatConfig.address_postcode);
-        await I.fillField('#deceasedAddress__detailAddressCountry', createCaveatConfig.address_country);
+        await I.fillField('#deceasedAddress__detailAddressLine1', createCaveatConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAddressLine2', createCaveatConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAddressLine3', createCaveatConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailPostTown', createCaveatConfig.address_town);
+        await I.fillField('#deceasedAddress__detailCounty', createCaveatConfig.address_county);
+        await I.fillField('#deceasedAddress__detailPostCode', createCaveatConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailCountry', createCaveatConfig.address_country);
     }
 
     if (crud === 'update') {

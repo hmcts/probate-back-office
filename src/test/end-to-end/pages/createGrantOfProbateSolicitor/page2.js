@@ -40,14 +40,14 @@ module.exports = async function (crud) {
         const pcLocator = {css: createGrantOfProbateConfig.UKpostcodeLink};
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
-        await I.waitForVisible({css: '#primaryApplicantAddress__detailAdressAddressLine1'});
-        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#primaryApplicantAddress__detailAdressAddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#primaryApplicantAddress__detailAdressPostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#primaryApplicantAddress__detailAdressCounty', createGrantOfProbateConfig.address_county);
-        await I.fillField('#primaryApplicantAddress__detailAdressPostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#primaryApplicantAddress__detailAdressCountry', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible({css: '#primaryApplicantAddress__detailAddressLine1'});
+        await I.fillField('#primaryApplicantAddress__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#primaryApplicantAddress__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#primaryApplicantAddress__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#primaryApplicantAddress__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#primaryApplicantAddress__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#primaryApplicantAddress__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#primaryApplicantAddress__detailCountry', createGrantOfProbateConfig.address_country);
     }
 
     if (crud === 'update') {

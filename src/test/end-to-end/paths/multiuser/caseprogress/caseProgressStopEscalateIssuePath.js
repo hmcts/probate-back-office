@@ -69,10 +69,10 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             {locator: {css: '#primaryApplicantHasAlias_No'}},
             {locator: {css: '#primaryApplicantIsApplying-Yes'}},
             {locator: {css: createCaseConfig.UKpostcodeLink}},
-            {locator: {css: '#primaryApplicantAddress__detailAddressAddressLine1'}, text: caseProgressConfig.solAddr1},
-            {locator: {css: '#primaryApplicantAddress__detailAddressPostTown'}, text: caseProgressConfig.solAddrTown},
-            {locator: {css: '#primaryApplicantAddress__detailAddressPostCode'}, text: caseProgressConfig.solAddrPostcode},
-            {locator: {css: '#primaryApplicantAddress__detailAddressCountry'}, text: caseProgressConfig.solAddrCountry},
+            {locator: {css: '#primaryApplicantAddress__detailAddressLine1'}, text: caseProgressConfig.solAddr1},
+            {locator: {css: '#primaryApplicantAddress__detailPostTown'}, text: caseProgressConfig.solAddrTown},
+            {locator: {css: '#primaryApplicantAddress__detailPostCode'}, text: caseProgressConfig.solAddrPostcode},
+            {locator: {css: '#primaryApplicantAddress__detailCountry'}, text: caseProgressConfig.solAddrCountry},
             {locator: {css: '#otherExecutorExists_No'}}
         ]);
 

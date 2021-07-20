@@ -21,14 +21,14 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForVisible(pcLocator);
         await I.click(pcLocator);
 
-        await I.waitForVisible({css: '#deceasedAddress__detailAddressAddressLine1'});
-        await I.fillField('#deceasedAddress__detailAddressAddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#deceasedAddress__detailAddressPostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#deceasedAddress__detailAddressCounty', createGrantOfProbateConfig.address_county);
-        await I.fillField('#deceasedAddress__detailAddressPostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#deceasedAddress__detailAddressCountry', createGrantOfProbateConfig.address_country);
+        await I.waitForVisible({css: '#deceasedAddress__detailAddressLine1'});
+        await I.fillField('#deceasedAddress__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#deceasedAddress__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#deceasedAddress__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailCountry', createGrantOfProbateConfig.address_country);
 
         await I.selectOption({css: '#dateOfDeathType'}, createGrantOfProbateConfig.page4_dateOfDeathType);
         await I.fillField({css: '#deceasedDateOfBirth-day'}, createGrantOfProbateConfig.page4_deceasedDob_day);

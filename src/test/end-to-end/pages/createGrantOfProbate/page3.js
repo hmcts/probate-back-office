@@ -34,13 +34,13 @@ module.exports = async function (crud) {
         await I.selectOption('#executorsApplying_0_applyingExecutorOtherNamesReason', createGrantOfProbateConfig.page3_executor0_alias_reason);
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressAddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressAddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressAddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressPostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressCounty', createGrantOfProbateConfig.address_county);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressPostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressCountry', createGrantOfProbateConfig.address_country);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#executorsApplying_0_applyingExecutorAddress__detailCountry', createGrantOfProbateConfig.address_country);
 
         await I.click({type: 'button'}, '#executorsNotApplying>div');
         if (!testConfig.TestAutoDelayEnabled) {

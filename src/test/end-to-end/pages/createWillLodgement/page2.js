@@ -66,13 +66,13 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user);
 
         await I.click(createWillLodgementConfig.UKpostcodeLink);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine1', createWillLodgementConfig.address_line1);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine2', createWillLodgementConfig.address_line2);
-        await I.fillField('#deceasedAddress__detailAddressAddressLine3', createWillLodgementConfig.address_line3);
-        await I.fillField('#deceasedAddress__detailAddressPostTown', createWillLodgementConfig.address_town);
-        await I.fillField('#deceasedAddress__detailAddressCounty', createWillLodgementConfig.address_county);
-        await I.fillField('#deceasedAddress__detailAddressPostCode', createWillLodgementConfig.address_postcode);
-        await I.fillField('#deceasedAddress__detailAddressCountry', createWillLodgementConfig.address_country);
+        await I.fillField('#deceasedAddress__detailAddressLine1', createWillLodgementConfig.address_line1);
+        await I.fillField('#deceasedAddress__detailAddressLine2', createWillLodgementConfig.address_line2);
+        await I.fillField('#deceasedAddress__detailAddressLine3', createWillLodgementConfig.address_line3);
+        await I.fillField('#deceasedAddress__detailPostTown', createWillLodgementConfig.address_town);
+        await I.fillField('#deceasedAddress__detailCounty', createWillLodgementConfig.address_county);
+        await I.fillField('#deceasedAddress__detailPostCode', createWillLodgementConfig.address_postcode);
+        await I.fillField('#deceasedAddress__detailCountry', createWillLodgementConfig.address_country);
         await I.fillField('#deceasedEmailAddress', createWillLodgementConfig.page2_email);
     }
 
