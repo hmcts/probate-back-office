@@ -67,7 +67,7 @@ Scenario(scenarioName, async function ({I}) {
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias_No'}},
             {locator: {css: '#primaryApplicantIsApplying_No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason_MentallyIncapable'}},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
             {locator: {css: '#otherExecutorExists_No'}}]);
 
         await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');

@@ -6,19 +6,26 @@ module.exports = async function (caseRef) {
     const I = this;
 
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
-    const searchLinkLocator = {css: 'a[href="/cases/case-search"]'};
+    const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.waitForVisible(searchLinkLocator);
+    await I.waitForClickable(searchLinkLocator);    
+
     // apply a small wait to allow for javascript on page to load and wire up the link
-    await I.wait(testConfig.FindCasesDelay);    
+    await I.wait(testConfig.FindCasesDelay);
     await I.click(searchLinkLocator);
-    await I.waitForElement({css: 'exui-search-case'});
+    const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
+    await I.waitForVisible(caseRefLocator);
+    await I.waitForEnabled(caseRefLocator);
+
+    // await I.waitForElement({css: 'exui-search-case'});
     await I.waitForEnabled({css: '#s-jurisdiction'});
     await I.waitForElement({css: '#s-jurisdiction option'});
     await I.waitForEnabled({css: '#s-case-type'});
     await I.waitForElement({css: '#s-case-type option'});
     await I.selectOption({css: '#s-case-type'}, 'Grant of representation');
-    await I.waitForEnabled({css: 'input[id="[CASE_REFERENCE]"]'});
-    await I.fillField({css: 'input[id="[CASE_REFERENCE]'}, caseRef);
+    await I.waitForVisible(caseRefLocator);
+    await I.waitForEnabled(caseRefLocator);
+    await I.fillField(caseRefLocator, caseRef);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // implicit wait needed here
     }

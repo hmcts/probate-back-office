@@ -140,7 +140,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // IdAM - Caseworker
     await I.authenticateWithIdamIfAvailable(false);
-    await I.navigateToCaseCaseworker(caseRef);
+    await I.navigateToCase(caseRef);
     await I.logInfo(scenarioName, 'Amend details', caseRef);
     nextStepName = 'Amend case details';
     await I.chooseNextStep(nextStepName);

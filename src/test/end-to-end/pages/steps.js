@@ -128,8 +128,7 @@ module.exports = function () {
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
         completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
         getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
-        navigateToCaseCaseworker: steps.utility.navigateToCaseCaseworker,
-        navigateToCaseSolicitor: steps.utility.navigateToCaseSolicitor,
+        navigateToCase: steps.utility.navigateToCase,
         rejectCookies: steps.utility.rejectCookies,
         checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
         checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp

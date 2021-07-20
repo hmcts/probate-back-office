@@ -47,7 +47,7 @@ Scenario(scenarioName, async function ({I}) {
 
         await I.logInfo(scenarioName, 'Add application details');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
-            {locator: {css: '#willAccessOriginal-Yes'}},
+            {locator: {css: '#willAccessOriginal_Yes'}},
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
@@ -128,7 +128,7 @@ Scenario(scenarioName, async function ({I}) {
             goToNextStep: true});
 
         await I.logInfo(scenarioName, 'Confirm application');
-        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate-No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#solsSOTNeedToUpdate_No'}]);
         await I.caseProgressWaitForElementThenContinue('#solsLegalStatementUpload');
 
         await I.caseProgressClickElementsAndContinue([{css: '#solsReviewSOTConfirmCheckbox1-BelieveTrue'},
@@ -153,7 +153,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Print case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Print the case');
         await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
         await I.caseProgressClickSubmitAndSignOut();
@@ -161,7 +161,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Print case', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 4,
             numInProgress: 1,
@@ -171,7 +171,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Mark as ready for examination', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Mark as ready for examination');
         await I.caseProgressClickElementsAndContinue([{css: '#boEmailDocsReceivedNotification_No'}]);
         await I.caseProgressClickSubmitAndSignOut();
@@ -179,7 +179,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Mark as ready for examination', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -190,7 +190,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Find matches (Examining)', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Examining)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Examining)', false, null, true);
         await I.signOut();
@@ -198,7 +198,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Find matches (Examining)', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -209,14 +209,14 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Examine case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Examine case');
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Examine case', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -227,7 +227,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Mark as ready to issue', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Mark as ready to issue');
         await I.caseProgressClickElementsAndContinue([
             {css: '#boExaminationChecklistQ1_Yes'},
@@ -238,7 +238,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Mark as ready to issue', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 6,
             numInProgress: 1,
@@ -249,7 +249,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Find matches (Issue grant)', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
 
@@ -258,7 +258,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -269,7 +269,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Issue grant', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseCaseworker(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressClickSubmitAndSignOut();
@@ -277,7 +277,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Issue grant', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCaseSolicitor(caseRef);
+        await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 0,
