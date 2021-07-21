@@ -23,7 +23,7 @@ module.exports = {
     SignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     RejectCookies: false,
-    RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0.5,
+    RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     CaseDetailsDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     // Running in the pipeline means a much slower response bringing back existing cases.
     // This is a blunt approach, would be be better if we used an implicit wait
@@ -32,7 +32,7 @@ module.exports = {
     // if timeout exception raised)
     // This was set to 60 for pipeline which seems overkill, perhaps
     // we had a problem one time with ES? Now set back to 6
-    CaseMatchesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 6 : 0.5,
+    CaseMatchesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 6 : 0,
     CaseMatchesLocateRemoveButtonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
     CaseMatchesCompletionDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseworkerGoButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
