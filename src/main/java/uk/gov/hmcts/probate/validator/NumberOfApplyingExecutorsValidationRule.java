@@ -40,10 +40,10 @@ public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetai
         List<String> allErrorCodes = new ArrayList<>();
         long countApplying = ccdData.getExecutors().stream().filter(Executor::isApplying).count();
 
-        if (ccdData.getSolsSolicitorIsApplying() != null && ccdData.getSolsSolicitorIsApplying().matches(YES)) {
+        if (ccdData.getSolsSolicitorIsApplying() != null && YES.equals(ccdData.getSolsSolicitorIsApplying())) {
             countApplying++;
         }
-        
+
         if (countApplying > MAX_EXECUTORS) {
             allErrorCodes.add(TOO_MANY_EXECUTORS);
         }
