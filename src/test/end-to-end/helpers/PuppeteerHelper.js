@@ -164,4 +164,5 @@ class PuppeteerHelper extends Helper {
         });
     }
 }
+
 module.exports = PuppeteerHelper;

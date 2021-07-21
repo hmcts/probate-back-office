@@ -10,7 +10,7 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStanda
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - standard path';
 
-Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
+Scenario(scenarioName, async function ({I}) {
     /* eslint-disable no-console */
     try {
 
@@ -202,7 +202,6 @@ Scenario('03 BO Case Progress E2E - standard path', async function ({I}) {
         await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
-
         await I.signOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)');

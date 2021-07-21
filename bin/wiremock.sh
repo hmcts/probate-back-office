@@ -206,7 +206,7 @@ curl -X POST \
             "url": "/refdata/external/v1/organisations/pbas",
             "headers": {
               "UserEmail": {
-                "equalTo": "probatesolicitorxui1@gmail.com"
+                "equalTo": "probatesolicitortestorgtest1@gmail.com"
               }
             }
           },
@@ -247,7 +247,7 @@ curl -X POST \
             "url": "/refdata/external/v1/organisations/pbas",
             "headers": {
               "UserEmail": {
-                "equalTo": "probatesolicitorxui2@gmail.com"
+                "equalTo": "probatesolicitortestorg2test1@gmail.com"
               }
             }
           },
