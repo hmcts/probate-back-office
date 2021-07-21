@@ -50,5 +50,5 @@ module.exports = {
     CaseProgressSignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CreateCaseContinueDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     WillLodgementDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0.75
+    FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0
 };
