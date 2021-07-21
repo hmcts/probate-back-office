@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
@@ -38,6 +39,10 @@ public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetai
     private List<String> getErrorCodeForInvalidNumberOfApplyingExecutors(CCDData ccdData) {
         List<String> allErrorCodes = new ArrayList<>();
         long countApplying = ccdData.getExecutors().stream().filter(Executor::isApplying).count();
+
+        if (ccdData.getSolsSolicitorIsApplying() != null && YES.equals(ccdData.getSolsSolicitorIsApplying())) {
+            countApplying++;
+        }
 
         if (countApplying > MAX_EXECUTORS) {
             allErrorCodes.add(TOO_MANY_EXECUTORS);
