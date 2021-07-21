@@ -7,7 +7,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
     if (tabConfigFile.tabName) {
         const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
-        //Tabs are hidden when there are more tabs
+        // Tabs are hidden when there are more tabs
         await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
     }
 

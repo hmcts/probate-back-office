@@ -166,11 +166,13 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
 
     nextStepName = 'Withdraw caveat';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
 
     endState = 'Caveat closed';
+    await I.logInfo(scenarioName, endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     await I.signOut();

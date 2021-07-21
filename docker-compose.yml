@@ -610,6 +610,7 @@ services:
       SERVICES_IDAM_INDEX_URL: /
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
       SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_PRD_API: http://wiremock:8080
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
       REDISCLOUD_URL: http://dummyrediscloudurl
