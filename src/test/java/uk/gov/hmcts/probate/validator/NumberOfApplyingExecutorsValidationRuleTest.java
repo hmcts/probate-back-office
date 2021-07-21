@@ -82,4 +82,36 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
 
         assertTrue(validationError.isEmpty());
     }
+
+    @Test
+    public void shouldErrorForTooManyExecutorsForPPApplying() {
+        when(executor1.isApplying()).thenReturn(true);
+        when(executor2.isApplying()).thenReturn(true);
+        when(executor3.isApplying()).thenReturn(true);
+        when(executor4.isApplying()).thenReturn(true);
+        when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
+        when(ccdDataMock.getExecutors()).thenReturn(executors);
+        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
+        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
+            .thenReturn(fieldErrorResponse);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertEquals(1, validationError.size());
+        assertEquals(fieldErrorResponse, validationError.get(0));
+    }
+
+    @Test
+    public void shouldNotErrorForExecutorsPPNotApplying() {
+        when(executor1.isApplying()).thenReturn(true);
+        when(executor2.isApplying()).thenReturn(true);
+        when(executor3.isApplying()).thenReturn(true);
+        when(executor4.isApplying()).thenReturn(true);
+        when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+        when(ccdDataMock.getExecutors()).thenReturn(executors);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertTrue(validationError.isEmpty());
+    }
 }
