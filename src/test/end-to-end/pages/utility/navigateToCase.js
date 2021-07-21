@@ -10,7 +10,7 @@ module.exports = async function (caseRef) {
     await I.waitForVisible(searchLinkLocator);
     await I.waitForClickable(searchLinkLocator);    
 
-    // apply a small wait to allow for javascript on page to load and wire up the link
+    // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.click(searchLinkLocator);
     const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
@@ -36,7 +36,7 @@ module.exports = async function (caseRef) {
     const linkLocator = {css: `a.govuk-link[href="/cases/case-details/${caseRefNoDashes}"]`};
    
     await I.waitForVisible(linkLocator);
-    // apply a small wait to allow for javascript on page to load and wire up the link
+    // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
 
