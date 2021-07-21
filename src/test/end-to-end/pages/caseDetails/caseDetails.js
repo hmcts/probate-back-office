@@ -2,33 +2,29 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, forXui = testConfig.TestForXUI) {
+module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
     const I = this;
 
     if (tabConfigFile.tabName) {
-        let tabXPath;
-        if (forXui) {
-            tabXPath = `//div[text()='${tabConfigFile.tabName}']`;
-        } else {
-            tabXPath = `//a[contains(text(),"${tabConfigFile.tabName}")]`;
-        }
+        const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
         //Tabs are hidden when there are more tabs
         await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
     }
 
-    await I.waitForText(caseRef, testConfig.TestTimeToWaitForText || 60);
+    await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
 
-    await I.clickTab(tabConfigFile.tabName, forXui);
+    await I.clickTab(tabConfigFile.tabName);
+    await I.wait(delay);
     await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {
-        await I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
     /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
         if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-            await I.waitForText(tabConfigFile.fields[i]);
+            await I.see(tabConfigFile.fields[i]);
         }
     }
 
@@ -42,17 +38,17 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
 
         eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 
-        await I.waitForText(nextStep, testConfig.TestTimeToWaitForText || 60);
-        await I.waitForText(endState, testConfig.TestTimeToWaitForText || 60);
+        await I.waitForText(nextStep, testConfig.WaitForTextTimeout || 60);
+        await I.waitForText(endState, testConfig.WaitForTextTimeout || 60);
 
         if (dataConfigKeys) {
-            await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.TestTimeToWaitForText || 60);
-            await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.WaitForTextTimeout || 60);
+            await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.WaitForTextTimeout || 60);
         }
 
     } else if (dataConfigKeys) {
         for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
-            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.WaitForTextTimeout || 60);
         }
     }
 };

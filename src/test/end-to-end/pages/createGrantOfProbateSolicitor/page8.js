@@ -9,8 +9,8 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#applyingAsAnAttorney-${createGrantOfProbateConfig.page8_applyingAsAttorneyYes}`);
+        await I.waitForText(createGrantOfProbateConfig.page8_waitForText, testConfig.WaitForTextTimeout);
+        await I.click(`#applyingAsAnAttorney_${createGrantOfProbateConfig.page8_applyingAsAttorneyYes}`);
         await I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(testConfig.ManualDelayMedium); // needed in order to be able to switch off auto delay for local dev
@@ -20,23 +20,23 @@ module.exports = async function (crud) {
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page8_representativeOfName);
 
         await I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1'});
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostCode', createGrantOfProbateConfig.address_postcode);
-        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_Country', createGrantOfProbateConfig.address_country);
+        await I.waitForEnabled({css: '#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine1'});
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine1', createGrantOfProbateConfig.address_line1);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine2', createGrantOfProbateConfig.address_line2);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailAddressLine3', createGrantOfProbateConfig.address_line3);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailPostTown', createGrantOfProbateConfig.address_town);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailCounty', createGrantOfProbateConfig.address_county);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailPostCode', createGrantOfProbateConfig.address_postcode);
+        await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__detailCountry', createGrantOfProbateConfig.address_country);
 
-        await I.click(`#mentalCapacity-${createGrantOfProbateConfig.page8_mentalCapacityYes}`);
-        await I.click(`#courtOfProtection-${createGrantOfProbateConfig.page8_courtOfProtectionYes}`);
-        await I.click(`#epaOrLpa-${createGrantOfProbateConfig.page8_epaOrLpaYes}`);
-        await I.click(`#epaRegistered-${createGrantOfProbateConfig.page8_epaRegisteredYes}`);
+        await I.click(`#mentalCapacity_${createGrantOfProbateConfig.page8_mentalCapacityYes}`);
+        await I.click(`#courtOfProtection_${createGrantOfProbateConfig.page8_courtOfProtectionYes}`);
+        await I.click(`#epaOrLpa_${createGrantOfProbateConfig.page8_epaOrLpaYes}`);
+        await I.click(`#epaRegistered_${createGrantOfProbateConfig.page8_epaRegisteredYes}`);
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page8_representativeOfName_update);

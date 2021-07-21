@@ -19,17 +19,17 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-
-Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async function ({I}) {
+const scenarioName ='Solicitor - Apply Grant of probate Multi Executor';
+Scenario(scenarioName, async function ({I}) {
 
     const willType = 'WillLeft';
-    // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(true, true);
     await I.cyaPage();
@@ -38,6 +38,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
 
     const caseRef = await I.getCaseRefFromUrl();
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
@@ -57,6 +58,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2(false, true, true);
@@ -80,6 +82,7 @@ Scenario('01 - Solicitor - Apply Grant of probate Multi Executor', async functio
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
     await I.completeApplicationPage2();

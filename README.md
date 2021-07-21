@@ -112,13 +112,27 @@ Bring up the environment:
 # build the jar
 ./gradlew assemble
 
+# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+XUI_LD_ID
+LD_SDK_BO_KEY
+LD_BO_USER_KEY
+LD_SDK_FE_KEY
+LD_FE_USER_KEY
+
 # first time only
 npx @hmcts/probate-dev-env --create
 
 # spin up the docker containers
 npx @hmcts/probate-dev-env
 
-# use local probate backoffice
+# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+# To enable PBA payments for solicitors run this after startup of everything
+```
+docker-compose up -d wiremock
+./bin/wiremock.sh
+```
+
+# to use local probate backoffice
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
@@ -137,13 +151,6 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
-
-To enable PBA payments for solicitors run this after startup of everything
-```
-docker-compose up -d wiremock
-./bin/wiremock.sh
-```
-
 
 ## Full setup
 
@@ -529,17 +536,15 @@ Here are some other functionalities it provides:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
 # e2e Testing
-To run Probate Practitioner  tests on ExUI locally do the following:
+To run Probate Practitioner tests on ExUI locally do the following:
     1. Update the config.js file
-        TestXuiUrl -  http://localhost:3455
-        TestEnvProfUser - ProbateSolicitorXui1@gmail.com
-        TestEnvProfPassword - Pa55word11
-        TestForXUI: true
+        TestBackOfficeUrl -  http://localhost:3455
+        TestEnvProfUser - probatesolicitortestorgtest1@gmail.com
+        TestEnvProfPassword - Probate123
 
-To run Caseworker  tests on CCD locally do the following:
+To run Caseworker tests on XUI locally do the following:
     1. Update the config.js file
-        TestCcdUrl -  http://localhost:3451
+        TestBackOfficeUrl -  http://localhost:3455
         TestEnvUser - ProbateSolCW1@gmail.com
         TestEnvPassword - Pa55word11
-        TestForXUI: true
     

@@ -54,11 +54,9 @@ module.exports = function () {
         caseProgressConfirmApplication: steps.caseProgress.confirmApplication,
         caseProgressCompleteApplication: steps.caseProgress.completeApplication,
         caseProgressSubmittedConfirmation: steps.caseProgress.submittedConfirmation,
-        caseProgressNavigateToCaseCaseworker: steps.caseProgress.navigateToCaseCaseworker,
-        caseProgressCaseworkerChangeState: steps.caseProgress.caseworkerChangeState,
+        caseProgressCaseworkerChooseNextStepAndGo: steps.caseProgress.caseworkerChooseNextStepAndGo,
         caseProgressSelectPenultimateNextStepAndGo: steps.caseProgress.selectPenultimateNextStepAndGo,
-        caseProgressClickGoAndSignOut: steps.caseProgress.clickGoAndSignOut,
-        caseProgressNavigateToCaseSolicitor: steps.caseProgress.navigateToCaseSolicitor,
+        caseProgressClickSubmitAndSignOut: steps.caseProgress.clickSubmitAndSignOut,
         caseProgressFeePayment: steps.caseProgress.feePayment,
         caseProgressContinueWithoutChangingAnything: steps.caseProgress.continueWithoutChangingAnything,
 
@@ -130,7 +128,8 @@ module.exports = function () {
         completeCaveatApplicationPage2: steps.solicitorApplyCaveat.completeApplication.page2,
         completeCaveatApplicationPage3: steps.solicitorApplyCaveat.completeApplication.page3,
         getCaseRefFromUrl: steps.utility.getCaseRefFromUrl,
-        navigateToCaseCaseworker: steps.utility.navigateToCaseCaseworker,
+        navigateToCase: steps.utility.navigateToCase,
+        rejectCookies: steps.utility.rejectCookies,
         checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
         checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
     });

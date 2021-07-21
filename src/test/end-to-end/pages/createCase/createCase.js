@@ -3,22 +3,24 @@
 const testConfig = require('src/test/config.js');
 const createCaseConfig = require('./createCaseConfig');
 
-module.exports = async function (jurisdiction, caseType, event, forXui = testConfig.TestForXUI) {
+module.exports = async function (caseType, event) {
 
     const I = this;
-    await I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText || 60);
-    //In saucelabs this page is not able to load so waiting for more time
-    if (testConfig.TestForCrossBrowser) {
-        await I.wait(5);
-    }
-    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.TestTimeToWaitForText || 60);
-    await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.TestTimeToWaitForText || 60);
-    await I.selectOption('#cc-jurisdiction', jurisdiction);
-    await I.waitForEnabled({css: '#cc-case-type'}, testConfig.TestTimeToWaitForText || 60);
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForText(createCaseConfig.waitForText, testConfig.WaitForTextTimeout || 60);
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);    
+    await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 60);
+    await I.selectOption('#cc-jurisdiction', 'PROBATE');
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForEnabled({css: '#cc-case-type'}, testConfig.WaitForTextTimeout || 60);
     await I.retry(5).selectOption('#cc-case-type', caseType);
-    await I.waitForEnabled({css: '#cc-event'}, testConfig.TestTimeToWaitForText || 60);
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForEnabled({css: '#cc-event'}, testConfig.WaitForTextTimeout || 60);
     await I.retry(5).selectOption('#cc-event', event);
+    await I.wait(testConfig.CreateCaseDelay);
 
-    await I.waitForEnabled(createCaseConfig.startButton, testConfig.TestTimeToWaitForText || 60);
-    await I.waitForNavigationToComplete(createCaseConfig.startButton, forXui);
+    await I.waitForEnabled(createCaseConfig.startButton, testConfig.WaitForTextTimeout || 60);
+    await I.waitForNavigationToComplete(createCaseConfig.startButton);
+    await I.wait(testConfig.CreateCaseDelay);
 };

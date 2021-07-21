@@ -13,20 +13,21 @@ const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetai
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-
-Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped', async function ({I}) {
+const scenarioName = 'Solicitor - Apply Grant of probate (Will left annexed) - Stopped';
+Scenario(scenarioName, async function ({I}) {
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
     const willType = 'WillLeftAnnexed';
     const updateAddressManually = true;
 
-    // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    await I.logInfo(scenarioName, 'New case');
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2(isSolicitorExecutor, isSolicitorMainApplicant);
     await I.cyaPage();
@@ -40,6 +41,7 @@ Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped'
 
     endState = 'Admon will grant created';
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -54,6 +56,7 @@ Scenario('05 - Solicitor - Apply Grant of probate (Will left annexed) - Stopped'
 
     nextStepName = 'Admon will details';
     endState = 'Stopped';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.admonWillDetailsPage1();
     await I.admonWillDetailsPage2(updateAddressManually);

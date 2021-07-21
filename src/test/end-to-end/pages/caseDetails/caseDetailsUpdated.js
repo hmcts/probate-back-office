@@ -2,12 +2,12 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication, forXui = testConfig.TestForXUI) {
+module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication) {
 
     const I = this;
 
     await I.see(caseRef);
-    await I.clickTab(tabConfigFile.tabName, forXui);
+    await I.clickTab(tabConfigFile.tabName);
     await I.runAccessibilityTest();
 
     if (tabUpdates) {
@@ -26,7 +26,7 @@ module.exports = async function (caseRef, tabConfigFile, tabUpdates, tabUpdatesC
 
         for (let i = 0; i < keys.length; i++) {
             // eslint-disable-next-line
-            await I.waitForText(tabUpdatesConfigFile[keys[i]], testConfig.TestTimeToWaitForText || 60);
+            await I.waitForText(tabUpdatesConfigFile[keys[i]], testConfig.WaitForTextTimeout || 60);
         }
     }
 };

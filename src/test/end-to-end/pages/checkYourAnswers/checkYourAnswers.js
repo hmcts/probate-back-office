@@ -11,7 +11,7 @@ module.exports = async function (nextStepName) {
 
     let eventSummaryPrefix = nextStepName;
 
-    await I.waitForText(checkYourAnswersConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(checkYourAnswersConfig.waitForText, testConfig.WaitForTextTimeout);
 
     eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
 

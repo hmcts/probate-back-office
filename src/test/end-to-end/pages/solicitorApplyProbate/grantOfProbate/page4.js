@@ -12,10 +12,10 @@ module.exports = async function (isSolicitorApplying = false) {
     if (isSolicitorApplying) {
         await I.click(`#otherExecutorExists_${grantOfProbateConfig.page4_otherExecutorExists}`);
 
-        await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.TestTimeToWaitForText);
+        await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.WaitForTextTimeout);
 
-        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedApplyingExecutors, testConfig.TestTimeToWaitForText);
-        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors, testConfig.TestTimeToWaitForText);
+        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedApplyingExecutors, testConfig.WaitForTextTimeout);
+        await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors, testConfig.WaitForTextTimeout);
 
         await I.click('#solsAdditionalExecutorList > div > button');
 
@@ -29,18 +29,18 @@ module.exports = async function (isSolicitorApplying = false) {
 
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
         await I.click(`#solsAdditionalExecutorList_0_additionalExecNameOnWill_${grantOfProbateConfig.optionYes}`);
-        await I.waitForVisible('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', testConfig.TestTimeToWaitForText);
+        await I.waitForVisible('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', testConfig.WaitForTextTimeout);
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', grantOfProbateConfig.page2_executorAliasName);
 
         await I.click({css: '#solsAdditionalExecutorList_0_additionalApplying_Yes'});
 
-        await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', testConfig.TestTimeToWaitForText);
+        await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', testConfig.WaitForTextTimeout);
         await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', grantOfProbateConfig.page2_executorPostcode);
         await I.click('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress > div  > div > button');
 
-        await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', testConfig.TestTimeToWaitForText);
+        await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', testConfig.WaitForTextTimeout);
         const optLocator = {css: '#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList > option:first-child'};
-        await I.waitForElement(optLocator, testConfig.TestTimeToWaitForText);
+        await I.waitForElement(optLocator, testConfig.WaitForTextTimeout);
         const optText = await I.grabTextFrom(optLocator);
         if (optText.indexOf(grantOfProbateConfig.noAddressFound) >= 0) {
             const addExecAddrLocator = {css: grantOfProbateConfig.page4_postcodeLink};
