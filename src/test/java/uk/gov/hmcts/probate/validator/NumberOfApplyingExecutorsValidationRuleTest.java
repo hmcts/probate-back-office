@@ -39,7 +39,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     private ExecutorsTransformer executorsTransformer;
     private CaseData caseDataMock;
 
-    private final CollectionMember<AdditionalExecutorApplying> EXEC = new CollectionMember(
+    private static final CollectionMember<AdditionalExecutorApplying> EXEC = new CollectionMember(
         SOLICITOR_ID, AdditionalExecutorApplying.builder()
         .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
         .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
