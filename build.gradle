@@ -214,26 +214,6 @@ dependencyManagement {
       entry 'spring-security-crypto'
       entry 'spring-security-web'
     }
-
-    //CVE-2021-22118
-    dependencySet(group: 'org.springframework', version: '5.3.8') {
-      entry 'spring-aop'
-      entry 'spring-aspects'
-      entry 'spring-beans'
-      entry 'spring-context'
-      entry 'spring-core'
-      entry 'spring-expression'
-      entry 'spring-jcl'
-      entry 'spring-jdbc'
-      entry 'spring-orm'
-      entry 'spring-oxm'
-      entry 'spring-tx'
-      entry 'spring-web'
-      entry 'spring-webmvc'
-    }
-
-    //CVE-2021-27568
-    dependency group: 'json-smart', name: 'json-smart', version: '2.3'
   }
 }
 
