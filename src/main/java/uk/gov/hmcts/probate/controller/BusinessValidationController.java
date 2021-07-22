@@ -110,7 +110,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
