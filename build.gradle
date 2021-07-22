@@ -251,133 +251,133 @@ configurations.all {
 }
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
-  compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-  compile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
+  implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
 
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
-  compile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
+  implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
     force = true
   }
 
-  compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
-  compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  compile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
-  compile group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
+  implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
+  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
+  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
+  implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
-  compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
-  compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-  compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
+  implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
+  implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
+  implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+  implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
-  compile group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
+  implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
 
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
-  compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
-  compile group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
+  implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
+  implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
+  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.3'
 
-  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
-  compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+  implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
-  compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
-  compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
-  compile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
-  compile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.3.2'
+  implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
+  implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
+  implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
-  compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
-  compile ('org.springframework.boot:spring-boot-starter-data-jpa')
-  compile ('org.postgresql:postgresql:42.2.18') {
+  implementation group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
+  implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
+  implementation ('org.postgresql:postgresql:42.2.18') {
     exclude module: 'slf4j-simple'
   }
-  compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
+  implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  testCompile group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
-  testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
+  testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
+  testImplementation("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
-  testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
-  testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
-  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
-  testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-  testCompile "org.junit.jupiter:junit-jupiter-api:5.6.2"
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  testCompile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+  testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+  testImplementation group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+  testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
+  testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
+  testImplementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   
-  testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
-  testSmokeCompile sourceSets.main.runtimeClasspath
-  testSmokeCompile sourceSets.test.runtimeClasspath
+  testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+  testSmokeImplementation sourceSets.main.runtimeClasspath
+  testSmokeImplementation sourceSets.test.runtimeClasspath
 
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
-  testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalCompile group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
-  testFunctionalCompile sourceSets.main.runtimeClasspath
-  testFunctionalCompile sourceSets.test.runtimeClasspath
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+  testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  testFunctionalImplementation sourceSets.main.runtimeClasspath
+  testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testFunctionalCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testFunctionalCompile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
+  testFunctionalImplementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
     force = true
   }
 
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testCaseCreatorCompile sourceSets.main.runtimeClasspath
-  testCaseCreatorCompile sourceSets.test.runtimeClasspath
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testCaseCreatorImplementation sourceSets.main.runtimeClasspath
+  testCaseCreatorImplementation sourceSets.test.runtimeClasspath
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
-  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
-  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.1")
-  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
+  contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
   contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
-  contractTestRuntime group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
-  contractTestCompile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
+  contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
 
-  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-  contractTestRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  contractTestCompile group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
+  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
   testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
-  contractTestCompile sourceSets.main.runtimeClasspath
-  contractTestCompile sourceSets.test.runtimeClasspath
+  contractTestImplementation sourceSets.main.runtimeClasspath
+  contractTestImplementation sourceSets.test.runtimeClasspath
 }
 
 tasks.withType(JavaCompile) {
@@ -385,7 +385,7 @@ tasks.withType(JavaCompile) {
 }
 
 bootJar {
-  archiveName = 'back-office.jar'
+  archiveFileName = 'back-office.jar'
   manifest {
 
     attributes 'Implementation-Title': project.name,
