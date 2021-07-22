@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
@@ -331,34 +333,6 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    public void shouldNotValidateWithTooManyExecutors() throws Exception {
-        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
-                new AdditionalExecutorTrustCorps(
-                        "Executor forename",
-                        "Executor surname",
-                        "Solicitor"
-                ));
-        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-
-        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("The total number executors applying cannot exceed 4"));
     }
 
     @Test
