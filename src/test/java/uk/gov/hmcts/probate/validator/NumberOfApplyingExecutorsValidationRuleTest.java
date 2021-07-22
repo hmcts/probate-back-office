@@ -39,7 +39,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     private ExecutorsTransformer executorsTransformer;
     private CaseData caseDataMock;
 
-    private final CollectionMember<AdditionalExecutorApplying> ADDITIONAL_EXEC = new CollectionMember(
+    private final CollectionMember<AdditionalExecutorApplying> ADD_EXEC = new CollectionMember(
         SOLICITOR_ID, AdditionalExecutorApplying.builder()
         .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
         .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
@@ -67,11 +67,11 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     @Test
     public void shouldErrorForTooManyExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        execsApplying.add(ADDITIONAL_EXEC);
-        execsApplying.add(ADDITIONAL_EXEC);
-        execsApplying.add(ADDITIONAL_EXEC);
-        execsApplying.add(ADDITIONAL_EXEC);
-        execsApplying.add(ADDITIONAL_EXEC);
+        execsApplying.add(ADD_EXEC);
+        execsApplying.add(ADD_EXEC);
+        execsApplying.add(ADD_EXEC);
+        execsApplying.add(ADD_EXEC);
+        execsApplying.add(ADD_EXEC);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
@@ -88,8 +88,8 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     @Test
     public void shouldNotErrorForExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        execsApplying.add(ADDITIONAL_EXEC);
-        execsApplying.add(ADDITIONAL_EXEC);
+        execsApplying.add(ADD_EXEC);
+        execsApplying.add(ADD_EXEC);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
