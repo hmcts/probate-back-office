@@ -1,0 +1,18 @@
+{
+  "size": :size,
+  "from": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.grantIssuedDate": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
