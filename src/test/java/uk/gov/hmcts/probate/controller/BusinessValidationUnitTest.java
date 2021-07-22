@@ -116,7 +116,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private RedeclarationSoTValidationRule redeclarationSoTValidationRuleMock;
     @Mock
-    private List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRuleMock;
+    private NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRuleMock;
 
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
