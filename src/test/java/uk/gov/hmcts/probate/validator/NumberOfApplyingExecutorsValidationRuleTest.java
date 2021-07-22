@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
-    private CCDData ccdDataMock;
+    private CaseDetails caseDetailsMock;
     @Mock
     private Executor executor1;
     @Mock
@@ -63,7 +64,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(caseDetailsMock);
 
         assertEquals(1, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
@@ -78,7 +79,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         when(executor5.isApplying()).thenReturn(false);
         when(ccdDataMock.getExecutors()).thenReturn(executors);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(caseDetailsMock);
 
         assertTrue(validationError.isEmpty());
     }
@@ -89,16 +90,13 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         when(executor2.isApplying()).thenReturn(true);
         when(executor3.isApplying()).thenReturn(true);
         when(executor4.isApplying()).thenReturn(true);
-        when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
-        when(ccdDataMock.getExecutors()).thenReturn(executors);
+        when(caseDetailsMock.getExecutors()).thenReturn(executors);
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
             .thenReturn(fieldErrorResponse);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        underTest.validate(caseDetailsMock);
 
-        assertEquals(1, validationError.size());
-        assertEquals(fieldErrorResponse, validationError.get(0));
     }
 
     @Test
@@ -110,7 +108,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(ccdDataMock.getExecutors()).thenReturn(executors);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(caseDetailsMock);
 
         assertTrue(validationError.isEmpty());
     }
