@@ -286,17 +286,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNoOfApplyingExecutorsMoreThanFour() {
-        validatePostFailure("failure.moreThanFourExecutors.json",
-            "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
-        validatePostFailure("failure.moreThanFourExecutors.json",
-            "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
-        validatePostFailure("failure.moreThanFourExecutors.json",
-            "The total number executors applying cannot exceed 4",
-            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
-    }
-
-    @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() {
         validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
         validatePostSuccess("success.validWillAndCodicilDates.json",

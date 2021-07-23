@@ -334,34 +334,6 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithTooManyExecutors() throws Exception {
-        CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
-                new AdditionalExecutorTrustCorps(
-                        "Executor forename",
-                        "Executor surname",
-                        "Solicitor"
-                ));
-        List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-        additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
-
-        caseDataBuilder.additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList);
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_EXEC_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("The total number executors applying cannot exceed 4"));
-    }
-
-    @Test
     public void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()

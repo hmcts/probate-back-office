@@ -86,7 +86,7 @@ public class BusinessValidationController {
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    private final List<NumberOfApplyingExecutorsValidationRule> numberOfApplyingExecutorsValidationRule;
+    private final NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRule;
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
     private final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
@@ -110,7 +110,6 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
@@ -130,6 +129,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
@@ -152,6 +152,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
@@ -170,13 +171,10 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateTitleAndClearingPage(callbackRequest);
-        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
-                numberOfApplyingExecutorsValidationRule);
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
-        if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
-            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
-        }
+        caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
 
         return ResponseEntity.ok(response);
     }
@@ -209,6 +207,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
@@ -237,7 +236,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {

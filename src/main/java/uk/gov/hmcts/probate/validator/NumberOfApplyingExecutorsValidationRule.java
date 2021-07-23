@@ -2,52 +2,42 @@ package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Executor;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
-public class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule,
-        CaseworkerAmendValidationRule {
+public class NumberOfApplyingExecutorsValidationRule {
 
     private static final String TOO_MANY_EXECUTORS = "tooManyExecutors";
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final int MAX_EXECUTORS = 4;
+    private final ExecutorsTransformer executorsTransformer;
 
-    private final BusinessValidationMessageService businessValidationMessageService;
+    public void validate(CaseDetails caseDetails) {
+        String[] args = {caseDetails.getId().toString()};
+        String userMessage = businessValidationMessageRetriever.getMessage(TOO_MANY_EXECUTORS, args, Locale.UK);
 
-    @Override
-    public List<FieldErrorResponse> validate(CCDData ccdData) {
-        return Optional.ofNullable(ccdData)
-            .map(this::getErrorCodeForInvalidNumberOfApplyingExecutors)
-            .map(List::stream)
-            .orElse(Stream.empty())
-            .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
-            .collect(Collectors.toList());
-    }
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
+            executorsTransformer.createCaseworkerApplyingList(caseDetails.getData());
+        execsApplying = executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+            caseDetails.getData());
+        String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
 
-    private List<String> getErrorCodeForInvalidNumberOfApplyingExecutors(CCDData ccdData) {
-        List<String> allErrorCodes = new ArrayList<>();
-        long countApplying = ccdData.getExecutors().stream().filter(Executor::isApplying).count();
+        List<String> executors = Arrays.asList(execsApplyingNames.split(","));
 
-        if (ccdData.getSolsSolicitorIsApplying() != null && YES.equals(ccdData.getSolsSolicitorIsApplying())) {
-            countApplying++;
+        if (executors.size() > MAX_EXECUTORS) {
+            throw new BusinessValidationException(userMessage,
+                "The total number executors applying cannot exceed 4 for case id " + caseDetails.getId());
         }
-
-        if (countApplying > MAX_EXECUTORS) {
-            allErrorCodes.add(TOO_MANY_EXECUTORS);
-        }
-
-        return allErrorCodes;
     }
 }

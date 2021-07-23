@@ -1,22 +1,30 @@
 package uk.gov.hmcts.probate.validator;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Executor;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 
 public class NumberOfApplyingExecutorsValidationRuleTest {
 
@@ -24,94 +32,72 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     private NumberOfApplyingExecutorsValidationRule underTest;
 
     @Mock
-    private BusinessValidationMessageService businessValidationMessageServiceMock;
+    private CaseDetails caseDetailsMock;
     @Mock
-    private CCDData ccdDataMock;
+    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Mock
-    private Executor executor1;
-    @Mock
-    private Executor executor2;
-    @Mock
-    private Executor executor3;
-    @Mock
-    private Executor executor4;
-    @Mock
-    private Executor executor5;
+    private ExecutorsTransformer executorsTransformer;
+    private CaseData caseDataMock;
 
-    private final List<Executor> executors = new ArrayList<>();
+    private static final CollectionMember<AdditionalExecutorApplying> EXEC = new CollectionMember(
+        SOLICITOR_ID, AdditionalExecutorApplying.builder()
+        .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
+        .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
+        .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
+        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+        .applyingExecutorAddress(SOLICITOR_ADDRESS)
+        .build());
 
     @Before
     public void setup() {
-        initMocks(this);
+        MockitoAnnotations.initMocks(this);
 
-        executors.add(executor1);
-        executors.add(executor2);
-        executors.add(executor3);
-        executors.add(executor4);
-        executors.add(executor5);
+        caseDataMock = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .solsSolicitorIsExec("No")
+            .solsSolicitorIsApplying("Yes")
+            .titleAndClearingType("TCTPartSuccPowerRes")
+            .primaryApplicantForenames("Probate")
+            .primaryApplicantSurname("Practitioner")
+            .anyOtherApplyingPartners("Yes")
+            .registryLocation("Bristol")
+            .build();
     }
 
     @Test
     public void shouldErrorForTooManyExecutors() {
-        when(executor1.isApplying()).thenReturn(true);
-        when(executor2.isApplying()).thenReturn(true);
-        when(executor3.isApplying()).thenReturn(true);
-        when(executor4.isApplying()).thenReturn(true);
-        when(executor5.isApplying()).thenReturn(true);
-        when(ccdDataMock.getExecutors()).thenReturn(executors);
-        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
-        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
-                .thenReturn(fieldErrorResponse);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+            caseDetailsMock.getData())).thenReturn(execsApplying);
 
-        assertEquals(1, validationError.size());
-        assertEquals(fieldErrorResponse, validationError.get(0));
+        Assertions.assertThatThrownBy(() -> {
+            underTest.validate(caseDetailsMock);
+        })
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("The total number executors applying cannot exceed 4 for case id 0");
     }
 
     @Test
     public void shouldNotErrorForExecutors() {
-        when(executor1.isApplying()).thenReturn(true);
-        when(executor2.isApplying()).thenReturn(true);
-        when(executor3.isApplying()).thenReturn(true);
-        when(executor4.isApplying()).thenReturn(true);
-        when(executor5.isApplying()).thenReturn(false);
-        when(ccdDataMock.getExecutors()).thenReturn(executors);
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        execsApplying.add(EXEC);
+        execsApplying.add(EXEC);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
+        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
+            caseDetailsMock.getData())).thenReturn(execsApplying);
 
-        assertTrue(validationError.isEmpty());
-    }
 
-    @Test
-    public void shouldErrorForTooManyExecutorsForPPApplying() {
-        when(executor1.isApplying()).thenReturn(true);
-        when(executor2.isApplying()).thenReturn(true);
-        when(executor3.isApplying()).thenReturn(true);
-        when(executor4.isApplying()).thenReturn(true);
-        when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
-        when(ccdDataMock.getExecutors()).thenReturn(executors);
-        FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
-        when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
-            .thenReturn(fieldErrorResponse);
+        underTest.validate(caseDetailsMock);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertEquals(1, validationError.size());
-        assertEquals(fieldErrorResponse, validationError.get(0));
-    }
-
-    @Test
-    public void shouldNotErrorForExecutorsPPNotApplying() {
-        when(executor1.isApplying()).thenReturn(true);
-        when(executor2.isApplying()).thenReturn(true);
-        when(executor3.isApplying()).thenReturn(true);
-        when(executor4.isApplying()).thenReturn(true);
-        when(ccdDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
-        when(ccdDataMock.getExecutors()).thenReturn(executors);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertTrue(validationError.isEmpty());
     }
 }
