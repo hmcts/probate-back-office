@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -57,6 +58,7 @@ public class NextStepsController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
+    private final AssignCaseAccessService assignCaseAccessService;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -111,6 +113,7 @@ public class NextStepsController {
             }
         }
 
+        assignCaseAccessService.assignCaseAccess(callbackRequest.getCaseDetails(), authToken);
         return ResponseEntity.ok(callbackResponse);
     }
 
