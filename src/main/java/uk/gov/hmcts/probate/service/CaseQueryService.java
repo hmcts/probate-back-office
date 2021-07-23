@@ -66,6 +66,8 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_exela.json";
     private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_hmrc.json";
+    private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
+        + "grants_issued_date_range_query_smeeford.json";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -86,10 +88,20 @@ public class CaseQueryService {
         return result;
     }
 
-    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String queryDate) {
+    public List<ReturnedCaseDetails> findGrantIssuedCasesWithGrantIssuedDate(String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
+        query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
+
+        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+
+        return runQuery(jsonQuery);
+    }
+
+    public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String queryDate) {
+        BoolQueryBuilder query = boolQuery();
+
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
@@ -106,7 +118,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(dataExtractSmeeAndFordSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+        return findCaseStateWithinDateRange(dataExtractSmeeAndFordSize, GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
     }
 
     private List<ReturnedCaseDetails> findCaseStateWithinDateRange(int size, String qry, String startDate,
