@@ -348,6 +348,7 @@ public class BusinessValidationController {
         BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;
         final CaseData data = callbackRequest.getCaseDetails().getData();
