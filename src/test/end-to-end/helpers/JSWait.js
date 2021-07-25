@@ -33,7 +33,7 @@ class JSWait extends codecept_helper {
 
             await Promise.all([
                 // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
-                helper.page.waitForNavigation(), // The promise resolves after navigation has finished
+                helper.page.waitForNavigation({waitUntil: 'networkidle2'}), // The promise resolves after navigation has finished
                 helper.page.goto(url, 60)
             ]);
 
