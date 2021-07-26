@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,6 +159,9 @@ public class BulkPrintService {
                     caseId,
                     getLetterType.apply(coverSheet, grantDocument));
 
+            ObjectMapper mapper  = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(printLetterRequest);
+            log.info("Rishi PrintRequest::\n {}",jsonInString);
             printLetterResponse = printLetterApi
                     .printLetter(BEARER + authHeaderValue, printLetterRequest);
 
