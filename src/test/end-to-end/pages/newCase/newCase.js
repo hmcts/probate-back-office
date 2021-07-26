@@ -9,15 +9,18 @@ module.exports = async function () {
 
     await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
     const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements({css: 'body exui-root xuilib-cookie-banner'});
+
     if (numVisibleCookieBannerEls > 0) {
-        // just reject additional cookies
-        const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
-        await I.waitForEnabled(rejectLocator);
-        await I.click(rejectLocator);
+        //check to see we can still click
+        const bannerButton = await I.grabNumberOfVisibleElements({css: 'button.govuk-button[value="reject"]'});
+        if (bannerButton > 0) {
+            // just reject additional cookies
+            const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
+            await I.waitForEnabled(rejectLocator);
+            await I.click(rejectLocator);
+        }
     }
-    await I.waitForEnabled({css: testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator});
-    await I.waitForNavigationToComplete(testConfig.TestForXUI ? newCaseConfig.xuiCreateCaseLocator : newCaseConfig.ccduilCreateCaselocator);
-    if (testConfig.TestForXUI) {
-        await I.wait(0.5);
-    }
+    await I.waitForEnabled({css: newCaseConfig.xuiCreateCaseLocator});
+    await I.wait(2);
+    await I.waitForNavigationToComplete(newCaseConfig.xuiCreateCaseLocator, 5);
 };
