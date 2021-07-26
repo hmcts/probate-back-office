@@ -179,6 +179,7 @@ public class NotificationServiceTest {
     private CaseDetails solsCaseDataCtscRequestInformation;
     private CaseDetails solicitorCaseDataManchester;
     private CaseDetails personalGrantDelayedOxford;
+    private CaseDetails solicitorGrantDelayedOxford;
     private CaseDetails personalGrantRaisedOxford;
     private CaseDetails solicitorGrantRaisedOxford;
     private CaseDetails personalGrantRaisedOxfordPaper;
@@ -254,6 +255,21 @@ public class NotificationServiceTest {
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .registryLocation("Oxford")
             .primaryApplicantEmailAddress("primary@probate-test.com")
+            .languagePreferenceWelsh("No")
+            .build(), LAST_MODIFIED, ID);
+
+        solicitorGrantDelayedOxford = new CaseDetails(CaseData.builder()
+            .applicationType(SOLICITOR)
+            .primaryApplicantForenames(PERSONALISATION_APPLICANT_FORENAMES)
+            .primaryApplicantSurname(PERSONALISATION_APPLICANT_SURNAME)
+            .deceasedForenames(PERSONALISATION_DECEASED_FORNAMES)
+            .deceasedSurname(PERSONALISATION_DECEASED_SURNAME)
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .registryLocation("Oxford")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .solsSolicitorAppReference(PERSONALISATION_SOLICITOR_REFERENCE)
+            .solsSOTName(PERSONALISATION_SOLICITOR_NAME)
+            .solsSolicitorEmail("solicitor@probate-test.com")
             .languagePreferenceWelsh("No")
             .build(), LAST_MODIFIED, ID);
 
@@ -1870,6 +1886,47 @@ public class NotificationServiceTest {
             eq("primary@probate-test.com"),
             eq(personalisation),
             eq(null));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantDelayedAwaitingDocumentationSolicitorEmail()
+        throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solicitorGrantDelayedOxford.getData()
+            .getBoStopDetails());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, solicitorGrantDelayedOxford.getId().toString());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
+        personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solicitorGrantDelayedOxford.getData()
+            .getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, solicitorGrantDelayedOxford.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, personalGrantDelayedOxford.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, "12 Rhagfyr 2000");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, null);
+        personalisation
+            .put(PERSONALISATION_APPLICANT_NAME, solicitorGrantDelayedOxford.getData().getPrimaryApplicantFullName());
+
+        ReturnedCaseDetails returnedCaseDetails =
+            new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), null, ID);
+
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        Document document = notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails);
+
+        assertEquals(SENT_EMAIL_FILE_NAME, document.getDocumentFileName());
+
+        verify(notificationClient).sendEmail(
+            eq("sols-grantAwaitingDoc"),
+            eq("solicitor@probate-test.com"),
+            eq(personalisation),
+            eq("solicitor_reference"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
