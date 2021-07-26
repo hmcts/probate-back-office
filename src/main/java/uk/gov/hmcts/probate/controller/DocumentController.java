@@ -122,8 +122,10 @@ public class DocumentController {
         documents.add(coversheet);
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
+            log.info("Rishi Going here");
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
                 letter, true);
+            log.info("Rishi Going here letterID {}", letterId);
         }
 
         CallbackResponse response =
