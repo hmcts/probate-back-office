@@ -17,15 +17,18 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async function ({I}) {
+const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy)';
+Scenario(scenarioName, async function ({I}) {
 
     const willType = 'NoWill';
 
     // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
@@ -41,6 +44,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
 
     endState = 'Intestacy grant created';
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -55,6 +59,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
 
     nextStepName = 'Intestacy details';
     endState = 'Application updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.intestacyDetailsPage1();
     await I.intestacyDetailsPage2();
@@ -69,6 +74,7 @@ Scenario('Solicitor - Apply Grant of probate - No Will (Intestacy)', async funct
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1(willType);
     await I.completeApplicationPage2();

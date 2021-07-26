@@ -12,5 +12,5 @@ module.exports = async function () {
 
     await I.waitForText(`The case was stopped on ${moment().format('DD MMM yyyy')} for one of two reasons:`);
 
-    await I.waitForNavigationToComplete('#sign-out');
+    await I.signOut();
 };

@@ -10,13 +10,13 @@ module.exports = async function (crud) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
-        await I.click(`#willExists-${createGrantOfProbateConfig.page5_willExistsYes}`);
-        await I.click(`#willDatedBeforeApril-${createGrantOfProbateConfig.page5_willDatedBeforeAprilYes}`);
-        await I.click(`#willAccessOriginal-${createGrantOfProbateConfig.page5_willAccessOriginalYes}`);
-        await I.click(`#willHasCodicils-${createGrantOfProbateConfig.page5_willHasCodicilsYes}`);
+        await I.click(`#willExists_${createGrantOfProbateConfig.page5_willExistsYes}`);
+        await I.click(`#willDatedBeforeApril_${createGrantOfProbateConfig.page5_willDatedBeforeAprilYes}`);
+        await I.click(`#willAccessOriginal_${createGrantOfProbateConfig.page5_willAccessOriginalYes}`);
+        await I.click(`#willHasCodicils_${createGrantOfProbateConfig.page5_willHasCodicilsYes}`);
         await I.fillField('#willNumberOfCodicils', createGrantOfProbateConfig.page5_willNumberOfCodicils);
-        await I.click(`#willsOutsideOfUK-${createGrantOfProbateConfig.page5_willsOutsideOfUKYes}`);
-        await I.click(`#deceasedEnterMarriageOrCP-${createGrantOfProbateConfig.page5_deceasedEnterMarriageOrCPYes}`);
+        await I.click(`#willsOutsideOfUK_${createGrantOfProbateConfig.page5_willsOutsideOfUKYes}`);
+        await I.click(`#deceasedEnterMarriageOrCP_${createGrantOfProbateConfig.page5_deceasedEnterMarriageOrCPYes}`);
 
         await I.fillField('#dateOfMarriageOrCP-day', createGrantOfProbateConfig.page5_dateOfMarriageOrCP_day);
         await I.fillField('#dateOfMarriageOrCP-month', createGrantOfProbateConfig.page5_dateOfMarriageOrCP_month);
@@ -27,13 +27,13 @@ module.exports = async function (crud) {
         await I.fillField('#dateOfDivorcedCPJudicially-year', createGrantOfProbateConfig.page5_dateOfDivorcedCPJudicially_year);
 
         await I.fillField('#courtOfDecree', createGrantOfProbateConfig.page5_courtOfDecree);
-        await I.click(`#willGiftUnderEighteen-${createGrantOfProbateConfig.page5_willGiftUnderEighteenYes}`);
+        await I.click(`#willGiftUnderEighteen_${createGrantOfProbateConfig.page5_willGiftUnderEighteenYes}`);
     }
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
 
         await I.fillField('#willNumberOfCodicils', createGrantOfProbateConfig.page5_willNumberOfCodicils_update);
     }
