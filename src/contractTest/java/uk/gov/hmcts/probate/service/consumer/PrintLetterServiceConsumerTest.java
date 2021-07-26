@@ -49,7 +49,7 @@ public class PrintLetterServiceConsumerTest {
             .path("/print-jobs/" + uuid)
             .method("PUT")
             .headers(SERVICE_AUTHORIZATION_HEADER, SOME_SERVICE_AUTH_TOKEN)
-            .body(createJsonObject(buildLetter()), "application/json")
+            .body(createJsonObject(buildLetter()), "application/vnd.uk.gov.hmcts.letter-service.in.print-job.v1+json")
             .willRespondWith()
             .matchHeader(HttpHeaders.CONTENT_TYPE, "application/json")
             .body(new PactDslJsonBody()
