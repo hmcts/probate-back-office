@@ -183,12 +183,12 @@ public class BulkPrintService {
             Document coverSheetDocument,
             String authHeaderValue) throws IOException {
         Long extraCopies = 1L;
-
+        log.info("Rishi 1 coversheet filename {}",coverSheetDocument.getDocumentFileName());
+        log.info("Rishi 1 grant filename {}",grantDocument.getDocumentFileName());
         var caseId = callbackRequest.getCaseDetails().getId().toString();
 
         byte[] coverBytes = getPdfAsBinary(coverSheetDocument, authHeaderValue, "Grant", caseId);
         byte[] grantBytes = getPdfAsBinary(grantDocument, authHeaderValue, "Grant", caseId);
-
         List<Document> documentList = Collections.singletonList(grantDocument);
         if (documentTransformer.hasDocumentWithType(documentList, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documentList, ADMON_WILL_GRANT)
@@ -214,6 +214,8 @@ public class BulkPrintService {
                 grantBytes,
                 extraCopies.intValue());
         List<PrintDocument> documents = new LinkedList<>();
+        log.info("Rishi coversheet filename {}",coversheet.fileName);
+        log.info("Rishi grant filename {}",grant.fileName);
         documents.add(coversheet);
         documents.add(grant);
         return documents;
