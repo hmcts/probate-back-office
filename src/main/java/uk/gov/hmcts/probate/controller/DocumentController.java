@@ -118,6 +118,16 @@ public class DocumentController {
         Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
+        log.info("Rishi coverSheetDocument Name {}", coversheet.getDocumentFileName());
+        log.info("Rishi grantDocument Name {}", letter.getDocumentFileName());
+
+        if (coversheet.getDocumentFileName() == null) {
+            coversheet.setDocumentFileName("coversheet");
+        }
+        if (letter.getDocumentFileName() == null) {
+            letter.setDocumentFileName("grant");
+        }
+
         documents.add(letter);
         documents.add(coversheet);
 
