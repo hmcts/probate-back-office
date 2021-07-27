@@ -190,6 +190,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
     private static final String NOT_NAMED_TC_PAYLOAD = "solicitorPayloadTrustCorpsNotNamed.json";
     private static final String NOT_NAMED_TC_TC_EXEC_PAYLOAD = "solicitorPayloadTrustCorpsNotNamedTcExec.json";
+    private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
@@ -254,6 +255,25 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySolicitorGenerateGrantDraftReissueCtsc() {
+        final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
+        assertTrue(response
+            .contains("Principal Registry of the Family DivisionHMCTS ProbatePO Box 12625HarlowCM20 9QE0300 303 0648"));
+        assertTrue(response.contains("Grant of Probate Duplicate of original created on 1st April 2020"));
+    }
+
+    @Test
+    public void verifySolicitorGenerateGrantDraftReissueOxford() {
+        final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
+             "\"registryLocation\": \"ctsc\"","\"registryLocation\": \"Oxford\"" );
+        final String response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response
+            .contains("High Court of Justice England and Wales"
+            + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648"));
+        assertTrue(response.contains("Grant of Probate Duplicate of original created on 1st April 2020"));
+    }
+
+    @Test
     public void verifyTrustCorpsShouldReturnOkResponseCode() {
         validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
     }
@@ -268,6 +288,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generateGrantDocumentFromPayload(String payload, String path) {
         return generateDocumentFromPayload(payload, path, GRANT_DOC_NAME);
+    }
+
+    private String generateReissueGrantDraftDocument(String jsonFileName) {
+        return generateDocument(jsonFileName, GENERATE_GRANT_DRAFT_REISSUE, GRANT_DOC_NAME);
+    }
+
+    private String generateReissueGrantDraftDocumentFromPayload(String payload) {
+        return generateDocumentFromPayload(payload, GENERATE_GRANT_DRAFT_REISSUE, GRANT_DOC_NAME);
     }
 
     private String generateDocumentFromPayload(String payload, String path, String documentName) {
