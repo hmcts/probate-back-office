@@ -91,6 +91,9 @@ public class CaseDataParent {
     private final String reissueDateFormatted = convertDate(reissueDate);
 
     public String convertDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
         return convertDate(dateToConvert.toString());
     }
 
