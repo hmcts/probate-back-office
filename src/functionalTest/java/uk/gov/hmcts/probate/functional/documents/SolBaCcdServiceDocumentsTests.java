@@ -265,7 +265,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorGenerateGrantDraftReissueOxford() {
         final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
-             "\"registryLocation\": \"ctsc\"","\"registryLocation\": \"Oxford\"" );
+             "\"registryLocation\": \"ctsc\"","\"registryLocation\": \"Oxford\"");
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
         assertTrue(response
             .contains("High Court of Justice England and Wales"
