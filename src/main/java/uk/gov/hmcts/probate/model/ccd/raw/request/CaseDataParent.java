@@ -98,7 +98,7 @@ public class CaseDataParent {
     }
 
     public String convertDate(String dateToConvert) {
-        if (dateToConvert == null) {
+        if (dateToConvert == null || dateToConvert.equals("")) {
             return null;
         }
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
