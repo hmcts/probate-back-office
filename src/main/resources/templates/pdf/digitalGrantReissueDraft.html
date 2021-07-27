@@ -160,6 +160,22 @@ Died on
 </p>
 {% endmacro %}
 
+{% macro reissueReasonAndDateTableRow(cd) %}
+<tr>
+    <td colspan="3" class="text-centerAligned ">
+        {% if cd.reissueReasonNotation == "duplicate" %}
+            <span>Duplicate of original created on {{ cd.reissueDateFormatted }}</span>
+        {% elseif cd.reissueReasonNotation == "registrarsOrder" %}
+            <span>Amended and re-issued pursuant to Registrar's order dated {{ cd.reissueDateFormatted }}</span>
+        {% elseif cd.reissueReasonNotation == "registrarsDirection" %}
+            <span>Amended and re-issued {{ cd.reissueDateFormatted }} pursuant to Registrar's Direction 004/17</span>
+        {% endif %}
+        <br/>
+        <br/>
+    </td>
+</tr>
+{% endmacro %}
+
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:remove="all" th:text="${title}">Grant of Probate</title>
@@ -308,13 +324,7 @@ Died on
             <Strong>Grant of Probate</Strong>
         </td>
     </tr>
-    <tr>
-        <td colspan="3">
-            <span>Duplicate of original created on {{ new DateTime(case_details.case_data.reissueDate)|date("F") }}</span>
-            <br/>
-            <br/>
-        </td>
-    </tr>
+    {{ reissueReasonAndDateTableRow(case_details.case_data) }}
     <tr>
         <td colspan="3" class="text-rightAligned">
             Case Reference: {{ case_details.id }}<br />

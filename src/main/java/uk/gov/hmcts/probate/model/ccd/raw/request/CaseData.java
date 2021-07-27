@@ -458,7 +458,6 @@ public class CaseData extends CaseDataParent {
     private final String resolveStopState;
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
-    private final String reissueDate;
     private final String reissueReasonNotation;
     private final String latestGrantReissueDate;
     private final String boStopDetailsDeclarationParagraph;
@@ -537,6 +536,9 @@ public class CaseData extends CaseDataParent {
     private String registryEmailAddress;
     private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
+
+    // @Getter(lazy = true)
+    // private final String reissueDateFormatted = convertDate(reissueDate);
 
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);
@@ -623,39 +625,6 @@ public class CaseData extends CaseDataParent {
 
     public boolean isLanguagePreferenceWelsh() {
         return YES.equals(getLanguagePreferenceWelsh());
-    }
-
-    public String convertDate(LocalDate dateToConvert) {
-        if (dateToConvert == null) {
-            return null;
-        }
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
-        try {
-            Date date = originalFormat.parse(dateToConvert.toString());
-            String formattedDate = targetFormat.format(date);
-            int day = Integer.parseInt(formattedDate.substring(0, 2));
-            switch (day) {
-                case 1:
-                case 21:
-                case 31:
-                    return day + "st " + formattedDate.substring(3);
-
-                case 2:
-                case 22:
-                    return day + "nd " + formattedDate.substring(3);
-
-                case 3:
-                case 23:
-                    return day + "rd " + formattedDate.substring(3);
-
-                default:
-                    return day + "th " + formattedDate.substring(3);
-            }
-        } catch (ParseException ex) {
-            ex.getMessage();
-            return null;
-        }
     }
 
 }
