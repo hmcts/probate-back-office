@@ -237,7 +237,11 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
         Document document;
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        registryDetailsService.getRegistryDetails(caseDetails);
+
 
         // The only difference between grant and reissue grant is one statement with the reissue date. Html/pdf template
         // post TC work has lots of complex logic in it that would be difficult to code in Docmosis,
@@ -261,7 +265,10 @@ public class DocumentController {
         final List<Document> documents = new ArrayList<>();
         Document grantDocument;
         Document coversheet;
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        registryDetailsService.getRegistryDetails(caseDetails);
 
         // The only difference between grant and reissue grant is one statement with the reissue date. Html/pdf template
         // post TC work has lots of complex logic in it that would be difficult to code in Docmosis,
