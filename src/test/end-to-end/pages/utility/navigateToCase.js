@@ -22,7 +22,8 @@ module.exports = async function (caseRef) {
     await I.click(searchLinkLocator);
     await I.logInfo(scenarioName, 'Search link clicked, now waiting for case ref input field to be visible and enabled');
 
-    const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
+    // const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
+    const caseRefLocator = {css: 'input[type="text"]:first-child'};
     try {
         await I.waitForVisible(caseRefLocator);
     } catch (e) {

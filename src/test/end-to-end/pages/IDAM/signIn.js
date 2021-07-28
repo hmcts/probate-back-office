@@ -5,8 +5,10 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
 
     const I = this;
+    // const t = await I.addATabRetainingFocusOnOriginal();
     await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
     await I.wait(testConfig.ManualDelayMedium);
+    // await I.removeTab(t);
 
     await I.waitForText('Sign in', 600);
     await I.waitForText('Email address');

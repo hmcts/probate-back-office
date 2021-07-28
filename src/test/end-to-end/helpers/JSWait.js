@@ -40,7 +40,7 @@ class JSWait extends codecept_helper {
             if (helper.browser.newPage) {
                 // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
                 const dummyTab = await helper.browser.newPage();
-                await this.delay(0.1);
+                await this.delay(0.2);
                 await dummyTab.close();
             }
         } else {
