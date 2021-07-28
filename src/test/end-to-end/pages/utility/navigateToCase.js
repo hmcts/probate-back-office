@@ -16,7 +16,7 @@ module.exports = async function (caseRef) {
     */
 
     await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
-    await I.waitForElement({css: '#wb-case-type'});
+    await I.waitForVisible({css: '#wb-case-type'});
     await I.logInfo(scenarioName, 'Waiting for wb-case-type select GoR option');
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
