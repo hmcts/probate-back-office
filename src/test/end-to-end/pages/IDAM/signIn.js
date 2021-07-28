@@ -7,7 +7,7 @@ module.exports = async function (useProfessionalUser, alreadyAtSignInPage = fals
     const I = this;
     // const t = await I.addATabRetainingFocusOnOriginal();
     if (!alreadyAtSignInPage) {
-        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
+        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`, false);
     }
     await I.wait(testConfig.ManualDelayMedium);
     // await I.removeTab(t);
