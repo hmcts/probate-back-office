@@ -12,18 +12,29 @@ module.exports = async function (caseRef) {
     await I.waitForVisible(searchLinkLocator);
     await I.waitForClickable(searchLinkLocator);
 
-    // if (!testConfig.TestAutoDelayEnabled) {
     // This code navigates to case by searching for the case by case ref in the UI, then clicking it.
-    // Works fine locally but is not running in the pipeline (pipeline always has auto-delay enabled)
+    // Works fine locally but we have issues in the pipeline
 
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.logInfo(scenarioName, 'About to click search link');
+    await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesDelay} seconds`);
     await I.wait(testConfig.FindCasesDelay);
     await I.click(searchLinkLocator);
     await I.logInfo(scenarioName, 'Search link clicked, now waiting for case ref input field to be visible and enabled');
 
     const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
-    await I.waitForVisible(caseRefLocator);
+    try {
+        await I.waitForVisible(caseRefLocator);
+    } catch (e) {
+        await I.logInfo(scenarioName, 'Unable to find element input[id="[CASE_REFERENCE]"], switching to fallback position of direct navigation');
+        await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesDelay} seconds`);
+        await I.wait(testConfig.FindCasesDelay);
+        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+        await I.amOnLoadedPage(url);
+        await I.wait(testConfig.CaseworkerCaseNavigateDelay);
+        return;
+    }
+
     await I.waitForEnabled(caseRefLocator);
     await I.logInfo(scenarioName, 'case ref input field now visible and enabled');
 
@@ -49,13 +60,5 @@ module.exports = async function (caseRef) {
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
-
-    // } else {
-    // Conversely, this much simpler js, which used to run locally under CCD ui, sometimes fails locally
-    // running xui but is ok in pipeline
-    // const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-    //    await I.amOnLoadedPage(url);
-    // }
-
     await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 };
