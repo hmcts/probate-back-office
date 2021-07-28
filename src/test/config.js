@@ -1,9 +1,9 @@
 module.exports = {
     // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
-    TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
+    TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
@@ -51,7 +51,7 @@ module.exports = {
     CaseProgressSignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     CreateCaseContinueDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     WillLodgementDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    FindCasesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
+    FindCasesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.25,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.25,
     CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
     NotApplyingExecReasonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0
