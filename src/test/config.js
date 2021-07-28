@@ -19,7 +19,7 @@ module.exports = {
     ManualDelayMedium: 0.5,
     ManualDelayLong: 0.75,
     // if auto delay enabled, is running in pipeline, not locally from individual test path run via package.json script
-    SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
+    SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0,
     SignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     RejectCookies: false,
@@ -51,7 +51,7 @@ module.exports = {
     CaseProgressSignInDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CreateCaseContinueDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     WillLodgementDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0.25,
+    FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0.25,
     CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
     NotApplyingExecReasonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0
 };
