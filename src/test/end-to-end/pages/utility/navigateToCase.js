@@ -15,12 +15,11 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, html);
     */
 
-    await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
-    await I.waitForVisible({css: '#wb-case-type'});
-    await I.logInfo(scenarioName, 'Waiting for wb-case-type select GoR option');
+    await I.logInfo(scenarioName, 'Waiting for wb-case-type select and GoR option');
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.logInfo(scenarioName, 'Waiting for case-search link');
+    await I.waitForVisible(searchLinkLocator);
     await I.waitForElement(searchLinkLocator);
 
     // This code navigates to case by searching for the case by case ref in the UI, then clicking it.
@@ -35,6 +34,7 @@ module.exports = async function (caseRef) {
 
     const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
 
+    await I.waitForVisible(caseRefLocator);
     await I.waitForEnabled(caseRefLocator);
     await I.logInfo(scenarioName, 'case ref input field now visible and enabled');
 
@@ -44,6 +44,7 @@ module.exports = async function (caseRef) {
     await I.waitForElement({css: '#s-case-type option'});
     await I.selectOption({css: '#s-case-type'}, 'Grant of representation');
 
+    await I.waitForVisible(caseRefLocator);
     await I.waitForEnabled(caseRefLocator);
     await I.fillField(caseRefLocator, caseRef);
     if (!testConfig.TestAutoDelayEnabled) {
@@ -61,4 +62,9 @@ module.exports = async function (caseRef) {
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
     await I.wait(testConfig.CaseworkerCaseNavigateDelay);
+
+    /*
+        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+        await I.amOnLoadedPage(url);
+    */
 };
