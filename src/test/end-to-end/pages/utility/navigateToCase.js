@@ -8,7 +8,7 @@ module.exports = async function (caseRef) {
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.waitForVisible(searchLinkLocator);
-    await I.waitForClickable(searchLinkLocator);    
+    await I.waitForClickable(searchLinkLocator);
 
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
@@ -34,7 +34,7 @@ module.exports = async function (caseRef) {
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
     const linkLocator = {css: `a.govuk-link[href="/cases/case-details/${caseRefNoDashes}"]`};
-   
+
     await I.waitForVisible(linkLocator);
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
