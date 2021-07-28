@@ -50,7 +50,7 @@ module.exports = async function (caseRef) {
 
     const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
     await I.amOnLoadedPage(url);
-    
+
     /*
     const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
     await I.amOnLoadedPage(url);
