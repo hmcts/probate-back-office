@@ -149,7 +149,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
 
-
     private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
