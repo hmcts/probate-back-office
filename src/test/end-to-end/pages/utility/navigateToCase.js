@@ -9,6 +9,11 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, 'Navigating to case');
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
+
+    await I.waitForElement({css: 'exui-root'});    
+    const html = await I.grabHTMLFrom({css: 'exui-root'});
+    await I.logInfo(scenarioName, html);    
+
     await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
     await I.waitForElement({css: '#wb-case-type'});
     await I.logInfo(scenarioName, 'Waiting for wb-case-type select GoR option');
