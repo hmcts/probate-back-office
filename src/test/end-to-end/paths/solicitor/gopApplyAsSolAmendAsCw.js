@@ -59,14 +59,20 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Deceased details');
 
     await I.chooseNextStep(nextStepName, true);
-    await I.logInfo(scenarioName, nextStepName);
+    await I.logInfo(scenarioName, 'Deceased details page 1');
     await I.deceasedDetailsPage1();
+    await I.logInfo(scenarioName, 'Deceased details page 2');
     await I.deceasedDetailsPage2();
+    await I.logInfo(scenarioName, 'Deceased details page 3');
     await I.deceasedDetailsPage3();
+    await I.logInfo(scenarioName, 'Deceased details page 4');
     await I.deceasedDetailsPage4();
+    await I.logInfo(scenarioName, 'Check your answers');
+
     await I.cyaPage();
 
     await I.seeEndState(endState);
+    await I.logInfo(scenarioName, 'Check case details');
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig, null, null, true);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig, null, null, true);
@@ -134,12 +140,14 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig, null, null, true);
 
-    await I.logInfo(scenarioName, 'Sign out and login as case worker');
+    await I.logInfo(scenarioName, 'Sign out as probate practitioner');
 
     await I.signOut();
 
     // IdAM - Caseworker
+    await I.logInfo(scenarioName, 'Login as case worker');
     await I.authenticateWithIdamIfAvailable(false);
+    await I.logInfo(scenarioName, 'Navigate to case');
     await I.navigateToCase(caseRef);
     await I.logInfo(scenarioName, 'Amend details', caseRef);
     nextStepName = 'Amend case details';

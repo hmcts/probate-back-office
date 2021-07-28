@@ -7,6 +7,7 @@ module.exports = async function () {
 
     const I = this;
 
+    await I.wait(testConfig.CreateCaseDelay);
     await I.waitForText(newCaseConfig.waitForText, testConfig.WaitForTextTimeout);
     await I.rejectCookies();
 

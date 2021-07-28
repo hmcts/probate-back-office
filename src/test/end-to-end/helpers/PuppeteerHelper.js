@@ -60,8 +60,8 @@ class PuppeteerHelper extends Helper {
             // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason
             const dummyTab = await this.helpers[helperName].browser.newPage();
             await this.delay(0.1);
-            await dummyTab.close();    
-        }        
+            await dummyTab.close();
+        }
     }
 
     async clickTab(tabTitle) {

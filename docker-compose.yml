@@ -36,6 +36,8 @@ services:
       DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,probate_backend
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       REFORM_SERVICE_NAME: ccd-definition-store-api
       REFORM_TEAM: ccd
@@ -68,6 +70,8 @@ services:
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
@@ -107,6 +111,8 @@ services:
     environment:
       IDAM_BASE_URL: http://sidam-api:5000
       IDAM_USER_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       IDAM_SERVICE_KEY: AAAAAAAAAAAAAAAA
       IDAM_OAUTH2_LOGOUT_ENDPOINT: http://sidam-api:5000/session/:token

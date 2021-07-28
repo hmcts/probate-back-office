@@ -14,7 +14,7 @@ const markForExaminationConfig = require('src/test/end-to-end/pages/markForExami
 const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markForIssueConfig');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig-PaperFormYes');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGoPSol/caseDetailsTabConfig-PaperFormYes');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsTabConfig-PaperFormYes');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');

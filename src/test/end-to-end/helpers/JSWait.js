@@ -17,7 +17,7 @@ class JSWait extends codecept_helper {
         });
     }
 
-    async amOnLoadedPage (url) {        
+    async amOnLoadedPage (url) {
         const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
         const helperIsPuppeteer = this.helpers.Puppeteer;
 
@@ -27,9 +27,9 @@ class JSWait extends codecept_helper {
             }
 
             const currUrl = await helper.page.url();
-            if ( currUrl === url) {
+            if (currUrl === url) {
                 return;
-            }            
+            }
 
             await Promise.all([
                 // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
@@ -41,8 +41,8 @@ class JSWait extends codecept_helper {
                 // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
                 const dummyTab = await helper.browser.newPage();
                 await this.delay(0.1);
-                await dummyTab.close();    
-            }            
+                await dummyTab.close();
+            }
         } else {
             // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
             await helper.amOnPage(url, 60);

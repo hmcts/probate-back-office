@@ -8,7 +8,7 @@ module.exports = async function () {
 
     await I.waitForText('Check your answers', testConfig.WaitForTextTimeout);
     await I.runAccessibilityTest();
-    await I.wait(testConfig.ManualDelayMedium);
+    await I.wait(testConfig.CheckYourAnswersDelay);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
