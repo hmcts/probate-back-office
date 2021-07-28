@@ -6,11 +6,13 @@ module.exports = async function (caseRef) {
     const I = this;
 
     const scenarioName = 'Find cases';
+    await I.logInfo(scenarioName, 'Navigating to case');
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.waitForVisible(searchLinkLocator);
     await I.waitForClickable(searchLinkLocator);
 
+    /*
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.logInfo(scenarioName, 'About to click search link');
     await I.wait(testConfig.FindCasesDelay);
@@ -44,7 +46,11 @@ module.exports = async function (caseRef) {
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
+    */
 
+    const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+    await I.amOnLoadedPage(url);
+    
     /*
     const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
     await I.amOnLoadedPage(url);
