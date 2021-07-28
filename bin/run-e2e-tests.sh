@@ -20,7 +20,8 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/xui'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+#yarn test:functional
+yarn test-e2e-gop-sol-create-cw-amend_pipeline
 
 export TEST_E2E_URL=${TEST_E2E_URL}
 export E2E_TEST_PATH="./paths/caseworker/**/*.js"
@@ -39,7 +40,7 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+# yarn test:functional
 
 export TEST_E2E_URL=${TEST_E2E_URL}
 export E2E_TEST_PATH="./paths/caseprogress/**/*.js"
@@ -58,7 +59,7 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+# yarn test:functional
 
 #export E2E_TEST_PATH="./paths/caseprogress/*.js"
 #yarn test:functional
