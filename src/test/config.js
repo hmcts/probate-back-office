@@ -51,5 +51,5 @@ module.exports = {
     CreateCaseContinueDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0 : 0,
     WillLodgementDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0 : 0,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
-    CheckYourAnswersDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.5
+    CheckYourAnswersDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
 };
