@@ -55,7 +55,13 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
-   
+
+    // Is set when Solicitor completes.We currently have either 2.0.0 or null.
+    // If we need to introduce more versions, we may need to change code where this is used
+    // and possibly use more constants such as VERSION_TC_INTRODUCED, and use
+    // >, >=, <=, < comparisions etc, converting to numeric
+    public static final String LATEST_SCHEMA_VERSION = "2.0.0";
+
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
         return new ArrayList<>(asList(
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED,

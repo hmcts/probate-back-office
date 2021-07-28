@@ -72,6 +72,7 @@ public class PDFManagementService {
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
         switch (documentType) {
             case DIGITAL_GRANT:
+            case DIGITAL_GRANT_REISSUE:
                 callbackRequest.getCaseDetails()
                     .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));

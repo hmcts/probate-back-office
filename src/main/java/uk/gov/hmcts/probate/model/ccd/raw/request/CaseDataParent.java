@@ -9,11 +9,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Jacksonized
 @SuperBuilder
@@ -80,4 +85,48 @@ public class CaseDataParent {
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
 
+    private final String reissueDate;
+
+    @Getter(lazy = true)
+    private final String reissueDateFormatted = convertDate(reissueDate);
+
+    public String convertDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        return convertDate(dateToConvert.toString());
+    }
+
+    public String convertDate(String dateToConvert) {
+        if (dateToConvert == null || dateToConvert.equals("")) {
+            return null;
+        }
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        try {
+            Date date = originalFormat.parse(dateToConvert);
+            String formattedDate = targetFormat.format(date);
+            int day = Integer.parseInt(formattedDate.substring(0, 2));
+            switch (day) {
+                case 1:
+                case 21:
+                case 31:
+                    return day + "st " + formattedDate.substring(3);
+
+                case 2:
+                case 22:
+                    return day + "nd " + formattedDate.substring(3);
+
+                case 3:
+                case 23:
+                    return day + "rd " + formattedDate.substring(3);
+
+                default:
+                    return day + "th " + formattedDate.substring(3);
+            }
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
+    }
 }

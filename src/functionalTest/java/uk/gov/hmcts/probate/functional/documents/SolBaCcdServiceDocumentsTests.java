@@ -111,22 +111,26 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
 
-    private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
-    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
+    private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
+    private static final String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
         + "which is available from the Court) was John Smith";
-    private static String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
+    private static final String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
-    private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos "
-        + "Sn2 2JU United Kingdom";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
+    private static final String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon "
+        + "Glos Sn2 2JU United Kingdom";
+    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
-    private static String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
-    private static String EXTRANEOUS_CURLY_START_BRACE = "{";
-    private static String EXTRANEOUS_CURLY_END_BRACE = "}";
-    private static String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
+    private static final String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
+    private static final String EXTRANEOUS_CURLY_START_BRACE = "{";
+    private static final String EXTRANEOUS_CURLY_END_BRACE = "}";
+    private static final String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executorof";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
+    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
+    private static final String REISSUE_REASON_DUPLICATE = "Grant of Probate Duplicate of original "
+        + "created on 1st April 2020";
+    private static final String OXFORD_REGISTRY_ADDRESS = "High Court of Justice England and Wales"
+            + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -145,12 +149,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
 
-
     private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
             "solicitorPDFPayloadProbateMultipleExecutors.json";
-    private static final String EMPTY_REQUEST = "emptyRequest.json";
 
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
@@ -190,6 +192,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
     private static final String NOT_NAMED_TC_PAYLOAD = "solicitorPayloadTrustCorpsNotNamed.json";
     private static final String NOT_NAMED_TC_TC_EXEC_PAYLOAD = "solicitorPayloadTrustCorpsNotNamedTcExec.json";
+    private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
@@ -254,6 +257,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySolicitorGenerateGrantDraftReissueCtsc() {
+        final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+    }
+
+    @Test
+    public void verifySolicitorGenerateGrantDraftReissueOxford() {
+        final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
+             "\"registryLocation\": \"ctsc\"","\"registryLocation\": \"Oxford\"");
+        final String response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
+        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+    }
+
+    @Test
     public void verifyTrustCorpsShouldReturnOkResponseCode() {
         validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
     }
@@ -268,6 +287,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generateGrantDocumentFromPayload(String payload, String path) {
         return generateDocumentFromPayload(payload, path, GRANT_DOC_NAME);
+    }
+
+    private String generateReissueGrantDraftDocument(String jsonFileName) {
+        return generateDocument(jsonFileName, GENERATE_GRANT_DRAFT_REISSUE, GRANT_DOC_NAME);
+    }
+
+    private String generateReissueGrantDraftDocumentFromPayload(String payload) {
+        return generateDocumentFromPayload(payload, GENERATE_GRANT_DRAFT_REISSUE, GRANT_DOC_NAME);
     }
 
     private String generateDocumentFromPayload(String payload, String path, String documentName) {
