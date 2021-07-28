@@ -43,7 +43,7 @@ module.exports = {
     CaseworkerCaseNavigateDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CaseProgressSolicitorDetailsDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CaseProgressSubmitConfirmationDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    CreateCaseDelay: 1, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
+    CreateCaseDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     DocumentUploadDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.5,
     EventSummaryDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     GetCaseRefFromUrlDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 4 : 0,
