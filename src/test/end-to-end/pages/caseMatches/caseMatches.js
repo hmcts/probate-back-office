@@ -48,6 +48,9 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
+        // ensure javascript is added to button
+        await I.wait(testConfig.CaseMatchesAddNewButtonClickDelay);
+        await I.waitForEnabled(addNewButtonLocator);
         await I.click(addNewButtonLocator);
     }
 

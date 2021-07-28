@@ -34,6 +34,7 @@ module.exports = {
     // we had a problem one time with ES? Now set back to 6
     CaseMatchesInitialDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 6 : 0,
     CaseMatchesLocateRemoveButtonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
+    CaseMatchesAddNewButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseMatchesCompletionDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseworkerGoButtonClickDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     CaseProgressTabCheckDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
