@@ -55,6 +55,7 @@ module.exports = async function (caseRef) {
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
     const linkLocator = {css: `a.govuk-link[href="/cases/case-details/${caseRefNoDashes}"]`};
 
+    await I.logInfo(scenarioName, `waiting for link ${linkLocator}`);
     await I.waitForVisible(linkLocator);
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
