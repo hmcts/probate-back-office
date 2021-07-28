@@ -111,22 +111,26 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Administrators Applying for Letters of Administration (with will annexed)";
     private static final String HMCTS_VALUE = "HMCTS";
 
-    private static String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
-    private static String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
+    private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
+    private static final String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
         + "which is available from the Court) was John Smith";
-    private static String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
+    private static final String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
-    private static String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon Glos "
-        + "Sn2 2JU United Kingdom";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
+    private static final String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon "
+        + "Glos Sn2 2JU United Kingdom";
+    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
-    private static String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
-    private static String EXTRANEOUS_CURLY_START_BRACE = "{";
-    private static String EXTRANEOUS_CURLY_END_BRACE = "}";
-    private static String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
+    private static final String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
+    private static final String EXTRANEOUS_CURLY_START_BRACE = "{";
+    private static final String EXTRANEOUS_CURLY_END_BRACE = "}";
+    private static final String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executorof";
-    private static String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
+    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
+    private static final String REISSUE_REASON_DUPLICATE = "Grant of Probate Duplicate of original "
+        + "created on 1st April 2020";
+    private static final String OXFORD_REGISTRY_ADDRESS = "High Court of Justice England and Wales"
+            + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -150,7 +154,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
             "solicitorPDFPayloadProbateMultipleExecutors.json";
-    private static final String EMPTY_REQUEST = "emptyRequest.json";
 
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
     private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
@@ -257,9 +260,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorGenerateGrantDraftReissueCtsc() {
         final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
-        assertTrue(response
-            .contains("Principal Registry of the Family DivisionHMCTS ProbatePO Box 12625HarlowCM20 9QE0300 303 0648"));
-        assertTrue(response.contains("Grant of Probate Duplicate of original created on 1st April 2020"));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
     }
 
     @Test
@@ -267,10 +269,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
              "\"registryLocation\": \"ctsc\"","\"registryLocation\": \"Oxford\"");
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
-        assertTrue(response
-            .contains("High Court of Justice England and Wales"
-            + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648"));
-        assertTrue(response.contains("Grant of Probate Duplicate of original created on 1st April 2020"));
+        assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
+        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
     }
 
     @Test
