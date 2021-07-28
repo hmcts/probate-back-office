@@ -18,6 +18,7 @@ export SOL_USER_PASSWORD="Probate123"
 export E2E_AUTO_DELAY_ENABLED='true'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/xui'
+export RETRY_SCENARIOS=2
 
 yarn test:functional
 
@@ -36,6 +37,7 @@ export SOL_USER_PASSWORD="Probate123"
 
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
+export RETRY_SCENARIOS=2
 
 yarn test:functional
 
@@ -54,6 +56,7 @@ export SOL_USER_PASSWORD="Probate123"
 
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
+export RETRY_SCENARIOS=2
 
 yarn test:functional
 
