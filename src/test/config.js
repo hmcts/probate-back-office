@@ -20,7 +20,7 @@ module.exports = {
     ManualDelayLong: 0.75,
     // if auto delay enabled, is running in pipeline, not locally from individual test path run via package.json script
     SignOutDelayDefault: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
-    SignInDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
+    SignInDelay: 2, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     RejectCookies: false,
     RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
