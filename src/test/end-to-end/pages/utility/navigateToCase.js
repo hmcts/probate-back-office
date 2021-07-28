@@ -7,10 +7,16 @@ module.exports = async function (caseRef) {
 
     const scenarioName = 'Find cases';
     await I.logInfo(scenarioName, 'Navigating to case');
+    await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
+    await I.wait(testConfig.FindCasesInitialDelay);
+    await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
+    await I.waitForElement({css: '#wb-case-type'});
+    await I.logInfo(scenarioName, 'Waiting for wb-case-type select GoR option');
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
-    await I.waitForVisible(searchLinkLocator);
-    await I.waitForClickable(searchLinkLocator);
+    await I.logInfo(scenarioName, 'Waiting for case-search link');
+    await I.waitForElement(searchLinkLocator);
+    // await I.waitForClickable(searchLinkLocator);
 
     // This code navigates to case by searching for the case by case ref in the UI, then clicking it.
     // Works fine locally but we have issues in the pipeline
