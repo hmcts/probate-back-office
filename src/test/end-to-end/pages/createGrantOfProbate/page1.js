@@ -33,6 +33,7 @@ module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled('#selectionList');
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         if (forAmendOfSolicitorCreatedCase) {
             await I.click({css: `#languagePreferenceWelsh_${createGrantOfProbateConfig.page1_optionNo}`});

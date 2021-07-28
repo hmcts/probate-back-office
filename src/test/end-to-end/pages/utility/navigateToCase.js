@@ -13,6 +13,10 @@ module.exports = async function (caseRef) {
     await I.waitForClickable(searchLinkLocator);
 
     /*
+    This code navigates to case by searching for the case by case ref in the UI, then clicking it.
+    Works fine locally but is not running in the pipeline, so have reverted to putting in the url and
+    going straight there.
+
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.logInfo(scenarioName, 'About to click search link');
     await I.wait(testConfig.FindCasesDelay);
@@ -50,22 +54,6 @@ module.exports = async function (caseRef) {
 
     const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
     await I.amOnLoadedPage(url);
-
-    /*
-    const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-    await I.amOnLoadedPage(url);
-
-    let numHomEls = 0;
-    let loopCount = 0;
-    while (numHomEls == 0 || loopCount > 20) {
-        numHomEls = await I.grabNumberOfVisibleElements('exui-case-home');
-        if (numHomEls === 0) {
-            await I.wait(0.25);
-            await I.amOnLoadedPage(url);
-            loopCount++;
-        }
-    }
-    */
 
     await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 };
