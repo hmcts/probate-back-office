@@ -12,12 +12,11 @@ module.exports = async function (caseRef) {
     await I.waitForVisible(searchLinkLocator);
     await I.waitForClickable(searchLinkLocator);
 
-    /*
-    This code navigates to case by searching for the case by case ref in the UI, then clicking it.
-    Works fine locally but is not running in the pipeline, so have reverted to putting in the url and
-    going straight there.
+    // if (!testConfig.TestAutoDelayEnabled) {
+        // This code navigates to case by searching for the case by case ref in the UI, then clicking it.
+        // Works fine locally but is not running in the pipeline (pipeline always has auto-delay enabled)
 
-    // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
+        // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.logInfo(scenarioName, 'About to click search link');
     await I.wait(testConfig.FindCasesDelay);
     await I.click(searchLinkLocator);
@@ -50,10 +49,13 @@ module.exports = async function (caseRef) {
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
-    */
 
-    const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-    await I.amOnLoadedPage(url);
-
+    // } else {
+        // Conversely, this much simpler js, which used to run locally under CCD ui, sometimes fails locally
+        // running xui but is ok in pipeline
+    // const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+    //    await I.amOnLoadedPage(url);    
+    // }
+    
     await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 };
