@@ -35,23 +35,6 @@ class PuppeteerHelper extends Helper {
         return typeof locator === 'string' ? this.adjustLocator(locator) : this.adjustLocator(locator.css);
     }
 
-    async addATabRetainingFocusOnOriginal() {
-        const browser = this.helpers[helperName].browser;
-        if (browser.newPage) {
-            // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason
-            const t = await browser.newPage();
-            const pages = await browser.pages();
-            await pages[0].bringToFront();
-            return t;
-        }
-    }
-
-    async removeTab(tab) {
-        if (this.helpers[helperName].browser.newPage) {
-            await tab.close();
-        }
-    }
-
     async addATemporaryDummyTab() {
         if (this.helpers[helperName].browser.newPage) {
             // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason

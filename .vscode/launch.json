@@ -219,7 +219,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },                
+        },
+        {
+            "name": "Solicitor create GOP, Caseworker amend e2e (PIPELINE version)",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-gop-sol-create-cw-amend-pipeline",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },                 
         {
             "name": "Solicitor GoP e2e",
             "request": "launch",

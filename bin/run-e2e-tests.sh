@@ -21,7 +21,7 @@ export E2E_OUTPUT_DIR='./functional-output/xui'
 export RETRY_SCENARIOS=2
 
 #yarn test:functional
-yarn test-e2e-gop-sol-create-cw-amend_pipeline
+yarn test-e2e-gop-sol-create-cw-amend-pipeline
 
 export TEST_E2E_URL=${TEST_E2E_URL}
 export E2E_TEST_PATH="./paths/caseworker/**/*.js"

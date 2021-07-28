@@ -10,8 +10,10 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
 
-    const html = await I.grabSource(); // await I.grabHTMLFrom({css: 'exui-root'});
+    /*
+    const html = await I.grabSource();
     await I.logInfo(scenarioName, html);
+    */
 
     await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
     await I.waitForElement({css: '#wb-case-type'});
@@ -20,7 +22,6 @@ module.exports = async function (caseRef) {
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.logInfo(scenarioName, 'Waiting for case-search link');
     await I.waitForElement(searchLinkLocator);
-    // await I.waitForClickable(searchLinkLocator);
 
     // This code navigates to case by searching for the case by case ref in the UI, then clicking it.
     // Works fine locally but we have issues in the pipeline
@@ -37,13 +38,12 @@ module.exports = async function (caseRef) {
     await I.waitForEnabled(caseRefLocator);
     await I.logInfo(scenarioName, 'case ref input field now visible and enabled');
 
-    // await I.waitForElement({css: 'exui-search-case'});
     await I.waitForEnabled({css: '#s-jurisdiction'});
     await I.waitForElement({css: '#s-jurisdiction option'});
     await I.waitForEnabled({css: '#s-case-type'});
     await I.waitForElement({css: '#s-case-type option'});
     await I.selectOption({css: '#s-case-type'}, 'Grant of representation');
-    // await I.waitForVisible(caseRefLocator);
+
     await I.waitForEnabled(caseRefLocator);
     await I.fillField(caseRefLocator, caseRef);
     if (!testConfig.TestAutoDelayEnabled) {
