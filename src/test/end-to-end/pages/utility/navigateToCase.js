@@ -22,10 +22,10 @@ module.exports = async function (caseRef) {
     await I.click(searchLinkLocator);
     await I.logInfo(scenarioName, 'Search link clicked, now waiting for case ref input field to be visible and enabled');
 
-    // const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
-    const caseRefLocator = {css: 'input[type="text"]:first-child'};
+    const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
+    // const caseRefLocator = {css: 'input[type="text"]'};
     try {
-        await I.waitForVisible(caseRefLocator);
+        await I.waitForEnabled(caseRefLocator);
     } catch (e) {
         await I.logInfo(scenarioName, 'Unable to find element input[id="[CASE_REFERENCE]"], switching to fallback position of direct navigation');
         await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesDelay} seconds`);
@@ -45,7 +45,7 @@ module.exports = async function (caseRef) {
     await I.waitForEnabled({css: '#s-case-type'});
     await I.waitForElement({css: '#s-case-type option'});
     await I.selectOption({css: '#s-case-type'}, 'Grant of representation');
-    await I.waitForVisible(caseRefLocator);
+    // await I.waitForVisible(caseRefLocator);
     await I.waitForEnabled(caseRefLocator);
     await I.fillField(caseRefLocator, caseRef);
     if (!testConfig.TestAutoDelayEnabled) {
