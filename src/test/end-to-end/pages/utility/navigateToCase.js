@@ -5,6 +5,7 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (caseRef) {
     const I = this;
 
+    const scenarioName = 'Find cases';
     await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.waitForVisible(searchLinkLocator);
