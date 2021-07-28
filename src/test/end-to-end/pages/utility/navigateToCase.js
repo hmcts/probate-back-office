@@ -11,11 +11,15 @@ module.exports = async function (caseRef) {
     await I.waitForClickable(searchLinkLocator);
 
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
+    await I.logInfo(scenarioName, 'About to click search link');
     await I.wait(testConfig.FindCasesDelay);
     await I.click(searchLinkLocator);
+    await I.logInfo(scenarioName, 'Search link clicked, now waiting for case ref input field to be visible and enabled');
+
     const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
     await I.waitForVisible(caseRefLocator);
     await I.waitForEnabled(caseRefLocator);
+    await I.logInfo(scenarioName, 'case ref input field now visible and enabled');
 
     // await I.waitForElement({css: 'exui-search-case'});
     await I.waitForEnabled({css: '#s-jurisdiction'});

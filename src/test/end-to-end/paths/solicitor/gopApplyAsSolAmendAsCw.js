@@ -134,12 +134,14 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState, true);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig, null, null, true);
 
-    await I.logInfo(scenarioName, 'Sign out and login as case worker');
+    await I.logInfo(scenarioName, 'Sign out as probate practitioner');
 
     await I.signOut();
 
     // IdAM - Caseworker
+    await I.logInfo(scenarioName, 'Login as case worker');
     await I.authenticateWithIdamIfAvailable(false);
+    await I.logInfo(scenarioName, 'Navigate to case');
     await I.navigateToCase(caseRef);
     await I.logInfo(scenarioName, 'Amend details', caseRef);
     nextStepName = 'Amend case details';
