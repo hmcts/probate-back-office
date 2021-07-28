@@ -34,16 +34,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
-    /*
-    await I.waitForElement({css: 'html'});
-    try {
-        const html = await I.grabSource(); // await I.grabHTMLFrom({css: 'html'});
-        await I.logInfo(scenarioName, html);
-    } catch (e) {
-        await I.logInfo(scenarioName, e.message);
-    }
-    */
-
     await I.logInfo(scenarioName, 'Initial application details');
 
     let nextStepName = 'Deceased details';
@@ -157,7 +147,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // IdAM - Caseworker
     await I.logInfo(scenarioName, 'Login as case worker');
-    await I.authenticateWithIdamIfAvailable(false, true);
+    await I.authenticateWithIdamIfAvailable(false, false, testConfig.MultiUserSignInDelay);
     await I.logInfo(scenarioName, 'Navigate to case');
     await I.navigateToCase(caseRef);
     await I.logInfo(scenarioName, 'Amend details', caseRef);

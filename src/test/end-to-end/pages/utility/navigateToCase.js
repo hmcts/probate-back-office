@@ -10,7 +10,6 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
 
-    // await I.waitForElement({css: 'exui-root'});
     const html = await I.grabSource(); // await I.grabHTMLFrom({css: 'exui-root'});
     await I.logInfo(scenarioName, html);
 
@@ -34,18 +33,6 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, 'Search link clicked, now waiting for case ref input field to be visible and enabled');
 
     const caseRefLocator = {css: 'input[id="[CASE_REFERENCE]"]'};
-    // const caseRefLocator = {css: 'input[type="text"]'};
-    try {
-        await I.waitForEnabled(caseRefLocator);
-    } catch (e) {
-        await I.logInfo(scenarioName, 'Unable to find element input[id="[CASE_REFERENCE]"], switching to fallback position of direct navigation');
-        await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesDelay} seconds`);
-        await I.wait(testConfig.FindCasesDelay);
-        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-        await I.amOnLoadedPage(url);
-        await I.wait(testConfig.CaseworkerCaseNavigateDelay);
-        return;
-    }
 
     await I.waitForEnabled(caseRefLocator);
     await I.logInfo(scenarioName, 'case ref input field now visible and enabled');

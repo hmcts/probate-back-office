@@ -20,11 +20,11 @@ module.exports = {
     ManualDelayLong: 0.75,
     // if auto delay enabled, is running in pipeline, not locally from individual test path run via package.json script
     SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0,
-    SignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     RejectCookies: false,
     RejectCookieDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0,
     CaseDetailsDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
+    MultiUserSignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     // Running in the pipeline means a much slower response bringing back existing cases.
     // This is a blunt approach, would be be better if we used an implicit wait
     // and check for events appearing, detect if a callback in progress, and wait for buttons.
@@ -48,10 +48,10 @@ module.exports = {
     DocumentUploadDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.5,
     EventSummaryDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     GetCaseRefFromUrlDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 4 : 0,
-    CaseProgressSignInDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
+    CaseProgressSignInDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CreateCaseContinueDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     WillLodgementDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
-    FindCasesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0,
+    FindCasesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0.25,
     CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
     NotApplyingExecReasonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0
