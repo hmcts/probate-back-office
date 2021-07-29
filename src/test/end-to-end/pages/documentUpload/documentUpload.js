@@ -12,6 +12,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
 
     await I.see(caseRef);
 
+    await I.waitForEnabled({css: `${documentUploadConfig.id}>div`});
     await I.click({type: 'button'}, `${documentUploadConfig.id}>div`);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev

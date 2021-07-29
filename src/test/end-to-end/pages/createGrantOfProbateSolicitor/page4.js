@@ -98,6 +98,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
+        await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
+        await I.waitForEnabled('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.1);
