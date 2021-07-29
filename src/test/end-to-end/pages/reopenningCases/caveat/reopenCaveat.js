@@ -11,6 +11,7 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
+    await I.waitForEnabled('#caveatReopenReason');
     await I.fillField('#caveatReopenReason', reopenCaveatConfig.reopen_caveat_reason);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
