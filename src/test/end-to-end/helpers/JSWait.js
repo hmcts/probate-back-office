@@ -17,7 +17,7 @@ class JSWait extends codecept_helper {
         });
     }
 
-    async amOnLoadedPage (url) {
+    async amOnLoadedPage (url, waitForNetworkIdle = true) {
         const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
         const helperIsPuppeteer = this.helpers.Puppeteer;
 
@@ -33,7 +33,7 @@ class JSWait extends codecept_helper {
             await this.delay(0.75);
             await Promise.all([
                 // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
-                page.waitForNavigation({waitUntil: 'networkidle2'}), // The promise resolves after navigation has finished
+                page.waitForNavigation(waitForNetworkIdle ? {waitUntil: 'networkidle2'} : {}), // The promise resolves after navigation has finished
                 page.goto(url, 60)
             ]);
             await dummyTab.close();

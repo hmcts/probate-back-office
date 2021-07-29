@@ -88,9 +88,9 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.waitForEnabled('#executorsNotApplying_0_notApplyingExecutorReason');
         await I.selectOption('#executorsNotApplying_0_notApplyingExecutorReason', createGrantOfProbateConfig.page4_not_applying_reason);
 
-        if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.1);
-        }
+        // we seem to need a long wait here when running in the pipeline, not quite sure why, more investigation needed
+        // could be exui show/hide issue
+        await I.wait(testConfig.TestAutoDelayEnabled ? 1 : 0.1);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
         assert (numEls === 0);
@@ -98,8 +98,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.waitForVisible('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
-        await I.waitForEnabled('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
+        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
+        await I.waitForEnabled({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(0.1);

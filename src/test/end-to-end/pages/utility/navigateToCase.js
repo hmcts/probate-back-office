@@ -10,18 +10,32 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
 
+    /*
+    // for some reason we have exui problems in headless mode
+    // that we don't when browser visible
+    if (!testConfig.TestShowBrowserWindow) {
+        // in headless mode this is fine whereas using the UI to find is not
+        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+        await I.logInfo(scenarioName, `Navigating straight to url ${url}`);
+        await I.amOnLoadedPage(url, false);
+        await I.logInfo(scenarioName, 'Navigation successful');
+        await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesDelay} seconds`);
+        await I.wait(testConfig.FindCasesDelay);
+        return;
+    }
+    */
+
+    // when not in headless, navigating to url doesn't work but this is fine
+
     await I.logInfo(scenarioName, 'Waiting for caseType dropdown (not used, but indicates page has at least partially loaded)');
     // await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
     await I.waitForElement({css: '#wb-case-type'});
-    await I.logInfo(scenarioName, 'Case type dropdwon populated, if that didn\'t happen or took too long - address exui issues or clear down data');
+    await I.logInfo(scenarioName, 'Case type dropdwon found, if that didn\'t happen or took too long - address exui issues or clear down data');
 
     /*
     const html = await I.grabSource();
     await I.logInfo(scenarioName, html);
     */
-
-    // const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-    // await I.amOnLoadedPage(url);
 
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.logInfo(scenarioName, 'Waiting for case-search link');

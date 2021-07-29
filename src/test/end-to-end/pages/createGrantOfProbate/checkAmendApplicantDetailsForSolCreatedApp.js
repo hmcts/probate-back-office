@@ -8,6 +8,7 @@ module.exports = async function () {
     const I = this;
 
     await I.waitForText(grantOfProbateConfig.amendCaseDetails_waitForText);
+    await I.waitForEnabled({css: '#selectionList'});
     await I.selectOption('#selectionList', grantOfProbateConfig.amendApplicantDetails_update_option);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
