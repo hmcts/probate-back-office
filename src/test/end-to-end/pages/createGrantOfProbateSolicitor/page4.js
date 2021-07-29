@@ -8,8 +8,6 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     const I = this;
 
-    await I.wait(testConfig.ExecutorsPageDelay);
-
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.WaitForTextTimeout);
         await I.seeElement('#otherExecutorExists_Yes');
@@ -23,6 +21,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
             await I.wait(testConfig.ManualDelayMedium);
         }
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText3, testConfig.WaitForTextTimeout);
+
+        await I.wait(testConfig.ExecutorsPageDelay);
 
         let numEls = await I.grabNumberOfVisibleElements({css: '#executorsApplying_0_applyingExecutorTrustCorpPosition'});
         assert (numEls === 0);
