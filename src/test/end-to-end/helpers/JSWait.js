@@ -29,15 +29,15 @@ class JSWait extends codecept_helper {
             // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
             const page = helper.page;
             let dummyTab = await helper.browser.newPage();
-
-            await this.delay(0.5);
+            await page.bringToFront();
+            await this.delay(0.75);
             await Promise.all([
                 // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
                 page.waitForNavigation({waitUntil: 'networkidle2'}), // The promise resolves after navigation has finished
                 page.goto(url, 60)
             ]);
             await dummyTab.close();
-            await this.delay(0.5);            
+            await this.delay(0.5);
             dummyTab = await helper.browser.newPage();
             await this.delay(0.75);
             await dummyTab.close();

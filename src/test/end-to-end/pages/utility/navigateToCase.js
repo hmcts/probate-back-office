@@ -10,6 +10,11 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
 
+    await I.logInfo(scenarioName, 'Waiting for caseType dropdown (not used, but indicates page has at least partially loaded)');
+    // await I.waitForElement({xpath: '//select[@id="wb-case-type"]/option[text()="Grant of representation"]'});
+    await I.waitForElement({css: '#wb-case-type'});
+    await I.logInfo(scenarioName, 'Case type dropdwon populated, if that didn\'t happen or took too long - address exui issues or clear down data');
+
     /*
     const html = await I.grabSource();
     await I.logInfo(scenarioName, html);
@@ -17,7 +22,7 @@ module.exports = async function (caseRef) {
 
     // const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
     // await I.amOnLoadedPage(url);
-    
+
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.logInfo(scenarioName, 'Waiting for case-search link');
     await I.waitForVisible(searchLinkLocator);
@@ -59,9 +64,9 @@ module.exports = async function (caseRef) {
 
     await I.logInfo(scenarioName, `waiting for link ${linkLocator.css}`);
     await I.waitForElement(linkLocator);
-    
+
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
-    await I.wait(testConfig.CaseworkerCaseNavigateDelay);    
+    await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 };
