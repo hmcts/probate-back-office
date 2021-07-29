@@ -54,6 +54,6 @@ module.exports = {
     FindCasesInitialDelay: 1, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.75,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 1,
     CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
-    ExecutorsPageDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0 // allow time for js to attach to elements
+    ExecutorsPageDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0 // allow time for js to attach to elements
 
 };

@@ -42,7 +42,8 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+# yarn test:functional
+yarn test-e2e-grantOfProbate-sol-non-trust-pipeline
 
 ################
 
