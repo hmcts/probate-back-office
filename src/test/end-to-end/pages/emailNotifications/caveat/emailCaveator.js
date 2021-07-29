@@ -11,7 +11,8 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
-    await I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
+    await I.waitForEnabled({css: '#messageContent'});
+    await I.fillField({css: '#messageContent'}, emailCaveatorConfig.email_message_content);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
