@@ -293,7 +293,7 @@ dependencies {
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.9.RC2'
+  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.9.RC3'
   implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
