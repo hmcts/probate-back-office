@@ -87,25 +87,28 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
         await I.waitForEnabled('#executorsNotApplying_0_notApplyingExecutorReason');
         await I.selectOption('#executorsNotApplying_0_notApplyingExecutorReason', createGrantOfProbateConfig.page4_not_applying_reason);
-        // await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
 
-        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.1);
+        }
 
-        // numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
-        // assert (numEls === 0);
+        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
+        assert (numEls === 0);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
-        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
+        if (!testConfig.TestAutoDelayEnabled) {
+            await I.wait(0.1);
+        }
 
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No');
-
+        // await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No');
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes');
+
         await I.waitForVisible({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
 
         await I.fillField('#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day', createGrantOfProbateConfig.page4_dispense_notice_leave_day);
@@ -140,6 +143,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled('#selectionList');
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');

@@ -11,6 +11,7 @@ module.exports = async function (crud) {
     if (crud === 'create') {
         await I.waitForText(createWillLodgementConfig.page1_waitForText, testConfig.WaitForTextTimeout);
 
+        await I.waitForEnabled('applicationType');
         await I.selectOption('#applicationType', createWillLodgementConfig.page1_list1_application_type);
         await I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location);
         await I.selectOption('#lodgementType', createWillLodgementConfig.page1_list3_lodgement_type);
@@ -35,6 +36,7 @@ module.exports = async function (crud) {
     if (crud === 'update') {
         await I.waitForText(createWillLodgementConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
 
+        await I.waitForEnabled('#registryLocation');
         await I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location_update);
         await I.selectOption('#lodgementType', createWillLodgementConfig.page1_list3_lodgement_type_update);
 
