@@ -88,27 +88,28 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
         await I.waitForEnabled('#executorsNotApplying_0_notApplyingExecutorReason');
         await I.selectOption('#executorsNotApplying_0_notApplyingExecutorReason', createGrantOfProbateConfig.page4_not_applying_reason);
 
-        // we seem to need a long wait here when running in the pipeline, not quite sure why, more investigation needed
-        // could be exui show/hide issue
-        await I.wait(testConfig.TestAutoDelayEnabled ? 1 : 0.1);
-
-        numEls = await I.grabNumberOfVisibleElements({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
-        assert (numEls === 0);
-
-        numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
-        assert (numEls === 0);
+        await I.wait(0.1);
 
         await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
         await I.waitForEnabled({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
-        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
-        if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.1);
-        }
+        
+        numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
+        assert (numEls === 0);
 
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
         assert (numEls === 0);
 
-        // await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No');
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes');
+
+        await I.wait(0.1);
+
+        numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
+        assert (numEls === 0);
+
+        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No'});
+        await I.waitForEnabled({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No'});
+
+        await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_No');
         await I.click('#executorsNotApplying_0_notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes');
 
         await I.waitForVisible({css: '#notApplyingExecutorDispenseWithNoticeLeaveGivenDate-day'});
