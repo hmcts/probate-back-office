@@ -1,20 +1,31 @@
 'use strict';
 
+/*
+Resolve this xui issues that we get in pipeline (not locally)
+15:50:47    2) Back Office
+15:50:47         Caseworker Grant of Representation - Sol journey - Paper Form Yes - Grant issued:
+15:50:47       Error: element ({css: #executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes}) still not visible after 60 sec
+15:50:47  waiting for selector `#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes` failed: timeout 60000ms exceeded
+15:50:47        at /opt/jenkins/workspace/bate_probate-back-office_PR-1680/node_modules/codeceptjs/lib/helper/Puppeteer.js:1968:13
+15:50:47        at async Actor.module.exports (src/test/end-to-end/pages/createGrantOfProbateSolicitor/page4.js:101:9)
+15:50:47        at async Test.<anonymous> (src/test/end-to-end/paths/caseworker/grantOfProbateSolPath-PaperFormYes.js:55:5)
+*/
+
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
-const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateSolicitor/createGrantOfProbateConfig-NonTrust');
+const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateSolicitor/createGrantOfProbateConfig-PaperFormYes');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const markForExaminationConfig = require('src/test/end-to-end/pages/markForExamination/markForExaminationConfig');
 const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markForIssueConfig');
 
-const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig-NonTrust');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsTabConfig-Succ');
+const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsTabConfig-PaperFormYes');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsTabConfig-PaperFormYes');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
@@ -25,11 +36,11 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfP
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/applicantDetailsUpdateTabConfig');
-const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsUpdateTabConfig');
+const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/caseDetailsUpdateTabConfig-PaperFormYes');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/cwCreateGopSol/deceasedUpdateTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Caseworker Grant of Representation - Sol journey - Non Trust Corp option - Grant issued';
+const scenarioName = 'Caseworker Grant of Representation - Sol journey - Paper Form Yes - Grant issued';
 Scenario(scenarioName, async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
@@ -70,8 +81,8 @@ Scenario(scenarioName, async function ({I}) {
 
     // SECOND case - the main test case
 
-    await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
+    await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.cwEnterSolsGoPPage1('create', createGrantOfProbateConfig);
@@ -99,6 +110,7 @@ Scenario(scenarioName, async function ({I}) {
     const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
@@ -145,7 +157,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
     await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
     await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
@@ -230,6 +241,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.issueGrant(caseRef);
     endState = 'Grant issued';
     await I.logInfo(scenarioName, endState, caseRef);
+
     await I.enterEventSummary(caseRef, nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
