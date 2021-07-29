@@ -22,6 +22,7 @@ module.exports = async function (crud) {
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 

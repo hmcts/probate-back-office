@@ -51,7 +51,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
-        await I.waitForEnabled('#selectionList');
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);

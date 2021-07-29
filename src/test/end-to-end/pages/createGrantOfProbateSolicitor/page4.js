@@ -145,7 +145,7 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
-        await I.waitForEnabled('#selectionList');
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForVisible('#executorsApplying_0_applyingExecutorOtherNames');
