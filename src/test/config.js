@@ -53,5 +53,7 @@ module.exports = {
     WillLodgementDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     FindCasesInitialDelay: 1, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.75,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 1,
-    CheckYourAnswersDelay: 0.5 // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
+    CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
+    ExecutorsPageDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 0 // allow time for js to attach to elements
+
 };

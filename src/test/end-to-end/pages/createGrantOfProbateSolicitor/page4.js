@@ -8,6 +8,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
     const I = this;
 
+    await I.wait(testConfig.ExecutorsPageDelay);
+
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.WaitForTextTimeout);
         await I.seeElement('#otherExecutorExists_Yes');
@@ -90,11 +92,8 @@ module.exports = async function (crud, createGrantOfProbateConfig) {
 
         await I.wait(0.1);
 
-        // doesn't work in the pipeline - no idea why  works locally headless and with broser showing
-        if (!testConfig.TestAutoDelayEnabled) {
-            await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
-            await I.waitForEnabled({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
-        }
+        await I.waitForVisible({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
+        await I.waitForEnabled({css: '#executorsNotApplying_0_notApplyingExecutorDispenseWithNotice_Yes'});
 
         numEls = await I.grabNumberOfVisibleElements({css: '#notApplyingExecutorDispenseWithNoticeLeaveGiven_Yes'});
         assert (numEls === 0);
