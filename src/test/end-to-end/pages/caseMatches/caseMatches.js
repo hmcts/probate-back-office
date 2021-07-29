@@ -60,8 +60,9 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         if (!testConfig.TestAutoDelayEnabled) {
             await I.wait(testConfig.ManualDelayMedium);
         }
-        await I.scrollTo({css: 'input[id$="valid_Yes"]'});
         await I.waitForElement({css: 'input[id$="valid_Yes"]'});
+        await I.scrollTo({css: 'input[id$="valid_Yes"]'});
+        await I.waitForEnabled({css: 'input[id$="valid_Yes"]'});
         await I.click({css: 'input[id$="valid_Yes"]'});
         await I.waitForElement({css: 'input[id$="doImport_No"]'});
         await I.click({css: 'input[id$="doImport_No"]'});

@@ -11,7 +11,10 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
+    await I.waitForElement({css: `#boSendToBulkPrint_${issueGrantConfig.list1_text}`});
+    await I.waitForEnabled({css: `#boSendToBulkPrint_${issueGrantConfig.list1_text}`});
     await I.click(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
+    await I.waitForEnabled({css: `#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`});
     await I.click(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

@@ -32,7 +32,7 @@ module.exports = {
     // if timeout exception raised)
     // This was set to 60 for pipeline which seems overkill, perhaps
     // we had a problem one time with ES? Now set back to 6
-    CaseMatchesInitialDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 6 : 0,
+    CaseMatchesInitialDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.25,
     CaseMatchesLocateRemoveButtonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
     CaseMatchesAddNewButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseMatchesCompletionDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,

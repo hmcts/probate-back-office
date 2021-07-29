@@ -76,6 +76,7 @@ module.exports = async function (crud, unique_deceased_user) {
         // "reverting" update back to defaults - to enable case-match with matching case
         await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.WaitForTextTimeout);
 
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 

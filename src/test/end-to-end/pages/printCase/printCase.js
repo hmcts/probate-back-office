@@ -11,6 +11,8 @@ module.exports = async function (caseRef) {
 
     await I.see(caseRef);
 
+    await I.waitForElement({css: '#casePrinted'});
+    await I.waitForEnabled({css: '#casePrinted'});
     await I.selectOption('#casePrinted', printCaseConfig.list1_text);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
