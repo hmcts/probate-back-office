@@ -49,7 +49,7 @@ class PuppeteerHelper extends Helper {
 
         await this.delay(delay);
         const promises = [];
-        promises.push(page.waitForNavigation({waitUntil: 'networkidle2'}));
+        promises.push(page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle2']}));
         if (locator) {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
