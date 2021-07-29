@@ -448,7 +448,6 @@ public class CaseData extends CaseDataParent {
     private final String paymentReferenceNumberPaperform;
     private final String bulkPrintSendLetterId;
     private final String bulkPrintPdfSize;
-    private final String grantIssuedDate;
     private final String dateOfDeathType;
     private final String resolveStopState;
     private final String orderNeeded;

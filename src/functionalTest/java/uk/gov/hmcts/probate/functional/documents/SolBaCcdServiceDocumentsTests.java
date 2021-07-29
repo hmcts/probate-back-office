@@ -131,6 +131,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         + "created on 1st April 2020";
     private static final String OXFORD_REGISTRY_ADDRESS = "High Court of Justice England and Wales"
             + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648";
+    private static final String REISSUE_ORIGINAL_ISSUE_DATE = "1st April 2021";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -261,6 +262,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+        assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
     }
 
     @Test
@@ -270,6 +272,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
         assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
         assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+        assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
     }
 
     @Test

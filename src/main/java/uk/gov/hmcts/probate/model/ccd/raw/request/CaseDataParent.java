@@ -86,9 +86,13 @@ public class CaseDataParent {
     private final String solsNeedsPBAPayment;
 
     private final String reissueDate;
+    private final String grantIssuedDate;
 
     @Getter(lazy = true)
     private final String reissueDateFormatted = convertDate(reissueDate);
+
+    @Getter(lazy = true)
+    private final String grantIssuedDateFormatted = convertDate(grantIssuedDate);
 
     public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
