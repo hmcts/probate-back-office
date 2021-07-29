@@ -64,7 +64,7 @@ class PuppeteerHelper extends Helper {
         }
         await Promise.all(promises);
         await this.delay(delay);
-        await this.addATemporaryDummyTab();
+        // await this.addATemporaryDummyTab();
     }
 
     async clickTab(tabTitle) {

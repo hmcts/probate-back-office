@@ -9,24 +9,15 @@ module.exports = async function (caseRef) {
     await I.logInfo(scenarioName, 'Navigating to case');
     await I.logInfo(scenarioName, `Waiting for ${testConfig.FindCasesInitialDelay} seconds`);
     await I.wait(testConfig.FindCasesInitialDelay);
-    await I.addATemporaryDummyTab();
 
     /*
     const html = await I.grabSource();
     await I.logInfo(scenarioName, html);
     */
 
-    await I.logInfo(scenarioName, 'Waiting for wb-case-type select');
-
-    let numEls = await I.grabNumberOfVisibleElements({css: '#wb-case-type'});
-    if (numEls == 0) {
-        await I.addATemporaryDummyTab();
-        // give up and try navigating straight there
-        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-        await I.amOnLoadedPage(url);
-        return;
-    }
-
+    // const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
+    // await I.amOnLoadedPage(url);
+    
     const searchLinkLocator = {css: 'a[href="/cases/case-search"]:first-child'};
     await I.logInfo(scenarioName, 'Waiting for case-search link');
     await I.waitForVisible(searchLinkLocator);
@@ -67,18 +58,10 @@ module.exports = async function (caseRef) {
     const linkLocator = {css: `a.govuk-link[href="/cases/case-details/${caseRefNoDashes}"]`};
 
     await I.logInfo(scenarioName, `waiting for link ${linkLocator.css}`);
-    await I.wait(testConfig.FindCasesDelay);
-    numEls = await I.grabNumberOfVisibleElements(linkLocator);
-    if (numEls === 0) {
-        // give up and try navigating straight there
-        const url = `${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`;
-        await I.amOnLoadedPage(url);
-        return;
-    }
-
-    // await I.waitForVisible(linkLocator);
+    await I.waitForElement(linkLocator);
+    
     // now that waitforNavigation has networkidle2 wait shouldn't need this, but retained for pipeline (autodelay true)
     await I.wait(testConfig.FindCasesDelay);
     await I.waitForNavigationToComplete(linkLocator.css);
-    await I.wait(testConfig.CaseworkerCaseNavigateDelay);
+    await I.wait(testConfig.CaseworkerCaseNavigateDelay);    
 };
