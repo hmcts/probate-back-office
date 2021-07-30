@@ -418,3 +418,7 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
   application-insights:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
+    
+aca:
+  api:
+    url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}

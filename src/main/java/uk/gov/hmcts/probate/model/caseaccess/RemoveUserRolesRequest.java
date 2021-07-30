@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.caseaccess;
+package uk.gov.hmcts.probate.model.caseaccess;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

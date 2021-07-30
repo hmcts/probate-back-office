@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 
 import java.util.List;
 
@@ -44,4 +45,5 @@ public class ResponseCaseDataParent {
     protected String solsPBAPaymentReference;
     protected String solsOrgHasPBAs;
     protected String solsNeedsPBAPayment;
+    protected OrganisationPolicy applicantOrganisationPolicy;
 }

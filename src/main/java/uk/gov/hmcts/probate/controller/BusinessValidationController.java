@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -81,10 +82,21 @@ public class BusinessValidationController {
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    private final AssignCaseAccessService assignCaseAccessService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
+        logRequest("/update-task-list", request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
+
+    @PostMapping(path = "/sols-access")
+    public ResponseEntity<AfterSubmitCallbackResponse> solicitorCreate(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
+        assignCaseAccessService.assignCaseAccess(request.getCaseDetails(), authToken);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
     @PostMapping(path = "/sols-apply-as-exec")
@@ -370,9 +382,8 @@ public class BusinessValidationController {
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            if (log.isDebugEnabled()) {
-                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
-            }
+            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }

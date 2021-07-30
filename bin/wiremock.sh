@@ -5,7 +5,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "POST",
-            "url": "/credit-account-payments",
+            "urlPath": "/credit-account-payments",
             "bodyPatterns": [ {
               "contains": "PBA0082126"
               }
@@ -43,7 +43,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "POST",
-            "url": "/credit-account-payments",
+            "urlPath": "/credit-account-payments",
             "bodyPatterns": [ {
               "contains": "PBA0083372"
               }
@@ -83,7 +83,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "POST",
-            "url": "/credit-account-payments",
+            "urlPath": "/credit-account-payments",
             "bodyPatterns": [ {
               "contains": "PBA0083374"
               }
@@ -123,7 +123,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "POST",
-            "url": "/credit-account-payments",
+            "urlPath": "/credit-account-payments",
             "bodyPatterns": [ {
               "contains": "1000000"
               }
@@ -163,7 +163,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "POST",
-            "url": "/credit-account-payments",
+            "urlPath": "/credit-account-payments",
             "bodyPatterns": [ {
               "contains": "999999"
               }
@@ -203,7 +203,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "GET",
-            "url": "/refdata/external/v1/organisations/pbas",
+            "urlPath": "/refdata/external/v1/organisations/pbas",
             "headers": {
               "UserEmail": {
                 "equalTo": "probatesolicitortestorgtest1@gmail.com"
@@ -217,7 +217,7 @@ curl -X POST \
             },
             "jsonBody": {
               "organisationEntityResponse" : {
-                "organisationIdentifier": "0UFUG4Z",
+                "organisationIdentifier": "XXXXX",
                 "name": "ia-legal-rep-org",
                 "status": "ACTIVE",
                 "sraId": null,
@@ -244,7 +244,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "GET",
-            "url": "/refdata/external/v1/organisations/pbas",
+            "urlPath": "/refdata/external/v1/organisations/pbas",
             "headers": {
               "UserEmail": {
                 "equalTo": "probatesolicitortestorg2test1@gmail.com"
@@ -258,7 +258,7 @@ curl -X POST \
             },
             "jsonBody": {
               "organisationEntityResponse" : {
-                "organisationIdentifier": "0UFUG4Z",
+                "organisationIdentifier": "XXXXX",
                 "name": "ia-legal-rep-org",
                 "status": "ACTIVE",
                 "sraId": null,
@@ -285,7 +285,7 @@ curl -X POST \
 --data '{
           "request": {
             "method": "GET",
-            "url": "/refdata/external/v1/organisations/pbas",
+            "urlPath": "/refdata/external/v1/organisations/pbas",
             "headers": {
               "UserEmail": {
                 "equalTo": "probatesolicitor2@gmail.com"
@@ -319,6 +319,237 @@ curl -X POST \
           }
         }' \
 http://localhost:8991/__admin/mappings/new
+
+#Organisations
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/external/v1/organisations"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": 
+      {
+    "organisations": [
+      {
+        "companyNumber": "string",
+        "companyUrl": "string",
+        "contactInformation": [
+          {
+            "addressLine1": "string",
+            "addressLine2": "string",
+            "addressLine3": "string",
+            "country": "string",
+            "county": "string",
+            "postCode": "string",
+            "townCity": "string"
+          }
+        ],
+        "name": "XXXXX",
+        "organisationIdentifier": "XXXXX",
+        "paymentAccount": [
+          "string"
+        ],
+        "sraId": "string",
+        "sraRegulated": true,
+        "status": "ACTIVE",
+        "superUser": {
+          "email": "probatesolicitortestorgtest1@gmail.com",
+          "firstName": "PBA",
+          "lastName": "TestUser"
+        }
+      }
+    ]
+  }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
+#OrganisationAddress
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/external/v1/organisations",
+    "queryParameters": {
+      "id": {
+        "equalTo": "XXXXX"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "contactInformation": [
+        {
+          "addressLine1": "Line 1",
+          "addressLine2": "Line 2",
+          "addressLine3": "Line 3",
+          "county": "Kent",
+          "townCity": "London",
+          "country": "UK",
+          "postCode": "DA15 7LN"
+        }
+      ],
+      "organisationIdentifier": "XXXXX",
+      "name": "XXXXX"
+    }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
+#OrganisationAddress2
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/external/v1/organisations/status/ACTIVE",
+    "queryParameters": {
+      "address": {
+        "equalTo": "true"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "contactInformation": [
+        {
+          "addressLine1": "Line 1",
+          "addressLine2": "Line 2",
+          "addressLine3": "Line 3",
+          "county": "Kent",
+          "townCity": "London",
+          "country": "UK",
+          "postCode": "DA15 7LN"
+        }
+      ],
+      "organisationIdentifier": "XXXXX",
+      "name": "XXXXX"
+    }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
+#OrganisationUsers
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/internal/v1/organisations/XXXXX/users",
+    "queryParameters": {
+      "returnRoles": {
+        "equalTo": "false"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "users": [
+        {
+          "userIdentifier": "9cc54f57-b3b1-49df-9a84-0d1529077858",
+          "firstName": "PBA",
+          "lastName": "TestUser",
+          "email": "probatesolicitortestorgtest1@gmail.com",
+          "idamStatus": "ACTIVE"
+        },
+        {
+          "userIdentifier": "c969e0e9-198e-4a5a-9d2d-666c36a854d9",
+          "firstName": "PBA",
+          "lastName": "TestUser2",
+          "email": "probatesolicitortestorg2test1@gmail.com",
+          "idamStatus": "ACTIVE"
+        }  
+      ],
+      "organisationIdentifier": "XXXXX"
+    }
+  }
+}' \
+http://localhost:8991/__admin/mappings/new
+
+
+#Users
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users",
+            "queryParameters": {
+              "status": {
+                "equalTo": "Active"
+              },
+              "returnRoles": {
+                  "equalTo": "false"
+                }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationIdentifier": "XXXXX",
+              "users": [
+                  {
+                    "userIdentifier": "9cc54f57-b3b1-49df-9a84-0d1529077858",
+                    "firstName": "PBA",
+                    "lastName": "TestUser",
+                    "email": "probatesolicitortestorgtest1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "[CREATOR]",
+                      "[APPLICANTSOLICITOR]",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "c969e0e9-198e-4a5a-9d2d-666c36a854d9",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg2test1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "[CREATOR]",
+                      "[APPLICANTSOLICITOR]",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  }
+                ]
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
 
 # make responses persistent in Docker volume
 curl -X POST http://localhost:8991/__admin/mappings/save

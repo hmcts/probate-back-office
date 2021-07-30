@@ -63,7 +63,8 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp
+      CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: aac_manage_case_assignment,fpl_case_service,iac,finrem_case_orchestration,divorce_frontend,nfdiv_cos,civil_service,probate_backend
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,aac_manage_case_assignment
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
@@ -154,6 +155,7 @@ services:
       MICROSERVICEKEYS_XUI_WEBAPP: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_AAC_MANAGE_CASE_ASSIGNMENT: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
       MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
     ports:
@@ -434,7 +436,7 @@ services:
       - DB_USER=${DB_USERNAME}
       - DB_PWD=${DB_PASSWORD}
       - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
-      - LOG_LEVEL=warn
+      - LOG_LEVEL=info
     depends_on:
       - ccd-elasticsearch
       - shared-database
@@ -463,9 +465,11 @@ services:
       LD_USER_KEY: "${LD_BO_USER_KEY}"
       PAYMENT_URL: http://wiremock:8080
       PRD_API_URL: http://wiremock:8080
+      ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
     ports:
       - 4104:4104
     depends_on:
+      - manage-case-assignment
       - sidam-api
       - shared-database
       - service-auth-provider-api
@@ -539,6 +543,7 @@ services:
 
   wiremock:
     image: rodolpheche/wiremock
+    command: --verbose
     ports:
       - 8991:8080
     volumes:
@@ -599,7 +604,6 @@ services:
       MICROSERVICE: xui_webapp
       PROTOCOL: http
       XUI_ENV: local
-
       SERVICES_DOCUMENTS_API: http://dm-store:8080
       SERVICES_PAYMENTS_URL: http://payments-api:8080
       SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
@@ -612,6 +616,7 @@ services:
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
       SERVICES_S2S: http://service-auth-provider-api:8080
       SERVICES_PRD_API: http://wiremock:8080
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://manage-case-assignment:4454
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
       REDISCLOUD_URL: http://dummyrediscloudurl
@@ -627,6 +632,42 @@ services:
     depends_on:
       - ccd-api-gateway
       - ccd-data-store-api
+
+  manage-case-assignment:
+    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+    environment:
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_API_URL: http://sidam-api:5000
+      # IDAM_CLIENT_ID: aac_manage_case_assignment
+      # IDAM_CLIENT_SECRET: "AACAACAACAACAACA"
+      IDAM_CLIENT_REDIRECT_URL: http://localhost:3333/oauth2/callback
+      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_CAA_PASSWORD: "Password12"
+      IDAM_NOC_APPROVER_USERNAME: "approver-noc@mailnesia.com"
+      IDAM_NOC_APPROVER_PASSWORD: "Password12"
+      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_SYSTEM_USER_PASSWORD: "Password12"
+      IDAM_URL: http://sidam-api:5000
+      S2S_URL: http://service-auth-provider-api:8080
+      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      CCD_DATA_STORE_ALLOWED_SERVICE: ccd_gw,xui_webapp,probate_backend
+      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
+      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
+      PRD_HOST: http://wiremock:8080
+      NOTIFY_MCA_API_KEY: "notify-test-api-key"
+    #      JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
+    ports:
+      - 4454:4454
+    #      - 5006:5006
+    depends_on:
+      - sidam-api
+      - shared-database
+      - ccd-data-store-api
+      - service-auth-provider-api
+
 
 volumes:
   ccd-docker-azure-blob-data:

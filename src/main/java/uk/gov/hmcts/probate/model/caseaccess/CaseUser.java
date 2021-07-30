@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.caseaccess;
+package uk.gov.hmcts.probate.model.caseaccess;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -8,13 +8,13 @@ import lombok.Getter;
 @Builder
 @Getter
 @EqualsAndHashCode
-public class AssignCaseAccessRequest {
+public class CaseUser {
     @JsonProperty("case_id")
     private String caseId;
 
-    @JsonProperty("assignee_id")
-    private String assigneeId;
+    @JsonProperty("user_id")
+    private String userId;
 
-    @JsonProperty("case_type_id")
-    private String caseTypeId;
+    @JsonProperty("case_role")
+    private String caseRole;
 }

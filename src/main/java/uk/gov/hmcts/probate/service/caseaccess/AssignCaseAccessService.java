@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.caseaccess.AssignCaseAccessRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -18,6 +19,7 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 @RequiredArgsConstructor
 public class AssignCaseAccessService {
 
+    private final CcdDataStoreService ccdDataStoreService;
     private final AuthTokenGenerator authTokenGenerator;
     private final AssignCaseAccessClient assignCaseAccessClient;
     private final IdamApi idamApi;
@@ -31,12 +33,15 @@ public class AssignCaseAccessService {
         log.info("CaseId: {} assigning case access to user {}", caseDetails.getId(), userId);
 
         String serviceToken = authTokenGenerator.generate();
+        log.info("serviceToken: {}", serviceToken);
+        log.info("authorisationToken: {}", authorisationToken);
         assignCaseAccessClient.assignCaseAccess(
             authorisationToken,
             serviceToken,
             true,
             buildAssignCaseAccessRequest(caseDetails, userId)
         );
+        ccdDataStoreService.removeCreatorRole(caseDetails, authorisationToken);
 
         log.info("CaseId: {} assigned case access to user {}", caseDetails.getId(), userId);
     }

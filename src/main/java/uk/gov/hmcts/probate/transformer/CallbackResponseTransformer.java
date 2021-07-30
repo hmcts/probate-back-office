@@ -16,6 +16,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -791,7 +793,10 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .iht217(caseData.getIht217())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords());
+            .deathRecords(caseData.getDeathRecords())
+            .applicantOrganisationPolicy(buildOrgPolicy(caseData));
+            //I have not identified why this element is not being populated corectly with the orgId yet
+            //.applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -807,6 +812,19 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    private OrganisationPolicy buildOrgPolicy(CaseData caseData) {
+        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
+            .organisation(Organisation.builder()
+                .organisationID("XXXXX")
+                .organisationName("XXXXX")
+                .build())
+            .orgPolicyReference("Policy Ref")
+            .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+            .build();
+        return organisationPolicy;
+        
     }
 
     private boolean isPaperForm(CaseData caseData) {

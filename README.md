@@ -137,6 +137,22 @@ docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
 
+docker-compose stop service-auth-provider-api
+docker-compose up -d service-auth-provider-api
+
+docker-compose stop manage-case-assignment
+docker-compose up -d manage-case-assignment
+
+docker-compose stop xui-manage-cases
+docker-compose up -d xui-manage-cases
+
+wiremock
+http://localhost:8991/__admin/mappings?limit=10
+curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
+curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
+
+    return [{ "idamId": "u111111", "firstName": "Joe", "lastName": "Elliott", "email": "joe.elliott@woodford.com" }, { "idamId": "u222222", "firstName": "Steve", "lastName": "Harrison", "email": "steve.harrison@woodford.com" }, { "idamId": "u333333", "firstName": "James", "lastName": "Priest", "email": "james.priest@woodford.com" }, { "idamId": "u444444", "firstName": "Shaun", "lastName": "Coldwell", "email": "shaun.coldwell@woodford.com" }];
+    
 # to clear out all images
 npx @hmcts/probate-dev-env --destroy
 docker container rm $(docker container ls -a -q)
@@ -148,6 +164,8 @@ docker volume rm $(docker volume ls -q)
 If you would like to test a new CCD config locally, you should run:
 
 ```
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 && ./ccdImports/conversionScripts/importAllXLS.sh
+
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```

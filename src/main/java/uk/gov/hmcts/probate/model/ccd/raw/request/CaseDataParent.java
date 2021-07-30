@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 
 import java.time.LocalDate;
 
@@ -26,5 +27,6 @@ public class CaseDataParent {
     private final String solsPBAPaymentReference;
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
+    private final OrganisationPolicy applicantOrganisationPolicy;
 
 }
