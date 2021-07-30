@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -1272,7 +1273,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
 
-    //Commented out due to Docmosis not allowing screen readers as images overlay all text
+    //Ignored due to Docmosis not allowing screen readers as images overlay all text
+    @Ignore
     @Test
     public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
         final String response = generateGrantDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
