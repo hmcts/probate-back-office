@@ -21,7 +21,7 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/xui'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+# yarn test:functional
 
 ################
 
@@ -42,7 +42,7 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 export RETRY_SCENARIOS=2
 
-yarn test:functional
+# yarn test:functional
 
 ################
 
@@ -63,7 +63,7 @@ export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/ccd'
 export RETRY_SCENARIOS=2
 
-# yarn test:functional
+yarn test:functional
 
 ################
 
