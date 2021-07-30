@@ -80,10 +80,4 @@
    ]]></notes>
         <cve>CVE-2021-33037</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   Suppressing CVE-2021-22145
-   ]]></notes>
-        <cve>CVE-2021-22145</cve>
-    </suppress>
 </suppressions>
