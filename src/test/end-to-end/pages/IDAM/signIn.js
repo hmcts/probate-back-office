@@ -2,12 +2,10 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser, alreadyAtSignInPage = false, signInDelay = testConfig.SignInDelayDefault) {
+module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
 
     const I = this;
-    if (!alreadyAtSignInPage) {
-        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
-    }
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
     await I.wait(testConfig.ManualDelayMedium);
 
     await I.waitForText('Sign in', 600);

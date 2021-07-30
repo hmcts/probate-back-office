@@ -147,7 +147,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // IdAM - Caseworker
     await I.logInfo(scenarioName, 'Login as case worker');
-    await I.authenticateWithIdamIfAvailable(false, false, testConfig.MultiUserSignInDelay);
+    await I.authenticateWithIdamIfAvailable(false, testConfig.MultiUserSignInDelay);
     await I.logInfo(scenarioName, 'Navigate to case');
     await I.navigateToCase(caseRef);
     await I.logInfo(scenarioName, 'Amend details', caseRef);
