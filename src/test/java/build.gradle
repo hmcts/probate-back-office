@@ -18,7 +18,7 @@ repositories {
 
 // tag::dependencies[]
 dependencies {
-    testCompile 'com.github.hmcts:fortify-client:1.1.0:all'
+    testCompile  'com.github.hmcts:fortify-client:1.2.0:all'
 }
 // end::dependencies[]
 
