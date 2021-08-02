@@ -42,7 +42,7 @@ withNightlyPipeline("nodejs", product, component) {
     after('fortify-scan') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
-    enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
+    //enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     after('fullFunctionalTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }

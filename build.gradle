@@ -385,6 +385,12 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << '-parameters'  
 }
 
+task fortifyScan(type: JavaExec)  {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
 bootJar {
   archiveFileName = 'back-office.jar'
   manifest {
@@ -418,12 +424,6 @@ task runAndPublishConsumerPactTests(type: Test){
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
-}
-
-task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
-  classpath += sourceSets.test.runtimeClasspath
-  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
