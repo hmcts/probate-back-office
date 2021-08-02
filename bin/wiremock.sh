@@ -464,14 +464,14 @@ curl -X POST \
     "jsonBody": {
       "users": [
         {
-          "userIdentifier": "9cc54f57-b3b1-49df-9a84-0d1529077858",
+          "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
           "firstName": "PBA",
           "lastName": "TestUser",
           "email": "probatesolicitortestorgtest1@gmail.com",
           "idamStatus": "ACTIVE"
         },
         {
-          "userIdentifier": "c969e0e9-198e-4a5a-9d2d-666c36a854d9",
+          "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
           "firstName": "PBA",
           "lastName": "TestUser2",
           "email": "probatesolicitortestorg2test1@gmail.com",
@@ -509,7 +509,7 @@ curl -X POST \
               "organisationIdentifier": "XXXXX",
               "users": [
                   {
-                    "userIdentifier": "9cc54f57-b3b1-49df-9a84-0d1529077858",
+                    "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
                     "firstName": "PBA",
                     "lastName": "TestUser",
                     "email": "probatesolicitortestorgtest1@gmail.com",
@@ -527,7 +527,7 @@ curl -X POST \
                     "idamMessage": "11 OK"
                   },
                   {
-                    "userIdentifier": "c969e0e9-198e-4a5a-9d2d-666c36a854d9",
+                    "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
                     "firstName": "PBA",
                     "lastName": "TestUser2",
                     "email": "probatesolicitortestorg2test1@gmail.com",
