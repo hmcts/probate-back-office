@@ -50,7 +50,7 @@ class WebDriverHelper extends Helper {
             ret = ret + ' : ' + caseRef;
         }
         await console.info(ret);
-     }
+    }
 
     async uploadDocumentIfNotMicrosoftEdge() {
         const browserName = this.helpers.WebDriver.config.browser;
