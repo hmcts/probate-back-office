@@ -11,7 +11,7 @@ const defaultSauceOptions = {
     tunnelIdentifier: process.env.TUNNEL_IDENTIFIER || 'reformtunnel',
     acceptSslCerts: true,
     windowSize: '1600x900',
-    tags: ['probate']
+    tags: ['probate_expertui']
 };
 
 function merge (intoObject, fromObject) {
@@ -53,9 +53,6 @@ const setupConfig = {
             region: 'eu',
             capabilities: {}
         },
-        WebDriverHelper: {
-            require: './helpers/WebDriverHelper.js'
-        },
         SauceLabsReportingHelper: {
             require: './helpers/SauceLabsReportingHelper.js'
         },
@@ -72,14 +69,13 @@ const setupConfig = {
             retries: 2
         },
         autoDelay: {
-            enabled: testConfig.TestAutoDelayEnabled,
+            enabled: true,
             delayAfter: 2000
         }
     },
     include: {
         I: './pages/steps.js'
     },
-
     mocha: {
         reporterOptions: {
             'codeceptjs-cli-reporter': {
