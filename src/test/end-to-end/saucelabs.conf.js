@@ -53,6 +53,9 @@ const setupConfig = {
             region: 'eu',
             capabilities: {}
         },
+        WebDriverHelper: {
+            require: './helpers/WebDriverHelper.js'
+        },
         SauceLabsReportingHelper: {
             require: './helpers/SauceLabsReportingHelper.js'
         },
@@ -69,13 +72,14 @@ const setupConfig = {
             retries: 2
         },
         autoDelay: {
-            enabled: true,
+            enabled: testConfig.TestAutoDelayEnabled,
             delayAfter: 2000
         }
     },
     include: {
         I: './pages/steps.js'
     },
+
     mocha: {
         reporterOptions: {
             'codeceptjs-cli-reporter': {
