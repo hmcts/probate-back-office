@@ -41,6 +41,17 @@ class WebDriverHelper extends Helper {
         }
     }
 
+    async logInfo(scenarioName, log, caseRef) {
+        let ret = String (scenarioName);
+        if (log) {
+            ret = ret + ' : ' + log;
+        }
+        if (caseRef) {
+            ret = ret + ' : ' + caseRef;
+        }
+        await console.info(ret);
+     }
+
     async uploadDocumentIfNotMicrosoftEdge() {
         const browserName = this.helpers.WebDriver.config.browser;
         const helper = this.helpers.WebDriver;
