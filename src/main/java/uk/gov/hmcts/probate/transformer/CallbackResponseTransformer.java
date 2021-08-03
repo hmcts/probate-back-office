@@ -29,10 +29,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -114,10 +115,18 @@ public class CallbackResponseTransformer {
     private final TaskListUpdateService taskListUpdateService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
-    private final PDFManagementService pdfManagementService;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
+    public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
+            callbackRequest.getCaseDetails().getData(), authToken));
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+    
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
@@ -793,11 +802,8 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .iht217(caseData.getIht217())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords())
-            .applicantOrganisationPolicy(buildOrgPolicy(caseData));
-            //I have not identified why this element is not being populated corectly with the orgId yet
-            //.applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
-
+            .deathRecords(caseData.getDeathRecords());
+        
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
 
@@ -814,14 +820,15 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    private OrganisationPolicy buildOrgPolicy(CaseData caseData) {
+    private OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
+        OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrgId(authToken);
         OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
             .organisation(Organisation.builder()
-                .organisationID("XXXXX")
-                .organisationName("XXXXX")
+                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                .organisationName(organisationEntityResponse.getName())
                 .build())
-            .orgPolicyReference("Policy Ref")
-            .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+            .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+            .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
             .build();
         return organisationPolicy;
         

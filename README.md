@@ -152,6 +152,7 @@ curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
 curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
 
     return [{ "idamId": "u111111", "firstName": "Joe", "lastName": "Elliott", "email": "joe.elliott@woodford.com" }, { "idamId": "u222222", "firstName": "Steve", "lastName": "Harrison", "email": "steve.harrison@woodford.com" }, { "idamId": "u333333", "firstName": "James", "lastName": "Priest", "email": "james.priest@woodford.com" }, { "idamId": "u444444", "firstName": "Shaun", "lastName": "Coldwell", "email": "shaun.coldwell@woodford.com" }];
+    {"applicantOrganisationPolicy":{"Organisation":{"OrganisationID":null,"OrganisationName":null},"OrgPolicyCaseAssignedRole":"[APPLICANTSOLICITOR]","OrgPolicyReference":null}
     
 # to clear out all images
 npx @hmcts/probate-dev-env --destroy

@@ -485,7 +485,7 @@ curl -X POST \
 http://localhost:8991/__admin/mappings/new
 
 
-#Users
+#Users no roles
 curl -X POST \
 --data '{
           "request": {
@@ -550,6 +550,71 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
+
+#Users with roles
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users",
+            "queryParameters": {
+              "status": {
+                "equalTo": "active"
+              },
+              "returnRoles": {
+                  "equalTo": "true"
+                }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationIdentifier": "XXXXX",
+              "users": [
+                  {
+                    "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
+                    "firstName": "PBA",
+                    "lastName": "TestUser",
+                    "email": "probatesolicitortestorgtest1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "[CREATOR]",
+                      "[APPLICANTSOLICITOR]",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg2test1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "[CREATOR]",
+                      "[APPLICANTSOLICITOR]",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  }
+                ]
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
 
 # make responses persistent in Docker volume
 curl -X POST http://localhost:8991/__admin/mappings/save

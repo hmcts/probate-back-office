@@ -44,6 +44,7 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
@@ -424,6 +425,8 @@ public class CallbackResponseTransformerTest {
     private SolicitorPBADefaulter solicitorPBADefaulter;
     @Mock
     private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    @Mock
+    private OrganisationsRetrievalService organisationsRetrievalService;
     @Mock
     private PaymentResponse paymentResponseMock;
 

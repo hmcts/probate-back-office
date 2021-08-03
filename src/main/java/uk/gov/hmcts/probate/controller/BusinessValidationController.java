@@ -90,6 +90,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
+    @PostMapping(path = "/sols-created")
+    public ResponseEntity<CallbackResponse> createSolsCase(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
+        logRequest("/update-task-list", request);
+        return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
+    }
+
     @PostMapping(path = "/sols-access")
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorCreate(
         @RequestHeader(value = "Authorization") String authToken,
