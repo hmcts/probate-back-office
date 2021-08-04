@@ -517,8 +517,6 @@ curl -X POST \
                       "caseworker",
                       "caseworker-probate",
                       "caseworker-probate-solicitor",
-                      "[CREATOR]",
-                      "[APPLICANTSOLICITOR]",
                       "pui-user-manager",
                       "pui-case-manager"
                     ],
@@ -535,8 +533,6 @@ curl -X POST \
                       "caseworker",
                       "caseworker-probate",
                       "caseworker-probate-solicitor",
-                      "[CREATOR]",
-                      "[APPLICANTSOLICITOR]",
                       "pui-user-manager",
                       "pui-case-manager"
                     ],
@@ -583,8 +579,6 @@ curl -X POST \
                       "caseworker",
                       "caseworker-probate",
                       "caseworker-probate-solicitor",
-                      "[CREATOR]",
-                      "[APPLICANTSOLICITOR]",
                       "pui-user-manager",
                       "pui-case-manager"
                     ],
@@ -601,8 +595,6 @@ curl -X POST \
                       "caseworker",
                       "caseworker-probate",
                       "caseworker-probate-solicitor",
-                      "[CREATOR]",
-                      "[APPLICANTSOLICITOR]",
                       "pui-user-manager",
                       "pui-case-manager"
                     ],

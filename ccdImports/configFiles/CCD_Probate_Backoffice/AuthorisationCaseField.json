@@ -2173,8 +2173,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "payments", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "[APPLICANTSOLICITOR]", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "[CREATOR]", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDivorcedInEnglandOrWales", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAdoptionInEnglandOrWales", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRU"},

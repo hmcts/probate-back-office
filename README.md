@@ -107,66 +107,78 @@ docker-compose build
 
 Bring up the environment: 
 
+before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+
 ```
-
-# build the jar
-./gradlew assemble
-
-# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
 XUI_LD_ID
 LD_SDK_BO_KEY
 LD_BO_USER_KEY
 LD_SDK_FE_KEY
 LD_FE_USER_KEY
+```
 
 # first time only
+```
 npx @hmcts/probate-dev-env --create
+```
 
 # spin up the docker containers
+```
 npx @hmcts/probate-dev-env
+```
 
-# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
-# To enable PBA payments for solicitors run this after startup of everything
+#### to stop
+```
+npx @hmcts/probate-dev-env --stop
+```
+
+#### to restart after stop
+```
+npx @hmcts/probate-dev-env --start
+```
+
+#### Then wait upto 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+#### To enable PBA payments for solicitors and sharing a case run this after startup of everything
 ```
 docker-compose up -d wiremock
 ./bin/wiremock.sh
 ```
 
-# to use local probate backoffice
+#### To clear out all wiremock requests
+```
+curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
+```
+
+#### Then check there are none
+```
+curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
+```
+
+#### re run the ./bin/wiremock above to apply as needed
+
+# to use local probate backoffice 
+eg for a branch/PR
+```
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
+```
 
-docker-compose stop service-auth-provider-api
-docker-compose up -d service-auth-provider-api
-
-docker-compose stop manage-case-assignment
-docker-compose up -d manage-case-assignment
-
-docker-compose stop xui-manage-cases
-docker-compose up -d xui-manage-cases
-
-wiremock
+#### wiremock url
+```
 http://localhost:8991/__admin/mappings?limit=10
-curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
-curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
-
-    return [{ "idamId": "u111111", "firstName": "Joe", "lastName": "Elliott", "email": "joe.elliott@woodford.com" }, { "idamId": "u222222", "firstName": "Steve", "lastName": "Harrison", "email": "steve.harrison@woodford.com" }, { "idamId": "u333333", "firstName": "James", "lastName": "Priest", "email": "james.priest@woodford.com" }, { "idamId": "u444444", "firstName": "Shaun", "lastName": "Coldwell", "email": "shaun.coldwell@woodford.com" }];
-    {"applicantOrganisationPolicy":{"Organisation":{"OrganisationID":null,"OrganisationName":null},"OrgPolicyCaseAssignedRole":"[APPLICANTSOLICITOR]","OrgPolicyReference":null}
+```
     
 # to clear out all images
+```
 npx @hmcts/probate-dev-env --destroy
 docker container rm $(docker container ls -a -q)
 docker image rm $(docker image ls -a -q)
 docker volume rm $(docker volume ls -q)
-
 ```
 
 If you would like to test a new CCD config locally, you should run:
-
 ```
-./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 && ./ccdImports/conversionScripts/importAllXLS.sh
-
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
