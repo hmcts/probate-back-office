@@ -1,0 +1,158 @@
+{
+  "case_details": {
+    "id": 1528365719154001,
+    "jurisdiction": "PROBATE",
+    "state": "BOCaseMatchingReissue",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2021,
+      1,
+      8,
+      10,
+      11,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2021,
+      2,
+      8,
+      10,
+      11,
+      59,
+      151000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "caseType": "gop",
+      "taskList": "",
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "casePrinted": "Yes",
+      "ihtNetValue": "29000000",
+      "orderNeeded": "Yes",
+      "ihtGrossValue": "30000000",
+      "reissueReason": [
+        {
+          "id": "6ce49fdb-9693-4fdf-8e69-c7eea0448db6",
+          "value": {
+            "reissueReason": "officialError",
+            "reissueReasonDetails": "gggg"
+          }
+        }
+      ],
+      "applicationType": "Personal",
+      "dateOfDeathType": "presumedDiedOn",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "HP5 2PN",
+        "PostTown": "",
+        "AddressLine1": "1 WelshReissue Road",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedSurname": "DeadSN",
+      "evidenceHandled": "Yes",
+      "grantIssuedDate": "2021-08-05",
+      "bulkPrintPdfSize": "null",
+      "paragraphDetails": [],
+      "registryLocation": "Oxford",
+      "authenticatedDate": "2021-08-05",
+      "boSendToBulkPrint": "No",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "DeadFN1 DeadFN2",
+      "executorsApplying": [],
+      "ihtReferenceNumber": "1234567890",
+      "deceasedDateOfBirth": "1999-03-04",
+      "deceasedDateOfDeath": "2021-04-04",
+      "otherExecutorExists": "No",
+      "executorsNotApplying": [],
+      "deceasedAnyOtherNames": "No",
+      "ihtFormCompletedOnline": "Yes",
+      "languagePreferenceWelsh": "Yes",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "HP5 2PN",
+        "PostTown": "",
+        "AddressLine1": "PrimApp1 WelshReissue Road",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "primaryApplicantSurname": "App1SN",
+      "applicationSubmittedDate": "2021-01-01",
+      "boExaminationChecklistQ1": "Yes",
+      "boExaminationChecklistQ2": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantForenames": "App1FN",
+      "probateDocumentsGenerated": [
+        {
+          "id": "2adc3612-b86a-444b-a3f7-761ee5611b11",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/979440f2-87e8-43ce-8ad3-3cad0419a14c",
+              "document_filename": "welshAdmonWillGrant.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/979440f2-87e8-43ce-8ad3-3cad0419a14c/binary"
+            },
+            "DocumentType": "welshAdmonWillGrant",
+            "DocumentFileName": "eb786abe-1f03-4ae4-9396-0af1f926b74d.pdf",
+            "DocumentDateAdded": "2021-08-05",
+            "DocumentGeneratedBy": "6621863c-8ee5-46b4-9ca5-6549342999f3"
+          }
+        },
+        {
+          "id": "d1417118-e537-4672-a5bf-a38ba4e600b7",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/6927a442-4409-4a69-8196-a3510f539518",
+              "document_filename": "grantCover.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/6927a442-4409-4a69-8196-a3510f539518/binary"
+            },
+            "DocumentType": "grantCover",
+            "DocumentFileName": "89ead344-0d64-4e0d-9645-c55d14a4b9bd.pdf",
+            "DocumentDateAdded": "2021-08-05",
+            "DocumentGeneratedBy": "6621863c-8ee5-46b4-9ca5-6549342999f3"
+          }
+        }
+      ],
+      "boSendToBulkPrintRequested": "No",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsDeceasedAliasNamesList": [],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "welshReissue@probate-test.com",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [
+        {
+          "id": "89550d44-6830-40dd-b6bb-2c5382335e58",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/8eb9751a-7b73-4d44-849b-c13b78587f0b",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/8eb9751a-7b73-4d44-849b-c13b78587f0b/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "7980fbdc-6c0d-40f8-8615-522e56f2b7d8.pdf",
+            "DocumentDateAdded": "2021-08-05",
+            "DocumentGeneratedBy": "6621863c-8ee5-46b4-9ca5-6549342999f3"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boExaminationChecklistRequestQA": "No",
+      "boEmailGrantReissuedNotification": "Yes",
+      "boEmailGrantIssuedNotificationRequested": "No",
+      "boEmailDocsReceivedNotificationRequested": "No",
+      "grantAwaitingDocumentationNotificationDate": "2021-09-09"
+    }
+  }
+}
