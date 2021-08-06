@@ -140,7 +140,6 @@ npx @hmcts/probate-dev-env --start
 #### Then wait upto 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
 #### To enable PBA payments for solicitors and sharing a case run this after startup of everything
 ```
-docker-compose up -d wiremock
 ./bin/wiremock.sh
 ```
 
@@ -164,11 +163,19 @@ docker-compose stop probate-back-office
 docker-compose up -d --build probate-back-office
 ```
 
+#### share case setup
+```
+./bin/idam-create-service.sh
+./bin/ccd-add-more-roles.sh
+make sure manage-case-assignment docker image is running
+make sure wiremock is running and populated
+```
+
 #### wiremock url
 ```
 http://localhost:8991/__admin/mappings?limit=10
 ```
-    
+
 # to clear out all images
 ```
 npx @hmcts/probate-dev-env --destroy

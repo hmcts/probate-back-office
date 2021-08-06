@@ -94,7 +94,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> createSolsCase(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest request) {
-        logRequest("/update-task-list", request);
+        logRequest("/sols-created", request);
         return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
     }
 
