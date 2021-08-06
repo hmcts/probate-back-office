@@ -165,7 +165,7 @@ public class SmeeAndFordPersonalisationService {
             sol = sol + DELIMITER;
             sol = sol + getFullAddress(data.getSolsSolicitorAddress());
         } else {
-            sol = sol + DELIMITER;
+            sol = sol + "Personal" + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
@@ -214,8 +214,7 @@ public class SmeeAndFordPersonalisationService {
         var execNames = new StringBuilder();
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
-        execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
-        execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
+        execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorLastName()));
         
         var allExecs = new StringBuilder();
         allExecs.append(replaceDelimeters(execNames.toString()));
