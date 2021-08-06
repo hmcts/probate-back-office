@@ -802,7 +802,8 @@ public class CallbackResponseTransformer {
             .deceasedForeignDeathCertTranslation(caseData.getDeceasedForeignDeathCertTranslation())
             .iht217(caseData.getIht217())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords());
+            .deathRecords(caseData.getDeathRecords())
+            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
         
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
