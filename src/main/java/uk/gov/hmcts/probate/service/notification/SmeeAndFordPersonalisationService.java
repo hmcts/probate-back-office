@@ -43,6 +43,7 @@ public class SmeeAndFordPersonalisationService {
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
+    private static final String APPLICATION_TYPE_PERSONAL = "Personal";
 
     private final FileSystemResourceService fileSystemResourceService;
 
@@ -165,7 +166,7 @@ public class SmeeAndFordPersonalisationService {
             sol = sol + DELIMITER;
             sol = sol + getFullAddress(data.getSolsSolicitorAddress());
         } else {
-            sol = sol + "Personal" + DELIMITER;
+            sol = sol + APPLICATION_TYPE_PERSONAL + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
