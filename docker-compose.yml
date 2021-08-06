@@ -67,7 +67,8 @@ services:
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
-      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
@@ -611,6 +612,7 @@ services:
       SERVICES_IDAM_INDEX_URL: /
       SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
       SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_PRD_API: http://wiremock:8080
       SYSTEM_USER_NAME: "dummy"
       SYSTEM_USER_PASSWORD: "dummy"
       REDISCLOUD_URL: http://dummyrediscloudurl

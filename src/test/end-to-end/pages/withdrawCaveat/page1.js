@@ -9,10 +9,10 @@ module.exports = function () {
     const I = this;
 
     I.waitForText(withdrawCaveatConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
-    I.click(`#caveatRaisedEmailNotificationRequested-${withdrawCaveatConfig.page1_optionNo}`);
+    I.click(`#caveatRaisedEmailNotificationRequested_${withdrawCaveatConfig.page1_optionNo}`);
 
     I.waitForText(withdrawCaveatConfig.page1_send_bulk_print, testConfig.TestTimeToWaitForText);
-    I.click(`#sendToBulkPrintRequested-${withdrawCaveatConfig.page1_optionNo}`);
+    I.click(`#sendToBulkPrintRequested_${withdrawCaveatConfig.page1_optionNo}`);
 
     I.waitForNavigationToComplete(commonConfig.continueButton);
 };
