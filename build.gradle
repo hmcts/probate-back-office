@@ -420,6 +420,10 @@ task runAndPublishConsumerPactTests(type: Test){
 
 }
 
+test {
+  maxHeapSize = "1024m"
+}
+
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 def getCheckedOutGitCommitHash() {

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -84,7 +83,6 @@ import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
 
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class NotificationServiceTest {
