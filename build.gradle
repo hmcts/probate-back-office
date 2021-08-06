@@ -163,7 +163,7 @@ def versions = [
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
         lombok                          : '1.18.16',
-        springfoxSwagger                : '2.10.5',
+        springfoxSwagger                : '3.0.0',
         springSecurityVersion           : '5.3.5.RELEASE',
         probateCommonsVersion           : '1.2.3',
         ccdClient                       : '4.7.5',
@@ -281,8 +281,7 @@ dependencies {
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
-  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
-  implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+  implementation group: 'io.springfox', name: 'springfox-boot-starter', version: versions.springfoxSwagger
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
