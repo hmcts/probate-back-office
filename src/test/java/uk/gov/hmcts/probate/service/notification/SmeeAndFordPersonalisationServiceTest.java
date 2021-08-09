@@ -150,7 +150,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .build()));
         docs.add(new CollectionMember<Document>(Document.builder()
             .documentType(DIGITAL_GRANT)
-            .documentFileName("GrantFileName")
+            .documentFileName("GrantFileName.pdf")
             .build()));
 
         return docs;
@@ -161,7 +161,7 @@ public class SmeeAndFordPersonalisationServiceTest {
         docs.add(new CollectionMember<>(ScannedDocument.builder()
             .type(OTHER.name())
             .subtype(Constants.DOC_SUBTYPE_WILL)
-            .fileName("ScannedWillFileName")
+            .fileName("ScannedWillFileName.pdf")
             .build()));
         docs.add(new CollectionMember<>(ScannedDocument.builder()
             .type(DocumentType.EDGE_CASE.name())
