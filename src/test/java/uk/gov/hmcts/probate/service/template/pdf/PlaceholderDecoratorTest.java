@@ -26,7 +26,7 @@ public class PlaceholderDecoratorTest {
     private static final String DECEASED_DATE_OF_BIRTH_IN_WELSH = "deceasedDateOfBirthInWelsh";
     private static final String GRANT_ISSUED_DATE = "grantIssuedDate";
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
-    private static final String GRANT_REISSUED_DATE = "latestGrantReissueDate";
+    private static final String GRANT_REISSUED_DATE = "reissueDate";
     private static final String GRANT_REISSUED_DATE_IN_WELSH = "grantReissuedDateInWelsh";
 
     @MockBean

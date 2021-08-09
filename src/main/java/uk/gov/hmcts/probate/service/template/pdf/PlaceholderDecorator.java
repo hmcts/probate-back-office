@@ -21,7 +21,7 @@ public class PlaceholderDecorator {
     private static final String DECEASED_DATE_OF_BIRTH_IN_WELSH = "deceasedDateOfBirthInWelsh";
     private static final String GRANT_ISSUED_DATE = "grantIssuedDate";
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
-    private static final String GRANT_REISSUED_DATE = "latestGrantReissueDate";
+    private static final String GRANT_REISSUED_DATE = "reissueDate";
     private static final String GRANT_REISSUED_DATE_IN_WELSH = "grantReissuedDateInWelsh";
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
@@ -43,7 +43,8 @@ public class PlaceholderDecorator {
 
         if (placeholders.get(GRANT_REISSUED_DATE) != null) {
             placeholders.put(GRANT_REISSUED_DATE_IN_WELSH,
-                localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_REISSUED_DATE))));
+                localDateToWelshStringConverter.convert(
+                    LocalDate.parse((String) placeholders.get(GRANT_REISSUED_DATE))));
         }
     }
 }
