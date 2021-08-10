@@ -154,18 +154,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifyPersonalGenerateWelshReissueGOP() {
-        verifyPersonalWelshReissueText("personalPayloadReissueGOPWelsh.json", "expectedDocumentReissueGOPWelsh.txt");
+        verifyPersonalWelshReissueText("personalPayloadReissueGOPDuplicateWelsh.json", 
+            "expectedDocumentReissueGOPWelsh.txt");
     }
 
     @Test
     public void verifyPersonalGenerateWelshReissueAdmonWill() {
-        verifyPersonalWelshReissueText("personalPayloadReissueAdmonWillWelsh.json",
+        verifyPersonalWelshReissueText("personalPayloadReissueAdmonWillRegistrarsOrderWelsh.json",
             "expectedDocumentReissueAdmonWillWelsh.txt");
     }
 
     @Test
     public void verifyPersonalGenerateWelshReissueIntestacy() {
-        verifyPersonalWelshReissueText("personalPayloadReissueIntestacyWelsh.json",
+        verifyPersonalWelshReissueText("personalPayloadReissueIntestacyRegistrarsDirectionWelsh.json",
             "expectedDocumentReissueIntestacyWelsh.txt");
     }
 
