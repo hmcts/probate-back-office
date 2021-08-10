@@ -40,7 +40,6 @@ public class SmeeAndFordPersonalisationService {
     private static final String DELIMITER = "|";
     private static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
-    private static final String PDF_EXT = ".pdf";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
@@ -131,7 +130,7 @@ public class SmeeAndFordPersonalisationService {
         List<DocumentType> documentTypes = Arrays.asList(GRANT_TYPES);
         for (CollectionMember<Document> document : data.getProbateDocumentsGenerated()) {
             if (documentTypes.contains(document.getValue().getDocumentType())) {
-                return document.getValue().getDocumentType().getTemplateName() + PDF_EXT;
+                return document.getValue().getDocumentFileName();
             }
         }
         return "";

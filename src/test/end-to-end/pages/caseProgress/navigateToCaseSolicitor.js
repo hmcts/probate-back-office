@@ -5,5 +5,5 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (caseRef) {
     const I = this;
     await I.waitForElement({css: '#wb-case-state'});
-    await I.amOnPage(`${testConfig.TestBackOfficeUrl}/v2/case/${await I.replaceAll(caseRef, '-', '')}`);
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${await I.replaceAll(caseRef, '-', '')}`);
 };
