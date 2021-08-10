@@ -43,7 +43,7 @@ public class SmeeAndFordPersonalisationService {
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
-    private static final String APPLICATION_TYPE_PERSONAL = "Personal";
+    private static final String APPLICATION_TYPE_PERSONAL = "Personally";
 
     private final FileSystemResourceService fileSystemResourceService;
 
