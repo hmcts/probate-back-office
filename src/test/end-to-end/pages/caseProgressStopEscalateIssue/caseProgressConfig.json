@@ -9,10 +9,10 @@
     "solAddrPostcode": "SN15JU",
     "solIsMainApplicant": true,
     "ref": "XYZ",
-    "solEmail": "testsol@test.com",
+    "solEmail": "testsol@probate-test.com",
     "solPhone": "07777665432",
-    "deceasedFirstname": "Barney",
-    "deceasedSurname": "Rubble",
+    "deceasedFirstname": "Caseprogress",
+    "deceasedSurname": "Surname",
     "deceased": "Rubble",
     "deathDay": "10",
     "deathMonth": "10",
@@ -35,5 +35,6 @@
     "IHTNet": "150000",
     "JobTitle": "Solicitor",
     "FeeAccount": "1: fee account",
-    "FeeAccountNumber": "001234"
+    "PBAANumber": "PBA0082126",
+    "PaymentReference": "E2E Case Progress PBA Payment Reference"
 }

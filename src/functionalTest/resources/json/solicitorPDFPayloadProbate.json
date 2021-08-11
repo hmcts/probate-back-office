@@ -24,6 +24,24 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "solsPaymentMethods": "fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
       "solsSolicitorFirmName": "Firm Name",
       "solsSolicitorAddress": {
         "AddressLine1": "1",
@@ -58,8 +76,8 @@
       },
       "deceasedAnyOtherNames": "No",
       "ihtFormId": "IHT207",
-      "ihtNetValue": 20000.0,
-      "ihtGrossValue": 20000.0,
+      "ihtNetValue": 500100,
+      "ihtGrossValue": 500200,
       "solsWillType": "WillLeft",
       "willAccessOriginal": "Yes",
       "willHasCodicils": "No",

@@ -24,7 +24,9 @@ Payment summary
 
 **Payment method** fee account
 
-**Payment reference number** Fee account PBA-12345
+**Selected PBA account** PBA-12345
+
+**Customer reference** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
@@ -39,7 +41,7 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   the printed version of this page which will be used as your cover letter to us
+*   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
 *   renunciation form for Tim Smith
 *   renunciation form for John Smith
 *   death certificate for Bob Martin

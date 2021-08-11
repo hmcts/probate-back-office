@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1542274092932452,
+    "id": 1542274092932222,
     "jurisdiction": "PROBATE",
     "case_type_id": "Caveat",
     "state": "SolAppCreated",
@@ -49,7 +49,23 @@
         "Country": ""
       },
       "solsPaymentMethods": "fee account",
-      "solsFeeAccountNumber": "12345"
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1"
     },
     "data_classification": {
       "applicationType": "Solicitor",

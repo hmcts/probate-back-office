@@ -147,7 +147,6 @@ java:
         - idam-secret-probate
         - idamRedirectUrl
         - launchdarkly-key
-        - probate-site-id
         - launchdarklyUserkeyBackend
         - levPublicCertificate
         - levPrivateKey

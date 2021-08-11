@@ -264,6 +264,8 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    private final DocumentLink solsCoversheetDocument;
+
     @Builder.Default
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
@@ -299,7 +301,6 @@ public class CaseData extends CaseDataParent {
         "{outsideUKGrantCopiesIsNegative}")
     private final Long outsideUKGrantCopies;
 
-    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
     private final String solsPaymentMethods;
 
     private final String solsFeeAccountNumber;
@@ -531,6 +532,7 @@ public class CaseData extends CaseDataParent {
     private String checkAnswersSummaryJson;
     private String registryAddress;
     private String registryEmailAddress;
+    private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
 
     public String solicitorIsMainApplicant() {

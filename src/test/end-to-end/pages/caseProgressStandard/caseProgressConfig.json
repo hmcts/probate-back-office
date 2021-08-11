@@ -9,11 +9,11 @@
     "solAddrPostcode": "CN12JU",
     "solIsMainApplicant": true,
     "ref": "ABC",
-    "solEmail": "bbloggs@test.com",
+    "solEmail": "bbloggs@probate-test.com",
     "solPhone": "07654321234",
     "solDtlsPage2_pageHeader": "Apply for probate",
-    "deceasedFirstname": "Jane",
-    "deceasedSurname": "Smith",
+    "deceasedFirstname": "Caseprogress",
+    "deceasedSurname": "Surname",
     "deathDay": "11",
     "deathMonth": "11",
     "deathYear": "2020",
@@ -35,6 +35,7 @@
     "IHTNet": "140000",
     "JobTitle": "Lawyer",
     "FeeAccount": "1: fee account",
-    "FeeAccountNumber": "001234"
+    "PBAANumber": "PBA0082126",
+    "PaymentReference": "E2E Case Progress PBA Payment Reference"
 }
 

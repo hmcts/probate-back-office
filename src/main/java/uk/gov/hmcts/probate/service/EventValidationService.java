@@ -7,12 +7,16 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
@@ -111,4 +115,25 @@ public class EventValidationService {
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
     }
+
+    public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse, 
+            CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        String selectedPBA = caseDetails.getData().getSolsPBANumber().getValue().getLabel();
+        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
+            .validate(selectedPBA, caseDetails.getId().toString(), paymentResponse);
+        return CallbackResponse.builder()
+            .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+            .build();
+    }
+
+    public CaveatCallbackResponse validateCaveatPaymentResponse(CaveatDetails caveatDetails, 
+            PaymentResponse paymentResponse, CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
+        String selectedPBA = caveatDetails.getData().getSolsPBANumber().getValue().getLabel();
+        List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
+            .validate(selectedPBA, caveatDetails.getId().toString(), paymentResponse);
+        return CaveatCallbackResponse.builder()
+            .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+            .build();
+    }
+
 }
