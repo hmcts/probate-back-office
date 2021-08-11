@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -44,11 +43,11 @@ public class TemplateServiceTest {
     public void getDocumentsReceivedPA() {
 
         String response = templateService.getTemplateId(DOCUMENTS_RECEIVED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-document-received", response);
 
         String responseWelsh = templateService.getTemplateId(DOCUMENTS_RECEIVED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-document-received-welsh", responseWelsh);
     }
 
@@ -56,11 +55,11 @@ public class TemplateServiceTest {
     public void getApplicationReceivedPA() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-application-received", response);
 
         String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-application-received-welsh", responseWelsh);
     }
 
@@ -69,11 +68,11 @@ public class TemplateServiceTest {
     public void getDocumentsReceivedSols() {
 
         String response = templateService.getTemplateId(DOCUMENTS_RECEIVED, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-document-received", response);
 
         String responseWelsh = templateService.getTemplateId(DOCUMENTS_RECEIVED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-document-received-welsh", responseWelsh);
     }
 
@@ -81,11 +80,11 @@ public class TemplateServiceTest {
     public void getCaseStoppedPA() {
 
         String response = templateService.getTemplateId(CASE_STOPPED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-case-stopped", response);
 
         String responseWelsh = templateService.getTemplateId(CASE_STOPPED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-case-stopped-welsh", responseWelsh);
     }
 
@@ -93,11 +92,11 @@ public class TemplateServiceTest {
     public void getCaseStoppedSols() {
 
         String response = templateService.getTemplateId(CASE_STOPPED, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-case-stopped", response);
 
         String responseWelsh = templateService.getTemplateId(CASE_STOPPED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-case-stopped-welsh", responseWelsh);
     }
 
@@ -105,11 +104,11 @@ public class TemplateServiceTest {
     public void getCaseStoppedCaveatPA() {
 
         String response = templateService.getTemplateId(CASE_STOPPED_CAVEAT, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-case-stopped-caveat", response);
 
         String responseWelsh = templateService.getTemplateId(CASE_STOPPED_CAVEAT, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-case-stopped-caveat-welsh", responseWelsh);
     }
 
@@ -117,11 +116,11 @@ public class TemplateServiceTest {
     public void getCaseStoppedCaveatSols() {
 
         String response = templateService.getTemplateId(CASE_STOPPED_CAVEAT, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-case-stopped-caveat", response);
 
         String responseWelsh = templateService.getTemplateId(CASE_STOPPED_CAVEAT, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-case-stopped-caveat-welsh", responseWelsh);
     }
 
@@ -129,11 +128,11 @@ public class TemplateServiceTest {
     public void getGrantIssuedPA() {
 
         String response = templateService.getTemplateId(GRANT_ISSUED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-grant-issued", response);
 
         String responseWelsh = templateService.getTemplateId(GRANT_ISSUED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-grant-issued-welsh", responseWelsh);
     }
 
@@ -141,11 +140,11 @@ public class TemplateServiceTest {
     public void getGrantIssuedSols() {
 
         String response = templateService.getTemplateId(GRANT_ISSUED, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-grant-issued", response);
 
         String responseWelsh = templateService.getTemplateId(GRANT_ISSUED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-grant-issued-welsh", responseWelsh);
     }
 
@@ -153,11 +152,11 @@ public class TemplateServiceTest {
     public void getGrantReissuedPA() {
 
         String response = templateService.getTemplateId(GRANT_REISSUED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-grant-reissued", response);
 
         String responseWelsh = templateService.getTemplateId(GRANT_REISSUED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-grant-reissued-welsh", responseWelsh);
     }
 
@@ -165,11 +164,11 @@ public class TemplateServiceTest {
     public void getGrantReissuedSols() {
 
         String response = templateService.getTemplateId(GRANT_REISSUED, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-grant-reissued", response);
 
         String responseWelsh = templateService.getTemplateId(GRANT_REISSUED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-grant-reissued-welsh", responseWelsh);
     }
 
@@ -177,11 +176,11 @@ public class TemplateServiceTest {
     public void getGeneralCaveatMessagePA() {
 
         String response = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-general-caveat-message", response);
 
         String responseWelsh = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-general-caveat-message-welsh", responseWelsh);
     }
 
@@ -189,31 +188,35 @@ public class TemplateServiceTest {
     public void getGeneralCaveatMessageSols() {
 
         String response = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sol-general-caveat-message", response);
 
         String responseWelsh = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sol-general-caveat-message-welsh", responseWelsh);
     }
 
     @Test
     public void getCaseStoppedRequestForInfoPA() {
 
-        String response = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,LanguagePreference.ENGLISH);
+        String response =
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.ENGLISH);
         assertEquals("pa-request-information", response);
 
-        String responseWelsh = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,LanguagePreference.WELSH);
+        String responseWelsh =
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.WELSH);
         assertEquals("pa-request-information-welsh", responseWelsh);
     }
 
     @Test
     public void getCaseStoppedRequestForInfoSols() {
 
-        String response = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC,LanguagePreference.ENGLISH);
+        String response = templateService
+            .getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.ENGLISH);
         assertEquals("sols-request-information", response);
 
-        String responseWelsh = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC,LanguagePreference.WELSH);
+        String responseWelsh =
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.WELSH);
         assertEquals("sols-request-information-welsh", responseWelsh);
     }
 
@@ -221,23 +224,23 @@ public class TemplateServiceTest {
     public void getCaveatRaisedPA() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, "oxford",
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-caveat-raised", response);
 
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, "oxford",
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-caveat-raised-welsh", responseWelsh);
     }
 
     @Test
     public void getCaveatRaisedSols() {
 
-        String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford"
-                ,LanguagePreference.ENGLISH);
+        String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford",
+            LanguagePreference.ENGLISH);
         assertEquals("sols-caveat-raised", response);
 
-        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford"
-                ,LanguagePreference.WELSH);
+        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford",
+            LanguagePreference.WELSH);
         assertEquals("sols-caveat-raised-welsh", responseWelsh);
     }
 
@@ -245,11 +248,11 @@ public class TemplateServiceTest {
     public void getCaveatRaisedPersonalCTSC() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("pa-ctsc-caveat-raised", response);
 
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("pa-ctsc-caveat-raised-welsh", responseWelsh);
     }
 
@@ -257,11 +260,11 @@ public class TemplateServiceTest {
     public void getCaveatRaisedSolsCTSC() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
-                LanguagePreference.ENGLISH);
+            LanguagePreference.ENGLISH);
         assertEquals("sols-ctsc-caveat-raised", response);
 
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH);
+            LanguagePreference.WELSH);
         assertEquals("sols-ctsc-caveat-raised-welsh", responseWelsh);
     }
 
@@ -269,11 +272,11 @@ public class TemplateServiceTest {
     public void getSolsCaveatRaised() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
-                CTSC, LanguagePreference.ENGLISH);
+            CTSC, LanguagePreference.ENGLISH);
 
         assertEquals("solicitor-caveat-raised", response);
-     }
-     
+    }
+
     @Test
     public void getCaveatExtendPersonalCTSC() {
 

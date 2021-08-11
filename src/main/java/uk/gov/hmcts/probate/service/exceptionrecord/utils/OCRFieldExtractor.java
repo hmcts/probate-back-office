@@ -12,6 +12,9 @@ import java.util.List;
 @Component
 public class OCRFieldExtractor {
 
+    private OCRFieldExtractor() {
+    }
+
     public static String get(List<OCRField> ocrFields, String name) {
         String response = null;
 

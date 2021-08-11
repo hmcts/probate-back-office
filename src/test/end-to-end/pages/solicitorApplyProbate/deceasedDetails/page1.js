@@ -6,6 +6,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#deceasedForenames');
+    await I.runAccessibilityTest();
     await I.fillField('#deceasedForenames', deceasedDetailsConfig.page1_forenames);
     await I.fillField('#deceasedSurname', deceasedDetailsConfig.page1_surname);
 

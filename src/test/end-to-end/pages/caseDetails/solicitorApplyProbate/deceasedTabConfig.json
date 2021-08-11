@@ -2,8 +2,8 @@
     "tabName": "Deceased",
     "fields": [
       "Was the deceased domiciled in England or Wales at the time of their death?",
-      "What was their date of death?",
-      "What was their date of birth?",
+      "Date of death",
+      "Date of birth",
       "First name(s)",
       "Last name(s)",
       "Building and Street",

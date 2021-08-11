@@ -12,7 +12,11 @@
 
   "page2_ihtNetValue": "100000",
   "page2_ihtGrossValue": "100001",
-  "page2_solsIHTFormValue": "IHT 400",
+  "page2_IHTOption": "IHT400421",
+  "page2_solsIHT205FormLabel": "IHT205 - there was no inheritance tax to pay",
+  "page2_solsIHT207FormLabel": "IHT207 - the person who died lived abroad and there was no inheritance tax to pay",
+  "page2_solsIHT400421FormLabel": "IHT400 and IHT421",
+  "page2_solsIHTDNUFormLabel": "Not applicable - DO NOT USE",
   "page2_ihtGrossValueDisplay": "£100,001.00",
   "page2_ihtNetValueDisplay": "£100,000.00",
   "page2_applicationGrounds": "Application grounds info",
@@ -20,7 +24,7 @@
   "page3_willLeftDisplay": "Grant of probate",
   "page3_willLeftAnnexedDisplay": "Letters of administration with will annexed (Admon will)",
   "page3_noWillDisplay": "Letters of administration (Intestate)",
-  
+
   "optionYes": "Yes",
   "optionNo": "No",
 

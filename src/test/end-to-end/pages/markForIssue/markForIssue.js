@@ -10,9 +10,9 @@ module.exports = async function (caseRef) {
     await I.waitForText(markForIssueConfig.waitForText, testConfig.TestTimeToWaitForText);
 
     await I.see(caseRef);
-    await I.click(`#boExaminationChecklistQ1-${markForIssueConfig.list1_text}`);
-    await I.click(`#boExaminationChecklistQ2-${markForIssueConfig.list2_text}`);
-    await I.click(`#boExaminationChecklistRequestQA-${markForIssueConfig.list3_text}`);
+    await I.click(`#boExaminationChecklistQ1_${markForIssueConfig.list1_text}`);
+    await I.click(`#boExaminationChecklistQ2_${markForIssueConfig.list2_text}`);
+    await I.click(`#boExaminationChecklistRequestQA_${markForIssueConfig.list3_text}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 

@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,18 +14,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +56,17 @@ public class ExceptionRecordControllerTest {
 
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
-    
-    private String exceptionRecordPayloadPA8A;
-    private String exceptionRecordPayloadPA1P;
-    private String exceptionRecordPayloadPA1A;
-    private String exceptionRecordInvalidJsonPayload;
+
+    private String exceptionRecordPayloadCitizenPA8A;
+    private String exceptionRecordPayloadSolicitorPA8A;
+    private String exceptionRecordPayloadCitizenSingleExecutorPA1P;
+    private String exceptionRecordPayloadSolicitorSingleExecutorPA1P;
+    private String exceptionRecordPayloadCitizenMultipleExecutorPA1P;
+    private String exceptionRecordPayloadSolicitorMultipleExecutorPA1P;
+    private String exceptionRecordPayloadSolicitorPA1A;
+    private String exceptionRecordPayloadCitizenPA1A;
+    private String exceptionRecordInvalidJsonPayloadPA1P;
+    private String exceptionRecordInvalidJsonPayloadPA8A;
     private String updateCasePayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
@@ -73,10 +74,26 @@ public class ExceptionRecordControllerTest {
     @Before
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
-        exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataPA1P.json");
-        exceptionRecordPayloadPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataPA1A.json");
-        exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
+        exceptionRecordPayloadCitizenPA8A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
+        exceptionRecordPayloadSolicitorPA8A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA8A.json");
+        exceptionRecordPayloadCitizenSingleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorSingleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
+        exceptionRecordPayloadCitizenPA1A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
+        exceptionRecordPayloadCitizenMultipleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenMultipleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorMultipleExecutorPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorMultipleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorPA1A =
+                testUtils.getStringFromFile("exceptionRecordPayloadSolicitorPA1A.json");
+        exceptionRecordInvalidJsonPayloadPA1P =
+                testUtils.getStringFromFile("invalidExceptionRecordDataPA1P.json");
+        exceptionRecordInvalidJsonPayloadPA8A =
+                testUtils.getStringFromFile("invalidExceptionRecordDataPA8A.json");
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
@@ -86,17 +103,18 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA8A)
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+                .andExpect(content().string(containsString(
+                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA8A)
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8A() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
@@ -107,9 +125,22 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA1P)
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8A() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"Caveat\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
@@ -121,9 +152,66 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1P()
+            throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1A() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorPA1A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA1A)
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1003\"")))
@@ -136,52 +224,239 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testMissingFormType() throws Exception {
-        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadPA8A);
+        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
-        mockMvc.perform(post("/transform-exception-record")
+        mockMvc.perform(post("/transform-scanned-data")
                 .content(modifiedExceptionRecordPayload.toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().string(containsString("Form type 'null' not found")));
     }
 
+
     @Test
-    public void testExceptionRecordErrorHandler() throws Exception {
-        String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
-        String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
+    public void testWarningsPopulateListAndReturnOkWithWarningsResponseStatePreviousEndPoint() throws Exception {
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
-                .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+                    "{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8APreviousEndPoint() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadCitizenPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"Caveat\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8APreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadSolicitorPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"Caveat\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1PPreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1PPreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1PPreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1APreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadSolicitorPA1A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1PPreviousEndPoint()
+            throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1APreviousEndPoint() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadCitizenPA1A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1003\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testMissingFormTypePreviousEndPoint() throws Exception {
+        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
+        modifiedExceptionRecordPayload.remove("form_type");
+        mockMvc.perform(post("/transform-exception-record")
+            .content(modifiedExceptionRecordPayload.toString())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().string(containsString("Form type 'null' not found")));
+    }
+
+    @Test
+    public void testExceptionRecordErrorHandlerCitizenPA8A() throws Exception {
+        String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
+        String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+    }
+
+    @Test
+    public void testExceptionRecordErrorHandlerSolicitorPA8A() throws Exception {
+        String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
+        String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
+    }
+
+    @Test
+    public void testExceptionRecordErrorHandlerPA1P() throws Exception {
+        String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
+        String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P.replace(
+                    deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(
+                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                .andExpect(content().string(containsString(
+                    "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
 
     @Test
     public void testErrorReturnedForIncorrectClassification() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case: 1001\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                        + "This Exception Record can not be created as a case: 1001\"]")));
     }
 
     @Ignore
     public void testErrorReturnedForUnimplementedFormType() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordPayloadPA8A.replace("PA8A", "PPPP"))
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenPA8A.replace("PA8A", "PPPP"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping\"]")));
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                        + "This Exception Record form currently has no case mapping\"]")));
     }
 
     @Test
-    public void testInvalidExceptionRecordJsonResponse() throws Exception {
-        mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordInvalidJsonPayload)
+    public void testInvalidExceptionRecordGoPTransformJsonResponse() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordInvalidJsonPayloadPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testInvalidExceptionRecordCaveatTransformJsonResponse() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordInvalidJsonPayloadPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testInvalidExceptionRecordCaveatUpdateJsonResponse() throws Exception {
+        mockMvc.perform(post("/update-case")
+                .content(exceptionRecordInvalidJsonPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
@@ -193,17 +468,21 @@ public class ExceptionRecordControllerTest {
             .content(updateCasePayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
+            .andExpect(content().string(
+                containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
     }
 
     @Test
     public void shouldNotUpdateCaseForIncorrectJourneyClassification() throws Exception {
 
         mockMvc.perform(post("/update-case")
-            .content(updateCasePayload.replace("SUPPLEMENTARY_EVIDENCE_WITH_OCR", JourneyClassification.SUPPLEMENTARY_EVIDENCE.name()))
+            .content(updateCasePayload
+                .replace("SUPPLEMENTARY_EVIDENCE_WITH_OCR", JourneyClassification.SUPPLEMENTARY_EVIDENCE.name()))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("{\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case update for case:1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(content().string(containsString(
+                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case update "
+                    + "for case:1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
@@ -213,6 +492,8 @@ public class ExceptionRecordControllerTest {
             .content(updateCasePayload.replace("\"form_type\": \"PA8A\"", "\"form_type\": \"PA1A\""))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().string(containsString("{\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping for case: 1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+            .andExpect(content().string(containsString(
+                "{\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping "
+                    + "for case: 1542274092932452\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 }

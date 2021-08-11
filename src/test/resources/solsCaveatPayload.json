@@ -14,7 +14,6 @@
       8,
       695000000
     ],
-    "security_classification": "PUBLIC",
     "case_data": {
       "applicationType": "Solicitor",
       "registryLocation": "Leeds",
@@ -31,51 +30,6 @@
         "Country": ""
       },
       "solsSolicitorAppReference": "REF"
-    },
-    "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "solsSolicitorEmail": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
-      "solsSolicitorAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsSolicitorAppReference": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "delete_draft_response_status_code": null,
-    "delete_draft_response_status": null,
-    "security_classifications": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "solsSolicitorEmail": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
-      "solsSolicitorAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsSolicitorAppReference": "PUBLIC"
     }
   }
 }

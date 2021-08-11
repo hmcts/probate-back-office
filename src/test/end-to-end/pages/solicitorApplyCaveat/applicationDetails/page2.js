@@ -2,11 +2,12 @@
 
 const applicationDetailsConfig = require('./applicationDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const testConfig = require('src/test/config');
 
 module.exports = async function () {
     const I = this;
     await I.waitForElement('#deceasedForenames');
-
+    await I.runAccessibilityTest();
     await I.fillField('#deceasedForenames', applicationDetailsConfig.page2_deceased_forename);
     await I.fillField('#deceasedSurname', applicationDetailsConfig.page2_deceased_surname);
 
@@ -18,7 +19,12 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfBirth-month', applicationDetailsConfig.page2_dateOfBirth_month);
     await I.fillField('#deceasedDateOfBirth-year', applicationDetailsConfig.page2_dateOfBirth_year);
 
-    await I.click(`#deceasedAnyOtherNames-${applicationDetailsConfig.page2_hasAliasYes}`);
+    await I.click(`#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`);
+    if (!testConfig.TestAutoDelayEnabled) {
+        // only valid for local dev where we need it to run as fast as poss to minimise
+        // lost dev time
+        await I.wait(0.25);
+    }
 
     let idx = 0;
     /* eslint-disable no-await-in-loop */
@@ -27,7 +33,11 @@ module.exports = async function () {
         const propName = keys[i];
         if (propName.includes('page2_alias_')) {
             await I.click(applicationDetailsConfig.page2_addAliasButton);
-            await I.wait(0.1); // implicit wait needed here
+            if (!testConfig.TestAutoDelayEnabled) {
+                // only valid for local dev where we need it to run as fast as poss to minimise
+                // lost dev time
+                await I.wait(0.25);
+            }
             const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
             await I.waitForVisible(locator);
             await I.fillField(locator, applicationDetailsConfig[propName]);
@@ -36,13 +46,13 @@ module.exports = async function () {
     }
 
     await I.click(applicationDetailsConfig.UKpostcodeLink);
-    await I.fillField('#deceasedAddress_AddressLine1', applicationDetailsConfig.address_line1);
-    await I.fillField('#deceasedAddress_AddressLine2', applicationDetailsConfig.address_line2);
-    await I.fillField('#deceasedAddress_AddressLine3', applicationDetailsConfig.address_line3);
-    await I.fillField('#deceasedAddress_PostTown', applicationDetailsConfig.address_town);
-    await I.fillField('#deceasedAddress_County', applicationDetailsConfig.address_county);
-    await I.fillField('#deceasedAddress_PostCode', applicationDetailsConfig.address_postcode);
-    await I.fillField('#deceasedAddress_Country', applicationDetailsConfig.address_country);
+    await I.fillField('#deceasedAddress__detailAddressLine1', applicationDetailsConfig.address_line1);
+    await I.fillField('#deceasedAddress__detailAddressLine2', applicationDetailsConfig.address_line2);
+    await I.fillField('#deceasedAddress__detailAddressLine3', applicationDetailsConfig.address_line3);
+    await I.fillField('#deceasedAddress__detailPostTown', applicationDetailsConfig.address_town);
+    await I.fillField('#deceasedAddress__detailCounty', applicationDetailsConfig.address_county);
+    await I.fillField('#deceasedAddress__detailPostCode', applicationDetailsConfig.address_postcode);
+    await I.fillField('#deceasedAddress__detailCountry', applicationDetailsConfig.address_country);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -1,12 +1,13 @@
 {
-  "id": "1000003",
-  "case_type_id": "PROBATE_ExceptionRecord",
+  "exception_record_id": "1000003",
+  "exception_record_case_type_id": "PROBATE_ExceptionRecord",
   "po_box": "12626",
   "po_box_jurisdiction": "PROBATE",
   "form_type": "PA8A",
   "journey_classification": "NEW_APPLICATION",
   "delivery_date": "2019-07-20T12:34:56.789Z",
   "opening_date": "2019-07-21T13:00:00.000Z",
+  "is_automated_process": "false",
   "scanned_documents": [
     {
     "type": "form",

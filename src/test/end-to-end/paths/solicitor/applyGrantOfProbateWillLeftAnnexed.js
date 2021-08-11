@@ -17,37 +17,35 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async function (I) {
+const scenarioName = 'Solicitor - Apply Grant of probate (Will left annexed)';
+Scenario(scenarioName, async function ({I}) {
 
     const updateAddressManually = true;
     const willType = 'WillLeftAnnexed';
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Solicitor');
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
     await I.applyForProbatePage2();
     await I.cyaPage();
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
     endState = 'Admon will grant created';
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
@@ -62,6 +60,7 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     nextStepName = 'Admon will details';
     endState = 'Application updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.admonWillDetailsPage1();
     await I.admonWillDetailsPage2(updateAddressManually);
@@ -75,9 +74,11 @@ Scenario('Solicitor - Apply Grant of probate (Will left annexed)', async functio
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1(willType);
     await I.completeApplicationPage2();
+    await I.completeApplicationPage2a();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();

@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -42,14 +43,13 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 @Service
 public class PDFManagementService {
 
+    static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
-
-    static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion"; 
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
@@ -72,15 +72,18 @@ public class PDFManagementService {
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
         switch (documentType) {
             case DIGITAL_GRANT:
-                callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
+                callbackRequest.getCaseDetails()
+                    .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
             case ADMON_WILL_GRANT:
-                callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
+                callbackRequest.getCaseDetails()
+                    .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
             case INTESTACY_GRANT:
-                callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
+                callbackRequest.getCaseDetails()
+                    .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
             default:
@@ -93,7 +96,7 @@ public class PDFManagementService {
     public Document generateAndUpload(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
         if (WILL_LODGEMENT_DEPOSIT_RECEIPT.equals(documentType)) {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
-                    .getGrantSignatureEncryptedFile()));
+                .getGrantSignatureEncryptedFile()));
         }
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
@@ -116,7 +119,8 @@ public class PDFManagementService {
     public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
 
         log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
-        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
+        EvidenceManagementFileUpload fileUpload =
+            pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
                 placeholders);
         return uploadDocument(documentType, fileUpload);
     }
@@ -125,19 +129,27 @@ public class PDFManagementService {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
+            Optional<Link> binaryOptionalLink = store.getLink("binary");
+            Optional<Link> selfOptionalLink = store.getLink(Link.REL_SELF);
+            if (!binaryOptionalLink.isPresent()) {
+                throw new IOException("binary link is not present");
+            }
+            if (!selfOptionalLink.isPresent()) {
+                throw new IOException("self link is not present");
+            }
             DocumentLink documentLink = DocumentLink.builder()
-                    .documentBinaryUrl(store.getLink("binary").getHref())
-                    .documentUrl(store.getLink(Link.REL_SELF).getHref())
-                    .documentFilename(documentType.getTemplateName() + ".pdf")
-                    .build();
+                .documentBinaryUrl(((Link) binaryOptionalLink.get()).getHref())
+                .documentUrl(((Link) selfOptionalLink.get()).getHref())
+                .documentFilename(documentType.getTemplateName() + ".pdf")
+                .build();
 
             return Document.builder()
-                    .documentFileName(fileUpload.getFileName())
-                    .documentLink(documentLink)
-                    .documentType(documentType)
-                    .documentDateAdded(LocalDate.now())
-                    .documentGeneratedBy(httpServletRequest.getHeader("user-id"))
-                    .build();
+                .documentFileName(fileUpload.getFileName())
+                .documentLink(documentLink)
+                .documentType(documentType)
+                .documentDateAdded(LocalDate.now())
+                .documentGeneratedBy(httpServletRequest.getHeader("user-id"))
+                .build();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new ConnectionException(e.getMessage());
@@ -151,11 +163,11 @@ public class PDFManagementService {
         try {
             IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes(StandardCharsets.UTF_8));
             SecretKeySpec secretKey = new SecretKeySpec(pdfServiceConfiguration
-                    .getGrantSignatureSecretKey().getBytes(StandardCharsets.UTF_8), "AES");
+                .getGrantSignatureSecretKey().getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
             decryptedString = Base64.getEncoder().encodeToString(cipher
-                    .doFinal(Base64.getDecoder().decode(cipherMessage.getBytes())));
+                .doFinal(Base64.getDecoder().decode(cipherMessage.getBytes())));
         } catch (Exception e) {
             log.error("Error while retrieving file resource " + fileResource + ": " + e.getMessage(), e);
             throw new BadRequestException(e.getMessage());

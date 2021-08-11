@@ -1,7 +1,7 @@
 {
     "tabName": "Applicant details",
     "fields": [
-      "What application type is this?",
+      "Application type",
       "The undersigned declare that written notice has been given to all executors who have power reserved to them and are not making this application.",
       "First name(s)",
       "Last name(s)",
@@ -14,7 +14,6 @@
       "Applicant phone number",
       "Applicant second phone number",
       "Applicant email address",
-      "Relationship to the deceased",
       "Executor name",
       "Executor phone number",
       "Executor email",
@@ -46,7 +45,6 @@
       "page2_phoneNumber",
       "page2_secondPhoneNumber",
       "page2_email",
-      "page2_relationshipToDeceased",
       "page3_executor0_name",
       "page3_phone_number",
       "page3_applying_executor_email",

@@ -1,8 +1,8 @@
 {
   "tabName": "Applicant details",
   "fields": [
-    "Name of your firm",
-    "Your reference for this application",
+    "Firm name",
+    "Your reference",
     "Building and Street",
     "Address Line 2",
     "Address Line 3",
@@ -31,7 +31,7 @@
     "fields": [
       "First name(s)",
       "Last name(s)",
-      "Name of your firm",
+      "Firm name",
       "Enter their full name as it appears on the will",
       "Building and Street",
       "Address Line 2",

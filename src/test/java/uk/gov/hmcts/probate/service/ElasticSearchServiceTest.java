@@ -22,9 +22,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,8 +55,6 @@ public class ElasticSearchServiceTest {
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
         when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
                 .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
-
-        doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test

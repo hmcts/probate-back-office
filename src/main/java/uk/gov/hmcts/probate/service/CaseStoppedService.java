@@ -19,7 +19,7 @@ public class CaseStoppedService {
     public void caseStopped(CaseDetails caseDetails) {
         caseDetails.getData().setGrantStoppedDate(LocalDate.now());
     }
-    
+
     public void caseResolved(CaseDetails caseDetails) {
         log.info("Case resolved: {} ", caseDetails.getId());
 
@@ -33,12 +33,14 @@ public class CaseStoppedService {
         CaseData caseData = caseDetails.getData();
         if (caseData.getGrantAwaitingDocumentationNotificationDate() != null
             && caseData.getGrantStoppedDate() != null) {
-            
+
             LocalDate now = LocalDate.now();
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
-            LocalDate notificationDate = caseData.getGrantAwaitingDocumentationNotificationDate().plusDays(period.getDays());
-            log.info("From case-stopped/resolved, setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            LocalDate notificationDate =
+                caseData.getGrantAwaitingDocumentationNotificationDate().plusDays(period.getDays());
+            log.info("From case-stopped/resolved, setting grantAwaitingDocumentationNotificationDate {} for case {}",
+                notificationDate.toString(), caseDetails.getId());
             caseData.setGrantAwaitingDocumentationNotificationDate(notificationDate);
         }
     }
@@ -54,7 +56,8 @@ public class CaseStoppedService {
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
             LocalDate notificationDate = caseData.getGrantDelayedNotificationDate().plusDays(period.getDays());
-            log.info("From case-stopped/resolved, setting grantDelayedNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            log.info("From case-stopped/resolved, setting grantDelayedNotificationDate {} for case {}",
+                notificationDate.toString(), caseDetails.getId());
             caseData.setGrantDelayedNotificationDate(notificationDate);
         }
     }

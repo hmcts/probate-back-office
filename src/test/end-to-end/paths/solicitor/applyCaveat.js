@@ -1,5 +1,4 @@
 'use strict';
-
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -17,15 +16,23 @@ const notificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/so
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/deceasedDetailsTabConfig');
 const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/paymentDetailsTabConfig');
 
+const {
+    legacyParse,
+    convertTokens
+} = require('@date-fns/upgrade/v2');
+
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Caveat', async function (I) {
+const scenarioName = 'Solicitor - Apply Caveat';
+Scenario(scenarioName, async function ({I}) {
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Solicitor');
+    await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Application details';
     let endState = 'Caveat created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.applyCaveatPage1();
@@ -34,21 +41,15 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
 
     await I.seeEndState(endState);
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop()
-        .match(/.{4}/g)
-        .join('-');
-
-    // eslint-disable-next-line no-console
-    console.log('url is...', url);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, applyCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, applyCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, applyCaveatConfig);
-    await I.seeCaseDetails(caseRef, notificationsTabConfig, {});
 
     endState = 'Caveat updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.caveatApplicationDetailsPage1();
     await I.caveatApplicationDetailsPage2();
@@ -61,6 +62,7 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
 
     nextStepName = 'Complete application';
     endState = 'Caveat raised';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
     await I.completeCaveatApplicationPage2();
@@ -69,11 +71,12 @@ Scenario('Solicitor - Apply Caveat', async function (I) {
     await I.seeEndState(endState);
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    completeApplicationConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
+    completeApplicationConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
     // When emailing the caveator, the Date added for the email document is set to today
-    completeApplicationConfig.notification_date = dateFns.format(new Date(), 'D MMM YYYY');
+    completeApplicationConfig.notification_date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
 
     await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
-});
+}).tag('@crossbrowser')
+    .retry(testConfig.TestRetryScenarios);

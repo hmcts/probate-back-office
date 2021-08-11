@@ -1,21 +1,22 @@
 package uk.gov.hmcts.probate.service.consumer;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactHttpsProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -34,32 +35,27 @@ import java.util.Map;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(PactConsumerTestExt.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "4411")
+@PactFolder("pacts")
 @SpringBootTest
+@TestPropertySource(locations = {"/application.properties"})
 public class PdfGeneratorServiceConsumerTest {
 
     private static final String HTML = ".html";
-
+    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+    private final String someServiceAuthToken = "someServiceAuthToken";
     @Autowired
     PDFGeneratorService pdfGenerationService;
-
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     private PDFServiceConfiguration pdfServiceConfiguration;
-
     @Autowired
     private FileSystemResourceService fileSystemResourceService;
-
     @MockBean
     private AuthTokenGenerator serviceTokenGenerator;
-
-    private final String someServiceAuthToken = "someServiceAuthToken";
-    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
-
-    @Rule
-    public PactHttpsProviderRuleMk2 mockProvider = new PactHttpsProviderRuleMk2("rpePdfService_PDFGenerationEndpointV2", "localhost", 4411, this);
 
     // TBD consumer 'Name'
     @Pact(provider = "rpePdfService_PDFGenerationEndpointV2", consumer = "probate_backOffice")
@@ -70,7 +66,9 @@ public class PdfGeneratorServiceConsumerTest {
             .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
             .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
-            .body(createJsonObject(buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(), createJsonObjectAsString("willLodgementPayload.json"))),
+            .body(createJsonObject(
+                buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(),
+                    createJsonObjectAsString("willLodgementPayload.json"))),
                 "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
             .willRespondWith()
@@ -80,7 +78,7 @@ public class PdfGeneratorServiceConsumerTest {
     }
 
     @Test
-    @PactVerification(fragment = "generatePdfFromTemplate")
+    @PactTestFor(pactMethod = "generatePdfFromTemplate")
     public void verifyGeneratePdfFromTemplatePact() throws IOException, JSONException {
 
         when(serviceTokenGenerator.generate()).thenReturn(someServiceAuthToken);

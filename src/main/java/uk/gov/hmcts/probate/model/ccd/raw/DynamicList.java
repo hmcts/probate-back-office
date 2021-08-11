@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +18,8 @@ public class DynamicList {
     @JsonProperty("list_items")
     private List<DynamicListItem> listItems;
 
-    public DynamicList(@JsonProperty("value") DynamicListItem value, @JsonProperty("list_items") List<DynamicListItem> listItems) {
+    public DynamicList(@JsonProperty("value") DynamicListItem value,
+                       @JsonProperty("list_items") List<DynamicListItem> listItems) {
         this.value = value;
         this.listItems = listItems;
     }

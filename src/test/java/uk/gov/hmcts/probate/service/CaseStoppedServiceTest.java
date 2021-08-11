@@ -45,7 +45,8 @@ public class CaseStoppedServiceTest {
         caseStoppedService.caseResolved(caseDetails);
 
         assertEquals(LocalDate.now().plusWeeks(8), caseDetails.getData().getGrantDelayedNotificationDate());
-        assertEquals(LocalDate.now().plusWeeks(5), caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
+        assertEquals(LocalDate.now().plusWeeks(5), caseDetails.getData()
+            .getGrantAwaitingDocumentationNotificationDate());
     }
 
     @Test

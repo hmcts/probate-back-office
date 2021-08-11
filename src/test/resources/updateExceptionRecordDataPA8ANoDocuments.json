@@ -1,7 +1,7 @@
 {
   "case_details": {
-    "id": 1542274092932452,
-    "case_type_id": "Caveat",
+    "exception_record_id": 1542274092932452,
+    "exception_record_case_type_id": "Caveat",
     "case_data": {
       "applicationType": "Personal",
       "registryLocation": "Leeds",
@@ -58,8 +58,8 @@
     }
   },
   "exception_record" : {
-    "id": "1542274092932452",
-    "case_type_id": "PROBATE_ExceptionRecord",
+    "exception_record_id": "1542274092932452",
+    "exception_record_case_type_id": "PROBATE_ExceptionRecord",
     "po_box": "12626",
     "po_box_jurisdiction": "PROBATE",
     "form_type": "PA8A",

@@ -63,11 +63,12 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
-      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
@@ -77,6 +78,7 @@ services:
       ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       DATA_STORE_DEFAULT_LOG_LEVEL: INFO
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
     ports:
       - 4452:4452
       - 5005:5005
@@ -151,10 +153,12 @@ services:
       MICROSERVICEKEYS_BULK_SCAN_ORCHESTRATOR: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_PROBATE_BACKEND: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_PROBATE_FRONTEND: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_XUI_WEBAPP: "AAAAAAAAAAAAAAAA"
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
       MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
+      MICROSERVICEKEYS_CCD_CASE_DOCUMENT_AM_API : "AAAAAAAAAAAAAAAC"
     ports:
       - 4502:8080
 
@@ -243,6 +247,7 @@ services:
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
       - ENABLE_TTL=false
       - ENABLE_METADATA_MIGRATION=false
+      - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
     depends_on:
       - shared-database
       - service-auth-provider-api
@@ -323,6 +328,7 @@ services:
       - GOV_PAY_AUTH_KEY_CMC=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_PROBATE_BACKEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
       - GOV_PAY_OPERATIONAL_SERVICES=ccd_gw
       - GOV_PAY_URL=https://publicapi.payments.service.gov.uk/v1/payments
       - payments.report.file.location=.
@@ -362,12 +368,14 @@ services:
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST=*
       - SPRING_MAIL_PORT=25
       - SPRING_MAIL_HOST=smtp-server
-      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
+      - TRUSTED_S2S_SERVICE_NAMES=probate_backend,cmc,probate_frontend,divorce_frontend,divorce,payment_app,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
       - PAYBUBBLE_HOME_URL=https://ccpay-bubble-frontend-aat.service.core-compute-aat.internal
       - PCI_PAL_CALLBACK_URL=https://core-api-mgmt-aat.azure-api.net/telephony-api/telephony/callback
       - ASB_CONNECTION_STRING=some-azure-service-bus-connection-string
       - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
       - CORE_CASE_DATA_API_URL=http://ccd-data-store-api:4452
+      - LAUNCH_DARKLY_SDK_KEY=sdk-06456c8b-312c-475c-b154-ca585f5ca063
+      - SPRING_PROFILES_ACTIVE=local,liberataMock
     ports:
       - 8383:8080
     depends_on:
@@ -422,7 +430,7 @@ services:
       - 9200:9200
 
   ccd-logstash:
-    image: hmctspublic.azurecr.io/ccd/logstash:probate-latest
+    image: hmctspublic.azurecr.io/ccd/logstash:ccd-probate-logstash-latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - XPACK_MONITORING_ENABLED=false
@@ -438,10 +446,6 @@ services:
   probate-back-office:
     build:
       context: .
-    dns:
-      - 172.16.0.10
-      - 172.16.0.14
-      - 8.8.8.8
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
@@ -459,6 +463,10 @@ services:
       SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+      LAUNCHDARKLY_KEY: "${LD_SDK_BO_KEY}"
+      LD_USER_KEY: "${LD_BO_USER_KEY}"
+      PAYMENT_URL: http://wiremock:8080
+      PRD_API_URL: http://wiremock:8080
     ports:
       - 4104:4104
     depends_on:
@@ -481,6 +489,9 @@ services:
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
+      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
+
     ports:
       - 3000:3000
 
@@ -529,6 +540,123 @@ services:
         }
     ports:
       - 8081:8081
+
+  wiremock:
+    image: rodolpheche/wiremock
+    ports:
+      - 8991:8080
+    volumes:
+      - esdata1:/usr/share/wiremock/data
+
+  send-letter-service:
+    image: hmctspublic.azurecr.io/rpe/send-letter-service
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+      - SERVER_PORT=8485
+      - FTP_FINGERPRINT=fingerprint
+      - FTP_HOSTNAME=hostname
+      - FTP_PORT=22
+      - FTP_PRIVATE_KEY=private
+      - FTP_PUBLIC_KEY=public
+      - FTP_REPORTS_FOLDER=/reports/
+      - FTP_TARGET_FOLDER=/target/
+      - FTP_USER=user
+      - LETTER_TRACKING_DB_PASSWORD=${DB_PASSWORD}
+      - LETTER_TRACKING_DB_USER_NAME=${DB_USERNAME}
+      - S2S_URL=http://service-auth-provider-api:8080
+      - FLYWAY_URL=jdbc:postgresql://shared-database:5432/send_letter?sslmode=require
+      - FLYWAY_NOOP_STRATEGY=false
+      - SCHEDULING_ENABLED
+      - ENCRYPTION_ENABLED
+      - ENCRYPTION_PUBLIC_KEY=DUMMY
+      # these environment variables are used by java-logging library
+      - ROOT_APPENDER
+      - JSON_CONSOLE_PRETTY_PRINT
+      - ROOT_LOGGING_LEVEL
+      - REFORM_SERVICE_NAME
+      - REFORM_TEAM
+      - REFORM_ENVIRONMENT
+      - LETTER_TRACKING_DB_HOST=shared-database
+      - LETTER_TRACKING_DB_NAME=letter_tracking
+      - LETTER_TRACKING_DB_PORT=5432
+      - SMTP_HOST=false
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+    ports:
+      - 8485:8485
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+    links:
+      - shared-database
+      - service-auth-provider-api
+
+ # complete the XUI setup for probate-back-office - this has just been added as a starting point    
+  xui-manage-cases:
+    image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
+    environment:
+      FEATURE_APP_INSIGHTS_ENABLED: "true"
+      FEATURE_SECURE_COOKIE_ENABLED: "false"
+      FEATURE_REDIS_ENABLED: "false"
+      JURISDICTIONS: PROBATE
+      MICROSERVICE: xui_webapp
+      PROTOCOL: http
+      XUI_ENV: local
+
+      SERVICES_DOCUMENTS_API: http://dm-store:8080
+      SERVICES_PAYMENTS_URL: http://payments-api:8080
+      SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
+      SERVICES_IDAM_API_URL: http://sidam-api:5000
+      SERVICES_IDAM_CLIENT_ID: xui_webapp
+      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
+      SERVICES_IDAM_INDEX_URL: /
+      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
+      SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_PRD_API: http://wiremock:8080
+      SYSTEM_USER_NAME: "dummy"
+      SYSTEM_USER_PASSWORD: "dummy"
+      REDISCLOUD_URL: http://dummyrediscloudurl
+      HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
+      HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
+
+      APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
+      IDAM_SECRET: xui_webapp_secret
+      S2S_SECRET: "AAAAAAAAAAAAAAAA"
+      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
+    ports:
+      - 3455:3000
+    depends_on:
+      - ccd-api-gateway
+      - ccd-data-store-api
+
+  ccd-case-document-am-api:
+    image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
+    environment:
+      CASE_DOCUMENT_AM_API_S2S_SECRET: "AAAAAAAAAAAAAAAC"
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor
+      IDAM_API_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_OIDC_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      S2S_URL: http://service-auth-provider-api:8080
+      DM_STORE_BASE_URL: http://dm-store:8080
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      REFORM_SERVICE_NAME: ccd-case-document-am-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      DOCUMENT_TTL: 3600000
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      # JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    ports:
+      - 4455:4455
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - dm-store
+      - service-auth-provider-api
 
 volumes:
   ccd-docker-azure-blob-data:

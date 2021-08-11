@@ -23,33 +23,37 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class ReprintService {
-    @Autowired
-    private final BulkPrintService bulkPrintService;
-    private final PDFManagementService pdfManagementService;
-    private final CallbackResponseTransformer callbackResponseTransformer;
-
     public static final String LABEL_GRANT = "Grant";
     public static final String LABEL_REISSUED_GRANT = "ReissuedGrant";
     public static final String LABEL_WILL = "Will";
     public static final String LABEL_SOT = "SOT";
     public static final String WILL_DOC_TYPE = "Other";
     public static final String WILL_DOC_SUB_TYPE = "Will";
+    @Autowired
+    private final BulkPrintService bulkPrintService;
+    private final PDFManagementService pdfManagementService;
+    private final CallbackResponseTransformer callbackResponseTransformer;
 
     public CallbackResponse reprintSelectedDocument(CallbackRequest callbackRequest) {
 
-        DynamicListItem selectedDocumentItem = callbackRequest.getCaseDetails().getData().getReprintDocument().getValue();
+        DynamicListItem selectedDocumentItem =
+            callbackRequest.getCaseDetails().getData().getReprintDocument().getValue();
         if (selectedDocumentItem == null || selectedDocumentItem.getCode() == null) {
             throw new BadRequestException("No selection made for document to reprint");
         }
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         Document selectedDocument = findDocument(selectedDocumentItem, callbackRequest.getCaseDetails().getData());
-        SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, selectedDocument, coverSheet);
+        SendLetterResponse response =
+            bulkPrintService.sendDocumentsForReprint(callbackRequest, selectedDocument, coverSheet);
         String letterId = response != null ? response.letterId.toString() : null;
-        String pdfSize = String.valueOf(Integer.parseInt(callbackRequest.getCaseDetails().getData().getReprintNumberOfCopies()) + 1);
+        String pdfSize =
+            String.valueOf(Integer.parseInt(callbackRequest.getCaseDetails().getData().getReprintNumberOfCopies()) + 1);
 
-        log.info("Adding BP info for case={}, docType.template={}, letterId={}, pdfSize={}", callbackRequest.getCaseDetails().getId(),
+        log.info("Adding BP info for case={}, docType.template={}, letterId={}, pdfSize={}",
+            callbackRequest.getCaseDetails().getId(),
             selectedDocument.getDocumentType().getTemplateName(), letterId, pdfSize);
-        return callbackResponseTransformer.addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize);
+        return callbackResponseTransformer
+            .addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize);
     }
 
     private Document findDocument(DynamicListItem selectedDocumentItem, CaseData data) {
@@ -65,8 +69,8 @@ public class ReprintService {
                     .documentFileName(scannedDocument.get().getValue().getFileName())
                     .build();
             }
-        } else if (LABEL_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel()) ||
-            LABEL_REISSUED_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())) {
+        } else if (LABEL_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())
+            || LABEL_REISSUED_GRANT.equalsIgnoreCase(selectedDocumentItem.getLabel())) {
             String fileName = selectedDocumentItem.getCode();
             Optional<CollectionMember<Document>> document = data.getProbateDocumentsGenerated().stream()
                 .filter(doc -> doc.getValue().getDocumentFileName().equals(fileName))
@@ -74,7 +78,8 @@ public class ReprintService {
             if (document.isPresent()) {
                 return document.get().getValue();
             }
-        } else if (LABEL_SOT.equalsIgnoreCase(selectedDocumentItem.getLabel()) && data.getProbateSotDocumentsGenerated() != null){
+        } else if (LABEL_SOT.equalsIgnoreCase(selectedDocumentItem.getLabel())
+            && data.getProbateSotDocumentsGenerated() != null) {
             String fileName = selectedDocumentItem.getCode();
             Optional<CollectionMember<Document>> document = data.getProbateSotDocumentsGenerated().stream()
                 .filter(doc -> doc.getValue().getDocumentFileName().equals(fileName))

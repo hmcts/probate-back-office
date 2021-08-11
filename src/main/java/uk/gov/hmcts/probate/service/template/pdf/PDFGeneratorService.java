@@ -67,7 +67,8 @@ public class PDFGeneratorService {
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
 
         Map<String, Object> paramMap = asMap(pdfGenerationData);
-        appInsights.trackEvent(REQUEST_SENT, pdfServiceConfiguration.getUrl());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap(
+            "url",pdfServiceConfiguration.getUrl()));
 
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }

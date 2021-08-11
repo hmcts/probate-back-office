@@ -55,14 +55,22 @@ public class RegistryDetailsServiceTest {
 
     @Test
     public void testCaseDetailsHaveRegistryMappedCorrectly() {
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTelephone(), is(registry.getPhone()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine1(), is(registry.getAddressLine1()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine2(), is(registry.getAddressLine2()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine3(), is(registry.getAddressLine3()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine4(), is(registry.getAddressLine4()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine4(), is(registry.getAddressLine4()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryPostcode(), is(registry.getPostcode()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTelephone(),
+            is(registry.getPhone()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine1(),
+            is(registry.getAddressLine1()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine2(),
+            is(registry.getAddressLine2()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine3(),
+            is(registry.getAddressLine3()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine4(),
+            is(registry.getAddressLine4()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine4(),
+            is(registry.getAddressLine4()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryPostcode(),
+            is(registry.getPostcode()));
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTown(), is(registry.getTown()));
-        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getCtscTelephone(), is(registryMap.get(CTSC).getPhone()));
+        assertThat(registryDetailsService.getRegistryDetails(caseDetails).getCtscTelephone(),
+            is(registryMap.get(CTSC).getPhone()));
     }
 }

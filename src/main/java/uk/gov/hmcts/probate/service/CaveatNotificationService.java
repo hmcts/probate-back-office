@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -48,17 +49,18 @@ public class CaveatNotificationService {
     private final CaveatDocmosisService caveatDocmosisService;
 
     public CaveatCallbackResponse caveatRaise(CaveatCallbackRequest caveatCallbackRequest)
-            throws NotificationClientException {
+        throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse;
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
-                caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+                caveatCallbackResponse =
+                    caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
             }
         } else {
             caveatCallbackResponse = citizenCaveatRaise(caveatCallbackRequest);
@@ -70,7 +72,8 @@ public class CaveatNotificationService {
     private CaveatCallbackResponse citizenCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        CaveatCallbackResponse caveatCallbackResponse =
+            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         Document document;
         List<Document> documents = new ArrayList<>();
         String letterId = null;
@@ -78,38 +81,44 @@ public class CaveatNotificationService {
         setCaveatExpiryDate(caveatDetails.getData());
 
         if (caveatDetails.getData().isCaveatEmailNotificationRequested()) {
-            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
+            caveatCallbackResponse =
+                eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
                 documents.add(document);
             }
         } else {
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Map<String, Object> placeholders =
+                caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
                 .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
+            Document caveatRaisedDoc =
+                pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response =
+                    bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
                     ? response.letterId.toString()
                     : null;
-                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
+                caveatCallbackResponse =
+                    eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         }
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, null, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest,
+                                                  PaymentResponse paymentResponse)
         throws NotificationClientException {
 
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         Document document;
         List<Document> documents = new ArrayList<>();
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -117,9 +126,12 @@ public class CaveatNotificationService {
 
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
         documents.add(document);
+        CaveatCallbackResponse caveatCallbackResponse =
+            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null);
         }
         return caveatCallbackResponse;
     }
@@ -134,65 +146,81 @@ public class CaveatNotificationService {
         String letterId = null;
 
         if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()) {
-            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
+            caveatCallbackResponse =
+                eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
-                Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
+                Document document =
+                    notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
                 documents.add(document);
             } else {
                 return caveatCallbackResponse;
             }
         } else {
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Map<String, Object> placeholders =
+                caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
                 .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_EXTENDED);
+            Document caveatRaisedDoc =
+                pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_EXTENDED);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response =
+                    bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 ///
                 letterId = response != null
                     ? response.letterId.toString()
                     : null;
-                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
+                caveatCallbackResponse =
+                    eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         }
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest) throws NotificationClientException {
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+    public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+        CaveatCallbackResponse caveatCallbackResponse =
+            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()) {
-            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
+            caveatCallbackResponse =
+                eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
-                Document document = notificationService.sendCaveatEmail(CAVEAT_WITHDRAW, caveatCallbackRequest.getCaseDetails());
+                Document document =
+                    notificationService.sendCaveatEmail(CAVEAT_WITHDRAW, caveatCallbackRequest.getCaseDetails());
                 documents.add(document);
             } else {
                 return caveatCallbackResponse;
             }
         } else {
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Map<String, Object> placeholders =
+                caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
                 .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
+            Document caveatRaisedDoc =
+                pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response =
+                    bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = Optional.ofNullable(response).map(data -> data.letterId.toString()).orElse(letterId);
 
-                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
+                caveatCallbackResponse =
+                    eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         }
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.withdrawn(caveatCallbackRequest, documents, letterId);
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.withdrawn(caveatCallbackRequest, documents, letterId);
         }
         return caveatCallbackResponse;
     }

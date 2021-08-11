@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 @Slf4j
 public class FileTransferService {
 
-    private final FileTransferApi fileTransferApi;
     private static final String SV_VALID_FROM = "2019-02-02";
     private static final String SS = "bfqt";
     private static final String SRT = "sco";
@@ -24,7 +23,7 @@ public class FileTransferService {
     private static final String SE_SIG_EXPIRY_DATE = "2029-02-10T18:49:08Z";
     private static final String ST_SIG_CREATION_DATE = "2020-02-10T10:49:08Z";
     private static final String SPR = "https,http";
-
+    private final FileTransferApi fileTransferApi;
     @Value("${ftp.client.signature}")
     private String signature;
 
@@ -38,8 +37,10 @@ public class FileTransferService {
 
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
-        log.info("targetEnv:{} fileName:{} SV_VALID_FROM:{} SS:{} SRT:{} SP:{} SE_SIG_EXPIRY_DATE:{} ST_SIG_CREATION_DATE:{} SPR:{} signature:{}",  
-            targetEnv , file.getName(), SV_VALID_FROM, SS, SRT, 
+        log.info(
+            "targetEnv:{} fileName:{} SV_VALID_FROM:{} SS:{} SRT:{} SP:{} SE_SIG_EXPIRY_DATE:{} "
+                + "ST_SIG_CREATION_DATE:{} SPR:{} signature:{}",
+            targetEnv, file.getName(), SV_VALID_FROM, SS, SRT,
             SP, SE_SIG_EXPIRY_DATE, ST_SIG_CREATION_DATE, SPR, signature);
         Response response = null;
         String fileAsString = fileAsString(file.toPath().toString());

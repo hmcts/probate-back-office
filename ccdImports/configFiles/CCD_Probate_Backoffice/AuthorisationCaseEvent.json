@@ -666,6 +666,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForAwaitingDocumentation", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boStopCaseForCasePrinted", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAddCommentReadyToExamine", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationCreation", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationDeceasedDetails", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationProbateDetails", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationIntestacy", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteApplicationAdmon", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorDeleteCaseStopped", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchesForReadyForExamining", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForReadyForExamination", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForReadyForExamination", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
@@ -774,5 +780,11 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateApplication", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseWithoutPayment", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "caseworker-probate-issuer", "CRUD": "R"}
 ]

@@ -8,7 +8,6 @@ exports.config = {
             'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            // 'waitForAction': 1,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
@@ -19,13 +18,13 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    // '--headless', 
+                    // '--headless',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
                     '--ignore-certificate-errors',
-                    '--proxy-server=proxyout.reform.hmcts.net:8080',
-                    '--proxy-bypass-list=*beta*LB.reform.hmcts.net',
+                    // '--proxy-server=proxyout.reform.hmcts.net:8080',
+                    // '--proxy-bypass-list=*beta*LB.reform.hmcts.net',
                     '--window-size=1440,1400'
                 ]
             },
@@ -37,6 +36,9 @@ exports.config = {
         'JSWait': {
             require: './helpers/JSWait.js'
         },
+        'Mochawesome': {
+            uniqueScreenshotNames: 'true'
+        }
     },
     'include': {
         'I': './pages/steps.js'
@@ -44,6 +46,10 @@ exports.config = {
     'plugins': {
         'autoDelay': {
             'enabled': testConfig.TestAutoDelayEnabled
+        },
+        screenshotOnFail: {
+            enabled: true,
+            fullPageScreenshots: 'true'
         }
     },
     'multiple': {
