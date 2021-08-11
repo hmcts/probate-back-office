@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.probate.caseactivity.befta;
 
 import uk.gov.hmcts.befta.dse.ccd.DataLoaderToDefinitionStore;
@@ -13,3 +14,4 @@ public class HighLevelDataSetupApp extends DataLoaderToDefinitionStore {
         main(HighLevelDataSetupApp.class, args);
     }
 }
+*/
