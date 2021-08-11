@@ -126,11 +126,6 @@ npx @hmcts/probate-dev-env --create
 npx @hmcts/probate-dev-env
 
 # Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
-# To enable PBA payments for solicitors run this after startup of everything
-```
-docker-compose up -d wiremock
-./bin/wiremock.sh
-```
 
 # to use local probate backoffice
 docker-compose stop probate-back-office
