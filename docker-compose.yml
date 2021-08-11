@@ -63,11 +63,12 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
-      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
@@ -77,6 +78,7 @@ services:
       ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       DATA_STORE_DEFAULT_LOG_LEVEL: INFO
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
     ports:
       - 4452:4452
       - 5005:5005
@@ -156,6 +158,7 @@ services:
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
       MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
+      MICROSERVICEKEYS_CCD_CASE_DOCUMENT_AM_API : "AAAAAAAAAAAAAAAC"
     ports:
       - 4502:8080
 
@@ -244,6 +247,7 @@ services:
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
       - ENABLE_TTL=false
       - ENABLE_METADATA_MIGRATION=false
+      - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
     depends_on:
       - shared-database
       - service-auth-provider-api
@@ -627,6 +631,32 @@ services:
     depends_on:
       - ccd-api-gateway
       - ccd-data-store-api
+
+  ccd-case-document-am-api:
+    image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
+    environment:
+      CASE_DOCUMENT_AM_API_S2S_SECRET: "AAAAAAAAAAAAAAAC"
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor
+      IDAM_API_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_OIDC_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      S2S_URL: http://service-auth-provider-api:8080
+      DM_STORE_BASE_URL: http://dm-store:8080
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      REFORM_SERVICE_NAME: ccd-case-document-am-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      DOCUMENT_TTL: 3600000
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      # JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    ports:
+      - 4455:4455
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - dm-store
+      - service-auth-provider-api
 
 volumes:
   ccd-docker-azure-blob-data:
