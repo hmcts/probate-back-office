@@ -10,8 +10,11 @@ import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -39,6 +42,12 @@ public class EmUploadServiceTest {
     @Mock
     private DocumentManagementURIBuilder documentManagementURIBuilder;
 
+    @Mock
+    private CaseDocumentClient caseDocumentClient;
+    @Mock
+    private IdamAuthenticateUserService idamAuthenticateUserService;
+    @Mock
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     @Mock
     private HttpHeadersFactory httpHeadersFactory;
 

@@ -128,7 +128,7 @@ public class PDFManagementService {
     private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
-            EvidenceManagementFile store = uploadService.store(fileUpload);
+            EvidenceManagementFile store = uploadService.store(fileUpload, documentType);
             Optional<Link> binaryOptionalLink = store.getLink("binary");
             Optional<Link> selfOptionalLink = store.getLink(Link.REL_SELF);
             if (!binaryOptionalLink.isPresent()) {

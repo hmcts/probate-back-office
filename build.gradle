@@ -171,7 +171,8 @@ def versions = [
         serviceAuthVersion              : '3.0.0',
         pact_version                    : '4.1.7',
         probatePactCommonsVersion       : '1.0.2',
-        elasticSearchVersion            : '7.13.4'
+        elasticSearchVersion            : '7.13.4',
+        documentClient                  : '1.7.1'
 ]
 
 jacocoTestReport {
@@ -258,6 +259,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
+  implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
 
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
