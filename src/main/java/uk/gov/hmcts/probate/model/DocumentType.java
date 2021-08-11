@@ -111,7 +111,7 @@ public enum DocumentType {
     SOT_INFORMATION_REQUEST("sotInformationRequest"),
 
     @JsonProperty("statementOfTruth")
-    STATEMENT_OF_TRUTH("legalStatementGrantOfProbate"),
+    STATEMENT_OF_TRUTH("statementOfTruth"),
 
     @JsonProperty("welshStatementOfTruth")
     WELSH_STATEMENT_OF_TRUTH("welshStatementOfTruth"),
