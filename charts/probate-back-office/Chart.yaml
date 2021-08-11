@@ -12,12 +12,12 @@ dependencies:
     version:  3.6.0
     repository: '@hmctspublic'
   - name: ccd
-    version: 4.3.2
+    version: 5.0.2
     repository: '@hmctspublic'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
-    version: ~0.2.1
+    version: ~0.2.13
     repository: '@hmctspublic'
     condition: xui-webapp.enabled
   - name: idam-pr
@@ -30,9 +30,9 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
 
-#  - name: elasticsearch
-#    version: 13.0.2
-#    repository: "https://charts.bitnami.com/bitnami"
-#  - name: logstash
-#    version: ~2.4.1
-#    repository: '@hmctspublic'
+  - name: elasticsearch
+    version: 13.0.2
+    repository: "https://charts.bitnami.com/bitnami"
+  - name: logstash
+    version: ~2.4.1
+    repository: '@hmctspublic'
