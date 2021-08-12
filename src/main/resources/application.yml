@@ -510,6 +510,5 @@ ld:
     firstName: Probate
     lastName: Backend
 
-
 case_document_am:
-  url: http://ccd-case-document-am-api:4455
+  url: ${CASE_DOCUMENT_AM_URL:http://ccd-case-document-am-api:4455}
