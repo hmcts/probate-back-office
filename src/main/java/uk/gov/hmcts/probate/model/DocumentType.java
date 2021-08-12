@@ -158,25 +158,7 @@ public enum DocumentType {
 
     private final String templateName;
 
-    public static final DocumentType[] CAVEAT_TYPES = {};
-    public static final DocumentType[] WILL_LODGEMENT_TYPES = {WILL_LODGEMENT_DEPOSIT_RECEIPT};
-    
     DocumentType(String templateName) {
         this.templateName = templateName;
-    }
-    
-    public String getCcdCaseType() {
-        switch (this) {
-            case CAVEAT_COVERSHEET:
-            case CAVEAT_RAISED:
-            case CAVEAT_STOPPED:
-            case CAVEAT_EXTENDED:
-            case CAVEAT_WITHDRAWN:
-                return CcdCaseType.CAVEAT.getName();
-            case WILL_LODGEMENT_DEPOSIT_RECEIPT:
-                return CcdCaseType.WILL_LODGEMENT.getName();
-            default:
-                return CcdCaseType.GRANT_OF_REPRESENTATION.getName();
-        }
     }
 }

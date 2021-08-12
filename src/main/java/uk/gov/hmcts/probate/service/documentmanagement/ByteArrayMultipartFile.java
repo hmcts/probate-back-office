@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.evidencemanagement.builder;
+package uk.gov.hmcts.probate.service.documentmanagement;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
