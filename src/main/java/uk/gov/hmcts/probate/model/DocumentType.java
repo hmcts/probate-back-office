@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 
 @Getter
 public enum DocumentType {

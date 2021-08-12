@@ -27,6 +27,8 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -190,18 +192,102 @@ public class PDFManagementServiceTest {
     }
 
     @Test(expected = ConnectionException.class)
-    public void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
+    public void shouldThrowConnectExceptionResponseIsNull() throws IOException {
         String json = "{}";
 
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(null);
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionResponseDocumentsIsNull() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+            .thenReturn(evidenceManagementFileUpload);
+        when(uploadResponseMock.getDocuments()).thenReturn(null);
+        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
 
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionResponseDocumentsIsEmpty() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+            .thenReturn(evidenceManagementFileUpload);
+        when(uploadResponseMock.getDocuments()).thenReturn(Collections.emptyList());
+        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(uploadResponseMock);
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionResponseFirstDocumentLinksAreNUll() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+            .thenReturn(evidenceManagementFileUpload);
+        uk.gov.hmcts.reform.ccd.document.am.model.Document document =
+            uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+            .build();
+        when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
+        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(uploadResponseMock);
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionResponseFirstDocumentLinkBinaryIsNUll() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+            .thenReturn(evidenceManagementFileUpload);
+        Links links = new Links();
+        links.self = new Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document document =
+            uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                .links(links)
+                .build();
+        when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
+        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(uploadResponseMock);
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionResponseFirstDocumentLinkSelfIsNUll() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+            .thenReturn(evidenceManagementFileUpload);
+        Links links = new Links();
+        links.binary = new Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document document =
+            uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                .links(links)
+                .build();
+        when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
+        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(uploadResponseMock);
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
     @Test
     public void testGetDecodedSignatureReturnsBase64String() {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));

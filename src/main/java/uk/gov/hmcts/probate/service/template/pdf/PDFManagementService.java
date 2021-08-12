@@ -138,9 +138,6 @@ public class PDFManagementService {
                 throw new IOException("Documents are empty");
             }
             uk.gov.hmcts.reform.ccd.document.am.model.Document document = uploadResponse.getDocuments().get(0);
-            if (document == null) {
-                throw new IOException("Document is null");
-            }
             if (document.links == null) {
                 throw new IOException("No Document links");
             }
