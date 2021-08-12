@@ -474,4 +474,7 @@ ld:
     key: ${LD_USER_KEY:dummy_key}
     firstName: Probate
     lastName: Backend
+
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_URL:http://ccd-case-document-am-api:4455}
     
