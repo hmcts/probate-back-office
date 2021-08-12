@@ -166,7 +166,7 @@ public enum DocumentType {
     }
     
     public String getCcdCaseType() {
-        switch (this){
+        switch (this) {
             case CAVEAT_COVERSHEET:
             case CAVEAT_RAISED:
             case CAVEAT_STOPPED:

@@ -20,7 +20,7 @@ public class UploadRequestBuilderTest {
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(
-                Collections.singletonList(fileUpload));
+            Collections.singletonList(fileUpload));
 
         assertEquals(2, parameters.size());
         assertTrue(parameters.containsKey("files"));

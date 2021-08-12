@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -18,10 +17,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -35,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
-import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -45,19 +43,20 @@ public class PDFManagementService {
 
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
     private final PDFGeneratorService pdfGeneratorService;
-    private final UploadService uploadService;
+    private final DocumentManagementService documentManagementService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
 
     @Autowired
-    public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
+    public PDFManagementService(PDFGeneratorService pdfGeneratorService,
+                                DocumentManagementService documentManagementService,
                                 ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
                                 PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService) {
         this.pdfGeneratorService = pdfGeneratorService;
-        this.uploadService = uploadService;
+        this.documentManagementService = documentManagementService;
         this.objectMapper = objectMapper.copy();
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
@@ -128,18 +127,23 @@ public class PDFManagementService {
     private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
-            EvidenceManagementFile store = uploadService.store(fileUpload, documentType);
-            Optional<Link> binaryOptionalLink = store.getLink("binary");
-            Optional<Link> selfOptionalLink = store.getLink(Link.REL_SELF);
-            if (!binaryOptionalLink.isPresent()) {
-                throw new IOException("binary link is not present");
+            UploadResponse uploadResponse = documentManagementService.store(fileUpload, documentType);
+            uk.gov.hmcts.reform.ccd.document.am.model.Document document = uploadResponse.getDocuments().get(0);
+            if (document == null) {
+                throw new IOException("Document is null");
             }
-            if (!selfOptionalLink.isPresent()) {
-                throw new IOException("self link is not present");
+            if (document.links == null) {
+                throw new IOException("No Document links");
+            }
+            if (document.links.binary == null) {
+                throw new IOException("No Document binary link");
+            }
+            if (document.links.self == null) {
+                throw new IOException("No Document self link");
             }
             DocumentLink documentLink = DocumentLink.builder()
-                .documentBinaryUrl(((Link) binaryOptionalLink.get()).getHref())
-                .documentUrl(((Link) selfOptionalLink.get()).getHref())
+                .documentBinaryUrl(document.links.binary.href)
+                .documentUrl(document.links.self.href)
                 .documentFilename(documentType.getTemplateName() + ".pdf")
                 .build();
 
