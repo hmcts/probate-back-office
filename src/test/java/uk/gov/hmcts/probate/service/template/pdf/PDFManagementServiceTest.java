@@ -288,6 +288,7 @@ public class PDFManagementServiceTest {
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
+    
     @Test
     public void testGetDecodedSignatureReturnsBase64String() {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
