@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: false
+  probate-ccd-stack: true
 
 postgresql:
   enabled: true
@@ -28,8 +28,7 @@ idam-pr:
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
       - http://xui-${SERVICE_FQDN}/oauth2/callback
-    CCD:
-      - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+
 ccd:
   ccd:
     adminWeb:
@@ -39,7 +38,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: true
+      enabled: false
     s2s:
       enabled: false
     postgresql:
