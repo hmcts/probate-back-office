@@ -128,6 +128,15 @@ public class PDFManagementService {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             UploadResponse uploadResponse = documentManagementService.store(fileUpload, documentType);
+            if (uploadResponse == null) {
+                throw new IOException("uploadResponse is null");
+            }
+            if (uploadResponse.getDocuments() == null) {
+                throw new IOException("Documents are null");
+            }
+            if (uploadResponse.getDocuments().isEmpty()) {
+                throw new IOException("Documents are empty");
+            }
             uk.gov.hmcts.reform.ccd.document.am.model.Document document = uploadResponse.getDocuments().get(0);
             if (document == null) {
                 throw new IOException("Document is null");

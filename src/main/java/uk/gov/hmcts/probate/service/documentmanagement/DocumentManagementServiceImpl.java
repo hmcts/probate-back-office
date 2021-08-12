@@ -30,12 +30,13 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     private static final boolean DELETE_PERMANENT = true;
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
+    private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
 
     @Override
     @Nullable
     public UploadResponse store(EvidenceManagementFileUpload file, DocumentType documentType) throws IOException {
         DocumentUploadRequest documentUploadRequest =
-            DocumentManagementRequestBuilder.perpareDocumentUploadRequest(file,
+            documentManagementRequestBuilder.perpareDocumentUploadRequest(file,
             documentType);
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
