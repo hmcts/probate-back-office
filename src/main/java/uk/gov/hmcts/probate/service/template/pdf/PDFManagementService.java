@@ -151,6 +151,7 @@ public class PDFManagementService {
                 .documentBinaryUrl(document.links.binary.href)
                 .documentUrl(document.links.self.href)
                 .documentFilename(documentType.getTemplateName() + ".pdf")
+                .documentHash(document.hashToken)
                 .build();
 
             return Document.builder()

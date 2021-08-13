@@ -109,10 +109,6 @@ public class FunctionalTestUtils {
         }
     }
 
-    public Headers getHeaders1() {
-        return getHeaders(serviceToken);
-    }
-
     public Headers getHeaders(String serviceToken) {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),

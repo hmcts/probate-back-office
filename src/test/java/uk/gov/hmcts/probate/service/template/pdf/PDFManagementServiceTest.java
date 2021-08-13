@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
-import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document.Link;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document.Links;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
@@ -48,10 +47,12 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
+import static uk.gov.hmcts.reform.ccd.document.am.model.Classification.PRIVATE;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
 
+    private static final String HASH_TOKEN = "hashToken";
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
@@ -241,7 +242,7 @@ public class PDFManagementServiceTest {
             .thenReturn(evidenceManagementFileUpload);
         uk.gov.hmcts.reform.ccd.document.am.model.Document document =
             uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-            .build();
+                .build();
         when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
         when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
@@ -288,7 +289,7 @@ public class PDFManagementServiceTest {
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
-    
+
     @Test
     public void testGetDecodedSignatureReturnsBase64String() {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
@@ -331,19 +332,13 @@ public class PDFManagementServiceTest {
         document = uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
             .links(links)
             .originalDocumentName(fileName)
-            .classification(Classification.PRIVATE)
+            .hashToken(HASH_TOKEN)
+            .classification(PRIVATE)
             .build();
 
         List<uk.gov.hmcts.reform.ccd.document.am.model.Document> documentsList = new ArrayList<>();
         documentsList.add(document);
         when(uploadResponseMock.getDocuments()).thenReturn(documentsList);
-    }
-
-    private void assertAll(Document response, String fileName) {
-        assertNotNull(response);
-        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
-        assertEquals(BINARY_URL, response.getDocumentLink().getDocumentBinaryUrl());
-        assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
     }
 
     private void assertDocumentUploaded(DocumentType docType, String fileName) throws IOException {
@@ -373,4 +368,11 @@ public class PDFManagementServiceTest {
         assertAll(response, fileName);
     }
 
+    private void assertAll(Document response, String fileName) {
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(BINARY_URL, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
+        assertEquals(HASH_TOKEN, response.getDocumentLink().getDocumentHash());
+    }
 }
