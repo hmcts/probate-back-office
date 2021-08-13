@@ -144,7 +144,7 @@ public class ReprintServiceTest {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("SOTFileName")
-                .label("SOT")
+                .label("LegalStatement")
                 .build())
             .build();
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
