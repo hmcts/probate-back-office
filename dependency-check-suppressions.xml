@@ -9,13 +9,6 @@
         <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
-        <notes>
-         Suppressing CVE-2021-22112</notes>
-        <filePath regex="true">.*spring-security-(core)-5\.3\.8\.RELEASE\.jar</filePath>
-        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
-        <cve>CVE-2021-22112</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[
    file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
    ]]></notes>
@@ -55,13 +48,6 @@
         <cve>CVE-2021-22118</cve>
     </suppress>
     <suppress>
-        <notes>
-         Suppressing CVE-2021-22112</notes>
-        <filePath regex="true">.*spring-security-(core)-5\.3\.8\.RELEASE\.jar</filePath>
-        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
-        <cve>CVE-2021-22112</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[
    file name: spring-security-core-5.3.8.RELEASE.jar
    ]]></notes>
@@ -76,8 +62,10 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   Suppressing CVE-2021-33037
-   ]]></notes>
-        <cve>CVE-2021-33037</cve>
+         Suppressing untill spring boot update
+        ]]></notes>
+        <filePath regex="true">.*jakarta.el-3.0.3.jar</filePath>
+        <cpe>cpe:/a:jakarta_expression_language</cpe>
+        <cve>CVE-2021-28170</cve>
     </suppress>
 </suppressions>
