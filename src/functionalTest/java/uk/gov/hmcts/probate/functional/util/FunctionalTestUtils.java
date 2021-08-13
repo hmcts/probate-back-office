@@ -109,7 +109,7 @@ public class FunctionalTestUtils {
         }
     }
 
-    public Headers getHeaders() {
+    public Headers getHeaders1() {
         return getHeaders(serviceToken);
     }
 

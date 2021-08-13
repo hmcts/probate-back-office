@@ -217,7 +217,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithCaseworkerUser())
             .config(config)
             .contentType(ContentType.JSON)
             .body("")

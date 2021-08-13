@@ -123,7 +123,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
     }
@@ -266,7 +266,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(replaceStringInCheckYourAnswersPayload(oldString, replacingString))
             .when().post(postURL).then().statusCode(400)
             .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
