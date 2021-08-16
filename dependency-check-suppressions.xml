@@ -68,4 +68,11 @@
         <cpe>cpe:/a:jakarta_expression_language</cpe>
         <cve>CVE-2021-28170</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.3.9.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2021-22119</vulnerabilityName>
+    </suppress>
 </suppressions>
