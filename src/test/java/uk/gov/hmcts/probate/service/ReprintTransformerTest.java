@@ -115,7 +115,8 @@ public class ReprintTransformerTest {
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getCode(), is("Grant1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Grant"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("WSOT3"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("LegalStatement"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(),
+                is("LegalStatement"));
     }
 
     @Test
