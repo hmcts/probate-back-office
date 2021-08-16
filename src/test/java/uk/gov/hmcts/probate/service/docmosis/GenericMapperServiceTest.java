@@ -34,7 +34,6 @@ public class GenericMapperServiceTest {
     private static final String DECEASED_DOD_VALUE = "2015-01-01";
     private static final String DECEASED_DOB_VALUE = "1990-01-01";
     private static final String DECEASED_ADDRESS_KEY = "deceasedAddress";
-    private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
     private static final String DECEASED_TITLE_KEY = "boDeceasedTitle";
     private static final String DECEASED_TITLE_VALUE = "Mr";
     private static final String PRIMARY_APPLICANT_APPLYING_KEY = "primaryApplicantIsApplying";
@@ -44,11 +43,9 @@ public class GenericMapperServiceTest {
     private static final String PRIMARY_APPLICANT_SURNAME_KEY = "primaryApplicantSurname";
     private static final String PRIMARY_APPLICANT_SURNAME_VALUE = "Timson";
     private static final String PRIMARY_APPLICANT_ADDRESS_KEY = "primaryApplicantAddress";
-    private static Map<String, Object> PRIMARY_APPLICANT_ADDRESS_VALUE = new HashMap<>();
     private static final String SOLICITOR_FIRM_NAME_KEY = "solsSolicitorFirmName";
     private static final String SOLICITOR_FIRM_NAME_VALUE = "Solicitors R us";
     private static final String SOLICITOR_ADDRESS_KEY = "solsSolicitorAddress";
-    private static Map<String, Object> SOLICITOR_ADDRESS_VALUE = new HashMap<>();
     private static final String IHT_GROSS_KEY = "ihtGrossValue";
     private static final BigDecimal IHT_GROSS_VALUE = new BigDecimal(8899);
     private static final String IHT_NET_KEY = "ihtNetValue";
@@ -78,12 +75,10 @@ public class GenericMapperServiceTest {
     private static final String ADDRESS_LINE_1_VALUE = "123 Fake street";
     private static final String ADDRESS_LINE_3_VALUE = "The lane";
     private static final String POSTCODE_VALUE = "AB1 2CD";
-
     private static final String APPEND_NAME = "Bob Smith";
     private static final SolsAddress APPEND_ADDRESS =
-            SolsAddress.builder().addressLine1("678").addressLine2("the street").addressLine3("Lane").country(
-                    "England").county("County").postTown("town").postCode("AB1").build();
-
+        SolsAddress.builder().addressLine1("678").addressLine2("the street").addressLine3("Lane").country(
+            "England").county("County").postTown("town").postCode("AB1").build();
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String REGISTRY_LOCATION = "oxford";
     private static final Long CASE_ID = 12345678987654321L;
@@ -93,6 +88,9 @@ public class GenericMapperServiceTest {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
+    private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
+    private static Map<String, Object> PRIMARY_APPLICANT_ADDRESS_VALUE = new HashMap<>();
+    private static Map<String, Object> SOLICITOR_ADDRESS_VALUE = new HashMap<>();
     private CallbackRequest callbackRequest;
     private Map<String, Object> images = new HashMap<>();
     private Registry registry = new Registry();
@@ -126,28 +124,28 @@ public class GenericMapperServiceTest {
         when(registriesProperties.getRegistries()).thenReturn(registryMap);
 
         CaseData caseData = CaseData.builder()
-                .deceasedForenames("Nigel")
-                .deceasedSurname("Deadsoul")
-                .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
-                .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
-                .deceasedAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).addressLine3(ADDRESS_LINE_3_VALUE)
-                        .postCode(POSTCODE_VALUE).build())
-                .boDeceasedTitle("Mr")
-                .primaryApplicantIsApplying("Yes")
-                .primaryApplicantForenames("Tim")
-                .primaryApplicantSurname("Timson")
-                .primaryApplicantAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).postCode(POSTCODE_VALUE)
-                        .build())
-                .solsSolicitorFirmName("Solicitors R us")
-                .solsSolicitorAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).build())
-                .ihtGrossValue(new BigDecimal(new BigInteger("8899"), 0))
-                .ihtNetValue(new BigDecimal(new BigInteger("7787"), 0))
-                .caseType("gop")
-                .registryLocation("Oxford")
-                .grantIssuedDate("2019-02-18")
-                .solsSOTName("John Thesolicitor")
-                .applicationType(ApplicationType.PERSONAL)
-                .build();
+            .deceasedForenames("Nigel")
+            .deceasedSurname("Deadsoul")
+            .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
+            .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
+            .deceasedAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).addressLine3(ADDRESS_LINE_3_VALUE)
+                .postCode(POSTCODE_VALUE).build())
+            .boDeceasedTitle("Mr")
+            .primaryApplicantIsApplying("Yes")
+            .primaryApplicantForenames("Tim")
+            .primaryApplicantSurname("Timson")
+            .primaryApplicantAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).postCode(POSTCODE_VALUE)
+                .build())
+            .solsSolicitorFirmName("Solicitors R us")
+            .solsSolicitorAddress(SolsAddress.builder().addressLine1(ADDRESS_LINE_1_VALUE).build())
+            .ihtGrossValue(new BigDecimal(new BigInteger("8899"), 0))
+            .ihtNetValue(new BigDecimal(new BigInteger("7787"), 0))
+            .caseType("gop")
+            .registryLocation("Oxford")
+            .grantIssuedDate("2019-02-18")
+            .solsSOTName("John Thesolicitor")
+            .applicationType(ApplicationType.PERSONAL)
+            .build();
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
@@ -164,41 +162,41 @@ public class GenericMapperServiceTest {
     public void testCaseDataIsMappedSuccessfullyWithFormattedDOD() {
         Map<String, Object> returnedMap = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
         expectedMappedCaseData().keySet().stream()
-                .forEach((key) -> {
-                    assertEquals(expectedMappedCaseData().get(key), returnedMap.get(key));
-                });
+            .forEach((key) -> {
+                assertEquals(expectedMappedCaseData().get(key), returnedMap.get(key));
+            });
     }
 
     @Test
     public void testRegistryMappedSuccessfully() {
         Map<String, Object> returnedMap =
-                genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
+            genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
         expectedMappedRegistries().keySet().stream()
-                .forEach((key) -> {
-                    assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
-                });
+            .forEach((key) -> {
+                assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
+            });
     }
 
     @Test
     public void testImagesMappedSuccessfully() {
         Map<String, Object> returnedMap = genericMapperService.addCaseDataWithImages(images,
-                callbackRequest.getCaseDetails());
+            callbackRequest.getCaseDetails());
         expectedImages().keySet().stream()
-                .forEach((key) -> {
-                    assertEquals(expectedImages().get(key), returnedMap.get(key));
-                });
+            .forEach((key) -> {
+                assertEquals(expectedImages().get(key), returnedMap.get(key));
+            });
     }
 
     @Test
     public void testAllFieldsAreAppendedToExistingMap() {
         assertEquals(expectedMappedCaseData().size() + 8,
-                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, APPEND_ADDRESS).size());
+            genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, APPEND_ADDRESS).size());
     }
 
     @Test
     public void testAppendedValuesMatchExpected() {
         Map<String, Object> resultMap = genericMapperService.appendExecutorDetails(expectedMappedCaseData(),
-                APPEND_NAME, APPEND_ADDRESS);
+            APPEND_NAME, APPEND_ADDRESS);
 
         assertEquals(APPEND_NAME, resultMap.get("name"));
         assertEquals(APPEND_ADDRESS.getAddressLine1(), resultMap.get("addressLine1"));
@@ -215,10 +213,10 @@ public class GenericMapperServiceTest {
         SolsAddress address = SolsAddress.builder().addressLine1("321 street").postCode("AB").build();
 
         assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME,
-                address).get("addressLine1"));
+            address).get("addressLine1"));
         assertEquals(null,
-                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, address).get(
-                        "addressLine2"));
+            genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, address).get(
+                "addressLine2"));
     }
 
     private Map<String, Object> expectedImages() {

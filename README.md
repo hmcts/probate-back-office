@@ -112,16 +112,31 @@ Bring up the environment:
 # build the jar
 ./gradlew assemble
 
+# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+XUI_LD_ID
+LD_SDK_BO_KEY
+LD_BO_USER_KEY
+LD_SDK_FE_KEY
+LD_FE_USER_KEY
+
 # first time only
 npx @hmcts/probate-dev-env --create
 
 # spin up the docker containers
 npx @hmcts/probate-dev-env
 
-# use local probate backoffice
+# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+
+# to use local probate backoffice
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
+
+# to clear out all images
+npx @hmcts/probate-dev-env --destroy
+docker container rm $(docker container ls -a -q)
+docker image rm $(docker image ls -a -q)
+docker volume rm $(docker volume ls -q)
 
 ```
 
@@ -131,6 +146,7 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
+
 
 ## Full setup
 
@@ -246,12 +262,15 @@ For mac
 ```bash
    ./ccdImports/conversionScripts/createAllXLS.sh docker.for.mac.localhost:4104
 ```
+For Windows 10
+```bash
+   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.win.localhost:4104
+```
 
 For linux (replace ip with your own ip)
 ```bash
    ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 
 ```
-The xls generation adds a empty Banner tab for each case type, which will not load using the /import scrips. Remove this tab from any/all xls file before importing it
 
 ###### Import xls
 ```bash
@@ -288,7 +307,28 @@ Add keywords to fees database
 ```bash
     ./bin/fees-add-keyword.sh
 ```
+## Running Back Office Puppeteer End To End Tests
+The tests are located at src/test/end-to-end and must be maintainend and run, as they are run as part of the nightly Jenkins CI build.
+Configuration is set by default to be able to run in an npx created local environment without amendment. 
 
+Config is by environment variables with defaults if not present. The .env file does not contain environment variables, 
+and so default values will be used for local run. These can be found in src/test/config.js, and are used by
+codecept config file src/test/end-to-end/codecept.conf.js.
+
+The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
+yarn script test:fullfunctional (not to be confused with functional tests).
+
+To see if it's running ok, change config value TestShowBrowserWindow in config.js from false to true and the browser will 
+show, allowing you to see what's going on.  
+ 
+The default test configuration runs all end to end tests, however, often we just want to run the ones that are failing.
+As a step towards running an individual test, a new env var has been added for local use: process.env.E2E_TEST_PATH
+(see config.js).
+
+This defaults to './paths/**/*.js', which the Jenkins nightly build will use. 
+However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area.
+
+ 
 ## Complete setup for local FE + e2e development
 ### probate-frontend
 set following in default.yml
@@ -491,5 +531,16 @@ Here are some other functionalities it provides:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
+# e2e Testing
+To run Probate Practitioner tests on ExUI locally do the following:
+    1. Update the config.js file
+        TestBackOfficeUrl -  http://localhost:3455
+        TestEnvProfUser - probatesolicitortestorgtest1@gmail.com
+        TestEnvProfPassword - Probate123
 
+To run Caseworker tests on XUI locally do the following:
+    1. Update the config.js file
+        TestBackOfficeUrl -  http://localhost:3455
+        TestEnvUser - ProbateSolCW1@gmail.com
+        TestEnvPassword - Pa55word11
     

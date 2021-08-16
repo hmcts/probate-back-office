@@ -24,17 +24,16 @@ public class FullAliasNameMapperTest {
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
     private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "|" + DECEASED_ALIAS_NAME2;
-
-    @Autowired
-    private FullAliasNameMapper aliasNameMapper;
-
     @MockBean
     AppInsights appInsights;
+    @Autowired
+    private FullAliasNameMapper aliasNameMapper;
 
     @Test
     public void shouldMapToCollection() {
 
-        List<CollectionMember<FullAliasName>> aliasCollection = aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAMES);
+        List<CollectionMember<FullAliasName>> aliasCollection =
+            aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAMES);
         List<CollectionMember<FullAliasName>> expectedAliasNames = buildAliasNames();
 
         aliasCollection.forEach(alias -> assertThat(expectedAliasNames).contains(alias));
@@ -54,7 +53,8 @@ public class FullAliasNameMapperTest {
     @Test
     public void shouldMapToCollectionOneAliasOnly() {
 
-        List<CollectionMember<FullAliasName>> aliasCollection = aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAME1);
+        List<CollectionMember<FullAliasName>> aliasCollection =
+            aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAME1);
 
         assertEquals(DECEASED_ALIAS_NAME1, aliasCollection.get(0).getValue().getFullAliasName());
         assertEquals(1, aliasCollection.size());
@@ -62,11 +62,11 @@ public class FullAliasNameMapperTest {
 
     private List<CollectionMember<FullAliasName>> buildAliasNames() {
         FullAliasName aliasName1 = FullAliasName.builder()
-                .fullAliasName(DECEASED_ALIAS_NAME1)
-                .build();
+            .fullAliasName(DECEASED_ALIAS_NAME1)
+            .build();
         FullAliasName aliasName2 = FullAliasName.builder()
-                .fullAliasName(DECEASED_ALIAS_NAME2)
-                .build();
+            .fullAliasName(DECEASED_ALIAS_NAME2)
+            .build();
         List<CollectionMember<FullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<FullAliasName>>();
         CollectionMember<FullAliasName> aliasNamesCollection1 = new CollectionMember(null, aliasName1);
         aliasNamesCollections.add(aliasNamesCollection1);

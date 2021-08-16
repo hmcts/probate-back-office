@@ -56,8 +56,7 @@
       "PostCode": "2",
       "Country": "2"
     },
-    "solsSolicitorEmail": "contact@lonGenArt.com",
-    "solsSolicitorPhoneNumber": "0208 863 98688",
+    "solsSolicitorEmail": "solicitor@probate-test.com",
     "deceasedDomicileInEngWales": "Yes",
     "ihtNetValue": "90009",
     "deceasedSurname": "Victoria",
@@ -94,4 +93,4 @@
     "solsSolicitorAppReference": "appref",
     "solsSOTNeedToUpdate": "Yes"
   }
-}                                                                                                                                                          with
+}

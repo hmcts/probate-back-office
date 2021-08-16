@@ -20,6 +20,9 @@ public enum DocumentType {
     @JsonProperty("grantCover")
     GRANT_COVER("grantCover"),
 
+    @JsonProperty("solicitorCoverSheet")
+    SOLICITOR_COVERSHEET("solicitorCoverSheet"),
+
     @JsonProperty("blank")
     BLANK("blank"),
 
@@ -61,6 +64,9 @@ public enum DocumentType {
 
     @JsonProperty("correspondence")
     CORRESPONDENCE("correspondence"),
+
+    @JsonProperty("will")
+    WILL("will"),
 
     @JsonProperty("caveatCoversheet")
     CAVEAT_COVERSHEET("caveatCoversheet"),

@@ -38,19 +38,21 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
         fieldErrorResponsePrimary = FieldErrorResponse.builder()
             .message("primary missing")
             .build();
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA")).thenReturn(fieldErrorResponsePrimary);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA"))
+            .thenReturn(fieldErrorResponsePrimary);
 
         fieldErrorResponseSolicitor = FieldErrorResponse.builder()
             .message("solicitor missing")
             .build();
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS")).thenReturn(fieldErrorResponseSolicitor);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"))
+            .thenReturn(fieldErrorResponseSolicitor);
     }
 
     @Test
     public void shouldPassPersonalWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
-            .primaryApplicantEmailAddress("primary@email.com")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
@@ -62,7 +64,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     public void shouldPassSolicitorWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
-            .solsSolicitorEmail("solicitor@email.com")
+            .solsSolicitorEmail("solicitor@probate-test.com")
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 

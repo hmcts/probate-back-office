@@ -17,7 +17,8 @@ public enum EventId {
     SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT("scheduledUpdateGrantDelayNotificationSent"),
     SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT("scheduledUpdateGrantAwaitingDocsNotificationSent"),
     GRANT_STOPPED_DATE("grantStoppedDate"),
-    GRANT_RESOLVED("grantResolved");
+    GRANT_RESOLVED("grantResolved"),
+    DEATH_RECORD_VERIFIED("deathRecordVerified");
     @Getter
     private final String name;
 

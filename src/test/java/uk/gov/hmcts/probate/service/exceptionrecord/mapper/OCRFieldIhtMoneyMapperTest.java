@@ -35,7 +35,8 @@ public class OCRFieldIhtMoneyMapperTest {
     @Test
     public void testExceptionForToPenniesNotNumeric() throws Exception {
         expectedEx.expect(OCRMappingException.class);
-        expectedEx.expectMessage("Monetary field '" + MONETARY_TEST_UNKNOWN_VALUE + "' could not be converted to a number");
+        expectedEx
+            .expectMessage("Monetary field '" + MONETARY_TEST_UNKNOWN_VALUE + "' could not be converted to a number");
         Long response = ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_UNKNOWN_VALUE);
     }
 

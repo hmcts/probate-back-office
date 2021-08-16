@@ -1,0 +1,30 @@
+{
+  "page1_caveator_forename": "E2E_caveator_forenames",
+  "page1_caveator_surname": "E2E_caveator_surname",
+
+  "page2_deceased_forename": "E2E_deceased_forenames",
+  "page2_deceased_surname": "E2E_deceased_surname",
+  "page2_dateOfDeath_day": "01",
+  "page2_dateOfDeath_month": "01",
+  "page2_dateOfDeath_year": "2017",
+  "page2_dateOfDeath_long": "1 Jan 2017",
+  "page2_dateOfBirth_day": "01",
+  "page2_dateOfBirth_month": "01",
+  "page2_dateOfBirth_year": "1930",
+  "page2_dateOfBirth_long": "1 Jan 1930",
+
+  "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
+  "page2_alias_1": "deceased_alias_name1",
+  "page2_alias_2": "deceased_alias_name2",
+  "page2_hasAliasYes": "Yes",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}

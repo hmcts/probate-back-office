@@ -1,4 +1,5 @@
 {
-  "waitForText" : "Case List",
-  "locator": "a[href=\"\/create\/case\"]"
+  "waitForText" : "Case list",
+  "ccduilCreateCaselocator": "a[href=\"\/create\/case\"]",
+  "xuiCreateCaseLocator": "a[href=\"\/cases\/case-filter\"]"
 }

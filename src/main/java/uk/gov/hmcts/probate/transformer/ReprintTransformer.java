@@ -31,7 +31,7 @@ public class ReprintTransformer {
 
 
     public void transformReprintDocuments(@Valid CaseDetails caseDetails,
-                                          ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder) {
+                                          ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.reprintDocument(getDocumentsAsDynamicList(caseDetails.getData()));
     }
 
@@ -51,8 +51,11 @@ public class ReprintTransformer {
                 .collect(Collectors.toList()));
         }
 
-        if (caseData.getProbateSotDocumentsGenerated() != null && !caseData.getProbateSotDocumentsGenerated().isEmpty()) {
-            Document sot = caseData.getProbateSotDocumentsGenerated().get(caseData.getProbateSotDocumentsGenerated().size()-1).getValue();
+        if (caseData.getProbateSotDocumentsGenerated() != null && !caseData.getProbateSotDocumentsGenerated()
+            .isEmpty()) {
+            Document sot =
+                caseData.getProbateSotDocumentsGenerated().get(caseData.getProbateSotDocumentsGenerated().size() - 1)
+                    .getValue();
             if (isFromGeneratedDocuments(sot)) {
                 Optional<DynamicListItem> dynamicListItem = buildFromGeneratedDocument(sot);
                 if (dynamicListItem.isPresent()) {
@@ -75,8 +78,8 @@ public class ReprintTransformer {
     }
 
     private boolean isFromScannedDOcuments(ScannedDocument document) {
-        return (WILL_DOC_TYPE.equalsIgnoreCase(document.getType()) &&
-            WILL_DOC_SUB_TYPE.equalsIgnoreCase(document.getSubtype()));
+        return (WILL_DOC_TYPE.equalsIgnoreCase(document.getType())
+            && WILL_DOC_SUB_TYPE.equalsIgnoreCase(document.getSubtype()));
     }
 
     private boolean isFromGeneratedDocuments(Document document) {
@@ -118,7 +121,8 @@ public class ReprintTransformer {
             case DIGITAL_GRANT_REISSUE:
             case INTESTACY_GRANT_REISSUE:
             case ADMON_WILL_GRANT_REISSUE:
-                optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_REISSUED_GRANT));
+                optionalDynamicListItem =
+                    Optional.of(buildListItem(document.getDocumentFileName(), LABEL_REISSUED_GRANT));
                 break;
             case STATEMENT_OF_TRUTH:
             case WELSH_STATEMENT_OF_TRUTH:

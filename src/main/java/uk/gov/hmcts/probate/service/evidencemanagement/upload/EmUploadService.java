@@ -19,7 +19,9 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,21 +32,32 @@ public class EmUploadService implements UploadService {
     private final DocumentManagementURIBuilder documentManagementURIBuilder;
     private final ObjectMapper objectMapper;
 
+    private static <T> T nonNull(@Nullable T result) {
+        try {
+            Assert.state(result != null, "Entity should be non null in EmUploadService");
+        } catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
+        }
+        return result;
+    }
+
     @Override
     @Nullable
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(file);
 
-        HashMap<String, HashMap<String,EvidenceManagementFile>> response = nonNull(evidenceManagementRestTemplate.postForObject(
-            documentManagementURIBuilder.buildUrl(),
-            new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
-            HashMap.class));
+        HashMap<String, HashMap<String, EvidenceManagementFile>> response =
+            nonNull(evidenceManagementRestTemplate.postForObject(
+                documentManagementURIBuilder.buildUrl(),
+                new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
+                HashMap.class));
 
         ObjectMapper originalObjectMapper = new ObjectMapper();
         Map embedded = response.get("_embedded");
         List documents = (List) embedded.get("documents");
 
-        return originalObjectMapper.readValue(originalObjectMapper.writeValueAsString(documents.get(0)), EvidenceManagementFile.class);
+        return originalObjectMapper
+            .readValue(originalObjectMapper.writeValueAsString(documents.get(0)), EvidenceManagementFile.class);
     }
 
     @Override
@@ -52,17 +65,8 @@ public class EmUploadService implements UploadService {
         String json = objectMapper.writeValueAsString(new EvidenceManagementTTL(ZonedDateTime.now()));
 
         evidenceManagementRestTemplate.patchForObject(
-                document.getDocumentLink().getDocumentUrl(),
-                new HttpEntity<>(json, headers.getApplicationJsonHttpHeader()),
-                HashMap.class);
-    }
-
-    private static <T> T nonNull(@Nullable T result) {
-        try {
-            Assert.state(result != null, "Entity should be non null in EmUploadService");
-        }catch (IllegalStateException e) {
-            throw new ClientDataException(e.getMessage());
-        }
-        return result;
+            document.getDocumentLink().getDocumentUrl(),
+            new HttpEntity<>(json, headers.getApplicationJsonHttpHeader()),
+            HashMap.class);
     }
 }

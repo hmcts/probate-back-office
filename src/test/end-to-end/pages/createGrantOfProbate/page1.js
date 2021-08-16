@@ -16,7 +16,7 @@ module.exports = async function (crud) {
         await I.fillField('#applicationSubmittedDate-day', createGrantOfProbateConfig.page1_applicationSubmittedDate_day);
         await I.fillField('#applicationSubmittedDate-month', createGrantOfProbateConfig.page1_applicationSubmittedDate_month);
         await I.fillField('#applicationSubmittedDate-year', createGrantOfProbateConfig.page1_applicationSubmittedDate_year);
-        await I.click({css: `#paperForm-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#paperForm_${createGrantOfProbateConfig.page1_optionNo}`});
 
         await I.selectOption('#caseType', createGrantOfProbateConfig.page1_list3_case_type);
 
@@ -28,15 +28,17 @@ module.exports = async function (crud) {
         await I.fillField('#totalFeePaperForm', createGrantOfProbateConfig.page1_totalFee);
 
         await I.selectOption('#paperPaymentMethod', createGrantOfProbateConfig.page1_list4_payment_method);
-        await I.click({css: `#languagePreferenceWelsh-${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#languagePreferenceWelsh_${createGrantOfProbateConfig.page1_optionNo}`});
     }
 
     if (crud === 'update') {
         await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
-        await I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
-
+        await I.waitForEnabled({css: '#boWillMessage'});
+        await I.fillField({css: '#boWillMessage'}, createGrantOfProbateConfig.page1_boWillMessage);
+        await I.waitForEnabled({css: `#caseHandedOffToLegacySite_${createGrantOfProbateConfig.page1_optionNo}`});
+        await I.click({css: `#caseHandedOffToLegacySite_${createGrantOfProbateConfig.page1_optionNo}`});
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);

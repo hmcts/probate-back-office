@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 public class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
 
     @Override
-    public void serialize(BigDecimal value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
+    public void serialize(BigDecimal value, JsonGenerator jsonGenerator, SerializerProvider serializers)
+        throws IOException {
         jsonGenerator.writeString(value.toString());
     }
 }

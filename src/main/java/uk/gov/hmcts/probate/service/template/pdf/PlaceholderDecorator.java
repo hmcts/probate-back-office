@@ -13,8 +13,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PlaceholderDecorator {
 
-    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
-
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
@@ -23,19 +21,23 @@ public class PlaceholderDecorator {
     private static final String DECEASED_DATE_OF_BIRTH_IN_WELSH = "deceasedDateOfBirthInWelsh";
     private static final String GRANT_ISSUED_DATE = "grantIssuedDate";
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     public void decorate(Map<String, Object> placeholders) {
         if (placeholders.get(DECEASED_DATE_OF_DEATH) != null) {
             String deceasedDate = (String) placeholders.get(DECEASED_DATE_OF_DEATH);
-            placeholders.put(DECEASED_DATE_OF_DEATH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDate)));
+            placeholders.put(DECEASED_DATE_OF_DEATH_IN_WELSH,
+                localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDate)));
         }
 
         if (placeholders.get(DECEASED_DATE_OF_BIRTH) != null) {
             String deceasedDateOfBirth = (String) placeholders.get(DECEASED_DATE_OF_BIRTH);
-            placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDateOfBirth)));
+            placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH,
+                localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDateOfBirth)));
         }
         placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> dateTimeFormatter.format(LocalDate.now()));
-        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
+        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH,
+            localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
 
     }
 }

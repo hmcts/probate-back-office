@@ -8,6 +8,9 @@ import java.nio.file.Files;
 
 public class FileUtils {
 
+    private FileUtils() {
+    }
+
     public static String getStringFromFile(String fileName) throws IOException {
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + fileName));
         return new String(Files.readAllBytes(file.toPath()));

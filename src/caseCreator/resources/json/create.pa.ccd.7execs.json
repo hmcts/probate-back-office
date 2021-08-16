@@ -22,7 +22,7 @@
     "willNumberOfCodicils": 2,
     "numberOfApplicants": 3,
     "willAccessOriginal": "Yes",
-    "primaryApplicantEmailAddress": "aatpa9@mailinator.com",
+    "primaryApplicantEmailAddress": "primary@probate-test.com",
     "primaryApplicantIsApplying": "Yes",
     "willExists": "Yes",
     "primaryApplicantForenames": "EX1FIRSTname EX1MIDDLEname",
@@ -91,7 +91,7 @@
         "value": {
           "applyingExecutorName": "EX2FIRSTname EX2MIDDLEname EX2SURname1 EX2SURname2",
           "applyingExecutorPhoneNumber": "07999999992",
-          "applyingExecutorEmail": "ex2@email.com",
+          "applyingExecutorEmail": "executor2@probate-test.com",
           "applyingExecutorAddress": {
             "AddressLine1": "The Shard 32 London Bridge Street (EX2) London SE1 9SG UK",
             "AddressLine2": "32 London Bridge Street",
@@ -108,7 +108,7 @@
         "value": {
           "applyingExecutorName": "EX5FIRSTname EX5MIDDLEname EX5SURname1 EX5SURname2",
           "applyingExecutorPhoneNumber": "07999999995",
-          "applyingExecutorEmail": "ex5@email.com",
+          "applyingExecutorEmail": "executor5@probate-test.com",
           "applyingExecutorAddress": {
             "AddressLine1": "The Shard 32 London Bridge Street (EX5) London SE1 9SG UK",
             "AddressLine2": "32 London Bridge Street",

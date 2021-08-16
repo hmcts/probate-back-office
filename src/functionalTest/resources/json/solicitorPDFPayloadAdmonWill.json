@@ -12,7 +12,7 @@
         "Country": "UK"
       },
       "solsSolicitorAppReference": "Ref",
-      "solsSolicitorEmail": "test@test.com",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorIsExec": "No",
       "applicationGrounds": "Grounds.",
       "deceasedForenames": "De",
@@ -52,7 +52,7 @@
         "PostCode": "A1 2BC",
         "Country": "UK"
       },
-      "primaryApplicantEmailAddress": "test@test.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "willExists": "Yes",
       "executorsApplying": [
         {

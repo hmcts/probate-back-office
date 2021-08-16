@@ -1,5 +1,4 @@
 'use strict';
-
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -27,9 +26,15 @@ const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pa
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
+const {
+    legacyParse,
+    convertTokens
+} = require('@date-fns/upgrade/v2');
+
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
+const scenarioName = 'Caseworker Will Lodgement - Withdraw will';
+Scenario(scenarioName, async function ({I}) {
 
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 
@@ -37,11 +42,13 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     const unique_deceased_user = Date.now();
 
     // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Caseworker');
+    await I.authenticateWithIdamIfAvailable(false);
 
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Create a will lodgement';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
@@ -53,6 +60,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     // SECOND case - the main test case
 
     nextStepName = 'Create a will lodgement';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
@@ -61,6 +69,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.checkMyAnswers(nextStepName);
     endState = 'Will lodgement created';
 
+    await I.wait(5);
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
         .pop()
@@ -73,6 +82,7 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig);
 
     nextStepName = 'Upload document';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -81,12 +91,14 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend will lodgement';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterWillLodgementPage1('update');
     await I.enterWillLodgementPage2('update', unique_deceased_user);
@@ -99,29 +111,33 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.seeCaseDetails(caseRef, executorTabUpdateConfig, createWillLodgementConfig);
 
     nextStepName = 'Generate deposit receipt';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when generating a deposit receipt.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
-    generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    generateDepositReceiptConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend will lodgement';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterWillLodgementPage2('update2orig');
     await I.checkMyAnswers(nextStepName);
 
     nextStepName = 'Match application';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig, nextStepName);
+    await I.selectCaseMatchesForWillLodgement(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Will lodged';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Withdraw will';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectWithdrawalReason(caseRef, withdrawWillConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -129,6 +145,6 @@ Scenario('01 BO Will Lodgement E2E - Withdraw will', async function (I) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
 
-    await I.click('#sign-out');
+    await I.signOut();
 
 }).retry(testConfig.TestRetryScenarios);

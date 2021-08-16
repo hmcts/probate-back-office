@@ -1,0 +1,155 @@
+{
+  "case_details": {
+    "id": 1544096696107175,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "StandingSearch",
+    "state": "StandingSearchCreated",
+    "created_date": "2018-11-20T11:44:56.118",
+    "last_modified": [
+      2018,
+      11,
+      30,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "registryLocation": "Manchester",
+      "applicationType": "Solicitor",
+      "deceasedDateOfDeath": "2017-11-11",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantSurname": "cl name 2",
+      "applicantAddress": {
+        "AddressLine1": "22",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantForenames": "cf name 2",
+      "applicantEmailAddress": "primary@probate-test.com",
+      "deceasedDateOfBirth": "1990-11-11",
+      "deceasedForenames": "df name 2",
+      "numberOfCopies": "2",
+      "deceasedSurname": "dl name 2",
+      "deceasedFullAliasNameList": [
+        {
+          "value": {
+            "FullAliasName": "d alais name 2"
+          },
+          "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+        }
+      ]
+    },
+    "data_classification": {
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedAnyOtherNames": "",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "1 Flat",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "PostTown": "Illford",
+          "County": "Middlesex",
+          "PostCode": "IL11 0EC",
+          "Country": "United Kingdom"
+        }
+      },
+      "applicantSurname": "applicantSurname",
+      "applicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "applicantAddress",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "PostTown": "",
+          "County": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicantForenames": "applicantForenames",
+      "applicantEmailAddress": "primary@probate-test.com",
+      "deceasedDateOfBirth": "2020-01-01",
+      "deceasedForenames": "deceasedForenames",
+      "numberOfCopies": "2",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedFullAliasNameList": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "value": {
+              "FullAliasName": "deceasedForenames deceasedSurname"
+            },
+            "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+          }
+        ]
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedAnyOtherNames": "deceasedAnyOtherNames",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "",
+          "AddressLine3": "",
+          "PostTown": "",
+          "County": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicantSurname": "applicantSurname",
+      "applicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "AddressLine1",
+          "AddressLine2": "AddressLine2",
+          "AddressLine3": "",
+          "PostTown": "",
+          "County": "",
+          "PostCode": "",
+          "Country": ""
+        }
+      },
+      "applicantForenames": "applicantForenames",
+      "applicantEmailAddress": "primary@probate-test.com",
+      "deceasedDateOfBirth": "2020-01-01",
+      "deceasedForenames": "deceasedForenames",
+      "numberOfCopies": "2",
+      "deceasedSurname": "deceasedSurname",
+      "deceasedFullAliasNameList": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "value": {
+              "FullAliasName": "deceasedForenames deceasedSurname "
+            },
+            "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+          }
+        ]
+      }
+    }
+  }
+}

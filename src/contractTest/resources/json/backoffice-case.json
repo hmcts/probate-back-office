@@ -1,0 +1,553 @@
+{
+  "id": 1606504243360564,
+  "jurisdiction": "PROBATE",
+  "state": "BOReadyForExamination",
+  "version": 2,
+  "case_type_id": "GrantOfRepresentation",
+  "created_date": "2020-11-27T19:10:43.342212",
+  "last_modified": "2020-11-27T19:11:09.266454",
+  "last_state_modified_date": "2020-11-27T19:11:09.266256",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "otherExecutorExists": "No",
+    "applicationType": "Personal",
+    "deceasedAddress": {
+      "AddressLine1": "dddddddddddxxxxxxxxxxxxxxxxxxxx",
+      "AddressLine2": null,
+      "AddressLine3": null,
+      "County": null,
+      "PostTown": null,
+      "PostCode": null,
+      "Country": null
+    },
+    "boAssembleLetterSendToBulkPrint": "Yes",
+    "deceasedDateOfBirth": "1900-01-31",
+    "willHasCodicils": "Yes",
+    "boEmailRequestInfoNotification": "Yes",
+    "willAccessOriginal": "Yes",
+    "willExists": "Yes",
+    "executorsNotApplying": [
+
+    ],
+    "deceasedDateOfDeath": "2020-01-31",
+    "primaryApplicantForenames": "Sanjay",
+    "probateSotDocumentsGenerated": [
+
+    ],
+    "ihtReferenceNumber": "12345678F12345",
+    "deceasedSurname": "applyManSN",
+    "boRequestInfoSendToBulkPrint": "Yes",
+    "grantAwaitingDocumentationNotificationDate": "2020-12-18",
+    "willNumberOfCodicils": "1",
+    "boSendToBulkPrint": "Yes",
+    "probateNotificationsGenerated": [
+      {
+        "value": {
+          "DocumentLink": {
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/7417c3fe-1742-4abb-8a54-6a04cee3d495/binary",
+            "document_filename": "sentEmail.pdf"
+          },
+          "DocumentType": "sentEmail",
+          "DocumentFileName": "b7a3a28c-d05c-40a3-a2b7-0eb6b1d92d5a.pdf",
+          "DocumentDateAdded": "2020-11-27",
+          "DocumentGeneratedBy": "d1ace1a7-0e72-4809-b4c4-8a13bc4f4197"
+        },
+        "id": "96d185c3-fba8-4479-b2a2-fa5820727817"
+      },
+      {
+        "value": {
+          "DocumentLink": {
+            "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/ef78635e-d456-448f-bf8b-053e145b3c67",
+            "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/ef78635e-d456-448f-bf8b-053e145b3c67/binary",
+            "document_filename": "sentEmail.pdf"
+          },
+          "DocumentType": "sentEmail",
+          "DocumentFileName": "800c08d8-0c1c-4682-b345-cd8958899713.pdf",
+          "DocumentDateAdded": "2020-11-27",
+          "DocumentGeneratedBy": "d1ace1a7-0e72-4809-b4c4-8a13bc4f4197"
+        },
+        "id": "747bec7b-a48b-4b17-8167-3ec87eaac1fa"
+      }
+    ],
+    "boCaveatStopEmailNotification": "Yes",
+    "primaryApplicantHasAlias": "No",
+    "executorsApplying": [
+
+    ],
+    "ihtGrossValue": "222200",
+    "boEmailGrantIssuedNotification": "Yes",
+    "registryLocation": "Birmingham",
+    "ihtFormId": "IHT205",
+    "boEmailDocsReceivedNotification": "Yes",
+    "dateOfDeathType": "diedOn",
+    "legalStatement": {
+      "intro": "This statement is based on the information you&rsquo;ve given in your application. It will be stored as a public record.",
+      "applicant": "We, Amal Mason of ssssssssssssssssssssssssssssssssssssssss, Eric Lloyd4 of ddddddddddddddddddddddddddddd and Devin Wade5 of xxxxxxxxxxxxxxxxxxxxxxxxxxx, make the following statement:",
+      "deceased": "Suki Hammond was born on 6 October 1902 and died on 22 December 1983, domiciled in England and Wales.",
+      "deceasedOtherNames": "They were also known as Giacomo Terrell.",
+      "deceasedEstateValue": "The gross value for the estate amounts to &pound;2222 and the net value for the estate amounts to &pound;222.",
+      "deceasedEstateLand": "To the best of our knowledge, information and belief, there was no land vested in Suki Hammond which was settled previously to the death (and not by the will) of Suki Hammond and which remained settled land notwithstanding such death.",
+      "executorsNotApplying": [
+
+      ],
+      "executorsApplying": [
+
+      ]
+    },
+    "outsideUKGrantCopies": "0",
+    "deceasedAnyOtherNames": "Yes",
+    "solsDeceasedAliasNamesList": [
+      {
+        "value": {
+          "SolsAliasname": "Giacomo Terrell"
+        },
+        "id": "35681870-81d8-4e7d-bd7c-510540b7499a"
+      },
+      {
+        "value": {
+          "SolsAliasname": "Tom Thumb"
+        },
+        "id": "bbe174d1-63be-4c24-8838-612057e6b91d"
+      },
+      {
+        "value": {
+          "SolsAliasname": "MS Dhoni"
+        },
+        "id": "410aada7-45ff-445c-a1c3-a849c8fbfbdc"
+      }
+    ],
+    "paperForm": "No",
+    "primaryApplicantEmailAddress": "sanjayaat2@mailinator.com",
+    "caseType": "gop",
+    "caseMatches": [
+
+    ],
+    "primaryApplicantAddress": {
+      "AddressLine1": "ssssssssssssssssssssssssssssssssssssssss",
+      "AddressLine2": null,
+      "AddressLine3": null,
+      "County": null,
+      "PostTown": null,
+      "PostCode": null,
+      "Country": null
+    },
+    "applicationSubmittedDate": "2020-01-01",
+    "deceasedDomicileInEngWales": "Yes",
+    "boCaveatStopSendToBulkPrint": "Yes",
+    "ihtNetValue": "22200",
+    "primaryApplicantPhoneNumber": "+643514579562",
+    "boEmailGrantReissuedNotification": "Yes",
+    "extraCopiesOfGrant": "0",
+    "numberOfExecutors": 1,
+    "deceasedForenames": "applyManFN",
+    "declaration": {
+      "confirm": "We confirm that we will administer the estate of Suki Hammond, according to law. We will:",
+      "confirmItem1": "collect the whole estate",
+      "confirmItem2": "keep full details (an inventory) of the estate",
+      "confirmItem3": "keep a full account of how the estate has been administered",
+      "requests": "If the probate registry (court) asks us to do so, we will:",
+      "requestsItem1": "provide the full details of the estate and how it has been administered",
+      "requestsItem2": "return the grant of probate to the court",
+      "understand": "We understand that:",
+      "understandItem1": "our application will be rejected if we do not answer any questions about the information we have given",
+      "understandItem2": "criminal proceedings for fraud may be brought against us if we are found to have been deliberately untruthful or dishonest",
+      "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful."
+    },
+    "numberOfApplicants": 3,
+    "primaryApplicantIsApplying": "Yes",
+    "totalFee": "0",
+    "probateDocumentsGenerated": [
+
+    ],
+    "ihtFormCompletedOnline": "Yes",
+    "boGrantReissueSendToBulkPrint": "Yes",
+    "primaryApplicantSurname": "AAT",
+    "grantDelayedNotificationDate": "2020-11-27",
+    "boEmailDocsReceivedNotificationRequested": "Yes"
+  },
+  "data_classification": {
+    "otherExecutorExists": "PUBLIC",
+    "applicationType": "PUBLIC",
+    "deceasedAddress": {
+      "classification": "PUBLIC",
+      "value": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      }
+    },
+    "boAssembleLetterSendToBulkPrint": "PUBLIC",
+    "deceasedDateOfBirth": "PUBLIC",
+    "willHasCodicils": "PUBLIC",
+    "boEmailRequestInfoNotification": "PUBLIC",
+    "willAccessOriginal": "PUBLIC",
+    "willExists": "PUBLIC",
+    "executorsNotApplying": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "deceasedDateOfDeath": "PUBLIC",
+    "primaryApplicantForenames": "PUBLIC",
+    "probateSotDocumentsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtReferenceNumber": "PUBLIC",
+    "deceasedSurname": "PUBLIC",
+    "boRequestInfoSendToBulkPrint": "PUBLIC",
+    "grantAwaitingDocumentationNotificationDate": "PUBLIC",
+    "willNumberOfCodicils": "PUBLIC",
+    "boSendToBulkPrint": "PUBLIC",
+    "probateNotificationsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+        {
+          "value": {
+            "DocumentLink": "PUBLIC",
+            "DocumentType": "PUBLIC",
+            "DocumentFileName": "PUBLIC",
+            "DocumentDateAdded": "PUBLIC",
+            "DocumentGeneratedBy": "PUBLIC"
+          },
+          "id": "96d185c3-fba8-4479-b2a2-fa5820727817"
+        },
+        {
+          "value": {
+            "DocumentLink": "PUBLIC",
+            "DocumentType": "PUBLIC",
+            "DocumentFileName": "PUBLIC",
+            "DocumentDateAdded": "PUBLIC",
+            "DocumentGeneratedBy": "PUBLIC"
+          },
+          "id": "747bec7b-a48b-4b17-8167-3ec87eaac1fa"
+        }
+      ]
+    },
+    "boCaveatStopEmailNotification": "PUBLIC",
+    "primaryApplicantHasAlias": "PUBLIC",
+    "executorsApplying": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtGrossValue": "PUBLIC",
+    "boEmailGrantIssuedNotification": "PUBLIC",
+    "registryLocation": "PUBLIC",
+    "ihtFormId": "PUBLIC",
+    "boEmailDocsReceivedNotification": "PUBLIC",
+    "dateOfDeathType": "PUBLIC",
+    "legalStatement": {
+      "classification": "PUBLIC",
+      "value": {
+        "intro": "PUBLIC",
+        "applicant": "PUBLIC",
+        "deceased": "PUBLIC",
+        "deceasedOtherNames": "PUBLIC",
+        "deceasedEstateValue": "PUBLIC",
+        "deceasedEstateLand": "PUBLIC",
+        "executorsNotApplying": {
+          "classification": "PUBLIC",
+          "value": [
+
+          ]
+        },
+        "executorsApplying": {
+          "classification": "PUBLIC",
+          "value": [
+
+          ]
+        }
+      }
+    },
+    "outsideUKGrantCopies": "PUBLIC",
+    "deceasedAnyOtherNames": "PUBLIC",
+    "solsDeceasedAliasNamesList": {
+      "classification": "PUBLIC",
+      "value": [
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "35681870-81d8-4e7d-bd7c-510540b7499a"
+        },
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "bbe174d1-63be-4c24-8838-612057e6b91d"
+        },
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "410aada7-45ff-445c-a1c3-a849c8fbfbdc"
+        }
+      ]
+    },
+    "paperForm": "PUBLIC",
+    "primaryApplicantEmailAddress": "PUBLIC",
+    "caseType": "PUBLIC",
+    "caseMatches": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "primaryApplicantAddress": {
+      "classification": "PUBLIC",
+      "value": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      }
+    },
+    "applicationSubmittedDate": "PUBLIC",
+    "deceasedDomicileInEngWales": "PUBLIC",
+    "boCaveatStopSendToBulkPrint": "PUBLIC",
+    "ihtNetValue": "PUBLIC",
+    "primaryApplicantPhoneNumber": "PUBLIC",
+    "boEmailGrantReissuedNotification": "PUBLIC",
+    "extraCopiesOfGrant": "PUBLIC",
+    "numberOfExecutors": "PUBLIC",
+    "deceasedForenames": "PUBLIC",
+    "declaration": {
+      "classification": "PUBLIC",
+      "value": {
+        "confirm": "PUBLIC",
+        "confirmItem1": "PUBLIC",
+        "confirmItem2": "PUBLIC",
+        "confirmItem3": "PUBLIC",
+        "requests": "PUBLIC",
+        "requestsItem1": "PUBLIC",
+        "requestsItem2": "PUBLIC",
+        "understand": "PUBLIC",
+        "understandItem1": "PUBLIC",
+        "understandItem2": "PUBLIC",
+        "accept": "PUBLIC"
+      }
+    },
+    "numberOfApplicants": "PUBLIC",
+    "primaryApplicantIsApplying": "PUBLIC",
+    "totalFee": "PUBLIC",
+    "probateDocumentsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtFormCompletedOnline": "PUBLIC",
+    "boGrantReissueSendToBulkPrint": "PUBLIC",
+    "primaryApplicantSurname": "PUBLIC",
+    "grantDelayedNotificationDate": "PUBLIC",
+    "boEmailDocsReceivedNotificationRequested": "PUBLIC"
+  },
+  "supplementary_data": null,
+  "after_submit_callback_response": null,
+  "callback_response_status_code": null,
+  "callback_response_status": null,
+  "delete_draft_response_status_code": null,
+  "delete_draft_response_status": null,
+  "security_classifications": {
+    "otherExecutorExists": "PUBLIC",
+    "applicationType": "PUBLIC",
+    "deceasedAddress": {
+      "classification": "PUBLIC",
+      "value": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      }
+    },
+    "boAssembleLetterSendToBulkPrint": "PUBLIC",
+    "deceasedDateOfBirth": "PUBLIC",
+    "willHasCodicils": "PUBLIC",
+    "boEmailRequestInfoNotification": "PUBLIC",
+    "willAccessOriginal": "PUBLIC",
+    "willExists": "PUBLIC",
+    "executorsNotApplying": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "deceasedDateOfDeath": "PUBLIC",
+    "primaryApplicantForenames": "PUBLIC",
+    "probateSotDocumentsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtReferenceNumber": "PUBLIC",
+    "deceasedSurname": "PUBLIC",
+    "boRequestInfoSendToBulkPrint": "PUBLIC",
+    "grantAwaitingDocumentationNotificationDate": "PUBLIC",
+    "willNumberOfCodicils": "PUBLIC",
+    "boSendToBulkPrint": "PUBLIC",
+    "probateNotificationsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+        {
+          "value": {
+            "DocumentLink": "PUBLIC",
+            "DocumentType": "PUBLIC",
+            "DocumentFileName": "PUBLIC",
+            "DocumentDateAdded": "PUBLIC",
+            "DocumentGeneratedBy": "PUBLIC"
+          },
+          "id": "96d185c3-fba8-4479-b2a2-fa5820727817"
+        },
+        {
+          "value": {
+            "DocumentLink": "PUBLIC",
+            "DocumentType": "PUBLIC",
+            "DocumentFileName": "PUBLIC",
+            "DocumentDateAdded": "PUBLIC",
+            "DocumentGeneratedBy": "PUBLIC"
+          },
+          "id": "747bec7b-a48b-4b17-8167-3ec87eaac1fa"
+        }
+      ]
+    },
+    "boCaveatStopEmailNotification": "PUBLIC",
+    "primaryApplicantHasAlias": "PUBLIC",
+    "executorsApplying": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtGrossValue": "PUBLIC",
+    "boEmailGrantIssuedNotification": "PUBLIC",
+    "registryLocation": "PUBLIC",
+    "ihtFormId": "PUBLIC",
+    "boEmailDocsReceivedNotification": "PUBLIC",
+    "dateOfDeathType": "PUBLIC",
+    "legalStatement": {
+      "classification": "PUBLIC",
+      "value": {
+        "intro": "PUBLIC",
+        "applicant": "PUBLIC",
+        "deceased": "PUBLIC",
+        "deceasedOtherNames": "PUBLIC",
+        "deceasedEstateValue": "PUBLIC",
+        "deceasedEstateLand": "PUBLIC",
+        "executorsNotApplying": {
+          "classification": "PUBLIC",
+          "value": [
+
+          ]
+        },
+        "executorsApplying": {
+          "classification": "PUBLIC",
+          "value": [
+
+          ]
+        }
+      }
+    },
+    "outsideUKGrantCopies": "PUBLIC",
+    "deceasedAnyOtherNames": "PUBLIC",
+    "solsDeceasedAliasNamesList": {
+      "classification": "PUBLIC",
+      "value": [
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "35681870-81d8-4e7d-bd7c-510540b7499a"
+        },
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "bbe174d1-63be-4c24-8838-612057e6b91d"
+        },
+        {
+          "value": {
+            "SolsAliasname": "PUBLIC"
+          },
+          "id": "410aada7-45ff-445c-a1c3-a849c8fbfbdc"
+        }
+      ]
+    },
+    "paperForm": "PUBLIC",
+    "primaryApplicantEmailAddress": "PUBLIC",
+    "caseType": "PUBLIC",
+    "caseMatches": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "primaryApplicantAddress": {
+      "classification": "PUBLIC",
+      "value": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "County": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      }
+    },
+    "applicationSubmittedDate": "PUBLIC",
+    "deceasedDomicileInEngWales": "PUBLIC",
+    "boCaveatStopSendToBulkPrint": "PUBLIC",
+    "ihtNetValue": "PUBLIC",
+    "primaryApplicantPhoneNumber": "PUBLIC",
+    "boEmailGrantReissuedNotification": "PUBLIC",
+    "extraCopiesOfGrant": "PUBLIC",
+    "numberOfExecutors": "PUBLIC",
+    "deceasedForenames": "PUBLIC",
+    "declaration": {
+      "classification": "PUBLIC",
+      "value": {
+        "confirm": "PUBLIC",
+        "confirmItem1": "PUBLIC",
+        "confirmItem2": "PUBLIC",
+        "confirmItem3": "PUBLIC",
+        "requests": "PUBLIC",
+        "requestsItem1": "PUBLIC",
+        "requestsItem2": "PUBLIC",
+        "understand": "PUBLIC",
+        "understandItem1": "PUBLIC",
+        "understandItem2": "PUBLIC",
+        "accept": "PUBLIC"
+      }
+    },
+    "numberOfApplicants": "PUBLIC",
+    "primaryApplicantIsApplying": "PUBLIC",
+    "totalFee": "PUBLIC",
+    "probateDocumentsGenerated": {
+      "classification": "PUBLIC",
+      "value": [
+
+      ]
+    },
+    "ihtFormCompletedOnline": "PUBLIC",
+    "boGrantReissueSendToBulkPrint": "PUBLIC",
+    "primaryApplicantSurname": "PUBLIC",
+    "grantDelayedNotificationDate": "PUBLIC",
+    "boEmailDocsReceivedNotificationRequested": "PUBLIC"
+  }
+}

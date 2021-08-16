@@ -1,0 +1,26 @@
+{
+    "tabName": "SOT",
+    "fields": [
+      "Legal statement"
+    ],
+    "dataKeys": [
+      "page1_legalStmtLink"
+    ],
+    "WillLeftAnnexed": {
+      "fields": [
+        "Legal statement"
+      ],
+      "dataKeys": [
+        "page1_AdmonWilllegalStmtLink"
+      ]
+    },
+    "NoWill": {
+      "fields": [
+        "Legal statement"
+      ],
+      "dataKeys": [
+        "page1_NoWilllegalStmtLink"
+      ]
+    }
+  }
+  

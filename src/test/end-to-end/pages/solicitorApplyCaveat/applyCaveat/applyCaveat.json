@@ -1,0 +1,20 @@
+{
+  "page2_firm_name": "Solicitor Rob Firm",
+  "application_type": "Solicitor",
+  "registry_location": "CTSC",
+  
+  "page2_app_ref": "SOL-123-456",
+  "page2_caveator_email": "caveator@hmcts-test.com",
+  "page2_phone_num" : "0129898989",
+  "optionNo": "No",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}

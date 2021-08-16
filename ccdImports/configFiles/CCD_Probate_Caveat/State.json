@@ -13,5 +13,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "SummonsOrdered", "Name": "Summons ordered", "Description": "Summons ordered", "DisplayOrder": 12},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "ReviewAppearance", "Name": "Review appearance", "Description": "Review appearance", "DisplayOrder": 13},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatImported", "Name": "Caveat imported", "Description": "Caveat imported", "DisplayOrder": 14},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatPermanent", "Name": "Caveat Permanent", "Description": "Caveat Permanent", "DisplayOrder": 15}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatPermanent", "Name": "Caveat Permanent", "Description": "Caveat Permanent", "DisplayOrder": 15},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "Deleted", "Name": "Deleted", "Description": "Delete application", "DisplayOrder": 16}
 ]

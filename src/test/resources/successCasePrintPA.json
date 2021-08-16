@@ -23,7 +23,7 @@
     "deceasedForenames": "Suki",
     "numberOfApplicants": 3,
     "willAccessOriginal": "Yes",
-    "primaryApplicantEmailAddress": "harjeet2",
+    "primaryApplicantEmailAddress": "primary@probate-test.com",
     "primaryApplicantIsApplying": "Yes",
     "willExists": "Yes",
     "primaryApplicantForenames": "Amal",
@@ -81,7 +81,7 @@
         "value": {
           "applyingExecutorName": "Inga Giles4",
           "applyingExecutorPhoneNumber": "07891900431",
-          "applyingExecutorEmail": "nigel.dunne@hmcts.net",
+          "applyingExecutorEmail": "executor1@probate-test.com",
           "applyingExecutorAddress": {
             "AddressLine1": "ddddddddddddddddddddddddddddd"
 
@@ -96,7 +96,7 @@
         "value": {
           "applyingExecutorName": "Devin Wade5",
           "applyingExecutorPhoneNumber": "07891900431",
-          "applyingExecutorEmail": "nigel.dunne@hmcts.net",
+          "applyingExecutorEmail": "executor1@probate-test.com",
           "applyingExecutorAddress": {
             "AddressLine1": "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
           }

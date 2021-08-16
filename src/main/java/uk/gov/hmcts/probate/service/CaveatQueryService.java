@@ -55,6 +55,11 @@ public class CaveatQueryService {
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
+    private static <T> T nonNull(@Nullable T result) {
+        Assert.state(result != null, "Entity should be non null in CaveatQueryService");
+        return result;
+    }
+
     public CaveatData findCaveatById(CaseType caseType, String caveatId) {
         BoolQueryBuilder query = boolQuery();
 
@@ -68,17 +73,17 @@ public class CaveatQueryService {
             String[] args = {caveatId};
             String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Could not find any caveats for the entered caveat id: " + caveatId);
+                "Could not find any caveats for the entered caveat id: " + caveatId);
         }
         return foundCaveats.get(0).getData();
     }
-    
+
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
-        log.info("CaveatMatchingService runQuery: " + jsonQuery);
+        log.debug("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, caseType.getCode())
-                .build().encode().toUri();
+            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+            .queryParam(CASE_TYPE_ID, caseType.getCode())
+            .build().encode().toUri();
 
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
@@ -98,18 +103,14 @@ public class CaveatQueryService {
         try {
             returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
+                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
         return returnedCaveats.getCaveats();
-    }
-
-    private static <T> T nonNull(@Nullable T result) {
-        Assert.state(result != null, "Entity should be non null in CaveatQueryService");
-        return result;
     }
 }

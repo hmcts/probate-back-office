@@ -25,8 +25,9 @@ public class AssembleWitnessTest extends AssembleTestBase {
             "Signature of affidavit - witness required"});
         code2Expected.put(WitnessDate, new String[]{"WitDate", "FL-PRB-GNO-ENG-00173.docx",
             "Date of will affidavit - witness required", "Will / Codicil"});
-        code2Expected.put(WitnessConsent, new String[]{"WitConsent", "FL-PRB-GNO-ENG-00174.docx", "Consent of proof of will",
-            "Will / Codicil"});
+        code2Expected
+            .put(WitnessConsent, new String[] {"WitConsent", "FL-PRB-GNO-ENG-00174.docx", "Consent of proof of will",
+                "Will / Codicil"});
 
     }
 

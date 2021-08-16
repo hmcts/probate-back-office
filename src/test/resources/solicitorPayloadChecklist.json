@@ -12,7 +12,7 @@
         "Country": "SolAddCo"
       },
       "solsSolicitorAppReference": "firmReference",
-      "solsSolicitorEmail": "rebecca.baker@hmcts.net",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
       "solsSolicitorPhoneNumber": null,
       "deceasedForenames": "fname",
       "deceasedSurname": "lname",
@@ -107,7 +107,18 @@
       "extraCopiesOfGrant": null,
       "outsideUKGrantCopies": null,
       "solsPaymentMethods": null,
-      "solsFeeAccountNumber": null,
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA1111",
+          "label": "PBA1111"
+        },
+        "list_items": [
+          {
+            "code": "PBA1111",
+            "label": "PBA1111"
+          }
+        ]
+      },
       "casePrinted": null,
       "boCaseStopReasonList": null,
       "applicationFee": null,

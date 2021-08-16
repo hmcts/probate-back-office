@@ -1,0 +1,125 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "Stopped",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "dateOfDeathType" : "diedOnOrSince",
+      "otherExecutorExists": "No",
+      "boSendToBulkPrint": "No",
+      "outsideUKGrantCopies": null,
+      "applicationType": "Solicitor",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "caseType": "gop",
+      "deceasedAnyOtherNames": "No",
+      "solsFeeAccountNumber": "1234",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "willExists": "Yes",
+      "solsWillType": "WillLeft",
+      "solsApplicantRelationshipToDeceased": null,
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": null,
+      "solsApplicantSiblings": null,
+      "solsEntitledMinority": null,
+      "solsDiedOrNotApplying": null,
+      "solsResiduary": null,
+      "solsResiduaryType": null,
+      "solsLifeInterest": null,
+      "solsSolicitorFirmName": "Solicitor Firm Name",
+      "deceasedDateOfDeath": "2000-01-01",
+      "solsSOTNeedToUpdate": "No",
+      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "testsolicitor@probate-test.com",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "boStopDetails": "SOLS stop details",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "extraCopiesOfGrant": null,
+      "solsPaymentMethods": "fee account",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
+      "deceasedForenames": "Deceased First Name",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "solsSOTName": "Solicitor_fn Solicitor_ln",
+      "solsSOTForenames": "Solicitor_fn",
+      "solsSOTSurname": "Solicitor_ln",
+      "solsSolicitorIsExec": "No",
+      "solsSolicitorIsMainApplicant": null,
+      "solsSolicitorIsApplying": null,
+      "solsSolicitorNotApplyingReason": null,
+      "ihtGrossValue": "1000000",
+      "ihtFormId": "IHT205",
+      "registryLocation": "ctsc",
+      "primaryApplicantSurname": "Executor Last Name 1",
+      "solsSolicitorAppReference": "1231-3984-3949-0300",
+      "solsSOTJobTitle": "job title",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "yes"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "tabName": "Payment Details",
+    "fields": [
+      "How do you want to pay?"
+    ],
+    "dataKeys": [
+      "page1_payment_type"
+    ]
+}
+

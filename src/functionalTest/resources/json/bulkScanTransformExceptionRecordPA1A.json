@@ -1,12 +1,13 @@
 {
-  "id": "1000001",
-  "case_type_id": "PROBATE_ExceptionRecord",
+  "exception_record_id": "1000001",
+  "exception_record_case_type_id": "PROBATE_ExceptionRecord",
   "po_box": "12626",
   "po_box_jurisdiction": "PROBATE",
   "form_type": "PA1A",
   "journey_classification": "NEW_APPLICATION",
   "delivery_date": "2019-07-20T12:34:56.789Z",
   "opening_date": "2019-07-21T13:00:00.000Z",
+  "is_automated_process": "false",
   "scanned_documents": [
     {
       "type": "form",
@@ -40,7 +41,7 @@
     { "name": "primaryApplicantAddressPostCode", "value": "W1A 0AX" },
     { "name": "primaryApplicantPhoneNumber", "value": "" },
     { "name": "primaryApplicantSecondPhoneNumber", "value": "701231231231" },
-    { "name": "primaryApplicantEmailAddress", "value": "test@test.email" },
+    { "name": "primaryApplicantEmailAddress", "value": "primary@probate-test.com" },
     { "name": "executorsApplying_0_applyingExecutorForenames", "value": "Ruby-Rocket" },
     { "name": "executorsApplying_0_applyingExecutorMiddleNames", "value": "" },
     { "name": "executorsApplying_0_applyingExecutorSurname", "value": "Beeetle" },
@@ -49,7 +50,7 @@
     { "name": "executorsApplying_0_applyingExecutorAddressTown", "value": "Rockinway" },
     { "name": "executorsApplying_0_applyingExecutorAddressCounty", "value": "" },
     { "name": "executorsApplying_0_applyingExecutorAddressPostCode", "value": "LV2 6SD" },
-    { "name": "executorsApplying_0_applyingExecutorEmail", "value": "rubeee-1@test.email.com" },
+    { "name": "executorsApplying_0_applyingExecutorEmail", "value": "executor1@probate-test.com" },
     { "name": "executorsApplying_1_applyingExecutorForenames", "value": "" },
     { "name": "executorsApplying_1_applyingExecutorMiddleNames", "value": "" },
     { "name": "executorsApplying_1_applyingExecutorSurname", "value": "" },

@@ -90,21 +90,21 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     public void testSetSolsSolicitorEmailIsSolicitor() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
-                .caveatorEmailAddress("caveator@citizen.com")
-                .solsSolicitorEmail("solicitor@sols.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
                 .build();
         CaveatData response = exceptionRecordCaveatMapper.toCcdData(ocrFields);
-        assertEquals("solicitor@sols.com", response.getCaveatorEmailAddress());
+        assertEquals("solicitor@probate-test.com", response.getCaveatorEmailAddress());
     }
 
     @Test
     public void testSetSolsSolicitorEmailIsCitizen() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .caveatorEmailAddress("caveator@citizen.com")
-                .solsSolicitorEmail("solicitor@sols.com")
+                .caveatorEmailAddress("caveator@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
                 .build();
         CaveatData response = exceptionRecordCaveatMapper.toCcdData(ocrFields);
-        assertEquals("caveator@citizen.com", response.getCaveatorEmailAddress());
+        assertEquals("caveator@probate-test.com", response.getCaveatorEmailAddress());
     }
 
     @Test

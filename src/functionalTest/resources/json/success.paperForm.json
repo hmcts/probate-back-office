@@ -39,7 +39,6 @@
       "ihtGrossValue": "300000",
       "primaryApplicantForenames": "fname",
       "primaryApplicantSurname": "lname",
-      "primaryApplicantEmailAddress": null,
       "primaryApplicantHasAlias": "No",
       "primaryApplicantAlias": null,
       "primaryApplicantAliasReason": null,
@@ -222,7 +221,7 @@
       "grantIssuedEmailNotificationRequested": true,
       "docsReceivedEmailNotificationRequested": true,
       "primaryApplicantFullName": "fname lname",
-      "primaryApplicantEmailAddress": "fname@fttest.com",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
       "deceasedFullName": "deceasedfname deceasedlname",
       "primaryApplicantApplying": true
     },

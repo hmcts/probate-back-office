@@ -17,8 +17,6 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
@@ -32,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CaseQueryServiceTest {
@@ -57,6 +54,9 @@ public class CaseQueryServiceTest {
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
+    @Mock
+    private FileSystemResourceService fileSystemResourceService;
+
     @Captor
     private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
@@ -73,23 +73,33 @@ public class CaseQueryServiceTest {
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
+        caseQueryService.dataExtractBlockSize = 2000;
+        caseQueryService.numDaysBlock = 13;
 
         CaseData caseData = CaseData.builder()
-                .deceasedSurname("Smith")
-                .build();
-        List<ReturnedCaseDetails> caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+            .deceasedSurname("Smith")
+            .build();
+        List<ReturnedCaseDetails> caseList =
+            new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
                 LAST_MODIFIED, 1L))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-
-        doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseList() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -99,7 +109,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -107,10 +117,54 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("2019-02-05", "2019-02-22");
+    public void findCasesWithDateRangeReturnsCaseListExela() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
 
-        assertEquals(1, cases.size());
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void findCasesWithDateRangeThrowsError() {
+        CaseData caseData = CaseData.builder()
+            .deceasedSurname("Smith")
+            .build();
+        List<ReturnedCaseDetails> caseList =
+            new ImmutableList.Builder<ReturnedCaseDetails>()
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
+                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
+                .build();
+        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+        caseQueryService.dataExtractBlockSize = 3;
+
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        caseQueryService.findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListHMRC() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+        caseQueryService.dataExtractSmeeAndFordSize = 10000;
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
     }
@@ -119,8 +173,8 @@ public class CaseQueryServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
-                .isInstanceOf(CaseMatchingException.class);
+        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate"))
+            .isInstanceOf(CaseMatchingException.class);
     }
 
     @Test
@@ -137,19 +191,32 @@ public class CaseQueryServiceTest {
         CaseData caseData = CaseData.builder()
             .deceasedSurname("Smith")
             .build();
-        List<ReturnedCaseDetails> caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-            LAST_MODIFIED, 1L))
-            .build();
+        List<ReturnedCaseDetails> caseList =
+            new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+                LAST_MODIFIED, 1L))
+                .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
         when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
-        String expected = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":" +
-            "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true," +
-            "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":{\"data.grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}," +
-            "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}]," +
-            "\"must_not\":[{\"exists\":{\"field\":\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},{\"exists\":{\"field\":\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,\"boost\":1.0}}}";
+        String expected = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":"
+            + "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
+            + "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
+            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true,"
+            +
+            "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":{\"data"
+            + ".grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\","
+            + "\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,"
+            + "\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}},"
+            +
+            "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,"
+            + "\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
+            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],"
+            +
+            "\"must_not\":[{\"exists\":{\"field\":\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},"
+            + "{\"exists\":{\"field\":\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,"
+            + "\"boost\":1.0}}}";
         assertEquals(expected, entityCaptor.getValue().getBody());
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -159,6 +226,6 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caseQueryService.findCasesWithDatedDocument("testDate");
+        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
     }
 }

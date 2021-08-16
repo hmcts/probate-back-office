@@ -23,19 +23,14 @@ public class PrintService {
 
     private static final String DOCUMENT_NAME = "Print Case Details";
     private static final String DOCUMENT_TYPE = "HTML";
-
+    private final AppInsights appInsights;
+    private final FileSystemResourceService fileSystemResourceService;
     @Value("${printservice.templatesDirectory}")
     private String templatesDirectory;
-
     @Value("${printservice.host}")
     private String printServiceHost;
-
     @Value("${printservice.path}")
     private String printServicePath;
-
-    private final AppInsights appInsights;
-
-    private final FileSystemResourceService fileSystemResourceService;
 
     public String getSolicitorCaseDetailsTemplateForPrintService() {
         return getFileAsString(TEMPLATE_CASE_DETAILS_SOL);
@@ -59,7 +54,7 @@ public class PrintService {
         String urlTemplate = printServiceHost + printServicePath + applicationTypeCode;
         String url = String.format(urlTemplate, caseId);
 
-        appInsights.trackEvent(REQUEST_SENT, url);
+        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", url));
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);
 

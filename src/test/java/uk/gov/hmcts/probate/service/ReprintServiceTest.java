@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -29,7 +28,6 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +60,7 @@ public class ReprintServiceTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
     }
-    
+
     @Test
     public void shouldReprintSelectedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
@@ -114,7 +112,7 @@ public class ReprintServiceTest {
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("GrantFileName"));
     }
-    
+
     @Test
     public void shouldReprintSelectedReissuedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
@@ -295,7 +293,7 @@ public class ReprintServiceTest {
 
         when(caseData.getProbateSotDocumentsGenerated()).thenReturn(collectionMemberList);
     }
-    
+
     private void setupGeneratedDocs() {
         List<CollectionMember<Document>> collectionMemberList = new ArrayList();
         Document grant = Document.builder()

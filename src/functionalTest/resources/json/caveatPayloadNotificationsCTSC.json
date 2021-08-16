@@ -1,0 +1,65 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "CavCaveatRaised",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "ctsc",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
+      "deceasedSurname": "dl name 2",
+      "deceasedDateOfDeath": "2017-12-31",
+      "deceasedDateOfBirth": "2016-12-31",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "documentsGenerated": [
+      ],
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "expiryDate": "2019-05-15",
+      "messageContent": "content message",
+      "deceasedAnyOtherNames": "No",
+      "caveatorForenames": "cf name 2",
+      "deceasedForenames": "df name 2",
+      "caveatorSurname": "cl name 2",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ]
+    }
+  }
+}
