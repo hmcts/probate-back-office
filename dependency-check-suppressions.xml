@@ -70,9 +70,9 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: spring-security-core-5.3.9.RELEASE.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
-        <vulnerabilityName>CVE-2021-22119</vulnerabilityName>
+            Suppressing until after TC live
+        ]]></notes>
+        <filePath regex="true">.*spring-security-core-5.3.9.RELEASE.jar</filePath>
+        <cve>CVE-2021-22119</cve>
     </suppress>
 </suppressions>
