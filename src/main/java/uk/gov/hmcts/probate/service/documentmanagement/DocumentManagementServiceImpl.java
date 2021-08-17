@@ -28,6 +28,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     private static final int DOC_UUID_LENGTH = 36;
     private static final boolean DELETE_PERMANENT = true;
+    private static final String BEARER_PREFIX = "Bearer ";
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
     private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
@@ -40,7 +41,10 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             documentType);
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = "Bearer " + securityDTO.getAuthorisation();
+        String auth = securityDTO.getAuthorisation();
+        if (!auth.contains(BEARER_PREFIX)) {
+            auth = auth + BEARER_PREFIX;
+        }
         String s2s = securityDTO.getServiceAuthorisation();
 
         log.info("auth:" + auth);
