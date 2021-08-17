@@ -40,11 +40,12 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             documentType);
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = securityDTO.getAuthorisation();
+        String auth = "Bearer " + securityDTO.getAuthorisation();
         String s2s = securityDTO.getServiceAuthorisation();
 
         log.info("auth:" + auth);
         log.info("s2s:" + s2s);
+        
         return caseDocumentClient.uploadDocuments(auth, s2s, documentUploadRequest.getCaseTypeId(),
             documentUploadRequest.getJurisdictionId(), documentUploadRequest.getFiles(), PRIVATE);
     }
