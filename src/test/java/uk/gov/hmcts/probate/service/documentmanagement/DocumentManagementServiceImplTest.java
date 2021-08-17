@@ -55,7 +55,7 @@ public class DocumentManagementServiceImplTest {
 
         when(documentManagementRequestBuilder.perpareDocumentUploadRequest(evidenceManagementFileUpload, DIGITAL_GRANT))
             .thenReturn(documentUploadRequestMock);
-        when(caseDocumentClient.uploadDocuments("AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
+        when(caseDocumentClient.uploadDocuments("Bearer AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
             Collections.emptyList(), Classification.PRIVATE))
             .thenReturn(uploadResponseMock);
         UploadResponse uploadResponse = documentManagementService.store(evidenceManagementFileUpload, DIGITAL_GRANT);
