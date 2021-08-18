@@ -17,10 +17,12 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 
 Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
 
-Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I}) {
+const scenarioName ='Solicitor - Apply Grant of probate Multi Executor';
+Scenario(scenarioName, async function ({I}) {
 
     const willType = 'WillLeft';
     // IdAM
+    await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
@@ -35,6 +37,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     const caseRef = await I.getCaseRefFromUrl();
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
@@ -54,6 +57,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2();
@@ -67,6 +71,7 @@ Scenario('Solicitor - Apply Grant of probate Multi Executor', async function ({I
 
     nextStepName = 'Complete application';
     endState = 'Case created';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
     await I.completeApplicationPage2();
