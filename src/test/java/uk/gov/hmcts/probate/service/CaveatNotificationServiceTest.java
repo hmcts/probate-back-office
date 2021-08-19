@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.Constants.INVALID_EMAIL_ADDRESSES;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
@@ -774,6 +776,24 @@ public class CaveatNotificationServiceTest {
 
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+    }
+
+    @Test
+    public void testEmailCaveatorWithInvalidEmailAddress() {
+        CaveatData caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .caveatorEmailAddress(INVALID_EMAIL_ADDRESSES[0])
+            .build();
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+            .errors(Arrays.asList("emailInvalidCaveats")).build();
+        when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class)))
+            .thenReturn(caveatCallbackResponse);
+
+        assertTrue(caveatCallbackResponse.getErrors().contains("emailInvalidCaveats"));
+
+
     }
 }
 

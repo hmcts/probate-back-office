@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.ocr;
 
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.EmailValidationService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +23,7 @@ public class OcrEmailValidator {
     private static final String CAVEATOR_EMAIL_ADDRESS_DESCRIPTION = "Caveator email address";
     private static final String SOLS_SOLICITOR_EMAIL_DESCRIPTION = "Solicitor email address";
     private static Map<String, String> emailFields = new HashMap<>();
+    private final EmailValidationService emailValidationService = new EmailValidationService();
 
     static {
         emailFields.put(PRIMARY_APPLICANT_EMAIL_ADDRESS, PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION);
@@ -41,6 +42,6 @@ public class OcrEmailValidator {
     }
 
     private boolean isNotValid(final String email) {
-        return !EmailValidator.getInstance().isValid(email);
+        return !emailValidationService.validateEmailAddress(email, "No ID for bulk scan application");
     }
 }

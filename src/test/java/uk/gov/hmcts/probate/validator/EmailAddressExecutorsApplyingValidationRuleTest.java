@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -47,6 +48,15 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
                     .email("executor1@probate-test.com")
                     .notification(YES)
                     .build()));
+
+    private static final List<CollectionMember<ExecutorsApplyingNotification>>
+        EXECEUTORS_APPLYING_NOTIFICATION_INVALID = Arrays.asList(
+            new CollectionMember<>("id",
+                ExecutorsApplyingNotification.builder()
+                    .name("Name")
+                    .email(Constants.INVALID_EMAIL_ADDRESSES[0])
+                    .notification(YES)
+                    .build()));
     @InjectMocks
     private EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
     @Mock
@@ -55,6 +65,8 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
     private CaseData caseDataNotEmpty;
     private CaseData caseDataNotEmptySolicitor;
     private CaseData caseDataNull;
+    private CaseData caseDataInvalidEmailPersonal;
+    private CaseData caseDataInvalidEmailSolicitor;
 
     @Before
     public void setUp() {
@@ -78,6 +90,16 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
         caseDataNotEmptySolicitor = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
+            .registryLocation("Bristol").build();
+
+        caseDataInvalidEmailPersonal = CaseData.builder()
+            .applicationType(ApplicationType.PERSONAL)
+            .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_INVALID)
+            .registryLocation("Bristol").build();
+
+        caseDataInvalidEmailSolicitor = CaseData.builder()
+            .applicationType(ApplicationType.SOLICITOR)
+            .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_INVALID)
             .registryLocation("Bristol").build();
     }
 
@@ -119,5 +141,26 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CaseDetails(caseDataNotEmptySolicitor, LAST_MODIFIED, CASE_ID);
 
         emailAddressExecutorsApplyingValidationRule.validate(caseDetailsNotEmptySolicitor);
+    }
+
+    @Test
+    public void shouldThrowWhenApplyingExecEmailIsInvalid() {
+        CaseDetails caseDetailsInvalidEmailPersonal =
+            new CaseDetails(caseDataInvalidEmailPersonal, LAST_MODIFIED, CASE_ID);
+
+        Assertions.assertThatThrownBy(() -> {
+            emailAddressExecutorsApplyingValidationRule.validate(caseDetailsInvalidEmailPersonal);
+        })
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("An applying exec email: plainaddress, is invalid for case id 12345678987654321");
+
+        CaseDetails caseDetailsInvalidSolicitorPersonal =
+            new CaseDetails(caseDataInvalidEmailSolicitor, LAST_MODIFIED, CASE_ID);
+
+        Assertions.assertThatThrownBy(() -> {
+            emailAddressExecutorsApplyingValidationRule.validate(caseDetailsInvalidSolicitorPersonal);
+        })
+            .isInstanceOf(BusinessValidationException.class)
+            .hasMessage("An applying exec email: plainaddress, is invalid for case id 12345678987654321");
     }
 }

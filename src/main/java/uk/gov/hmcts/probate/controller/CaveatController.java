@@ -115,12 +115,14 @@ public class CaveatController {
 
     @PostMapping(path = "/solsCreate")
     public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
-        @Validated({CaveatCreatedGroup.class})
+        @Validated({CaveatCreatedGroup.class, CaveatsEmailAddressNotificationValidationRule.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
-
+            eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+        }
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 

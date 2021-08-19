@@ -417,8 +417,8 @@ public class NotificationControllerTest {
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this solicitor. "
-                    + "To continue the application, go back and select no to sending an email."))
+                .value("There is no email address for this solicitor."
+                    + " Add an email address or contact them by post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -448,8 +448,8 @@ public class NotificationControllerTest {
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this applicant. "
-                    + "To continue the application, go back and select no to sending an email."))
+                .value("There is no email address for this applicant."
+                    + " Add an email address or contact them by post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }

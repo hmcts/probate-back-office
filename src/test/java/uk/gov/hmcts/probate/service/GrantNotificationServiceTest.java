@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -29,6 +30,8 @@ import java.util.Map;
 
 import static java.lang.Boolean.TRUE;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -63,11 +66,17 @@ public class GrantNotificationServiceTest {
     private CaseData caseData1;
     private CaseData caseData2;
     private CaseData caseData3;
+    private CaseData caseDataInvalidPersonalEmailAddress;
+    private CaseData caseDataInvalidSolicitorEmailAddress;
     private List<Document> documents = new ArrayList<>();
     private List<ReturnedCaseDetails> returnedCases = new ArrayList();
+    private List<ReturnedCaseDetails> returnedCasesWithInvalidEmail = new ArrayList<>();
     private ReturnedCaseDetails returnedCaseDetails1;
     private ReturnedCaseDetails returnedCaseDetails2;
     private ReturnedCaseDetails returnedCaseDetails3;
+    private ReturnedCaseDetails returnedCaseDetailsInvalidPersonalEmail;
+    private ReturnedCaseDetails returnedCaseDetailsInvalidSolicitorEmail;
+
 
     @Before
     public void setUp() {
@@ -98,12 +107,35 @@ public class GrantNotificationServiceTest {
             .applicationType(ApplicationType.SOLICITOR)
             .build();
 
+        caseDataInvalidPersonalEmailAddress = CaseData.builder()
+            .registryLocation("Registry1")
+            .primaryApplicantEmailAddress(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .primaryApplicantForenames("Forename1")
+            .primaryApplicantSurname("Surname1")
+            .applicationType(ApplicationType.PERSONAL)
+            .build();
+
+        caseDataInvalidSolicitorEmailAddress = CaseData.builder()
+            .registryLocation("Registry1")
+            .solsSolicitorEmail(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .primaryApplicantForenames("Forename1")
+            .primaryApplicantSurname("Surname1")
+            .applicationType(ApplicationType.SOLICITOR)
+            .build();
+
+
         returnedCaseDetails1 = new ReturnedCaseDetails(caseData1, null, Long.valueOf(1));
         returnedCaseDetails2 = new ReturnedCaseDetails(caseData2, null, Long.valueOf(2));
         returnedCaseDetails3 = new ReturnedCaseDetails(caseData3, null, Long.valueOf(3));
+        returnedCaseDetailsInvalidPersonalEmail = new ReturnedCaseDetails(caseDataInvalidPersonalEmailAddress,
+            null, Long.valueOf(4));
+        returnedCaseDetailsInvalidSolicitorEmail = new ReturnedCaseDetails(caseDataInvalidSolicitorEmailAddress,
+            null, Long.valueOf(5));
         returnedCases.add(returnedCaseDetails1);
         returnedCases.add(returnedCaseDetails2);
         returnedCases.add(returnedCaseDetails3);
+        returnedCasesWithInvalidEmail.add(returnedCaseDetailsInvalidPersonalEmail);
+        returnedCasesWithInvalidEmail.add(returnedCaseDetailsInvalidSolicitorEmail);
 
         sentEmail = Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build();
     }
@@ -548,6 +580,25 @@ public class GrantNotificationServiceTest {
         assertThat(response.getScheduleResponseData().contains("<1:emailError>"), equalTo(true));
         assertThat(response.getScheduleResponseData().contains("<2:emailError>"), equalTo(true));
         assertThat(response.getScheduleResponseData().contains("<3:emailError>"), equalTo(true));
+    }
+
+    @Test
+    public void shouldThrowExceptionForInvalidEmailAddressForGrantAwaitingDocs() {
+        documents.add(sentEmail);
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString))
+            .thenReturn(returnedCasesWithInvalidEmail);
+
+        List<FieldErrorResponse> errorsList = new ArrayList<>();
+        errorsList.add(FieldErrorResponse.builder().message("invalid email").build());
+        when(emailAddressNotifyApplicantValidationRule.validate(any()))
+            .thenReturn(errorsList);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        assertEquals(response.getScheduleResponseData().size(), 2);
+        assertTrue(response.getScheduleResponseData().contains("<4:invalid email>"));
+        assertTrue(response.getScheduleResponseData().contains("<5:invalid email>"));
     }
 
     private Document buildDocument() {

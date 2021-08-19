@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EmailValidationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -40,6 +41,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
@@ -67,6 +69,7 @@ public class BusinessValidationController {
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
     private final EventValidationService eventValidationService;
+    private final EmailValidationService emailValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
     private final List<ValidationRule> allValidationRules;
@@ -80,6 +83,7 @@ public class BusinessValidationController {
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    private final List<EmailAddressNotifyApplicantValidationRule> emailAddressNotifyApplicantValidationRules;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
 
     @PostMapping(path = "/update-task-list")
@@ -292,18 +296,27 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
-        @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
+        @Validated({AmendCaseDetailsGroup.class, EmailAddressNotifyValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         Document document = null;
-        if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
+        List<FieldErrorResponse> hasRequiredEmailAddressErrors =
+            hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData());
+        if (hasRequiredEmailAddressErrors.isEmpty()) {
             document = notificationService
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
 
-        CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        CallbackResponse response;
+        if (emailValidationService.isEmailNotValidErrorResponse(hasRequiredEmailAddressErrors)) {
+            response = eventValidationService.validateEmailRequest(callbackRequest,
+                emailAddressNotifyApplicantValidationRules);
+        } else {
+            response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        }
 
         return ResponseEntity.ok(response);
     }
@@ -378,14 +391,13 @@ public class BusinessValidationController {
         }
     }
 
-    private boolean hasRequiredEmailAddress(CaseData data) {
+    private List<FieldErrorResponse> hasRequiredEmailAddress(CaseData data) {
         CCDData dataForEmailAddress = CCDData.builder()
             .applicationType(data.getApplicationType().name())
             .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())
             .solsSolicitorEmail(data.getSolsSolicitorEmail())
             .build();
-        List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
-        return emailErrors.isEmpty();
+        return emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
     }
 
     private void validateIHT400Date(CallbackRequest callbackRequest) {

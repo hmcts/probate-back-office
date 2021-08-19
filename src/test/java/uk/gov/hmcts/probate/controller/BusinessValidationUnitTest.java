@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EmailValidationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -66,7 +67,11 @@ public class BusinessValidationUnitTest {
     @Mock
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     @Mock
+    private List<EmailAddressNotifyApplicantValidationRule> emailAddressNotifyApplicantValidationRules;
+    @Mock
     private EventValidationService eventValidationServiceMock;
+    @Mock
+    private EmailValidationService emailValidationService;
     @Mock
     private NotificationService notificationService;
     @Mock
@@ -123,6 +128,7 @@ public class BusinessValidationUnitTest {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
         underTest = new BusinessValidationController(eventValidationServiceMock,
+            emailValidationService,
             notificationService,
             objectMapper,
             validationRules,
@@ -136,6 +142,7 @@ public class BusinessValidationUnitTest {
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
+            emailAddressNotifyApplicantValidationRules,
             ihtFourHundredDateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");

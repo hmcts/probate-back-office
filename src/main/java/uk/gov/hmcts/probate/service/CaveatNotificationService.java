@@ -55,7 +55,11 @@ public class CaveatNotificationService {
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
+                caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest,
+                    emailValidationRuleCaveats);
+                if (caveatCallbackResponse.getErrors().isEmpty()) {
+                    caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
+                }
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);

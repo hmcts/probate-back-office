@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.service.EmailValidationService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,9 +19,11 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNotifyValidationRule {
+public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNotifyValidationRule,
+    EmailAddressNotificationValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final EmailValidationService emailValidationService = new EmailValidationService();
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
@@ -33,6 +36,12 @@ public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNo
             .isEmpty(ccdData.getSolsSolicitorEmail())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"));
         }
+
+        if (errors.isEmpty() && !emailValidationService.validateEmailAddress(ccdData)) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                "notifyApplicantInvalidEmail"));
+        }
+
         return new ArrayList<>(errors);
     }
 }

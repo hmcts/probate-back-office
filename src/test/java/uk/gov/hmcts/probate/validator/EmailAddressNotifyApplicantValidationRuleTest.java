@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
@@ -31,6 +32,8 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     private CCDData ccdData;
     private FieldErrorResponse fieldErrorResponsePrimary;
     private FieldErrorResponse fieldErrorResponseSolicitor;
+    private FieldErrorResponse fieldErrorResponseInvalidEmail;
+
 
     @Before
     public void setUp() {
@@ -46,6 +49,12 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
             .build();
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"))
             .thenReturn(fieldErrorResponseSolicitor);
+
+        fieldErrorResponseInvalidEmail = FieldErrorResponse.builder()
+            .message("email invalid")
+            .build();
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantInvalidEmail"))
+            .thenReturn(fieldErrorResponseInvalidEmail);
     }
 
     @Test
@@ -84,6 +93,18 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
+    public void shouldFailPersonalWithInvalidEmail() {
+        ccdData = CCDData.builder()
+            .applicationType(ApplicationType.PERSONAL.name())
+            .primaryApplicantEmailAddress(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .build();
+        List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
+
+        assertEquals(1, validationErrors.size());
+        assertEquals(validationErrors.get(0).getMessage(), "email invalid");
+    }
+
+    @Test
     public void shouldFailSolicitorWithNoEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
@@ -92,6 +113,18 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
 
         assertTrue(validationErrors.size() == 1);
         assertEquals(validationErrors.get(0).getMessage(), "solicitor missing");
+    }
+
+    @Test
+    public void shouldFailSolicitorWithInvalidEmail() {
+        ccdData = CCDData.builder()
+            .applicationType(ApplicationType.SOLICITOR.name())
+            .solsSolicitorEmail(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .build();
+        List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
+
+        assertEquals(1, validationErrors.size());
+        assertEquals(validationErrors.get(0).getMessage(), "email invalid");
     }
 
 }
