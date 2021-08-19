@@ -4,12 +4,12 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud) {
+module.exports = async function (crud, forAmendOfSolicitorCreatedCase) {
 
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page1_waitForText, testConfig.WaitForTextTimeout);
         await I.selectOption('#registryLocation', createGrantOfProbateConfig.page1_list1_registry_location);
         await I.selectOption('#applicationType', createGrantOfProbateConfig.page1_list2_application_type);
 
@@ -32,8 +32,12 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
+        if (forAmendOfSolicitorCreatedCase) {
+            await I.click({css: `#languagePreferenceWelsh_${createGrantOfProbateConfig.page1_optionNo}`});
+        }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.waitForEnabled({css: '#boWillMessage'});
         await I.fillField({css: '#boWillMessage'}, createGrantOfProbateConfig.page1_boWillMessage);

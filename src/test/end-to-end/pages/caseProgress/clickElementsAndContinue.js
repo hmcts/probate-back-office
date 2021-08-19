@@ -8,7 +8,8 @@ module.exports = async function (elementLocators, delayPerLocator = 0) {
     for (let i=0; i < elementLocators.length; i++) {
         await I.wait(delayPerLocator);
         await I.waitForElement(elementLocators[i]);
-        await I.waitForClickable(elementLocators[i]);
+        await I.scrollTo(elementLocators[i]);
+        await I.waitForEnabled(elementLocators[i]);
         await I.click(elementLocators[i]);
     }
 
