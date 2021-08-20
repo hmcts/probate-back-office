@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
@@ -49,12 +50,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -69,6 +74,7 @@ public class DocumentController {
     private final RegistryDetailsService registryDetailsService;
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
@@ -160,7 +166,7 @@ public class DocumentController {
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
-            DocumentIssueType.GRANT);
+                DocumentIssueType.GRANT);
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
@@ -234,8 +240,23 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
-        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
-            Optional.of(DocumentIssueType.REISSUE));
+        Document document;
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        registryDetailsService.getRegistryDetails(caseDetails);
+
+
+        // The only difference between grant and reissue grant is one statement with the reissue date. Html/pdf template
+        // post TC work has lots of complex logic in it that would be difficult to code in Docmosis,
+        // so we use html/pdf template instead.
+        if (useHtmlPdfGeneratorForReissue(caseData)) {
+            document = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW,
+                DocumentIssueType.REISSUE);
+        } else {
+            document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
+                Optional.of(DocumentIssueType.REISSUE));
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
             Arrays.asList(document), null, null));
@@ -245,16 +266,31 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
-        List<Document> documents = new ArrayList<>();
+        final List<Document> documents = new ArrayList<>();
         validateEmailAddresses(callbackRequest);
-        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL,
-            Optional.of(DocumentIssueType.REISSUE));
-        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+        Document grantDocument;
+        Document coversheet;
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        registryDetailsService.getRegistryDetails(caseDetails);
+
+        // The only difference between grant and reissue grant is one statement with the reissue date. Html/pdf template
+        // post TC work has lots of complex logic in it that would be difficult to code in Docmosis,
+        // so we use html/pdf template instead.
+        if (useHtmlPdfGeneratorForReissue(caseData)) {
+            grantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
+                DocumentIssueType.REISSUE);
+            coversheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
+        } else {
+            grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL,
+                Optional.of(DocumentIssueType.REISSUE));
+            coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+        }
 
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
         String letterId = null;
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
@@ -272,10 +308,13 @@ public class DocumentController {
             documents, letterId, pdfSize));
     }
 
+    // This only seems to be called once list lists are mapped to exec lists
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
+
         log.info("Initiating call for SoT");
+        caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
             documentGeneratorService.generateSoT(callbackRequest)));
     }
@@ -294,5 +333,15 @@ public class DocumentController {
         for (CaseDetailsEmailValidationRule rule : allCaseDetailsEmailValidationRule) {
             rule.validate(callbackRequest.getCaseDetails());
         }
+    }
+    
+    private boolean useHtmlPdfGeneratorForReissue(CaseData cd) {
+        if ((GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
+                && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
+                && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()))) {
+
+            return true;
+        }
+        return false;
     }
 }

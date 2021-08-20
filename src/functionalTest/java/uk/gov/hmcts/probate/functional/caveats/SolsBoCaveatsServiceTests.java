@@ -232,6 +232,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
             responseBody, replacements);
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyPersonalCaveatAmendedEmailContents() {
         ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_VALIDATE_AMEND);

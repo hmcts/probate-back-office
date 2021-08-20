@@ -38,26 +38,34 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseDetailsEmailValidationRule;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @Slf4j
 @Controller
@@ -74,10 +82,16 @@ public class BusinessValidationController {
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    private final NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRule;
+    private final CodicilDateValidationRule codicilDateValidationRule;
+    private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
+    private final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
+
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -89,11 +103,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/sols-apply-as-exec")
-    public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
-        return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
-    }
-
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidate(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
@@ -103,12 +112,11 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
                 stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
         }
 
         return ResponseEntity.ok(response);
@@ -123,12 +131,16 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
+
+            caseDataTransformer.transformCaseDataForValidateProbate(callbackRequest);
+
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE,
-                GRANT_OF_PROBATE_NAME);
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
+                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -142,6 +154,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
@@ -149,6 +162,41 @@ public class BusinessValidationController {
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY,
                 INTESTACY_NAME);
         }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateExecutors(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateTitleAndClearingPage(callbackRequest);
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+
+        caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+        var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+        final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
+        
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                gopPage1ValidationRules);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+        }
+
         return ResponseEntity.ok(response);
     }
 
@@ -161,8 +209,12 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
+
+            caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequest);
+
             Optional<String> newState =
                 stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON,
@@ -188,6 +240,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
         validateEmailAddresses(callbackRequest);
 
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
@@ -301,14 +354,34 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         validateEmailAddresses(callbackRequest);
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;
-        if (hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData())) {
+        final CaseData data = callbackRequest.getCaseDetails().getData();
+        if (hasRequiredEmailAddress(data)) {
             document = notificationService
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
 
-        CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        CallbackResponse response;
+
+        // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
+        // note - we are assuming here that bulk scan imports set paper form = yes
+        if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
+                && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
+
+            var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
+            final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
+
+            response = eventValidationService.validateRequest(callbackRequest,
+                    gopPage1ValidationRules);
+
+            if (response.getErrors().isEmpty()) {
+                response = callbackResponseTransformer.paperForm(callbackRequest, document);
+            }
+        } else {
+            response = callbackResponseTransformer.paperForm(callbackRequest, document);
+        }
 
         return ResponseEntity.ok(response);
     }
@@ -374,9 +447,15 @@ public class BusinessValidationController {
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
-            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            if (log.isDebugEnabled()) {
-                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            if (log != null && uri != null && callbackRequest != null) {
+                final var caseDetails = callbackRequest.getCaseDetails();
+                if (caseDetails != null) {
+                    final Long id =  callbackRequest.getCaseDetails().getId();
+                    log.info("POST: {} Case Id: {} ", uri, id == null ? "Unknown" : id.toString());
+                    if (log.isDebugEnabled()) {
+                        log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+                    }
+                }
             }
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
@@ -395,6 +474,12 @@ public class BusinessValidationController {
 
     private void validateIHT400Date(CallbackRequest callbackRequest) {
         ihtFourHundredDateValidationRule.validate(callbackRequest.getCaseDetails());
+    }
+
+    private void validateTitleAndClearingPage(CallbackRequest callbackRequest) {
+        for (TitleAndClearingPageValidationRule rule : allTitleAndClearingValidationRules) {
+            rule.validate(callbackRequest.getCaseDetails());
+        }
     }
 
     private void validateEmailAddresses(CallbackRequest callbackRequest) {

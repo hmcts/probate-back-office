@@ -65,7 +65,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
     private final String solsSolicitorIsExec;
-    private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
@@ -104,6 +103,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String solsSOTNeedToUpdate;
+    private final DocumentLink solsLegalStatementUpload;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
@@ -300,7 +300,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
-    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
