@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -55,10 +56,15 @@ public class EmailValidationService {
         }
 
         if (!Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE).matcher(emailAddress).matches()) {
-            log.info("Notification not sent due to invalid email address: {}, for case: {}", emailAddress, caseID);
+            log.info("Notification not sent due to invalid email address: {}, for case: {}",
+                getEmailEncodedBase64(emailAddress), caseID);
             return false;
         }
         return true;
+    }
+
+    private String getEmailEncodedBase64(String emailAddress) {
+        return new String(Base64.getEncoder().encode(emailAddress.getBytes()));
     }
 
 }

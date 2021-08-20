@@ -19,7 +19,6 @@ public class EmailValidationServiceTest {
     @Test
     public void shouldAssertEmailsAsValid() {
         for (String email : Constants.VALID_EMAIL_ADDRESSES) {
-            System.out.println(email);
             assertTrue(emailValidationService.validateEmailAddress(email, CASE_NUMBER));
         }
     }
@@ -27,7 +26,6 @@ public class EmailValidationServiceTest {
     @Test
     public void shouldAssertEmailsAsFalse() {
         for (String email : Constants.INVALID_EMAIL_ADDRESSES) {
-            System.out.println(email);
             assertFalse(emailValidationService.validateEmailAddress(email, CASE_NUMBER));
         }
     }
