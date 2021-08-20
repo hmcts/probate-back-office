@@ -5,13 +5,15 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForElement('#applicationGrounds');
+
+    await I.waitForElement('#deceasedDomicileInEngWales');
     await I.runAccessibilityTest();
-    await I.fillField('#applicationGrounds', deceasedDetailsConfig.page2_applicationGrounds);
+
     await I.click(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
     await I.click(`#deceasedAnyOtherNames_${deceasedDetailsConfig.optionNo}`);
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
+
     await I.fillField('#deceasedAddress__detailAddressLine1', deceasedDetailsConfig.address_line1);
     await I.fillField('#deceasedAddress__detailAddressLine2', deceasedDetailsConfig.address_line2);
     await I.fillField('#deceasedAddress__detailAddressLine3', deceasedDetailsConfig.address_line3);
@@ -28,5 +30,5 @@ module.exports = async function () {
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
     await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

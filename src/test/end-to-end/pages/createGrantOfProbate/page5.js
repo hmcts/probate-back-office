@@ -9,7 +9,7 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.WaitForTextTimeout);
         await I.click(`#willExists_${createGrantOfProbateConfig.page5_willExistsYes}`);
         await I.click(`#willDatedBeforeApril_${createGrantOfProbateConfig.page5_willDatedBeforeAprilYes}`);
         await I.click(`#willAccessOriginal_${createGrantOfProbateConfig.page5_willAccessOriginalYes}`);
@@ -31,9 +31,10 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         await I.fillField('#willNumberOfCodicils', createGrantOfProbateConfig.page5_willNumberOfCodicils_update);
     }
