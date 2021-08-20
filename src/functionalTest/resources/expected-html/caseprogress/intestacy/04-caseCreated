@@ -1,9 +1,9 @@
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds">
 <h2 class="govuk-heading-l">1. Enter application details</h2>
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the probate practitioner.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the Probate practitioner.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Add solicitor details</p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Add Probate practitioner details</p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -17,7 +17,7 @@
 
 <br/>
 <h2 class="govuk-heading-l">2. Sign legal statement and submit application</h2>
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the probate practitioner.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the Probate practitioner.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Review and sign legal statement and submit application</p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>

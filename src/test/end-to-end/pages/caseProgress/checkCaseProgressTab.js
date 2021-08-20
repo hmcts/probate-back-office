@@ -1,21 +1,22 @@
 'use strict';
 const assert = require('assert');
 const moment = require('moment');
+const testConfig = require('src/test/config.js');
 
 // opts are numCompleted, numInProgress, numNotStarted, linkText, opts.linkUrl
 module.exports = async function (opts) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForText('Case Progress', 5);
+    await I.waitForText('Case Progress', testConfig.WaitForTextTimeout || 60);
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
     assert (texts.length === 17);
-    assert (texts[0] === 'These steps are to be completed by the probate practitioner.');
-    assert (texts[1] === 'Add solicitor details');
+    assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
+    assert (texts[1] === 'Add Probate practitioner details');
     assert (texts[2] === 'Add deceased details');
     assert (texts[3] === 'Add application details');
-    assert (texts[4] === 'These steps are to be completed by the probate practitioner.');
+    assert (texts[4] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[5] === 'Review and sign legal statement and submit application');
     assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
     assert (texts[7] === 'Send documents\n');
@@ -79,7 +80,7 @@ module.exports = async function (opts) {
         await I.caseProgressSelectPenultimateNextStepAndGo();
     }
     if (opts.signOut) {
-        await I.signOut(5);
+        await I.signOut();
     }
 
     return caseRef.replace('#', '');

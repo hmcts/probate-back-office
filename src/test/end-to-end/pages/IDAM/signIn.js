@@ -2,31 +2,21 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser, delay = 2) {
+module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
 
     const I = this;
-    await I.amOnLoadedPage('/');
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
+    await I.wait(testConfig.ManualDelayMedium);
 
-    await I.waitForText('Sign in', 30);
-    await I.waitForText('Email address', 30);
-    await I.waitForText('Password', 30);
+    await I.waitForText('Sign in', 600);
+    await I.waitForText('Email address');
+    await I.waitForText('Password');
 
-    await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvUser);
-    await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvPassword);
+    await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvCwUser);
+    await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvCwPassword);
 
-    await I.waitForNavigationToComplete('input[type="submit"]', 5);
-
-    const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements({css: 'body exui-root xuilib-cookie-banner'});
-    if (numVisibleCookieBannerEls > 0) {
-        //check to see we can still click
-        const bannerButton = await I.grabNumberOfVisibleElements({css: 'button.govuk-button[value="reject"]'});
-        if (bannerButton > 0) {
-            // just reject additional cookies
-            const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
-            await I.waitForEnabled(rejectLocator);
-            await I.click(rejectLocator);
-            await I.wait(delay);
-        }
-    }
-    await I.wait(delay);
+    await I.waitForNavigationToComplete('input[type="submit"]', signInDelay);
+    await I.dontSee({css: '#username'});
+    await I.rejectCookies();
+    await I.wait(signInDelay);
 };

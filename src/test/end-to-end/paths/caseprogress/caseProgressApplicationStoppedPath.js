@@ -10,17 +10,16 @@ const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressAppSto
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 const scenarioName = 'Case Progress - application stopped path';
+/* eslint-disable no-console */
 Scenario(scenarioName, async function ({I}) {
-    // IDAM
-    /* eslint-disable no-console */
     try {
         // get unique suffix for names - in order to match only against 1 case
         const unique_deceased_user = Date.now();
         await I.logInfo(scenarioName, 'Login as Solicitor');
-        await I.authenticateWithIdamIfAvailable(true, 5);
-        await I.selectNewCase(2);
-        await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor, 5);
-        await I.waitForNavigationToComplete(commonConfig.continueButton, 5);
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.selectNewCase();
+        await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
         await I.logInfo(scenarioName, 'Initial application entry');
         await I.caseProgressSolicitorDetails(caseProgressConfig);
@@ -48,15 +47,30 @@ Scenario(scenarioName, async function ({I}) {
             goToNextStep: true});
 
         await I.logInfo(scenarioName, 'Add application details');
-        await I.caseProgressClickElementsAndContinue([{css: '#willAccessOriginal_Yes'}, {css: '#willHasCodicils_No'}]);
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#willAccessOriginal_Yes'}},
+            {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
+            {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
+            {locator: {css: '#willHasCodicils_No'}}]);
+
+        await I.logInfo(scenarioName, 'Dispense with notice and clearing type');
+        await I.caseProgressClickSelectOrFillElementsAndContinue([
+            {locator: {css: '#dispenseWithNotice_No'}},
+            {locator: {css: '#titleAndClearingType-TCTNoT'}},
+        ]);
+
+        await I.logInfo(scenarioName, 'Remaining application details');
+
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#primaryApplicantForenames'}, text: 'Fred'},
             {locator: {css: '#primaryApplicantSurname'}, text: 'Bassett'},
             {locator: {css: '#primaryApplicantHasAlias_No'}},
             {locator: {css: '#primaryApplicantIsApplying_No'}},
-            {locator: {css: '#solsPrimaryExecutorNotApplyingReason'}, option: 'They lack capacity to act as executor'},
+            {locator: {css: '#solsPrimaryExecutorNotApplyingReason-MentallyIncapable'}},
             {locator: {css: '#otherExecutorExists_No'}}]);
 
+        await I.caseProgressWaitForElementThenContinue('#furtherEvidenceForApplication');
         await I.caseProgressWaitForElementThenContinue('#solsAdditionalInfo');
 
         // More extensive checks already performed at this stage for stop/escalate issue
