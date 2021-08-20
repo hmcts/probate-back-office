@@ -9,7 +9,7 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page2_waitForText, testConfig.WaitForTextTimeout);
         await I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames);
         await I.fillField('#primaryApplicantSurname', createGrantOfProbateConfig.page2_lastnames);
 
@@ -20,9 +20,16 @@ module.exports = async function (crud) {
         await I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
 
         await I.click(`#primaryApplicantHasAlias_${createGrantOfProbateConfig.page2_hasAliasYes}`);
+
         const aliasLocator = {css: '#primaryApplicantAlias'};
         await I.waitForVisible(aliasLocator);
         await I.fillField(aliasLocator, createGrantOfProbateConfig.page2_alias);
+
+        if (!testConfig.TestAutoDelayEnabled) {
+            // only valid for local dev where we need it to run as fast as poss to minimise
+            // lost dev time
+            await I.wait(testConfig.ManualDelayShort);
+        }
 
         await I.click(`#primaryApplicantIsApplying_${createGrantOfProbateConfig.page2_applyingYes}`);
 
@@ -40,7 +47,8 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page2_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page2_list1_update_option);
         await I.waitForNavigationToComplete(commonConfig.continueButton);
         await I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames_update);

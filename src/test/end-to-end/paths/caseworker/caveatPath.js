@@ -33,7 +33,6 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-
 const scenarioName = 'Caseworker Caveat1 - Order summons';
 Scenario(scenarioName, async function ({I}) {
 
@@ -42,7 +41,6 @@ Scenario(scenarioName, async function ({I}) {
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
-    // IdAM
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
 
@@ -51,7 +49,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'Raise a caveat';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -62,7 +60,7 @@ Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
