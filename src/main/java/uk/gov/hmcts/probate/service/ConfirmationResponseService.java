@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -69,7 +68,6 @@ public class ConfirmationResponseService {
     private final ImmovableEstateRule immovableEstateRule;
     private final LifeInterestRule lifeInterestRule;
     private final MinorityInterestRule minorityInterestConfirmationResponseRule;
-    private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
@@ -96,11 +94,6 @@ public class ConfirmationResponseService {
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
-            if (response.isPresent()) {
-                return response.get();
-            }
-
-            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
@@ -140,11 +133,6 @@ public class ConfirmationResponseService {
 
         if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, immovableEstateRule, STOP_BODY);
-            if (response.isPresent()) {
-                return response.get();
-            }
-
-            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
@@ -284,7 +272,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        String legalPhotocopy = "";
+        if (hasNoLegalStatmentBeenUploaded(ccdData)) {
+            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        }
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
@@ -295,6 +286,10 @@ public class ConfirmationResponseService {
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
+    boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
+        return !ccdData.isHasUploadedLegalStatement();
+    } 
+    
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
