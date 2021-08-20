@@ -15,10 +15,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.time.LocalDate;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -353,6 +355,31 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithEmailText() {
+        assertContentsForEmail("caseworkerCreatedPersonalEmailPaperFormYesPersonalisation.txt",
+            "caseworkerCreatedPersonalEmailPaperFormYesResponse.txt");
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithEmailText() {
+        assertContentsForEmail("caseworkerCreatedPersonalEmailPaperFormNoPersonalisation.txt",
+            "caseworkerCreatedPersonalEmailPaperFormNoResponse.txt");
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmailText() {
+        assertContentsForEmail("caseworkerCreatedSolicitorEmailPaperFormYesPersonalisation.txt",
+            "caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt");
+    }
+
+    @Test
+    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithEmailText() {
+        assertContentsForEmail("caseworkerCreatedSolicitorEmailPaperFormNoPersonalisation.txt",
+            "caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt");
+    }
+
 
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
@@ -729,4 +756,26 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             assert false;
         }
     }
+    
+    private void assertContentsForEmail(String personalisationFile, String responseFile) {
+        String payload = utils.getStringFromFile("/email/" + personalisationFile);
+        HashMap<String, String> payloadMap = (HashMap<String, String>) Arrays.asList(payload.split("\n")).stream()
+            .map(s -> s.split("::")).collect(Collectors.toMap(e -> e[0], e -> e[1]));
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(payloadMap)
+            .when().post("/testing-support/documents/gov-notify")
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        final ResponseBody responseBody = response.getBody();
+        String pdfText = removeCrLfs(utils.parsePDFToString(responseBody.asInputStream()));
+        final String expectedText = removeCrLfs(getJsonFromFile(responseFile));
+        System.out.println("expectedText:" + expectedText);
+        System.out.println("pdfText:" + pdfText);
+        assertTrue(pdfText.contains(expectedText));
+    }
+
 }

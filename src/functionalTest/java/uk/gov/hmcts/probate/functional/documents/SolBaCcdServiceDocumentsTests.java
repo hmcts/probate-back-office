@@ -4,16 +4,21 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -242,6 +247,31 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
+    }
+
+    @Test
+    public void verifySuccessForGetAdmonWillGrantForCardiffText() {
+        assertContentsForPdfDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, DocumentType.DIGITAL_GRANT, 
+            "admonWillGrantForCardiffResponse.txt");
+    }
+
+    private void assertContentsForPdfDocument(String payloadFile, DocumentType documentType, String responseFile) {
+        String payload = utils.getJsonFromFile(payloadFile);
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(payload)
+            .when().post("/testing-support/documents/pdf?" + documentType.name())
+            .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        final ResponseBody responseBody = response.getBody();
+        String pdfText = removeCrLfs(utils.parsePDFToString(responseBody.asInputStream()));
+        final String expectedText = removeCrLfs(getJsonFromFile(responseFile));
+        System.out.println("expectedText:" + expectedText);
+        System.out.println("pdfText:" + pdfText);
+        TestCase.assertTrue(pdfText.contains(expectedText));
     }
 
     @Test

@@ -1,0 +1,13 @@
+templateId::92efedd8-feb9-4e50-896c-cddc930a9524
+case-stop-details::null
+ccd_reference::1542380211044655
+caveat_case_id::null
+deceased_dod::1st January 2018
+solicitor_reference::null
+registry_phone::0300 303 0648
+solicitor_name::null
+deceased_name::deceasedfname deceasedlname
+registry_name::Oxford Probate Registry
+welsh_deceased_date_of_death::1 Ionawr 2018
+boStopDetailsDeclarationParagraph::null
+applicant_name::fname lname
