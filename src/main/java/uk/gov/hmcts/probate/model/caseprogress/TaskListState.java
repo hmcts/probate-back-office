@@ -32,7 +32,10 @@ public enum TaskListState {
             case "":
                 return TL_STATE_ADD_SOLICITOR_DETAILS;
 
-            case StateConstants.STATE_SOL_APP_CREATED:
+            case StateConstants.STATE_SOL_APP_CREATED_SOLICITOR_DTLS:
+                return TL_STATE_ADD_SOLICITOR_DETAILS;
+
+            case StateConstants.STATE_SOL_APP_CREATED_DECEASED_DTLS:
                 return TL_STATE_ADD_DECEASED_DETAILS;
 
             case StateConstants.STATE_SOL_PROBATE_CREATED:

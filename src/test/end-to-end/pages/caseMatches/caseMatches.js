@@ -6,34 +6,26 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
 
     const I = this;
-    await I.waitForText(nextStepName, testConfig.TestTimeToWaitForText);
+    await I.waitForText(nextStepName, testConfig.WaitForTextTimeout);
 
-    await I.waitForText(caseRef, testConfig.TestTimeToWaitForText);
+    await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
     const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
+    await I.wait(testConfig.CaseMatchesInitialDelay);
 
-    if (!testConfig.TestAutoDelayEnabled) {
-        // just a small delay - occasionally we get issues.
-        // Only necessary where we have no auto delay (local dev).
-        await I.wait(2);
-    } else {
-        // This was set to 60 for pipeline which seems overkill, perhaps
-        // we had a problem one time with ES? Now set back to 6
-        await I.wait(6);
-    }
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     if (numOfElements > 0) {
-        await I.waitForElement('#caseMatches_0_0', testConfig.TestTimeToWaitForText);
-        await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.TestTimeToWaitForText);
+        await I.waitForElement('#caseMatches_0_0', testConfig.WaitForTextTimeout);
+        await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.WaitForTextTimeout);
     }
     // -1 to ignore previous button at bottom of page
     /* eslint-disable no-await-in-loop */
     const btnLocatorLastChild = {css: `${btnLocator.css}:last-child`};
     for (let i = retainFirstItem ? 1 : 0; i < numOfElements; i++) {
         await I.scrollTo(btnLocatorLastChild);
-        await I.wait(0.5);
+        await I.wait(testConfig.CaseMatchesLocateRemoveButtonDelay);
 
         await I.waitForEnabled(btnLocatorLastChild);
         await I.click(btnLocatorLastChild);
@@ -41,21 +33,24 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Only necessary where we have no auto delay (local dev).
 
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(2);
+            await I.wait(testConfig.ManualDelayShort);
         }
-        await I.wait(1);
 
+        await I.wait(testConfig.ManualDelayMedium);
         await I.waitForEnabled(actionBtnLocator);
         await I.click(actionBtnLocator);
         await I.waitForInvisible(actionBtnLocator);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(2);
+            await I.wait(testConfig.ManualDelayShort);
         }
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
+        // ensure javascript is added to button
+        await I.wait(testConfig.CaseMatchesAddNewButtonClickDelay);
+        await I.waitForEnabled(addNewButtonLocator);
         await I.click(addNewButtonLocator);
     }
 
@@ -63,32 +58,30 @@ module.exports = async function (caseRef, nextStepName, retainFirstItem=true, ad
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(2);
+            await I.wait(testConfig.ManualDelayMedium);
         }
-        await I.scrollTo({css: 'input[id$="valid_Yes"]'});
         await I.waitForElement({css: 'input[id$="valid_Yes"]'});
+        await I.scrollTo({css: 'input[id$="valid_Yes"]'});
+        await I.waitForEnabled({css: 'input[id$="valid_Yes"]'});
         await I.click({css: 'input[id$="valid_Yes"]'});
         await I.waitForElement({css: 'input[id$="doImport_No"]'});
         await I.click({css: 'input[id$="doImport_No"]'});
     }
 
-    await I.wait(1);
     await I.waitForElement(commonConfig.continueButton);
     await I.scrollTo({css: commonConfig.continueButton});
-    await I.waitForClickable(commonConfig.continueButton);
+    await I.waitForEnabled(commonConfig.continueButton);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 
     if (skipMatchingInfo) {
-        await I.wait(3);
         await I.waitForElement({css: '#field-trigger-summary'});
-        await I.waitForElement(commonConfig.continueButton);
-        await I.waitForClickable(commonConfig.continueButton);
+        await I.waitForEnabled(commonConfig.continueButton);
         // Just a small delay - occasionally we get issues here but only relevant for local dev.
         // Only necessary where we have no auto delay (local dev).
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(2);
+            await I.wait(testConfig.ManualDelayShort);
         }
         await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
-    await I.wait(2);
+    await I.wait(testConfig.CaseMatchesCompletionDelay);
 };

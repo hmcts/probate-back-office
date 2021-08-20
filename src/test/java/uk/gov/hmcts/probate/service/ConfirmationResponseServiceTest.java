@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -75,8 +74,6 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MinorityInterestRule minorityInterestRuleMock;
     @Mock
-    private NoOriginalWillRule noOriginalWillRuleMock;
-    @Mock
     private RenouncingRule renouncingRuleMock;
     @Mock
     private ResiduaryRule residuaryRuleMock;
@@ -118,7 +115,6 @@ public class ConfirmationResponseServiceTest {
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
-            noOriginalWillRuleMock,
             renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
@@ -471,10 +467,9 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
-    public void shouldStopWillConfirmationForWillNotOriginalProbate() {
+    public void shouldNotStopWillConfirmationForWillNotOriginalProbate() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
@@ -482,14 +477,13 @@ public class ConfirmationResponseServiceTest {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Test
-    public void shouldStopWillConfirmationForWillNotOriginalAdmon() {
+    public void shouldNotStopWillConfirmationForWillNotOriginalAdmon() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -497,14 +491,13 @@ public class ConfirmationResponseServiceTest {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Test
     public void shouldNOTStopWillNotOriginalConfirmation() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
@@ -529,6 +522,28 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationLegalstatementUploaded() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.isHasUploadedLegalStatement()).thenReturn(true);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("",
+            nextStepsValues.get("{{legalPhotocopy}}"));
         assertFeeConfirmationValues(nextStepsValues);
     }
 
@@ -565,6 +580,7 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
 
@@ -602,6 +618,7 @@ public class ConfirmationResponseServiceTest {
         assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
 
@@ -625,6 +642,7 @@ public class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
 
@@ -665,10 +683,13 @@ public class ConfirmationResponseServiceTest {
         assertEquals("31/12/2000", nextStepsValues.get("{{deceasedDateOfDeath}}"));
         assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
+    }
+
+    private void assertLegalStatement(Map<String, String> nextStepsValues) {
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
     }
-
+    
     private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }

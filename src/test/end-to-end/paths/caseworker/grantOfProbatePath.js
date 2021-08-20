@@ -24,7 +24,6 @@ const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetai
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 
-const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsUpdateTabConfig');
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
 
@@ -34,15 +33,13 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-
-const scenarioName = 'Caseworker Grant of Representation - Grant issued';
+const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued';
 Scenario(scenarioName, async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
-    // IdAM
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
 
@@ -51,7 +48,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'PA1P/PA1A/Solicitors';
     await I.logInfo(scenarioName, nextStepName + ' - first case');
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.enterGrantOfProbatePage1('create');
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
@@ -75,9 +72,9 @@ Scenario(scenarioName, async function ({I}) {
 
     // SECOND case - the main test case
 
-    await I.logInfo(scenarioName, nextStepName + ' - Second case');
+    await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.enterGrantOfProbatePage1('create');
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage2');
@@ -105,6 +102,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
 
@@ -151,9 +149,12 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    createGrantOfProbateConfig.page8_deceasedDomicileInEngWales = 'No';
     await I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
+    await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
+
+    //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Print the case';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -235,11 +236,7 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Grant issued';
     await I.logInfo(scenarioName, endState, caseRef);
 
-    //
-    // This is as far as we can currently get locally due to bulk printing issue
     await I.enterEventSummary(caseRef, nextStepName);
-    //
-    //
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending an email notification, the Date added for the email notification is set to today
