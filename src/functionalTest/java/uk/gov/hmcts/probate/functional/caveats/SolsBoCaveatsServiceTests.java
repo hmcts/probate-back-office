@@ -230,6 +230,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
             responseBody, replacements);
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);

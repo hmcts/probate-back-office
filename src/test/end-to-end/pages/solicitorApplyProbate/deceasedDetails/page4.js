@@ -12,5 +12,5 @@ module.exports = async function () {
     await I.click(`#englishWill_${deceasedDetailsConfig.optionYes}`);
     await I.click(`#appointExec_${deceasedDetailsConfig.optionYes}`);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

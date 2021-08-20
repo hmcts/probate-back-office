@@ -7,7 +7,7 @@ module.exports = async function (caseRef, withdrawalConfig) {
 
     const I = this;
 
-    await I.waitForText(withdrawalConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(withdrawalConfig.waitForText, testConfig.WaitForTextTimeout);
 
     await I.see(caseRef);
 
