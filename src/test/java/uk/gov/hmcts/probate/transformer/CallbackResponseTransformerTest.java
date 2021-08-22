@@ -1325,6 +1325,7 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+        assertEquals(1,callbackResponse.getData().getDeceasedAliasNamesList().size());
     }
 
     @Test
