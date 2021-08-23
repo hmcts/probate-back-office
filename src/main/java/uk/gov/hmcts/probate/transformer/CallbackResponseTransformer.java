@@ -1009,6 +1009,7 @@ public class CallbackResponseTransformer {
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
+
         return builder;
     }
 
@@ -1318,28 +1319,22 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (shouldNullifyAliasNamesList(caseData)) {
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
+        }
+        if (deceasedAliasNames.isEmpty()) {
             builder
-                .solsDeceasedAliasNamesList(null)
-                .deceasedAliasNamesList(null);
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
         } else {
-            List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
-            if (caseData.getDeceasedAliasNameList() != null) {
-                deceasedAliasNames = caseData.getDeceasedAliasNameList()
-                        .stream()
-                        .map(CollectionMember::getValue)
-                        .map(this::buildDeceasedAliasNameExecutor)
-                        .map(alias -> new CollectionMember<>(null, alias))
-                        .collect(Collectors.toList());
-            }
-            if (deceasedAliasNames.isEmpty()) {
-                builder
-                        .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-            } else {
-                builder
-                        .solsDeceasedAliasNamesList(deceasedAliasNames)
-                        .deceasedAliasNamesList(null);
-            }
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(null);
         }
 
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
@@ -1353,8 +1348,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsDeceasedAliasNamesList(shouldNullifyAliasNamesList(caseData) ? null
-                        : caseData.getSolsDeceasedAliasNamesList());
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder
@@ -1429,12 +1423,6 @@ public class CallbackResponseTransformer {
             builder
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-    }
-
-    private boolean shouldNullifyAliasNamesList(CaseData caseData) {
-        return (caseData.getDeceasedAliasNameList() == null
-                || caseData.getDeceasedAliasNameList().isEmpty())
-                && !YES.equals(caseData.getDeceasedAnyOtherNames());
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
