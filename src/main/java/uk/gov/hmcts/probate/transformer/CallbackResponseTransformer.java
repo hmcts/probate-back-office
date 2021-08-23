@@ -1326,12 +1326,6 @@ public class CallbackResponseTransformer {
             List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
             List<CollectionMember<ProbateAliasName>> personalDeceasedAliasNames = EMPTY_LIST;
             if (caseData.getDeceasedAliasNameList() != null) {
-                deceasedAliasNames = caseData.getDeceasedAliasNameList()
-                        .stream()
-                        .map(CollectionMember::getValue)
-                        .map(this::buildDeceasedAliasNameExecutor)
-                        .map(alias -> new CollectionMember<>(null, alias))
-                        .collect(Collectors.toList());
 
                 personalDeceasedAliasNames = caseData.getDeceasedAliasNameList()
                     .stream()
@@ -1339,6 +1333,15 @@ public class CallbackResponseTransformer {
                     .map(alias -> new CollectionMember<>(null, alias))
                     .collect(Collectors.toList());
             }
+
+            if (caseData.getSolsDeceasedAliasNamesList() != null){
+                deceasedAliasNames = caseData.getSolsDeceasedAliasNamesList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
+            }
+
             if (deceasedAliasNames.isEmpty()) {
                 builder
                         .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
