@@ -6,7 +6,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(completeApplicationConfig.page3_waitForText, testConfig.WaitForTextTimeout);
 
     await I.runAccessibilityTest();
 
@@ -16,5 +16,5 @@ module.exports = async function () {
     await I.see(completeApplicationConfig.page3_pBA_Account);
     await I.see(completeApplicationConfig.page3_customer_Reference);
 
-    await I.waitForNavigationToComplete(commonConfig.goButton);
+    await I.waitForNavigationToComplete(commonConfig.submitButton);
 };
