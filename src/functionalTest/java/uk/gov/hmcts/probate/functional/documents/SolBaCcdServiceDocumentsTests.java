@@ -198,7 +198,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
-        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdomof and "
+        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
         + "The application has stated that the gross value";
 
