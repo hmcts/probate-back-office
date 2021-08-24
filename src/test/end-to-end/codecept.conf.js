@@ -5,7 +5,6 @@ exports.config = {
     'output': testConfig.TestOutputDir,
     'helpers': {
         'Puppeteer': {
-            'url': testConfig.TestBackOfficeUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'show': testConfig.TestShowBrowserWindow,

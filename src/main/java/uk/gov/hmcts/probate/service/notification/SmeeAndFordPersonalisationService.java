@@ -28,6 +28,10 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,10 +44,11 @@ public class SmeeAndFordPersonalisationService {
     private static final String DELIMITER = "|";
     private static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
-    private static final String PDF_EXT = ".pdf";
-    private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT};
+    private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
+        WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT};
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
+    private static final String APPLICATION_TYPE_PERSONAL = "Personally";
 
     private final FileSystemResourceService fileSystemResourceService;
 
@@ -131,7 +136,7 @@ public class SmeeAndFordPersonalisationService {
         List<DocumentType> documentTypes = Arrays.asList(GRANT_TYPES);
         for (CollectionMember<Document> document : data.getProbateDocumentsGenerated()) {
             if (documentTypes.contains(document.getValue().getDocumentType())) {
-                return document.getValue().getDocumentType().getTemplateName() + PDF_EXT;
+                return document.getValue().getDocumentFileName();
             }
         }
         return "";
@@ -166,7 +171,7 @@ public class SmeeAndFordPersonalisationService {
             sol = sol + DELIMITER;
             sol = sol + getFullAddress(data.getSolsSolicitorAddress());
         } else {
-            sol = sol + DELIMITER;
+            sol = sol + APPLICATION_TYPE_PERSONAL + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
@@ -215,8 +220,7 @@ public class SmeeAndFordPersonalisationService {
         var execNames = new StringBuilder();
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
-        execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorLastName()));
-        execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorOtherNames()));
+        execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorLastName()));
         
         var allExecs = new StringBuilder();
         allExecs.append(replaceDelimeters(execNames.toString()));

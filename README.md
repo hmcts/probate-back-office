@@ -126,11 +126,6 @@ npx @hmcts/probate-dev-env --create
 npx @hmcts/probate-dev-env
 
 # Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
-# To enable PBA payments for solicitors run this after startup of everything
-```
-docker-compose up -d wiremock
-./bin/wiremock.sh
-```
 
 # to use local probate backoffice
 docker-compose stop probate-back-office
@@ -151,7 +146,6 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
-
 
 ## Full setup
 
@@ -269,7 +263,7 @@ For mac
 ```
 For Windows 10
 ```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.win.localhost:4104
+   ./ccdImports/conversionScripts/createAllXLS.sh host.docker.internal:4104
 ```
 
 For linux (replace ip with your own ip)
