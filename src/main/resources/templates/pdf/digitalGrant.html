@@ -113,7 +113,6 @@ Died on
 {% endmacro %}
 
 {% macro applyingExecutors(cd, primaryApplicantApplying, isTc) %}
-<p>
     {% set addAnd = false %}
     {% set atLeastOneExecAdded = false %}
     {% for executor in cd.executorsApplying %}
@@ -125,7 +124,6 @@ Died on
             {% set atLeastOneExecAdded = true %}
         {% endif %}
     {% endfor %}
-</p>
 {% endmacro %}
 
 {% macro powerReserved(cd, primaryApplicantApplying) %}
