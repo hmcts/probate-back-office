@@ -54,8 +54,8 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -81,6 +81,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSU
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.ADMON_WILL;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -1245,7 +1246,7 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        if (isIntestacy(caseData)) {
+        if (isIntestacy(caseData) || ADMON_WILL.getName().equals(caseData.getCaseType())) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
@@ -1380,7 +1381,7 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        if (isIntestacy(caseData)) {
+        if (isIntestacy(caseData) || ADMON_WILL.getName().equals(caseData.getCaseType())) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
