@@ -8,6 +8,7 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 import java.io.IOException;
 import java.util.UUID;
 
+@Slf4j
 @ExtendWith(PactConsumerTestExt.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "8486")
@@ -61,11 +63,14 @@ public class PrintLetterServiceConsumerTest {
     @Test
     @PactTestFor(pactMethod = "createPrintLetterServiceFragment")
     public void verifyPrintLetterPact() throws Exception {
-        printLetterApiProxy.print(SOME_SERVICE_AUTH_TOKEN, uuid, buildLetter());
+        var printRequest = buildLetter();
+        log.info("printRequest {}", printRequest);
+        printLetterApiProxy.print(SOME_SERVICE_AUTH_TOKEN, uuid, printRequest);
     }
 
     private PrintRequest buildLetter() throws Exception {
         var json = ResourceLoader.loadJson("json/printJob.json");
+        log.info("Json {}", json);
         return objectMapper.readValue(json, PrintRequest.class);
     }
 

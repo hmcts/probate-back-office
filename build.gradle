@@ -396,6 +396,8 @@ dependencies {
 
   contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
   testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
+  contractTestAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+  contractTestCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 }
