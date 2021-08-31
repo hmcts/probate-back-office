@@ -76,12 +76,52 @@ public class TaskStateRendererTest {
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced2);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingDied);
+    }    
+
+    public void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
+        final String expectedHtml = "<div><a href=\""
+                + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
+                + "\" class=\"govuk-link\">Add Probate practitioner details</a></div>\n"
+                + "<div>Add deceased details</div>\n"
+                + "<div>Add application details</div>\n"
+                + "<div>Review and sign legal statement and submit application</div>\n"
+                + "<div>/div>\n"
+                + "<div>Authenticate documents</div>\n"
+                + "<div>Examine application</div>\n"
+                + "<div>Issue grant of representation<</div>\n"
+                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
+                + "</p>\n"
+                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/"
+                + "not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
+                + "</p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n"
+                + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p><strong>Authenticated on "
+                + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+
+        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                testHtml, (long) 9999, "WillLeft", "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_CaseCreated() {
+    public void shouldRenderCorrectHtmlForState_CaseCreatedDeceasedDtls() {
 
-        final String expectedHtml = "<div>Add solicitor details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div><a href=\""
             + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
@@ -122,7 +162,7 @@ public class TaskStateRendererTest {
     @Test
     public void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_UpdateCase() {
 
-        final String expectedHtml = "<div>Add solicitor details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
@@ -176,7 +216,7 @@ public class TaskStateRendererTest {
     @Test
     public void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_NotUpdatingCase() {
 
-        final String expectedHtml = "<div>Add solicitor details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
@@ -223,7 +263,7 @@ public class TaskStateRendererTest {
     @Test
     public void shouldRenderCorrectHtmlForState_AddAppDtls_Intestacy() {
 
-        final String expectedHtml = "<div>Add solicitor details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY
@@ -271,7 +311,7 @@ public class TaskStateRendererTest {
     @Test
     public void shouldRenderCorrectHtmlForState_AddAppDtls_AdmonWill() {
 
-        final String expectedHtml = "<div>Add solicitor details</div>\n"
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL

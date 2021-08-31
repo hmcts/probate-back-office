@@ -76,7 +76,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
                                                         int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
-                                                        boolean hasDeceasedAlias, boolean hasDOD) {
+                                                        boolean hasDeceasedAlias, boolean hasDOD, boolean isWelsh) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
         if (hasDeceasedAlias) {
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
@@ -150,7 +150,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .build()));
         docs.add(new CollectionMember<Document>(Document.builder()
             .documentType(DIGITAL_GRANT)
-            .documentFileName("GrantFileName")
+            .documentFileName("GrantFileName.pdf")
             .build()));
 
         return docs;
@@ -161,7 +161,7 @@ public class SmeeAndFordPersonalisationServiceTest {
         docs.add(new CollectionMember<>(ScannedDocument.builder()
             .type(OTHER.name())
             .subtype(Constants.DOC_SUBTYPE_WILL)
-            .fileName("ScannedWillFileName")
+            .fileName("ScannedWillFileName.pdf")
             .build()));
         docs.add(new CollectionMember<>(ScannedDocument.builder()
             .type(DocumentType.EDGE_CASE.name())
@@ -192,10 +192,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            true).build(), LAST_MODIFIED, ID);
+            true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false, 
-            true).build(), LAST_MODIFIED, ID);
+            false, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -212,10 +211,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+            true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false,
-            true).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -232,10 +230,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
-            true).build(), LAST_MODIFIED, ID);
+            true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
-            false,
-            true).build(), LAST_MODIFIED, ID);
+            false, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -252,10 +249,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
-            true).build(), LAST_MODIFIED, ID);
+            true, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
-            false,
-            true).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -272,11 +268,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
-            true, 
-            true).build(), LAST_MODIFIED, ID);
+            true, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
-            false, 
-            true).build(), LAST_MODIFIED, ID);
+            false, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -293,10 +287,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            false).build(), LAST_MODIFIED, ID);
+            false, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false,
-            false).build(), LAST_MODIFIED, ID);
+            false, false, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);

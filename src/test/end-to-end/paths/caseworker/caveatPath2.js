@@ -23,7 +23,8 @@ const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDe
 const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
+// this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
+// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
 const {
@@ -32,7 +33,6 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-
 const scenarioName = 'Caseworker Caveat2 - Request appearance';
 Scenario(scenarioName, async function ({I}) {
 
@@ -41,7 +41,6 @@ Scenario(scenarioName, async function ({I}) {
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
-    // IdAM
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
 
@@ -50,7 +49,7 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'Raise a caveat';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -60,10 +59,9 @@ Scenario(scenarioName, async function ({I}) {
 
     // SECOND case - the main test case
 
-    nextStepName = 'Raise a caveat';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -88,7 +86,9 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+
+    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
+    // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat matching'
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -174,7 +174,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterEventSummary(caseRef, nextStepName);
 
     endState = 'Caveat closed';
-    await I.logInfo(endState);
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     await I.signOut();
