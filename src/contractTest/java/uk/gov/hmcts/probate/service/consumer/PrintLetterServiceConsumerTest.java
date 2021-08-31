@@ -8,7 +8,6 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ import java.util.UUID;
 @PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "8486")
 @PactFolder("pacts")
 @SpringBootTest
-@Slf4j
 @TestPropertySource(locations = {"/application.properties"})
 public class PrintLetterServiceConsumerTest {
 
@@ -68,7 +66,6 @@ public class PrintLetterServiceConsumerTest {
 
     private PrintRequest buildLetter() throws Exception {
         var json = ResourceLoader.loadJson("json/printJob.json");
-        log.info("Json: {}", json);
         return objectMapper.readValue(json, PrintRequest.class);
     }
 
