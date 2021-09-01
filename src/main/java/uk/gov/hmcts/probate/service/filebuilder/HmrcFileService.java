@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
@@ -103,8 +104,12 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(FINAL_GRANT);
             fileData.add(ROW_DELIMITER);
-            if (data.getSolsDeceasedAliasNamesList() != null) {
+            if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty()) {
                 for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
+                    rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+                }
+            } if (data.getDeceasedAliasNameList() != null && !data.getDeceasedAliasNameList().isEmpty()) {
+                for (CollectionMember<ProbateAliasName> member : data.getDeceasedAliasNameList()) {
                     rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
                 }
             }
@@ -138,6 +143,16 @@ public class HmrcFileService extends BaseFileService {
         return 1;
     }
 
+    private int addAliasRow(ImmutableList.Builder<String> fileData, String caseId, ProbateAliasName aliasName) {
+        fileData.add(ROW_TYPE_ALIAS_DETAILS);
+        fileData.add(caseId);
+        fileData.add("");
+        fileData.add(aliasName.getForenames());
+        fileData.add(aliasName.getLastName());
+        fileData.add(ROW_DELIMITER);
+        return 1;
+    }
+    
     private void addExpectedEstateIndicator(ImmutableList.Builder<String> fileData, CaseData data) {
         String type = iht2EstateMap.get("NA");
         if (!StringUtils.isEmpty(data.getIhtFormId())) {
