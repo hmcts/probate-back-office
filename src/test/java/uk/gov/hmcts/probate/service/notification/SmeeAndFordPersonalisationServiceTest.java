@@ -79,13 +79,15 @@ public class SmeeAndFordPersonalisationServiceTest {
                                                         boolean hasGrant, boolean hasCodicils,
                                                         boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias, 
                                                         boolean hasDOD, boolean isWelsh) {
-        List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
+        List<CollectionMember<ProbateAliasName>> deceasedAliases = null;
         if (hasDeceasedAlias) {
+            deceasedAliases = new ArrayList();
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
         }
-        List<CollectionMember<AliasName>> solsDeceasedAliases = new ArrayList();
+        List<CollectionMember<AliasName>> solsDeceasedAliases = null;
         if (hasSolsDeceasedAlias) {
+            solsDeceasedAliases = new ArrayList();
             solsDeceasedAliases.add(new CollectionMember<AliasName>(buildSolsAlias("1")));
             solsDeceasedAliases.add(new CollectionMember<AliasName>(buildSolsAlias("2")));
         }
