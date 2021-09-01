@@ -108,7 +108,7 @@ public class HmrcFileService extends BaseFileService {
                 for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
                     rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
                 }
-            } if (data.getDeceasedAliasNameList() != null && !data.getDeceasedAliasNameList().isEmpty()) {
+            } else if (data.getDeceasedAliasNameList() != null && !data.getDeceasedAliasNameList().isEmpty()) {
                 for (CollectionMember<ProbateAliasName> member : data.getDeceasedAliasNameList()) {
                     rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
                 }
