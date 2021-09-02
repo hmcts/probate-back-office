@@ -1,12 +1,15 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
 const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function () {
     const I = this;
-    await I.waitForText(completeApplicationConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForElement('#solsPaymentMethods');
     await I.runAccessibilityTest();
-    await I.waitForNavigationToComplete(commonConfig.submitButton);
+    await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page6_paymentType);
+    await I.selectOption('#solsPBANumber', completeApplicationConfig.page6_pBAANumber);
+    await I.fillField('#solsPBAPaymentReference', completeApplicationConfig.page6_paymentReference);
+
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
