@@ -1844,7 +1844,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
         expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
 
-        assertTrue(response.contains(expectedText));
+        assertEquals(expectedText.trim(), response.trim());
     }
 
     private String getFirstProbateDocumentsText(String jsonFileName, String path) {
