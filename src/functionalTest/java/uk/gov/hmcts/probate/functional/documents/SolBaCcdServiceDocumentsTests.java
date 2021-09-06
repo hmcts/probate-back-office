@@ -1832,8 +1832,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
         expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
 
-        System.out.println("expectedText:" + expectedText);
-        System.out.println("response:" + response);
         assertTrue(response.contains(expectedText));
     }
 
