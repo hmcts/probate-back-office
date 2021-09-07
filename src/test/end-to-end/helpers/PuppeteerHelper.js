@@ -71,9 +71,9 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
 
         await this.delay(delay);
+        // await this.wait(delay);
         const promises = [];
         promises.push(page.waitForNavigation({waitUntil: ['domcontentloaded']}));
-        promises.push(page.waitForNavigation({timeout: 5000}));
         if (locator) {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
