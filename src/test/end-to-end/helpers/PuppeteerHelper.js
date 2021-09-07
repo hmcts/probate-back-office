@@ -62,11 +62,34 @@ class PuppeteerHelper extends Helper {
                 promises.push(page.click(locator));
             }
         }
-        await Promise.all(promises).catch(e => console.log('YYYYY' + e));
+        await Promise.all(promises);
         await this.delay(delay);
         // await this.addATemporaryDummyTab();
     }
+    
+    async waitForNavigationToComplete2(locator, delay = 0) {
+        const page = this.helpers[helperName].page;
 
+        await this.delay(delay);
+        const promises = [];
+        promises.push(page.waitForNavigation({waitUntil: ['domcontentloaded']}));
+        if (locator) {
+            if (Array.isArray(locator)) {
+                for (let i=0; i < locator.length; i++) {
+                    // eslint-disable-next-line no-await-in-loop
+                    await page.waitForSelector(this.getEnabledCssLocator(locator[i]), {visible: true, timeout: 5000});
+                    promises.push(page.click(locator[i]));
+                }
+            } else {
+                await page.waitForSelector(this.getEnabledCssLocator(locator), {visible: true, timeout: 5000});
+                promises.push(page.click(locator));
+            }
+        }
+        await Promise.all(promises);
+        await this.delay(delay);
+        // await this.addATemporaryDummyTab();
+    }
+    
     async clickTab(tabTitle) {
         const helper = this.helpers[helperName];
         const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
