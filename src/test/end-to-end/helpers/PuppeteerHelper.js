@@ -66,7 +66,7 @@ class PuppeteerHelper extends Helper {
         await this.delay(delay);
         // await this.addATemporaryDummyTab();
     }
- 
+
     async waitForNavigationToComplete2(locator, delay = 0) {
         const page = this.helpers[helperName].page;
 
@@ -89,7 +89,7 @@ class PuppeteerHelper extends Helper {
         await this.delay(delay);
         // await this.addATemporaryDummyTab();
     }
-  
+
     async clickTab(tabTitle) {
         const helper = this.helpers[helperName];
         const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
