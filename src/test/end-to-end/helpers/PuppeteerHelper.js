@@ -62,7 +62,7 @@ class PuppeteerHelper extends Helper {
                 promises.push(page.click(locator));
             }
         }
-        await Promise.all(promises);
+        await Promise.all(promises).catch(e => console.log('YYYYY' + e));
         await this.delay(delay);
         // await this.addATemporaryDummyTab();
     }
