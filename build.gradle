@@ -126,10 +126,10 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
-  finalizedBy aggregate
+  //finalizedBy aggregate
 }
 
-functional.finalizedBy(aggregate)
+//functional.finalizedBy(aggregate)
 
 serenity {
   reports = ["single-page-html"]
