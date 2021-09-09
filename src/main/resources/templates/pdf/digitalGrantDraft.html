@@ -356,6 +356,16 @@ Died on
             </p>
         </td>
     </tr>
+    {% if case_details.case_data.limitations != null %}
+    <tr>
+        <td colspan="3" class="text-leftAligned">
+            <p class="text-centerAligned" style="padding-top: 100px;">Limitations</p>
+            <p>
+                {{ case_details.case_data.selectedLimitationsText }}
+            </p>
+        </td>
+    </tr>
+    {% endif %}
     <tr>
         <td colspan="2">
              <p class="text-centerAligned" style="padding-top: 100px;">DISTRICT REGISTRAR</p>

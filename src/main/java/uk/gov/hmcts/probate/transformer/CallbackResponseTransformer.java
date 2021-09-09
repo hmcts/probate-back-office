@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.probate.transformer.assembly.LimitationsTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -112,6 +113,7 @@ public class CallbackResponseTransformer {
     private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
+    private final LimitationsTransformer limitationsTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final ReprintTransformer reprintTransformer;
     private final SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsDefaulter;
@@ -543,7 +545,7 @@ public class CallbackResponseTransformer {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
-        assembleLetterTransformer
+        limitationsTransformer
             .setupCombinedLimitationsText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
