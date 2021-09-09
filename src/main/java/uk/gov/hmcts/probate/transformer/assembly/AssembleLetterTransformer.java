@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.LimitationSentenceType;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -164,6 +165,7 @@ public class AssembleLetterTransformer {
     private final AssembleSolicitorCert assembleSolicitorCert;
     private final AssembleSolicitorAffidavit assembleSolicitorAffidavit;
     private final AssembleSolicitorRedeclaration assembleSolicitorRedeclaration;
+    private static final String NEW_LINE = "\n";
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
         paragraphCodeFunctions;
@@ -298,6 +300,20 @@ public class AssembleLetterTransformer {
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);
+    }
+
+    public void setupCombinedLimitationsText(@Valid CaseDetails caseDetails,
+                                               ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+
+        CaseData caseData = caseDetails.getData();
+        StringBuilder allText = new StringBuilder();
+        for (List<String> limitationGroup : caseData.getLimitations().getAllSelectedLimitations()) {
+            for (String limitation : limitationGroup) {
+                allText.append(LimitationSentenceType.valueOf(limitation).getLabel());
+                allText.append(NEW_LINE);
+            }
+        }
+        responseCaseDataBuilder.selectedLimitationsText(allText.toString());
     }
 
     private void addAllCategoryParagraphs(List<CollectionMember<ParagraphDetail>> paragraphDetails,

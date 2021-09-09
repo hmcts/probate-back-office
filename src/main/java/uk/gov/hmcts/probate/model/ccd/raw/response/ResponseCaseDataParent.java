@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.Limitations;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.time.LocalDate;
@@ -84,4 +85,6 @@ public class ResponseCaseDataParent {
     protected String solsPBAPaymentReference;
     protected String solsOrgHasPBAs;
     protected String solsNeedsPBAPayment;
+    protected Limitations limitations;
+    protected String selectedLimitationsText;
 }

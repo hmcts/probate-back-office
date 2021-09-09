@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.Limitations;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.text.DateFormat;
@@ -93,6 +94,9 @@ public class CaseDataParent {
 
     @Getter(lazy = true)
     private final String grantIssuedDateFormatted = convertDate(grantIssuedDate);
+
+    private final Limitations limitations;
+    private final String selectedLimitationsText;
 
     public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {

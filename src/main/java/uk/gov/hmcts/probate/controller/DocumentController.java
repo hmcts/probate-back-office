@@ -102,6 +102,16 @@ public class DocumentController {
 
     }
 
+    @PostMapping(path = "/assembleLimitations", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> assembleLimitation(
+        @RequestBody CallbackRequest callbackRequest) {
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLimitation(callbackRequest);
+
+        return ResponseEntity.ok(response);
+
+    }
+
     @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> previewLetter(
         @RequestBody CallbackRequest callbackRequest) {

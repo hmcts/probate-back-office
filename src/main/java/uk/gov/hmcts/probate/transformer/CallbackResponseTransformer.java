@@ -539,6 +539,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformCaseForLimitation(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+            getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        assembleLetterTransformer
+            .setupCombinedLimitationsText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
@@ -997,7 +1007,8 @@ public class CallbackResponseTransformer {
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords());
+            .deathRecords(caseData.getDeathRecords())
+            .limitations(caseData.getLimitations());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
