@@ -57,7 +57,6 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -666,7 +665,7 @@ public class CallbackResponseTransformer {
 
     private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs) {
         var plural = "";
-        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
+        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 0) {
             plural = "s";
         }
         return plural;
