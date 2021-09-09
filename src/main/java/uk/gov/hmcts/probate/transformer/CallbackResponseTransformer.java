@@ -680,26 +680,23 @@ public class CallbackResponseTransformer {
             && caseData.getSolsWillType().matches("WillLeft")) {
             executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
 
-            if (caseData.getSolsSolicitorIsApplying().matches(YES)
-                || getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            if (caseData.getSolsSolicitorIsApplying().matches(YES)) {
                 executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
             } else {
-                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
-                if (caseData.getPrimaryApplicantForenames() != null && caseData.getPrimaryApplicantSurname() != null) {
-                    executorNames = executorNames + ", " + caseData.getPrimaryApplicantForenames()
-                        + " " + caseData.getPrimaryApplicantSurname() + ": ";
-                }
+                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + caseData.getPrimaryApplicantForenames()
+                    + " " + caseData.getPrimaryApplicantSurname() + ": " :
+                    executorNames + caseData.getPrimaryApplicantForenames()
+                        + " " + caseData.getPrimaryApplicantSurname() + ", "
+                        + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
             }
-            return executorNames;
         } else {
             executorNames = "The applicant" + returnPlural(listOfApplyingExecs) + " ";
 
             executorNames = executorNames + caseData.getPrimaryApplicantForenames()
                 + " " + caseData.getPrimaryApplicantSurname();
-            return executorNames;
         }
+        return executorNames;
     }
     
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {

@@ -2476,7 +2476,7 @@ public class CallbackResponseTransformerTest {
 
         String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
 
-        assertEquals("The executors Andy Middlename Test, James Smith",
+        assertEquals("The executors Andy Middlename Test, James Smith: ",
             executorNames);
     }
 
