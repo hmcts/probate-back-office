@@ -52,7 +52,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeceasedNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("deceasedFirstName deceasedLastName", DOC_NAME,
+        validatePostRequestSuccessForLegalStatement("DeceasedFirstName DeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
@@ -68,28 +68,31 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME,
+                VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementAcceptInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "We confirm that the information we have provided is correct to the best of our knowledge.", DOC_NAME,
+            "We confirm that the information we have provided is correct to the best of our knowledge.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement(
-            "The executors believe that all the information stated in the legal statement is true.", DOC_NAME,
+            "The executors believe that all the information stated in the legal statement is true.",
+            DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement(
-            "We authorise SolicitorFirmName, as our appointed firm, to submit this application on our behalf.",
-            DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorFirmName "
+                + "to sign a statement of truth on their behalf.",
+                DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -129,18 +132,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"",
-            "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
-    public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"",
-            "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
-    }
-
-    @Test
     public void verifyMissingDeceasedDodReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"",
             "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath", VALIDATE_URL);
@@ -151,7 +142,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"",
             "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
-
+    
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         final Response response = given()
@@ -221,7 +212,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     @Test
@@ -233,7 +224,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
             .when().post("/nextsteps/validate")
             .then().statusCode(200)
-            .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+            .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
     private String replaceStringInCheckYourAnswersPayload(String oldJson, String newJson) {
@@ -294,7 +285,6 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             final String textContent = removeCrLfs(textContentOf(response2.extract().body().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
-
             assertEquals(response2.extract().contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();

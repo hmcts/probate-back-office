@@ -65,7 +65,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
     private final String solsSolicitorIsExec;
-    private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
@@ -98,11 +97,13 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final DocumentLink statementOfTruthDocument;
+    private final DocumentLink solsCoversheetDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> probateNotificationsGenerated;
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String solsSOTNeedToUpdate;
+    private final DocumentLink solsLegalStatementUpload;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
@@ -299,7 +300,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
-    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
@@ -323,6 +323,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
+    private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
 
 }
