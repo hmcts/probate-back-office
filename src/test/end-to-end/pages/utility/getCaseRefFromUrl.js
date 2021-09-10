@@ -1,13 +1,13 @@
 'use strict';
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
-    await I.wait(3);
-    let url = await I.grabCurrentUrl();
-    await I.wait(1);
-    url = url.replace('#Event%20History', '');
-    const caseRef = url.split('/').pop()
+    await I.wait(testConfig.GetCaseRefFromUrlDelay);
+    const url = await I.grabCurrentUrl();
+
+    return url.replace('#Event%20History', '').split('/')
+        .pop()
         .match(/.{4}/g)
         .join('-');
-    return caseRef;
 };

@@ -1,0 +1,209 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "BOReadyToIssue",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+
+      "iht217": "Yes",
+      "caseType": "gop",
+      "payments": [
+        {
+          "id": "ba5c1b88-57ee-4254-b818-587f2b7c9835",
+          "value": {
+            "date": null,
+            "amount": null,
+            "method": "pba",
+            "siteId": null,
+            "status": "Success",
+            "reference": "RC-1590-6786-1063-9991",
+            "transactionId": null
+          }
+        }
+      ],
+      "taskList": "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1625643096995782 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT205 and IHT217</li><li>renunciation form for John LayExec</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+      "totalFee": "15500",
+      "ihtFormId": "IHT205",
+      "paperForm": "No",
+      "willExists": "Yes",
+      "appointExec": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "englishWill": "Yes",
+      "ihtNetValue": "19000000",
+      "solsSOTName": "Tony Stark",
+      "willDispose": "Yes",
+      "solsWillType": "WillLeft",
+      "ihtGrossValue": "20000000",
+      "schemaVersion": "2.0.0",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "trustCorpName": "MyTc",
+      "applicationFee": "15500",
+      "feeForUkCopies": "0",
+      "solsSOTSurname": "Stark",
+      "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "Somerset",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Burnham-on-Sea",
+        "AddressLine1": "7 Ashley Avenue",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedSurname": "Smith",
+      "willHasCodicils": "No",
+      "paragraphDetails": [],
+      "registryLocation": "ctsc",
+      "solsSOTForenames": "Tony",
+      "trustCorpAddress": {
+        "County": "Glos",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Swindon",
+        "AddressLine1": "19 Curtis Street",
+        "AddressLine2": "Charlton Kings",
+        "AddressLine3": ""
+      },
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "John",
+      "executorsApplying": [
+        {
+          "id": "90edd7d1-bba7-4fa2-9445-dbdd62f78449",
+          "value": {
+            "applyingExecutorName": "Tcexec Utor",
+            "applyingExecutorType": "TrustCorporation",
+            "applyingExecutorEmail": null,
+            "applyingExecutorAddress": {
+              "County": "Wilts",
+              "Country": "United Kingdom",
+              "PostCode": "Sn2 2JU",
+              "PostTown": "Swindon",
+              "AddressLine1": "1 High St",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            },
+            "applyingExecutorLastName": "Utor",
+            "applyingExecutorFirstName": "Tcexec",
+            "applyingExecutorOtherNames": null,
+            "applyingExecutorOtherReason": null,
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorOtherNamesReason": null,
+            "applyingExecutorTrustCorpPosition": "Director"
+          }
+        }
+      ],
+      "feeForNonUkCopies": "0",
+      "dispenseWithNotice": "No",
+      "solsPaymentMethods": "fee account",
+      "solsSolicitorEmail": "tstark@probate-test.com",
+      "willAccessOriginal": "Yes",
+      "boDocumentsUploaded": [],
+      "deceasedDateOfBirth": "1926-01-10",
+      "deceasedDateOfDeath": "2021-01-10",
+      "otherExecutorExists": "Yes",
+      "solsSOTNeedToUpdate": "No",
+      "solsSolicitorIsExec": "No",
+      "codicilAddedDateList": [],
+      "solsSolicitorAddress": {
+        "County": "Somerset",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Burnham-on-Sea",
+        "AddressLine1": "7 Ashley Avenue",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "titleAndClearingType": "TCTTrustCorpResWithApp",
+      "deceasedAnyOtherNames": "No",
+      "solsSolicitorFirmName": "Stark Ltd",
+      "ihtFormCompletedOnline": "No",
+      "originalWillSignedDate": "1999-01-10",
+      "solsCoversheetDocument": {
+        "document_url": "http://dm-store:8080/documents/37495047-c9b3-4a98-93c4-e147952212f1",
+        "document_filename": "solicitorCoverSheet.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/37495047-c9b3-4a98-93c4-e147952212f1/binary"
+      },
+      "primaryApplicantAddress": {
+        "County": "Somerset",
+        "Country": "United Kingdom",
+        "PostCode": "Sn2 2JU",
+        "PostTown": "Burnham-on-Sea",
+        "AddressLine1": "7 Ashley Avenue",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "primaryApplicantSurname": "Stark",
+      "solsPBAPaymentReference": "tstark",
+      "solsSolicitorIsApplying": "Yes",
+      "applicationSubmittedDate": "2021-07-07",
+      "isSolThePrimaryApplicant": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "solsSolicitorPhoneNumber": "08876765456",
+      "solsSolicitorWillSignSOT": "Yes",
+      "primaryApplicantForenames": "Tony",
+      "probateDocumentsGenerated": [],
+      "solsSolicitorAppReference": "tstark",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsAdditionalExecutorList": [],
+      "solsLegalStatementDocument": {
+        "document_url": "http://dm-store:8080/documents/42d115e9-278f-446e-8e7d-48d85542dbe7",
+        "document_filename": "legalStatementGrantOfProbate.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/42d115e9-278f-446e-8e7d-48d85542dbe7/binary"
+      },
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "No",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [],
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "additionalExecutorsTrustCorpList": [],
+      "boEmailGrantReissuedNotification": "No",
+      "otherPartnersApplyingAsExecutors": [],
+      "anyOtherApplyingPartnersTrustCorp": "Yes",
+      "probatePractitionersPositionInTrust": "Director"
+    }
+  }
+}

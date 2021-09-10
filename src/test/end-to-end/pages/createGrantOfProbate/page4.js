@@ -9,7 +9,7 @@ module.exports = async function (crud, unique_deceased_user) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.WaitForTextTimeout);
         await I.waitForElement({css: '#boDeceasedTitle'});
         await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page4_bo_deceasedTitle);
 
@@ -42,18 +42,19 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click('#solsDeceasedAliasNamesList > div > button');
         await I.waitForVisible('#solsDeceasedAliasNamesList_0_SolsAliasname');
         await I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user);
-        await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatusCode}`);
 
+        await I.click(`#deceasedMaritalStatus-${createGrantOfProbateConfig.page4_deceasedMaritalStatus}`);
         await I.click(`#foreignAsset_${createGrantOfProbateConfig.page4_foreignAssetYes}`);
         await I.waitForVisible('#foreignAssetEstateValue');
         await I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page4_foreignAssetEstateValue);
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
 
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         await I.waitForVisible('#deceasedForenames');
         await I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
@@ -73,10 +74,11 @@ module.exports = async function (crud, unique_deceased_user) {
     if (crud === 'update2orig') {
 
         // "reverting" update back to defaults - to enable case-match with matching case
-        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
 
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
 
         await I.waitForVisible('#deceasedDateOfDeath-day');
         await I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day);
