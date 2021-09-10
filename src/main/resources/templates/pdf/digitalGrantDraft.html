@@ -360,9 +360,11 @@ Died on
     <tr>
         <td colspan="3" class="text-leftAligned">
             <p class="text-centerAligned" style="padding-top: 100px;">Limitations</p>
+            {% for limitation in case_details.case_data.selectedLimitationsTextForHTML %}
             <p>
-                {{ case_details.case_data.selectedLimitationsText }}
+                {{limitation}}
             </p>
+            {% endfor %}
         </td>
     </tr>
     {% endif %}

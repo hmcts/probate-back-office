@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -17,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -136,5 +138,9 @@ public class CaseDataParent {
             ex.getMessage();
             return null;
         }
+    }
+    
+    public List<String> getSelectedLimitationsTextForHTML() {
+        return Arrays.asList(selectedLimitationsText.split("\n"));
     }
 }

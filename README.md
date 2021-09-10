@@ -128,9 +128,7 @@ npx @hmcts/probate-dev-env
 # Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
 
 # to use local probate backoffice
-docker-compose stop probate-back-office
-./gradlew assemble
-docker-compose up -d --build probate-back-office
+docker-compose stop probate-back-office && ./gradlew assemble && docker-compose up -d --build probate-back-office
 
 # to clear out all images
 npx @hmcts/probate-dev-env --destroy
