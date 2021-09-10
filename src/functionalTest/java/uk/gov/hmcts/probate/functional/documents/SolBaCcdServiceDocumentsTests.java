@@ -1803,7 +1803,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         System.out.println(response);
         assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
                 + "I believe to be the true and original last will and"
-                + " testament of De Ceased")); //copy and paste
+                + " testament of De Ceased"));
     }
 
 }
