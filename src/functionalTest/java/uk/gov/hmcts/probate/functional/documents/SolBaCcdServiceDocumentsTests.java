@@ -1790,10 +1790,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifyWillAccessNoLegalStatementAdmonWillSols() {
-        final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json", GENERATE_LEGAL_STATEMENT);//willaccess to no json
+        final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json", GENERATE_LEGAL_STATEMENT);
         System.out.println(response);
-        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true and original last will and" +
-                "testament, as contained in a notarial/official copy testament of De Ceased")); //no notarial/offical copy
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true" +
+                " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
     }
 
     @Test
