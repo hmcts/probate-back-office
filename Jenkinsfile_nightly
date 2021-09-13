@@ -41,6 +41,10 @@ withNightlyPipeline("nodejs", product, component) {
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
     loadVaultSecrets(secrets)
+    enableFortifyScan('probate-aat')
+    after('fortify-scan') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    }
     enableFullFunctionalTest(90)
     enableSecurityScan()
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
@@ -53,11 +57,4 @@ withNightlyPipeline("nodejs", product, component) {
     }
 
     // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
-}
-
-withNightlyPipeline("java", product, component) {
-    enableFortifyScan('probate-aat')
-    after('fortify-scan') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-    }
 }
