@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 
@@ -139,7 +140,7 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
         final var len = caseData.getWhoSharesInCompanyProfits().size();
         for (var i = 0; i < len; i++) {
             // lower case and remove the plural 's'
-            var whoShares = caseData.getWhoSharesInCompanyProfits().get(i).toLowerCase();
+            var whoShares = caseData.getWhoSharesInCompanyProfits().get(i).toLowerCase(Locale.UK);
             if (forPlural && !whoShares.endsWith("s")) {
                 whoShares += "s";
             } else if (!forPlural && whoShares.endsWith("s")) {
