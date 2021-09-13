@@ -42,6 +42,10 @@ withNightlyPipeline("nodejs", product, component) {
     env.Rules = params.SecurityRules
     loadVaultSecrets(secrets)
     enableFullFunctionalTest(90)
+    enableFortifyScan('probate-aat')
+    after('fortify-scan') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    }
     enableSecurityScan()
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     after('fullFunctionalTest') {
