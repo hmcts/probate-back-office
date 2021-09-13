@@ -80,17 +80,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061-DTSPB-2318.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -102,29 +102,29 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226-DTSPB-2318.doc
 
 fee.api:  
   url: http://localhost:4411
