@@ -24,20 +24,28 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +63,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -81,6 +90,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private Document documentMock;
     @Mock
+    private Document solsCoversheetMock;
+    @Mock
     private BindingResult bindingResultMock;
     @Mock
     private FieldError fieldErrorMock;
@@ -95,6 +106,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private CallbackResponse callbackResponseMock;
     @Mock
+    private CaseDataTransformer caseDataTransformerMock;
+    @Mock
     private ConfirmationResponseService confirmationResponseServiceMock;
     @Mock
     private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
@@ -102,6 +115,9 @@ public class BusinessValidationUnitTest {
     private StateChangeService stateChangeServiceMock;
     @Mock
     private RedeclarationSoTValidationRule redeclarationSoTValidationRuleMock;
+    @Mock
+    private NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRuleMock;
+
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
@@ -111,7 +127,18 @@ public class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedServiceMock;
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
-
+    @Mock
+    private CodicilDateValidationRule codicilDateValidationRuleMock;
+    @Mock
+    private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
+    @Mock
+    private SolicitorApplicationCompletionTransformer solCompletionTransformer;
+    @Mock
+    private ResetCaseDataTransformer resetCdTransformer;
+    @Mock
+    private LegalStatementExecutorTransformer legalStatementExecutorTransformer;
+    @Mock
+    private List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
 
     private BusinessValidationController underTest;
 
@@ -119,6 +146,8 @@ public class BusinessValidationUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
+        CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer,
+            legalStatementExecutorTransformer);
         underTest = new BusinessValidationController(eventValidationServiceMock,
             notificationService,
             objectMapper,
@@ -126,10 +155,15 @@ public class BusinessValidationUnitTest {
             caseworkerAmendValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
+            cdt,
             confirmationResponseServiceMock,
             stateChangeServiceMock,
             pdfManagementServiceMock,
             redeclarationSoTValidationRuleMock,
+            numberOfApplyingExecutorsValidationRuleMock,
+            codicilDateValidationRuleMock,
+            originalWillSignedDateValidationRuleMock,
+            allTitleAndClearingValidationRules,
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
@@ -139,27 +173,16 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateSolsApplyAsExecWithNoErrors() {
-        when(callbackResponseTransformerMock.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock))
-            .thenReturn(callbackResponseMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock);
-
-        assertThat(response.getBody(), is(callbackResponseMock));
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
-    }
-
-    @Test
     public void shouldValidateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
         when(callbackResponseTransformerMock
-            .transformWithConditionalStateChange(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
+            .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
@@ -179,7 +202,7 @@ public class BusinessValidationUnitTest {
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(changedState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+        when(callbackResponseTransformerMock.transformForDeceasedDetails(callbackRequestMock, changedState))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
@@ -198,9 +221,12 @@ public class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "gop"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "gop"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateProbate(callbackRequestMock,
@@ -241,7 +267,10 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "intestacy"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "intestacy"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIntestacy(callbackRequestMock,
@@ -282,7 +311,10 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON))
             .thenReturn(documentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, "admonWill"))
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
+            .thenReturn(solsCoversheetMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+            "admonWill"))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidateAdmon(callbackRequestMock,
@@ -434,7 +466,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
             .thenReturn(callbackResponseMock);
-
         ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
             bindingResultMock);
 
@@ -558,8 +589,43 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
+    public void shouldSubmitForSolicitorPaperFormNoWithEmail() throws NotificationClientException {
+        String paperFormValue = "No";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        verify(notificationService, times(1))
+                .sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
     public void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    public void shouldSetGrantStoppedDateAfterCaseFailQa() {
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldDefaultPBAs() {
+        ResponseEntity<CallbackResponse> response =
+            underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
 }

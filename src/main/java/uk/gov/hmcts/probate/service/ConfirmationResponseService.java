@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -50,13 +49,16 @@ import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 public class ConfirmationResponseService {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
+    public static final String NO_PAYMENT_NEEDED = "No payment needed";
+    public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
+    public static final String PARM_SELECTED_PBA = "{{selectedPBA}}";
+    public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
@@ -66,7 +68,6 @@ public class ConfirmationResponseService {
     private final ImmovableEstateRule immovableEstateRule;
     private final LifeInterestRule lifeInterestRule;
     private final MinorityInterestRule minorityInterestConfirmationResponseRule;
-    private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
@@ -93,11 +94,6 @@ public class ConfirmationResponseService {
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
-            if (response.isPresent()) {
-                return response.get();
-            }
-
-            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
@@ -137,11 +133,6 @@ public class ConfirmationResponseService {
 
         if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, immovableEstateRule, STOP_BODY);
-            if (response.isPresent()) {
-                return response.get();
-            }
-
-            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
@@ -205,8 +196,9 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
+        keyValue.put(PARM_PAYMENT_METHOD, caveatData.getSolsPaymentMethods());
+        keyValue.put(PARM_SELECTED_PBA, caveatData.getSolsPBANumber().getValue().getCode());
+        keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(caveatData));
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -237,12 +229,21 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
-        keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
+        if (ccdData.getFee().getPaymentMethod() != null) {
+            keyValue.put(PARM_PAYMENT_METHOD, ccdData.getFee().getPaymentMethod());
+            keyValue.put(PARM_SELECTED_PBA, ccdData.getFee().getSolsPBANumber());
+            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(ccdData));
+        } else {
+            keyValue.put(PARM_PAYMENT_METHOD, NO_PAYMENT_NEEDED);
+            keyValue.put(PARM_SELECTED_PBA, NO_PAYMENT_NEEDED);
+            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, NO_PAYMENT_NEEDED);
+        }
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
+        keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
 
         String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";
@@ -271,7 +272,10 @@ public class ConfirmationResponseService {
             }
         }
 
-        String legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        String legalPhotocopy = "";
+        if (hasNoLegalStatmentBeenUploaded(ccdData)) {
+            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        }
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
@@ -282,6 +286,10 @@ public class ConfirmationResponseService {
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
+    boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
+        return !ccdData.isHasUploadedLegalStatement();
+    } 
+    
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
@@ -330,7 +338,7 @@ public class ConfirmationResponseService {
 
     private String getPaymentReference(CCDData ccdData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + ccdData.getFee().getSolsFeeAccountNumber();
+            return ccdData.getFee().getSolsPBAPaymentReference();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }
@@ -338,7 +346,7 @@ public class ConfirmationResponseService {
 
     private String getPaymentReference(CaveatData caveatData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethods())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + caveatData.getSolsFeeAccountNumber();
+            return caveatData.getSolsPBAPaymentReference();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }

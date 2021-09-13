@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +68,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
         log.warn(exception.getMessage());
+        List<String> userMessages = new ArrayList<>();
+        userMessages.add(exception.getUserMessage());
+        if (exception.getAdditionalMessages() != null) {
+            Collections.addAll(userMessages, Arrays.copyOf(exception.getAdditionalMessages(),
+                exception.getAdditionalMessages().length));
+        }
         CallbackResponse callbackResponse = CallbackResponse.builder()
-            .errors(Collections.singletonList(exception.getUserMessage()))
+            .errors(userMessages)
             .build();
         return ResponseEntity.ok(callbackResponse);
     }

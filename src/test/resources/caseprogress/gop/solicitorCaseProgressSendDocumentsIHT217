@@ -1,0 +1,34 @@
+<div>Add Probate practitioner details</div>
+<div>Add deceased details</div>
+<div>Add application details</div>
+<div>Review and sign legal statement and submit application</div>
+<div><details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      View the documents needed by HM Courts and Tribunal Service
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 9999 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT205 and IHT217</li></ul>
+  </div>
+</details>/div>
+<div>Authenticate documents</div>
+<div>Examine application</div>
+<div>Issue grant of representation<</div>
+<p><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/<BRANCH/>/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+</p>
+<p><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/<BRANCH/>/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+</p>
+<p><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/<BRANCH/>/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+</p>
+<p><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/<BRANCH/>/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+</p>
+<p><div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p><strong>Submitted on 01 Nov 2020</strong></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
+</p>
+<p><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/<BRANCH/>/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
+</p>
+<p><div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p><strong>Authenticated on 10 Oct 2020</strong></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
+</p>
+<p></p>
+<p></p>
+<p></p>

@@ -14,7 +14,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
 
     @Test
     public void shouldReturn200() {
-        final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreated.json");
+        final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreatedSolDtls.json");
         
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -20,12 +21,19 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -38,16 +46,23 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/nextsteps")
 public class NextStepsController {
 
+    private final EventValidationService eventValidationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
+    private final PaymentsService paymentsService;
+    private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
+    private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
+    private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
 
+    public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validate(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -63,18 +78,37 @@ public class NextStepsController {
                 .transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             if (bindingResult.hasErrors()) {
-                log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-
+            
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
-            FeeServiceResponse feeServiceResponse = feeService.getTotalFee(
+
+            FeesResponse feesResponse = feeService.getAllFeesData(
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
+            if (feesResponse.getTotalAmount().doubleValue() > 0) {
 
-            callbackResponse =
-                callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse);
+                solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
+
+                CreditAccountPayment creditAccountPayment =
+                    creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
+                PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
+                    creditAccountPayment);
+                CallbackResponse creditPaymentResponse =
+                    eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
+                        paymentResponse, creditAccountPaymentValidationRule);
+                if (creditPaymentResponse.getErrors().isEmpty()) {
+                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                        feesResponse, paymentResponse);
+                } else {
+                    callbackResponse = creditPaymentResponse;
+                }
+            } else {
+                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                    feesResponse, null);
+            }
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -97,7 +131,7 @@ public class NextStepsController {
         }
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 

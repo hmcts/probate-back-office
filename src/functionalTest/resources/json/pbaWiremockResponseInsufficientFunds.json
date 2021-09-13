@@ -1,0 +1,22 @@
+{
+  "organisationEntityResponse": {
+    "organisationIdentifier": "0UFUG4Z",
+    "name": "ia-legal-rep-org",
+    "status": "ACTIVE",
+    "sraId": null,
+    "sraRegulated": false,
+    "companyNumber": null,
+    "companyUrl": null,
+    "superUser": {
+      "firstName": "legalrep",
+      "lastName": "orgcreator",
+      "email": "superuser@probate-test.com"
+    },
+    "paymentAccount": [
+      "PBA0082126",
+      "PBA0083372",
+      "PBA0083374"
+    ],
+    "contactInformation": null
+  }
+}

@@ -25,7 +25,7 @@ public class IronMountainDataExtractService {
     public void performIronMountainExtractForDate(String date) {
         log.info("Iron Mountain data extract initiated for date: {}", date);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(date);
         log.info("Cases found for Iron Mountain: {}", cases.size());
 
         log.info("preparing for Iron Mountain file upload");

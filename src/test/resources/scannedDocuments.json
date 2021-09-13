@@ -5,7 +5,6 @@
     "state": "SolDraftCase",
     "case_type_id": "GrantOfRepresentation",
     "last_modified": null,
-    "security_classification": "PUBLIC",
     "case_data": {
       "otherExecutorExists": "Yes",
       "deceasedAddress": {
@@ -90,28 +89,6 @@
           }
         }
       ]
-    },
-    "data_classification": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
-      "solsSolicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "security_classifications": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
-      "solsSolicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
     }
-  },
-  "event_id": "solicitorCreate"
+  }
 }

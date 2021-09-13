@@ -7,6 +7,7 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Rule;
@@ -16,11 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
-import java.util.HashMap;
 import java.util.regex.Pattern;
+import java.util.HashMap;
 
 import static junit.framework.TestCase.assertTrue;
 
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
 public abstract class IntegrationTestBase {
@@ -64,9 +66,9 @@ public abstract class IntegrationTestBase {
         RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
                 .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 60000)
-                        .setParam("http.socket.timeout", 60000)
-                        .setParam("http.connection-manager.timeout", 60000));
+                        .setParam("http.connection.timeout", 120000)
+                        .setParam("http.socket.timeout", 120000)
+                        .setParam("http.connection-manager.timeout", 120000));
     }
 
     protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
@@ -90,10 +92,14 @@ public abstract class IntegrationTestBase {
     }
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path) {
-        final Response response = RestAssured.given()
-            .config(config)
+
+        return validatePostSuccessForPayload(payload, path, utils.getHeadersWithUserId());
+    }
+
+    protected ResponseBody validatePostSuccessForPayload(String payload, String path, Headers headers) {
+        Response response = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
+            .headers(headers)
             .body(payload)
             .when().post(path)
             .andReturn();
