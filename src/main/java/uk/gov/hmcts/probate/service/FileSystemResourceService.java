@@ -6,9 +6,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
@@ -34,8 +32,9 @@ public class FileSystemResourceService {
                         if (out != null) {
                             safeClose(out);
                         }
+                        safeClose(out);
+                        safeClose(in);
                     }
-
                 });
     }
 
@@ -52,15 +51,14 @@ public class FileSystemResourceService {
         }
     }
 
-    private void safeClose(FileOutputStream out) {
-        if (out != null) {
+    public static void safeClose(Closeable c) {
+        if (c != null) {
             try {
-                out.close();
+                c.close();
             } catch (IOException e) {
-                log.error("Error occurred during closing FileOutStream", e);
+                log.error("Cannot close file system resource", e);
             }
         }
     }
-
 }
 
