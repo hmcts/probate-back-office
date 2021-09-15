@@ -45,6 +45,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.reform.ccd.document.am.model.Classification.PRIVATE;
@@ -109,6 +110,33 @@ public class PDFManagementServiceTest {
     @Test
     public void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_PROBATE, "legalStatementProbate.pdf");
+    }
+
+    @Test
+    public void shouldGenerateAndUploadProbateTrustCorpsLegalStatement() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE_TRUST_CORPS, json))
+                .thenReturn(evidenceManagementFileUpload);
+        when(documentManagementServiceMock.upload(any(), any())).thenReturn(uploadResponseMock);
+        Links links = new Links();
+        links.self = new Link();
+        links.binary = new Link();
+        links.self.href = "href";
+        links.binary.href = "binaryhref";
+        uk.gov.hmcts.reform.ccd.document.am.model.Document document =
+            uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                .links(links)
+                .build();
+        when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS);
+
+        String fileName = "legalStatementGrantOfProbate.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals("binaryhref", response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals("href", response.getDocumentLink().getDocumentUrl());
     }
 
     @Test

@@ -46,7 +46,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
-        log.info("auth:" + auth);
         
         return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(), 
             documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),

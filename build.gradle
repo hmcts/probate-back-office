@@ -126,10 +126,10 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
-  finalizedBy aggregate
+  //finalizedBy aggregate
 }
 
-functional.finalizedBy(aggregate)
+//functional.finalizedBy(aggregate)
 
 serenity {
   reports = ["single-page-html"]
@@ -208,6 +208,8 @@ dependencyManagement {
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
     
+    // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
+
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
       entry 'spring-security-config'
@@ -418,6 +420,10 @@ task runAndPublishConsumerPactTests(type: Test){
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
+}
+
+test {
+  maxHeapSize = "1024m"
 }
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish

@@ -1,0 +1,32 @@
+{
+    "case_details": {
+        "id": 1521205807091932,
+        "jurisdiction": "PROBATE",
+        "state": "SolAnswersChecked",
+        "case_type_id": "GrantOfRepresentation",
+        "created_date": [
+            2018,
+            3,
+            16,
+            13,
+            10,
+            7,
+            9000000
+        ],
+        "last_modified": [
+            2018,
+            3,
+            16,
+            15,
+            22,
+            55,
+            335000000
+        ],
+        "security_classification": "PUBLIC",
+        "case_data": {
+            "solsForenames": "Solicitor Forenames",
+            "solsSurname": "Solicitor Surname",
+            "solsSolicitorWillSignSOT": "Yes"
+        }
+    }
+}

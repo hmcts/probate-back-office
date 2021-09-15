@@ -6,13 +6,13 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static junit.framework.TestCase.assertFalse;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -25,7 +25,8 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Test
     public void shouldValidateDefaultPBAs() {
-        validatePostRequestSuccessForPBAs("/case/default-sols-pba", "solicitorPDFPayloadProbate.json",
+        validatePostRequestSuccessForPBAs("/case/default-sols-pba",
+                "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}", 
             "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
             "\"solsNeedsPBAPayment\":\"Yes\"");

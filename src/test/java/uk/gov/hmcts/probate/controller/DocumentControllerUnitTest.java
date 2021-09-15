@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
@@ -55,6 +56,8 @@ public class DocumentControllerUnitTest {
     private PDFManagementService pdfManagementService;
     @Mock
     private CallbackResponseTransformer callbackResponseTransformer;
+    @Mock
+    private CaseDataTransformer caseDataTransformer;
     @Mock
     private WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     @Mock
@@ -94,10 +97,10 @@ public class DocumentControllerUnitTest {
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
         documentController = new DocumentController(documentGeneratorService, registryDetailsService,
-            pdfManagementService, callbackResponseTransformer, willLodgementCallbackResponseTransformer,
-            notificationService, registriesProperties, bulkPrintService, eventValidationService, 
-            emailAddressNotificationValidationRules, bulkPrintValidationRules, redeclarationSoTValidationRule,
-            reprintService, documentValidation, documentManagementService);
+            pdfManagementService, callbackResponseTransformer, caseDataTransformer, 
+            willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
+            eventValidationService, emailAddressNotificationValidationRules, bulkPrintValidationRules, 
+            redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService);
     }
 
     @Test
