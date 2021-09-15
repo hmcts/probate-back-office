@@ -58,7 +58,7 @@ public class DocumentManagementServiceImplTest {
         when(caseDocumentClient.uploadDocuments("Bearer AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
             Collections.emptyList(), Classification.PRIVATE))
             .thenReturn(uploadResponseMock);
-        UploadResponse uploadResponse = documentManagementService.store(evidenceManagementFileUpload, DIGITAL_GRANT);
+        UploadResponse uploadResponse = documentManagementService.upload(evidenceManagementFileUpload, DIGITAL_GRANT);
 
         assertEquals(uploadResponseMock, uploadResponse);
     }
@@ -70,7 +70,7 @@ public class DocumentManagementServiceImplTest {
             .serviceAuthorisation("S2S")
             .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        documentManagementService.expire(Document.builder()
+        documentManagementService.delete(Document.builder()
             .documentLink(DocumentLink.builder()
                 .documentBinaryUrl("binary-c387262a-c8a6-44eb-9aea-a740460f9302")
                 .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")

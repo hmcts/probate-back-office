@@ -9,8 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
@@ -26,17 +30,19 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
+import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -46,6 +52,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
@@ -65,19 +72,35 @@ public class DocumentController {
     private static final String FINAL = "final";
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
+    @Autowired
     private final RegistryDetailsService registryDetailsService;
+    @Autowired
     private final PDFManagementService pdfManagementService;
+    @Autowired
     private final CallbackResponseTransformer callbackResponseTransformer;
+    @Autowired
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
-    private final DocumentService documentService;
+    @Autowired
     private final NotificationService notificationService;
+    @Autowired
     private final RegistriesProperties registriesProperties;
+    @Autowired
     private final BulkPrintService bulkPrintService;
+    @Autowired
     private final EventValidationService eventValidationService;
+    @Autowired
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    @Autowired
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    @Autowired
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    @Autowired
     private final ReprintService reprintService;
+    @Autowired
+    private final DocumentValidation documentValidation;
+    @Autowired
+    private final DocumentManagementService documentManagementService;
+
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
             return GRANT_ISSUED_INTESTACY;
@@ -285,4 +308,63 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
     }
+
+    @PostMapping(
+        value = "/upload",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public List<String> upload(
+        @RequestHeader(value = "Authorization") String authorizationToken,
+        @RequestHeader(value = "ServiceAuthorization") String serviceAuthorizationToken,
+        @RequestPart("file") List<MultipartFile> files
+    ) {
+        List<String> result = new ArrayList<>();
+        if (files == null || files.isEmpty()) {
+            log.error("Zero files received by the API endpoint.");
+            result.add("Error: no files passed");
+            return result;
+        }
+
+        if (files.size() > 10) {
+            log.error("Too many files passed to the API endpoint");
+            result.add("Error: too many files");
+            return result;
+        }
+
+        boolean noValidFilesReceived = files.stream()
+            .noneMatch(f -> documentValidation.isValid(f));
+
+        if (noValidFilesReceived) {
+            log.error("No valid file types passed to the API endpoint.");
+            return files.stream()
+                .map(f -> "Error: invalid file type")
+                .collect(Collectors.toList());
+        }
+
+        files = files.stream()
+            .filter(f -> documentValidation.isValid(f))
+            .collect(Collectors.toList());
+
+        List<String> invalidFiles = files.stream()
+            .filter(f -> !documentValidation.isValid(f))
+            .map(f -> "Error: invalid file type")
+            .collect(Collectors.toList());
+
+        log.info("Uploading document at BackOffice");
+        UploadResponse uploadResponse = documentManagementService
+            .uploadForCitizen(files, authorizationToken, DocumentType.DIGITAL_GRANT);
+        if (uploadResponse != null) {
+            result = uploadResponse
+                .getDocuments()
+                .stream()
+                .map(f -> f.links.self.href)
+                .collect(Collectors.toList());
+        }
+
+        result.addAll(invalidFiles);
+        return result;
+    }
+
 }

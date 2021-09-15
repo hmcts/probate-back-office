@@ -127,7 +127,7 @@ public class PDFManagementService {
     private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
-            UploadResponse uploadResponse = documentManagementService.store(fileUpload, documentType);
+            UploadResponse uploadResponse = documentManagementService.upload(fileUpload, documentType);
             if (uploadResponse == null) {
                 throw new IOException("uploadResponse is null");
             }

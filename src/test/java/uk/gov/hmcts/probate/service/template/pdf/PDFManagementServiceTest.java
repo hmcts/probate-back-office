@@ -199,7 +199,7 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(null);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -213,7 +213,7 @@ public class PDFManagementServiceTest {
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         when(uploadResponseMock.getDocuments()).thenReturn(null);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -227,7 +227,7 @@ public class PDFManagementServiceTest {
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         when(uploadResponseMock.getDocuments()).thenReturn(Collections.emptyList());
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -244,7 +244,7 @@ public class PDFManagementServiceTest {
             uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                 .build();
         when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -264,7 +264,7 @@ public class PDFManagementServiceTest {
                 .links(links)
                 .build();
         when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -284,7 +284,7 @@ public class PDFManagementServiceTest {
                 .links(links)
                 .build();
         when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -302,7 +302,7 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -315,7 +315,7 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -346,7 +346,7 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(docType, json))
             .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, docType))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, docType))
             .thenReturn(uploadResponseMock);
         setupResponseDocument(fileName);
 
@@ -359,7 +359,7 @@ public class PDFManagementServiceTest {
         when(pdfGeneratorServiceMock
             .generateDocmosisDocumentFrom(docType.getTemplateName(), placeholdersMock))
             .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.store(evidenceManagementFileUpload, docType))
+        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, docType))
             .thenReturn(uploadResponseMock);
         setupResponseDocument(fileName);
 

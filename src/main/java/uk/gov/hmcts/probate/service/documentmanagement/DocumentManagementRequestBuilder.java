@@ -11,13 +11,6 @@ import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 import java.util.Arrays;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
-
 @Slf4j
 @Component
 public class DocumentManagementRequestBuilder {
@@ -34,6 +27,13 @@ public class DocumentManagementRequestBuilder {
             .build();
 
         List<MultipartFile> multipartFileList = Arrays.asList(multipartFile);
+        return new DocumentUploadRequest(CLASSIFICATION_PRIVATE_PARAMETER,
+            getCcdCaseType(documentType), JURISDICTION, multipartFileList);
+
+    }
+
+    public DocumentUploadRequest perpareDocumentUploadRequest(List<MultipartFile> multipartFileList,
+                                                              DocumentType documentType) {
         return new DocumentUploadRequest(CLASSIFICATION_PRIVATE_PARAMETER,
             getCcdCaseType(documentType), JURISDICTION, multipartFileList);
 
