@@ -1098,6 +1098,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() {
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
+            "\"primaryApplicantIsApplying\": \"Yes\",", "");
+        final String response =
+            generateGrantDocumentFromPayload(payload,
+                GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+    }
+    
+
+    @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
         final String response =
                 generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
