@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
@@ -52,8 +53,11 @@ public class LifeEventControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @MockBean
-    private LifeEventService lifeEventService;
+    private LifeEventCCDService lifeEventCCDService;
 
+    @MockBean
+    private LifeEventService lifeEventService;
+    
     @MockBean
     private SecurityUtils securityUtils;
 
@@ -76,7 +80,7 @@ public class LifeEventControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
         
-        verify(lifeEventService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
+        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
         assertThat(caseDetailsArgumentCaptorValue.getId()).isEqualTo(1621002468661478L);
         final CaseData data = caseDetailsArgumentCaptorValue.getData();
