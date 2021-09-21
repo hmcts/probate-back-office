@@ -42,7 +42,7 @@ public class FileSystemResourceService {
     }
 
     File createTempFile(String prefix, String suffix) throws IOException {
-        return File.createTempFile(prefix, suffix);
+        return File.createTempFile(prefix, suffix, new File("/secureDirectory"));
     }
 
     public String getFileFromResourceAsString(String resourcePath) {
