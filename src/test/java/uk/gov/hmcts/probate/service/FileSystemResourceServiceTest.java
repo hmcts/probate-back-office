@@ -8,12 +8,14 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.FileSystemResource;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +44,16 @@ public class FileSystemResourceServiceTest {
     @Test
     public void getFileSystemResourceFileNotFound() {
         Optional<FileSystemResource> resource = underTest.getFileSystemResource("file_not_found.json");
+        assertTrue(!resource.isPresent());
+    }
+
+    @Test
+    public void shouldReturnNullWhenGettingFileFromResourceIOException() throws IOException {
+        FileSystemResourceService fileSystemResourceServiceSpy = Mockito.spy(new FileSystemResourceService());
+        doThrow(IOException.class).when(fileSystemResourceServiceSpy).createTempFile(anyString(), anyString());
+
+        Optional<FileSystemResource> resource = fileSystemResourceServiceSpy.getFileSystemResource(
+            "success.json");
         assertTrue(!resource.isPresent());
     }
 

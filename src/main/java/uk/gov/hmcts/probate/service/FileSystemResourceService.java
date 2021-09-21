@@ -23,7 +23,7 @@ public class FileSystemResourceService {
                 .map(in -> {
                     FileOutputStream out = null;
                     try {
-                        File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".html");
+                        File tempFile = createTempFile(String.valueOf(in.hashCode()), ".html");
                         tempFile.deleteOnExit();
                         out = new FileOutputStream(tempFile);
                         IOUtils.copy(in, out);
@@ -41,6 +41,10 @@ public class FileSystemResourceService {
                 });
     }
 
+    File createTempFile(String prefix, String suffix) throws IOException {
+        return File.createTempFile(prefix, suffix);
+    }
+
     public String getFileFromResourceAsString(String resourcePath) {
         try {
             Optional<FileSystemResource> fileSystemResource = getFileSystemResource(resourcePath);
@@ -54,7 +58,7 @@ public class FileSystemResourceService {
         }
     }
 
-    public static void safeClose(Closeable c) {
+    private void safeClose(Closeable c) {
         if (c != null) {
             try {
                 c.close();
