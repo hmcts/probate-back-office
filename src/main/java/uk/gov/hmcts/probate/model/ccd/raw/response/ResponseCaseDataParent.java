@@ -85,6 +85,6 @@ public class ResponseCaseDataParent {
     protected String solsPBAPaymentReference;
     protected String solsOrgHasPBAs;
     protected String solsNeedsPBAPayment;
+    protected String selectionList;
     protected Limitations limitations;
-    protected String selectedLimitationsText;
 }

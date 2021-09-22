@@ -338,16 +338,10 @@
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Professional", "ListElement": "Probate practitioner"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "TrustCorporation", "ListElement": "Trust corporation"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Named", "ListElement": "Named executor"},
-  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationWill", "ListElement": "Will message", "DisplayOrder":  "1"},
-  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationGrant", "ListElement": "Grant format", "DisplayOrder":  "2"},
-  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationAdmonWill", "ListElement": "Admon will", "DisplayOrder":  "3"},
-  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationAdmonOnly", "ListElement": "Admon", "DisplayOrder":  "4"},
+  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationWill", "ListElement": "Will limitation", "DisplayOrder":  "1"},
+  {"LiveFrom": "06/01/2017", "ID": "limitationTypes", "ListElementCode": "LimitationGrant", "ListElement": "Grant limitation", "DisplayOrder":  "2"},
   {"LiveFrom": "06/01/2017", "ID": "LimitationWillSentences", "ListElementCode": "Will1", "ListElement": "With codicil"},
   {"LiveFrom": "06/01/2017", "ID": "LimitationWillSentences", "ListElementCode": "Will2", "ListElement": "With <> codicils"},
   {"LiveFrom": "06/01/2017", "ID": "LimitationGrantSentences", "ListElementCode": "Grant1", "ListElement": "limited until the original Will or a more authentic copy thereof be proved"},
-  {"LiveFrom": "06/01/2017", "ID": "LimitationGrantSentences", "ListElementCode": "Grant2", "ListElement": "limited until an authentic copy of the Will be proved"},
-  {"LiveFrom": "06/01/2017", "ID": "LimitationAdmonWillSentences", "ListElementCode": "AdmonWill1", "ListElement": "This is a De Bonis Non grant - Former Grant Type Place Date"},
-  {"LiveFrom": "06/01/2017", "ID": "LimitationAmonWillSentences", "ListElementCode": "AdmnWill2", "ListElement": "THE SOLICTOR FOR THE AFFAIRS OF THE DUCHY OF CORNWALL for the use of His Royal Highness Charles Philip Arthur George Prince of Wales Duke of Cornwall in right of His said Duchy"},
-  {"LiveFrom": "06/01/2017", "ID": "LimitationAdmonSentences", "ListElementCode": "Admon1", "ListElement": "This is an Ad Colligenda Bona grant and is limited for the purposes only of collecting getting in and receiving the estate and doing such acts as may be necessary for the preservation of the same and until further representation be granted"},
-  {"LiveFrom": "06/01/2017", "ID": "LimitationAmonWSentences", "ListElementCode": "Admon2", "ListElement": "limited to settled land vested in the said deceased under <NAME_OF_SETTLEMENT>"}
+  {"LiveFrom": "06/01/2017", "ID": "LimitationGrantSentences", "ListElementCode": "Grant2", "ListElement": "limited until an authentic copy of the Will be proved"}
 ]

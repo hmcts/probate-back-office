@@ -12,15 +12,8 @@ import java.util.List;
 @Builder
 public class Limitations {
 
-    private final List<String> selectedLimitations = new ArrayList();
-    private final List<String> willSelectedLimitations = new ArrayList();
-    private final List<String> grantSelectedLimitations = new ArrayList();
-    private final List<String> admonWillSelectedLimitations = new ArrayList();
-    private final List<String> admonSelectedLimitations = new ArrayList();
+    private final List<String> selectedLimitationTypes = new ArrayList();
+    private final List<String> willMessageLimitations = new ArrayList();
+    private final List<String> grantLimitations = new ArrayList();
 
-    @JsonIgnore
-    public List<List<String>> getAllSelectedLimitations() {
-        return Arrays.asList(willSelectedLimitations, grantSelectedLimitations, admonWillSelectedLimitations
-            , admonSelectedLimitations);
-    }
 }

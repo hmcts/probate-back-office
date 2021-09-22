@@ -151,19 +151,22 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sopl
 @RequiredArgsConstructor
 public class LimitationsTransformer {
 
-    private static final String NEW_LINE = "\n";
-
-    public void setupCombinedLimitationsText(@Valid CaseDetails caseDetails,
-                                               ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+    public void setLimitationsTexts(@Valid CaseDetails caseDetails,
+                                    ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
 
         CaseData caseData = caseDetails.getData();
-        StringBuilder allText = new StringBuilder();
-        for (List<String> limitationGroup : caseData.getLimitations().getAllSelectedLimitations()) {
-            for (String limitation : limitationGroup) {
-                allText.append(LimitationSentenceType.valueOf(limitation).getLabel());
-                allText.append(NEW_LINE);
-            }
+        if ("grant".equals(caseData.getSelectionList())) {
+            responseCaseDataBuilder.boWillMessage(getSelectedLimitationText(caseData.getLimitations().getWillMessageLimitations()));
+
+            responseCaseDataBuilder.boLimitationText(getSelectedLimitationText(caseData.getLimitations().getGrantLimitations()));
         }
-        responseCaseDataBuilder.selectedLimitationsText(allText.toString());
+    }
+
+    private String getSelectedLimitationText(List<String> selectedLimitations) {
+        StringBuilder limitationText = new StringBuilder();
+        for (String willMessagelimitation : selectedLimitations) {
+            limitationText.append(LimitationSentenceType.valueOf(willMessagelimitation).getLabel());
+        }
+        return limitationText.toString();
     }
 }

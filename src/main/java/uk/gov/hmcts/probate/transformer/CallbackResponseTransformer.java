@@ -546,7 +546,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
             getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         limitationsTransformer
-            .setupCombinedLimitationsText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+            .setLimitationsTexts(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

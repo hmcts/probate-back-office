@@ -97,8 +97,8 @@ public class CaseDataParent {
     @Getter(lazy = true)
     private final String grantIssuedDateFormatted = convertDate(grantIssuedDate);
 
+    private final String selectionList;
     private final Limitations limitations;
-    private final String selectedLimitationsText;
 
     public String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
@@ -138,9 +138,5 @@ public class CaseDataParent {
             ex.getMessage();
             return null;
         }
-    }
-    
-    public List<String> getSelectedLimitationsTextForHTML() {
-        return Arrays.asList(selectedLimitationsText.split("\n"));
     }
 }
