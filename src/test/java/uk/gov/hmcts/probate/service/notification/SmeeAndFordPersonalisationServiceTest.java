@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -76,12 +77,21 @@ public class SmeeAndFordPersonalisationServiceTest {
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
                                                         int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
-                                                        boolean hasDeceasedAlias, boolean hasDOD, boolean isWelsh) {
-        List<CollectionMember<ProbateAliasName>> deceasedAliases = new ArrayList();
+                                                        boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias, 
+                                                        boolean hasDOD, boolean isWelsh) {
+        List<CollectionMember<ProbateAliasName>> deceasedAliases = null;
         if (hasDeceasedAlias) {
+            deceasedAliases = new ArrayList();
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "1")));
             deceasedAliases.add(new CollectionMember<ProbateAliasName>(buildAlias("Dec", "2")));
         }
+        List<CollectionMember<AliasName>> solsDeceasedAliases = null;
+        if (hasSolsDeceasedAlias) {
+            solsDeceasedAliases = new ArrayList();
+            solsDeceasedAliases.add(new CollectionMember<AliasName>(buildSolsAlias("1")));
+            solsDeceasedAliases.add(new CollectionMember<AliasName>(buildSolsAlias("2")));
+        }
+
         SolsAddress deceasedAddress = buildAddress("Dec");
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsApplying = new ArrayList();
         if (numExecs == -1) {
@@ -99,6 +109,7 @@ public class SmeeAndFordPersonalisationServiceTest {
             .deceasedSurname("Michelson")
             .boDeceasedHonours("OBE")
             .deceasedAliasNameList(hasDeceasedAlias ? deceasedAliases : null)
+            .solsDeceasedAliasNamesList(hasSolsDeceasedAlias ? solsDeceasedAliases : null)
             .caseType("gop")
             .applicationType(applicationType)
             .deceasedDateOfDeath(hasDOD ? LocalDate.of(2020, 12, 31) : null)
@@ -139,6 +150,12 @@ public class SmeeAndFordPersonalisationServiceTest {
         return ProbateAliasName.builder()
             .forenames(prefix + "AliasForename" + suffix)
             .lastName(prefix + "AliasLastName" + suffix)
+            .build();
+    }
+
+    private AliasName buildSolsAlias(String suffix) {
+        return AliasName.builder()
+            .solsAliasname("SolsAliasForename" + suffix)
             .build();
     }
 
@@ -192,9 +209,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            true, false).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false, true, true).build(), LAST_MODIFIED, ID);
+            false, true, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -211,9 +228,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+            false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false, true, false).build(), LAST_MODIFIED, ID);
+            false, false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -230,9 +247,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
-            true, false).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
-            false, true, true).build(), LAST_MODIFIED, ID);
+            false, false, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -249,9 +266,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
-            true, true).build(), LAST_MODIFIED, ID);
+            false, true, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
-            false, true, false).build(), LAST_MODIFIED, ID);
+            false, false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -268,9 +285,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
-            true, true, false).build(), LAST_MODIFIED, ID);
+            true, false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
-            false, true, true).build(), LAST_MODIFIED, ID);
+            false, true, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -287,9 +304,9 @@ public class SmeeAndFordPersonalisationServiceTest {
     @Test
     public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
-            false, true).build(), LAST_MODIFIED, ID);
+            false, false, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
-            false, false, false).build(), LAST_MODIFIED, ID);
+            false, true, false, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
