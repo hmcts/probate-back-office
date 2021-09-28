@@ -217,12 +217,12 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Examining';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Mark as ready to issue';
+    nextStepName = 'Mark Case For QA';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.markForIssue(caseRef);
+    // await I.markForIssue(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Ready to issue';
+    endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';
@@ -246,6 +246,6 @@ Scenario(scenarioName, async function ({I}) {
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(new Date(), 'd MMM yyyy');
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
-    await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
+    // await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
 }).retry(testConfig.TestRetryScenarios);
