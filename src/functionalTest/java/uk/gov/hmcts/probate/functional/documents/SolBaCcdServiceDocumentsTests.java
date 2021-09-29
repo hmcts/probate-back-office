@@ -1156,6 +1156,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() {
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
+            "\"primaryApplicantIsApplying\": \"Yes\",", "");
+        final String response =
+            generateGrantDocumentFromPayload(payload,
+                GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+    }
+    
+
+    @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
         final String response =
                 generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
@@ -1729,8 +1741,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTPartSuccAllRenouncingWording() {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm" 
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will at the " 
                 + "date of death of the deceased have renounced probate."));
     }
 
