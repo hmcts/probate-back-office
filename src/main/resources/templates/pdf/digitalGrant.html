@@ -137,7 +137,7 @@ Died on
         {% endfor %}
     {% endif %}
 
-    {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearing == "TCTPartPowerRes" %}
+    {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTPartPowerRes" %}
         {% set powerReservedCounter = powerReservedCounter + 1 %}
         {% if cd.morePartnersHoldingPowerReserved == "Yes" %}
             {% set powerReservedCounter = powerReservedCounter + 1 %}
