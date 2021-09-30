@@ -23,6 +23,7 @@ const executorTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/w
 
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
 const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
+
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
@@ -32,7 +33,6 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-
 const scenarioName = 'Caseworker Will Lodgement - Withdraw will';
 Scenario(scenarioName, async function ({I}) {
 
@@ -41,7 +41,6 @@ Scenario(scenarioName, async function ({I}) {
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
-    // IdAM
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
 
@@ -50,31 +49,25 @@ Scenario(scenarioName, async function ({I}) {
     let nextStepName = 'Create a will lodgement';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
+    await I.enterWillLodgementPage1('create');
+    await I.enterWillLodgementPage2('create', unique_deceased_user);
+    await I.enterWillLodgementPage3('create');
+    await I.checkMyAnswers(nextStepName);
+
+    // SECOND case - the main test case
+
+    await I.logInfo(scenarioName, nextStepName);
+    await I.selectNewCase();
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     await I.enterWillLodgementPage1('create');
     await I.enterWillLodgementPage2('create', unique_deceased_user);
     await I.enterWillLodgementPage3('create');
     await I.checkMyAnswers(nextStepName);
     let endState = 'Will lodgement created';
 
-    // SECOND case - the main test case
-
-    nextStepName = 'Create a will lodgement';
-    await I.logInfo(scenarioName, nextStepName);
-    await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
-    await I.enterWillLodgementPage1('create');
-    await I.enterWillLodgementPage2('create', unique_deceased_user);
-    await I.enterWillLodgementPage3('create');
-    await I.checkMyAnswers(nextStepName);
-    endState = 'Will lodgement created';
-
-    await I.wait(5);
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/')
-        .pop()
-        .match(/.{4}/g)
-        .join('-');
+    await I.wait(testConfig.WillLodgementDelay);
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createWillLodgementConfig);
@@ -144,6 +137,7 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Will withdrawn';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
+    await I.logInfo(scenarioName, endState, caseRef);
 
     await I.signOut();
 

@@ -24,4 +24,19 @@
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+         Suppressing untill spring boot update
+        ]]></notes>
+        <filePath regex="true">.*jakarta.el-3.0.3.jar</filePath>
+        <cpe>cpe:/a:jakarta_expression_language</cpe>
+        <cve>CVE-2021-28170</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            Suppressing until after TC live
+        ]]></notes>
+        <filePath regex="true">.*spring-security-core-5.3.9.RELEASE.jar</filePath>
+        <cve>CVE-2021-22119</cve>
+    </suppress>
 </suppressions>
