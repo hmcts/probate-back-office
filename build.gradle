@@ -365,6 +365,10 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << '-parameters'  
 }
 
+rootProject.tasks.named("processContractTestResources") {
+  duplicatesStrategy = 'include'
+}
+
 bootJar {
   archiveFileName = 'back-office.jar'
   manifest {
