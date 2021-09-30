@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.5.1'
+    springBootVersion = '2.5.4'
   }
   repositories {
     jcenter()
@@ -16,13 +16,13 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.5.1'
-  id 'uk.gov.hmcts.java' version '0.12.2'
+  id 'org.springframework.boot' version '2.5.4'
+  id 'uk.gov.hmcts.java' version '0.12.12'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-  id 'info.solidsoft.pitest' version '1.3.0'
+  id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.2.6'
+  id 'au.com.dius.pact' version '4.2.9'
 }
 
 apply plugin: 'project-report'
@@ -152,9 +152,9 @@ gitProperties {
 
 def versions = [
         springCloudStarterNetflixHystrix: '2.1.3.RELEASE',
-        serenity                        : '2.4.34',
-        serenityreporter                : '2.4.34',
-        springBootVersion               : '2.5.1',
+        serenity                        : '2.5.8',
+        serenityreporter                : '2.5.8',
+        springBootVersion               : '2.5.4',
         springBootStarterHateoas        : '2.5.1',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
@@ -201,8 +201,6 @@ processResources {
 
 dependencyManagement {
   dependencies {
-    //CVE-2020-26939
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
@@ -302,11 +300,11 @@ dependencies {
   testImplementation group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.0-M1"
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   testImplementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
-  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.0-M1"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.0-M1"
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   
