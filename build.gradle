@@ -174,6 +174,8 @@ def versions = [
         elasticSearchVersion            : '7.15.0'
 ]
 
+ext["rest-assured.version"] = '4.4.0'
+
 jacocoTestReport {
   executionData(test)
   reports {
@@ -205,8 +207,6 @@ dependencyManagement {
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
     
-    // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
-
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.5.1') {
       entry 'spring-security-config'
