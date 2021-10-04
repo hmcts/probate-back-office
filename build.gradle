@@ -174,8 +174,6 @@ def versions = [
         elasticSearchVersion            : '7.15.0'
 ]
 
-ext["rest-assured.version"] = '4.4.0'
-
 jacocoTestReport {
   executionData(test)
   reports {
