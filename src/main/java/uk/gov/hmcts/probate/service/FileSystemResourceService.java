@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+@SuppressWarnings("squid:S5443")
 public class FileSystemResourceService {
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
