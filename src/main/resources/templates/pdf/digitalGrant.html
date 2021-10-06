@@ -324,7 +324,7 @@ Died on
             {% endif %}
             {% set primaryApplicantApplying = false %}
             {% set applyingExecCounter = 0 %}
-            {% if (case_details.case_data.primaryApplicantIsApplying == "Yes" and isTc == false) or
+            {% if (case_details.case_data.primaryApplicantIsApplying != "No" and isTc == false) or
                 (isTc == true and case_details.case_data.solsSolicitorIsExec == "Yes" and case_details.case_data.solsSolicitorIsApplying == "Yes") %}
                 {% set primaryApplicantApplying = true %}
                 {% set applyingExecCounter = 1 %}
