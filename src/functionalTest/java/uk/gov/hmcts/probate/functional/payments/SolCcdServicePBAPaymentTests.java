@@ -7,7 +7,6 @@ import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
@@ -19,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
-@AutoConfigureRestDocs
 public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Autowired

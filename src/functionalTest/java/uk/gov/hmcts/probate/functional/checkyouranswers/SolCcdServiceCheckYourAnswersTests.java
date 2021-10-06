@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.ByteArrayInputStream;
@@ -21,7 +20,6 @@ import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-@AutoConfigureRestDocs
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private static final String VALIDATE_URL = "/case/sols-validate";
