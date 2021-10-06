@@ -140,6 +140,13 @@ Died on
         {% set powerReservedCounter = powerReservedCounter + 1 %}
     {% endif %}
 
+    {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTPartPowerRes" %}
+        {% set powerReservedCounter = powerReservedCounter + 1 %}
+        {% if cd.morePartnersHoldingPowerReserved == "Yes" %}
+            {% set powerReservedCounter = powerReservedCounter + 1 %}
+        {% endif %}
+    {% endif %}
+
     {% if powerReservedCounter == 1 %}Power reserved to another Executor<br/>
     {% elseif powerReservedCounter > 1 %}Power reserved to other Executors<br/>
     {% endif %}

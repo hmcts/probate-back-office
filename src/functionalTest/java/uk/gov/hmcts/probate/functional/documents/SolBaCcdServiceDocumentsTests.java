@@ -197,6 +197,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
+    private static final String PARTNERS_FIRM_POWER_RESERVED_PAYLOAD =
+        "solicitorPayloadTrustCorpsPartnersInFirmPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
         "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
@@ -393,6 +395,62 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateGrantDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
     }
 
     @Test
