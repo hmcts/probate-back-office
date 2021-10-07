@@ -37,7 +37,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 def fullFunctionalTest(){
-        yarn("test:fullfunctional")
+    yarn test:fullfunctional
 }
 
 
