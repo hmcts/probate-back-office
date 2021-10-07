@@ -23,7 +23,7 @@ module.exports = async function () {
     if (!testConfig.TestAutoDelayEnabled) {
         // only valid for local dev where we need it to run as fast as poss to minimise
         // lost dev time
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     let idx = 0;
@@ -36,7 +36,7 @@ module.exports = async function () {
             if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
-                await I.wait(0.25);
+                await I.wait(testConfig.ManualDelayShort);
             }
             const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
             await I.waitForVisible(locator);

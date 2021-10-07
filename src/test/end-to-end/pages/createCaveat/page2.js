@@ -9,7 +9,7 @@ module.exports = async function (crud, unique_deceased_user) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createCaveatConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createCaveatConfig.page2_waitForText, testConfig.WaitForTextTimeout);
 
         await I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames+unique_deceased_user);
         await I.fillField('#deceasedSurname', createCaveatConfig.page2_surname+unique_deceased_user);
@@ -32,7 +32,7 @@ module.exports = async function (crud, unique_deceased_user) {
             if (propName.includes('page2_alias_')) {
                 await I.click(createCaveatConfig.page2_addAliasButton);
                 if (!testConfig.TestAutoDelayEnabled) {
-                    await I.wait(0.25); // implicit wait needed here
+                    await I.wait(testConfig.ManualDelayShort); // implicit wait needed here
                 }
                 const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
                 await I.waitForVisible(locator);
@@ -43,7 +43,7 @@ module.exports = async function (crud, unique_deceased_user) {
 
         await I.click(createCaveatConfig.UKpostcodeLink);
         if (!testConfig.TestAutoDelayEnabled) {
-            await I.wait(0.25); // implicit wait needed here
+            await I.wait(testConfig.ManualDelayShort); // implicit wait needed here
         }
         await I.fillField('#deceasedAddress__detailAddressLine1', createCaveatConfig.address_line1);
         await I.fillField('#deceasedAddress__detailAddressLine2', createCaveatConfig.address_line2);
@@ -55,7 +55,7 @@ module.exports = async function (crud, unique_deceased_user) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createCaveatConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createCaveatConfig.page2_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames_update+unique_deceased_user);
         await I.fillField('#deceasedSurname', createCaveatConfig.page2_surname_update+unique_deceased_user);
         await I.fillField('#deceasedDateOfBirth-day', createCaveatConfig.page2_dateOfBirth_day_update);
