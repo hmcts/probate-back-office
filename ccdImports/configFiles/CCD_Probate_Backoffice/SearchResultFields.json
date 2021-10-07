@@ -10,5 +10,4 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 9},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "Label": "Grant issued date", "DisplayOrder": 10},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[LAST_STATE_MODIFIED_DATE]", "Label": "Last State Modified Date", "DisplayOrder": 11}
-
 ]
