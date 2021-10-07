@@ -116,6 +116,10 @@ sourceSets {
   }
 }
 
+rootProject.tasks.named("processContractTestResources") {
+  duplicatesStrategy = 'include'
+}
+
 task smoke(type: Test) {
   description = "Runs Smoke Tests"
   testClassesDirs = sourceSets.testSmoke.output.classesDirs
