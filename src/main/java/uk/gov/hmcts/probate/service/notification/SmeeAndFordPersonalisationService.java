@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -310,11 +311,15 @@ public class SmeeAndFordPersonalisationService {
 
     private String getDeceasedAliasNames(CaseData data) {
         StringBuilder aliases = new StringBuilder();
-        if (data.getDeceasedAliasNameList() != null)  {
+        if (data.getDeceasedAliasNameList() != null && !data.getDeceasedAliasNameList().isEmpty())  {
             for (CollectionMember<ProbateAliasName> alias : data.getDeceasedAliasNameList()) {
                 aliases.append(ifNotEmptyWithSpace(
                     ifNotEmptyWithSpace(alias.getValue().getForenames())
                     + ifNotEmpty(alias.getValue().getLastName())));
+            }
+        } else if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty())  {
+            for (CollectionMember<AliasName> alias : data.getSolsDeceasedAliasNamesList()) {
+                aliases.append(ifNotEmptyWithSpace(alias.getValue().getSolsAliasname()));
             }
         }
         return removeAnyLastSpace(aliases.toString());
