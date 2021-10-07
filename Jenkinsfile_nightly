@@ -45,24 +45,18 @@ withNightlyPipeline("java", product, component) {
     enableSecurityScan()
     enableFortifyScan('probate-aat')
 
-    after('build') {
-        sh 'yarn setup'
-        yarn test:fullfunctional
-    }
-
     after('fortify-scan') {
-       steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     after('fullFunctionalTest') {
+        yarn test:fullfunctional
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
 
     after('crossBrowserTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
-
-
 
     // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
 }
