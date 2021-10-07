@@ -36,11 +36,12 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-withNightlyPipeline("java", product, component) {
+withNightlyPipeline("nodejs", product, component) {
     env.TEST_E2E_URL = params.XUI_URL_TO_TEST
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
     loadVaultSecrets(secrets)
+    enableFullFunctionalTest(90)
     enableSecurityScan()
     enableFortifyScan('probate-aat')
 
@@ -50,7 +51,7 @@ withNightlyPipeline("java", product, component) {
     }
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     after('fullFunctionalTest') {
-       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
 
     after('crossBrowserTest') {
@@ -58,6 +59,4 @@ withNightlyPipeline("java", product, component) {
     }
 
     // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
-
-
 }
