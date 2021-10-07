@@ -37,14 +37,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 def fullFunctionalTest(){
-    try{
         yarn("test:fullfunctional")
-    }
-    finally {
-        steps.junit allowEmptyResults: true, testResults: './functional-output/**/*result.xml'
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**'
-    }
 }
+
 
 withNightlyPipeline("java", product, component) {
     env.TEST_E2E_URL = params.XUI_URL_TO_TEST
@@ -68,5 +63,6 @@ withNightlyPipeline("java", product, component) {
     }
 
     // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
+
 
 }
