@@ -36,7 +36,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-withNightlyPipeline("java", product, component) {
+withNightlyPipeline("nodejs", product, component) {
     env.TEST_E2E_URL = params.XUI_URL_TO_TEST
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
