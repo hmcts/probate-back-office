@@ -36,21 +36,16 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-def fullFunctionalTest(){
-    yarn test:fullfunctional
-}
-
-
 withNightlyPipeline("java", product, component) {
     env.TEST_E2E_URL = params.XUI_URL_TO_TEST
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
     loadVaultSecrets(secrets)
-    fullFunctionalTest()
     enableSecurityScan()
     enableFortifyScan('probate-aat')
 
     after('fortify-scan') {
+        yarn test:fullfunctional
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
