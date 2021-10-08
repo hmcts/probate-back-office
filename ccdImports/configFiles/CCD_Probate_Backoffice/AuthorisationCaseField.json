@@ -54,8 +54,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "willDamageDateKnown", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "willDamageDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "willHasCodicils", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "codicilsHasVisibleDamage", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "codicilsDamage", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "codicilAddedDateList", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "willDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "willSignedDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
