@@ -46,7 +46,6 @@ withNightlyPipeline("nodejs", product, component) {
     enableFortifyScan('probate-aat')
 
     after('fortify-scan') {
-        yarn test:fullfunctional
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
