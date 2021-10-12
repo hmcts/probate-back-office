@@ -688,7 +688,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetPdfLegalStatementAdmonWillSols() {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
@@ -1899,10 +1898,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = getProbateDocumentsGeneratedTextAtIndex(payload, GENERATE_GRANT_REISSUE, "2");
 
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
-        expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
-        expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
 
-        assertTrue(response.contains(expectedText));
+        assertEquals(expectedText.trim(), response.trim());
     }
 
     private void verifyPersonalWelshGrantText(String payload, String expectedFile) {
@@ -1951,6 +1948,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
+    }
+
+    @Test
+    public void verifyWillAccessNoLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true"
+                + " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
+    }
+
+    @Test
+    public void verifyWillAccessYesLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
+                + "I believe to be the true and original last will and"
+                + " testament of De Ceased"));
     }
 
 }

@@ -2443,9 +2443,9 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextSingleExec() {
+    public void checkSolsReviewCheckBoxesTextSingleExecSolApplying() {
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.solsSolicitorIsApplying(YES).build());
 
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
             solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
@@ -2459,7 +2459,23 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextMultiExecs() {
+    public void checkSolsReviewCheckBoxesTextSingleExecSolNotApplying() {
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+
+        String professionalName = caseDetailsMock.getData().getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
+            professionalName);
+
+        assertEquals("The executor applicant forename applicant surname: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
             .applyingExecutorName(SOLICITOR_SOT_NAME).build();
@@ -2470,13 +2486,32 @@ public class CallbackResponseTransformerTest {
         additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
         caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
 
+        CaseData caseData = caseDataBuilder.solsSolicitorIsApplying(YES).build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executors Andy Middlename Test, James Smith: ",
+            executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
         CaseData caseData = caseDataBuilder.build();
 
         String professionalName = caseData.getSolsSOTName();
 
         String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
 
-        assertEquals("The executors Andy Middlename Test, James Smith",
+        assertEquals("The executors applicant forename applicant surname, James Smith: ",
             executorNames);
     }
 
