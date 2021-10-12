@@ -27,10 +27,7 @@ public class FileSystemResourceService {
                 .map(in -> {
                     FileOutputStream out = null;
                     try (ins) {
-                        Path secureDir = Files.createTempDirectory("");
-                        Path tempFile = Files.createTempFile(
-                            Paths.get(secureDir.toAbsolutePath().toString()), "", ".html");
-                        secureDir.toFile().deleteOnExit();
+                        Path tempFile = Files.createTempFile("", ".html");
                         tempFile.toFile().deleteOnExit();
                         out = new FileOutputStream(tempFile.toFile());
                         IOUtils.copy(in, out);
