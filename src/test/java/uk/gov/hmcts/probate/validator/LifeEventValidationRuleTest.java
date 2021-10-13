@@ -2,6 +2,10 @@ package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
@@ -12,10 +16,13 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class LifeEventValidationRuleTest {
-
-    private LifeEventValidationRule lifeEventValidationRule = new LifeEventValidationRule();
     
+    @Autowired
+    private LifeEventValidationRule lifeEventValidationRule;
+
     @Test
     public void shouldThrowWhenNumberOfDeathRecordsMatchCollectionSize() {
         final CaseData caseData = CaseData.builder()

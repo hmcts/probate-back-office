@@ -7,23 +7,30 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
 public class LifeEventValidationRule implements CaseDetailsValidationRule {
+    
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    
     @Override
     public void validate(CaseDetails caseDetails) {
         final CaseData data = caseDetails.getData();
         final List<CollectionMember<DeathRecord>> deathRecords = data.getDeathRecords();
         if (deathRecords.size() != data.getNumberOfDeathRecords()
             || deathRecords.stream().anyMatch(r -> r.getValue().getSystemNumber() == null)) {
-            final String message = "Don't add or remove records here";
+            final String message = businessValidationMessageRetriever.getMessage("dontAddOrRemoveRecords", null,
+                Locale.UK);
             throw new BusinessValidationException(message, message);
         }
         if (1 != deathRecords.stream().filter(r -> r.getValue().getValid().equalsIgnoreCase("Yes")).count()) {
-            final String message = "Select one death record";
+            final String message = businessValidationMessageRetriever.getMessage("selectOneDeathRecord",
+                null, Locale.UK);
             throw new BusinessValidationException(message, message);
         }
     }
