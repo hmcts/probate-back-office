@@ -22,11 +22,9 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
-
 const scenarioName = 'Solicitor - Apply Caveat';
 Scenario(scenarioName, async function ({I}) {
 
-    // IdAM
     await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
@@ -34,7 +32,7 @@ Scenario(scenarioName, async function ({I}) {
     let endState = 'Caveat created';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.applyCaveatPage1();
     await I.applyCaveatPage2();
     await I.cyaPage();

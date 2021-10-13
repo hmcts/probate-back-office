@@ -23,7 +23,7 @@ class WebDriverHelper extends Helper {
 
         if (locator) {
             // must be a button to click
-            await helper.waitForClickable(locator, testConfig.TestTimeToWaitForText);
+            await helper.waitForClickable(locator, testConfig.WaitForTextTimeout);
             await helper.click(locator);
         }
 
@@ -46,9 +46,9 @@ class WebDriverHelper extends Helper {
         const helper = this.helpers.WebDriver;
 
         if (browserName !== 'MicrosoftEdge') {
-            await helper.waitForElement('.dz-hidden-input', testConfig.TestTimeToWaitForText * testConfig.TestOneMilliSecond);
+            await helper.waitForElement('.dz-hidden-input', testConfig.WaitForTextTimeout * testConfig.TestOneMilliSecond);
             await helper.attachFile('.dz-hidden-input', testConfig.TestDocumentToUpload);
-            await helper.waitForEnabled('#button', testConfig.TestTimeToWaitForText);
+            await helper.waitForEnabled('#button', testConfig.WaitForTextTimeout);
         }
     }
 

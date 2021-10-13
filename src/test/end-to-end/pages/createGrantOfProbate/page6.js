@@ -9,7 +9,7 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page6_waitForText, testConfig.WaitForTextTimeout);
         await I.click(`#spouseOrPartner_${createGrantOfProbateConfig.page6_spouseOrPartnerNo}`);
         await I.click(`#childrenSurvived_${createGrantOfProbateConfig.page6_childrenSurvivedYes}`);
         await I.fillField('#childrenOverEighteenSurvived', createGrantOfProbateConfig.page6_childrenOverEighteenSurvived);
@@ -24,9 +24,10 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createGrantOfProbateConfig.page6_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createGrantOfProbateConfig.page6_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForEnabled({css: '#selectionList'});
         await I.selectOption('#selectionList', createGrantOfProbateConfig.page6_list1_update_option);
-        await I.waitForNavigationToComplete(commonConfig.continueButton, 3);
+        await I.click(commonConfig.continueButton);
         await I.waitForElement('#childrenDied_No');
         await I.seeElement('#childrenDied_Yes');
         await I.click(`#childrenDied_${createGrantOfProbateConfig.page6_childrenDiedNo}`);

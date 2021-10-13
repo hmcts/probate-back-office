@@ -7,20 +7,12 @@ module.exports = async function () {
 
     const I = this;
 
-    await I.waitForText(newCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-    const numVisibleCookieBannerEls = await I.grabNumberOfVisibleElements({css: 'body exui-root xuilib-cookie-banner'});
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForText(newCaseConfig.waitForText, testConfig.WaitForTextTimeout);
+    await I.rejectCookies();
 
-    if (numVisibleCookieBannerEls > 0) {
-        //check to see we can still click
-        const bannerButton = await I.grabNumberOfVisibleElements({css: 'button.govuk-button[value="reject"]'});
-        if (bannerButton > 0) {
-            // just reject additional cookies
-            const rejectLocator = {css: 'button.govuk-button[value="reject"]'};
-            await I.waitForEnabled(rejectLocator);
-            await I.click(rejectLocator);
-        }
-    }
-    await I.waitForEnabled({css: newCaseConfig.xuiCreateCaseLocator});
-    await I.wait(2);
-    await I.waitForNavigationToComplete(newCaseConfig.xuiCreateCaseLocator, 5);
+    const locator = newCaseConfig.xuiCreateCaseLocator;
+    await I.waitForEnabled({css: locator});
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.waitForNavigationToComplete(locator);
 };
