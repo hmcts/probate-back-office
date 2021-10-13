@@ -6,13 +6,10 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Slf4j
@@ -20,22 +17,17 @@ import java.util.Optional;
 public class FileSystemResourceService {
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
-        final InputStream ins = this.getClass().getClassLoader().getResourceAsStream(resourcePath);
 
-        return Optional.ofNullable(ins)
+        return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
                 .map(in -> {
-                    FileOutputStream out = null;
-                    try (ins) {
-                        Path secureDir = Files.createTempDirectory("");
-                        Path tempFile = Files.createTempFile(
-                            Paths.get(secureDir.toAbsolutePath().toString()), "", ".html");
-                        secureDir.toFile().deleteOnExit();
-                        tempFile.toFile().deleteOnExit();
-                        out = new FileOutputStream(tempFile.toFile());
+                    try {
+                        File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".html");
+                        tempFile.deleteOnExit();
+                        FileOutputStream out = new FileOutputStream(tempFile);
                         IOUtils.copy(in, out);
-                        return new FileSystemResource(tempFile.toFile());
+                        return new FileSystemResource(tempFile);
                     } catch (IOException e) {
-                        log.error("File system [ {} ] could not be found", resourcePath, e);
+                        log.warn("File system [ {} ] could not be found", resourcePath, e);
                         return null;
                     }
                 });
