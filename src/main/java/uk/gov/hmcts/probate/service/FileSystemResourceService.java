@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Slf4j
@@ -25,7 +26,10 @@ public class FileSystemResourceService {
                 .map(in -> {
                     FileOutputStream out = null;
                     try (ins) {
-                        Path tempFile = Files.createTempFile("", ".html");
+                        Path secureDir = Files.createTempDirectory("");
+                        Path tempFile = Files.createTempFile(
+                            Paths.get(secureDir.toAbsolutePath().toString()), "", ".html");
+                        secureDir.toFile().deleteOnExit();
                         tempFile.toFile().deleteOnExit();
                         out = new FileOutputStream(tempFile.toFile());
                         IOUtils.copy(in, out);
