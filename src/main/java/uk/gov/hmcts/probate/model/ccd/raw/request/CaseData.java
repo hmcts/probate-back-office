@@ -45,6 +45,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
@@ -530,6 +532,24 @@ public class CaseData extends CaseDataParent {
     private String registryEmailAddress;
     private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
+    private String willHasVisibleDamage;
+    private Damage willDamage;
+    private String willDamageReasonKnown;
+    private String willDamageReasonDescription;
+    private String willDamageCulpritKnown;
+    private CombinedName willDamageCulpritName;
+    private String willDamageDateKnown;
+    private String willDamageDate;
+    private String codicilsHasVisibleDamage;
+    private Damage codicilsDamage;
+    private String codicilsDamageReasonKnown;
+    private String codicilsDamageReasonDescription;
+    private String codicilsDamageCulpritKnown;
+    private CombinedName codicilsDamageCulpritName;
+    private String codicilsDamageDateKnown;
+    private String codicilsDamageDate;
+    private String deceasedWrittenWishes;
+
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
