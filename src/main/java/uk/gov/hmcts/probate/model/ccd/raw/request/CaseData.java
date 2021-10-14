@@ -532,23 +532,23 @@ public class CaseData extends CaseDataParent {
     private String registryEmailAddress;
     private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
-    private String willHasVisibleDamage;
-    private Damage willDamage;
-    private String willDamageReasonKnown;
-    private String willDamageReasonDescription;
-    private String willDamageCulpritKnown;
-    private CombinedName willDamageCulpritName;
-    private String willDamageDateKnown;
-    private String willDamageDate;
-    private String codicilsHasVisibleDamage;
-    private Damage codicilsDamage;
-    private String codicilsDamageReasonKnown;
-    private String codicilsDamageReasonDescription;
-    private String codicilsDamageCulpritKnown;
-    private CombinedName codicilsDamageCulpritName;
-    private String codicilsDamageDateKnown;
-    private String codicilsDamageDate;
-    private String deceasedWrittenWishes;
+    private final String willHasVisibleDamage;
+    private final Damage willDamage;
+    private final String willDamageReasonKnown;
+    private final String willDamageReasonDescription;
+    private final String willDamageCulpritKnown;
+    private final CombinedName willDamageCulpritName;
+    private final String willDamageDateKnown;
+    private final String willDamageDate;
+    private final String codicilsHasVisibleDamage;
+    private final Damage codicilsDamage;
+    private final String codicilsDamageReasonKnown;
+    private final String codicilsDamageReasonDescription;
+    private final String codicilsDamageCulpritKnown;
+    private final CombinedName codicilsDamageCulpritName;
+    private final String codicilsDamageDateKnown;
+    private final String codicilsDamageDate;
+    private final String deceasedWrittenWishes;
 
 
     // @Getter(lazy = true)
