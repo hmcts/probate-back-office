@@ -532,14 +532,7 @@ public class CaseData extends CaseDataParent {
     private String registryEmailAddress;
     private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
-    private final String willHasVisibleDamage;
-    private final Damage willDamage;
-    private final String willDamageReasonKnown;
-    private final String willDamageReasonDescription;
-    private final String willDamageCulpritKnown;
-    private final CombinedName willDamageCulpritName;
-    private final String willDamageDateKnown;
-    private final String willDamageDate;
+    private final String deceasedWrittenWishes;
     private final String codicilsHasVisibleDamage;
     private final Damage codicilsDamage;
     private final String codicilsDamageReasonKnown;
@@ -548,7 +541,14 @@ public class CaseData extends CaseDataParent {
     private final CombinedName codicilsDamageCulpritName;
     private final String codicilsDamageDateKnown;
     private final String codicilsDamageDate;
-    private final String deceasedWrittenWishes;
+    private final String willHasVisibleDamage;
+    private final Damage willDamage;
+    private final String willDamageReasonKnown;
+    private final String willDamageReasonDescription;
+    private final String willDamageCulpritKnown;
+    private final CombinedName willDamageCulpritName;
+    private final String willDamageDateKnown;
+    private final String willDamageDate;
 
 
     // @Getter(lazy = true)
