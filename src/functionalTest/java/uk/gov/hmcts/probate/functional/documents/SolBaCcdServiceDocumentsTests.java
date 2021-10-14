@@ -197,8 +197,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
+    private static final String PARTNERS_FIRM_POWER_RESERVED_PAYLOAD =
+        "solicitorPayloadTrustCorpsPartnersInFirmPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
-        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdomof and "
+        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
         + "The application has stated that the gross value";
 
@@ -393,6 +395,62 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = generateGrantDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains("Trust Corporation Name 1 High St"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
     }
 
     @Test
@@ -594,7 +652,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetPdfLegalStatementAdmonWillSols() {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
@@ -1096,6 +1153,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
     }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() {
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
+            "\"primaryApplicantIsApplying\": \"Yes\",", "");
+        final String response =
+            generateGrantDocumentFromPayload(payload,
+                GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+    }
+    
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
@@ -1671,8 +1740,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTPartSuccAllRenouncingWording() {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm" 
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will at the " 
                 + "date of death of the deceased have renounced probate."));
     }
 
@@ -1787,6 +1856,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .getJsonFromFile("/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
 
+    }
+
+    @Test
+    public void verifyWillAccessNoLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true"
+                + " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
+    }
+
+    @Test
+    public void verifyWillAccessYesLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
+                + "I believe to be the true and original last will and"
+                + " testament of De Ceased"));
     }
 
 }
