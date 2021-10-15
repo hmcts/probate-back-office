@@ -367,10 +367,10 @@ public class BusinessValidationController {
         if (emailValidationService.isEmailNotValidErrorResponse(hasRequiredEmailAddressErrors)) {
             response = eventValidationService.validateEmailRequest(callbackRequest,
                 emailAddressNotifyApplicantValidationRules);
-        }
+
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
-        else if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
+        } else if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
                 && NO.equals(callbackRequest.getCaseDetails().getData().getPaperForm())) {
 
             var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
