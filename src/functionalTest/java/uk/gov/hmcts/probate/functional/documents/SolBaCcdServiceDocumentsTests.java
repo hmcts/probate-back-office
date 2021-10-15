@@ -315,8 +315,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
+        final String document1Url =
+            jsonPath.get("data." + documentName + ".document_url");
+        final String documentId = document1Url.substring(document1Url.lastIndexOf("/") + 1);
         final String documentUrl =
                 jsonPath.get("data." + documentName + ".document_binary_url");
+        System.out.println("documentUrl:" + documentUrl);
+        System.out.println("documentId:" + documentId);
+        //utils.patchTTLOnDocument(documentId);
+        utils.getDocumentText(documentId);
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
     }

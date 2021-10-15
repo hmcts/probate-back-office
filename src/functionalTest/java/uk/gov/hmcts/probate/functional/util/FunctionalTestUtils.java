@@ -79,6 +79,9 @@ public class FunctionalTestUtils {
     @Value("${user.auth.provider.oauth2.url}")
     private String authProviderUrl;
 
+    @Value("${case_document_am.url}")
+    private String caseDocumentManagermentUrl;
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -376,4 +379,27 @@ public class FunctionalTestUtils {
                 return day + "th " + formattedDate.substring(3);
         }
     }
+
+    public void patchTTLOnDocument(String documentId) {
+        String payload = "{\"ttl\": \"2021-10-16T00:00:00.0000\"}";
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
+            .relaxedHTTPSValidation()
+            .headers(getHeadersWithCaseworkerUser())
+            .body(payload)
+            .when().patch("/cases/documents/" + documentId).andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+    }
+
+    public String getDocumentText(String documentId) {
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
+            .relaxedHTTPSValidation()
+            .headers(getHeadersWithCaseworkerUser())
+            .when().get("/cases/documents/" + documentId).andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+        
+        jsonResponse.andReturn().
+    }
+
 }

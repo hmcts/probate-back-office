@@ -176,7 +176,7 @@ def versions = [
         pact_version                    : '4.1.7',
         probatePactCommonsVersion       : '1.0.2',
         elasticSearchVersion            : '7.15.0',
-        documentClient                  : '1.7.1'
+        documentClient                  : '1.7.2'
 ]
 
 jacocoTestReport {
