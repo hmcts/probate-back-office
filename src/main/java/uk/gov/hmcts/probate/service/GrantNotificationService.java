@@ -71,7 +71,9 @@ public class GrantNotificationService {
         log.info("Preparing to send email to executors for grant notification");
         CCDData dataForEmailAddress = CCDData.builder()
             .primaryApplicantEmailAddress(foundCase.getData().getPrimaryApplicantEmailAddress())
+            .solsSolicitorEmail(foundCase.getData().getSolsSolicitorEmail())
             .applicationType(foundCase.getData().getApplicationType().getCode())
+            .caseId(foundCase.getId())
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
