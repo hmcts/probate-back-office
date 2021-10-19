@@ -165,7 +165,7 @@ def versions = [
         jacksonDatabind                 : '2.11.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
-        restAssured                     : '3.0.7',
+        restAssured                     : '4.4.0',
         lombok                          : '1.18.16',
         springfoxSwagger                : '3.0.0',
         springSecurityVersion           : '5.5.1',
