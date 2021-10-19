@@ -168,7 +168,7 @@ def versions = [
         restAssured                     : '3.0.7',
         lombok                          : '1.18.16',
         springfoxSwagger                : '3.0.0',
-        springSecurityVersion           : '5.3.5.RELEASE',
+        springSecurityVersion           : '5.5.1',
         probateCommonsVersion           : '1.2.5',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
