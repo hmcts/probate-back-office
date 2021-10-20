@@ -672,7 +672,7 @@ public class CallbackResponseTransformer {
         var plural = "";
         if (listOfApplyingExecs != null
             && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
-                plural = "s";
+            plural = "s";
         }
         return plural;
     }
