@@ -1,13 +1,13 @@
 buildscript {
   ext {
-    springBootVersion = '2.1.3.RELEASE'
+    springBootVersion = '2.5.5'
   }
   repositories {
     jcenter()
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.6.0")
     classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
   }
 }
@@ -15,13 +15,13 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.3.4.RELEASE'
+  id 'org.springframework.boot' version '2.5.5'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-  id 'info.solidsoft.pitest' version '1.3.0'
+  id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.2.6'
+  id 'au.com.dius.pact' version '4.2.9'
   id 'org.sonarqube' version '3.3'
 }
 
@@ -38,8 +38,6 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
-
-ext['selenium.version']='3.8.1'
 
 jacoco {
   toolVersion = '0.8.2'
@@ -156,25 +154,27 @@ gitProperties {
 
 def versions = [
         springCloudStarterNetflixHystrix: '2.1.3.RELEASE',
-        serenity                        : '2.0.23',
-        serenityreporter                : '2.1.4',
-        springBootVersion               : '2.3.4.RELEASE',
-        springBootStarterHateoas        : '2.3.4.RELEASE',
+        serenity                        : '2.6.0',
+        serenityreporter                : '2.6.0',
+        springBootVersion               : '2.5.5',
+        springBootStarterHateoas        : '2.5.5',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
-        restAssured                     : '3.0.7',
+        restAssured                     : '4.4.0',
         lombok                          : '1.18.16',
         springfoxSwagger                : '3.0.0',
-        springSecurityVersion           : '5.3.5.RELEASE',
+        springSecurityVersion           : '5.5.1',
         probateCommonsVersion           : 'DTSPB-2231-will-condition-v2.0.4',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
         pact_version                    : '4.1.7',
         probatePactCommonsVersion       : '1.0.2',
+        springCloud                     : '3.0.4',
+        junit_jupiter                   : '5.8.0-M1',
         elasticSearchVersion            : '7.15.0'
 ]
 
@@ -205,37 +205,17 @@ processResources {
 
 dependencyManagement {
   dependencies {
-    //CVE-2020-26939
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
-
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
     
     // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
 
     //CVE-2021-22112
-    dependencySet(group: 'org.springframework.security', version: '5.3.9.RELEASE') {
+    dependencySet(group: 'org.springframework.security', version: '5.5.1') {
       entry 'spring-security-config'
       entry 'spring-security-core'
       entry 'spring-security-crypto'
       entry 'spring-security-web'
-    }
-
-    //CVE-2021-22118
-    dependencySet(group: 'org.springframework', version: '5.2.9.RELEASE') {
-      entry 'spring-aop'
-      entry 'spring-aspects'
-      entry 'spring-beans'
-      entry 'spring-context'
-      entry 'spring-core'
-      entry 'spring-expression'
-      entry 'spring-jcl'
-      entry 'spring-jdbc'
-      entry 'spring-orm'
-      entry 'spring-oxm'
-      entry 'spring-tx'
-      entry 'spring-web'
-      entry 'spring-webmvc'
     }
 
     //CVE-2021-27568
@@ -264,6 +244,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
 
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
@@ -280,7 +261,6 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
-  implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.7'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
