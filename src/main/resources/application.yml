@@ -173,6 +173,8 @@ spring:
     database: POSTGRESQL
     show-sql: ${probate.persistence.show_sql}
     hibernate.ddl-auto: none
+  config:
+    import: "optional:configtree:/mnt/secrets/probate/"
 
   datasource:
     url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
