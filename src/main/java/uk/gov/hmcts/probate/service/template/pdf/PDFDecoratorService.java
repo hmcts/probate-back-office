@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Call;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -26,7 +25,8 @@ public class PDFDecoratorService {
     private final SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
 
     @Autowired
-    public PDFDecoratorService(ObjectMapper objectMapper, SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator) {
+    public PDFDecoratorService(ObjectMapper objectMapper, 
+                               SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator) {
         this.objectMapper = objectMapper.copy();
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());

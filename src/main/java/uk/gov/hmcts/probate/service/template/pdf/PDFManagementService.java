@@ -48,7 +48,8 @@ public class PDFManagementService {
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
                                 HttpServletRequest httpServletRequest,
                                 PDFServiceConfiguration pdfServiceConfiguration,
-                                FileSystemResourceService fileSystemResourceService, PDFDecoratorService pdfDecoratorService) {
+                                FileSystemResourceService fileSystemResourceService, 
+                                PDFDecoratorService pdfDecoratorService) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
         this.httpServletRequest = httpServletRequest;

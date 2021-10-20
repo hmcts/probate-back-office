@@ -32,8 +32,9 @@ public class MarkdownDecoratorServiceTest {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         
         String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
-        assertEquals("<a href=\"https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator" 
-            + "-rights\" target=\"blank\">Give up probate administrator rights paper form (PA16)<a/>", md);
+        assertEquals("\n*   <a href=\"https://www.gov.uk/government/publications/form-pa16-give-up-probate" 
+            + "-administrator-rights\" target=\"_blank\">Give up probate administrator rights paper form (PA16)</a>", 
+            md);
     }
 
     @Test

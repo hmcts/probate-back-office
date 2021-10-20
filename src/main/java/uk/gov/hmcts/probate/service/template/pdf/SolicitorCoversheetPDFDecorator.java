@@ -24,8 +24,8 @@ public class SolicitorCoversheetPDFDecorator {
         if (pa16FormBusinessRule.isApplicable(caseData)) {
             String jsonTemplate = fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_EXTRAS_DIRECTORY 
                 + PA16_FORM_FILE);
-            jsonTemplate = jsonTemplate.replaceAll("<PA16FormText>", PA16_FORM_TEXT);
-            jsonTemplate = jsonTemplate.replaceAll("<PA16FormUrl>", PA16_FORM_URL);
+            jsonTemplate = jsonTemplate.replaceAll("<PA16FormTEXT>", PA16_FORM_TEXT);
+            jsonTemplate = jsonTemplate.replaceAll("<PA16FormURL>", PA16_FORM_URL);
             json +=  jsonTemplate;
         }
         

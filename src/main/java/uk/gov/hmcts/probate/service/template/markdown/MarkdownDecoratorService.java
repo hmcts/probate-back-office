@@ -17,7 +17,7 @@ public class MarkdownDecoratorService {
 
     public String getPA16FormLabel(CaseData caseData) {
         if (pa16FormBusinessRule.isApplicable(caseData)) {
-            return "<a href=\"" + PA16_FORM_URL+ "\" target='blank'>" + PA16_FORM_TEXT + "</a>";
+            return "\n*   <a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a>";
         }
         return "";
     }

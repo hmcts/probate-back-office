@@ -243,8 +243,7 @@ public class TaskStateRenderer {
         keyValue.put("ihtForm", ihtForm);
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
-            pa16Form = "<li><a href='" + PA16_FORM_URL+ "' target='blank'>" + PA16_FORM_TEXT +"</a>" 
-                + "</a></li>";
+            pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
         }
         keyValue.put("pa16Form", pa16Form);
         keyValue.put("renouncingExecutors",
