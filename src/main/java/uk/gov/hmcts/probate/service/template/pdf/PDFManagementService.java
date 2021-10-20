@@ -1,8 +1,5 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -13,7 +10,6 @@ import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -28,10 +24,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
@@ -46,27 +39,22 @@ public class PDFManagementService {
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
-    private final ObjectMapper objectMapper;
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
+    private final PDFDecoratorService pdfDecoratorService;
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
-                                ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
+                                HttpServletRequest httpServletRequest,
                                 PDFServiceConfiguration pdfServiceConfiguration,
-                                FileSystemResourceService fileSystemResourceService) {
+                                FileSystemResourceService fileSystemResourceService, PDFDecoratorService pdfDecoratorService) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
-        this.objectMapper = objectMapper.copy();
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        this.objectMapper.setDateFormat(df);
-        this.objectMapper.registerModule(module);
         this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.fileSystemResourceService = fileSystemResourceService;
+        this.pdfDecoratorService = pdfDecoratorService;
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
@@ -91,7 +79,7 @@ public class PDFManagementService {
                 break;
         }
 
-        return generateAndUpload(toJson(callbackRequest), documentType);
+        return generateAndUpload(toJson(callbackRequest, documentType), documentType);
     }
 
     public Document generateAndUpload(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
@@ -99,21 +87,22 @@ public class PDFManagementService {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                 .getGrantSignatureEncryptedFile()));
         }
-        return generateAndUpload(toJson(callbackRequest), documentType);
+        return generateAndUpload(toJson(callbackRequest, documentType), documentType);
     }
 
     public Document generateAndUpload(CaveatCallbackRequest callbackRequest, DocumentType documentType) {
-        return generateAndUpload(toJson(callbackRequest), documentType);
+        return generateAndUpload(toJson(callbackRequest, documentType), documentType);
     }
 
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
-        return generateAndUpload(toJson(sentEmail), documentType);
+        return generateAndUpload(toJson(sentEmail, documentType), documentType);
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {
+        log.info("json {}", json);
         log.info("Generating pdf for template {}", documentType.getTemplateName());
         EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
-        log.info("Got the ", documentType.getTemplateName());
+        log.info("Got the {}", documentType.getTemplateName());
         return uploadDocument(documentType, fileUpload);
     }
 
@@ -176,13 +165,8 @@ public class PDFManagementService {
         return decryptedString;
     }
 
-    private String toJson(Object data) {
-        try {
-            return objectMapper.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage(), e);
-            throw new BadRequestException(e.getMessage());
-        }
+    private String toJson(Object data, DocumentType documentType) {
+        return pdfDecoratorService.decorate(data, documentType);
     }
 
     public String getDecodedSignature() {

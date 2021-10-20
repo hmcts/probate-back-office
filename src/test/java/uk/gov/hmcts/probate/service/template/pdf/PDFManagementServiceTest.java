@@ -46,6 +46,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -85,6 +86,8 @@ public class PDFManagementServiceTest {
     @Mock
     private PDFServiceConfiguration pdfServiceConfiguration;
     @Mock
+    private PDFDecoratorService pdfDecoratorService;
+    @Mock
     private CaseDetails caseDetails;
     @Mock
     private WillLodgementDetails willLodgementDetails;
@@ -105,7 +108,7 @@ public class PDFManagementServiceTest {
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
             .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
         underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
-            objectMapperMock, httpServletRequest, pdfServiceConfiguration, fileSystemResourceServiceMock);
+            httpServletRequest, pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
     }
 
     @Test
@@ -423,6 +426,27 @@ public class PDFManagementServiceTest {
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
+
+    @Test
+    public void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
+        String json = "{}";
+        when(pdfGeneratorServiceMock.generatePdf(SOLICITOR_COVERSHEET, json))
+            .thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        String href = "href";
+        mockLinks(href);
+        when(pdfDecoratorService.decorate(callbackRequestMock, SOLICITOR_COVERSHEET)).thenReturn(json);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET);
+
+        String fileName = "solicitorCoverSheet.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+
 
     private void mockLinks(String href) {
         optionalLink = Optional.of(link);

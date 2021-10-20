@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -241,8 +243,8 @@ public class TaskStateRenderer {
         keyValue.put("ihtForm", ihtForm);
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
-            pa16Form = "<li><a href=\"https://www.gov.uk/government/publications/form-pa16-give-up-probate" 
-                + "-administrator-rights\">Give up probate administrator rights paper form</a></li>";
+            pa16Form = "<li><a href='" + PA16_FORM_URL+ "' target='blank'>" + PA16_FORM_TEXT +"</a>" 
+                + "</a></li>";
         }
         keyValue.put("pa16Form", pa16Form);
         keyValue.put("renouncingExecutors",

@@ -10,9 +10,12 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Component
 public class PA16FormBusinessRule implements BusinessRule {
 
+    public static final String CHILD = "Child";
+    public static final String CHILD_ADOPTED = "ChildAdopted";
+
     public boolean isApplicable(CaseData caseData) {
         boolean childAdopted =
-            asList("Child", "ChildAdopted").contains(caseData.getSolsApplicantRelationshipToDeceased());
+            asList(CHILD, CHILD_ADOPTED).contains(caseData.getSolsApplicantRelationshipToDeceased());
         boolean noApplicantSiblings = NO.equals(caseData.getSolsApplicantSiblings());
         boolean hasCivilRenouncing = YES.equals(caseData.getSolsSpouseOrCivilRenouncing());
 

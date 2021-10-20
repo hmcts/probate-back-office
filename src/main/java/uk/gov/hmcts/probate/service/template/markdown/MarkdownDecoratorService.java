@@ -6,18 +6,18 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MarkdownDecoratorService {
     private final PA16FormBusinessRule pa16FormBusinessRule;
-    public static final String PA16_FORM_TEXT =
-        "[Give up probate administrator rights paper form](https://www.gov" 
-            + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights)";
 
     public String getPA16FormLabel(CaseData caseData) {
         if (pa16FormBusinessRule.isApplicable(caseData)) {
-            return PA16_FORM_TEXT;
+            return "<a href=\"" + PA16_FORM_URL+ "\" target='blank'>" + PA16_FORM_TEXT + "</a>";
         }
         return "";
     }

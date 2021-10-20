@@ -106,6 +106,15 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
+
+                {% if case_extras.showPa16Form == "Yes" %}
+                <li>
+                    <a href="{{ case_extras.pa16FormURL }}" target="blank">{{ case_extras.pa16FormText }}</a>
+                </li>
+                <li>
+                    <a href="https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights" target="blank">Give up probate administrator rights paper form (PA16)</a>
+                </li>
+                {% endif %}
             </ul>
             <br /><br /><br />
         </td>
