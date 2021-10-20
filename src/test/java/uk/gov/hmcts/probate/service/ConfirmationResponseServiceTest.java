@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
+import uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
@@ -92,6 +93,8 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
     @Mock
+    private MarkdownDecoratorService markdownDecoratorService;
+    @Mock
     private MessageResourceService messageResourceServiceMock;
     @Mock
     private Executor executorMock;
@@ -113,6 +116,7 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
+            markdownDecoratorService,
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
             renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);

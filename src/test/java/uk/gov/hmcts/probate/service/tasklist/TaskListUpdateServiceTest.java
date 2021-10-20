@@ -64,7 +64,7 @@ public class TaskListUpdateServiceTest {
 
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
 
-        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
+        //when(defaultTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(stoppedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(escalatedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
     }
@@ -202,6 +202,8 @@ public class TaskListUpdateServiceTest {
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n</div>\n</div>\n";
 
+        when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
+        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenReturn(expectedCaseProgressCaseCreatedHtml);
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();
 
@@ -348,6 +350,8 @@ public class TaskListUpdateServiceTest {
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n</div>\n</div>\n";
 
+        when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
+        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenReturn(expectedCaseProgressCaseCreatedHtml);
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();
 

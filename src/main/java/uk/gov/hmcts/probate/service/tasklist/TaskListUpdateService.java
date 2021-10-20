@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 @Service
 @RequiredArgsConstructor
 public class TaskListUpdateService {
-    TaskListRendererFactory factory = new TaskListRendererFactory();
+    private final TaskListRendererFactory factory;
 
     public ResponseCaseDataBuilder generateTaskList(CaseDetails caseDetails, ResponseCaseDataBuilder builder) {
 
