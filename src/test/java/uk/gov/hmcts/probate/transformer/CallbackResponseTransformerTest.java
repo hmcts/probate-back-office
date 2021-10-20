@@ -2534,6 +2534,26 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void checkSolsReviewCheckBoxesTextAdmonWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_ADMON).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextIntestacy() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
     public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
         caseDataBuilder.solsWillType("WillLeftAnnexed");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

@@ -608,13 +608,14 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
+        var primaryApplicantIsApplying = caseDetails.getData().isPrimaryApplicantApplying();
         var believePlural = "s";
-        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
+        if (listOfApplyingExecs != null
+            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() == 0) || listOfApplyingExecs.size() > 1)) {
             believePlural = "";
         }
 
         var professionalName = caseDetails.getData().getSolsSOTName();
-        var primaryApplicantIsApplying = caseDetails.getData().isPrimaryApplicantApplying();
         var confirmSOT = "";
 
         if (caseDetails.getData().getSolsWillType() != null
@@ -669,10 +670,9 @@ public class CallbackResponseTransformer {
     private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
                                 Boolean primaryApplicantIsApplying) {
         var plural = "";
-        if (listOfApplyingExecs != null) {
-            if ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || (listOfApplyingExecs.size() > 1)) {
+        if (listOfApplyingExecs != null
+            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
                 plural = "s";
-            }
         }
         return plural;
     }
@@ -707,11 +707,8 @@ public class CallbackResponseTransformer {
                 }
             }
         } else {
-            executorNames = "The applicant" + returnPlural(listOfApplyingExecs,
-                primaryApplicantIsApplying) + " ";
-
-            executorNames = executorNames + caseData.getPrimaryApplicantForenames()
-                + " " + caseData.getPrimaryApplicantSurname();
+            executorNames = "The applicant " + caseData.getPrimaryApplicantForenames()
+                + " " + caseData.getPrimaryApplicantSurname() + ": ";
         }
         return executorNames;
     }
