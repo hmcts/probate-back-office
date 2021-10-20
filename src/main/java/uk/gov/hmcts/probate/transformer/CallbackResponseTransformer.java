@@ -611,7 +611,7 @@ public class CallbackResponseTransformer {
         var primaryApplicantIsApplying = caseDetails.getData().isPrimaryApplicantApplying();
         var believePlural = "s";
         if (listOfApplyingExecs != null
-            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() == 0) || listOfApplyingExecs.size() > 1)) {
+            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
             believePlural = "";
         }
 
