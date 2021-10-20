@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -37,6 +36,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
+import static uk.gov.hmcts.probate.util.EmailAddressUtils.INVALID_EMAIL_ADDRESSES;
 
 public class GrantNotificationServiceTest {
 
@@ -106,7 +106,7 @@ public class GrantNotificationServiceTest {
 
         caseDataInvalidPersonalEmailAddress = CaseData.builder()
             .registryLocation("Registry1")
-            .primaryApplicantEmailAddress(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .primaryApplicantEmailAddress(INVALID_EMAIL_ADDRESSES[0])
             .primaryApplicantForenames("Forename1")
             .primaryApplicantSurname("Surname1")
             .applicationType(ApplicationType.PERSONAL)
@@ -114,7 +114,7 @@ public class GrantNotificationServiceTest {
 
         caseDataInvalidSolicitorEmailAddress = CaseData.builder()
             .registryLocation("Registry1")
-            .solsSolicitorEmail(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .solsSolicitorEmail(INVALID_EMAIL_ADDRESSES[0])
             .primaryApplicantForenames("Forename1")
             .primaryApplicantSurname("Surname1")
             .applicationType(ApplicationType.SOLICITOR)

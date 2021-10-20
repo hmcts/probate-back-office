@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
@@ -20,6 +19,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.util.EmailAddressUtils.INVALID_EMAIL_ADDRESSES;
 
 public class EmailAddressNotifyApplicantValidationRuleTest {
 
@@ -96,7 +96,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     public void shouldFailPersonalWithInvalidEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
-            .primaryApplicantEmailAddress(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .primaryApplicantEmailAddress(INVALID_EMAIL_ADDRESSES[0])
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
@@ -119,7 +119,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     public void shouldFailSolicitorWithInvalidEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
-            .solsSolicitorEmail(Constants.INVALID_EMAIL_ADDRESSES[0])
+            .solsSolicitorEmail(INVALID_EMAIL_ADDRESSES[0])
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 

@@ -356,15 +356,15 @@ public class BusinessValidationController {
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;
-        List<FieldErrorResponse> hasRequiredEmailAddressErrors =
-            hasRequiredEmailAddress(callbackRequest.getCaseDetails().getData());
-        if (hasRequiredEmailAddressErrors.isEmpty()) {
+        List<FieldErrorResponse> validateEmailAddressErrors =
+            validateEmailAddress(callbackRequest.getCaseDetails().getData());
+        if (validateEmailAddressErrors.isEmpty()) {
             document = notificationService
                 .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
         }
 
         CallbackResponse response;
-        if (emailValidationService.isEmailNotValidErrorResponse(hasRequiredEmailAddressErrors)) {
+        if (emailValidationService.isEmailNotValidErrorResponse(validateEmailAddressErrors)) {
             response = eventValidationService.validateEmailRequest(callbackRequest,
                 emailAddressNotifyApplicantValidationRules);
 
@@ -465,7 +465,7 @@ public class BusinessValidationController {
         }
     }
 
-    private List<FieldErrorResponse> hasRequiredEmailAddress(CaseData data) {
+    private List<FieldErrorResponse> validateEmailAddress(CaseData data) {
         CCDData dataForEmailAddress = CCDData.builder()
             .applicationType(data.getApplicationType().name())
             .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())

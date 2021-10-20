@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -19,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.util.EmailAddressUtils.INVALID_EMAIL_ADDRESSES;
 
 public class EmailAddressExecutorsApplyingValidationRuleTest {
 
@@ -54,7 +54,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                 ExecutorsApplyingNotification.builder()
                     .name("Name")
-                    .email(Constants.INVALID_EMAIL_ADDRESSES[0])
+                    .email(INVALID_EMAIL_ADDRESSES[0])
                     .notification(YES)
                     .build()));
     @InjectMocks
