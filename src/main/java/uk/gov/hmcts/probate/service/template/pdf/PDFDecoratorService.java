@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -54,15 +55,10 @@ public class PDFDecoratorService {
         String updatedJson = dataJson;
         if (data instanceof CallbackRequest && documentType.equals(SOLICITOR_COVERSHEET)) {
             CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
-            String solCoversheetJson = solicitorCoversheetPDFDecorator.decorate(caseData);
-            updatedJson = mergeJson(updatedJson, solCoversheetJson);
+            updatedJson = solicitorCoversheetPDFDecorator.decorate(updatedJson, caseData);
         }
-        
-        return updatedJson;
-    }
 
-    private String mergeJson(String updatedJson, String solCoversheetJson) {
-        String before = updatedJson.substring(0, updatedJson.lastIndexOf("}"));
-        return before + "," + solCoversheetJson + "}";
+        System.out.println("updatedJson:" + updatedJson);
+        return updatedJson;
     }
 }

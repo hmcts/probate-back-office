@@ -6,7 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.CaseExtraDecorator;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,7 +22,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
     @Mock
-    private FileSystemResourceService fileSystemResourceServiceMock;
+    private CaseExtraDecorator caseExtraDecorator;
     @Mock
     private CaseData caseDataMock;
 
@@ -33,23 +34,25 @@ public class SolicitorCoversheetPDFDecoratorTest {
     
     @Test
     public void shouldNotProvideAdditionalDecoration() {
-        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+        String caseJson = "{\"caseData\":{\"someAttr\": \"someValue\"}";
+        String json = solicitorCoversheetPDFDecorator.decorate(caseJson, caseDataMock);
         
-        assertEquals("", json);
+        assertEquals(caseJson, json);
     }
 
     @Test
     public void shouldProvideAdditionalDecoration() {
+        String caseJson = "{\"caseData\":{\"someAttr\": \"someValue\"}";
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(fileSystemResourceServiceMock.getFileFromResourceAsString(any()))
-            .thenReturn("\"case_extras\": {\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"<PA16FormURL>\"," 
-                + "\"pa16FormText\":\"<PA16FormTEXT>\"}");
+        String extra = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
+            + "\"pa16FormText\":\"PA16FormTEXT\"}";
+        when(caseExtraDecorator.decorate(any()))
+            .thenReturn(extra);
         
-        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+        String expected = "{\"caseData\":{\"someAttr\": \"someValue\",\"case_extras\":{\"showPa16Form\":\"Yes\"," 
+            + "\"pa16FormUrl\":\"PA16FormURL\",\"pa16FormText\":\"PA16FormTEXT\"}}";
+        String json = solicitorCoversheetPDFDecorator.decorate(caseJson, caseDataMock);
 
-        String expected = "\"case_extras\": {\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"https://www.gov" 
-            + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\",\"pa16FormText\":\"Give " 
-            + "up probate administrator rights paper form (PA16)\"}";
         assertEquals(expected, json);
     }
 }

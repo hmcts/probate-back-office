@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -57,13 +58,13 @@ public class PDFDecoratorServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(solicitorCoversheetPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\": {\"showPa16Form\" : \"Yes\","
+            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
+        when(solicitorCoversheetPDFDecoratorMock.decorate(caseDetailsJson, caseDataMock)).thenReturn(expectedJson);
 
         String json = pdfDecoratorService.decorate(callbackRequestMock, SOLICITOR_COVERSHEET);
 
-        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"}," 
-            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\": {\"showPa16Form\" : \"Yes\"," 
-            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
         assertEquals(expectedJson, json);
     }
 
