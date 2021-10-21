@@ -138,6 +138,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
+    private static final String GENERATE_GRANT_REISSUE = "/document/generate-grant-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
@@ -203,6 +204,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
         + "The application has stated that the gross value";
+
+    private String DECEASED_DOMICILED_IN_ENG_WALES = "The application has stated that the gross value of the estate in the" +
+        " United Kingdom amounts to £10,000.00 and the net value amounts to £8,000.00";
 
     private static final String GRANT_DOC_NAME = "probateDocumentsGenerated[0].value.DocumentLink";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
@@ -276,6 +280,87 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
         assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
         assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+
+        String response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+
+        response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+
+//        Docmosis generation - need to amend FL-PRB-GNO-ENG-00061.doc
+//        response = generateReissueGrantDraftDocument(DEFAULT_PA_PAYLOAD);
+//        assertTrue(response.contains(expectedText));
+
+//        response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+//        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+
+        final String expectedText = replaceAllInString(DECEASED_DOMICILED_IN_ENG_WALES, "the United Kingdom",
+            "England and Wales");
+
+        final String payload = replaceAllInString(getJsonFromFile(DEFAULT_PA_PAYLOAD),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+//        Docmosis generation - need to amend FL-PRB-GNO-ENG-00061.doc
+//        response = generateReissueGrantDraftDocument(DEFAULT_PA_PAYLOAD);
+//        assertTrue(response.contains(expectedText));
+
+//        response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+//        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+
+        String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+
+        response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+
+        final String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        final String expectedText = replaceAllInString(DECEASED_DOMICILED_IN_ENG_WALES, "the United Kingdom",
+            "England and Wales");
+
+        String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        payload = replaceAllInString(payload,
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
