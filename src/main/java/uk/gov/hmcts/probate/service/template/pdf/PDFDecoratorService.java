@@ -52,13 +52,23 @@ public class PDFDecoratorService {
     }
 
     private String addExtraCaseData(String dataJson, Object data, DocumentType documentType) {
-        String updatedJson = dataJson;
+        String updatedJson = "";
         if (data instanceof CallbackRequest && documentType.equals(SOLICITOR_COVERSHEET)) {
             CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
-            updatedJson = solicitorCoversheetPDFDecorator.decorate(updatedJson, caseData);
+            updatedJson = solicitorCoversheetPDFDecorator.decorate(caseData);
         }
 
-        System.out.println("updatedJson:" + updatedJson);
-        return updatedJson;
+        return mergeCaseExtrasJson(dataJson, updatedJson);
+    }
+
+    private String mergeCaseExtrasJson(String caseJson, String caseExtrasJson) {
+        String before = caseJson.substring(0, caseJson.lastIndexOf("}"));
+        String emptyCaseExtrasJson = "{}";
+        if (!caseExtrasJson.isEmpty()) {
+            emptyCaseExtrasJson = caseExtrasJson;
+        }
+        String merged = before + "," + "\"case_extras\":" + emptyCaseExtrasJson + "}";
+        System.out.println("merged:" + merged);
+        return merged;
     }
 }

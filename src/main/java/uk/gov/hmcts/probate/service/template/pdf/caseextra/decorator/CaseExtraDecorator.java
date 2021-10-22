@@ -17,7 +17,6 @@ public class CaseExtraDecorator {
         String dataJson = "";
         try {
             dataJson = objectMapper.writeValueAsString(data);
-            System.out.println("dataJson:" + dataJson);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
             throw new BadRequestException(e.getMessage());

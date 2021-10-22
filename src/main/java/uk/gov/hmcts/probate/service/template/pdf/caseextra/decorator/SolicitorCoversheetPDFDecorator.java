@@ -16,7 +16,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final CaseExtraDecorator caseExtraDecorator;
     private final PA16FormBusinessRule pa16FormBusinessRule;
 
-    public String decorate(String caseJson, CaseData caseData) {
+    public String decorate(CaseData caseData) {
 
         if (pa16FormBusinessRule.isApplicable(caseData)) {
             PA16FormCaseExtra pa16FormCaseExtra = PA16FormCaseExtra.builder()
@@ -24,15 +24,9 @@ public class SolicitorCoversheetPDFDecorator {
                 .pa16FormUrl(PA16_FORM_URL)
                 .showPa16Form(YES)
                 .build();
-            String pa16FormCaseExtrasJson = caseExtraDecorator.decorate(pa16FormCaseExtra);
-            return mergeCaseExtrasJson(caseJson, pa16FormCaseExtrasJson);
+            return caseExtraDecorator.decorate(pa16FormCaseExtra);
         } else {
-            return caseJson;
+            return "";
         }
-    }
-
-    private String mergeCaseExtrasJson(String caseJson, String caseExtrasJson) {
-        String before = caseJson.substring(0, caseJson.lastIndexOf("}"));
-        return before + "," + "\"case_extras\":" + caseExtrasJson + "}";
     }
 }

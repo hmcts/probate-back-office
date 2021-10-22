@@ -531,6 +531,30 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationForPA16Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
+        
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+        assertEquals("PA16Form text",
+            nextStepsValues.get("{{pa16form}}"));
+
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationLegalstatementUploaded() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
         when(ccdDataMock.isHasUploadedLegalStatement()).thenReturn(true);

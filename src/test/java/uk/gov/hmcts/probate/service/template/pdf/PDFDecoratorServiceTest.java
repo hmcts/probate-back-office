@@ -42,26 +42,29 @@ public class PDFDecoratorServiceTest {
 
     @Test
     public void shouldNotDecorate() throws JsonProcessingException {
-        when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn("{case_data_json}");
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(caseDetailsJson);
 
         String json = pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
 
-        assertEquals("{case_data_json}", json);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{}}";
+        assertEquals(expectedJson, json);
     }
 
     @Test
     public void shouldDecorateSolicitorCoversheet() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"}," 
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
-        String caseExtraJson = "\"case_extras\": {\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
-        
+        String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
-            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\": {\"showPa16Form\" : \"Yes\","
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"showPa16Form\" : \"Yes\","
             + "\"pa16FormText\" : \"<PA16FormText>\"}}";
-        when(solicitorCoversheetPDFDecoratorMock.decorate(caseDetailsJson, caseDataMock)).thenReturn(expectedJson);
+        when(solicitorCoversheetPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
 
         String json = pdfDecoratorService.decorate(callbackRequestMock, SOLICITOR_COVERSHEET);
 
