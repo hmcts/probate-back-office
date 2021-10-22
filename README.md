@@ -146,6 +146,12 @@ If you would like to test a new CCD config locally, you should run:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh
 ```
+or if you want to stop the docker back-office image and run locally in your IDE
+
+```
+./ccdImports/conversionScripts/createAllXLS.sh host.docker.internal:4104
+./ccdImports/conversionScripts/importAllXLS.sh
+```
 
 ## Full setup
 
