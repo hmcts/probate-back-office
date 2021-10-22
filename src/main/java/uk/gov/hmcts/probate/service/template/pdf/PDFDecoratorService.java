@@ -67,7 +67,6 @@ public class PDFDecoratorService {
         if (!caseExtrasJson.isEmpty()) {
             emptyCaseExtrasJson = caseExtrasJson;
         }
-        String merged = before + "," + "\"case_extras\":" + emptyCaseExtrasJson + "}";
-        return merged;
+        return before + "," + "\"case_extras\":" + emptyCaseExtrasJson + "}";
     }
 }
