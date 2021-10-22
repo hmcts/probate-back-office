@@ -31,7 +31,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
         initMocks(this);
     }
     
-    
     @Test
     public void shouldNotProvideAdditionalDecoration() {
         String caseJson = "";

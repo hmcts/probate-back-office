@@ -63,8 +63,6 @@ public class TaskListUpdateServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
-
-        //when(defaultTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(stoppedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(escalatedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
     }

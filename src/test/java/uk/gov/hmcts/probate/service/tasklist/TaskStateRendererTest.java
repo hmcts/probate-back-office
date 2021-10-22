@@ -466,6 +466,34 @@ public class TaskStateRendererTest {
     }
 
     @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacy() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_INTESTACY)
+            .ihtFormId(IHT_FORM_207)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/intestacy/solicitorCaseProgressSendDocuments");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndPA16Form() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
@@ -485,7 +513,7 @@ public class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
-                "caseprogress/intestacy/solicitorCaseProgressSendDocuments");
+                "caseprogress/intestacy/solicitorCaseProgressSendDocumentsWithPA16Form");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(true);

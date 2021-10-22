@@ -542,13 +542,7 @@ public class ConfirmationResponseServiceTest {
         
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
-        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
-        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
-        assertConfirmationValues(nextStepsValues);
-        assertFeeConfirmationValues(nextStepsValues);
-        assertLegalStatement(nextStepsValues);
         assertEquals("PA16Form text",
             nextStepsValues.get("{{pa16form}}"));
 

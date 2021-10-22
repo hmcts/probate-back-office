@@ -100,7 +100,6 @@ public class PDFManagementService {
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {
-        log.info("json {}", json);
         log.info("Generating pdf for template {}", documentType.getTemplateName());
         EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
         log.info("Got the {}", documentType.getTemplateName());

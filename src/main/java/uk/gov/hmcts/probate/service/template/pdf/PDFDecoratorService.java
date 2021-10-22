@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 @Slf4j
 @Component
 public class PDFDecoratorService {
+    private static final String CASE_EXTRAS_KEY = "\"case_extras\"";
     private final ObjectMapper objectMapper;
     private final SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
 
@@ -67,6 +68,6 @@ public class PDFDecoratorService {
         if (!caseExtrasJson.isEmpty()) {
             emptyCaseExtrasJson = caseExtrasJson;
         }
-        return before + "," + "\"case_extras\":" + emptyCaseExtrasJson + "}";
+        return before + "," + CASE_EXTRAS_KEY + ":" + emptyCaseExtrasJson + "}";
     }
 }
