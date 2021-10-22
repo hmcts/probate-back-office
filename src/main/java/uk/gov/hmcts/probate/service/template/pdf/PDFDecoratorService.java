@@ -68,7 +68,6 @@ public class PDFDecoratorService {
             emptyCaseExtrasJson = caseExtrasJson;
         }
         String merged = before + "," + "\"case_extras\":" + emptyCaseExtrasJson + "}";
-        System.out.println("merged:" + merged);
         return merged;
     }
 }

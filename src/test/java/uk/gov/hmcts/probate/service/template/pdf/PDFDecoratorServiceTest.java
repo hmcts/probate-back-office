@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCo
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 public class PDFDecoratorServiceTest {
@@ -41,7 +43,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotDecorate() throws JsonProcessingException {
+    public void shouldNotDecorateForCaveatRequest() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(caseDetailsJson);
@@ -51,6 +53,28 @@ public class PDFDecoratorServiceTest {
         String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{}}";
         assertEquals(expectedJson, json);
+    }
+
+    @Test
+    public void shouldNotDecorateForNonCoversheet() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
+
+        String json = pdfDecoratorService.decorate(callbackRequestMock, GRANT_COVER);
+
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{}}";
+        assertEquals(expectedJson, json);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldNotDecorateThrowBadRequest() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenThrow(JsonProcessingException.class);
+
+        String json = pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
     }
 
     @Test
