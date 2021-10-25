@@ -1,5 +1,6 @@
 {
   "tabName": "Documents",
+  "waitForText" : "Manage cases",
   "fields": [
     "Type",
     "Document Url",

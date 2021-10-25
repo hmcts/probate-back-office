@@ -3,20 +3,11 @@ const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;
-    let url = await I.grabCurrentUrl();
-    let caseRef;
-    if (testConfig.TestForXUI === true) {
-        url = url.replace('#Event%20History', '');
-        caseRef = url.split('/').pop()
-            .match(/.{4}/g)
-            .join('-');
+    await I.wait(testConfig.GetCaseRefFromUrlDelay);
+    const url = await I.grabCurrentUrl();
 
-    } else {
-        url = url.replace('#eventHistoryTab', '');
-        caseRef = url.split('/').pop()
-            .match(/.{4}/g)
-            .join('-');
-    }
-
-    return caseRef;
+    return url.replace('#Event%20History', '').split('/')
+        .pop()
+        .match(/.{4}/g)
+        .join('-');
 };

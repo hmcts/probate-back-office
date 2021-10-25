@@ -35,7 +35,7 @@ public class SmeeAndFordDataExtractService {
 
     private Document performSmeeAndFordExtractForDate(String date) {
         log.info("Smee And Ford data extract initiated for date: {}", date);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate(date);
         log.info("Found {} cases with dated document for SF", cases.size());
 
         return sendSmeeAndFordEmail(cases, date, date);

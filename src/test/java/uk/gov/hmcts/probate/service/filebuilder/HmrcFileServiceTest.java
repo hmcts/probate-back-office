@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
@@ -62,6 +63,11 @@ public class HmrcFileServiceTest {
             new CollectionMember(null, AliasName.builder().solsAliasname("PETE KRENT").build()),
             new CollectionMember(null, AliasName.builder().solsAliasname("PETRA").build())
         );
+        List<CollectionMember<ProbateAliasName>> deceasedProbateAliasNames = Arrays.asList(
+            new CollectionMember(null, ProbateAliasName.builder().forenames("Citizen PIPER").lastName("KRENT").build()),
+            new CollectionMember(null, ProbateAliasName.builder().forenames("Citizen PETE").lastName("KRENT").build()),
+            new CollectionMember(null, ProbateAliasName.builder().forenames("Citizen PETRA").lastName("KRENT").build())
+        );
         LocalDate dod = LocalDate.of(2018, 8, 17);
         LocalDate dob = LocalDate.of(1940, 10, 20);
         String grantIssuedDate = "2018-10-24";
@@ -112,7 +118,7 @@ public class HmrcFileServiceTest {
                 .addressLine3("Leicester")
                 .postCode("LE5 6XQ").build())
             .boDeceasedTitle("MR")
-            .solsDeceasedAliasNamesList(deceasedAliasNames)
+            .deceasedAliasNameList(deceasedProbateAliasNames)
             .primaryApplicantIsApplying("Yes")
             .primaryApplicantForenames("ANDJELKA")
             .primaryApplicantSurname("KOMODROMOS")
