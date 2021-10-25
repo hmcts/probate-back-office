@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -29,6 +30,8 @@ import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -56,6 +59,7 @@ public class TaskStateRenderer {
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final PA16FormBusinessRule pa16FormBusinessRule;
+    private final PA17FormBusinessRule pa17FormBusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -148,7 +152,8 @@ public class TaskStateRenderer {
                 .replaceFirst("<ihtText/>", keyValues.getOrDefault("ihtText", ""))
                 .replaceFirst("<ihtForm/>", keyValues.getOrDefault("ihtForm", ""))
                 .replaceFirst("<renouncingExecutors/>", keyValues.getOrDefault("renouncingExecutors", ""))
-                .replaceFirst("<pa16Form/>", keyValues.getOrDefault("pa16Form", "")));
+                .replaceFirst("<pa16Form/>", keyValues.getOrDefault("pa16Form", ""))
+                .replaceFirst("<pa17Form/>", keyValues.getOrDefault("pa17Form", "")));
     }
 
     private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
@@ -246,6 +251,11 @@ public class TaskStateRenderer {
             pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
         }
         keyValue.put("pa16Form", pa16Form);
+        String pa17Form = "";
+        if (pa17FormBusinessRule.isApplicable(data)) {
+            pa17Form = "<li><a href=\"" + PA17_FORM_URL + "\" target=\"_blank\">" + PA17_FORM_TEXT + "</a></li>";
+        }
+        keyValue.put("pa17Form", pa17Form);
         keyValue.put("renouncingExecutors",
             (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
