@@ -1875,6 +1875,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetGopPA17Form() {
+        String payload = "/caseprogress/04d-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
+        assertTrue(response.contains(expectedText));
+
+    }
+    
+    @Test
     public void verifyGenerateSolsCoverSheetIntestacy() {
         String payload = "/caseprogressintestacy/04-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");

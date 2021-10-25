@@ -56,6 +56,19 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)");
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
+    
+    @Test
+    public void shouldIncludePA17Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA17.json", VALIDATE_URL);
+        assertTrue(response.contains("(PA17)"));
+    }
+
+    @Test
+    public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() {
+        validatePostRequestSuccessForLegalStatement(
+            "success.nextsteps-LegalStatementUploaded-PA17"
+                + ".json",  "(PA17)");
+    }
 
     public void verifyAllDetailsInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement(Arrays.asList("deceasedFirstName", "deceasedLastName",
@@ -114,6 +127,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void shouldTransformSolicitorExecutorFields() {
         final String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
+        System.out.println("Response: "  + response);
         final JsonPath jsonPath = JsonPath.from(response);
 
         final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
@@ -146,6 +160,8 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path).andReturn();
+        
+        System.out.println("Status code: " + jsonResponse.getStatusCode());
 
         return jsonResponse.getBody().asString();
     }
@@ -189,7 +205,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(replaceString(oldString, replacingString))
-            .post("/nextsteps/validate");
+            .post(VALIDATE_URL);
         assertEquals(400, response.getStatusCode());
         assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
         assertTrue(response.getBody().asString().contains(errorMsg));

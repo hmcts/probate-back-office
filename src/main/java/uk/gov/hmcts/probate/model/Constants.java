@@ -57,7 +57,9 @@ public final class Constants {
     public static final String SOLICITOR_ID = "solicitor";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
-
+    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals";
+    public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
+        + " (PA17)";
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use

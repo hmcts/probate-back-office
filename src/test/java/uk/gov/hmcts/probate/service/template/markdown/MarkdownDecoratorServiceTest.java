@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,6 +19,9 @@ public class MarkdownDecoratorServiceTest {
     
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRule;
+
+    @Mock
+    private PA17FormBusinessRule pa17FormBusinessRule;
     
     @Mock
     private CaseData caseDataMock;
@@ -42,6 +46,26 @@ public class MarkdownDecoratorServiceTest {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+
+    @Test
+    public void shouldGetPA17FormLabel() {
+        when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        assertEquals("\n*   <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor" 
+                + "-rights-for-legal-professionals\" target=\"_blank\">Give up probate executor rights for probate " 
+                + "practitioners paper form (PA17)</a>",
+            md);
+    }
+
+    @Test
+    public void shouldNotGetPA17FormLabel() {
+        when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
         assertEquals("", md);
     }
 }
