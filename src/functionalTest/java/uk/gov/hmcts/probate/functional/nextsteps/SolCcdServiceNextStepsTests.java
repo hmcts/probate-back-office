@@ -202,7 +202,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithCaseworkerUser())
             .body(replaceString(oldString, replacingString))
-            .post(VALIDATE_URL);
+            .post("/nextsteps/validate");
         assertEquals(400, response.getStatusCode());
         assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
         assertTrue(response.getBody().asString().contains(errorMsg));
