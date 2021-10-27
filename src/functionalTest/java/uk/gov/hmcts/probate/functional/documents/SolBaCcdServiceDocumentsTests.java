@@ -139,7 +139,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
-    private static final String GENERATE_GRANT_REISSUE = "/document/generate-grant-reissue";
 
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
