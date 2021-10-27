@@ -127,7 +127,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void shouldTransformSolicitorExecutorFields() {
         final String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
-        System.out.println("Response: "  + response);
+
         final JsonPath jsonPath = JsonPath.from(response);
 
         final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
@@ -161,8 +161,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path).andReturn();
         
-        System.out.println("Status code: " + jsonResponse.getStatusCode());
-
         return jsonResponse.getBody().asString();
     }
 
