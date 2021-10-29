@@ -79,7 +79,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 // Vars for Kubernetes
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
-// Configure branches to sync with master branch SANJAY
+// Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
 withPipeline("java", product, component) {
