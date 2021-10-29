@@ -19,7 +19,7 @@ public class DocumentManagementRequestBuilderTest {
     private DocumentManagementRequestBuilder documentManagementRequestBuilder;
 
     @Test
-    public void shouldPrepareRequest() {
+    public void shouldPrepareRequestForGrantDoc() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 
@@ -30,6 +30,38 @@ public class DocumentManagementRequestBuilderTest {
         assertEquals("PRIVATE", documentUploadRequest.getClassification());
         assertEquals("PROBATE", documentUploadRequest.getJurisdictionId());
         assertEquals("GrantOfRepresentation", documentUploadRequest.getCaseTypeId());
+        String fileName = documentUploadRequest.getFiles().get(0).getName();
+        assertTrue(fileName.contains(".pdf"));
+    }
+    
+    @Test
+    public void shouldPrepareRequestForCaveatDoc() {
+        byte[] bytes = {32, 43, 86};
+        EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
+
+        DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder.perpareDocumentUploadRequest(
+            fileUpload, DocumentType.CAVEAT_COVERSHEET);
+
+        assertEquals(1, documentUploadRequest.getFiles().size());
+        assertEquals("PRIVATE", documentUploadRequest.getClassification());
+        assertEquals("PROBATE", documentUploadRequest.getJurisdictionId());
+        assertEquals("Caveat", documentUploadRequest.getCaseTypeId());
+        String fileName = documentUploadRequest.getFiles().get(0).getName();
+        assertTrue(fileName.contains(".pdf"));
+    }
+
+    @Test
+    public void shouldPrepareRequestForWillDoc() {
+        byte[] bytes = {32, 43, 86};
+        EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
+
+        DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder.perpareDocumentUploadRequest(
+            fileUpload, DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT);
+
+        assertEquals(1, documentUploadRequest.getFiles().size());
+        assertEquals("PRIVATE", documentUploadRequest.getClassification());
+        assertEquals("PROBATE", documentUploadRequest.getJurisdictionId());
+        assertEquals("WillLodgement", documentUploadRequest.getCaseTypeId());
         String fileName = documentUploadRequest.getFiles().get(0).getName();
         assertTrue(fileName.contains(".pdf"));
     }

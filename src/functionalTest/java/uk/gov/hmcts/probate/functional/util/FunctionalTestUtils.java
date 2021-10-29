@@ -170,7 +170,7 @@ public class FunctionalTestUtils {
         return parsePDFToString(jsonResponse.getBody().asInputStream());
     }
 
-    public String parsePDFToString(InputStream inputStream) {
+    private String parsePDFToString(InputStream inputStream) {
 
         PDFParser parser;
         PDDocument pdDoc = null;
