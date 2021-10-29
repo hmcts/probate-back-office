@@ -45,6 +45,7 @@ public class SmeeAndFordPersonalisationService {
     private static final String DELIMITER = "|";
     private static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
+    private static final String COMMA = ",";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
         WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT};
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
@@ -309,32 +310,47 @@ public class SmeeAndFordPersonalisationService {
         }
     }
 
+    private String ifNotEmptyWithComma(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return "";
+        } else {
+            return value + COMMA;
+        }
+    }
+
     private String getDeceasedAliasNames(CaseData data) {
         StringBuilder aliases = new StringBuilder();
         if (data.getDeceasedAliasNameList() != null && !data.getDeceasedAliasNameList().isEmpty())  {
             for (CollectionMember<ProbateAliasName> alias : data.getDeceasedAliasNameList()) {
-                aliases.append(ifNotEmptyWithSpace(
+                aliases.append(ifNotEmptyWithComma(
                     ifNotEmptyWithSpace(alias.getValue().getForenames())
                     + ifNotEmpty(alias.getValue().getLastName())));
             }
         } else if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty())  {
             for (CollectionMember<AliasName> alias : data.getSolsDeceasedAliasNamesList()) {
-                aliases.append(ifNotEmptyWithSpace(alias.getValue().getSolsAliasname()));
+                aliases.append(ifNotEmptyWithComma(alias.getValue().getSolsAliasname()));
             }
         }
-        return removeAnyLastSpace(aliases.toString());
+        return removeAnyLastComma(aliases.toString());
     }
 
     private String getDeceasedNameWithHonours(CaseData data) {
         return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmptyWithSpace(data.getDeceasedSurname()) 
             + ifNotEmpty(data.getBoDeceasedHonours());
     }
-    
+
     private String removeAnyLastSpace(String data) {
         if (data.indexOf(SPACE) <= 0) {
             return data;
         }
         return data.substring(0, data.lastIndexOf(SPACE));
+    }
+
+    private String removeAnyLastComma(String data) {
+        if (data.indexOf(COMMA) <= 0) {
+            return data;
+        }
+        return data.substring(0, data.lastIndexOf(COMMA));
     }
 
     private String removeLastNewLine(String data) {
