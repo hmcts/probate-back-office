@@ -141,7 +141,7 @@ public class DocumentControllerUnitTest {
     @Test
     public void shouldReturnErrorForInvalidFileExtension() {
         List<String> expectedResult = new ArrayList<>();
-        expectedResult.add("Error: invalid file type");
+        expectedResult.add("Error: invalid file type: testData");
         MockMultipartFile file = new MockMultipartFile("testData", "filename.txt", "text/plain", "some xml".getBytes());
         List<MultipartFile> files = new ArrayList<>();
         files.add(file);

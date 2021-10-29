@@ -58,8 +58,8 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
+import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -186,7 +186,7 @@ public class DocumentController {
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
-                DocumentIssueType.GRANT);
+            DocumentIssueType.GRANT);
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
@@ -350,8 +350,8 @@ public class DocumentController {
 
     private boolean useHtmlPdfGeneratorForReissue(CaseData cd) {
         if ((GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
-                && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
-                && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()))) {
+            && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
+            && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()))) {
 
             return true;
         }
@@ -370,36 +370,11 @@ public class DocumentController {
         @RequestPart("file") List<MultipartFile> files
     ) {
         List<String> result = new ArrayList<>();
-        if (files == null || files.isEmpty()) {
-            log.error("Zero files received by the API endpoint.");
-            result.add("Error: no files passed");
+        List<String> fileValidationErrors = documentValidation.validateFiles(files);
+        if (!fileValidationErrors.isEmpty()) {
+            result.addAll(fileValidationErrors);
             return result;
         }
-
-        if (files.size() > 10) {
-            log.error("Too many files passed to the API endpoint");
-            result.add("Error: too many files");
-            return result;
-        }
-
-        boolean noValidFilesReceived = files.stream()
-            .noneMatch(f -> documentValidation.isValid(f));
-
-        if (noValidFilesReceived) {
-            log.error("No valid file types passed to the API endpoint.");
-            return files.stream()
-                .map(f -> "Error: invalid file type")
-                .collect(Collectors.toList());
-        }
-
-        files = files.stream()
-            .filter(f -> documentValidation.isValid(f))
-            .collect(Collectors.toList());
-
-        List<String> invalidFiles = files.stream()
-            .filter(f -> !documentValidation.isValid(f))
-            .map(f -> "Error: invalid file type")
-            .collect(Collectors.toList());
 
         log.info("Uploading document at BackOffice");
         UploadResponse uploadResponse = documentManagementService
@@ -412,7 +387,6 @@ public class DocumentController {
                 .collect(Collectors.toList());
         }
 
-        result.addAll(invalidFiles);
         return result;
     }
 
