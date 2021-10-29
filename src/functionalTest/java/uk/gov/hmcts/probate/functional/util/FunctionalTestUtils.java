@@ -144,36 +144,30 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
-        final String documentId = documentUrl.substring(documentUrl.lastIndexOf("/") + 1);
-
-        Response jsonResponse = RestAssured.given()
-            .baseUri(caseDocumentManagermentUrl)
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
-        jsonResponse.then().assertThat().statusCode(200);
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
 
         return parsePDFToString(jsonResponse.getBody().asInputStream());
 
     }
 
-    public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        final String userId = getSchedulerCaseworkerUserId();
-        final Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId(serviceToken, userId))
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+    private Response getDocumentResponse(String documentUrl, Headers headers) {
+        String docUrl = documentUrl.replaceAll("/binary", "");
+        final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
 
-        return parsePDFToString(document.getBody().asInputStream());
-    }
-
-    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
-        final Response document = RestAssured.given()
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
             .relaxedHTTPSValidation()
             .headers(headers)
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+        return  jsonResponse;
+    }
+    
+    public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithUserId(serviceToken, 
+            getSchedulerCaseworkerUserId()));
 
-        return parsePDFToString(document.getBody().asInputStream());
+        return parsePDFToString(jsonResponse.getBody().asInputStream());
     }
 
     public String parsePDFToString(InputStream inputStream) {

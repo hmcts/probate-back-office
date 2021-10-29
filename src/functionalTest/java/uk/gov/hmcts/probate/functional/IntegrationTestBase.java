@@ -145,16 +145,6 @@ public abstract class IntegrationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
-    protected void assertExpectedContentsForHeaders(String expectedResponseFile, String responseDocumentUrl,
-                                                    ResponseBody responseBody, Headers headers) {
-        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
-
-        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        final String documentUrl = jsonPath.get(responseDocumentUrl);
-        final String response = removeCrLfs(utils.downloadPdfAndParseToStringForHeaders(documentUrl, headers));
-        assertTrue(response.contains(expectedText));
-    }
-
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
         String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
         String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
