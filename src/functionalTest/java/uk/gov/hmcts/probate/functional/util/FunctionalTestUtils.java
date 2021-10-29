@@ -151,6 +151,7 @@ public class FunctionalTestUtils {
     }
 
     private Response getDocumentResponse(String documentUrl, Headers headers) {
+        log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
         String docUrl = documentUrl.replaceAll("/binary", "");
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
 
