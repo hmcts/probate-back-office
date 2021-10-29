@@ -238,7 +238,7 @@ services:
       - 5050:5432
 
   dm-store:
-    image: hmctspublic.azurecr.io/dm/store:latest
+    image: hmctspublic.azurecr.io/dm/store:pr-1152-6ef6ba3-20211027150237
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m
       - SERVER_PORT=8080
@@ -249,7 +249,7 @@ services:
       - STORAGEACCOUNT_PRIMARY_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azure-storage-emulator-azurite:10000/devstoreaccount1
       - STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME=hmctstestcontainer
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
-      - ENABLE_TTL=false
+      - ENABLE_TTL=true
       - ENABLE_METADATA_MIGRATION=false
       - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
     depends_on:
@@ -636,7 +636,7 @@ services:
       - ccd-data-store-api
 
   ccd-case-document-am-api:
-    image: cdamlocaldebug:latest
+    image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
     environment:
       CASE_DOCUMENT_AM_API_S2S_SECRET: "AAAAAAAAAAAAAAAC"
       CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,probate_backend

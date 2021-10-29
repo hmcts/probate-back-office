@@ -315,15 +315,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-        final String document1Url =
-            jsonPath.get("data." + documentName + ".document_url");
-        final String documentId = document1Url.substring(document1Url.lastIndexOf("/") + 1);
         final String documentUrl =
-                jsonPath.get("data." + documentName + ".document_binary_url");
-        System.out.println("documentUrl:" + documentUrl);
-        System.out.println("documentId:" + documentId);
-        //utils.patchTTLOnDocument(documentId);
-        utils.getDocumentText(documentId);
+                jsonPath.get("data." + documentName + ".document_url");
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
     }
@@ -338,31 +331,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generateSotDocumentFromPayload(String payload, String path) {
         return generateDocumentFromPayload(payload, path, SOT_DOC_NAME);
-    }
-
-    @Test
-    public void verifySuccessForGetAdmonWillGrantForCardiffText() {
-        assertContentsForPdfDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, DocumentType.DIGITAL_GRANT, 
-            "admonWillGrantForCardiffResponse.txt");
-    }
-
-    private void assertContentsForPdfDocument(String payloadFile, DocumentType documentType, String responseFile) {
-        String payload = utils.getJsonFromFile(payloadFile);
-        Response response = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(payload)
-            .when().post("/testing-support/documents/pdf?" + documentType.name())
-            .andReturn();
-
-        response.then().assertThat().statusCode(200);
-
-        final ResponseBody responseBody = response.getBody();
-        String pdfText = removeCrLfs(utils.parsePDFToString(responseBody.asInputStream()));
-        final String expectedText = removeCrLfs(getJsonFromFile(responseFile));
-        System.out.println("expectedText:" + expectedText);
-        System.out.println("pdfText:" + pdfText);
-        TestCase.assertTrue(pdfText.contains(expectedText));
     }
 
     @Test
@@ -1884,6 +1852,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifyGenerateSolsCoverSheetAdmonWill() {
+        
         String payload = "/caseprogressadmonwill/04-caseCreated.json";
         String response = generateDocument(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
         String expectedText = utils

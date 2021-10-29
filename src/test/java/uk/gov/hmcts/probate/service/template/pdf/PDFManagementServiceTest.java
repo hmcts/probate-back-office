@@ -53,7 +53,6 @@ import static uk.gov.hmcts.reform.ccd.document.am.model.Classification.PRIVATE;
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
 
-    private static final String HASH_TOKEN = "hashToken";
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
@@ -360,7 +359,6 @@ public class PDFManagementServiceTest {
         document = uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
             .links(links)
             .originalDocumentName(fileName)
-            .hashToken(HASH_TOKEN)
             .classification(PRIVATE)
             .build();
 
@@ -401,6 +399,5 @@ public class PDFManagementServiceTest {
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(BINARY_URL, response.getDocumentLink().getDocumentBinaryUrl());
         assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
-        assertEquals(HASH_TOKEN, response.getDocumentLink().getDocumentHash());
     }
 }

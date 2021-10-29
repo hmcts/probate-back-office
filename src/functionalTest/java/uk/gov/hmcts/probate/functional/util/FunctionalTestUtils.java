@@ -144,12 +144,17 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
-        final Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId())
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+        final String documentId = documentUrl.substring(documentUrl.lastIndexOf("/") + 1);
 
-        return parsePDFToString(document.getBody().asInputStream());
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
+            .relaxedHTTPSValidation()
+            .headers(getHeadersWithCaseworkerUser())
+            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+
+        return parsePDFToString(jsonResponse.getBody().asInputStream());
+
     }
 
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
@@ -378,28 +383,6 @@ public class FunctionalTestUtils {
             default:
                 return day + "th " + formattedDate.substring(3);
         }
-    }
-
-    public void patchTTLOnDocument(String documentId) {
-        String payload = "{\"ttl\": \"2021-10-16T00:00:00.0000\"}";
-        Response jsonResponse = RestAssured.given()
-            .baseUri(caseDocumentManagermentUrl)
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .body(payload)
-            .when().patch("/cases/documents/" + documentId).andReturn();
-        jsonResponse.then().assertThat().statusCode(200);
-    }
-
-    public String getDocumentText(String documentId) {
-        Response jsonResponse = RestAssured.given()
-            .baseUri(caseDocumentManagermentUrl)
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithCaseworkerUser())
-            .when().get("/cases/documents/" + documentId).andReturn();
-        jsonResponse.then().assertThat().statusCode(200);
-        
-        jsonResponse.andReturn().
     }
 
 }
