@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -273,19 +272,13 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private void downloadPdfAndVerifyString(String documentId, String validationString) {
-        IntegrationTestBase.setEvidenceManagementUrlAsBaseUri();
         try {
-            final ValidatableResponse response2 = given()
-                .config(config)
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .when().get("/documents/" + documentId + "/binary")
-                .then().assertThat().statusCode(200);
+            final Response response = utils.getDocumentResponseFromId(documentId, utils.getHeadersWithUserId());
 
-            final String textContent = removeCrLfs(textContentOf(response2.extract().body().asByteArray()));
+            final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
-            assertEquals(response2.extract().contentType(), "application/pdf");
+            assertEquals(response.contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();
         }

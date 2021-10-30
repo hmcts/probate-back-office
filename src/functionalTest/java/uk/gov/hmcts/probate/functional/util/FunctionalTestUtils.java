@@ -143,6 +143,16 @@ public class FunctionalTestUtils {
             new Header("user-id", userId));
     }
 
+    public Response getDocumentResponseFromId(String documentId, Headers headers) {
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+        return  jsonResponse;
+    }
+    
     public String downloadPdfAndParseToString(String documentUrl) {
         Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
 
@@ -154,14 +164,7 @@ public class FunctionalTestUtils {
         log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
         String docUrl = documentUrl.replaceAll("/binary", "");
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
-
-        Response jsonResponse = RestAssured.given()
-            .baseUri(caseDocumentManagermentUrl)
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
-        jsonResponse.then().assertThat().statusCode(200);
-        return  jsonResponse;
+        return getDocumentResponseFromId(documentId, headers);
     }
     
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
