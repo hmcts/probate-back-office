@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
@@ -138,5 +140,21 @@ public class DocumentManagementServiceImplTest {
                 .build())
             .build());
         assertTrue(bytes.length > 0);
+    }
+
+    @Test(expected = ClientException.class)
+    public void shoulThrowExceptionForNoBodyGetDocument() throws IOException {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation("AUTH")
+            .serviceAuthorisation("S2S")
+            .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
+        documentManagementService.getDocument(Document.builder()
+            .documentLink(DocumentLink.builder()
+                .documentBinaryUrl("binary-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .build())
+            .build());
     }
 }

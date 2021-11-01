@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
@@ -93,6 +94,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String binaryUrl = document.getDocumentLink().getDocumentBinaryUrl();
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
             binaryUrl);
+        if (response.getBody() == null) {
+            throw new ClientException(500, "No body in document resource");
+        }
         return IOUtils.toByteArray(response.getBody().getInputStream());
     }
 }
