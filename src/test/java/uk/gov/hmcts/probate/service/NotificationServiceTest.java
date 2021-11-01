@@ -37,7 +37,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -158,7 +158,7 @@ public class NotificationServiceTest {
     private AuthTokenGenerator tokenGenerator;
 
     @MockBean
-    private DocumentStoreClient documentStoreClient;
+    private DocumentManagementService documentManagementService;
 
     @MockBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -217,7 +217,7 @@ public class NotificationServiceTest {
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
-        when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
+        when(documentManagementService.getDocument(any())).thenReturn(DOC_BYTES);
 
         when(tokenGenerator.generate()).thenReturn("123");
 

@@ -86,6 +86,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         caseDocumentClient.deleteDocument(auth, s2s, docId, DELETE_PERMANENT);
     }
 
+    @Override
     public byte[] getDocument(Document document) throws IOException {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String auth = securityDTO.getAuthorisation();
@@ -94,10 +95,11 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String binaryUrl = document.getDocumentLink().getDocumentBinaryUrl();
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
             binaryUrl);
-        if (response.getBody() != null) {
-            return IOUtils.toByteArray(response.getBody().getInputStream());
+        Resource body = response.getBody();
+        if (body != null) {
+            return IOUtils.toByteArray(body.getInputStream());
         } else {
-            throw new ClientException(500, "No body in document resource");
+            throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
         }
     }
 }
