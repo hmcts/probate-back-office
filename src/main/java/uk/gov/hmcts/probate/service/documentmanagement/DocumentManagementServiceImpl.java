@@ -94,9 +94,10 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String binaryUrl = document.getDocumentLink().getDocumentBinaryUrl();
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
             binaryUrl);
-        if (response.getBody() == null) {
+        if (response.getBody() != null) {
+            return IOUtils.toByteArray(response.getBody().getInputStream());
+        } else {
             throw new ClientException(500, "No body in document resource");
         }
-        return IOUtils.toByteArray(response.getBody().getInputStream());
     }
 }
