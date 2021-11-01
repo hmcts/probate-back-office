@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -51,7 +51,7 @@ public class BulkPrintService {
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String CASE_ID = "case id ";
     private final SendLetterApi sendLetterApi;
-    private final DocumentStoreClient documentStoreClient;
+    private final DocumentManagementService documentManagementService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final EventValidationService eventValidationService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
@@ -175,7 +175,7 @@ public class BulkPrintService {
                                                CallbackRequest callbackRequest) throws IOException {
 
         String response =
-            Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
+            Base64.getEncoder().encodeToString(documentManagementService.getDocument(document));
         log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString()
             + "dm store" + document.getDocumentFileName());
         return response;
@@ -186,7 +186,7 @@ public class BulkPrintService {
                                                CaveatCallbackRequest caveatCallbackRequest) throws IOException {
 
         String response =
-            Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
+            Base64.getEncoder().encodeToString(documentManagementService.getDocument(document));
         log.info(CASE_ID + caveatCallbackRequest.getCaseDetails().getId().toString()
             + "dm store" + document.getDocumentFileName());
         return response;

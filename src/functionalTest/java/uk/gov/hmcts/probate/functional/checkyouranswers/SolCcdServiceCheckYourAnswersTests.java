@@ -243,7 +243,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private void validatePostRequestSuccessForLegalStatement(String validationString, String fileName, String url) {
         final Response response = given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile(fileName))
             .when().post(url);
         assertEquals(200, response.getStatusCode());

@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DocumentManagementService {
@@ -16,5 +17,7 @@ public interface DocumentManagementService {
                                     DocumentType documentType);
 
     void delete(Document document) throws JsonProcessingException;
+
+    public byte[] getDocument(Document document) throws IOException;
 
 }

@@ -5,24 +5,33 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.util.FileUtils;
 import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
@@ -41,6 +50,12 @@ public class DocumentManagementServiceImplTest {
     private DocumentUploadRequest documentUploadRequestMock;
     @Mock
     private UploadResponse uploadResponseMock;
+    @Mock
+    private ResponseEntity<Resource> getResponseMock;
+    @Mock
+    private Resource getBodyMock;
+    @Mock
+    private InputStream inputStreamMock;
 
     @Test
     public void shouldStoreFile() {
@@ -102,5 +117,26 @@ public class DocumentManagementServiceImplTest {
                 .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")
                 .build())
             .build());
+    }
+
+    @Test
+    public void shoulGetDocument() throws IOException {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation("AUTH")
+            .serviceAuthorisation("S2S")
+            .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
+        when(getResponseMock.getBody()).thenReturn(getBodyMock);
+        File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + "digitalCase.json"));
+        FileInputStream fis = new FileInputStream(file);
+        when(getBodyMock.getInputStream()).thenReturn(fis);
+        byte[] bytes = documentManagementService.getDocument(Document.builder()
+            .documentLink(DocumentLink.builder()
+                .documentBinaryUrl("binary-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .build())
+            .build());
+        assertTrue(bytes.length > 0);
     }
 }
