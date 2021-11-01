@@ -32,8 +32,8 @@ public class DocumentManagementRequestBuilder {
 
     }
 
-    public DocumentUploadRequest perpareDocumentUploadRequest(List<MultipartFile> multipartFileList,
-                                                              DocumentType documentType) {
+    public DocumentUploadRequest perpareDocumentUploadRequestForCitizen(List<MultipartFile> multipartFileList,
+                                                                        DocumentType documentType) {
         return new DocumentUploadRequest(CLASSIFICATION_PRIVATE_PARAMETER,
             getCcdCaseType(documentType), JURISDICTION, multipartFileList);
 

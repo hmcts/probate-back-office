@@ -68,7 +68,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             auth = BEARER_PREFIX + auth;
         }
         DocumentUploadRequest documentUploadRequest =
-            documentManagementRequestBuilder.perpareDocumentUploadRequest(multipartFileList,
+            documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(multipartFileList,
                 documentType);
 
         return caseDocumentClient.uploadDocuments(auth, serviceAuthorisation,

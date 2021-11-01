@@ -47,7 +47,7 @@ public class DocumentValidationTest {
         assertThat(result, equalTo(false));
     }
 
-    @Ignore
+    @Test
     public void rejectInvalidFileForFileSize() throws IOException {
         TestUtils testUtils = new TestUtils();
         MockMultipartFile file = new MockMultipartFile("filename.txt", "filename.txt", "image/jpeg",

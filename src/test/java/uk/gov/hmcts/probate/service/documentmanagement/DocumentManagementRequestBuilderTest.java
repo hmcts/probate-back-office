@@ -5,9 +5,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -64,5 +68,18 @@ public class DocumentManagementRequestBuilderTest {
         assertEquals("WillLodgement", documentUploadRequest.getCaseTypeId());
         String fileName = documentUploadRequest.getFiles().get(0).getName();
         assertTrue(fileName.contains(".pdf"));
+    }
+
+    @Test
+    public void shouldPrepareRequestForCitizenDoc() {
+        List<MultipartFile> multipartFileList = new ArrayList<>();
+
+        DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(
+            multipartFileList, DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT);
+
+        assertEquals(0, documentUploadRequest.getFiles().size());
+        assertEquals("PRIVATE", documentUploadRequest.getClassification());
+        assertEquals("PROBATE", documentUploadRequest.getJurisdictionId());
+        assertEquals("WillLodgement", documentUploadRequest.getCaseTypeId());
     }
 }

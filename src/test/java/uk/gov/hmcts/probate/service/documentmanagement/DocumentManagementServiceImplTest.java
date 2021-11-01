@@ -33,6 +33,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
@@ -97,7 +98,7 @@ public class DocumentManagementServiceImplTest {
             Collections.emptyList(), Classification.PRIVATE))
             .thenReturn(uploadResponseMock);
         List<MultipartFile> multipartFileList = new ArrayList<>();
-        when(documentManagementRequestBuilder.perpareDocumentUploadRequest(multipartFileList, DIGITAL_GRANT))
+        when(documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(multipartFileList, DIGITAL_GRANT))
             .thenReturn(documentUploadRequestMock);
         UploadResponse uploadResponse = documentManagementService.uploadForCitizen(multipartFileList, 
             "AUTH", DIGITAL_GRANT);

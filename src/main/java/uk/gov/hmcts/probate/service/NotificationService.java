@@ -406,7 +406,6 @@ public class NotificationService {
                                                    String reference)
         throws NotificationClientException {
         SendEmailResponse response;
-        dumpPersonalisation(personalisation, templateId);
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
@@ -420,14 +419,6 @@ public class NotificationService {
         }
         log.info("Return the SendEmailResponse");
         return response;
-    }
-
-    private void dumpPersonalisation(Map<String, Object> personalisation, String templateId) {
-        System.out.println("templateId::" + templateId);
-        for (String key : personalisation.keySet()) {
-            Object value = personalisation.get(key);
-            System.out.println(key + "::" + value);
-        }
     }
 
     private String getEmail(CaseData caseData) {
