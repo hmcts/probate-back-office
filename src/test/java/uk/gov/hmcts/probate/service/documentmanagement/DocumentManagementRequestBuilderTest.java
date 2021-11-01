@@ -74,8 +74,8 @@ public class DocumentManagementRequestBuilderTest {
     public void shouldPrepareRequestForCitizenDoc() {
         List<MultipartFile> multipartFileList = new ArrayList<>();
 
-        DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(
-            multipartFileList, DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT);
+        DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder
+            .perpareDocumentUploadRequestForCitizen(multipartFileList, DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT);
 
         assertEquals(0, documentUploadRequest.getFiles().size());
         assertEquals("PRIVATE", documentUploadRequest.getClassification());
