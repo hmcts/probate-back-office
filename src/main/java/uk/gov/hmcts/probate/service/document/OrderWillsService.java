@@ -37,7 +37,8 @@ public class OrderWillsService {
     public List<CollectionMember<WillDocument>> orderWillDocuments(List<Document> documents) {
         Comparator<Document> comparator = Comparator.comparing((Document doc) -> willOrder.indexOf(
             doc.getDocumentType().getTemplateName()))
-            .thenComparing(doc -> (doc.getDocumentDateAdded() == null ? LocalDate.now() : doc.getDocumentDateAdded()))
+            .thenComparing(doc -> (doc.getDocumentDateAdded() == null ? LocalDate.of(1900, 1, 1) :
+                    doc.getDocumentDateAdded()), Comparator.reverseOrder())
             .thenComparing(doc -> doc.getDocumentFileName());
 
         Collections.sort(documents, comparator);

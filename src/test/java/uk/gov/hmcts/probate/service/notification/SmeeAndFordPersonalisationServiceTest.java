@@ -155,7 +155,7 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     private AliasName buildSolsAlias(String suffix) {
         return AliasName.builder()
-            .solsAliasname("SolsAliasForename" + suffix)
+            .solsAliasname("SolsAliasForename" + suffix + " SolsAliasLastname" + suffix)
             .build();
     }
 

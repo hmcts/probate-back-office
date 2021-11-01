@@ -48,13 +48,13 @@ public class OrderWillsServiceTest {
         documentList.add(will2);
         List<CollectionMember<WillDocument>> willDocuments = orderWillsService.orderWillDocuments(documentList);
 
-        assertWillDocument(willDocuments.get(0), "Will", "2005-02-01", "binaryurl-will1");
-        assertWillDocument(willDocuments.get(1), "Will", "2010-01-01", "binaryurl-will2");
-        assertWillDocument(willDocuments.get(2), "Codicil", "2001-05-01", "binaryurl-codicil1");
-        assertWillDocument(willDocuments.get(3), "Codicil", "2019-12-31", "binaryurl-codicil2");
+        assertWillDocument(willDocuments.get(0), "Will", "2010-01-01", "binaryurl-will2");
+        assertWillDocument(willDocuments.get(1), "Will", "2005-02-01", "binaryurl-will1");
+        assertWillDocument(willDocuments.get(2), "Codicil", "2019-12-31", "binaryurl-codicil2");
+        assertWillDocument(willDocuments.get(3), "Codicil", "2001-05-01", "binaryurl-codicil1");
         assertWillDocument(willDocuments.get(4), "Codicil", null, "binaryurl-codicil3");
-        assertWillDocument(willDocuments.get(5), "Other", "2001-01-01", "binaryurl-other1");
-        assertWillDocument(willDocuments.get(6), "Other", "2009-02-01", "binaryurl-other2");
+        assertWillDocument(willDocuments.get(5), "Other", "2009-02-01", "binaryurl-other2");
+        assertWillDocument(willDocuments.get(6), "Other", "2001-01-01", "binaryurl-other1");
     }
 
     @Test(expected = BadRequestException.class)
