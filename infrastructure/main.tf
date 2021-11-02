@@ -49,7 +49,7 @@ module "db-v11" {
   env                = var.env
   postgresql_user    = var.postgresql_user_v11
   database_name      = var.database_name_v11
-  postgresql_version = "11"
+  postgresql_version = "v11"
   subnet_id          = data.azurerm_subnet.postgres.id
   sku_name           = "GP_Gen5_2"
   sku_tier           = "GeneralPurpose"
