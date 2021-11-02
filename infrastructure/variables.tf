@@ -4,7 +4,7 @@ variable product {
 }
 
 variable component {
-  default = "probate"
+  default = "backoffice"
 }
 
 variable postgresql_user_v11 {

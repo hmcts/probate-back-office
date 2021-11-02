@@ -22,7 +22,7 @@ module "db" {
   source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   product = var.product
   component = var.component
-  name = "${local.app_full_name}-postgres-db"
+  name = join("-", [var.product,var.component,"postgres-db-v11"])
   location = var.location
   env = var.env
   postgresql_user = var.postgresql_user
