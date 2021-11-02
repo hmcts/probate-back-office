@@ -18,22 +18,6 @@ resource "azurerm_resource_group" "rg" {
   tags = var.common_tags
 }
 
-module "db" {
-  source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
-  product = var.product
-  component = var.component
-  name = "${local.app_full_name}-postgres-db"
-  location = var.location
-  env = var.env
-  postgresql_user = var.postgresql_user
-  database_name = var.database_name
-  sku_name = "GP_Gen5_2"
-  sku_tier = "GeneralPurpose"
-  storage_mb = "51200"
-  common_tags  = var.common_tags
-  subscription = var.subscription
-}
-
 data "azurerm_subnet" "postgres" {
   name                 = "core-infra-subnet-0-${var.env}"
   resource_group_name  = "core-infra-${var.env}"
@@ -55,18 +39,6 @@ module "db-v11" {
   sku_tier           = "GeneralPurpose"
   common_tags        = var.common_tags
   subscription       = var.subscription
-}
-
-module "local_key_vault" {
-  source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
-  product = local.app_full_name
-  env = var.env
-  tenant_id = var.tenant_id
-  object_id = var.jenkins_AAD_objectId
-  resource_group_name = "${local.app_full_name}-${var.env}"
-  product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
-  common_tags = var.common_tags
-  managed_identity_object_ids = [data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id]
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER-V11" {
@@ -97,11 +69,6 @@ resource "azurerm_key_vault_secret" "POSTGRES-DATABASE-V11" {
   name = "${var.component}-POSTGRES-DATABASE-V11"
   value = module.db-v11.postgresql_database
   key_vault_id = module.local_key_vault.key_vault_id
-}
-
-data "azurerm_user_assigned_identity" "rpa-shared-identity" {
-  name                = "rpa-${var.env}-mi"
-  resource_group_name = "managed-identities-${var.env}-rg"
 }
 
 provider "vault" {
