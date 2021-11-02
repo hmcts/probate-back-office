@@ -22,7 +22,7 @@ module "db" {
   source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   product = var.product
   component = var.component
-  name = join("-", [var.product,var.component,"postgres-db-v11"])
+  name = "${local.app_full_name}-postgres-db"
   location = var.location
   env = var.env
   postgresql_user = var.postgresql_user
@@ -44,12 +44,12 @@ module "db-v11" {
   source             = "git@github.com:hmcts/cnp-module-postgres?ref=postgresql_tf"
   product            = var.product
   component          = var.component
-  name               = join("-", [var.component,"postgres-db-v11"])
+  name               = join("-", [var.product,var.component,"postgres-db-v11"])
   location           = var.location
   env                = var.env
   postgresql_user    = var.postgresql_user_v11
   database_name      = var.database_name_v11
-  postgresql_version = "v11"
+  postgresql_version = "11"
   subnet_id          = data.azurerm_subnet.postgres.id
   sku_name           = "GP_Gen5_2"
   sku_tier           = "GeneralPurpose"
