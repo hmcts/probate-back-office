@@ -371,12 +371,6 @@ public class CallbackResponseTransformerTest {
         .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
         .build();
 
-    private static final List<CollectionMember<AliasName>> aliasListOneName = Arrays.asList(
-            new CollectionMember<AliasName>("id",
-            AliasName.builder()
-            .solsAliasname("James Dean")
-                .build()));
-
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -2449,9 +2443,9 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextSingleExec() {
+    public void checkSolsReviewCheckBoxesTextSingleExecSolApplying() {
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.solsSolicitorIsApplying(YES).build());
 
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
             solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
@@ -2465,7 +2459,23 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextMultiExecs() {
+    public void checkSolsReviewCheckBoxesTextSingleExecSolNotApplying() {
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+
+        String professionalName = caseDetailsMock.getData().getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseDetailsMock.getData(), listOfApplyingExecs,
+            professionalName);
+
+        assertEquals("The executor applicant forename applicant surname: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
             .applyingExecutorName(SOLICITOR_SOT_NAME).build();
@@ -2476,13 +2486,32 @@ public class CallbackResponseTransformerTest {
         additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
         caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
 
+        CaseData caseData = caseDataBuilder.solsSolicitorIsApplying(YES).build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executors Andy Middlename Test, James Smith: ",
+            executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
         CaseData caseData = caseDataBuilder.build();
 
         String professionalName = caseData.getSolsSOTName();
 
         String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
 
-        assertEquals("The executors Andy Middlename Test, James Smith",
+        assertEquals("The executors applicant forename applicant surname, James Smith: ",
             executorNames);
     }
 
@@ -3378,47 +3407,5 @@ public class CallbackResponseTransformerTest {
         assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
         verify(solicitorExecutorTransformerMock, times(1))
                 .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
-    }
-
-    @Test
-    public void shouldTransformAliasCorrectlyForDeceasedDetailsOtherNamesNo() {
-        caseDataBuilder.applicationType(SOLICITOR)
-                .caseType(GRANT_OF_PROBATE_NAME)
-                .solsWillType(WILL_TYPE_PROBATE)
-                .solsSOTForenames("Fred")
-                .solsSOTSurname("Bassett")
-                .solsSOTName("Fred Bassett")
-                .solsSolicitorIsExec("Yes")
-                .solsSolicitorIsApplying("Yes")
-                .deceasedAnyOtherNames("No")
-                .solsDeceasedAliasNamesList(aliasListOneName);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse =
-                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
-
-        assertEquals(null, callbackResponse.getData().getSolsDeceasedAliasNamesList());
-    }
-
-    @Test
-    public void shouldTransformAliasCorrectlyForDeceasedDetailsOtherNamesYes() {
-        caseDataBuilder.applicationType(SOLICITOR)
-                .caseType(GRANT_OF_PROBATE_NAME)
-                .solsWillType(WILL_TYPE_PROBATE)
-                .solsSOTForenames("Fred")
-                .solsSOTSurname("Bassett")
-                .solsSOTName("Fred Bassett")
-                .solsSolicitorIsExec("Yes")
-                .solsSolicitorIsApplying("Yes")
-                .deceasedAnyOtherNames("Yes")
-                .solsDeceasedAliasNamesList(aliasListOneName);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse =
-                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
-
-        assertEquals(aliasListOneName, callbackResponse.getData().getSolsDeceasedAliasNamesList());
     }
 }
