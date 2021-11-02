@@ -97,11 +97,11 @@
                         {% endif %}
                     </li>
                 {% endif %}
-                {% if case_details.case_data.executorsNotApplyingForLegalStatement != null %}
-                    {% for executor in case_details.case_data.executorsNotApplyingForLegalStatement %}
-                        {% if executor.value.additionalExecReasonNotApplying == "Renunciation" %}
+                {% if case_details.case_data.executorsNotApplyingLegalStatement != null %}
+                    {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}
                         <li>renunciation form for
-                            {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}
+                            {{ executor.value.notApplyingExecutorName }}
                         </li>
                         {% endif %}
                     {% endfor %}

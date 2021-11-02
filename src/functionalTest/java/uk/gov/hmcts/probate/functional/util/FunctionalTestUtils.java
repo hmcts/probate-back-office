@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -91,8 +91,9 @@ public class FunctionalTestUtils {
 
     public String getJsonFromFile(String fileName) {
         try {
-            File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            return new String(Files.readString(file.toPath(), Charset.forName("UTF-8")));
+            final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
+            final String fileContent = new String(Files.readString(file.toPath(), StandardCharsets.UTF_8));
+            return fileContent;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -101,7 +102,7 @@ public class FunctionalTestUtils {
 
     public String getStringFromFile(String fileName) {
         try {
-            File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
+            final File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
             return new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,8 +121,8 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
-        String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
@@ -144,7 +145,7 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToString(String documentUrl) {
-        Response document = RestAssured.given()
+        final Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId())
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
@@ -153,8 +154,8 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        String userId = getSchedulerCaseworkerUserId();
-        Response document = RestAssured.given()
+        final String userId = getSchedulerCaseworkerUserId();
+        final Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
@@ -163,7 +164,7 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
-        Response document = RestAssured.given()
+        final Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(headers)
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
@@ -212,22 +213,23 @@ public class FunctionalTestUtils {
     }
 
     public String getUserId(String email, String password) {
-        String caseworkerToken = serviceAuthTokenGenerator.generateClientToken(email, password);
-        Headers headers = Headers.headers(
+        final String caseworkerToken = serviceAuthTokenGenerator.generateClientToken(email, password);
+        final Headers headers = Headers.headers(
             new Header("Authorization", "Bearer " + caseworkerToken));
 
-        String userInfoUrl = authProviderUrl + "/details";
-        Response userResponse = RestAssured.given()
+        final String userInfoUrl = authProviderUrl + "/details";
+        final Response userResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(headers)
             .when().get(userInfoUrl).andReturn();
 
-        JsonPath jsonPath = JsonPath.from(userResponse.getBody().asString());
+        final JsonPath jsonPath = JsonPath.from(userResponse.getBody().asString());
         return jsonPath.get("id");
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail, caseworkerPassword);
+        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
+                caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -251,8 +253,9 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail, schedulerPassword);
-        String id = getUserId(schedulerEmail, schedulerPassword);
+        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
+                schedulerPassword);
+        final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -261,16 +264,16 @@ public class FunctionalTestUtils {
     }
 
     public String createCaseAsCaseworker(String caseJson, String eventId) {
-        String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+        final String user = getCaseworkerUserId();
+        final String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventId + "/token";
-        Response startResponse = RestAssured.given()
+        final Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
-        String token = startResponse.getBody().jsonPath().get("token");
-        String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
-        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+        final String token = startResponse.getBody().jsonPath().get("token");
+        final String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
+        final String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
@@ -281,10 +284,10 @@ public class FunctionalTestUtils {
     }
 
     public String findCaseAsCaseworker(String caseId) {
-        String user = getCaseworkerUserId();
-        String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+        final String user = getCaseworkerUserId();
+        final String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId;
-        Response startResponse = RestAssured.given()
+        final Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdFindCaseUrl).andReturn();
@@ -292,17 +295,17 @@ public class FunctionalTestUtils {
     }
 
     public String updateCaseAsCaseworker(String caseJson, String eventId, String caseId) {
-        String updateToken = startUpdateCaseAsCaseworker(caseId, eventId);
-        String markAsReadyForExaminationUpdateJson = replaceAttribute(caseJson, TOKEN_PARM, updateToken);
+        final String updateToken = startUpdateCaseAsCaseworker(caseId, eventId);
+        final String markAsReadyForExaminationUpdateJson = replaceAttribute(caseJson, TOKEN_PARM, updateToken);
         return continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
     }
 
     public String startUpdateCaseAsCaseworker(String caseId, String eventId) {
-        String user = getCaseworkerUserId();
-        String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+        final String user = getCaseworkerUserId();
+        final String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/event-triggers/" + eventId
             + "/token";
-        Response startResponse = RestAssured.given()
+        final Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
@@ -310,10 +313,10 @@ public class FunctionalTestUtils {
     }
 
     public String continueUpdateCaseAsCaseworker(String caseJson, String caseId) {
-        String user = getCaseworkerUserId();
-        String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+        final String user = getCaseworkerUserId();
+        final String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
             + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/" + caseId + "/events";
-        Response submitResponse = RestAssured.given()
+        final Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .body(caseJson)
@@ -331,15 +334,15 @@ public class FunctionalTestUtils {
     }
 
     public String convertToWelsh(LocalDate dateToConvert) {
-        String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
+        final String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
             "Hydref", "Tachwedd","Rhagfyr"};
 
         if (dateToConvert == null) {
             return null;
         }
-        int day = dateToConvert.getDayOfMonth();
-        int year = dateToConvert.getYear();
-        int month = dateToConvert.getMonth().getValue();
+        final int day = dateToConvert.getDayOfMonth();
+        final int year = dateToConvert.getYear();
+        final int month = dateToConvert.getMonth().getValue();
         return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
             Integer.toString(year));
     }
@@ -348,11 +351,11 @@ public class FunctionalTestUtils {
         if (dateToConvert == null) {
             return null;
         }
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        final DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        final DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
         try {
-            Date date = originalFormat.parse(dateToConvert.toString());
-            String formattedDate = targetFormat.format(date);
+            final Date date = originalFormat.parse(dateToConvert.toString());
+            final String formattedDate = targetFormat.format(date);
             return addDayNumberSuffix(formattedDate);
         } catch (ParseException ex) {
             ex.getMessage();
@@ -361,7 +364,7 @@ public class FunctionalTestUtils {
     }
     
     private String addDayNumberSuffix(String formattedDate) {
-        int day = Integer.parseInt(formattedDate.substring(0, 2));
+        final int day = Integer.parseInt(formattedDate.substring(0, 2));
         switch (day) {
             case 3:
             case 23:
@@ -377,5 +380,4 @@ public class FunctionalTestUtils {
                 return day + "th " + formattedDate.substring(3);
         }
     }
-
 }
