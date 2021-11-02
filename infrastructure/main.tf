@@ -4,6 +4,7 @@ provider "azurerm" {
 
 locals {
   vaultName = "${var.product}-${var.env}"
+  app_full_name = "${var.product}-${var.component}"
 
   data "azurerm_subnet" "postgres" {
     name                 = "core-infra-subnet-0-${var.env}"
@@ -26,6 +27,12 @@ locals {
     sku_tier           = "GeneralPurpose"
     common_tags        = var.common_tags
     subscription       = var.subscription
+  }
+
+  module "local_key_vault" {
+    source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
+    product = local.app_full_name
+    managed_identity_object_ids = [data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id]
   }
 
   resource "azurerm_key_vault_secret" "POSTGRES-USER-V11" {
