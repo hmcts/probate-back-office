@@ -311,7 +311,7 @@ dependencies {
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
-  testImplementation 'com.github.hmcts:fortify-client:1.2.1:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
   
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
