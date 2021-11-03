@@ -13,6 +13,11 @@ data "azurerm_subnet" "postgres" {
   virtual_network_name = "core-infra-vnet-${var.env}"
 }
 
+data "azurerm_user_assigned_identity" "rpa-shared-identity" {
+  name                = "rpa-${var.env}-mi"
+  resource_group_name = "managed-identities-${var.env}-rg"
+}
+
 module "db-v11" {
   source             = "git@github.com:hmcts/cnp-module-postgres?ref=postgresql_tf"
   product            = var.product
@@ -36,7 +41,7 @@ module "local_key_vault" {
   managed_identity_object_ids = [data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id]
   env = var.env
   tenant_id = var.tenant_id
-  object_id = var.jenkins_AAD_objectI
+  object_id = var.jenkins_AAD_objectId
   resource_group_name = "${local.app_full_name}-${var.env}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = var.common_tags
