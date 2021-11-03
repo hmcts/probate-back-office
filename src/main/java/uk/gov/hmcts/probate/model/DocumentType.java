@@ -12,7 +12,7 @@ public enum DocumentType {
     LEGAL_STATEMENT_PROBATE("legalStatementProbate"),
 
     @JsonProperty("legalStatement")
-    LEGAL_STATEMENT_PROBATE_TRUST_CORPS(  "legalStatementProbate"),
+    LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementProbate"),
 
     @JsonProperty("legalStatement")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
