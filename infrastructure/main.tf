@@ -65,5 +65,3 @@ resource "azurerm_key_vault_secret" "POSTGRES-DATABASE-V11" {
   value = module.db-v11.postgresql_database
   key_vault_id = module.local_key_vault.key_vault_id
 }
-
-}
