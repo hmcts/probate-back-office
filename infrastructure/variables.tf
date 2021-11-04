@@ -1,7 +1,19 @@
 // Infrastructural variables
-variable "product" {}
+variable product {
+  default = "probate"
+}
 
-variable "component" {}
+variable component {
+  default = "back-office"
+}
+
+variable postgresql_user_v11 {
+  default = "probate"
+}
+
+variable database_name_v11 {
+  default = "probate"
+}
 
 variable "location" {
   default = "UK South"
