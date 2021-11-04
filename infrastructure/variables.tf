@@ -4,7 +4,7 @@ variable product {
 }
 
 variable component {
-  default = "backoffice"
+  default = "back-office"
 }
 
 variable postgresql_user_v11 {
