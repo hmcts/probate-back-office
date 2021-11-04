@@ -1,5 +1,6 @@
 {
   "waitForText": "Issue grant",
+  "willSelection": "Yes",
   "list1_text": "Yes",
   "list2_text": "Yes",
   "notificationType": "Sent Email",

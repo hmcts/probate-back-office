@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
+module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault, uploadDocRecordNum) {
     const I = this;
 
     if (tabConfigFile.tabName) {
@@ -45,10 +45,17 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
             await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.WaitForTextTimeout || 60);
             await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.WaitForTextTimeout || 60);
         }
-
     } else if (dataConfigKeys) {
-        for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
-            await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.WaitForTextTimeout || 60);
+        if (tabConfigFile.tabName === 'Documents'){
+            for (let i = 0; i < tabConfigFile.dataKeys.length; i++){
+                console.log(dataConfigFile.uploadDocList[uploadDocRecordNum]);
+                await I.waitForText(dataConfigFile.uploadDocList[uploadDocRecordNum][tabConfigFile.dataKeys[i]], testConfig.WaitForTextTimeout || 60);
+            }
+        }
+        else{
+            for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
+                await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.WaitForTextTimeout || 60);
+            }
         }
     }
 };

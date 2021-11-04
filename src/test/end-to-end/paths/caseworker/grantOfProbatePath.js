@@ -39,6 +39,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
+    let uploadDocNum = 0;
 
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
@@ -173,10 +174,28 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Upload Documents';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.uploadDocument(caseRef, documentUploadConfig, uploadDocNum);
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig, undefined, undefined, undefined, uploadDocNum);
+
+    nextStepName = 'Upload Documents';
+    uploadDocNum += 1;
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.uploadDocument(caseRef, documentUploadConfig, uploadDocNum);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig, undefined, undefined, undefined, uploadDocNum);
+
+    nextStepName = 'Upload Documents';
+    uploadDocNum += 1;
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.uploadDocument(caseRef, documentUploadConfig, uploadDocNum);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig, undefined, undefined, undefined, uploadDocNum);
 
     nextStepName = 'Mark as ready for examination';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -232,6 +251,7 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Issue grant';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
+    await I.selectWillIfMultipleWillUploads(caseRef);
     await I.issueGrant(caseRef);
     endState = 'Grant issued';
     await I.logInfo(scenarioName, endState, caseRef);

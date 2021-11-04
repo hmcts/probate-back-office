@@ -81,6 +81,7 @@ module.exports = function () {
         enterComment: steps.eventSummary.eventSummary,
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,
+        selectWillIfMultipleWillUploads: steps.issueGrant.selectWill,
         issueGrant: steps.issueGrant.issueGrant,
         selectCaseMatchesForWillLodgement: steps.caseMatches.caseMatches,
         selectCaseMatchesForGrantOfProbate: steps.caseMatches.caseMatches,

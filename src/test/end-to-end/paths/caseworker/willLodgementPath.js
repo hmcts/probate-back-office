@@ -40,6 +40,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
+    let uploadDocNum = 0;
 
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
@@ -77,11 +78,11 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Upload document';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.uploadDocument(caseRef, documentUploadConfig, uploadDocNum);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+    await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig, undefined, undefined, undefined, uploadDocNum);
 
     nextStepName = 'Add comment';
     await I.logInfo(scenarioName, nextStepName, caseRef);
