@@ -5,6 +5,13 @@ variable "product" {
 
 variable "component" {}
 
+variable postgresql_user_v11 {
+  default = "probateman_user"
+}
+variable database_name_v11 {
+  ddefault = "probatemandb"
+}
+
 variable "location" {
   default = "UK South"
 }
