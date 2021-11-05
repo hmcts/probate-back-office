@@ -3,9 +3,7 @@ variable "product" {
   default = "probate"
 }
 
-variable "component" {
-  default = "probatemandb"
-}
+variable "component" {}
 
 variable "location" {
   default = "UK South"
