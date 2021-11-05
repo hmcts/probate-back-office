@@ -1,7 +1,11 @@
 // Infrastructural variables
-variable "product" {}
+variable "product" {
+  default = "probate"
+}
 
-variable "component" {}
+variable "component" {
+  default = "probatemandb"
+}
 
 variable "location" {
   default = "UK South"
