@@ -130,7 +130,8 @@ public class NotificationService {
         String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -153,7 +154,8 @@ public class NotificationService {
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
 
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -256,7 +258,8 @@ public class NotificationService {
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
 
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, executor.getEmail(), response);
     }
@@ -403,20 +406,21 @@ public class NotificationService {
 
     private SendEmailResponse getSendEmailResponse(State state, String templateId, String emailReplyToId,
                                                    String emailAddress, Map<String, Object> personalisation,
-                                                   String reference)
+                                                   String reference, Long caseId)
         throws NotificationClientException {
         SendEmailResponse response;
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
                 response =
-                    notificationClientService.sendEmail(templateId, emailAddress,
+                    notificationClientService.sendEmail(caseId, templateId, emailAddress,
                         personalisation, reference, emailReplyToId);
                 break;
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
             default:
-                response = notificationClientService.sendEmail(templateId, emailAddress, personalisation, reference);
+                response = notificationClientService.sendEmail(caseId, templateId, emailAddress, personalisation,
+                    reference);
         }
         log.info("Return the SendEmailResponse");
         return response;

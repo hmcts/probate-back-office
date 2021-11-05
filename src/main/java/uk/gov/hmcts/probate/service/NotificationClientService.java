@@ -32,11 +32,11 @@ public class NotificationClientService {
         return notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
     }
 
-    public SendEmailResponse sendEmail(String templateId, String emailAddress,
-                                       Map<String, ?> personalisation,
-                           String reference, String emailReplyToId)
+    public SendEmailResponse sendEmail(Long caseId, String templateId, String emailAddress,
+                                       Map<String, ?> personalisation, String reference, String emailReplyToId)
         throws NotificationClientException {
-        log.info("Preparing to send email to email address: {}", getEmailEncodedBase64(emailAddress));
+        log.info("Preparing to send email for case: {}, to email address: {}", caseId,
+            getEmailEncodedBase64(emailAddress));
         return notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
     }
 
