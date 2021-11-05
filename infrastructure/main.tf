@@ -14,6 +14,7 @@ module "db-v11" {
   location           = var.location
   env                = var.env
   database_name      = "${var.component}-${var.env}"
+  postgresql_user    = var.product
   postgresql_version = 11
   sku_name           = "GP_Gen5_2"
   sku_tier           = "GeneralPurpose"
