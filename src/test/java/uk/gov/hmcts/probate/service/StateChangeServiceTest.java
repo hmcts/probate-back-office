@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -47,7 +46,7 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
-    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreatedDeceasedDtls";
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -67,8 +66,6 @@ public class StateChangeServiceTest {
     private LifeInterestRule lifeInterestRule;
     @Mock
     private MinorityInterestRule minorityInterestRule;
-    @Mock
-    private NoOriginalWillRule noOriginalWillRule;
     @Mock
     private RenouncingRule renouncingRule;
     @Mock
@@ -94,7 +91,6 @@ public class StateChangeServiceTest {
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
             entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule,
-            noOriginalWillRule,
             renouncingRule, residuaryRule, solsExecutorRule, spouseOrCivilRule, updateApplicationRule,
             callbackResponseTransformer);
 
@@ -124,7 +120,6 @@ public class StateChangeServiceTest {
     @Test
     public void shouldChangeStateForAnyRuleValid() {
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
 
@@ -285,25 +280,6 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateForOriginalWillRuleValid() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-
-        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals("Stopped", newState.get());
-    }
-
-    @Test
-    public void shouldNOTChangeStateForOriginalWillRule() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
-
-        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
-
-        assertEquals(Optional.empty(), newState);
-    }
-
-    @Test
     public void shouldChangeStateForRenouncingRuleValid() {
         when(renouncingRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
@@ -391,7 +367,6 @@ public class StateChangeServiceTest {
 
     @Test
     public void shouldNOTChangeStateForAllRulesInvalid() {
-        when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
@@ -412,8 +387,8 @@ public class StateChangeServiceTest {
     @Test
     public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsDeceasedDetails() {
         when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        DynamicListItem item = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
-        DynamicListItem value = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
+        DynamicListItem item = DynamicListItem.builder().code("SolAppCreatedDeceasedDtls").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("SolAppCreatedDeceasedDtls").label("label1").build();
 
         DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
         when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);
@@ -536,5 +511,4 @@ public class StateChangeServiceTest {
         Optional<String> state = underTest.getRedeclarationComplete(caseData);
         assertEquals(Optional.empty(), state);
     }
-
 }
