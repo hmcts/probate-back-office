@@ -40,8 +40,8 @@ public class AppStoppedTaskListRendererTest {
             + "applications must be submitted by paper.</a></p>\n"
             + "<p class=\"govuk-body-s\">If having read this guidance you're sure that the online service should "
             + "handle your application, "
-            + "contact <a href=\"mailto:probatefeedback@justice.co.uk\" class=\"govuk-link\" target=\"_blank\">"
-            + "probatefeedback@justice.co.uk</a> with the broad details of your application and we "
+            + "contact <a href=\"mailto:probatefeedback@justice.gov.uk\" class=\"govuk-link\" target=\"_blank\">"
+            + "probatefeedback@justice.gov.uk</a> with the broad details of your application and we "
             + "will help to progress "
             + "your application.</p>\n\n\n\n</div>";
         final String result = renderer.renderHtml(caseDetails);

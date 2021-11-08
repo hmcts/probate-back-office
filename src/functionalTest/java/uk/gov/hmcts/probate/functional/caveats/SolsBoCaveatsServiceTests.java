@@ -48,6 +48,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String PAYLOAD_CAVEAT_NO_DOB_WELSH = "caveatPayloadNoDOBWelsh.json";
     private static final String RESPONSE_CAVEAT_NO_DOB_WELSH = "caveatPayloadNoDOBWelshResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR = "caveatPayloadNotificationsSolicitor.json";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE =
+        "solicitorCaveatWithdrawnExpectedEmailText.txt";
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE_WELSH =
+        "solicitorCaveatWithdrawnExpectedTextWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_WELSH = "caveatPayloadNotificationsSolicitorWelsh.json";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH = 
@@ -164,6 +168,24 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySolicitorCaveatWithdrawnEmailTextEnglish() {
+        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_WITHDRAW);
+        final HashMap<String, String> replacements = new HashMap<>();
+        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE,
+            EMAIL_NOTIFICATION_URL, responseBody, replacements);
+    }
+
+    @Test
+    public void verifySolicitorCaveatWithdrawnEmailTextWelsh() {
+        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_WITHDRAW);
+        final HashMap<String, String> replacements = new HashMap<>();
+        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE_WELSH,
+            EMAIL_NOTIFICATION_URL, responseBody, replacements);
+    }
+
+    @Test
     public void verifyPersonalCaveatRaisedEmailContentsNoDOBWelsh() {
         final ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
@@ -230,6 +252,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
             responseBody, replacements);
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);

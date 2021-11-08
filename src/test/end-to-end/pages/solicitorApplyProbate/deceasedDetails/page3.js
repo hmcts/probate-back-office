@@ -8,5 +8,5 @@ module.exports = async function (willType = 'WillLeft') {
     await I.runAccessibilityTest();
     await I.click(`#solsWillType-${willType}`);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

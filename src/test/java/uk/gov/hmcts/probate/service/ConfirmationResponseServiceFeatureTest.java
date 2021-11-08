@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -15,6 +16,8 @@ import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -63,6 +66,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
+    public static final Long ID = 1L;
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
@@ -225,7 +229,9 @@ public class ConfirmationResponseServiceFeatureTest {
             .fee(createFee())
             .executors(new ArrayList<>())
             .solsAdditionalInfo(ADDITIONAL_INFO)
-            .solsWillType(WILL_TYPE_PROBATE);
+            .solsWillType(WILL_TYPE_PROBATE)
+            .solsCoversheetDocument(createSolsCoverSheet().getDocumentLink())
+            .caseId(ID);
     }
 
     private CaveatData.CaveatDataBuilder createCaveatDataBuilder() {
@@ -295,6 +301,12 @@ public class ConfirmationResponseServiceFeatureTest {
             .forename(forename)
             .lastname(lastname)
             .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
+            .build();
+    }
+
+    private Document createSolsCoverSheet() {
+        return Document.builder().documentType(DocumentType.SOLICITOR_COVERSHEET)
+            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
             .build();
     }
 }
