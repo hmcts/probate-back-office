@@ -9,7 +9,7 @@ variable postgresql_user_v11 {
   default = "probateman_user"
 }
 variable database_name_v11 {
-  ddefault = "probatemandb"
+  default = "probatemandb"
 }
 
 variable "location" {
