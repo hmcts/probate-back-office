@@ -4,7 +4,7 @@ set -ex
 export TEST_E2E_URL=${TEST_E2E_URL}
 export E2E_TEST_PATH="./paths/solicitor/**/*.js"
 export SOL_USER_EMAIL=${SOL_USER_EMAIL}
-export SOl_USER_PASSWORD=${SOL_USER_PASSWORD}
+export SOL_USER_PASSWORD=${SOL_USER_PASSWORD}
 export E2E_AUTO_DELAY_ENABLED='true'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/solicitor/xui'
