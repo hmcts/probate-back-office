@@ -177,5 +177,9 @@
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "dateOfBirth", "FieldType": "Date", "ElementLabel": "Date of birth", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "sex", "FieldType": "Text", "ElementLabel": "Sex", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "address", "FieldType": "Text", "ElementLabel": "Address", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "dateOfDeath", "FieldType": "Date", "ElementLabel": "Date of death", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "dateOfDeath", "FieldType": "Date", "ElementLabel": "Date of death", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "damageTypesList", "FieldType": "MultiSelectList", "FieldTypeParameter": "damageTypes", "ElementLabel": "Damage type", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "otherDamageDescription", "FieldType": "TextArea", "ElementLabel": "Other", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "firstName", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Last name", "SecurityClassification": "Public"}
 ]
