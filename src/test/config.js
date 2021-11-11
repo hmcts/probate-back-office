@@ -1,5 +1,4 @@
 module.exports = {
-    // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: 0, // process.env.RETRY_FEATURES || 2,
@@ -14,6 +13,7 @@ module.exports = {
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
+    //TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
     // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
     ManualDelayShort: 0.25,
     ManualDelayMedium: 0.5,
