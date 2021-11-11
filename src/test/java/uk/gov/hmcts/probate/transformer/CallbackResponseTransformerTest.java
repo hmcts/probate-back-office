@@ -446,6 +446,8 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDataTransformer caseDataTransformerMock;
+    @Mock
+    private IhtEstateDefaulter ihtEstateDefaulter;
 
     @Before
     public void setup() {

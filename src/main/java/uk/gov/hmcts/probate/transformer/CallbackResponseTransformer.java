@@ -121,9 +121,16 @@ public class CallbackResponseTransformer {
     private final PDFManagementService pdfManagementService;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    private final IhtEstateDefaulter ihtEstateDefaulter;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -810,6 +817,16 @@ public class CallbackResponseTransformer {
             .ihtGrossValue(caseData.getIhtGrossValue())
             .ihtNetValue(caseData.getIhtNetValue())
             .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
+            .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
+            .ihtFormEstate(caseData.getIhtFormEstate())
+            .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
+            .ihtEstateGrossValueField(caseData.getIhtEstateGrossValueField())
+            .ihtEstateNetValue(caseData.getIhtEstateNetValue())
+            .ihtEstateNetValueField(caseData.getIhtEstateNetValueField())
+            .ihtEstateNetQualifyingValue(caseData.getIhtEstateNetQualifyingValue())
+            .ihtEstateNetQualifyingValueField(caseData.getIhtEstateNetQualifyingValueField())
+            .deceasedHadLateSpouseOrCivilPartner(caseData.getDeceasedHadLateSpouseOrCivilPartner())
+            .ihtUnusedAllowanceClaimed(caseData.getIhtUnusedAllowanceClaimed())
 
             .solsPaymentMethods(caseData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())

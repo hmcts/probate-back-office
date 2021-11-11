@@ -146,7 +146,6 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{ihtFormIdIsNull}")
     private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
@@ -530,6 +529,16 @@ public class CaseData extends CaseDataParent {
     private String registryEmailAddress;
     private String caseHandedOffToLegacySite;
     private final List<CollectionMember<DeathRecord>> deathRecords;
+    private String ihtFormEstateValuesCompleted;
+    private String ihtFormEstate;
+    private BigDecimal ihtEstateGrossValue;
+    private String ihtEstateGrossValueField;
+    private BigDecimal ihtEstateNetValue;
+    private String ihtEstateNetValueField;
+    private BigDecimal ihtEstateNetQualifyingValue;
+    private String ihtEstateNetQualifyingValueField;
+    private String deceasedHadLateSpouseOrCivilPartner;
+    private String ihtUnusedAllowanceClaimed;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
