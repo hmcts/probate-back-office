@@ -345,4 +345,16 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String codicilsDamageDateKnown;
     private final String codicilsDamageDate;
     private final String deceasedWrittenWishes;
+    private String dateOfDeathAfterEstateSwitch;
+    private String ihtFormEstateValuesCompleted;
+    private String ihtFormEstate;
+    private BigDecimal ihtEstateGrossValue;
+    private String ihtEstateGrossValueField;
+    private BigDecimal ihtEstateNetValue;
+    private String ihtEstateNetValueField;
+    private BigDecimal ihtEstateNetQualifyingValue;
+    private String ihtEstateNetQualifyingValueField;
+    private String deceasedHadLateSpouseOrCivilPartner;
+    private String ihtUnusedAllowanceClaimed;
+
 }
