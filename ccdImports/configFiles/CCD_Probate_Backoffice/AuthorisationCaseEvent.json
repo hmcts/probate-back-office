@@ -644,6 +644,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantAwaitingDocsNotificationSent", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "attachScannedDocs", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledStartGrantDelayNotificationPeriod", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantDelayNotificationIdentified", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantDelayNotificationSent", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
