@@ -470,6 +470,9 @@ welsh:
     11: "Tachwedd"
     12: "Rhagfyr"
 
+iht-estate:
+  switch-date: "2021-01-01"
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:
