@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 @Service
 public class IhtEstateDefaulter {
-    private final String SWITCH_DATE_FORMATTER_PATTERN = "yyyy-MM-dd";
+    private static final String SWITCH_DATE_FORMATTER_PATTERN = "yyyy-MM-dd";
 
     @Value("${iht-estate.switch-date}")
     private String ihtEstateSwitchDate;

@@ -2880,6 +2880,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
+    @Test
+    public void shouldSetIhtEstateValues() {
+        underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        verify(ihtEstateDefaulter).defaultPageFlowIhtSwitchDate(any(), any());
+    }
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname,
                                                                         String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
