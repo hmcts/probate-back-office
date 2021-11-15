@@ -56,8 +56,10 @@ import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
@@ -371,6 +373,14 @@ public class CallbackResponseTransformerTest {
         .additionalApplying(NO)
         .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
         .build();
+    public static final String DAMAGE_TYPE_1 = "Type1";
+    public static final String DAMAGE_TYPE_2 = "Type2";
+    public static final String DAMAGE_TYPE_OTHER = "Other";
+    public static final String DAMAGE_DESC = "Damage Desc";
+    public static final String DAMAGE_REASON_DESC = "Damage reason";
+    public static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
+    public static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
+    public static final String DAMAGE_DATE = "9/2021";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -565,7 +575,38 @@ public class CallbackResponseTransformerTest {
             .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
             .pcqId(APP_REF)
             .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
-            .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
+            .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
+            .willHasVisibleDamage(YES)
+            .willDamage(Damage.builder()
+                .damageTypesList(Arrays.asList(
+                    DAMAGE_TYPE_1, DAMAGE_TYPE_2, DAMAGE_TYPE_OTHER))
+                .otherDamageDescription(DAMAGE_DESC)
+                .build())
+            .willDamageReasonKnown(YES)
+            .willDamageReasonDescription(DAMAGE_REASON_DESC)
+            .willDamageCulpritKnown(YES)
+            .willDamageCulpritName(CombinedName.builder()
+                .firstName(DAMAGE_CULPRIT_FN)
+                .lastName(DAMAGE_CULPRIT_LN)
+                .build())
+            .willDamageDateKnown(YES)
+            .willDamageDate(DAMAGE_DATE)
+            .codicilsHasVisibleDamage(YES)
+            .codicilsDamage(Damage.builder()
+                .damageTypesList(Arrays.asList(DAMAGE_TYPE_1, DAMAGE_TYPE_2, DAMAGE_TYPE_OTHER))
+                .otherDamageDescription(DAMAGE_DESC)
+                .build())
+            .codicilsDamageReasonKnown(YES)
+            .codicilsDamageReasonDescription(DAMAGE_REASON_DESC)
+            .codicilsDamageCulpritKnown(YES)
+            .codicilsDamageCulpritName(CombinedName.builder()
+                .firstName(DAMAGE_CULPRIT_FN)
+                .lastName(DAMAGE_CULPRIT_LN)
+                .build())
+            .codicilsDamageDateKnown(YES)
+            .codicilsDamageDate(DAMAGE_DATE)
+            .deceasedWrittenWishes(YES)
+        ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -3031,6 +3072,33 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
+        
+        assertEquals(YES, callbackResponse.getData().getWillHasVisibleDamage());
+        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getWillDamage().getDamageTypesList().get(0));
+        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getWillDamage().getDamageTypesList().get(1));
+        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getWillDamage().getDamageTypesList().get(2));
+        assertEquals(DAMAGE_DESC, callbackResponse.getData().getWillDamage().getOtherDamageDescription());
+        assertEquals(YES, callbackResponse.getData().getWillDamageReasonKnown());
+        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getWillDamageReasonDescription());
+        assertEquals(YES, callbackResponse.getData().getWillDamageCulpritKnown());
+        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getWillDamageCulpritName().getFirstName());
+        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getWillDamageCulpritName().getLastName());
+        assertEquals(YES, callbackResponse.getData().getWillDamageDateKnown());
+        assertEquals(DAMAGE_DATE, callbackResponse.getData().getWillDamageDate());
+
+        assertEquals(YES, callbackResponse.getData().getCodicilsHasVisibleDamage());
+        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(0));
+        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(1));
+        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(2));
+        assertEquals(DAMAGE_DESC, callbackResponse.getData().getCodicilsDamage().getOtherDamageDescription());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageReasonKnown());
+        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getCodicilsDamageReasonDescription());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageCulpritKnown());
+        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getCodicilsDamageCulpritName().getFirstName());
+        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getCodicilsDamageCulpritName().getLastName());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageDateKnown());
+        assertEquals(DAMAGE_DATE, callbackResponse.getData().getCodicilsDamageDate());
+        assertEquals(YES, callbackResponse.getData().getDeceasedWrittenWishes());
     }
     
     private void assertCommonPayments(CallbackResponse callbackResponse) {

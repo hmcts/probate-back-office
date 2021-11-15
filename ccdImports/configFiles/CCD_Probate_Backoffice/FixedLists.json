@@ -337,5 +337,11 @@
   {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Date", "ListElement": "DO NOT SHOW - Date"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Professional", "ListElement": "Probate practitioner"},
   {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "TrustCorporation", "ListElement": "Trust corporation"},
-  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Named", "ListElement": "Named executor"}
+  {"LiveFrom": "01/01/2017", "ID": "executorTypeList", "ListElementCode": "Named", "ListElement": "Named executor"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "stapleOrPunchHoles", "ListElement": "Staples or punch holes"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "rustMarks", "ListElement": "Rust marks"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "paperClipMarks", "ListElement": "Paper clip marks"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "tornEdges", "ListElement": "Torn edges"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"}
 ]
