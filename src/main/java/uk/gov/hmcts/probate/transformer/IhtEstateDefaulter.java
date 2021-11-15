@@ -28,5 +28,6 @@ public class IhtEstateDefaulter {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(SWITCH_DATE_FORMATTER_PATTERN);
         LocalDate switchDate = LocalDate.parse(ihtEstateSwitchDate, dateFormatter);
         responseCaseDataBuilder.dateOfDeathAfterEstateSwitch(dod.isAfter(switchDate) ? YES : NO);
+        System.out.println("switchDate:" + (dod.isAfter(switchDate) ? YES : NO));
     }
 }
