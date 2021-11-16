@@ -31,6 +31,13 @@ public class IhtEstateDefaulterTest {
     }
 
     @Test
+    public void shouldSwitchPageFlowForDateOn2022Jan1() {
+        when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 01, 01));
+        ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
+        verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("Yes");
+    }
+
+    @Test
     public void shouldSwitchPageFlowForDateAfter2022Jan1() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 06, 30));
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
@@ -39,7 +46,7 @@ public class IhtEstateDefaulterTest {
     
     @Test
     public void shouldNotSwitchPageFlowForDateAfter2022Jan1() {
-        when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2021, 06, 30));
+        when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2021, 12, 31));
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("No");
     }
