@@ -1008,7 +1008,24 @@ public class CallbackResponseTransformer {
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords());
+            .deathRecords(caseData.getDeathRecords())
+            .willHasVisibleDamage(caseData.getWillHasVisibleDamage())
+            .willDamage(caseData.getWillDamage())
+            .willDamageReasonKnown(caseData.getWillDamageReasonKnown())
+            .willDamageReasonDescription(caseData.getWillDamageReasonDescription())
+            .willDamageCulpritKnown(caseData.getWillDamageCulpritKnown())
+            .willDamageCulpritName(caseData.getWillDamageCulpritName())
+            .willDamageDateKnown(caseData.getWillDamageDateKnown())
+            .willDamageDate(caseData.getWillDamageDate())
+            .codicilsHasVisibleDamage(caseData.getCodicilsHasVisibleDamage())
+            .codicilsDamage(caseData.getCodicilsDamage())
+            .codicilsDamageReasonKnown(caseData.getCodicilsDamageReasonKnown())
+            .codicilsDamageReasonDescription(caseData.getCodicilsDamageReasonDescription())
+            .codicilsDamageCulpritKnown(caseData.getCodicilsDamageCulpritKnown())
+            .codicilsDamageCulpritName(caseData.getCodicilsDamageCulpritName())
+            .codicilsDamageDateKnown(caseData.getCodicilsDamageDateKnown())
+            .codicilsDamageDate(caseData.getCodicilsDamageDate())
+            .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
