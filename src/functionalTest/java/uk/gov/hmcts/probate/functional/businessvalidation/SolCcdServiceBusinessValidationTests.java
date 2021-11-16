@@ -704,6 +704,22 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyRequestInTestacySuccessForDefaultIhtEstateNo() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstate.json");
+        json = json.replaceAll("<DOD-DATE>", "2020-12-31");
+        final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String willExist = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String errors = jsonPath.get("data.errors");
+
+        assertEquals(willExist, "No");
+        assertNull(errors);
+    }
+
+    @Test
     public void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() {
         final ResponseBody body = validatePostSuccessForPayload(
                 utils.getJsonFromFile("solicitorPDFPayloadProbateSingleExecutor.json"),
