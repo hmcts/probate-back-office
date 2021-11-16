@@ -2559,6 +2559,44 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplyingPrimaryApplicantNotApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
+        CaseData caseData = caseDataBuilder.primaryApplicantIsApplying(NO).build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executor James Smith: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextAdmonWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_ADMON).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextIntestacy() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
     public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
         caseDataBuilder.solsWillType("WillLeftAnnexed");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

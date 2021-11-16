@@ -3276,6 +3276,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsReviewSOTConfirmCheckbox1Names", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsReviewSOTConfirmCheckbox2Names", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
