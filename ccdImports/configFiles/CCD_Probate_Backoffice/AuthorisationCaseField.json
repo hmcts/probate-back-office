@@ -42,6 +42,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtEstateNetValue", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtEstateNetValueField", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtEstateNetQualifyingValue", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtEstateNetQualifyingValueField", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedHadLateSpouseOrCivilPartner", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtUnusedAllowanceClaimed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "iht217", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
