@@ -173,6 +173,8 @@ spring:
     database: POSTGRESQL
     show-sql: ${probate.persistence.show_sql}
     hibernate.ddl-auto: none
+  config:
+    import: "optional:configtree:/mnt/secrets/probate/"
 
   datasource:
     url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
@@ -260,8 +262,9 @@ notifications:
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
-          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
       welsh:
         personal:
           applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
@@ -274,7 +277,7 @@ notifications:
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          grantRaisedPaperFormBulkScan: "57395595-c64c-4e26-8003-b18e9ae49adb"
           caveatRaised: "dd2a2e85-20c1-4a3a-b4e7-461c51a1003a"
           caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
@@ -295,7 +298,7 @@ notifications:
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaisedPaperFormBulkScan: "6ed710bd-e2e8-492e-a59b-c69468bd79d1"
+          grantRaisedPaperFormBulkScan: "57395595-c64c-4e26-8003-b18e9ae49adb"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
           caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
@@ -303,8 +306,9 @@ notifications:
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
-          grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
 
 documents:
   templates:
