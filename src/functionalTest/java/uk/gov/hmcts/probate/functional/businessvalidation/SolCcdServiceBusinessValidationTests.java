@@ -691,7 +691,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestInTestacySuccessForDefaultIhtEstate() {
         //adjust with app yml iht-estate.switch-date
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstate.json");
-        json = json.replaceAll("<DOD-DATE>", "2021-01-01");
+        json = json.replaceAll("<DOD-DATE>", "2022-01-01");
         final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
             utils.getHeadersWithSolicitorUser());
 
@@ -699,7 +699,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String willExist = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
         final String errors = jsonPath.get("data.errors");
 
-        assertEquals(willExist, "Yes");
+        assertEquals("Yes", willExist);
         assertNull(errors);
     }
 
@@ -707,7 +707,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestInTestacySuccessForDefaultIhtEstateNo() {
         //adjust with app yml iht-estate.switch-date
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstate.json");
-        json = json.replaceAll("<DOD-DATE>", "2020-12-31");
+        json = json.replaceAll("<DOD-DATE>", "2021-12-31");
         final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
             utils.getHeadersWithSolicitorUser());
 
@@ -715,7 +715,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String willExist = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
         final String errors = jsonPath.get("data.errors");
 
-        assertEquals(willExist, "No");
+        assertEquals("No", willExist);
         assertNull(errors);
     }
 

@@ -73,12 +73,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptySolicitorIHTFormIdReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"ihtFormId\": \"IHT205\"", "\"ihtFormId\": \"\"",
-            "caseDetails.data.ihtFormId");
-    }
-
-    @Test
     public void verifyEmptySolicitorSOTForenamesReturnsError() {
         validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"",
             "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
