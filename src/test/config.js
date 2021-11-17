@@ -36,7 +36,7 @@ module.exports = {
     CaseMatchesLocateRemoveButtonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
     CaseMatchesAddNewButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseMatchesCompletionDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
-    CaseworkerGoButtonClickDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
+    CaseworkerGoButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     CaseProgressTabCheckDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CaseProgressClickSelectFillDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 3 : 0,
     CaseProgressClickGoButtonInitialDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 3 : 0,
