@@ -312,7 +312,8 @@ public class NotificationService {
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL)
             ? caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
-        SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress, personalisation, reference);
+        SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
+            personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
