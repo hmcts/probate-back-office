@@ -129,7 +129,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(), 
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
