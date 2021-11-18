@@ -54,7 +54,9 @@ def secrets = [
                 secret('levClientSecret', 'LEV_CLIENT_SECRET'),
                 secret('levUsername', 'LEV_USERNAME'),
                 secret('levPassword', 'LEV_PASSWORD'),
-                secret('levDeathUrl', 'LEV_DEATH_URL')
+                secret('levDeathUrl', 'LEV_DEATH_URL'),
+                secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+                secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -113,13 +115,13 @@ def archiveCoreCaseDataDefinitions(env) {
         ccdDefinitionFilePath="${WORKSPACE}/ccdImports/conversionScripts/build/jsonToXLS-preview"
         sh """
         eval \$(./variables/load-preview-environment-variables.sh ${CHANGE_ID})
-        ${WORKSPACE}/fpla-docker/bin/utils/ccd-import-definition.sh ${ccdDefinitionFilePath}
+        ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
       """
       } else {
-        ccdDefinitionFilePath="${WORKSPACE}/build/ccd-release-config/ccd-fpl-${env}.xlsx"
+        ccdDefinitionFilePath="${WORKSPACE}/ccdImports/conversionScripts/build/jsonToXLS-${env}"
         sh """
         eval \$(./variables/load-${env}-environment-variables.sh)
-        ${WORKSPACE}/fpla-docker/bin/utils/ccd-import-definition.sh ${ccdDefinitionFilePath}
+        ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
       """
       }
     }
@@ -176,6 +178,9 @@ withPipeline("java", product, component) {
 
   before('smoketest:preview') {
 
+    archiveCoreCaseDataDefinitions('preview')
+    uploadCoreCaseDataDefinitions('preview')
+
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
@@ -196,7 +201,5 @@ withPipeline("java", product, component) {
  """
   }
 
-  archiveCoreCaseDataDefinitions('preview')
-  uploadCoreCaseDataDefinitions('preview')
 }
 

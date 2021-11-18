@@ -11,4 +11,4 @@ echo "export CCD_IDAM_REDIRECT_URL=https://ccd-case-management-web-perftest.serv
 echo "export CCD_DEFINITION_STORE_API_BASE_URL=http://ccd-definition-store-api-perftest.service.core-compute-perftest.internal"
 
 # definition placeholders
-echo "export CCD_DEF_CASE_SERVICE_BASE_URL=http://fpl-case-service-perftest.service.core-compute-perftest.internal"
+echo "export CCD_DEF_CASE_SERVICE_BASE_URL=http://probate-back-office-perftest.service.core-compute-perftest.internal"

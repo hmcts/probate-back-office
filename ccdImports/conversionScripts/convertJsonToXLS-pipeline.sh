@@ -2,8 +2,14 @@
 
 set -eu
 
-excel_output_directory="jsonToXLS"
+#root_dir="$(cd "$(dirname "$0")"/..)"
+root_dir=$(dirname "$0")
+echo ${root_dir}
+excel_output_directory=${root_dir}/build/"jsonToXLS"-"$2"
 mkdir -p ${excel_output_directory}
+
+#excel_output_directory="jsonToXLS"-"$2"
+#mkdir -p ${excel_output_directory}
 
 source ${0%/*}/toAbsPath.sh
 source ${0%/*}/setHostAndPort.sh
