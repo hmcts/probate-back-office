@@ -326,8 +326,9 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
     private String caseHandedOffToLegacySite;
-    private final List<CollectionMember<DeathRecord>> deathRecords;
-
+    private List<CollectionMember<DeathRecord>> deathRecords;
+    private DeathRecord deathRecord;
+    private Integer numberOfDeathRecords;
     private final String willHasVisibleDamage;
     private final Damage willDamage;
     private final String willDamageReasonKnown;
@@ -345,7 +346,4 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String codicilsDamageDateKnown;
     private final String codicilsDamageDate;
     private final String deceasedWrittenWishes;
-    private List<CollectionMember<DeathRecord>> deathRecords;
-    private DeathRecord deathRecord;
-    private Integer numberOfDeathRecords;
 }
