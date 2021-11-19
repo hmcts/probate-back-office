@@ -2479,8 +2479,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "numberOfDeathRecords", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "taskList", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "taskListLabel", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
@@ -3295,9 +3293,5 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecord", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "numberOfDeathRecords", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"}
 ]
