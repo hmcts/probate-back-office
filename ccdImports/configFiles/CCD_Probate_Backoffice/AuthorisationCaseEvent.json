@@ -813,5 +813,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "citizen", "CRUD": "CRUD"}
 ]
