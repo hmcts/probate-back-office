@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -128,6 +129,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     @Mock
+    private IhtEstateValidationRule ihtEstateValidationRule;
+    @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
     @Mock
     private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
@@ -167,7 +170,8 @@ public class BusinessValidationUnitTest {
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
-            ihtFourHundredDateValidationRule);
+            ihtFourHundredDateValidationRule,
+            ihtEstateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -625,6 +629,25 @@ public class BusinessValidationUnitTest {
             underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
             .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldDefaultIHT() {
+        ResponseEntity<CallbackResponse> response =
+            underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+            .defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateIHTEstateData() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response =
+            underTest.validateIhtEstateData(callbackRequestMock);
+        verify(ihtEstateValidationRule, times(1))
+            .validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

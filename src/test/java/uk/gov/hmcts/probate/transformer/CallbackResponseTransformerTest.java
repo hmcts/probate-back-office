@@ -101,6 +101,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -1220,6 +1221,22 @@ public class CallbackResponseTransformerTest {
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetGrantIssuedDateForEdgeCase() {
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(EDGE_CASE)
+            .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String grantIssuedDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(document), null, null);
+        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
