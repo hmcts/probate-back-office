@@ -38,7 +38,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: false
+      enabled: true
     s2s:
       enabled: false
     postgresql:
