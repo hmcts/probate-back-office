@@ -142,6 +142,7 @@
         <td colspan="2">
             <p>The gross value for the estate in England and Wales
                 amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            {% if case_details.case_data.ihtFormEstateValuesCompleted == "No" %}<p>I confirm that the estate is an excepted estate</p>{% endif %}
             <p>To the best of {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
