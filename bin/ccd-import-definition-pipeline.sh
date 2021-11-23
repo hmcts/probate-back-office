@@ -6,8 +6,11 @@ dir=$(dirname ${0})
 filepath=${1}
 filename=$(basename ${filepath})
 uploadFilename="$(date +"%Y%m%d-%H%M%S")-${filename}"
+echo filepath =$filepath
 
+echo Get User token
 userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Password12})
+echo Get Service token
 serviceToken=$(${dir}/idam-lease-service-token.sh ccd_gw $(docker run --rm toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAC}))
 
 uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
