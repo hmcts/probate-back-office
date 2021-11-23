@@ -1,5 +1,9 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -32,6 +38,9 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DET
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class TaskStateRenderer {
     private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add Probate practitioner details";
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
@@ -46,13 +55,10 @@ public class TaskStateRenderer {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
-
-    private TaskStateRenderer() {
-        throw new IllegalStateException("Utility class");
-    }
+    private final PA16FormBusinessRule pa16FormBusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
-    public static String renderByReplace(TaskListState currState, String html, Long caseId,
+    public String renderByReplace(TaskListState currState, String html, Long caseId,
                                          String willType, String solSOTNeedToUpdate,
                                          LocalDate authDate, LocalDate submitDate, CaseDetails details) {
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
@@ -104,7 +110,7 @@ public class TaskStateRenderer {
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
 
-    private static TaskState getTaskState(TaskListState currState, TaskListState renderState,
+    private TaskState getTaskState(TaskListState currState, TaskListState renderState,
                                           String solSOTNeedToUpdate) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
@@ -123,7 +129,7 @@ public class TaskStateRenderer {
         return TaskState.NOT_AVAILABLE;
     }
 
-    private static String renderTaskStateTag(TaskState taskState) {
+    private String renderTaskStateTag(TaskState taskState) {
         if (taskState == TaskState.NOT_AVAILABLE) {
             return "";
         }
@@ -133,7 +139,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
-    private static String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
+    private String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
         Map<String, String> keyValues = getKeyValues(details.getData());
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
@@ -141,10 +147,11 @@ public class TaskStateRenderer {
                 .replaceFirst("<originalWill/>", keyValues.getOrDefault("originalWill", ""))
                 .replaceFirst("<ihtText/>", keyValues.getOrDefault("ihtText", ""))
                 .replaceFirst("<ihtForm/>", keyValues.getOrDefault("ihtForm", ""))
-                .replaceFirst("<renouncingExecutors/>", keyValues.getOrDefault("renouncingExecutors", "")));
+                .replaceFirst("<renouncingExecutors/>", keyValues.getOrDefault("renouncingExecutors", ""))
+                .replaceFirst("<pa16Form/>", keyValues.getOrDefault("pa16Form", "")));
     }
 
-    private static String renderLinkOrText(TaskListState taskListState, TaskListState currState,
+    private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
                                            TaskState currTaskState, String linkText, String caseId,
                                            String willType, CaseDetails details) {
 
@@ -173,7 +180,7 @@ public class TaskStateRenderer {
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
-    private static String renderSubmitDate(LocalDate submitDate) {
+    private String renderSubmitDate(LocalDate submitDate) {
         if (submitDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
         }
@@ -183,7 +190,7 @@ public class TaskStateRenderer {
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
-    private static String getLinkUrlTemplate(TaskListState taskListState, String willType) {
+    private String getLinkUrlTemplate(TaskListState taskListState, String willType) {
         switch (taskListState) {
             case TL_STATE_ADD_SOLICITOR_DETAILS:
                 return SOLICITOR_DETAILS_URL_TEMPLATE;
@@ -207,7 +214,7 @@ public class TaskStateRenderer {
         }
     }
 
-    private static Map<String, String> getKeyValues(CaseData data) {
+    private Map<String, String> getKeyValues(CaseData data) {
         Map<String, String> keyValue = new HashMap<>();
         String solsWillType = data.getSolsWillType() == null ? "" : data.getSolsWillType();
         String willHasCodicils = data.getWillHasCodicils() == null ? "" : data.getWillHasCodicils();
@@ -234,13 +241,18 @@ public class TaskStateRenderer {
 
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
+        String pa16Form = "";
+        if (pa16FormBusinessRule.isApplicable(data)) {
+            pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
+        }
+        keyValue.put("pa16Form", pa16Form);
         keyValue.put("renouncingExecutors",
             (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
-    private static String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
+    private String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         return executors.stream()
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
                 .getNotApplyingExecutorReason()))

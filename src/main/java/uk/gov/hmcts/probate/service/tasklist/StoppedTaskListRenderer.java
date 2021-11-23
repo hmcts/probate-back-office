@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.htmlrendering.UnorderedListRenderer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -8,6 +10,8 @@ import uk.gov.hmcts.probate.model.htmltemplate.CaseStoppedHtmlTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Service
+@RequiredArgsConstructor
 public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
 
     protected String renderBody(CaseDetails details) {
