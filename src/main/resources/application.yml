@@ -508,7 +508,7 @@ welsh:
     12: "Rhagfyr"
 
 iht-estate:
-  switch-date: "2021-07-01"
+  switch-date: "2022-01-01"
   
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}
