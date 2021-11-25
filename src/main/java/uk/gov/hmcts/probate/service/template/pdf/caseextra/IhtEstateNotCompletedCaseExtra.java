@@ -7,9 +7,8 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
-public class IhtEstate207CaseExtra {
+public class IhtEstateNotCompletedCaseExtra {
 
     private final String showIhtEstate;
-    private final String ihtEstate207Text;
-
+    private final String ihtEstateNotCompletedText;
 }

@@ -542,8 +542,8 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
-        assertEquals("IHT 205 and IHT 217", nextStepsValues.get("{{ihtForm}}"));
-        assertEquals("\n*   the inheritance tax form", nextStepsValues.get("{{ihtText}}"));
+        assertEquals("", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("\n*   the inheritance tax form IHT 207", nextStepsValues.get("{{ihtText}}"));
         assertFeeConfirmationValues(nextStepsValues);
         assertLegalStatement(nextStepsValues);
     }

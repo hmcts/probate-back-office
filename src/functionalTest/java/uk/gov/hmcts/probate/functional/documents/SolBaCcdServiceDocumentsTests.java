@@ -1905,11 +1905,29 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstates() {
-        //confirmation of this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstates
+    public void verifyGenerateSolsGopExpectedEstatesNo() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = getJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
+        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
@@ -1964,7 +1982,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         return response;
     }
 
-    private JsonPath getJsonPathResponse(String jsonFileName, String path) {
+    private JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()

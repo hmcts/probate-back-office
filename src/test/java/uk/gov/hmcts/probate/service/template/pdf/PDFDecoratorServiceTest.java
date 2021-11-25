@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorLegalStatementPDFDecorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -27,6 +28,8 @@ public class PDFDecoratorServiceTest {
     @Mock
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecoratorMock;
     @Mock
+    private SolicitorLegalStatementPDFDecorator solicitorLegalStatementPDFDecorator;
+    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private CaveatCallbackRequest caveatCallbackRequestMock;
@@ -39,7 +42,8 @@ public class PDFDecoratorServiceTest {
     public void setup() {
         initMocks(this);
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
-        pdfDecoratorService = new PDFDecoratorService(objectMapperMock, solicitorCoversheetPDFDecoratorMock);
+        pdfDecoratorService = new PDFDecoratorService(objectMapperMock, solicitorCoversheetPDFDecoratorMock,
+            solicitorLegalStatementPDFDecorator);
     }
 
     @Test
