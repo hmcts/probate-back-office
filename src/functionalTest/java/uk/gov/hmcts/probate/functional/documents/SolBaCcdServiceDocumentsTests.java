@@ -1910,7 +1910,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = getJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir +"expectedCaseProgress.txt");
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
