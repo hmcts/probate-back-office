@@ -41,4 +41,17 @@ public class CaseExtraDecoratorTest {
         when(objectMapper.writeValueAsString(caseExtraMock)).thenThrow(JsonProcessingException.class);
         caseExtraDecorator.decorate(caseExtraMock);
     }
+    
+    @Test
+    public void shouldCombineDecorations() {
+        String extraPA16 = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
+            + "\"pa16FormText\":\"PA16FormTEXT\"}";
+        String extraIht = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
+
+        String extraAll = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
+            + "\"pa16FormText\":\"PA16FormTEXT\",\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
+
+        String combined = caseExtraDecorator.combineDecorations(extraPA16, extraIht);
+        assertEquals(extraAll, combined);
+    }
 }

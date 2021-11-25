@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
@@ -27,8 +28,16 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
+import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -56,6 +65,7 @@ public class TaskStateRenderer {
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final PA16FormBusinessRule pa16FormBusinessRule;
+    private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -144,11 +154,13 @@ public class TaskStateRenderer {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
-                .replaceFirst("<originalWill/>", keyValues.getOrDefault("originalWill", ""))
-                .replaceFirst("<ihtText/>", keyValues.getOrDefault("ihtText", ""))
-                .replaceFirst("<ihtForm/>", keyValues.getOrDefault("ihtForm", ""))
-                .replaceFirst("<renouncingExecutors/>", keyValues.getOrDefault("renouncingExecutors", ""))
-                .replaceFirst("<pa16Form/>", keyValues.getOrDefault("pa16Form", "")));
+                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
+                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
+                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                );
     }
 
     private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
@@ -232,7 +244,7 @@ public class TaskStateRenderer {
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421) && !"".equals(ihtFormValue)) {
             ihtText = "<li>the inheritance tax form ";
-            if ("Yes".equals(data.getIht217())) {
+            if (YES.equals(data.getIht217())) {
                 ihtForm = "IHT205 and IHT217</li>";
             } else {
                 ihtForm = ihtFormValue + "</li>";
@@ -246,6 +258,11 @@ public class TaskStateRenderer {
             pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
         }
         keyValue.put("pa16Form", pa16Form);
+        String ihtEstate207 = "";
+        if (ihtEstate207BusinessRule.isApplicable(data)) {
+            ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";
+        }
+        keyValue.put("ihtEstate207", ihtEstate207);
         keyValue.put("renouncingExecutors",
             (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");

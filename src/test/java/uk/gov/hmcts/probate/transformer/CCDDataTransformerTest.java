@@ -37,6 +37,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 
 public class CCDDataTransformerTest {
 
@@ -381,6 +382,19 @@ public class CCDDataTransformerTest {
         assertEquals("No", ccdData.getSolsApplicantSiblings());
         assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
 
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForIhtEstate() {
+
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("Yes", ccdData.getIht().getIhtFormEstateValuesCompleted());
+        assertEquals("IHT207", ccdData.getIht().getIhtFormEstate());
     }
 
     private void assertAll(CCDData ccdData) {

@@ -126,6 +126,7 @@ public class BusinessValidationControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/sols-default-iht-estate";
+    private static final String SOLS_VALIDATE_IHT_ESTATE_URL = "/case/sols-validate-iht-estate";
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_VALIDATE_EXEC_URL = "/case/sols-validate-executors";
@@ -256,6 +257,18 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(SOLS_DEFAULT_IHT_ESTATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldValidateIHTEstate() throws Exception {
+        LocalDateTime dod = LocalDateTime.parse("2021-07-01T00:00:00.000");
+        caseDataBuilder.deceasedDateOfDeath(dod.toLocalDate());
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 
