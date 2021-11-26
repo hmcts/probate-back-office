@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -80,6 +81,17 @@ public class IhtEstateValidationRuleTest {
     }
 
     @Test
+    public void testValidateNoMessageNvqLargerThanUpper() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
+        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
+        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(7000000));
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
     public void testValidateNoMessageNoNvq() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
@@ -99,7 +111,7 @@ public class IhtEstateValidationRuleTest {
     }
 
     @Test
-    public void testValidateNoMessageNoIhtValues() {
+    public void testValidateNoMessageNoProbateIhtValues() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
@@ -107,4 +119,21 @@ public class IhtEstateValidationRuleTest {
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
 
+    @Test
+    public void testValidateNoMessageNoProbateIhtGrossValue() {
+        lenient().when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+    
+    @Test
+    public void testValidateNoMessageNoProbateIhtNetValue() {
+        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(29000000));
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
 }

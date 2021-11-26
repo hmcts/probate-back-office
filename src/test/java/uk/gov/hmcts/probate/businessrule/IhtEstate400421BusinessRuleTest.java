@@ -15,10 +15,10 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
-public class IhtEstate207BusinessRuleTest {
+public class IhtEstate400421BusinessRuleTest {
 
     @InjectMocks
-    private IhtEstate207BusinessRule underTest;
+    private IhtEstate400421BusinessRule underTest;
 
     @Mock
     private CaseData mockCaseData;
@@ -29,30 +29,30 @@ public class IhtEstate207BusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForCompletedAndIHT207() {
+    public void shouldBeApplicableForCompletedAndIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForNotCompletedAndIHT207() {
+    public void shouldNotBeApplicableForNotCompletedAndIHT400421() {
+        when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
+        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+        assertFalse(underTest.isApplicable(mockCaseData));
+    }
+
+    @Test
+    public void shouldNotBeApplicableForNotCompletedAndNotIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
         when(mockCaseData.getIhtFormEstate()).thenReturn(IHT207_VALUE);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForNotCompletedAndNotIHT207() {
-        when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
-        assertFalse(underTest.isApplicable(mockCaseData));
-    }
-
-    @Test
-    public void shouldNotBeApplicableForCompletedAndNotIHT207() {
+    public void shouldNotBeApplicableForCompletedAndNotIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT207_VALUE);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 }
