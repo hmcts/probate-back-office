@@ -55,4 +55,13 @@ public class SolicitorLegalStatementPDFDecoratorTest {
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertEquals("someJson", actual);
     }
+    
+    @Test
+    public void shouldNotDecorate() {
+        when(ihtEstate400421BusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        when(ihtEstate207BusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        when(ihtEstate207BusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+        assertEquals("", actual);
+    }
 }
