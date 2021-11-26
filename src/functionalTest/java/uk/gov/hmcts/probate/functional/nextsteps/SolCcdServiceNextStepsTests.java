@@ -66,6 +66,17 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
+        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
+    }
+
+    @Test
     public void verifyGenerateSolsGopExpectedEstatesNo() {
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -79,6 +90,17 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
+        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
             Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
