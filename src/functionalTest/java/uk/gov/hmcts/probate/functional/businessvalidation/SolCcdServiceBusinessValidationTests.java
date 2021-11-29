@@ -696,10 +696,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             utils.getHeadersWithSolicitorUser());
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String willExist = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
         final String errors = jsonPath.get("data.errors");
 
-        assertEquals("Yes", willExist);
+        assertEquals("Yes", dateOfDeathAfterEstateSwitch);
         assertNull(errors);
     }
 
@@ -712,10 +712,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             utils.getHeadersWithSolicitorUser());
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String willExist = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
         final String errors = jsonPath.get("data.errors");
 
-        assertEquals("No", willExist);
+        assertEquals("No", dateOfDeathAfterEstateSwitch);
         assertNull(errors);
     }
 
