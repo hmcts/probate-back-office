@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
+import uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
@@ -92,6 +93,8 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
     @Mock
+    private MarkdownDecoratorService markdownDecoratorService;
+    @Mock
     private MessageResourceService messageResourceServiceMock;
     @Mock
     private Executor executorMock;
@@ -113,6 +116,7 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
+            markdownDecoratorService,
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
             renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);
@@ -524,6 +528,24 @@ public class ConfirmationResponseServiceTest {
         assertConfirmationValues(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
         assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA16Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
+        
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA16Form text",
+            nextStepsValues.get("{{pa16form}}"));
+
     }
 
     @Test

@@ -33,6 +33,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
 
@@ -363,6 +365,22 @@ public class CCDDataTransformerTest {
 
         assertAll(ccdData);
         assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForPA16Form() {
+
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
+        when(caseDataMock.getSolsApplicantSiblings()).thenReturn(NO);
+        when(caseDataMock.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("ChildAdopted", ccdData.getSolsApplicantRelationshipToDeceased());
+        assertEquals("No", ccdData.getSolsApplicantSiblings());
+        assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
+
     }
 
     private void assertAll(CCDData ccdData) {

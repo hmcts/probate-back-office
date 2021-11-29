@@ -101,6 +101,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -1220,6 +1221,22 @@ public class CallbackResponseTransformerTest {
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetGrantIssuedDateForEdgeCase() {
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(EDGE_CASE)
+            .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String grantIssuedDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(document), null, null);
+        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
@@ -2556,6 +2573,44 @@ public class CallbackResponseTransformerTest {
 
         assertEquals("The executors applicant forename applicant surname, James Smith: ",
             executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplyingPrimaryApplicantNotApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
+        CaseData caseData = caseDataBuilder.primaryApplicantIsApplying(NO).build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executor James Smith: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextAdmonWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_ADMON).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextIntestacy() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
     }
 
     @Test

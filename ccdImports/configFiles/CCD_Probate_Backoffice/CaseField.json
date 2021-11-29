@@ -15,7 +15,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantOtherReason", "Label": "What is the ‘other’ reason for the applicant name difference on the will? ", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantAddress", "Label": "Applicant address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantPhoneNumber", "Label": "Applicant phone number", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantEmailAddress", "Label": "Applicant email address", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantEmailAddress", "Label": "Applicant email address", "FieldType": "Text", "RegularExpression": "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedNameSection", "Label": "### What's the full name of the deceased? \nUse the name on the death certificate", "HintText": "Use the name on the death certificate", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedForenames", "Label": "First name(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSurname", "Label": "Last name(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1},
@@ -106,7 +106,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "softStop", "Label": "Soft Stop", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorFirmName", "Label": "Name of the firm, or the name under which the applicant operates", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 100},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorAddress", "Label": "Address of your firm or where the applicant operates", "FieldType": "AddressUK", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorEmail", "Label": "Contact email address", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorEmail", "Label": "Contact email address", "FieldType": "Text", "RegularExpression": "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorPhoneNumber", "Label": "Contact phone number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorAppReference", "Label": "Your reference for this application", "FieldType": "Text", "SecurityClassification": "Public", "Max": 100},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorIsExec", "Label": "Is the Probate practitioner named in the will as an executor?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
@@ -445,5 +445,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "isSolThePrimaryApplicant", "Label": "probate practitioner is primary applicant", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Deceased", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorIsMainApplicant", "Label": "Hot fix for CaseValidationException field not found error - not used", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorIsMainApplicant", "Label": "Hot fix for CaseValidationException field not found error - not used", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecord", "Label": "Deceased", "FieldType": "DeathRecord", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfDeathRecords", "Label": "Number of death records", "FieldType": "Number",  "SecurityClassification": "Public"}
 ]

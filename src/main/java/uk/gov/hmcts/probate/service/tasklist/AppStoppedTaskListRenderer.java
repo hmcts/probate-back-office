@@ -1,11 +1,15 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.htmlrendering.EmailAddressRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmltemplate.AppStoppedHtmlTemplate;
 
+@Service
+@RequiredArgsConstructor
 public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
 
     protected String renderContactDetails() {
