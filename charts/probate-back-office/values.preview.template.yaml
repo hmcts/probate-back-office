@@ -28,8 +28,7 @@ idam-pr:
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
       - http://xui-${SERVICE_FQDN}/oauth2/callback
-    CCD:
-      - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+
 ccd:
   ccd:
     adminWeb:
@@ -172,6 +171,7 @@ java:
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
+    CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
 
   keyVaults:
     probate:
