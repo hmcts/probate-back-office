@@ -2,14 +2,11 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
-import uk.gov.hmcts.probate.businessrule.IhtEstate400421BusinessRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
 
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_CONFIRM;
-import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_NOT_CONFIRM;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -17,8 +14,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class SolicitorLegalStatementPDFDecorator {
     private final CaseExtraDecorator caseExtraDecorator;
     private final IhtEstateNotCompletedBusinessRule ihtEstateNotCompletedBusinessRule;
-    private final IhtEstate400421BusinessRule ihtEstate400421BusinessRule;
-    private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -28,19 +23,7 @@ public class SolicitorLegalStatementPDFDecorator {
                 .ihtEstateText(IHT_ESTATE_CONFIRM)
                 .build();
             decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
-        } else if (ihtEstate400421BusinessRule.isApplicable(caseData)) {
-            IhtEstateConfirmCaseExtra ihtEstateConfirmCaseExtra = IhtEstateConfirmCaseExtra.builder()
-                .showIhtEstate(YES)
-                .ihtEstateText(IHT_ESTATE_NOT_CONFIRM)
-                .build();
-            decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
-        } else if (ihtEstate207BusinessRule.isApplicable(caseData)) {
-            IhtEstateConfirmCaseExtra ihtEstateConfirmCaseExtra = IhtEstateConfirmCaseExtra.builder()
-                .showIhtEstate(YES)
-                .ihtEstateText(IHT_ESTATE_CONFIRM)
-                .build();
-            decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
-        }        
+        }
         return decoration;
     }
 }
