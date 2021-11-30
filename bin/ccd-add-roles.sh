@@ -17,4 +17,4 @@ binFolder=$(dirname "$0")
 (${binFolder}/ccd-add-role.sh caseworker-probate-scheduler)
 (${binFolder}/ccd-add-role.sh caseworker-probate-bulkscan)
 (${binFolder}/ccd-add-role.sh caseworker-probate-caseadmin)
-
+(${binFolder}/ccd-add-role.sh caseworker-probate-charity)
