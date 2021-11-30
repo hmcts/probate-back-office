@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: false
+  probate-ccd-stack: true
 
 postgresql:
   enabled: true
@@ -39,7 +39,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: false
+      enabled: true
     s2s:
       enabled: false
     postgresql:
@@ -47,6 +47,7 @@ ccd:
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
+    ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
@@ -75,25 +76,45 @@ ccd:
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
-        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+        IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
+        IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
+        IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
+        IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
+        IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: back-office
+        DATA_STORE_CROSS_JURISDICTIONAL_ROLES: caseworker-caa,caseworker-approver
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
+        HTTP_CLIENT_READ_TIMEOUT: '120000'
+        HTTP_CLIENT_MAX_TOTAL: '300'
+        HTTP_CLIENT_MAX_CLIENT_PER_ROUTE: '30'
+        DATA_STORE_DB_MAX_POOL_SIZE: 80
+        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
+        CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
+        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       keyVaults: []
-      #ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+      ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
+        DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp
+        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
-      #ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      ingressHost: ccd-definition-store-${SERVICE_FQDN}
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
       enviroment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
       keyVaults: []
-      #ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+      ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
@@ -113,8 +134,32 @@ xui-webapp:
       HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
       SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
+      SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       JURISDICTIONS: PROBATE
+      LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
+      FEATURE_REDIS_ENABLED: false
+      FEATURE_APP_INSIGHTS_ENABLED: false
+      FEATURE_SECURE_COOKIE_ENABLED: false
+      FEATURE_PROXY_ENABLED: false
+      FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
+      FEATURE_HELMET_ENABLED: false
+      FEATURE_OIDC_ENABLED: false
+      NOW: false
+      REDISCLOUD_URL: http://dummyrediscloudurl
+      UV_THREADPOOL_SIZE: 128
+      PROTOCOL: http
+    keyVaults:
+      rpx:
+        resourceGroup: rpx
+        secrets:
+          - mc-s2s-client-secret
+          - mc-idam-client-secret
+          - system-user-name
+          - system-user-password
 
 java:
   image: ${IMAGE_NAME}
@@ -124,9 +169,9 @@ java:
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
     PROBATE_POSTGRESQL_DATABASE: probate
-    #CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
-    #SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
-    #CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
+    CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
 
   keyVaults:
     probate:
