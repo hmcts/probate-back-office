@@ -615,6 +615,14 @@ public class BusinessValidationUnitTest {
     public void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).transform(any());
+    }
+
+    @Test
+    public void shouldDefaultIHT400421PageFlow() {
+        ResponseEntity<CallbackResponse> response = underTest.defaultIht400DatePage(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).defaultIht400421DatePageFlow(any());
     }
 
     @Test

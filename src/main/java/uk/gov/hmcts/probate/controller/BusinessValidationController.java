@@ -240,6 +240,11 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
+    @PostMapping(path = "/sols-default-iht400421Page")
+    public ResponseEntity<CallbackResponse> defaultIht400DatePage(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(callbackResponseTransformer.defaultIht400421DatePageFlow(request));
+    }
+
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
