@@ -33,6 +33,7 @@ public class SolicitorCoversheetPDFDecorator {
         if (ihtEstate207BusinessRule.isApplicable(caseData)) {
             IhtEstate207CaseExtra ihtEstate207CaseExtra = IhtEstate207CaseExtra.builder()
                 .ihtEstate207Text(IHT_ESTATE_207_TEXT)
+                .showIhtEstate(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
