@@ -60,7 +60,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Test
     public void shouldProvideIhtEstate207Decoration() {
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
+        String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);

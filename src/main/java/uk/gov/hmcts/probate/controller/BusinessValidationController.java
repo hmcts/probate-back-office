@@ -108,7 +108,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(request));
     }
 
-    @PostMapping(path = "/sols-validate-iht-estate")
+    @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         ihtEstateValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
