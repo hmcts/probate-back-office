@@ -461,8 +461,6 @@ public class CallbackResponseTransformerTest {
     private IhtEstateDefaulter ihtEstateDefaulter;
     @Mock
     private Iht400421Defaulter iht400421Defaulter;
-    @Mock
-    private IhtEstateDefaulter ihtEstateDefaulter;
 
     @Before
     public void setup() {
