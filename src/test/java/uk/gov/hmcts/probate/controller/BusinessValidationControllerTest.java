@@ -126,7 +126,7 @@ public class BusinessValidationControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/sols-default-iht-estate";
-    private static final String SOLS_VALIDATE_IHT_ESTATE_URL = "/case/sols-validate-iht-estate";
+    private static final String SOLS_VALIDATE_IHT_ESTATE_URL = "/case/validate-iht-estate";
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_VALIDATE_EXEC_URL = "/case/sols-validate-executors";
