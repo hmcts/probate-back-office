@@ -67,6 +67,7 @@
   {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "deceasedOtherNames", "FieldType": "Text", "ElementLabel": "Deceased other names", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "executorsApplying", "FieldType": "Collection", "FieldTypeParameter": "LegalStatementExecutorApplying", "ElementLabel": "Executors applying", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "deceasedEstateValue", "FieldType": "Text", "ElementLabel": "Deceased estate value", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "deceasedEstateValueExceptedEstateConfirmation", "FieldType": "Text", "ElementLabel": "Excepted estate confirmation", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "deceasedEstateLand", "FieldType": "Text", "ElementLabel": "Deceased estate land", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "LegalStatement", "ListElementCode": "executorsNotApplying", "FieldType": "Collection", "FieldTypeParameter": "LegalStatementExecutorNotApplying", "ElementLabel": "Executors not applying", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "accept", "FieldType": "Text", "ElementLabel": "Accept", "SecurityClassification": "Public"},
