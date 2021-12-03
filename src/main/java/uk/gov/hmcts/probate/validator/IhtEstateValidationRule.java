@@ -28,11 +28,10 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
         CaseData caseData = caseDetails.getData();
         boolean estateValuesEntered =
             caseData.getIhtEstateGrossValue() != null && caseData.getIhtEstateNetValue() != null;
-        boolean probateValuesEntered = caseData.getIhtGrossValue() != null && caseData.getIhtNetValue() != null;
         boolean unusedClaimedNotSet = StringUtils.isEmpty(caseData.getIhtUnusedAllowanceClaimed());
         
         BigDecimal nqv = caseData.getIhtEstateNetQualifyingValue();
-        if (estateValuesEntered && probateValuesEntered && nqv != null) {
+        if (estateValuesEntered && nqv != null) {
             boolean nqvBetweenValues = (nqv.doubleValue() >= NQV_LOWER && nqv.doubleValue() <= NQV_UPPER);
             if (nqvBetweenValues && unusedClaimedNotSet) {
                 String userMessage = businessValidationMessageRetriever.getMessage(MUST_ANSWER_UNUSED_ALLOWANCE, null,

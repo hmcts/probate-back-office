@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -42,8 +41,6 @@ public class IhtEstateValidationRuleTest {
     public void testValidateWithUnusedAllowanceError() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(50000000));
         when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn("unused iht message");
         try {
@@ -57,8 +54,6 @@ public class IhtEstateValidationRuleTest {
     public void testValidateWithExpectedIht() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(70000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn("expected iht message");
@@ -73,8 +68,6 @@ public class IhtEstateValidationRuleTest {
     public void testValidateNoMessage() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
@@ -84,8 +77,6 @@ public class IhtEstateValidationRuleTest {
     public void testValidateNoMessageNvqLargerThanUpper() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(7000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
@@ -95,16 +86,12 @@ public class IhtEstateValidationRuleTest {
     public void testValidateNoMessageNoNvq() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
 
     @Test
     public void testValidateNoMessageNoEstateValues() {
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(30000000));
-        when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
@@ -116,24 +103,6 @@ public class IhtEstateValidationRuleTest {
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
-        ihtEstateValidationRule.validate(caseDetailsMock);
-    }
-
-    @Test
-    public void testValidateNoMessageNoProbateIhtGrossValue() {
-        lenient().when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(29000000));
-        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
-        when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
-        ihtEstateValidationRule.validate(caseDetailsMock);
-    }
-    
-    @Test
-    public void testValidateNoMessageNoProbateIhtNetValue() {
-        when(caseDataMock.getIhtGrossValue()).thenReturn(BigDecimal.valueOf(29000000));
-        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(BigDecimal.valueOf(100000000));
-        when(caseDataMock.getIhtEstateNetValue()).thenReturn(BigDecimal.valueOf(90000000));
-        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(BigDecimal.valueOf(1000000));
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
 }
