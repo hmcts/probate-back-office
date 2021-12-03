@@ -46,6 +46,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String DEFAULT_SOLS_IHT_ESTATE = "/case/sols-default-iht-estate";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -683,6 +684,38 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String errors = jsonPath.get("data.errors");
 
         assertEquals(willExist, "No");
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifyRequestInTestacySuccessForDefaultIhtEstate() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstate.json");
+        json = json.replaceAll("<DOD-DATE>", "2022-01-01");
+        final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String errors = jsonPath.get("data.errors");
+
+        assertEquals("Yes", dateOfDeathAfterEstateSwitch);
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifyRequestInTestacySuccessForDefaultIhtEstateNo() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstate.json");
+        json = json.replaceAll("<DOD-DATE>", "2021-12-31");
+        final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String errors = jsonPath.get("data.errors");
+
+        assertEquals("No", dateOfDeathAfterEstateSwitch);
         assertNull(errors);
     }
 

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded"
                 + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
-            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc");
+            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc").getBody().asString();
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
         assertFalse(fullResponse.contains("(PA16)"));
     }
@@ -53,14 +54,59 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA16"
                 + ".json", "deceasedFirstName", "deceasedLastName", "01/01/2018", "refCYA2",
-            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)");
+            "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)").getBody().asString();
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
 
+    @Test
     public void verifyAllDetailsInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement(Arrays.asList("deceasedFirstName", "deceasedLastName",
-            "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "TestSOTJobTitle",
+            "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln",
             "firmpc", "appref-PAY1"));
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
+        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesNo() {
+        String dir = "/exceptedEstates/ihtEstateCompletedNo/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
+        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
+        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+            Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
+        assertEquals(confirmationExpectedText, response);
     }
 
     @Test
@@ -79,12 +125,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     public void verifyEmptySolicitorFirmNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"solsSolicitorFirmName\": \"SolicitorFirmName\"",
             "\"solsSolicitorFirmName\": \"\"", "caseDetails.data.solsSolicitorFirmName");
-    }
-
-    @Test
-    public void verifyEmptySolicitorIHTFormIdReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"ihtFormId\": \"IHT205\"", "\"ihtFormId\": \"\"",
-            "caseDetails.data.ihtFormId");
     }
 
     @Test
@@ -150,15 +190,11 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
-    private String validatePostRequestSuccessForLegalStatement(String validationString) {
-        return validatePostRequestSuccessForLegalStatement("success.nextsteps.json", validationString);
-    }
-
-    private String validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
+    private Response validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
         return validatePostRequestSuccessForLegalStatement("success.nextsteps.json", validationStrings);
     }
     
-    private String validatePostRequestSuccessForLegalStatement(String file, String... validationString) {
+    private Response validatePostRequestSuccessForLegalStatement(String file, String... validationString) {
         final var vars = new ArrayList<String>();
         for (final String val : validationString) {
             vars.add(val);
@@ -166,7 +202,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         return validatePostRequestSuccessForLegalStatement(file, vars);
     }
     
-    private String validatePostRequestSuccessForLegalStatement(String file, List<String> validationString) {
+    private Response validatePostRequestSuccessForLegalStatement(String file, List<String> validationString) {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -179,7 +215,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         for (final String val : validationString) {
             assertTrue(responseString.contains(val));
         }
-        return responseString;
+        return response;
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString,

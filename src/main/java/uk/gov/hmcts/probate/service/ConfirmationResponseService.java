@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
@@ -43,7 +44,10 @@ import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +58,6 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
-    private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
@@ -74,6 +77,7 @@ public class ConfirmationResponseService {
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
+    private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -262,31 +266,51 @@ public class ConfirmationResponseService {
             additionalInfo = "None provided";
         }
 
-        String ihtFormValue = ccdData.getIht().getFormName();
-        String ihtText = "";
-        String ihtForm = "";
-        if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "\n*   the inheritance tax form ";
-            if ("Yes".equals(ccdData.getIht217())) {
-                ihtForm = "IHT205 and IHT217";
-            } else {
-                ihtForm = ccdData.getIht().getFormName();
-            }
-        }
-
         String legalPhotocopy = "";
         if (hasNoLegalStatmentBeenUploaded(ccdData)) {
             legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
         }
         keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
-        keyValue.put("{{ihtText}}", ihtText);
-        keyValue.put("{{ihtForm}}", ihtForm);
+        keyValue.put("{{ihtText}}", getIhtText(ccdData));
+        keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    private String getIhtForm(CCDData ccdData) {
+        String ihtFormValue = ccdData.getIht().getFormName();
+        String ihtForm = "";
+        if (ihtFormValue != null && !ihtFormValue.contentEquals(IHT400421_VALUE)) {
+            if (YES.equals(ccdData.getIht217())) {
+                ihtForm = "IHT205 and IHT217";
+            } else {
+                ihtForm = ccdData.getIht().getFormName();
+            }
+        }
+
+        return ihtForm;
+    }
+
+    private String getIhtText(CCDData ccdData) {
+        String ihtFormValue = ccdData.getIht().getFormName();
+        String ihtText = "";
+        if (ihtFormValue == null) {
+            CaseData caseData = CaseData.builder()
+                .ihtFormEstateValuesCompleted(ccdData.getIht().getIhtFormEstateValuesCompleted())
+                .ihtFormEstate(ccdData.getIht().getIhtFormEstate())
+                .build();
+            if (ihtEstate207BusinessRule.isApplicable(caseData)) {
+                ihtText = "\n*   " + IHT_ESTATE_207_TEXT;
+            }
+        } else if (!ihtFormValue.contentEquals(IHT400421_VALUE)) {
+            ihtText = "\n*   the inheritance tax form ";
+        }
+
+        return ihtText;
     }
 
     private String getPA16FormLabel(CCDData ccdData) {

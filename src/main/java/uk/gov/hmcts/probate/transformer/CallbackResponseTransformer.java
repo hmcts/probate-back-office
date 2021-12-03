@@ -123,6 +123,7 @@ public class CallbackResponseTransformer {
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final Iht400421Defaulter iht400421Defaulter;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
@@ -130,8 +131,17 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(), 
+            responseCaseDataBuilder);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse defaultIht400421DatePageFlow(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            true);
+        iht400421Defaulter.defaultPageFlowForIht400421(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }

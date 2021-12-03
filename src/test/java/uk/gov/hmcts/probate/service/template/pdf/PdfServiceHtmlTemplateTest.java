@@ -136,6 +136,7 @@ public class PdfServiceHtmlTemplateTest {
     @Test
     public void shouldGenerateCorrectHtml() throws Exception {
         Map<String, Object> valuesMap = objectMapper.readValue(jsonData, MapType.REFERENCE);
+        valuesMap.put("case_extras", null);
         String templateString = new String(Files.readAllBytes(Paths.get(getClass()
                 .getResource("/templates/pdf/legalStatementProbate.html").toURI())));
         Writer writer = new StringWriter();
