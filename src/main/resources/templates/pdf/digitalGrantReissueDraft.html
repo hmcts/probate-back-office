@@ -113,7 +113,6 @@ Died on
 {% endmacro %}
 
 {% macro applyingExecutors(cd, primaryApplicantApplying, isTc) %}
-<p>
     {% set addAnd = false %}
     {% set atLeastOneExecAdded = false %}
     {% for executor in cd.executorsApplying %}
@@ -125,7 +124,6 @@ Died on
     {% set atLeastOneExecAdded = true %}
     {% endif %}
     {% endfor %}
-</p>
 {% endmacro %}
 
 {% macro powerReserved(cd, primaryApplicantApplying) %}
@@ -140,6 +138,13 @@ Died on
     {% endif %}
     {% if cd.primaryApplicantIsApplying == "No" and cd.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
     {% set powerReservedCounter = powerReservedCounter + 1 %}
+    {% endif %}
+
+    {% if cd.titleAndClearingType == "TCTPartSuccPowerRes" or cd.titleAndClearingType == "TCTPartPowerRes" %}
+        {% set powerReservedCounter = powerReservedCounter + 1 %}
+        {% if cd.morePartnersHoldingPowerReserved == "Yes" %}
+            {% set powerReservedCounter = powerReservedCounter + 1 %}
+        {% endif %}
     {% endif %}
 
     {% if powerReservedCounter == 1 %}Power reserved to another Executor<br/>
@@ -345,7 +350,7 @@ Died on
             {% endif %}
             {% set primaryApplicantApplying = false %}
             {% set applyingExecCounter = 0 %}
-            {% if (case_details.case_data.primaryApplicantIsApplying == "Yes" and isTc == false) or
+            {% if (case_details.case_data.primaryApplicantIsApplying != "No" and isTc == false) or
             (isTc == true and case_details.case_data.solsSolicitorIsExec == "Yes" and case_details.case_data.solsSolicitorIsApplying == "Yes") %}
             {% set primaryApplicantApplying = true %}
             {% set applyingExecCounter = 1 %}

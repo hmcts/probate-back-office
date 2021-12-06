@@ -1,8 +1,12 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CREATED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_REDEC;
@@ -14,48 +18,63 @@ import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
 public class TaskListRendererFactoryTest {
 
-    private BaseTaskListRenderer renderer;
-    private TaskListRendererFactory taskListRendererFactory = new TaskListRendererFactory();
+    @InjectMocks
+    private TaskListRendererFactory taskListRendererFactory;
+    @Mock
+    private StoppedTaskListRenderer stoppedTaskListRenderer;
+    @Mock
+    private EscalatedTaskListRenderer escalatedTaskListRenderer;
+    @Mock
+    private AppStoppedTaskListRenderer appStoppedTaskListRenderer;
+    @Mock
+    private DefaultTaskListRenderer defaultTaskListRenderer;
 
+    private BaseTaskListRenderer renderer;
+
+    @Before
+    public void setup() {
+        initMocks(this);
+    }
+    
     @Test
     public void shouldReturnCorrectRendererForState_CaseCreated() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_CREATED.getId());
-        assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
+        assertEquals(defaultTaskListRenderer, renderer);
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_BOExamining() {
         renderer = taskListRendererFactory.getTaskListRenderer(EXAMINING.getId());
-        assertEquals(DefaultTaskListRenderer.class, renderer.getClass());
+        assertEquals(defaultTaskListRenderer, renderer);
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStopped() {
         renderer = taskListRendererFactory.getTaskListRenderer(BO_CASE_STOPPED.getId());
-        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
+        assertEquals(stoppedTaskListRenderer, renderer);    
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStoppedReissue() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_REISSUE.getId());
-        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
+        assertEquals(stoppedTaskListRenderer, renderer);
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStoppedAwaitRedec() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_AWAIT_REDEC.getId());
-        assertEquals(StoppedTaskListRenderer.class, renderer.getClass());
+        assertEquals(stoppedTaskListRenderer, renderer);    
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_BORegistrarEscalation() {
         renderer = taskListRendererFactory.getTaskListRenderer(REGISTRAR_ESCALATION.getId());
-        assertEquals(EscalatedTaskListRenderer.class, renderer.getClass());
+        assertEquals(escalatedTaskListRenderer, renderer);
     }
 
     @Test
     public void shouldReturnCorrectRendererForState_Stopped() {
         renderer = taskListRendererFactory.getTaskListRenderer(STOPPED.getId());
-        assertEquals(AppStoppedTaskListRenderer.class, renderer.getClass());
+        assertEquals(appStoppedTaskListRenderer, renderer);
     }
 }
