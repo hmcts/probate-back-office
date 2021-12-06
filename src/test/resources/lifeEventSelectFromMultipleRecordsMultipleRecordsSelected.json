@@ -1,0 +1,28 @@
+{
+  "case_details": {
+    "case_data": {
+      "numberOfDeathRecords": 2,
+      "deathRecords": [
+        {
+          "id": null,
+          "value": {
+            "systemNumber": 500035095,
+            "name": "John TEST SMITH",
+            "address": "Oldway Mansion, Torquay Road, Paignton, Devon",
+            "valid": "Yes"
+          }
+        },
+        {
+          "id": null,
+          "value": {
+            "systemNumber": 500163228,
+            "name": "John TEST SMITH",
+            "address": "Arlington House, Kents Road, Torquay, Devon",
+            "valid": "Yes"
+          }
+        }
+      ]
+    },
+    "id": 1621002468661478
+  }
+}

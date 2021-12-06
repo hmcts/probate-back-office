@@ -550,6 +550,8 @@ public class CaseData extends CaseDataParent {
     private final String willDamageDateKnown;
     private final String willDamageDate;
 
+    private final DeathRecord deathRecord;
+    private final Integer numberOfDeathRecords;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

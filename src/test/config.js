@@ -1,5 +1,4 @@
 module.exports = {
-    // use for when we know we want to use xui, e.g. when swapping between xui and ccd
     TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: 0, // process.env.RETRY_FEATURES || 2,
@@ -14,6 +13,7 @@ module.exports = {
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
+    //TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
     // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
     ManualDelayShort: 0.25,
     ManualDelayMedium: 0.5,
@@ -36,7 +36,7 @@ module.exports = {
     CaseMatchesLocateRemoveButtonDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.25,
     CaseMatchesAddNewButtonClickDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
     CaseMatchesCompletionDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0,
-    CaseworkerGoButtonClickDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
+    CaseworkerGoButtonClickDelay: 3, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0,
     CaseProgressTabCheckDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 5 : 0,
     CaseProgressClickSelectFillDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 3 : 0,
     CaseProgressClickGoButtonInitialDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 3 : 0,

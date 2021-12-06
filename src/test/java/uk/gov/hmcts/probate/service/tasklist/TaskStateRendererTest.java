@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service.tasklist;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
@@ -31,7 +33,11 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class TaskStateRendererTest {
-
+    @InjectMocks
+    private TaskStateRenderer taskStateRenderer;
+    @Mock
+    private PA16FormBusinessRule pa16FormBusinessRule;
+    
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -41,6 +47,7 @@ public class TaskStateRendererTest {
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
     private static final SolsAddress PRIMARY_APPLICANT_ADDRESS = mock(SolsAddress.class);
     private static final String PRIMARY_APPLICANT_NAME_ON_WILL = "willName";
+    private static final String CHILD_ADOPTED = "ChildAdopted";
     private final FileSystemResourceService fileSystemResourceService = new FileSystemResourceService();
     final String testHtml = fileSystemResourceService
         .getFileFromResourceAsString("caseprogress/testCaseProgressHTML");
@@ -110,7 +117,7 @@ public class TaskStateRendererTest {
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -151,7 +158,7 @@ public class TaskStateRendererTest {
             + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -205,7 +212,7 @@ public class TaskStateRendererTest {
             + "<p></p>\n"
             + "<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "Yes",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -252,7 +259,7 @@ public class TaskStateRendererTest {
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -300,7 +307,7 @@ public class TaskStateRendererTest {
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "NoWill", null,
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -351,7 +358,7 @@ public class TaskStateRendererTest {
             + "<p></p>\n"
             + "<p></p>\n";
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeftAnnexed", "No",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
@@ -390,7 +397,7 @@ public class TaskStateRendererTest {
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocuments");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -420,7 +427,7 @@ public class TaskStateRendererTest {
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsWillHasCodicils");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -450,7 +457,7 @@ public class TaskStateRendererTest {
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsIHT217");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -478,7 +485,7 @@ public class TaskStateRendererTest {
                 "caseprogress/intestacy/solicitorCaseProgressSendDocuments");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -486,6 +493,70 @@ public class TaskStateRendererTest {
         assertEquals(expectedHtml, result);
     }
 
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndPA16Form() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_INTESTACY)
+            .ihtFormId(IHT_FORM_207)
+            .solsApplicantRelationshipToDeceased(CHILD_ADOPTED)
+            .solsApplicantSiblings(NO)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/intestacy/solicitorCaseProgressSendDocumentsWithPA16Form");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndNoPA16Form() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_INTESTACY)
+            .ihtFormId(IHT_FORM_207)
+            .solsApplicantRelationshipToDeceased(CHILD_ADOPTED)
+            .solsApplicantSiblings(YES)
+            .solsSpouseOrCivilRenouncing(YES)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/intestacy/solicitorCaseProgressSendDocumentsNoPA16Form");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(false);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+    
     @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_IntestacyIht217() {
         final CaseData caseData = CaseData.builder()
@@ -508,7 +579,7 @@ public class TaskStateRendererTest {
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsIHT217");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -537,7 +608,7 @@ public class TaskStateRendererTest {
                 "caseprogress/admonwill/solicitorCaseProgressSendDocuments");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -567,7 +638,7 @@ public class TaskStateRendererTest {
                 "caseprogress/admonwill/solicitorCaseProgressSendDocumentsWillHasCodicils");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
@@ -597,7 +668,7 @@ public class TaskStateRendererTest {
                 "caseprogress/admonwill/solicitorCaseProgressSendDocumentsIHT217");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
-        String result = TaskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
