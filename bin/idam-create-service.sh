@@ -11,7 +11,9 @@ REDIRECT_URL=${4}
 SELF_REGISTRATION=${5:-"false"}
 SCOPE=${6:-"openid profile roles"}
 
-apiToken=$(${dir}/idam-authenticate.sh "role.assignment.admin@gmail.com" "Pa55word11")
+apiToken=$(${dir}/idam-authenticate.sh "idamOwner@hmcts.net" "Ref0rmIsFun")
+
+echo token=${apiToken}
 
 echo -e "\nCreating service with:\nLabel: ${LABEL}\nClient ID: ${CLIENT_ID}\nClient Secret: ${CLIENT_SECRET}\nRedirect URL: ${REDIRECT_URL}\n"
 
