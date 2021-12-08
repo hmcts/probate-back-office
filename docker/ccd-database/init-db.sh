@@ -12,7 +12,7 @@ psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=$DB_USERNAME --set PA
   CREATE USER :USERNAME WITH PASSWORD ':PASSWORD';
 EOSQL
 
-for service in idam ccd_user_profile ccd_definition ccd_data evidence ccd_definition_designer fees_register probate; do
+for service in idam ccd_user_profile ccd_definition ccd_data evidence ccd_definition_designer fees_register probate role_assignment; do
   echo "Database $service: Creating..."
 psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=$DB_USERNAME --set PASSWORD=$DB_PASSWORD --set DATABASE=$service <<-EOSQL
   CREATE DATABASE :DATABASE
@@ -22,3 +22,7 @@ psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=$DB_USERNAME --set PA
 EOSQL
   echo "Database $service: Created"
 done
+# should be accomplished by above additional service for role_assignment
+#psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=ccd --set PASSWORD=Pa55word11 --set DATABASE=role_assignment <<-EOSQL
+#  CREATE DATABASE :DATABASE WITH OWNER = :USERNAME ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#EOSQL
