@@ -165,6 +165,7 @@ services:
       MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
       MICROSERVICEKEYS_CCD_CASE_DOCUMENT_AM_API : "AAAAAAAAAAAAAAAC"
       MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT_SERVICE: "AAAAAAAAAAAAAAAA"
     ports:
       - 4502:8080
 
@@ -674,11 +675,11 @@ services:
       ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
       ROLE_ASSIGNMENT_DB_OPTIONS:
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
-      LD_SDK_KEY:
+      LD_SDK_KEY: sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
       ROLE_ASSIGNMENT_IDAM_KEY:
       ROLE_ASSIGNMENT_TOKEN_SECRET:
       ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data
-      IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://idam-api:5000}"
+      IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
       OIDC_ISSUER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/openam/oauth2/hmcts"
@@ -686,7 +687,7 @@ services:
       ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
       ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
       ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: "Pa55word11"
-      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: search-user
+      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
       CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
       AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
       REFORM_SERVICE_NAME: am-role-assignment-service
