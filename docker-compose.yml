@@ -65,13 +65,14 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service,aac_manage_case_assignment
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_API_BASE_URL: http://sidam-api:5000
       IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
+      IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: idam_data_store_client_secret
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
       REFORM_ENVIRONMENT: local
@@ -81,6 +82,11 @@ services:
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       DATA_STORE_DEFAULT_LOG_LEVEL: INFO
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
+      CCD_DEFAULTPRINTURL: https://return-case-doc-ccd.nonprod.platform.hmcts.net/jurisdictions/:jid/case-types/:ctid/cases/:cid
+      ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL: "${ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL:-true}"
+      ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION: "${ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION:-true}"
+      ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION: "${ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION:-true}"
+      REFERENCE_DATA_API_URL: "${RD_LOCATION_REF_API_BASE_URL:-http://ccd-test-stubs-service:5555}"
       ROLE_ASSIGNMENT_URL: "${ROLE_ASSIGNMENT_URL:-http://am-role-assignment-service:4096}"
     ports:
       - 4452:4452
@@ -678,7 +684,7 @@ services:
       LD_SDK_KEY: sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
       ROLE_ASSIGNMENT_IDAM_KEY:
       ROLE_ASSIGNMENT_TOKEN_SECRET:
-      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data
+      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
       IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
       IDAM_S2S_URL: http://service-auth-provider-api:8080
       OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
@@ -693,6 +699,7 @@ services:
       REFORM_SERVICE_NAME: am-role-assignment-service
       REFORM_TEAM: am
       REFORM_ENVIRONMENT: local
+      BYPASS_ORG_DROOL_RULE: "true"
       # Uncomment this line to enable JVM debugging and uncomment the port mapping below
       #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
     ports:
