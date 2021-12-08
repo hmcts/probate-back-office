@@ -672,45 +672,45 @@ services:
       - dm-store
       - service-auth-provider-api
 
-am-role-assignment-service:
-  image: hmctspublic.azurecr.io/am/role-assignment-service:latest
-  environment:
-    ROLE_ASSIGNMENT_DB_HOST: "shared-database"
-    ROLE_ASSIGNMENT_DB_NAME: role_assignment
-    ROLE_ASSIGNMENT_DB_PORT: 5432
-    ROLE_ASSIGNMENT_DB_USERNAME: "${DB_USERNAME}"
-    ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
-    ROLE_ASSIGNMENT_DB_OPTIONS:
-    AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
-    LD_SDK_KEY: sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
-    ROLE_ASSIGNMENT_IDAM_KEY:
-    ROLE_ASSIGNMENT_TOKEN_SECRET:
-    ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
-    IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
-    IDAM_S2S_URL: http://service-auth-provider-api:8080
-    OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
-    OIDC_ISSUER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/openam/oauth2/hmcts"
-    ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
-    ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
-    ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
-    ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: "Pa55word11"
-    ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
-    CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
-    AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
-    REFORM_SERVICE_NAME: am-role-assignment-service
-    REFORM_TEAM: am
-    REFORM_ENVIRONMENT: local
-    BYPASS_ORG_DROOL_RULE: "true"
-    # Uncomment this line to enable JVM debugging and uncomment the port mapping below
-    #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-  ports:
-    - 4096:4096
-    # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
-    # - 5005:5005
-  depends_on:
-    - ccd-data-store-api
-    - shared-database
-    - service-auth-provider-api
+  am-role-assignment-service:
+    image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: "shared-database"
+      ROLE_ASSIGNMENT_DB_NAME: role_assignment
+      ROLE_ASSIGNMENT_DB_PORT: 5432
+      ROLE_ASSIGNMENT_DB_USERNAME: "${DB_USERNAME}"
+      ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
+      ROLE_ASSIGNMENT_DB_OPTIONS:
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
+      LD_SDK_KEY: sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
+      ROLE_ASSIGNMENT_IDAM_KEY:
+      ROLE_ASSIGNMENT_TOKEN_SECRET:
+      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
+      IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
+      OIDC_ISSUER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/openam/oauth2/hmcts"
+      ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
+      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
+      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: "Pa55word11"
+      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
+      CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
+      AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
+      REFORM_SERVICE_NAME: am-role-assignment-service
+      REFORM_TEAM: am
+      REFORM_ENVIRONMENT: local
+      BYPASS_ORG_DROOL_RULE: "true"
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ports:
+      - 4096:4096
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # - 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - shared-database
+      - service-auth-provider-api
 
 volumes:
   ccd-docker-azure-blob-data:
