@@ -378,9 +378,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private void verifyPAEmailNotificationReceived(String document) {
-        assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
     }
 
     private void verifySolsEmailNotificationReceived(String document) {
