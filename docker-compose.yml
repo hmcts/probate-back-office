@@ -239,7 +239,7 @@ services:
     volumes:
       - ./compose/database:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment
+      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment,role_assignment
       DB_USERNAME:
       DB_PASSWORD:
       POSTGRES_HOST_AUTH_METHOD: trust
