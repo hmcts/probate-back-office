@@ -308,7 +308,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifyPersonalApplicantGrantIssuedContentIsOk() {
         final String document = sendEmail("personalPayloadNotifications.json", GRANT_ISSUED,
                 EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
+        String expectedText = utils.getStringFromFile("/json/personalApplicantGrantIssuedEmailContent.txt");
+        assertTrue(document.contains(expectedText));
     }
 
     @Test
@@ -378,7 +379,9 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private void verifyPAEmailNotificationReceived(String document) {
+        assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
+        assertTrue(document.contains(BIRMINGHAM_NO));
     }
 
     private void verifySolsEmailNotificationReceived(String document) {
