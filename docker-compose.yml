@@ -682,7 +682,7 @@ services:
       ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
       ROLE_ASSIGNMENT_DB_OPTIONS:
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
-      LD_SDK_KEY: sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844
+      LD_SDK_KEY: "${LD_SDK_FE_KEY}"
       ROLE_ASSIGNMENT_IDAM_KEY:
       ROLE_ASSIGNMENT_TOKEN_SECRET:
       ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
