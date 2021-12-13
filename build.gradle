@@ -232,6 +232,9 @@ configurations.all {
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.4.25.Final'
       }
+      if (details.requested.group in ['org.apache.logging.log4j']) {
+        details.useVersion '2.15.0'
+      }
     }
   }
 }
