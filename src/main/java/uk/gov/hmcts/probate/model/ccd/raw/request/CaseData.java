@@ -549,9 +549,6 @@ public class CaseData extends CaseDataParent {
     private final CombinedName willDamageCulpritName;
     private final String willDamageDateKnown;
     private final String willDamageDate;
-
-    private final DeathRecord deathRecord;
-    private final Integer numberOfDeathRecords;
     private final String ihtFormEstateValuesCompleted;
     private final String ihtFormEstate;
     private final BigDecimal ihtEstateGrossValue;
@@ -562,6 +559,9 @@ public class CaseData extends CaseDataParent {
     private final String ihtEstateNetQualifyingValueField;
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
+
+    private final DeathRecord deathRecord;
+    private final Integer numberOfDeathRecords;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
