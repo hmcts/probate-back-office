@@ -552,6 +552,16 @@ public class CaseData extends CaseDataParent {
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
+    private final String ihtFormEstateValuesCompleted;
+    private final String ihtFormEstate;
+    private final BigDecimal ihtEstateGrossValue;
+    private final String ihtEstateGrossValueField;
+    private final BigDecimal ihtEstateNetValue;
+    private final String ihtEstateNetValueField;
+    private final BigDecimal ihtEstateNetQualifyingValue;
+    private final String ihtEstateNetQualifyingValueField;
+    private final String deceasedHadLateSpouseOrCivilPartner;
+    private final String ihtUnusedAllowanceClaimed;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
