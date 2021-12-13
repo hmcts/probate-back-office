@@ -21,6 +21,11 @@ ccd_definition_json_output_dir_absolute_path=$(to-abs-path "$1")
 ccd_definition_json_output_dir_name=$(echo ${ccd_definition_json_output_dir_absolute_path##*/})
 ccd_definition_excel_output_file=$(to-abs-path "${excel_output_directory}/${ccd_definition_json_output_dir_name}.xlsx")
 
+echo $ccd_definition_json_output_dir_absolute_path
+echo $ccd_definition_json_output_dir_name
+echo $ccd_definition_excel_output_file
+echo $excel_output_directory
+
 echo $ccd_definition_excel_output_file
 
 if [[ ! -e ${ccd_definition_excel_output_file} ]]; then
