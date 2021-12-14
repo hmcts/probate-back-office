@@ -15,7 +15,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "full functional",
             "request": "launch",
@@ -183,7 +183,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },      
+        },
         {
             "name": "Caseworker GoP (Solicitor Paper Form Yes) e2e",
             "request": "launch",
@@ -195,7 +195,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },                        
+        },
         {
             "name": "Caseworker GoP (Personal) e2e",
             "request": "launch",
@@ -207,7 +207,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },            
+        },
         {
             "name": "Solicitor create GOP, Caseworker amend e2e",
             "request": "launch",
@@ -231,12 +231,24 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },                 
+        },
         {
             "name": "Solicitor GoP e2e",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-sol-grantOfProbate",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Solicitor GoP e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateEE",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -255,7 +267,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },         
+        },
         {
             "name": "Solicitor applyCaveat e2e",
             "request": "launch",
@@ -267,7 +279,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Solicitor multi GoP e2e",
             "request": "launch",
