@@ -4,7 +4,7 @@ set -eu
 
 #root_dir="$(cd "$(dirname "$0")"/..)"
 #root_dir=../../$(dirname "$0")
-root_dir=$(realpath $(dirname ${0})/..)
+root_dir=$(realpath $(dirname ${0})/../..)
 echo root_dir = $root_dir
 excel_output_directory=${root_dir}/build/"jsonToXLS"-"$2"
 mkdir -p ${excel_output_directory}
