@@ -63,4 +63,4 @@ docker run --rm --name json2xlsx \
     hmctspublic.azurecr.io/ccd/definition-processor:latest \
     json2xlsx -D /tmp/ccd-definition -o /tmp/ccd-definition.xlsx
 
-cp "$definition_tmp_out_file"  "$ccd_definition_json_output_dir_name"
+cp "$definition_tmp_out_file"  "$excel_output_directory"

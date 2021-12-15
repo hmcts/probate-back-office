@@ -191,6 +191,9 @@ withPipeline("java", product, component) {
 
   before('smoketest:preview') {
 
+    sh """
+      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+    """
     archiveCoreCaseDataDefinitions('preview')
     uploadCoreCaseDataDefinitions('preview')
 
