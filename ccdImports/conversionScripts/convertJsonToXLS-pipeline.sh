@@ -30,11 +30,6 @@ echo ccd_definition_excel_output_file = $ccd_definition_excel_output_file
 echo excel_output_directory = $excel_output_directory
 
 
-#echo ccd_definition_json_output_dir_absolute_path = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/configFiles/CCD_Probate_Backoffice
-#echo ccd_definition_json_output_dir_name = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/conversionScripts/build/jsonToXLS-preview/CCD_Probate_Backoffice.xlsx
-#echo ccd_definition_excel_output_file = .././ccdImports/conversionScripts/build/jsonToXLS-preview
-#echo excel_output_directory = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/conversionScripts/build/jsonToXLS-preview/CCD_Probate_Backoffice.xlsx
-
 #ccd_definition_json_output_dir_absolute_path = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/configFiles/CCD_Probate_Backoffice
 #ccd_definition_json_output_dir_name = CCD_Probate_Backoffice
 #ccd_definition_excel_output_file = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/conversionScripts/build/jsonToXLS-preview/CCD_Probate_Backoffice.xlsx
@@ -59,7 +54,7 @@ cp -a ${definition_input_dir}/* "$definition_tmp_dir"
 definition_tmp_out_dir="${definition_tmp_dir}/build/ccd-development-config"
 [[ ! -d "$definition_tmp_out_dir" ]] && mkdir -p "$definition_tmp_out_dir"
 
-definition_tmp_out_file="${definition_tmp_out_dir}/ccd-probate-dev.xlsx"
+definition_tmp_out_file="${definition_tmp_out_dir}/${ccd_definition_json_output_dir_name}.xlsx"
 [[ ! -e "$definition_tmp_out_file" ]] && touch "$definition_tmp_out_file"
 
 echo definition_tmp_out_file = $definition_tmp_out_file
