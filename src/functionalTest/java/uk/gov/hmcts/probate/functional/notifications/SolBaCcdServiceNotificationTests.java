@@ -308,7 +308,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifyPersonalApplicantGrantIssuedContentIsOk() {
         final String document = sendEmail("personalPayloadNotifications.json", GRANT_ISSUED,
                 EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
+        String expectedText = utils.getStringFromFile("/json/personalApplicantGrantIssuedEmailContent.txt");
+        assertTrue(document.contains(expectedText));
     }
 
     @Test
