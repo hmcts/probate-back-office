@@ -386,6 +386,8 @@ excelaEmail: excela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 
 data-extract:
+  pagination:
+    size: 1
   block:
     size: 3000
     numDaysInclusive: 0

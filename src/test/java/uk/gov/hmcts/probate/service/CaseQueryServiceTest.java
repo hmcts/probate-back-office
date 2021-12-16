@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -83,14 +84,15 @@ public class CaseQueryServiceTest {
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
                 LAST_MODIFIED, 1L))
                 .build();
-        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
     }
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+        List<ReturnedCaseDetails> cases =
+            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -99,7 +101,9 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findAllCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("testDate");
+        caseQueryService.dataExtractPaginationSize = 1;
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService", 
+            "testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -107,9 +111,48 @@ public class CaseQueryServiceTest {
     }
 
     @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePages() {
+        caseQueryService.dataExtractPaginationSize = 3;
+        ReturnedCases returnedCases1 = getReturnedCases(3, 0, 5);
+        ReturnedCases returnedCases2 = getReturnedCases(2, 3, 5);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
+            "testDate");
+
+        assertEquals(5, cases.size());
+        assertThat(cases.get(0).getId(), is(0L));
+        assertThat(cases.get(1).getId(), is(1L));
+        assertThat(cases.get(2).getId(), is(2L));
+        assertThat(cases.get(3).getId(), is(3L));
+        assertThat(cases.get(4).getId(), is(4L));
+        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals("Smith1", cases.get(1).getData().getDeceasedSurname());
+        assertEquals("Smith2", cases.get(2).getData().getDeceasedSurname());
+        assertEquals("Smith3", cases.get(3).getData().getDeceasedSurname());
+        assertEquals("Smith4", cases.get(4).getData().getDeceasedSurname());
+    }
+
+    private ReturnedCases getReturnedCases(int numCases, int caseIndex, int total) {
+        ArrayList<ReturnedCaseDetails> allReturnedCases = new ArrayList<>();
+        for (int i = 0; i < numCases; i++) {
+            CaseData caseData = CaseData.builder()
+                .deceasedSurname("Smith" + (caseIndex + i))
+                .build();
+            allReturnedCases.add(new ReturnedCaseDetails(caseData,
+                LAST_MODIFIED, Long.valueOf(caseIndex + i)));
+        }
+        List<ReturnedCaseDetails> caseList =
+            new ImmutableList.Builder<ReturnedCaseDetails>()
+                .addAll(allReturnedCases)
+                .build();
+        return new ReturnedCases(caseList, total);
+    }
+
+    @Test
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
+            "testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -138,7 +181,7 @@ public class CaseQueryServiceTest {
                 .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
                 .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
                 .build();
-        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        ReturnedCases returnedCases = new ReturnedCases(caseList, 3);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
         caseQueryService.dataExtractBlockSize = 3;
 
@@ -173,7 +216,8 @@ public class CaseQueryServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate"))
+        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
+            "testDate"))
             .isInstanceOf(CaseMatchingException.class);
     }
 
@@ -195,7 +239,7 @@ public class CaseQueryServiceTest {
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
                 LAST_MODIFIED, 1L))
                 .build();
-        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
         when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
@@ -226,6 +270,6 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "testDate");
     }
 }

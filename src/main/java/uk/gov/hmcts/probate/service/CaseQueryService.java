@@ -90,7 +90,7 @@ public class CaseQueryService {
         return result;
     }
 
-    public List<ReturnedCaseDetails> findGrantIssuedCasesWithGrantIssuedDate(String queryDate) {
+    public List<ReturnedCaseDetails> findGrantIssuedCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -104,26 +104,29 @@ public class CaseQueryService {
 
         List<ReturnedCaseDetails> allResults = new ArrayList<>();
         List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
-        boolean first = true;
+        int index = 0;
         int pageStart = 0;
-        while (first || pagedResults.size() < dataExtractPaginationSize || !allResults.isEmpty()) {
+        int total = 10000;
+        while (index < total) {
             String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(pageStart)
                 .toString();
 
-            pagedResults = runQuery(jsonQuery);
+            ReturnedCases cases = runQuery(jsonQuery);
+            total = cases.getTotal();
+            pagedResults = cases.getCases();
             log.info("{} for date:{} from:{} to:{}", queryName, queryDate, pageStart,
                 (pageStart + dataExtractPaginationSize));
             allResults.addAll(pagedResults);
-            first = false;
+            index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;
         }
 
         return allResults;
     }
 
-    public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String queryDate) {
+    public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
@@ -160,7 +163,7 @@ public class CaseQueryService {
                 .replace(":size", "" + size)
                 .replace(":fromDate", stBlock)
                 .replace(":toDate", endBlock);
-            List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery);
+            List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery).getCases();
             if (blockCases.size() == size) {
                 String message = "Number of cases returned during data range query at max block size for "
                     + stBlock + " to " + endBlock;
@@ -191,7 +194,7 @@ public class CaseQueryService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
-        return runQuery(jsonQuery);
+        return runQuery(jsonQuery).getCases();
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
@@ -210,11 +213,11 @@ public class CaseQueryService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
-        return runQuery(jsonQuery);
+        return runQuery(jsonQuery).getCases();
     }
 
     @Nullable
-    private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
+    private ReturnedCases runQuery(String jsonQuery) {
         log.debug("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
@@ -253,7 +256,7 @@ public class CaseQueryService {
         appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
-        return returnedCases.getCases();
+        return returnedCases;
     }
 
 }
