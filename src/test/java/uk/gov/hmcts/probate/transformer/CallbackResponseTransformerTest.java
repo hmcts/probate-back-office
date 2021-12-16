@@ -172,8 +172,15 @@ public class CallbackResponseTransformerTest {
     private static final String GRANT_DELAYED_NOTIFICATION_SENT = YES;
     private static final String NUM_CODICILS = "9";
     private static final String IHT_FORM_ID = "IHT205";
+    private static final String IHT_FORM_ESTATE = "IHT400421";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
+    private static final BigDecimal IHT_ESTATE_GROSS = BigDecimal.valueOf(10000f);
+    private static final String IHT_ESTATE_GROSS_FIELD = "10000";
+    private static final BigDecimal IHT_ESTATE_NET = BigDecimal.valueOf(9000f);
+    private static final String IHT_ESTATE_NET_FIELD = "9000";
+    private static final BigDecimal IHT_ESTATE_NET_QUALIFYING = BigDecimal.valueOf(9000f);
+    private static final String IHT_ESTATE_NET_QUALIFYING_FIELD = "9000";
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
     private static final String FEE_ACCT_NUMBER = "1234";
@@ -483,6 +490,16 @@ public class CallbackResponseTransformerTest {
             .ihtFormId(IHT_FORM_ID)
             .ihtGrossValue(IHT_GROSS)
             .ihtNetValue(IHT_NET)
+            .ihtFormEstateValuesCompleted(YES)
+            .ihtFormEstate(IHT_FORM_ESTATE)
+            .ihtEstateGrossValue(IHT_ESTATE_GROSS)
+            .ihtEstateGrossValueField(IHT_ESTATE_GROSS_FIELD)
+            .ihtEstateNetValue(IHT_ESTATE_NET)
+            .ihtEstateNetValueField(IHT_ESTATE_NET_FIELD)
+            .ihtEstateNetQualifyingValue(IHT_ESTATE_NET_QUALIFYING)
+            .ihtEstateNetQualifyingValueField(IHT_ESTATE_NET_QUALIFYING_FIELD)
+            .deceasedHadLateSpouseOrCivilPartner(YES)
+            .ihtUnusedAllowanceClaimed(YES)
             .primaryApplicantForenames(APPLICANT_FORENAME)
             .primaryApplicantSurname(APPLICANT_SURNAME)
             .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
@@ -3053,6 +3070,14 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
         Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        Assert.assertThat(new BigDecimal("10000"),
+            comparesEqualTo(callbackResponse.getData().getIhtEstateGrossValue()));
+        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
+        Assert.assertThat(new BigDecimal("9000"),
+            comparesEqualTo(callbackResponse.getData().getIhtEstateNetQualifyingValue()));
+        assertEquals("10000", callbackResponse.getData().getIhtEstateGrossValueField());
+        assertEquals("9000", callbackResponse.getData().getIhtEstateNetValueField());
+        assertEquals("9000", callbackResponse.getData().getIhtEstateNetQualifyingValueField());
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
