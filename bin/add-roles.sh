@@ -24,6 +24,3 @@ ${dir}/idam-role.sh ccd-import
 ${dir}/idam-create-caseworker.sh "ccd-import" "ccd.docker.default@hmcts.net"
 
 ${dir}/idam-role.sh "prd-aac-system"
-${dir}/ccd-add-role.sh "prd-aac-system"
-
-${dir}/ccd-add-role.sh "citizen"
