@@ -76,6 +76,8 @@ public class CaseQueryService {
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final FileSystemResourceService fileSystemResourceService;
+    @Value("${data-extract.pagination.size}")
+    protected int dataExtractPaginationSize;
     @Value("${data-extract.block.size}")
     protected int dataExtractBlockSize;
     @Value("${data-extract.block.numDaysInclusive}")
@@ -94,19 +96,38 @@ public class CaseQueryService {
         query.must(matchQuery(STATE, STATE_MATCH));
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+        return runQueryWithPagination("findGrantIssuedCasesWithGrantIssuedDate", query, queryDate);
+    }
 
-        return runQuery(jsonQuery);
+    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, BoolQueryBuilder query,
+                                                             String queryDate) {
+
+        List<ReturnedCaseDetails> allResults = new ArrayList<>();
+        List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
+        boolean first = true;
+        int pageStart = 0;
+        while (first || pagedResults.size() < dataExtractPaginationSize || !allResults.isEmpty()) {
+            String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(pageStart)
+                .toString();
+
+            pagedResults = runQuery(jsonQuery);
+            log.info("{} for date:{} from:{} to:{}", queryName, queryDate, pageStart,
+                (pageStart + dataExtractPaginationSize));
+            allResults.addAll(pagedResults);
+            first = false;
+            pageStart = pageStart + dataExtractPaginationSize;
+        }
+
+        return allResults;
     }
 
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String queryDate) {
         BoolQueryBuilder query = boolQuery();
-
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
-
-        return runQuery(jsonQuery);
+        return runQueryWithPagination("findAllCasesWithGrantIssuedDate", query, queryDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
