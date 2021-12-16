@@ -2,15 +2,10 @@
 
 set -eu
 
-#root_dir="$(cd "$(dirname "$0")"/..)"
-#root_dir=../../$(dirname "$0")
 root_dir=$(realpath $(dirname ${0})/../..)
 echo root_dir = $root_dir
 excel_output_directory=${root_dir}/build/"jsonToXLS"-"$2"
 mkdir -p ${excel_output_directory}
-
-#excel_output_directory="jsonToXLS"-"$2"
-#mkdir -p ${excel_output_directory}
 
 source ${0%/*}/toAbsPath.sh
 source ${0%/*}/setHostAndPort.sh
@@ -24,27 +19,7 @@ ccd_definition_excel_output_file=$(to-abs-path "${excel_output_directory}/${ccd_
 
 definition_input_dir=${ccd_definition_json_output_dir_absolute_path}
 
-echo ccd_definition_json_output_dir_absolute_path = $ccd_definition_json_output_dir_absolute_path
-echo ccd_definition_json_output_dir_name = $ccd_definition_json_output_dir_name
-echo ccd_definition_excel_output_file = $ccd_definition_excel_output_file
-echo excel_output_directory = $excel_output_directory
-
-
-#ccd_definition_json_output_dir_absolute_path = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/configFiles/CCD_Probate_Backoffice
-#ccd_definition_json_output_dir_name = CCD_Probate_Backoffice
-#ccd_definition_excel_output_file = /opt/jenkins/workspace/bate_probate-back-office_PR-1778/ccdImports/conversionScripts/build/jsonToXLS-preview/CCD_Probate_Backoffice.xlsx
-#excel_output_directory = .././ccdImports/conversionScripts/build/jsonToXLS-preview
-#definition_tmp_out_file = /tmp/jenkins-agent/probate.Da6Z04/ccd-definition/build/ccd-development-config/ccd-probate-dev.xlsx
-#definition_tmp_dir = /tmp/jenkins-agent/probate.Da6Z04/ccd-definition
-#root_dir =.././ccdImports/conversionScripts
-
-#
-#echo $ccd_definition_excel_output_file
-#
-#if [[ ! -e ${ccd_definition_excel_output_file} ]]; then
-#   touch ${ccd_definition_excel_output_file}
-#fi
-
+echo Output Directory excel_output_directory = $excel_output_directory
 
 [[ ! -d /tmp/jenkins-agent ]] && mkdir -p /tmp/jenkins-agent
 definition_tmp=$(mktemp -d /tmp/jenkins-agent/probate.XXXXXX)
