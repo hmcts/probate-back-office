@@ -132,6 +132,58 @@ public class CaseQueryServiceTest {
         assertEquals("Smith4", cases.get(4).getData().getDeceasedSurname());
     }
 
+    @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesExact() {
+        caseQueryService.dataExtractPaginationSize = 3;
+        ReturnedCases returnedCases1 = getReturnedCases(3, 0, 6);
+        ReturnedCases returnedCases2 = getReturnedCases(3, 3, 6);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
+            "testDate");
+
+        assertEquals(6, cases.size());
+        assertThat(cases.get(0).getId(), is(0L));
+        assertThat(cases.get(1).getId(), is(1L));
+        assertThat(cases.get(2).getId(), is(2L));
+        assertThat(cases.get(3).getId(), is(3L));
+        assertThat(cases.get(4).getId(), is(4L));
+        assertThat(cases.get(5).getId(), is(5L));
+        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals("Smith1", cases.get(1).getData().getDeceasedSurname());
+        assertEquals("Smith2", cases.get(2).getData().getDeceasedSurname());
+        assertEquals("Smith3", cases.get(3).getData().getDeceasedSurname());
+        assertEquals("Smith4", cases.get(4).getData().getDeceasedSurname());
+        assertEquals("Smith5", cases.get(5).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesPlus() {
+        caseQueryService.dataExtractPaginationSize = 3;
+        ReturnedCases returnedCases1 = getReturnedCases(3, 0, 7);
+        ReturnedCases returnedCases2 = getReturnedCases(3, 3, 7);
+        ReturnedCases returnedCases3 = getReturnedCases(1, 6, 7);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
+            returnedCases3);
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
+            "testDate");
+
+        assertEquals(7, cases.size());
+        assertThat(cases.get(0).getId(), is(0L));
+        assertThat(cases.get(1).getId(), is(1L));
+        assertThat(cases.get(2).getId(), is(2L));
+        assertThat(cases.get(3).getId(), is(3L));
+        assertThat(cases.get(4).getId(), is(4L));
+        assertThat(cases.get(5).getId(), is(5L));
+        assertThat(cases.get(6).getId(), is(6L));
+        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals("Smith1", cases.get(1).getData().getDeceasedSurname());
+        assertEquals("Smith2", cases.get(2).getData().getDeceasedSurname());
+        assertEquals("Smith3", cases.get(3).getData().getDeceasedSurname());
+        assertEquals("Smith4", cases.get(4).getData().getDeceasedSurname());
+        assertEquals("Smith5", cases.get(5).getData().getDeceasedSurname());
+        assertEquals("Smith6", cases.get(6).getData().getDeceasedSurname());
+    }
+
     private ReturnedCases getReturnedCases(int numCases, int caseIndex, int total) {
         ArrayList<ReturnedCaseDetails> allReturnedCases = new ArrayList<>();
         for (int i = 0; i < numCases; i++) {
