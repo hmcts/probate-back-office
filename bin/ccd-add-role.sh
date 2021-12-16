@@ -27,9 +27,9 @@ esac
 
 binFolder=$(dirname "$0")
 
-userToken="$(${binFolder}/idam-user-token.sh)"
-serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
-ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
+userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Password12})
+serviceToken=$(${dir}/idam-lease-service-token.sh ccd_gw $(docker run --rm toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAC}))
+ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
 
 echo "User token ${userToken}"
 echo "Service token ${serviceToken}"
