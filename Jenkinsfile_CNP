@@ -213,8 +213,6 @@ withPipeline("java", product, component) {
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DEF_URL/health
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
-
- ./bin/ccd-add-roles.sh
  """
   }
 
