@@ -92,7 +92,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
         List<ReturnedCaseDetails> cases =
-            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "testDate");
+            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -103,7 +103,7 @@ public class CaseQueryServiceTest {
     public void findAllCasesWithDatedDocumentReturnsCaseList() {
         caseQueryService.dataExtractPaginationSize = 1;
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService", 
-            "testDate");
+            "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -117,7 +117,7 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases2 = getReturnedCases(2, 3, 5);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "testDate");
+            "2021-01-01");
 
         assertEquals(5, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -139,7 +139,7 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases2 = getReturnedCases(3, 3, 6);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "testDate");
+            "2021-01-01");
 
         assertEquals(6, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -165,7 +165,7 @@ public class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
             returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "testDate");
+            "2021-01-01");
 
         assertEquals(7, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -204,7 +204,7 @@ public class CaseQueryServiceTest {
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
         List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
-            "testDate");
+            "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -269,7 +269,7 @@ public class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
         Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
-            "testDate"))
+            "2021-01-01"))
             .isInstanceOf(CaseMatchingException.class);
     }
 
@@ -322,6 +322,6 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "testDate");
+        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
     }
 }

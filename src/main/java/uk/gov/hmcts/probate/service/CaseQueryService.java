@@ -96,7 +96,7 @@ public class CaseQueryService {
         query.must(matchQuery(STATE, STATE_MATCH));
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
-        return runQueryWithPagination("findGrantIssuedCasesWithGrantIssuedDate", query, queryDate);
+        return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", query, queryDate);
     }
 
     private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, BoolQueryBuilder query,
@@ -130,7 +130,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
-        return runQueryWithPagination("findAllCasesWithGrantIssuedDate", query, queryDate);
+        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", query, queryDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
