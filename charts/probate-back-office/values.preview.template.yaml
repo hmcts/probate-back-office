@@ -42,6 +42,8 @@ ccd:
       enabled: false
     s2s:
       enabled: false
+    elastic:
+      enabled: true
     postgresql:
       enabled: false
 
