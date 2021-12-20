@@ -51,7 +51,7 @@ sonarqube {
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java"
+    property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java," + "**/ResponseCaseData.java," + "**/CaseData.java"
   }
 }
 
@@ -167,7 +167,7 @@ def versions = [
         lombok                          : '1.18.16',
         springfoxSwagger                : '3.0.0',
         springSecurityVersion           : '5.5.1',
-        probateCommonsVersion           : '1.3.2',
+        probateCommonsVersion           : '1.3.3',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -231,6 +231,9 @@ configurations.all {
       }
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.4.25.Final'
+      }
+      if (details.requested.group in ['org.apache.logging.log4j']) {
+        details.useVersion '2.16.0'
       }
     }
   }
