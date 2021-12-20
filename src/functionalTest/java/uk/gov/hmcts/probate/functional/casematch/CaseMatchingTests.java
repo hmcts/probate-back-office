@@ -73,7 +73,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-     }
+    }
 
     @Test
     public void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() {
@@ -88,7 +88,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-     }
+    }
 
     @Test
     public void shouldReturnNoMatchingCaseWhenStandingSearchFlow() {
@@ -103,7 +103,7 @@ public class CaseMatchingTests extends IntegrationTestBase {
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
-     }
+    }
 
     @Test
     public void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() {
