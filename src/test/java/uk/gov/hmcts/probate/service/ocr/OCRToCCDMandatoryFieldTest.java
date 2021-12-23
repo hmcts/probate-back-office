@@ -14,10 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 public class OCRToCCDMandatoryFieldTest {
 
     private List<OCRField> ocrFields;
+    private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
 
     @Mock
     private OcrEmailValidator ocrEmailValidator;
@@ -35,6 +38,20 @@ public class OCRToCCDMandatoryFieldTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ocrFields = new ArrayList<>();
+    }
+
+    @Test
+    public void testAllMandatoryFieldsPresentPA1P() {
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        verify(pa1PCitizenMandatoryFieldsValidator).addWarnings(any(), any());
+    }
+
+    @Test
+    public void testSolicitorAllMandatoryFieldsPresentPA1P() {
+        ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
+
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        verify(pa1PSolicitorMandatoryFieldsValidator).addWarnings(any(), any());
     }
 
     @Test

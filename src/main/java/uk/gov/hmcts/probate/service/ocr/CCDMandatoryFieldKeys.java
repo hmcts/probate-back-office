@@ -5,6 +5,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.GORSolicitorMandatoryFields;
 public interface CCDMandatoryFieldKeys {
 
     static final String MANDATORY_FIELD_WARNING_STIRNG = "%s (%s) is mandatory.";
+    static final String MANDATORY_FIELD_NOT_FOUND_LOG = "{} was not found in ocr fields";
     static final String DEPENDANT_KEY_PRIMARYAPPLICANTALIAS = "primaryApplicantAlias";
     static final String DEPENDANT_DESC_PRIMARYAPPLICANTALIAS = "Primary applicant alias";
     static final String DEPENDANT_KEY_IHTREFERENCENUMBER = "ihtReferenceNumber";

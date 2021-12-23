@@ -1,10 +1,11 @@
-package uk.gov.hmcts.probate.service.ocr;
+package uk.gov.hmcts.probate.service.ocr.pa1p;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCommonMandatoryFieldsValidator;
 
 import java.util.ArrayList;

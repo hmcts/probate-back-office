@@ -6,8 +6,8 @@ import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -20,20 +20,20 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 public class MandatoryFieldsValidatorUtils {
     private static final String VERSION2_KEY = "formVersion";
 
-    public void addWarningIfEmpty(HashMap<String, String> ocrFieldValues, ArrayList<String> warnings,
-                           DefaultKeyValue keyValue) {
+    public void addWarningIfEmpty(HashMap<String, String> ocrFieldValues, List<String> warnings,
+                                  DefaultKeyValue keyValue) {
         if (isEmpty(ocrFieldValues.get(keyValue.getKey()))) {
-            log.warn("{} was not found in v2 ocr fields when expected", keyValue.getKey());
+            log.warn("{} was not found in ocr fields when expected", keyValue.getKey());
             warnings.add(format(MANDATORY_FIELD_WARNING_STIRNG, keyValue.getValue(),
                 keyValue.getKey()));
         }
     }
 
-    public void addWarningsForConditionalFields(ArrayList<String> warnings, HashMap<String, String> ocrFieldValues,
-                                         GORCitizenMandatoryFields... toCheck) {
+    public void addWarningsForConditionalFields(HashMap<String, String> ocrFieldValues, List<String> warnings,
+                                                GORCitizenMandatoryFields... toCheck) {
         Stream.of(toCheck).forEach(field -> {
             if (!ocrFieldValues.containsKey(field.getKey())) {
-                log.warn("{} was not found in v2 ocr fields when expected", field.getKey());
+                log.warn("{} was not found in ocr fields when expected", field.getKey());
                 warnings.add(format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
             }
         });
