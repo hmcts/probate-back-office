@@ -217,7 +217,7 @@ public class OCRFieldTestUtils {
         return ocrFields;
     }
 
-    public List<OCRField> addAllCaveatCitizenMandatoryFields() {
+    public List<OCRField> addAllMandatoryCaveatCitizenFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField field1 = OCRField.builder()
             .name("deceasedForenames")
@@ -259,9 +259,9 @@ public class OCRFieldTestUtils {
         return ocrFields;
     }
 
-    public List<OCRField> addAllCaveatSolcitorMandatoryFields() {
+    public List<OCRField> addAllMandatoryCaveatSolicitorFields() {
         List<OCRField> ocrFields = new ArrayList<>();
-        ocrFields.addAll(addAllCaveatCitizenMandatoryFields());
+        ocrFields.addAll(addAllMandatoryCaveatCitizenFields());
         OCRField field1 = OCRField.builder()
             .name("solsSolicitorRepresentativeName")
             .value("Mark Jones")

@@ -66,7 +66,7 @@ public class NonMandatoryFieldsValidatorTest {
 
     @Test
     public void testFlagAsSolicitorCaseWarningPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllCaveatSolcitorMandatoryFields();
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         List<String> warningsResult = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA8A);
         assertEquals(1, warningsResult.size());
