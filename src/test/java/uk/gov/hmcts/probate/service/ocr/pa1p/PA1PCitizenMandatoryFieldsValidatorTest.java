@@ -78,7 +78,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
         assertEquals(1, warnings.size());
-        assertEquals("IHT 400421 completed (iht400421completed) is mandatory", warnings.get(0));
+        assertEquals("IHT 400421 completed (iht400421completed) is mandatory.", warnings.get(0));
 
     }
 
