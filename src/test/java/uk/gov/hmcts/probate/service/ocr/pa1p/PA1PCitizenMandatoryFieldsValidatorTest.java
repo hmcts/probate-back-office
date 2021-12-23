@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 public class PA1PCitizenMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
+    private ArrayList<String> warnings;
 
     @Mock
     private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
@@ -27,16 +28,17 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     @InjectMocks
     private PA1PCitizenMandatoryFieldsValidator pa1PCitizenMandatoryFieldsValidator;
 
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        warnings = new ArrayList<>();
     }
 
     @Test
     public void testAllMandatoryFieldsPresentPA1PCitizen() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ArrayList<String> warnings = new ArrayList<>();
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
@@ -47,7 +49,6 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     public void testOptionalFieldsNotAddedForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ArrayList<String> warnings = new ArrayList<>();
         ocrFieldValues.put("non-mandatoryField", "test");
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -58,7 +59,6 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ArrayList<String> warnings = new ArrayList<>();
         ocrFieldValues.remove("solsSolicitorIsApplying");
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -72,7 +72,6 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     public void testAllMandatoryFieldsPresentPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ArrayList<String> warnings = new ArrayList<>();
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);

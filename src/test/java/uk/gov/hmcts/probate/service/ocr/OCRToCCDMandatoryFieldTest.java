@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PSolicitorMandatoryFieldsValidator;
@@ -30,6 +31,8 @@ public class OCRToCCDMandatoryFieldTest {
     private PA1PCitizenMandatoryFieldsValidator pa1PCitizenMandatoryFieldsValidator;
     @Mock
     private PA1PSolicitorMandatoryFieldsValidator pa1PSolicitorMandatoryFieldsValidator;
+    @Mock
+    private PA1ACitizenMandatoryFieldsValidator pa1ACitizenMandatoryFieldsValidator;
 
     @InjectMocks
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
@@ -54,73 +57,6 @@ public class OCRToCCDMandatoryFieldTest {
         verify(pa1PSolicitorMandatoryFieldsValidator).addWarnings(any(), any());
     }
 
-    @Test
-    public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
-        assertEquals(1, results.size());
-        assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
-    }
-
-    @Test
-    public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        ocrFields.remove(getOCRFieldByKey(ocrFields, "ihtFormId"));
-        ocrFields
-            .add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
-        assertEquals(1, results.size());
-        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
-    }
-
-    @Test
-    public void testAllMandatoryFieldsPresentPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
-    }
-
-    @Test
-    public void testSolicitorAllMandatoryFieldsPresentPA1A() {
-        addAllMandatoryIntestacySolicitorFields();
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
-    }
-
-    @Test
-    public void testMissingMandatoryFieldsReturnSuccessfullyForPA1A() {
-        addDeceasedMandatoryFields();
-        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
-    }
-
-    @Test
-    public void testSolicitorMissingMandatoryFieldsPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        ocrFields.add(
-            OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
-        List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
-        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.",
-            warningsResponse.get(0));
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(1));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.",
-            warningsResponse.get(2));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(3));
-        assertEquals(4, warningsResponse.size());
-    }
-
-    @Test
-    public void testOptionalFieldsNotAddedForPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
-    }
-
-    @Test
-    public void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
-        addAllMandatoryIntestacyCitizenFields();
-        ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).get(0));
-    }
 
     @Test
     public void testAllMandatoryFieldsPresentPA8A() {
