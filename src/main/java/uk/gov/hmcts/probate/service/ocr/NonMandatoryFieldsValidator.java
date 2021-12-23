@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ocr.OCRField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_SOLSWILLTYPE;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_SOLSWILLTYPEREASON;
@@ -26,7 +27,7 @@ public class NonMandatoryFieldsValidator {
     public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         warnings.addAll(ocrEmailValidator.validateField(ocrFields));
-        HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
+        Map<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
         ocrFields.forEach(ocrField -> {

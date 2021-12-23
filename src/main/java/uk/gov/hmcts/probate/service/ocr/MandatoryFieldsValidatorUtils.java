@@ -6,8 +6,8 @@ import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -20,7 +20,7 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 public class MandatoryFieldsValidatorUtils {
     private static final String VERSION2_KEY = "formVersion";
 
-    public void addWarningIfEmpty(HashMap<String, String> ocrFieldValues, List<String> warnings,
+    public void addWarningIfEmpty(Map<String, String> ocrFieldValues, List<String> warnings,
                                   DefaultKeyValue keyValue) {
         if (isEmpty(ocrFieldValues.get(keyValue.getKey()))) {
             log.warn("{} was not found in ocr fields when expected", keyValue.getKey());
@@ -29,7 +29,7 @@ public class MandatoryFieldsValidatorUtils {
         }
     }
 
-    public void addWarningsForConditionalFields(HashMap<String, String> ocrFieldValues, List<String> warnings,
+    public void addWarningsForConditionalFields(Map<String, String> ocrFieldValues, List<String> warnings,
                                                 GORCitizenMandatoryFields... toCheck) {
         Stream.of(toCheck).forEach(field -> {
             if (!ocrFieldValues.containsKey(field.getKey())) {
@@ -39,7 +39,7 @@ public class MandatoryFieldsValidatorUtils {
         });
     }
 
-    public boolean isVersion2(HashMap<String, String> ocrFieldValues) {
+    public boolean isVersion2(Map<String, String> ocrFieldValues) {
         return "2".equals(ocrFieldValues.get(VERSION2_KEY));
     }
 

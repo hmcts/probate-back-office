@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_DESC_IHTFORMID;
@@ -45,7 +46,7 @@ public class OCRToCCDMandatoryField {
 
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
-        HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
+        Map<String, String> ocrFieldValues = new HashMap<String, String>();
 
         ocrFields.forEach(ocrField -> {
             ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
@@ -68,7 +69,7 @@ public class OCRToCCDMandatoryField {
         return warnings;
     }
 
-    private Collection<? extends String> getWarningsForPA1PCase(HashMap<String, String> ocrFieldValues) {
+    private Collection<? extends String> getWarningsForPA1PCase(Map<String, String> ocrFieldValues) {
         List<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = false;
 
@@ -86,7 +87,7 @@ public class OCRToCCDMandatoryField {
         return warnings;
     }
 
-    private ArrayList<String> getWarningsForPA1ACase(HashMap<String, String> ocrFieldValues) {
+    private ArrayList<String> getWarningsForPA1ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = false;
         if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
@@ -136,7 +137,7 @@ public class OCRToCCDMandatoryField {
         return warnings;
     }
 
-    private ArrayList<String> getWarningsForPA8ACase(HashMap<String, String> ocrFieldValues) {
+    private ArrayList<String> getWarningsForPA8ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = false;
         if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))

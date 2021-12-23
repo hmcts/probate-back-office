@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORSolicitorMandatoryFields;
 import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER;
@@ -24,7 +24,7 @@ public class PA1PSolicitorMandatoryFieldsValidator {
 
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
-    public void addWarnings(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
             addWarningsFormVersion2(ocrFieldValues, warnings);
         } else {
@@ -33,7 +33,7 @@ public class PA1PSolicitorMandatoryFieldsValidator {
 
     }
 
-    private void addWarningsFormVersion1(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORSolicitorMandatoryFields.values()).forEach(field -> {
             log.info("Checking {} against ocr fields", field.getKey());
             if (!ocrFieldValues.containsKey(field.getKey())) {
@@ -52,7 +52,7 @@ public class PA1PSolicitorMandatoryFieldsValidator {
         }
     }
 
-    private void addWarningsFormVersion2(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
     }
 
 }

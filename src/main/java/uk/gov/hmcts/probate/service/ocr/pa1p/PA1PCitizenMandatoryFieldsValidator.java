@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
 import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -36,7 +36,7 @@ public class PA1PCitizenMandatoryFieldsValidator {
     private static final DefaultKeyValue DIED_AFTER_SWITCH_DATE = new DefaultKeyValue("deceasedDiedOnAfterSwitchDate",
         "Did the deceased die on or after 1 January 2022?");
 
-    public void addWarnings(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
             addWarningsFormVersion2(ocrFieldValues, warnings);
         } else {
@@ -45,7 +45,7 @@ public class PA1PCitizenMandatoryFieldsValidator {
 
     }
 
-    private void addWarningsFormVersion1(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORCitizenMandatoryFields.values()).filter(field -> field.isVersion1()).forEach(field -> {
             log.info("Checking {} against ocr fields", field.getKey());
             if (!ocrFieldValues.containsKey(field.getKey())) {
@@ -55,7 +55,7 @@ public class PA1PCitizenMandatoryFieldsValidator {
         });
     }
 
-    private void addWarningsFormVersion2(HashMap<String, String> ocrFieldValues, List<String> warnings) {
+    private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORCitizenMandatoryFields.values()).filter(field -> field.isVersion2()).forEach(field -> {
             log.info("Checking v2 {} against ocr fields", field.getKey());
             if (!ocrFieldValues.containsKey(field.getKey())) {
