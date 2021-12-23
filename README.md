@@ -129,8 +129,7 @@ npx @hmcts/probate-dev-env
 
 # to use local probate backoffice
 docker-compose stop probate-back-office
-./gradlew assemble
-docker-compose up -d --build probate-back-office
+./gradlew assemble && docker-compose up -d --build probate-back-office
 
 # to clear out all images
 npx @hmcts/probate-dev-env --destroy

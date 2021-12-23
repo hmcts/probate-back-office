@@ -18,8 +18,8 @@ public class BulkScanPA1PFormV2Tests extends IntegrationTestBase {
     private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
     private static final String PA1P = "PA1P";
     private static final String WARNINGS = "WARNINGS";
-    private static final String NQV_MISSING = "Net qualifying value (ihtEstateNetQualifyingValue) is mandatory.";
-    private String jsonRequest;
+    private static final String NQV_MISSING = "net qualifying value of the estate " 
+        + "(ihtEstateNetQualifyingValue) is mandatory.";
 
     @Before
     public void setUp() {
@@ -28,14 +28,14 @@ public class BulkScanPA1PFormV2Tests extends IntegrationTestBase {
 
     @Test
     public void testPost2022AllMandatoryFieldsPresentReturnNoWarning() {
-        jsonRequest = utils.getJsonFromFile("bulkScan/version2/Post2022AllMandatoryFilled.json");
+        String jsonRequest = utils.getJsonFromFile("bulkscan/version2/Post2022AllMandatoryFilled.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
     @Test
     public void testPost2022MissingMandatoryFieldsPresentReturnSomeWarnings() {
-        jsonRequest = utils.getJsonFromFile("bulkScan/version2/Post2022MissingNVQ.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, NQV_MISSING, 1, 1);
+        String jsonRequest = utils.getJsonFromFile("bulkscan/version2/Post2022MissingNVQ.json");
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, NQV_MISSING, 1, 0);
     }
 
     private void validateOCRDataPostSuccess(String formName, String bodyText, String containsText,
