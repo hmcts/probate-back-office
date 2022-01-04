@@ -3,10 +3,8 @@ package uk.gov.hmcts.probate.service.ocr.pa1p;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
-import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -19,9 +17,6 @@ public class PA1PSolicitorMandatoryFieldsValidatorTest {
     
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
-
-    @Mock
-    private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
     @InjectMocks
     private PA1PSolicitorMandatoryFieldsValidator pa1PSolicitorMandatoryFieldsValidator;
