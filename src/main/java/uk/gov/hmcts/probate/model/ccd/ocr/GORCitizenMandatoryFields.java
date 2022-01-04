@@ -35,5 +35,4 @@ public enum GORCitizenMandatoryFields {
     public String getValue() {
         return value;
     }
-
 }
