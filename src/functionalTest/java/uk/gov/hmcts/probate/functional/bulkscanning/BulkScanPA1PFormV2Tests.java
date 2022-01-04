@@ -26,18 +26,6 @@ public class BulkScanPA1PFormV2Tests extends IntegrationTestBase {
         initialiseConfig();
     }
 
-    @Test
-    public void testPost2022AllMandatoryFieldsPresentReturnNoWarning() {
-        String jsonRequest = utils.getJsonFromFile("bulkscan/version2/Post2022AllMandatoryFilled.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
-    }
-
-    @Test
-    public void testPost2022MissingMandatoryFieldsPresentReturnSomeWarnings() {
-        String jsonRequest = utils.getJsonFromFile("bulkscan/version2/Post2022MissingNVQ.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, NQV_MISSING, 1, 0);
-    }
-
     private void validateOCRDataPostSuccess(String formName, String bodyText, String containsText,
                                             String warningMessage, int warningSize, int warningItem) {
         RestAssured.given()
