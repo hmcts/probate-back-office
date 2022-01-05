@@ -3,10 +3,8 @@ package uk.gov.hmcts.probate.service.ocr.pa1a;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
-import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -18,9 +16,6 @@ import static org.junit.Assert.assertEquals;
 public class PA1ASolicitorMandatoryFieldsValidatorTest {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
-
-    @Mock
-    private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
     @InjectMocks
     private PA1ASolicitorMandatoryFieldsValidator pa1ASolicitorMandatoryFieldsValidator;
@@ -58,5 +53,16 @@ public class PA1ASolicitorMandatoryFieldsValidatorTest {
         assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(3));
     }
 
+    @Test
+    public void testSolicitorMissingPaymentMethodFieldsPA1P() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.put("paperPaymentMethod", "PBA");
+
+        pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(1, warnings.size());
+        assertEquals("Solicitors fee account number (solsFeeAccountNumber) is mandatory.", warnings.get(0));
+    }
 
 }

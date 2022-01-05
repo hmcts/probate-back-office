@@ -21,6 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.DIED_AFTER_SWITCH_DATE;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_205_COMPLETED_ONLINE;
+import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_207_COMPLETED;
 
 public class CitizenMandatoryFieldsValidatorV2Test {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
@@ -55,8 +56,10 @@ public class CitizenMandatoryFieldsValidatorV2Test {
             ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(2)).addWarningIfEmpty(any(), any(),
             defaultKeyValueArgumentCaptor1.capture());
-        DefaultKeyValue defaultKeyValueArgumentCaptorValue1 = defaultKeyValueArgumentCaptor1.getValue();
-        assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValue1.getValue());
+        List<DefaultKeyValue> defaultKeyValueArgumentCaptorValue1 = defaultKeyValueArgumentCaptor1.getAllValues();
+        assertEquals(2, defaultKeyValueArgumentCaptorValue1.size());
+        assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValue1.get(0).getValue());
+        assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValue1.get(1).getValue());
 
         assertEquals(2, warnings.size());
         assertEquals("IHT 400421 completed (iht400421completed) is mandatory.", warnings.get(0));
@@ -81,8 +84,11 @@ public class CitizenMandatoryFieldsValidatorV2Test {
             ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(3)).addWarningIfEmpty(any(), any(),
             defaultKeyValueArgumentCaptor1.capture());
-        DefaultKeyValue defaultKeyValueArgumentCaptorValue1 = defaultKeyValueArgumentCaptor1.getValue();
-        assertEquals(IHT_205_COMPLETED_ONLINE.getValue(), defaultKeyValueArgumentCaptorValue1.getValue());
+        List<DefaultKeyValue> defaultKeyValueArgumentCaptorValue1 = defaultKeyValueArgumentCaptor1.getAllValues();
+        assertEquals(3, defaultKeyValueArgumentCaptorValue1.size());
+        assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValue1.get(0).getValue());
+        assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValue1.get(1).getValue());
+        assertEquals(IHT_205_COMPLETED_ONLINE.getValue(), defaultKeyValueArgumentCaptorValue1.get(2).getValue());
 
         assertEquals(3, warnings.size());
         assertEquals("IHT 400421 completed (iht400421completed) is mandatory.", warnings.get(0));
