@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2;
 import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
@@ -24,10 +25,13 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     @Mock
     private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
+    @Mock
+    private CitizenMandatoryFieldsValidatorV2 citizenMandatoryFieldsValidatorV2;
+
     @InjectMocks
     private PA1PCitizenMandatoryFieldsValidator pa1PCitizenMandatoryFieldsValidator;
 
-    
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -70,37 +74,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     @Test
     public void testAllMandatoryFieldsPresentPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("true")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField ihtEstateGrossValue = OCRField.builder()
-            .name("ihtEstateGrossValue")
-            .value("1,000,000")
-            .description("ihtEstateGrossValue").build();
-        OCRField ihtEstateNetValue = OCRField.builder()
-            .name("ihtEstateNetValue")
-            .value("900,000")
-            .description("ihtEstateNetValue").build();
-        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
-            .name("ihtEstateNetQualifyingValue")
-            .value("800,000")
-            .description("ihtEstateNetQualifyingValue").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(ihtEstateGrossValue);
-        ocrFields.add(ihtEstateNetValue);
-        ocrFields.add(ihtEstateNetQualifyingValue);
-
+        ocrFieldTestUtils.addAllV2Data(ocrFields);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
 
@@ -110,7 +84,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingMandatoryFieldsPresentPA1PCitizenV2() {
+    public void testMissingMandatoryFieldsForPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);

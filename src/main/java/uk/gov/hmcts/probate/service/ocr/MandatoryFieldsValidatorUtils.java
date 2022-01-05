@@ -42,5 +42,4 @@ public class MandatoryFieldsValidatorUtils {
     public boolean isVersion2(Map<String, String> ocrFieldValues) {
         return "2".equals(ocrFieldValues.get(VERSION2_KEY));
     }
-
 }
