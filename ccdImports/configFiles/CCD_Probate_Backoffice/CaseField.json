@@ -84,6 +84,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathAfterEstateSwitch", "Label": "DOD is after switch date", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "showIht400421Page", "Label": "Show the IHT400421 page", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesCompleted", "Label": "Did you complete IHT forms to report the estate's values?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesLabel", "Label": "What are the values of the estate for Inheritance tax?", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstate", "Label": "Which IHT forms did you complete to report the estate's value?", "FieldType": "FixedRadioList", "FieldTypeParameter": "IHTFormEstate", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtEstateGrossValue", "Label": "Gross value of the IHT estate", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtEstateGrossValueField", "Label": "Gross value of the IHT estate, as entered by the user", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
