@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PA1PCitizenMandatoryFieldsValidatorTest {
@@ -55,6 +57,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
         ocrFieldValues.put("non-mandatoryField", "test");
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
         assertEquals(0, warnings.size());
     }
 
@@ -80,6 +83,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
+        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(0, warnings.size());
     }
 
@@ -91,6 +95,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
+        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(1, warnings.size());
         assertEquals("IHT 400421 completed (iht400421completed) is mandatory.", warnings.get(0));
 
