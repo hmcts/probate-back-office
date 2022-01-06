@@ -225,7 +225,7 @@ notifications:
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
+          grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
@@ -262,6 +262,7 @@ notifications:
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
       welsh:
@@ -305,6 +306,7 @@ notifications:
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
 

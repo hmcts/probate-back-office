@@ -14,4 +14,5 @@ public class DeathRecord {
     private final String sex;
     private final String address;
     private final LocalDate dateOfDeath;
+    private final String valid;
 }
