@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
+import uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
@@ -61,6 +62,7 @@ public class ConfirmationResponseService {
     public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
+    private final MarkdownDecoratorService markdownDecoratorService;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
     private final EntitledMinorityRule entitledMinorityRule;
@@ -282,8 +284,18 @@ public class ConfirmationResponseService {
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
+        keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    private String getPA16FormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .solsApplicantRelationshipToDeceased(ccdData.getSolsApplicantRelationshipToDeceased())
+            .solsApplicantSiblings(ccdData.getSolsApplicantSiblings())
+            .solsSpouseOrCivilRenouncing(ccdData.getSolsSpouseOrCivilRenouncing())
+            .build();
+        return markdownDecoratorService.getPA16FormLabel(caseData);
     }
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Test;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
+import org.junit.Test;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
@@ -30,9 +30,8 @@ public class DeathRecordServiceTest {
         assert (collectionMembers.isEmpty());
     }
 
-
     @Test
-    public void mapDeathRecordsShouldHandleListWilthNullElement() {
+    public void mapDeathRecordsShouldHandleListWithNullElement() {
         ArrayList list = new ArrayList();
         list.add(null);
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(list);
@@ -86,5 +85,4 @@ public class DeathRecordServiceTest {
         assertEquals(deathRecordCollectionMembers.size(), 1);
         final DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
     }
-
 }
