@@ -3,7 +3,7 @@
 const deceasedDetailsConfig = require('./deceasedDetailsConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function () {
+module.exports = async function (deathTypeDate) {
     const I = this;
     await I.waitForElement('#deceasedForenames');
     await I.runAccessibilityTest();
@@ -16,9 +16,16 @@ module.exports = async function () {
 
     await I.click(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
 
-    await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_day);
-    await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
-    await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);
+    if (deathTypeDate === 'EE') {
+        await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_dayEE);
+        await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_monthEE);
+        await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_yearEE);
+    }
+    else{
+        await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_day);
+        await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
+        await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);
+    }
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
 

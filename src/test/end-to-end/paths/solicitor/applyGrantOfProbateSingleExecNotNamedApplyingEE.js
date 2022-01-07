@@ -11,7 +11,7 @@ const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorAp
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const applicantExecutorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfigEE');
-const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigEE');
+const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigEEIHT207');
 const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
@@ -19,9 +19,10 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
 Feature('Solicitor - Apply Grant of probate Excepted Estates').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Solicitor - Apply Grant of probate Single Executor for Excepted Estates';
+const scenarioName = 'Solicitor - Apply Grant of probate Single Executor Excepted Estates (not named, applying)';
+
 Scenario(scenarioName, async function ({I}) {
-    const isSolicitorNamedExecutor = true;
+    const isSolicitorNamedExecutor = false;
     const isSolicitorApplyingExecutor = true;
     const willType = 'WillLeft';
 
@@ -49,7 +50,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1('EE');
-    await I.deceasedDetailsPage2('EE','Yes');
+    await I.deceasedDetailsPage2('EE','Yes','IHT207');
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
@@ -59,7 +60,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig, false);
+    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
@@ -82,7 +83,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
     await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig, false);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', applyProbateConfig);
     await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
 
     nextStepName = 'Complete application';
@@ -90,7 +91,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
-    await I.completeApplicationPage2();
+    //await I.completeApplicationPage2();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
