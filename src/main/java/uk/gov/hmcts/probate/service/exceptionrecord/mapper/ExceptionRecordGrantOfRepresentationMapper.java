@@ -1,5 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.ReportingPolicy;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsNotApplying;
@@ -26,15 +34,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.util.List;
-
-import io.micrometer.core.instrument.util.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
     imports = {StringUtils.class, ApplicationType.class},
@@ -223,10 +222,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtFormEstate", source = "ocrFields.ihtFormEstate", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtEstateNetQualifyingValue", source = "ocrFields.ihtEstateNetQualifyingValue"
-        , qualifiedBy = {ToPennies.class})
-    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", source = "ocrFields.deceasedHadLateSpouseOrCivilPartner"
-        , qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "ihtEstateNetQualifyingValue", source = "ocrFields.ihtEstateNetQualifyingValue",
+        qualifiedBy = {ToPennies.class})
+    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", source = "ocrFields.deceasedHadLateSpouseOrCivilPartner",
+        qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
         ToYesOrNo.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);

@@ -1,12 +1,5 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
-import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
@@ -15,6 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -405,23 +404,24 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtFormEstate());
     }
-    
+
     @Test
     public void testIhtEstateGrossValue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtEstateGrossValue("1,000,000").build();
+        ExceptionRecordOCRFields ocrFields =
+            ExceptionRecordOCRFields.builder().ihtEstateGrossValue("1,000,000").build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(100000000), response.getIhtEstateGrossValue());
     }
-    
+
     @Test
     public void testIhtEstateGrossValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertNull( response.getIhtEstateGrossValue());
-    } 
-    
+        assertNull(response.getIhtEstateGrossValue());
+    }
+
     @Test
     public void testIhtEstateNetValue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtEstateNetValue("900,0000").build();
@@ -429,18 +429,19 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(900000000), response.getIhtEstateNetValue());
     }
-    
+
     @Test
     public void testIhtEstateNetValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertNull( response.getIhtEstateNetValue());
+        assertNull(response.getIhtEstateNetValue());
     }
-    
+
     @Test
     public void testIhtEstateNetQualifyingValue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtEstateNetQualifyingValue("800,000").build();
+        ExceptionRecordOCRFields ocrFields =
+            ExceptionRecordOCRFields.builder().ihtEstateNetQualifyingValue("800,000").build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(80000000), response.getIhtEstateNetQualifyingValue());
@@ -454,10 +455,11 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateNetQualifyingValue());
     }
-    
+
     @Test
     public void testDeceasedHadLateSpouseOrCivilPartnerTrue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(TRUE).build();
+        ExceptionRecordOCRFields ocrFields =
+            ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(TRUE).build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getDeceasedHadLateSpouseOrCivilPartner());
@@ -465,7 +467,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
     @Test
     public void testDeceasedHadLateSpouseOrCivilPartnerFalse() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(FALSE).build();
+        ExceptionRecordOCRFields ocrFields =
+            ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(FALSE).build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertFalse(response.getDeceasedHadLateSpouseOrCivilPartner());
@@ -489,7 +492,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
     @Test
     public void testIhtUnusedAllowanceClaimedFalse() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(FALSE).build();
+        ExceptionRecordOCRFields ocrFields =
+            ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(FALSE).build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertFalse(response.getIhtUnusedAllowanceClaimed());
