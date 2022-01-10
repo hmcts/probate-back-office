@@ -241,7 +241,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             && ocrField.getIhtEstateNetValue() != null
             && ocrField.getIhtEstateNetQualifyingValue() != null) {
             caseData.setIhtFormEstateValuesCompleted(Boolean.FALSE);
-        } else if ("TRUE".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())){
+        } else if ("TRUE".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())) {
             caseData.setIhtFormEstateValuesCompleted(Boolean.TRUE);
         }
     }
