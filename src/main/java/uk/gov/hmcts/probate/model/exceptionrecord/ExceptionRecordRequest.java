@@ -283,6 +283,7 @@ public class ExceptionRecordRequest {
             .ihtEstateNetQualifyingValue(get(ocrFields, "ihtEstateNetQualifyingValue"))
             .deceasedHadLateSpouseOrCivilPartner(get(ocrFields, "deceasedHadLateSpouseOrCivilPartner"))
             .ihtUnusedAllowanceClaimed(get(ocrFields, "ihtUnusedAllowanceClaimed"))
+            .deceasedDiedOnAfterSwitchDate(get(ocrFields, "deceasedDiedOnAfterSwitchDate"))
             .build();
     }
 }

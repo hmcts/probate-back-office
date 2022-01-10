@@ -507,6 +507,28 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         assertNull(response.getIhtUnusedAllowanceClaimed());
     }
 
+    @Test
+    public void testSetIhtFormEstateValuesCompletedIfIhtEstateValuesPresent() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .ihtEstateGrossValue("1,000,000")
+            .ihtEstateNetValue("900,000")
+            .ihtEstateNetQualifyingValue("800,000")
+            .build();
+        GrantOfRepresentationData response =
+            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertFalse(response.getIhtFormEstateValuesCompleted());
+    }
+    
+    @Test
+    public void testSetIhtFormEstateNotValuesCompletedIfIhtEstateValuesNotPresentAndDeceasedDiedOnAfterSwitchDate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .deceasedDiedOnAfterSwitchDate(TRUE)
+            .build();
+        GrantOfRepresentationData response =
+            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertTrue(response.getIhtFormEstateValuesCompleted());
+    }  
+    
     @Configuration
     public static class Config {
 

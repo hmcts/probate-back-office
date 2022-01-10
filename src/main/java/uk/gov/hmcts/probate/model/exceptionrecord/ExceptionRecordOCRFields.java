@@ -194,4 +194,5 @@ public class ExceptionRecordOCRFields {
     private final String ihtEstateNetQualifyingValue;
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
+    private final String deceasedDiedOnAfterSwitchDate;
 }
