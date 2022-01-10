@@ -234,6 +234,17 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         ToYesOrNo.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
+    @AfterMapping
+    default void setIhtFormEstateValuesCompleted(@MappingTarget GrantOfRepresentationData caseData,
+                                                 ExceptionRecordOCRFields ocrField) {
+        if (ocrField.getIhtEstateGrossValue() != null
+            && ocrField.getIhtEstateNetValue() != null
+            && ocrField.getIhtEstateNetQualifyingValue() != null) {
+            caseData.setIhtFormEstateValuesCompleted(Boolean.FALSE);
+        } else if ("TRUE".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())){
+            caseData.setIhtFormEstateValuesCompleted(Boolean.TRUE);
+        }
+    }
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData,
