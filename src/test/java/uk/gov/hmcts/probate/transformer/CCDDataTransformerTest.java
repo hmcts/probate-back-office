@@ -68,6 +68,8 @@ public class CCDDataTransformerTest {
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String SELECTED_PBA_NUMBER = "PBA1234";
     private static final String PBA_PAYMENT_REFERENCE = "PBA1234-PayRef";
+    private static final BigDecimal IHT_ESTATE_GROSS = BigDecimal.valueOf(20000f);
+    private static final BigDecimal IHT_ESTATE_NET = BigDecimal.valueOf(18000f);
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -389,12 +391,16 @@ public class CCDDataTransformerTest {
 
         when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(IHT_ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(IHT_ESTATE_NET);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertEquals("Yes", ccdData.getIht().getIhtFormEstateValuesCompleted());
         assertEquals("IHT207", ccdData.getIht().getIhtFormEstate());
+        assertEquals(IHT_ESTATE_GROSS, ccdData.getIht().getIhtEstateGrossValue());
+        assertEquals(IHT_ESTATE_NET, ccdData.getIht().getIhtEstateNetValue());
     }
 
     private void assertAll(CCDData ccdData) {
