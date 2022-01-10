@@ -46,6 +46,8 @@ import org.mapstruct.ReportingPolicy;
         OCRFieldYesOrNoMapper.class,
         OCRFieldMartialStatusMapper.class,
         OCRFieldAdoptiveRelativesMapper.class,
+        OCRFieldIhtFormEstateMapper.class,
+        OCRFieldIhtFormTypeMapper.class,
         OCRFieldIhtMoneyMapper.class,
         OCRFieldRelationshipMapper.class,
         OCRFieldPaymentMethodMapper.class,

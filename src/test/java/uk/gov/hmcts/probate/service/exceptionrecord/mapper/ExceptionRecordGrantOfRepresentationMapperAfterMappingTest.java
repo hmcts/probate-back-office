@@ -47,6 +47,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
     @Autowired
+    private OCRFieldIhtFormEstateMapper ocrFieldIhtFormEstateMapper;
+    @Autowired
     private OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper;
     @Autowired
     private OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
@@ -570,6 +572,11 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             return new OCRFieldAdoptiveRelativesMapper();
         }
 
+        @Bean
+        public OCRFieldIhtFormEstateMapper ocrFieldIhtFormEstateMapper() {
+            return new OCRFieldIhtFormEstateMapper();
+        }
+        
         @Bean
         public OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper() {
             return new OCRFieldIhtFormTypeMapper();
