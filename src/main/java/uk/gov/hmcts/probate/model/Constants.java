@@ -55,6 +55,8 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
+    public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
+    public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
 
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used

@@ -5,21 +5,14 @@ import com.github.hmcts.lifeevents.client.service.DeathService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.security.SecurityDTO;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 @Slf4j
 @Service
@@ -27,59 +20,36 @@ import static java.util.Collections.emptyList;
 @EnableAsync
 public class LifeEventService {
 
-    public static final String LIFE_EVENT_VERIFICATION_SUCCESSFUL = "Life Event Verification successful";
-    public static final String REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS = "Review LEV tab, proceed to other checks";
     private DeathService deathService;
-    private CcdClientApi ccdClientApi;
-    private DeathRecordService deathRecordService;
+    private DeathRecordCCDService deathRecordCCDService;
 
     @Autowired
-    public LifeEventService(final DeathService deathService, final CcdClientApi ccdClientApi,
-                            final DeathRecordService deathRecordService) {
+    public LifeEventService(final DeathService deathService, final DeathRecordCCDService deathRecordCCDService) {
         this.deathService = deathService;
-        this.ccdClientApi = ccdClientApi;
-        this.deathRecordService = deathRecordService;
+        this.deathRecordCCDService = deathRecordCCDService;
     }
 
-    @Async
-    public void verifyDeathRecord(final CaseDetails caseDetails, final SecurityDTO securityDTO) {
+    public List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>> 
+        getDeathRecordsByNamesAndDate(final CaseDetails caseDetails) {
         final CaseData caseData = caseDetails.getData();
         final String deceasedForenames = caseData.getDeceasedForenames();
         final String deceasedSurname = caseData.getDeceasedSurname();
         final LocalDate deceasedDateOfDeath = caseData.getDeceasedDateOfDeath();
         log.info("Trying LEV call");
-        List<V1Death> records = emptyList();
+        List<V1Death> records;
         try {
-            records = deathService
-                    .searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname, deceasedDateOfDeath);
+            records = deathService.searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname,
+                deceasedDateOfDeath);
         } catch (Exception e) {
             log.error("Error during LEV call", e);
+            throw e;
         }
-        log.info("LEV Records returned: " + records.size());
-        if (1 == records.size()) {
-            updateCCDLifeEventVerified(caseDetails.getId().toString(), records, securityDTO);
+
+        if (records.isEmpty()) {
+            String message = "No death records found";
+            throw new BusinessValidationException(message, message);
         }
-    }
 
-    private void updateCCDLifeEventVerified(final String caseId,
-                                            final List<V1Death> records,
-                                            final SecurityDTO securityDTO) {
-        
-        log.info("LEV update CCD: " + caseId);
-
-        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
-                .builder()
-                .deathRecords(deathRecordService.mapDeathRecords(records))
-                .build();
-
-        ccdClientApi.updateCaseAsCitizen(
-                CcdCaseType.GRANT_OF_REPRESENTATION,
-                caseId,
-                grantOfRepresentationData,
-                EventId.DEATH_RECORD_VERIFIED,
-                securityDTO,
-                LIFE_EVENT_VERIFICATION_SUCCESSFUL,
-                REVIEW_LEV_TAB_PROCEED_TO_OTHER_CHECKS
-        );
+        return deathRecordCCDService.mapDeathRecords(records);
     }
 }

@@ -17,6 +17,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -886,5 +888,69 @@ public class CaseDataTest {
 
         assertEquals(additionalExecutorsApplyingList, caseData.getExecutorsApplyingLegalStatement());
         assertEquals(additionalExecutorsNotApplyingList, caseData.getExecutorsNotApplyingLegalStatement());
+    }
+
+    @Test
+    public void shouldApplyWillConditionAttributes() {
+        final CaseData caseData = CaseData.builder()
+            .willHasVisibleDamage("Yes")
+            .willDamage(Damage.builder()
+                .damageTypesList(Arrays.asList("Type1", "Type2", "Other"))
+                .otherDamageDescription("Other damage desc")
+                .build())
+            .willDamageReasonKnown("Yes")
+            .willDamageReasonDescription("Will damage desc")
+            .willDamageCulpritKnown("Yes")
+            .willDamageCulpritName(CombinedName.builder()
+                .firstName("WillCulpritFN")
+                .lastName("WillCulpritLN")
+                .build())
+            .willDamageDateKnown("Yes")
+            .willDamageDate("1/12/2020")
+            .codicilsHasVisibleDamage("Yes")
+            .codicilsDamage(Damage.builder()
+                .damageTypesList(Arrays.asList("Type1C", "Type2C", "Other"))
+                .otherDamageDescription("Cod Other desc")
+                .build())
+            .codicilsDamageReasonKnown("Yes")
+            .codicilsDamageReasonDescription("Cod damage desc")
+            .codicilsDamageCulpritKnown("Yes")
+            .codicilsDamageCulpritName(CombinedName.builder()
+                .firstName("CodCulpritFN")
+                .lastName("CodCulpritLN")
+                .build())
+            .codicilsDamageDateKnown("Yes")
+            .codicilsDamageDate("9/2021")
+            .deceasedWrittenWishes("Yes")
+            .build();
+
+        assertEquals("Yes", caseData.getWillHasVisibleDamage());
+        assertEquals("Type1", caseData.getWillDamage().getDamageTypesList().get(0));
+        assertEquals("Type2", caseData.getWillDamage().getDamageTypesList().get(1));
+        assertEquals("Other", caseData.getWillDamage().getDamageTypesList().get(2));
+        assertEquals("Other damage desc", caseData.getWillDamage().getOtherDamageDescription());
+        assertEquals("Yes", caseData.getWillDamageReasonKnown());
+        assertEquals("Will damage desc", caseData.getWillDamageReasonDescription());
+        assertEquals("Yes", caseData.getWillDamageCulpritKnown());
+        assertEquals("WillCulpritFN", caseData.getWillDamageCulpritName().getFirstName());
+        assertEquals("WillCulpritLN", caseData.getWillDamageCulpritName().getLastName());
+        assertEquals("Yes", caseData.getWillDamageDateKnown());
+        assertEquals("1/12/2020", caseData.getWillDamageDate());
+        
+
+        assertEquals("Yes", caseData.getCodicilsHasVisibleDamage());
+        assertEquals("Type1C", caseData.getCodicilsDamage().getDamageTypesList().get(0));
+        assertEquals("Type2C", caseData.getCodicilsDamage().getDamageTypesList().get(1));
+        assertEquals("Other", caseData.getCodicilsDamage().getDamageTypesList().get(2));
+        assertEquals("Cod Other desc", caseData.getCodicilsDamage().getOtherDamageDescription());
+        assertEquals("Yes", caseData.getCodicilsDamageReasonKnown());
+        assertEquals("Cod damage desc", caseData.getCodicilsDamageReasonDescription());
+        assertEquals("Yes", caseData.getCodicilsDamageCulpritKnown());
+        assertEquals("CodCulpritFN", caseData.getCodicilsDamageCulpritName().getFirstName());
+        assertEquals("CodCulpritLN", caseData.getCodicilsDamageCulpritName().getLastName());
+        assertEquals("Yes", caseData.getCodicilsDamageDateKnown());
+        assertEquals("9/2021", caseData.getCodicilsDamageDate());
+        
+        assertEquals("Yes", caseData.getDeceasedWrittenWishes());
     }
 }
