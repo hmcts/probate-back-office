@@ -225,8 +225,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtFormEstate", source = "ocrFields.ihtFormEstate", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtEstateNetQualifyingValue", source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", source = "ocrFields.deceasedHadLateSpouseOrCivilPartner", qualifiedBy = {
+    @Mapping(target = "ihtEstateNetQualifyingValue", 
+        source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", 
+        source = "ocrFields.deceasedHadLateSpouseOrCivilPartner", qualifiedBy = {
             ToYesOrNo.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
         ToYesOrNo.class})
