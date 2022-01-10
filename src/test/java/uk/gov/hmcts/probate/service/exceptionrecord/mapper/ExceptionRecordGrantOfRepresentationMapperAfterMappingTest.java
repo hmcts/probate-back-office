@@ -1,5 +1,12 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
@@ -8,12 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
-import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,6 +46,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private OCRFieldMartialStatusMapper ocrFieldMartialStatusMapper;
     @Autowired
     private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
+    @Autowired
+    private OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper;
     @Autowired
     private OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
     @Autowired
@@ -567,6 +570,11 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             return new OCRFieldAdoptiveRelativesMapper();
         }
 
+        @Bean
+        public OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper() {
+            return new OCRFieldIhtFormTypeMapper();
+        }
+        
         @Bean
         public OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper() {
             return new OCRFieldIhtMoneyMapper();
