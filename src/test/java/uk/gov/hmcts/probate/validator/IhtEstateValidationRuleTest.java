@@ -143,4 +143,21 @@ public class IhtEstateValidationRuleTest {
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
+
+    @Test
+    public void testValidateNoMessageNoNetIhtValue() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(null);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+    
+    @Test
+    public void testValidateNoMessageNoGrossIhtValue() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(null);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
 }
