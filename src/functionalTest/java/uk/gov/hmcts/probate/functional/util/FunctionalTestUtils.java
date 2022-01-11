@@ -229,7 +229,7 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithCaseworkerUser() {
         final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
-                caseworkerPassword);
+            caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -254,7 +254,7 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
         final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
-                schedulerPassword);
+            schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
@@ -334,8 +334,8 @@ public class FunctionalTestUtils {
     }
 
     public String convertToWelsh(LocalDate dateToConvert) {
-        final String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
-            "Hydref", "Tachwedd","Rhagfyr"};
+        final String[] welshMonths = {"Ionawr", "Chwefror", "Mawrth", "Ebrill", "Mai", "Mehefin", "Gorffennaf", "Awst",
+            "Medi", "Hydref", "Tachwedd", "Rhagfyr"};
 
         if (dateToConvert == null) {
             return null;
@@ -343,10 +343,9 @@ public class FunctionalTestUtils {
         final int day = dateToConvert.getDayOfMonth();
         final int year = dateToConvert.getYear();
         final int month = dateToConvert.getMonth().getValue();
-        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
-            Integer.toString(year));
+        return String.join(" ", Integer.toString(day), welshMonths[month - 1], Integer.toString(year));
     }
-    
+
     public String formatDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
@@ -362,7 +361,7 @@ public class FunctionalTestUtils {
             return null;
         }
     }
-    
+
     private String addDayNumberSuffix(String formattedDate) {
         final int day = Integer.parseInt(formattedDate.substring(0, 2));
         switch (day) {
