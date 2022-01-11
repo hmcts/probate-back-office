@@ -11,11 +11,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorLegalStatementPDFDecorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 public class PDFDecoratorServiceTest {
@@ -26,6 +31,8 @@ public class PDFDecoratorServiceTest {
     private ObjectMapper objectMapperMock;
     @Mock
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecoratorMock;
+    @Mock
+    private SolicitorLegalStatementPDFDecorator solicitorLegalStatementPDFDecoratorMock;
     @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
@@ -39,7 +46,8 @@ public class PDFDecoratorServiceTest {
     public void setup() {
         initMocks(this);
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
-        pdfDecoratorService = new PDFDecoratorService(objectMapperMock, solicitorCoversheetPDFDecoratorMock);
+        pdfDecoratorService = new PDFDecoratorService(objectMapperMock, solicitorCoversheetPDFDecoratorMock,
+            solicitorLegalStatementPDFDecoratorMock);
     }
 
     @Test
@@ -70,11 +78,9 @@ public class PDFDecoratorServiceTest {
 
     @Test(expected = BadRequestException.class)
     public void shouldNotDecorateThrowBadRequest() throws JsonProcessingException {
-        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
-            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenThrow(JsonProcessingException.class);
 
-        String json = pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
+        pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
     }
 
     @Test
@@ -95,4 +101,75 @@ public class PDFDecoratorServiceTest {
         assertEquals(expectedJson, json);
     }
 
+    @Test
+    public void shouldDecorateSolicitorLegalStatementProbateTC() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"showPa16Form\" : \"Yes\","
+            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
+        when(solicitorLegalStatementPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
+
+        String json = pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS);
+
+        assertEquals(expectedJson, json);
+    }
+
+    @Test
+    public void shouldDecorateSolicitorLegalStatementProbate() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"showPa16Form\" : \"Yes\","
+            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
+        when(solicitorLegalStatementPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
+
+        String json = pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+
+        assertEquals(expectedJson, json);
+    }
+
+    @Test
+    public void shouldDecorateSolicitorLegalStatementIntestacy() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"showPa16Form\" : \"Yes\","
+            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
+        when(solicitorLegalStatementPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
+
+        String json = pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_INTESTACY);
+
+        assertEquals(expectedJson, json);
+    }
+    
+    @Test
+    public void shouldDecorateSolicitorLegalStatementAdmon() throws JsonProcessingException {
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
+        String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        String expectedJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
+            + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"showPa16Form\" : \"Yes\","
+            + "\"pa16FormText\" : \"<PA16FormText>\"}}";
+        when(solicitorLegalStatementPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson);
+
+        String json = pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_ADMON);
+
+        assertEquals(expectedJson, json);
+    }
 }
