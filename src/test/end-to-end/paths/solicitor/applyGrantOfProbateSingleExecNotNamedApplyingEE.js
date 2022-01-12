@@ -51,7 +51,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1('EE');
-    await I.deceasedDetailsPage2('EE','Yes','IHT207');
+    await I.deceasedDetailsPage2('EE', 'Yes', 'IHT207');
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();

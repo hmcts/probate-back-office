@@ -18,8 +18,7 @@ module.exports = async function (deathTypeDate) {
         await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_dayEE);
         await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_monthEE);
         await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_yearEE);
-    }
-    else{
+    } else {
         await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_day);
         await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
         await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);

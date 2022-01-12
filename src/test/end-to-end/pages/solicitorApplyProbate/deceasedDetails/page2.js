@@ -9,20 +9,18 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
     await I.runAccessibilityTest();
 
     if (applicationType === 'EE') {
-        if(iHTFormsCompleted === 'Yes'){
+        if (iHTFormsCompleted === 'Yes') {
             await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
             await I.waitForText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
             await I.waitForText(deceasedDetailsConfig.page2_IHT207Label);
             await I.waitForText(deceasedDetailsConfig.page2_IHT400421Label);
 
-            if(whichIHTFormsCompleted === 'IHT207'){
+            if (whichIHTFormsCompleted === 'IHT207') {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
-            }
-            else{
+            } else {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
             }
-        }
-        else {
+        } else {
             await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionNo}`);
             await I.waitForText(deceasedDetailsConfig.page2_grossValueIHTEstateLabel);
             await I.waitForText(deceasedDetailsConfig.page2_netValueIHTEstateLabel);
@@ -35,13 +33,11 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
             await I.click(`#deceasedHadLateSpouseOrCivilPartner_${deceasedDetailsConfig.optionYes}`);
             await I.click(`#ihtUnusedAllowanceClaimed_${deceasedDetailsConfig.optionYes}`);
         }
-    }
-    else if(applicationType === 'MultiExec'){
+    } else if (applicationType === 'MultiExec') {
         await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOptionMulti}`});
         await I.waitForText(deceasedDetailsConfig.page2_NilRateBandLabel);
         await I.click({css: `#iht217_${deceasedDetailsConfig.optionYes}`});
-    }
-    else{
+    } else {
         await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
     }
 

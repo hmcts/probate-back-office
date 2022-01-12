@@ -46,7 +46,7 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Grant of probate created';
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1('EE');
-    await I.deceasedDetailsPage2('EE','No');
+    await I.deceasedDetailsPage2('EE', 'No');
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
