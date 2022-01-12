@@ -118,6 +118,8 @@ public class CCDDataTransformer {
             .formName(caseData.getIhtFormId())
             .netValue(caseData.getIhtNetValue())
             .grossValue(caseData.getIhtGrossValue())
+            .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
+            .ihtFormEstate(caseData.getIhtFormEstate())
             .build();
     }
 

@@ -15,7 +15,8 @@ public class SendDocumentsDetailsHtmlTemplate {
                     PageTextConstants.IHT_FORM,
                     PageTextConstants.RENOUNCING_EXECUTORS,
                     PageTextConstants.PA16_FORM,
-                    PageTextConstants.PA17_FORM);
+                    PageTextConstants.PA17_FORM,
+                    PageTextConstants.IHT_ESTATE_207);
 
     private SendDocumentsDetailsHtmlTemplate() {
         throw new IllegalStateException("Utility class");

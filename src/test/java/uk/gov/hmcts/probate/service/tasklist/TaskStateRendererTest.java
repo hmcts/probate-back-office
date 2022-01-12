@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
@@ -18,6 +19,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,8 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 public class TaskStateRendererTest {
     @InjectMocks
@@ -39,7 +46,9 @@ public class TaskStateRendererTest {
     private PA16FormBusinessRule pa16FormBusinessRule;
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
-    
+    @Mock
+    private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -599,7 +608,97 @@ public class TaskStateRendererTest {
 
         assertEquals(expectedHtml, result);
     }
-    
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate207() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .ihtFormId(null)
+            .ihtFormEstateValuesCompleted(YES)
+            .ihtFormEstate(IHT207_VALUE)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstate207");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        when(ihtEstate207BusinessRule.isApplicable(any(CaseData.class))).thenReturn(true);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate400421() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .ihtFormId(null)
+            .ihtFormEstateValuesCompleted(YES)
+            .ihtFormEstate(IHT400421_VALUE)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstate400421");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstateCompletedNo() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .ihtFormId(null)
+            .ihtFormEstateValuesCompleted(NO)
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstateCompletedNo");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
     @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_IntestacyIht217() {
         final CaseData caseData = CaseData.builder()
