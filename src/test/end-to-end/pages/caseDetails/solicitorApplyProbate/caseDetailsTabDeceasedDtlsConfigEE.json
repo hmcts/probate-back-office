@@ -9,8 +9,8 @@
     "Did the deceased have assets in any other names?"
   ],
   "dataKeys": [
-    "page2_ihtGrossValueDisplay",
-    "page2_ihtNetValueDisplay",
+    "page2_probateIHTGrossValueDisplay",
+    "page2_probateIHTNetValueDisplay",
     "page2_solsCompleteIHTForms",
     "page2_solsIHTFormsCompleted400421"
   ],

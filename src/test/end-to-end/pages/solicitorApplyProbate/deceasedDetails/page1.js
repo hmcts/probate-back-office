@@ -14,8 +14,6 @@ module.exports = async function (deathTypeDate) {
     await I.fillField('#deceasedDateOfBirth-month', deceasedDetailsConfig.page1_dateOfBirth_month);
     await I.fillField('#deceasedDateOfBirth-year', deceasedDetailsConfig.page1_dateOfBirth_year);
 
-    await I.click(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
-
     if (deathTypeDate === 'EE') {
         await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_dayEE);
         await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_monthEE);
@@ -26,6 +24,8 @@ module.exports = async function (deathTypeDate) {
         await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
         await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);
     }
+
+    await I.click(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
 
     await I.click(deceasedDetailsConfig.UKpostcodeLink);
 

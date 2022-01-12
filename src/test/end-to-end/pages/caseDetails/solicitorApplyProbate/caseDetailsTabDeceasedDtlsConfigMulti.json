@@ -9,8 +9,8 @@
   ],
   "dataKeys": [
     "page2_solsIHTForm",
-    "page2_ihtGrossValueDisplay",
-    "page2_ihtNetValueDisplay"
+    "page2_probateIHTGrossValueDisplay",
+    "page2_probateIHTNetValueDisplay"
   ],
   "fieldsNotPresent": [
     "Please state the grounds for making this application and any information in support:",
