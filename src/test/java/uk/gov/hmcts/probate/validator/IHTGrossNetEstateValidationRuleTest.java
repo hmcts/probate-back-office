@@ -63,6 +63,17 @@ public class IHTGrossNetEstateValidationRuleTest {
     }
 
     @Test
+    public void testValidateWithSuccessWhenEqual() {
+        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
+        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
+        assertThat(validationError.isEmpty(), is(true));
+    }
+
+    @Test
     public void testValidateWithSuccessWhenIhtIsNull() {
         when(ccdDataMock.getIht()).thenReturn(null);
 
