@@ -1,18 +1,18 @@
 {
   "tabName": "Applicant details",
   "fields": [
-    "Name of the firm",
-    "Your reference",
+    "Name of the firm, or the name under which the applicant operates",
+    "Your reference for this application",
+    "Contact email address",
+    "Contact phone number",
+    "Is the Probate practitioner named in the will as an executor?",
     "Building and Street",
     "Address Line 2",
     "Address Line 3",
     "Town or City",
     "County",
     "Postcode/Zipcode",
-    "Country",
-    "Contact email address",
-    "Is the Probate practitioner named in the will as an executor?",
-    "Contact phone number"
+    "Country"
   ],
   "dataKeys": [
     "page2_firm_name",
@@ -43,7 +43,7 @@
       "County",
       "Postcode/Zipcode",
       "Country",
-      "Are there any more executors?"      
+      "Are there any more executors?"
     ],
     "dataKeys": [
       "page2_firm_name",
