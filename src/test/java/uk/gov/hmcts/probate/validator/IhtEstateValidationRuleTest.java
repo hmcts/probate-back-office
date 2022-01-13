@@ -44,7 +44,7 @@ public class IhtEstateValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithUnusedAllowanceError() {
+    public void testValidateWithNoUnusedAllowanceError() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_BETWEEN);
@@ -58,11 +58,31 @@ public class IhtEstateValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithUnusedAllowanceNoError() {
+    public void testValidateWithNoUnusedAllowanceNoError() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_BETWEEN);
         when(caseDataMock.getDeceasedHadLateSpouseOrCivilPartner()).thenReturn(NO);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    public void testValidateWithUnusedAllowanceSetError() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_BETWEEN);
+        when(caseDataMock.getDeceasedHadLateSpouseOrCivilPartner()).thenReturn(YES);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    public void testValidateWithUnusedAllowanceSetNoError() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_BETWEEN);
+        when(caseDataMock.getDeceasedHadLateSpouseOrCivilPartner()).thenReturn(NO);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
 
@@ -112,6 +132,21 @@ public class IhtEstateValidationRuleTest {
     }
 
     @Test
+    public void testMessageNQVLargerNoNull() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_LARGER);
+        when(caseDataMock.getDeceasedHadLateSpouseOrCivilPartner()).thenReturn(NO);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(null);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn("expected iht message");
+        try {
+            ihtEstateValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals("expected iht message", bve.getUserMessage());
+        }
+    }
+
+    @Test
     public void testNoMessageNQVSmaller() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
@@ -139,6 +174,23 @@ public class IhtEstateValidationRuleTest {
     public void testValidateNoMessageNoProbateIhtValues() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
         when(caseDataMock.getIhtEstateNetValue()).thenReturn(ESTATE_NET);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    public void testValidateNoMessageNoNetIhtValue() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(null);
+        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
+        when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
+        ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+    
+    @Test
+    public void testValidateNoMessageNoGrossIhtValue() {
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(null);
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
