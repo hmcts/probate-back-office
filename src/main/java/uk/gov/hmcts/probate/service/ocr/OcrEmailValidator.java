@@ -41,5 +41,7 @@ public class OcrEmailValidator {
             .collect(toList());
     }
 
-    private boolean isNotValid(final String email) { return !emailValidationService.validateEmailAddress(email); }
+    private boolean isNotValid(final String email) {
+        return !emailValidationService.validateEmailAddress(email);
+    }
 }
