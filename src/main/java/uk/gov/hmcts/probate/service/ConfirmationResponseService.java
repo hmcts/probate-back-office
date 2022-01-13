@@ -277,6 +277,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
+        keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -321,7 +322,14 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
-
+    
+    private String getPA17FormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .titleAndClearingType(ccdData.getTitleAndClearingType())
+            .build();
+        return markdownDecoratorService.getPA17FormLabel(caseData);
+    }
+    
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
     } 
