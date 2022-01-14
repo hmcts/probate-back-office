@@ -28,7 +28,6 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
@@ -61,8 +60,6 @@ public class NotificationControllerUnitTest {
     CallbackResponseTransformer callbackResponseTransformer;
     @Mock
     EventValidationService eventValidationService;
-    @Mock
-    List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     @Mock
     List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     @Mock
