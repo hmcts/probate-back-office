@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -24,6 +25,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
 
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
+    @Mock
+    private PA17FormBusinessRule pa17FormBusinessRuleMock;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
     @Mock
@@ -52,6 +55,19 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+    }
+
+    @Test
+    public void shouldProvideAdditionalDecorationPA17() {
+        when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
+            + "\"pa17FormText\":\"PA17FormTEXT\"}";
+        when(caseExtraDecorator.decorate(any()))
+            .thenReturn(extra);
+
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extra, json);

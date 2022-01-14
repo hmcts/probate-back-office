@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -31,12 +32,15 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
@@ -65,6 +69,7 @@ public class TaskStateRenderer {
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final PA16FormBusinessRule pa16FormBusinessRule;
+    private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
@@ -159,6 +164,7 @@ public class TaskStateRenderer {
                 .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
                 .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
                 );
     }
@@ -258,6 +264,11 @@ public class TaskStateRenderer {
             pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
         }
         keyValue.put("pa16Form", pa16Form);
+        String pa17Form = "";
+        if (pa17FormBusinessRule.isApplicable(data)) {
+            pa17Form = "<li><a href=\"" + PA17_FORM_URL + "\" target=\"_blank\">" + PA17_FORM_TEXT + "</a></li>";
+        }
+        keyValue.put("pa17Form", pa17Form);
         String ihtEstate207 = "";
         if (ihtEstate207BusinessRule.isApplicable(data)) {
             ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";

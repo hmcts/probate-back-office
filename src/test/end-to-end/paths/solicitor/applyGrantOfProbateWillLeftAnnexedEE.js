@@ -5,86 +5,90 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const applyProbateConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/applyProbate/applyProbateConfig');
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig');
-const gopConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/grantOfProbate/grantOfProbate');
+const admonWillDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/admonWillDetails/admonWillDetails');
 const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorApplyProbate/completeApplication/completeApplication');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
-const applicantExecutorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig');
-const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
-const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigMulti');
-const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
+const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfigEE');
+const iHTTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/iHTTabConfigEE207');
+const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigEEIHT207');
+const caseDetailsTabAdmonWillConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabAdmonWillConfig');
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
+
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
-Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-const scenarioName ='Solicitor - Apply Grant of probate Multi Executor';
+Feature('Solicitor - Apply Grant of probate Admon Will Excepted Estates').retry(testConfig.TestRetryFeatures);
+const scenarioName = 'Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed)';
 Scenario(scenarioName, async function ({I}) {
 
-    const willType = 'WillLeft';
+    const updateAddressManually = true;
+    const willType = 'WillLeftAnnexed';
+
     await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
     let endState = 'Application created';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     await I.applyForProbatePage1();
-    await I.applyForProbatePage2(true, true);
+    await I.applyForProbatePage2();
     await I.cyaPage();
 
     await I.seeEndState(endState);
 
     const caseRef = await I.getCaseRefFromUrl();
 
-    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
-    endState = 'Grant of probate created';
+    endState = 'Admon will grant created';
+
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.deceasedDetailsPage1();
-    await I.deceasedDetailsPage2('MultiExec');
-    await I.deceasedDetailsPage3();
-    await I.deceasedDetailsPage4();
+    await I.deceasedDetailsPage1('EE');
+    await I.deceasedDetailsPage2('EE', 'Yes', 'IHT207');
+    await I.deceasedDetailsPage3(willType);
     await I.cyaPage();
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
+    await I.seeCaseDetails(caseRef, iHTTabConfig, deceasedDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
-    nextStepName = 'Grant of probate details';
+    nextStepName = 'Admon will details';
     endState = 'Application updated';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.grantOfProbatePage1();
-    await I.grantOfProbatePage2(false, true, true);
-    await I.grantOfProbatePage3();
-    await I.grantOfProbatePage4();
-    await I.grantOfProbatePage5();
-    await I.grantOfProbatePage6();
+    await I.admonWillDetailsPage1();
+    await I.admonWillDetailsPage2(updateAddressManually);
+    await I.admonWillDetailsPage3();
+    await I.admonWillDetailsPage4();
+    await I.admonWillDetailsPage5();
+
     await I.cyaPage();
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
-    const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
-    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
-    await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-    await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
-    await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
+    const admonWillDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...admonWillDetailsConfig};
 
-    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
-    await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, admonWillDtlsAndDcsdDtls);
+    await I.seeCaseDetails(caseRef, caseDetailsTabAdmonWillConfig, admonWillDtlsAndDcsdDtls);
+
+    await I.seeUpdatesOnCase(caseRef, sotTabConfig, willType, completeApplicationConfig);
+    await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);
 
     nextStepName = 'Complete application';
     endState = 'Case created';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.completeApplicationPage1();
+    await I.completeApplicationPage1(willType);
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
@@ -95,7 +99,5 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
-    await I.seeCaseDetails(caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
 
-}).tag('@crossbrowser')
-    .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);

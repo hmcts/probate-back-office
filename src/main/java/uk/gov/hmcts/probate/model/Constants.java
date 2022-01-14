@@ -57,6 +57,9 @@ public final class Constants {
     public static final String SOLICITOR_ID = "solicitor";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
+    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals";
+    public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
+        + " (PA17)";
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
