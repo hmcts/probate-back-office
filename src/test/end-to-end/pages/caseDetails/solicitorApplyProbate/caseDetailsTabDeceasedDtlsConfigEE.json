@@ -1,16 +1,18 @@
 {
   "tabName": "Case details",
   "fields": [
-    "Inheritance Tax form",
     "Gross value of the estate for probate",
     "Net value of the estate for probate",
+    "Did you complete IHT forms to report the estate's values?",
+    "Which IHT forms did you complete to report the estate's value?",
     "Did the deceased leave a will?",
     "Did the deceased have assets in any other names?"
   ],
   "dataKeys": [
-    "page2_solsIHTFormsCompleted400421",
     "page2_probateIHTGrossValueDisplay",
-    "page2_probateIHTNetValueDisplay"
+    "page2_probateIHTNetValueDisplay",
+    "page2_solsCompleteIHTForms",
+    "page2_solsIHTFormsCompleted400421"
   ],
   "fieldsNotPresent": [
     "Please state the grounds for making this application and any information in support:",
