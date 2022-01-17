@@ -377,6 +377,12 @@ public class BusinessValidationController {
 
         CallbackResponse response;
 
+        response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
+
+        if (!response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(response);
+        }
+
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
         if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
