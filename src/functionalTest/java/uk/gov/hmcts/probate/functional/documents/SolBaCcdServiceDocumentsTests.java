@@ -1875,6 +1875,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetGopPA17Form() {
+        String payload = "/caseprogress/04d-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
+        assertTrue(response.contains(expectedText));
+
+    }
+    
+    @Test
     public void verifyGenerateSolsCoverSheetIntestacy() {
         String payload = "/caseprogressintestacy/04-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
@@ -1902,6 +1912,78 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .getJsonFromFile("/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
 
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
+        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesNo() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
+        String dir = "/exceptedEstates/ihtEstateCompletedNo/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
+        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
+        //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
+        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     private void verifyPersonalWelshReissueText(String payload, String expectedFile) {
@@ -1946,7 +2028,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         return response;
     }
 
-    private String getFirstDocumentsGeneratedText(String jsonFileName, String path) {
+    private JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
@@ -1954,10 +2036,16 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path).andReturn();
 
-        final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        final String documentUrl = jsonPath.get("data.documentsGenerated[0].value.DocumentLink.document_binary_url");
-        final String response = utils.downloadPdfAndParseToString(documentUrl);
-        return removeCrLfs(response);
+        return JsonPath.from(jsonResponse.getBody().asString());
+    }
+
+    private String getDocumentText(JsonPath jsonPath, String documentName) {
+        final String documentUrl =
+            jsonPath.get("data." + documentName + ".document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+
     }
 
     @Test
