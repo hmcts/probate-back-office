@@ -18,8 +18,8 @@ const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApp
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
-Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Solicitor - Apply Grant of probate (Will left annexed)';
+Feature('Solicitor - Apply Grant of probate Admon Will').retry(testConfig.TestRetryFeatures);
+const scenarioName = 'Solicitor - Apply Grant of probate Admon Will (Will left annexed)';
 Scenario(scenarioName, async function ({I}) {
 
     const updateAddressManually = true;

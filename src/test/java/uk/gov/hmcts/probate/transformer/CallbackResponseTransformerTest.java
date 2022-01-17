@@ -464,6 +464,10 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDataTransformer caseDataTransformerMock;
+    @Mock
+    private IhtEstateDefaulter ihtEstateDefaulter;
+    @Mock
+    private Iht400421Defaulter iht400421Defaulter;
 
     @Before
     public void setup() {
@@ -2950,6 +2954,18 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
+    @Test
+    public void shouldSetIhtEstateValues() {
+        underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        verify(ihtEstateDefaulter).defaultPageFlowIhtSwitchDate(any(), any());
+    }
+
+    @Test
+    public void shouldSetIht400421PageFlow() {
+        underTest.defaultIht400421DatePageFlow(callbackRequestMock);
+        verify(iht400421Defaulter).defaultPageFlowForIht400421(any(), any());
+    }
+    
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname,
                                                                         String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
