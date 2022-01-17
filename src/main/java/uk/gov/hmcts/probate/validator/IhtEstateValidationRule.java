@@ -11,6 +11,9 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Component
 @RequiredArgsConstructor
 public class IhtEstateValidationRule implements CaseDetailsValidationRule {
@@ -32,15 +35,18 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
         
         BigDecimal nqv = caseData.getIhtEstateNetQualifyingValue();
         if (estateValuesEntered && nqv != null) {
+            boolean deceasedHadLateSpouseOrCivilPartner = YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner());
             boolean nqvBetweenValues = (nqv.doubleValue() >= NQV_LOWER && nqv.doubleValue() <= NQV_UPPER);
-            if (nqvBetweenValues && unusedClaimedNotSet) {
+            if (nqvBetweenValues && unusedClaimedNotSet && deceasedHadLateSpouseOrCivilPartner) {
                 String userMessage = businessValidationMessageRetriever.getMessage(MUST_ANSWER_UNUSED_ALLOWANCE, null,
                     Locale.UK);
                 throw new BusinessValidationException(userMessage,
                     "User must answer iht estate unused allowance question for case:" + caseDetails.getId());
             }
             boolean nqvLarger = nqv.doubleValue() > NQV_UPPER;
-            if (nqvLarger && !unusedClaimedNotSet) {
+            boolean deceasedNOTHaveLateSpouseOrCivilPartner =
+                NO.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner());
+            if (nqvLarger && (deceasedHadLateSpouseOrCivilPartner || deceasedNOTHaveLateSpouseOrCivilPartner)) {
                 String userMessage = businessValidationMessageRetriever.getMessage(IHT_ESTATE_VALUE_NEEDS_TAX, null,
                     Locale.UK);
                 throw new BusinessValidationException(userMessage,

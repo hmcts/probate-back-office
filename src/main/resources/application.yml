@@ -126,7 +126,7 @@ docmosis:
     welshAdmonWillGrantReissue:
       templateName: FL-PRB-GRP-WEL-00226.doc
 
-fee.api:  
+fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup
   service: probate
@@ -508,8 +508,8 @@ welsh:
     12: "Rhagfyr"
 
 iht-estate:
-  switch-date: "2022-01-01"
-  
+  switch-date: ${EXCEPTED_ESTATE_DATE_OF_DEATH:2022-01-01}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}
   user:

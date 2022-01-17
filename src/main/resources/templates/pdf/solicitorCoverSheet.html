@@ -121,6 +121,11 @@
                     </li>
                     {% endif %}
                 {% endif %}
+                {% if case_extras != null and case_extras.showPa17Form == "Yes" %}
+                <li>
+                    <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                </li>
+                {% endif %}
             </ul>
             <br /><br /><br />
         </td>
