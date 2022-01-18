@@ -247,7 +247,7 @@ services:
       - 5050:5432
 
   dm-store:
-    image: hmctspublic.azurecr.io/dm/store:pr-1152-6ef6ba3-20211027150237
+    image: hmctspublic.azurecr.io/dm/store:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m
       - SERVER_PORT=8080

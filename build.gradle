@@ -176,7 +176,7 @@ def versions = [
         springCloud                     : '3.0.4',
         junit_jupiter                   : '5.8.0-M1',
         elasticSearchVersion            : '7.15.0',
-        documentClient                  : '1.7.2'
+        documentClient                  : '1.7.3'
 ]
 
 jacocoTestReport {
