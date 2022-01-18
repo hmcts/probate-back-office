@@ -13,6 +13,7 @@ public class LegalStatement {
     private final String deceased;
     private final String deceasedOtherNames;
     private final String deceasedEstateValue;
+    private final String deceasedEstateValueExceptedEstateConfirmation;
     private final String deceasedEstateLand;
     private final List<LegalStatementExecutorsNotApplying> executorsNotApplying;
     private final List<LegalStatementExecutorsApplying> executorsApplying;

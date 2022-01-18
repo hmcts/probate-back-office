@@ -65,13 +65,14 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service,aac_manage_case_assignment
       CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_API_BASE_URL: http://sidam-api:5000
       IDAM_OIDC_URL: http://sidam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8080
+      IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: idam_data_store_client_secret
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
       REFORM_ENVIRONMENT: local
@@ -81,6 +82,12 @@ services:
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       DATA_STORE_DEFAULT_LOG_LEVEL: INFO
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
+      CCD_DEFAULTPRINTURL: https://return-case-doc-ccd.nonprod.platform.hmcts.net/jurisdictions/:jid/case-types/:ctid/cases/:cid
+      ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL: "${ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL:-true}"
+      ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION: "${ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION:-true}"
+      ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION: "${ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION:-true}"
+      REFERENCE_DATA_API_URL: "${RD_LOCATION_REF_API_BASE_URL:-http://ccd-test-stubs-service:5555}"
+      ROLE_ASSIGNMENT_URL: "${ROLE_ASSIGNMENT_URL:-http://am-role-assignment-service:4096}"
     ports:
       - 4452:4452
       - 5005:5005
@@ -163,6 +170,8 @@ services:
       TESTING_SUPPORT_ENABLED: "true"
       MICROSERVICEKEYS_PAYMENT_APP: "AAAAAAAAAAAAAAAB"
       MICROSERVICEKEYS_CCD_CASE_DOCUMENT_AM_API : "AAAAAAAAAAAAAAAC"
+      MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT: "AAAAAAAAAAAAAAAA"
+      MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT_SERVICE: "AAAAAAAAAAAAAAAA"
     ports:
       - 4502:8080
 
@@ -230,7 +239,7 @@ services:
     volumes:
       - ./compose/database:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment
+      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment,role_assignment
       DB_USERNAME:
       DB_PASSWORD:
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -249,7 +258,7 @@ services:
       - STORAGEACCOUNT_PRIMARY_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azure-storage-emulator-azurite:10000/devstoreaccount1
       - STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME=hmctstestcontainer
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
-      - ENABLE_TTL=true
+      - ENABLE_TTL=false
       - ENABLE_METADATA_MIGRATION=false
       - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
     depends_on:
@@ -479,43 +488,43 @@ services:
       - service-auth-provider-api
       - dm-store
 
-#  probate-frontend:
-#    image: hmctspublic.azurecr.io/probate/frontend:latest
-#    environment:
-#      - IDAM_API_URL=http://sidam-api:5000
-#      - IDAM_S2S_URL=http://service-auth-provider-api:8080
-#      - PAYMENT_API_URL=http://payments-api:8383
-#      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
-#      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
-#      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
-#      - USE_REDIS=false
-#      - REDIS_USE_TLS=false
-#      - USE_IDAM=true
-#      - REQUIRE_CCD_CASE_ID=true
-#      - NODE_ENV=dev
-#      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
-#      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
-#
-#    ports:
-#      - 3000:3000
+  probate-frontend:
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    environment:
+      - IDAM_API_URL=http://sidam-api:5000
+      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
+      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - USE_REDIS=false
+      - REDIS_USE_TLS=false
+      - USE_IDAM=true
+      - REQUIRE_CCD_CASE_ID=true
+      - NODE_ENV=dev
+      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
+
+    ports:
+      - 3000:3000
 
 
-#  probate-orchestrator:
-#    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
-#    environment:
-#      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
-#      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
-#      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
-#      SUBMIT_SERVICE_API_URL: http://probate-submit-service:8181
-#      BUSINESS_SERVICE_API_URL:  http://probate-business-service:8081
-#      BACK_OFFICE_API_URL: http://probate-back-office:4104
-#      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
-#    ports:
-#      - 8888:8888
-#    depends_on:
-#      - sidam-api
-#      - service-auth-provider-api
-#      - probate-back-office
+  probate-orchestrator:
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
+      SUBMIT_SERVICE_API_URL: http://probate-submit-service:8181
+      BUSINESS_SERVICE_API_URL:  http://probate-business-service:8081
+      BACK_OFFICE_API_URL: http://probate-back-office:4104
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+    ports:
+      - 8888:8888
+    depends_on:
+      - sidam-api
+      - service-auth-provider-api
+      - probate-back-office
 
   probate-submit-service:
     image: hmctspublic.azurecr.io/probate/submit-service:latest
@@ -532,18 +541,18 @@ services:
       - ccd-data-store-api
       - service-auth-provider-api
 
-#  probate-business-service:
-#    image: hmctspublic.azurecr.io/probate/business-service:latest
-#    environment:
-#      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
-#      - SERVER_PORT=8081
-#      - SPRING_APPLICATION_JSON={
-#        "services.auth.provider.baseUrl":"http://service-auth-provider-api:8080",
-#        "services.pdf.service.url":"http://pdf-service-api:5500",
-#        "document_management.url":"http://dm-store:8080"
-#        }
-#    ports:
-#      - 8081:8081
+  probate-business-service:
+    image: hmctspublic.azurecr.io/probate/business-service:latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - SERVER_PORT=8081
+      - SPRING_APPLICATION_JSON={
+        "services.auth.provider.baseUrl":"http://service-auth-provider-api:8080",
+        "services.pdf.service.url":"http://pdf-service-api:5500",
+        "document_management.url":"http://dm-store:8080"
+        }
+    ports:
+      - 8081:8081
 
   wiremock:
     image: rodolpheche/wiremock
@@ -636,43 +645,6 @@ services:
       - ccd-api-gateway
       - ccd-data-store-api
 
-  am-role-assignment-service:
-    image: "${AM_ROLE_ASSIGNMENT_SERVICE_USE_LOCAL-hmctspublic.azurecr.io/}am/role-assignment-service:${AM_ROLE_ASSIGNMENT_SERVICE_TAG:-latest}"
-    environment:
-      ROLE_ASSIGNMENT_DB_HOST: shared-database
-      ROLE_ASSIGNMENT_DB_NAME: role_assignment
-      ROLE_ASSIGNMENT_DB_PORT: 5432
-      ROLE_ASSIGNMENT_DB_USERNAME: DB_USERNAME
-      ROLE_ASSIGNMENT_DB_PASSWORD: DB_PASSWORD
-      ROLE_ASSIGNMENT_DB_OPTIONS:
-      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
-      LD_SDK_KEY:
-      ROLE_ASSIGNMENT_IDAM_KEY:
-      ROLE_ASSIGNMENT_TOKEN_SECRET:
-      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data
-      IDAM_USER_URL: http://sidam-api:5000
-      IDAM_S2S_URL: http://service-auth-provider-api:8080
-      OPEN_ID_API_BASE_URI: http://sidam-api:5000/o
-      OIDC_ISSUER_URL: http://sidam-api:5000/openam/oauth2/hmcts
-      ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
-      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
-      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
-      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: Pa55word11
-      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
-      CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
-      AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
-      REFORM_SERVICE_NAME: am-role-assignment-service
-      REFORM_TEAM: am
-      REFORM_ENVIRONMENT: local
-      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
-      #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
-    ports:
-      - 4096:4096
-      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
-      # - 5005:5005
-    depends_on:
-      - shared-database
-      - ccd-data-store-api
 
   ccd-case-document-am-api:
     image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
@@ -698,6 +670,46 @@ services:
     depends_on:
       - ccd-data-store-api
       - dm-store
+      - service-auth-provider-api
+
+  am-role-assignment-service:
+    image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: "shared-database"
+      ROLE_ASSIGNMENT_DB_NAME: role_assignment
+      ROLE_ASSIGNMENT_DB_PORT: 5432
+      ROLE_ASSIGNMENT_DB_USERNAME: "${DB_USERNAME}"
+      ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
+      ROLE_ASSIGNMENT_DB_OPTIONS:
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
+      LD_SDK_KEY: "${LD_SDK_FE_KEY}"
+      ROLE_ASSIGNMENT_IDAM_KEY:
+      ROLE_ASSIGNMENT_TOKEN_SECRET:
+      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
+      IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
+      OIDC_ISSUER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/openam/oauth2/hmcts"
+      ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
+      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
+      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: "Pa55word11"
+      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
+      CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
+      AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
+      REFORM_SERVICE_NAME: am-role-assignment-service
+      REFORM_TEAM: am
+      REFORM_ENVIRONMENT: local
+      BYPASS_ORG_DROOL_RULE: "true"
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ports:
+      - 4096:4096
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # - 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - shared-database
       - service-auth-provider-api
 
 volumes:

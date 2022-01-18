@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +45,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.reform.ccd.document.am.model.Classification.PRIVATE;
 
@@ -57,9 +56,6 @@ public class PDFManagementServiceTest {
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
     private DocumentManagementService documentManagementServiceMock;
-    @Mock
-    private ObjectMapper objectMapperMock;
-
     @Mock
     private EvidenceManagementFileUpload evidenceManagementFileUpload;
     @Mock
@@ -72,11 +68,11 @@ public class PDFManagementServiceTest {
     @Mock
     private WillLodgementCallbackRequest willLodgementCallbackRequestMock;
     @Mock
-    private JsonProcessingException jsonProcessingException;
-    @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
     private PDFServiceConfiguration pdfServiceConfiguration;
+    @Mock
+    private PDFDecoratorService pdfDecoratorService;
     @Mock
     private CaseDetails caseDetails;
     @Mock
@@ -94,16 +90,19 @@ public class PDFManagementServiceTest {
 
     @Before
     public void setUp() {
-        when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
         when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");
         when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey123456789");
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
             .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
-        underTest = new PDFManagementService(pdfGeneratorServiceMock, documentManagementServiceMock,
-            objectMapperMock, httpServletRequest, pdfServiceConfiguration, fileSystemResourceServiceMock);
+        underTest = new PDFManagementService(pdfGeneratorServiceMock, httpServletRequest, documentManagementServiceMock,
+            pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
+    }
 
+    @Test
+    public void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
+        assertDocumentUploaded(SOLICITOR_COVERSHEET, "solicitorCoverSheet.pdf");
     }
 
     @Test
@@ -114,9 +113,9 @@ public class PDFManagementServiceTest {
     @Test
     public void shouldGenerateAndUploadProbateTrustCorpsLegalStatement() throws IOException {
         String json = "{}";
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE_TRUST_CORPS, json))
-                .thenReturn(evidenceManagementFileUpload);
+            .thenReturn(evidenceManagementFileUpload);
         when(documentManagementServiceMock.upload(any(), any())).thenReturn(uploadResponseMock);
         Links links = new Links();
         links.self = new Link();
@@ -203,7 +202,8 @@ public class PDFManagementServiceTest {
 
     @Test(expected = BadRequestException.class)
     public void shouldThrowExceptionForInvalidRequest() throws IOException {
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(jsonProcessingException);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
+            .thenThrow(BadRequestException.class);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
@@ -212,7 +212,7 @@ public class PDFManagementServiceTest {
     public void shouldThrowExceptionWhenUnableToGeneratePDF() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenThrow(new ConnectionException(""));
 
@@ -221,14 +221,6 @@ public class PDFManagementServiceTest {
 
     @Test(expected = ConnectionException.class)
     public void shouldThrowConnectExceptionResponseIsNull() throws IOException {
-        String json = "{}";
-
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-            .thenReturn(null);
-
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
 
@@ -236,7 +228,7 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionResponseDocumentsIsNull() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         when(uploadResponseMock.getDocuments()).thenReturn(null);
@@ -250,7 +242,7 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionResponseDocumentsIsEmpty() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         when(uploadResponseMock.getDocuments()).thenReturn(Collections.emptyList());
@@ -262,18 +254,6 @@ public class PDFManagementServiceTest {
 
     @Test(expected = ConnectionException.class)
     public void shouldThrowConnectExceptionResponseFirstDocumentLinksAreNUll() throws IOException {
-        String json = "{}";
-
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        uk.gov.hmcts.reform.ccd.document.am.model.Document document =
-            uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                .build();
-        when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
-        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-            .thenReturn(uploadResponseMock);
-
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
     }
 
@@ -281,7 +261,7 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionResponseFirstDocumentLinkBinaryIsNUll() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
         Links links = new Links();
@@ -301,9 +281,9 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionResponseFirstDocumentLinkSelfIsNUll() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         Links links = new Links();
         links.binary = new Link();
         uk.gov.hmcts.reform.ccd.document.am.model.Document document =
@@ -326,9 +306,9 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
@@ -339,9 +319,9 @@ public class PDFManagementServiceTest {
     public void shouldThrowConnectExceptionWhenSelfLinkNotPresent() throws IOException {
         String json = "{}";
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
+        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
         when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
             .thenReturn(uploadResponseMock);
 
@@ -369,7 +349,7 @@ public class PDFManagementServiceTest {
 
     private void assertDocumentUploaded(DocumentType docType, String fileName) throws IOException {
         String json = "{}";
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfDecoratorService.decorate(callbackRequestMock, docType)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(docType, json))
             .thenReturn(evidenceManagementFileUpload);
         when(documentManagementServiceMock.upload(evidenceManagementFileUpload, docType))
