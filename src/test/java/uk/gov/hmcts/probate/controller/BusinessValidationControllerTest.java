@@ -1049,6 +1049,49 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
+    public void shouldValidateIhtNetGreaterThanGrossProbateValue() throws Exception {
+
+        String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
+
+        caseCreatorJson = caseCreatorJson.replaceFirst("\"ihtNetValue\": \"200000\"",
+            "\"ihtNetValue\": \"400000\"");
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+            .thenReturn(null);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors[0]")
+                .value("Net probate value cannot be greater than the Gross probate value"));
+    }
+
+    @Test
+    public void shouldValidateIhtNetGreaterThanGrossIhtValue() throws Exception {
+
+        String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
+
+        caseCreatorJson = caseCreatorJson.replaceFirst("\"ihtGrossValue\": \"300000\"",
+            "\"ihtGrossValue\": \"300000\",\n\"ihtEstateNetValue\": \"300000\",\n"
+                + "\"ihtEstateGrossValue\": \"200000\"");
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+            .thenReturn(null);
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors[0]")
+                .value("Net IHT value cannot be greater than the Gross IHT value"));
+    }
+
+    @Test
     public void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
