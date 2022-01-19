@@ -50,6 +50,7 @@ import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -497,6 +498,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
@@ -518,6 +521,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
@@ -540,6 +545,8 @@ public class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
@@ -560,6 +567,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
@@ -580,6 +589,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
@@ -599,6 +610,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
