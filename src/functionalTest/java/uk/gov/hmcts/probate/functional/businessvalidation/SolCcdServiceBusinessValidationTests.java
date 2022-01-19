@@ -46,6 +46,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String SOLS_VALIDATE_IHT_ESTATE = "/case/validate-iht-estate";
     private static final String DEFAULT_SOLS_IHT_ESTATE = "/case/sols-default-iht-estate";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
@@ -725,7 +726,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstateValidate.json");
         json = json.replaceAll("<DOD-DATE>", "2022-01-01");
         json = json.replaceAll("<NET_QUALIFYING_VALUE>", "10000000");
-        validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+        validatePostSuccessForPayload(json, SOLS_VALIDATE_IHT_ESTATE,
             utils.getHeadersWithSolicitorUser());
     }
 
