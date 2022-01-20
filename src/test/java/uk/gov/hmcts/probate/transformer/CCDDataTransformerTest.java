@@ -383,7 +383,18 @@ public class CCDDataTransformerTest {
         assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
 
     }
+    
+    @Test
+    public void shouldConvertRequestToDataBeanForPA17Form() {
 
+        when(caseDataMock.getTitleAndClearingType()).thenReturn("TCTPartAllRenouncing");
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("TCTPartAllRenouncing", ccdData.getTitleAndClearingType());
+    }
+    
     @Test
     public void shouldConvertRequestToDataBeanForIhtEstate() {
 
