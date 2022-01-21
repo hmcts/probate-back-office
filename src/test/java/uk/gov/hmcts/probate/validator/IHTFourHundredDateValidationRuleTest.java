@@ -65,7 +65,7 @@ public class IHTFourHundredDateValidationRuleTest {
             assertEquals("message1", bve.getUserMessage());
             assertEquals("message2", bve.getAdditionalMessages()[0]);
             assertEquals("message3", bve.getAdditionalMessages()[1]);
-        };
+        }
     }
 
     @Test
