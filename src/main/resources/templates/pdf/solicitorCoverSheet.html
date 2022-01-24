@@ -110,9 +110,19 @@
                 {% endif %}
 
                 {% if case_extras != null %}
+                    {% if case_extras.showPa15Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa15FormUrl }}" target="_blank">{{ case_extras.pa15FormText }}</a>
+                    </li>
+                    {% endif %}
                     {% if case_extras.showPa16Form == "Yes" %}
                     <li>
                         <a href="{{ case_extras.pa16FormUrl }}" target="_blank">{{ case_extras.pa16FormText }}</a>
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showPa17Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
                     </li>
                     {% endif %}
                     {% if case_extras.showIhtEstate == "Yes" %}
@@ -120,11 +130,6 @@
                         {{ case_extras.ihtEstate207Text }}
                     </li>
                     {% endif %}
-                {% endif %}
-                {% if case_extras != null and case_extras.showPa17Form == "Yes" %}
-                <li>
-                    <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
-                </li>
                 {% endif %}
             </ul>
             <br /><br /><br />

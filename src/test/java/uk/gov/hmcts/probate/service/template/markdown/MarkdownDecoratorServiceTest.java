@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -16,7 +17,10 @@ public class MarkdownDecoratorServiceTest {
 
     @InjectMocks
     private MarkdownDecoratorService markdownDecoratorService;
-    
+
+    @Mock
+    private PA15FormBusinessRule pa15FormBusinessRule;
+
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRule;
 
@@ -29,6 +33,25 @@ public class MarkdownDecoratorServiceTest {
     @Before
     public void  setup() {
         initMocks(this);
+    }
+
+    @Test
+    public void shouldGetPA15FormLabel() {
+        when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
+        assertEquals("\n*   <a href=\"https://www.gov.uk/government/publications/form-pa15-give-up-probate-" 
+                + "executor-rights\" target=\"_blank\">Give up probate administrator rights paper form (PA15)" 
+                + "</a>",
+            md);
+    }
+
+    @Test
+    public void shouldNotGetPA15FormLabel() {
+        when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
+        assertEquals("", md);
     }
     
     @Test

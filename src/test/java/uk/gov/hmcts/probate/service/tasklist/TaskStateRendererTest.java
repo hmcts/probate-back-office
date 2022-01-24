@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
@@ -42,6 +43,8 @@ import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_
 public class TaskStateRendererTest {
     @InjectMocks
     private TaskStateRenderer taskStateRenderer;
+    @Mock
+    private PA15FormBusinessRule pa15FormBusinessRule;
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRule;
     @Mock
@@ -456,7 +459,48 @@ public class TaskStateRendererTest {
 
         assertEquals(expectedHtml, result);
     }
-    
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA15Form() {
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
+
+        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorName()).thenReturn("Executor Two");
+        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorReason()).thenReturn("Renunciation");
+
+        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorName()).thenReturn("Executor Three");
+        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorReason()).thenReturn(
+            ExecutorNotApplyingReason.DIED_BEFORE.toString());
+
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .ihtFormId(IHT_FORM_207)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTPartAllRenouncing")
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA15Form");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(pa15FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
     @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWillHasCodicils() {
         final CaseData caseData = CaseData.builder()

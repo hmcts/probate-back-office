@@ -43,4 +43,7 @@ public class CCDData implements Serializable {
     private final String solsApplicantSiblings;
     private final String solsSpouseOrCivilRenouncing;
     private final String titleAndClearingType;
+    private final String primaryApplicantIsApplying;
+    private final String solsPrimaryExecutorNotApplyingReason;
+    private final String otherExecutorExists;
 }

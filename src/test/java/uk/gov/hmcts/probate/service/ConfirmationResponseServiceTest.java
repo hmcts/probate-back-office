@@ -631,12 +631,30 @@ public class ConfirmationResponseServiceTest {
             .thenReturn(willBodyTemplateResponseMock);
 
         when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
-        
+
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("PA16Form text",
             nextStepsValues.get("{{pa16form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA15Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA15FormLabel(any(CaseData.class))).thenReturn("PA15Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15Form text",
+            nextStepsValues.get("{{pa15form}}"));
 
     }
 

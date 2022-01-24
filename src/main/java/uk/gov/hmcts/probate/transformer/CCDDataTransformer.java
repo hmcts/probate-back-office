@@ -64,6 +64,9 @@ public class CCDDataTransformer {
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .titleAndClearingType(caseData.getTitleAndClearingType())
+            .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
+            .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
+            .otherExecutorExists(caseData.getOtherExecutorExists())
             .build();
     }
 

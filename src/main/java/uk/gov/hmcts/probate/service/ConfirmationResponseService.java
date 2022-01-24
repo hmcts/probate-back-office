@@ -22,6 +22,8 @@ import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -34,6 +36,7 @@ import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionServic
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -276,6 +280,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
+        keyValue.put("{{pa15form}}", getPA15FormLabel(ccdData));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
 
@@ -314,6 +319,35 @@ public class ConfirmationResponseService {
         return ihtText;
     }
 
+    private String getPA15FormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .solsSolicitorIsExec(ccdData.getSolsSolicitorIsExec())
+            .solsSolicitorIsApplying(ccdData.getSolsSolicitorIsApplying())
+            .solsSolicitorNotApplyingReason(ccdData.getSolsSolicitorNotApplyingReason())
+            .primaryApplicantIsApplying(ccdData.getPrimaryApplicantIsApplying())
+            .solsPrimaryExecutorNotApplyingReason(ccdData.getSolsPrimaryExecutorNotApplyingReason())
+            .otherExecutorExists(ccdData.getOtherExecutorExists())
+            .solsAdditionalExecutorList(getSolsAdditionalExecutors(ccdData.getExecutors()))
+            .build();
+        return markdownDecoratorService.getPA15FormLabel(caseData);
+    }
+
+    private List<CollectionMember<AdditionalExecutor>>  getSolsAdditionalExecutors(List<Executor> executors) {
+        List<CollectionMember<AdditionalExecutor>> execs = new ArrayList<>();
+        for (Executor executor : executors) {
+            AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
+                .additionalApplying(executor.isApplying() ? YES : NO)
+                .additionalExecAddress(executor.getAddress())
+                .additionalExecForenames(executor.getForename())
+                .additionalExecLastname(executor.getLastname())
+                .additionalExecReasonNotApplying(executor.getReasonNotApplying())
+                .build();
+            execs.add(new CollectionMember(additionalExecutor));
+        }
+        
+        return execs;
+    }
+
     private String getPA16FormLabel(CCDData ccdData) {
         CaseData caseData = CaseData.builder()
             .solsApplicantRelationshipToDeceased(ccdData.getSolsApplicantRelationshipToDeceased())
@@ -322,7 +356,7 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
-    
+
     private String getPA17FormLabel(CCDData ccdData) {
         CaseData caseData = CaseData.builder()
             .titleAndClearingType(ccdData.getTitleAndClearingType())
