@@ -111,10 +111,6 @@ public class IHTValidationRuleTest {
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
-            .thenReturn(businessValidationError);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_ESTATE_NET_GREATER_THAN_GROSS))
-            .thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
