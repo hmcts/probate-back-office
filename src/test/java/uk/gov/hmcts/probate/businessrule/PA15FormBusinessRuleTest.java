@@ -93,4 +93,20 @@ public class PA15FormBusinessRuleTest {
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
+    @Test
+    public void shouldNotBeApplicableForNotApplyingExecPowerReservedNoOtherExecs() {
+        List<CollectionMember<AdditionalExecutor>> execs = new ArrayList();
+        CollectionMember<AdditionalExecutor> exec1 =
+            new CollectionMember(AdditionalExecutor.builder().additionalApplying(YES).build());
+        CollectionMember<AdditionalExecutor> exec2 =
+            new CollectionMember(AdditionalExecutor.builder().additionalApplying(NO)
+                .additionalExecReasonNotApplying("PowerReserved")
+                .build());
+        execs.add(exec1);
+        execs.add(exec2);
+        when(mockCaseData.getSolsAdditionalExecutorList()).thenReturn(execs);
+        assertFalse(underTest.isApplicable(mockCaseData));
+    }
+
+
 }

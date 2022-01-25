@@ -32,7 +32,7 @@ public class PA15FormBusinessRule implements BusinessRule {
         }
         
         boolean otherExecs = YES.equals(caseData.getOtherExecutorExists());
-        if (otherExecs) {
+        if (otherExecs && caseData.getSolsAdditionalExecutorList() != null) {
             for (CollectionMember<AdditionalExecutor> cm : caseData.getSolsAdditionalExecutorList()) {
                 boolean notApplying = NO.equals(cm.getValue().getAdditionalApplying());
                 if (notApplying) {

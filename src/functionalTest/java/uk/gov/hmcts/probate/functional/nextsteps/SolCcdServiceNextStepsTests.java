@@ -57,11 +57,17 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)").getBody().asString();
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
-    
+
     @Test
     public void shouldIncludePA17Link() {
         final String response = transformCase("solicitorValidateProbateExecutorsPA17.json", VALIDATE_URL);
         assertTrue(response.contains("(PA17)"));
+    }
+
+    @Test
+    public void shouldIncludePA15Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA15.json", VALIDATE_URL);
+        assertTrue(response.contains("(PA15)"));
     }
 
     @Test

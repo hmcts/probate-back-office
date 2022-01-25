@@ -42,6 +42,7 @@ import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
@@ -167,6 +168,7 @@ public class TaskStateRenderer {
                 .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
                 .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
                 .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
+                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
@@ -267,7 +269,7 @@ public class TaskStateRenderer {
         if (pa15FormBusinessRule.isApplicable(data)) {
             pa15Form = "<li><a href=\"" + PA15_FORM_URL + "\" target=\"_blank\">" + PA15_FORM_TEXT + "</a></li>";
         }
-        keyValue.put("pa16Form", pa15Form);
+        keyValue.put("pa15Form", pa15Form);
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
             pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
