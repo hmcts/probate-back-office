@@ -36,7 +36,7 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -99,7 +99,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<ValidationRule> validationRules;
     @Mock
-    private List<CaseworkerAmendValidationRule> caseworkerAmendValidationRules;
+    private List<CaseworkerAmendAndCreateValidationRule> caseworkerAmendAndCreateValidationRules;
     @Mock
     private List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     @Mock
@@ -155,7 +155,7 @@ public class BusinessValidationUnitTest {
             notificationService,
             objectMapper,
             validationRules,
-            caseworkerAmendValidationRules,
+            caseworkerAmendAndCreateValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
             cdt,
@@ -382,7 +382,7 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
 
@@ -416,7 +416,7 @@ public class BusinessValidationUnitTest {
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors())
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
