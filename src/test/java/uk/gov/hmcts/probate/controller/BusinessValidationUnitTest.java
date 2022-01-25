@@ -382,7 +382,7 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
 
@@ -416,7 +416,7 @@ public class BusinessValidationUnitTest {
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors())
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
