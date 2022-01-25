@@ -17,7 +17,8 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class DobDodValidationRule implements SolicitorCreateValidationRule, CaseworkerAmendValidationRule {
+class DobDodValidationRule implements SolicitorCreateValidationRule,
+    CaseworkerAmendAndCreateValidationRule {
 
     public static final String CODE_DOD_BEFORE_DOB = "dodIsBeforeDob";
     public static final String CODE_DOD_ON_DOB = "dodIsSameAsDob";

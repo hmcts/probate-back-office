@@ -36,7 +36,7 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -99,7 +99,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<ValidationRule> validationRules;
     @Mock
-    private List<CaseworkerAmendValidationRule> caseworkerAmendValidationRules;
+    private List<CaseworkerAmendAndCreateValidationRule> caseworkerAmendAndCreateValidationRules;
     @Mock
     private List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     @Mock
@@ -155,7 +155,7 @@ public class BusinessValidationUnitTest {
             notificationService,
             objectMapper,
             validationRules,
-            caseworkerAmendValidationRules,
+            caseworkerAmendAndCreateValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
             cdt,
