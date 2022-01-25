@@ -103,7 +103,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/sols-default-iht-estate")
+    @PostMapping(path = "/default-iht-estate")
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(request));
     }
