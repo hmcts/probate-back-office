@@ -40,17 +40,17 @@ public class CCDDataTransformer {
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
-            .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
-            .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
-            .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-            .solsSolicitorNotApplyingReason(
-                callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
+            .solsWillType(caseData.getSolsWillType())
+            .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
+            .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
+            .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solicitor(buildSolicitorDetails(caseData))
             .deceased(buildDeceasedDetails(caseData))
             .iht(buildInheritanceTaxDetails(caseData))
             .fee(buildFeeDetails(caseData))
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .executors(getAllExecutors(caseData))
+            .executorsNotApplying(getAllExecutorsNotApplying(caseData))
             .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
@@ -155,6 +155,22 @@ public class CCDDataTransformer {
         return addedDates;
     }
 
+    private List<Executor> getAllExecutorsNotApplying(CaseData caseData) {
+        List<Executor> executors = new ArrayList<>();
+        if (caseData.getAdditionalExecutorsNotApplying() != null) {
+            executors.addAll(caseData.getAdditionalExecutorsNotApplying().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> Executor.builder()
+                    .applying(false)
+                    .address(null)
+                    .reasonNotApplying(executor.getNotApplyingExecutorReason())
+                    .forename(executor.getNotApplyingExecutorName())
+                    .build())
+                .collect(Collectors.toList()));
+        }
+        return executors;
+    }
+    
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {

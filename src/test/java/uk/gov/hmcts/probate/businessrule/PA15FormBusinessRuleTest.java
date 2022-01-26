@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -108,5 +109,38 @@ public class PA15FormBusinessRuleTest {
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
+    @Test
+    public void shouldBeApplicableForNotApplyingExecsRenounced() {
+        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList();
+        CollectionMember<AdditionalExecutorNotApplying> exec1 =
+            new CollectionMember(AdditionalExecutorNotApplying.builder().build());
+        CollectionMember<AdditionalExecutorNotApplying> exec2 =
+            new CollectionMember(AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorReason("Renunciation")
+                .build());
+        execs.add(exec1);
+        execs.add(exec2);
+        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(execs);
+        assertTrue(underTest.isApplicable(mockCaseData));
+    }
 
+    @Test
+    public void shouldNotBeApplicableForNotApplyingExecsRenounced() {
+        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
+        List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList();
+        CollectionMember<AdditionalExecutorNotApplying> exec1 =
+            new CollectionMember(AdditionalExecutorNotApplying.builder().build());
+        execs.add(exec1);
+        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(execs);
+        assertFalse(underTest.isApplicable(mockCaseData));
+    }
+
+    @Test
+    public void shouldNotBeApplicableForNotApplyingExecsNull() {
+        when(mockCaseData.getOtherExecutorExists()).thenReturn(YES);
+        when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(null);
+        assertFalse(underTest.isApplicable(mockCaseData));
+    }
+    
 }

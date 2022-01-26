@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -165,6 +166,18 @@ public class CCDDataTransformerTest {
         additionalExecutorsPartner.add(additionalExecutorsPartner1);
         additionalExecutorsPartner.add(additionalExecutorsPartner2);
         when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(additionalExecutorsPartner);
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying = 
+            new ArrayList<>();
+        AdditionalExecutorNotApplying addNot1 = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorReason("Renunciation")
+            .build();
+        AdditionalExecutorNotApplying addNot2 = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorReason("Renunciation")
+            .build();
+        additionalExecutorsNotApplying.add(new CollectionMember<>(addNot1));
+        additionalExecutorsNotApplying.add(new CollectionMember<>(addNot2));
+        when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(additionalExecutorsNotApplying);
     }
 
     @Test
@@ -436,7 +449,8 @@ public class CCDDataTransformerTest {
         assertEquals(true, ccdData.getExecutors().get(0).isApplying());
         assertEquals(false, ccdData.getExecutors().get(1).isApplying());
         assertEquals("Renunciation", ccdData.getExecutors().get(1).getReasonNotApplying());
-        
+
+        assertEquals("Renunciation", ccdData.getExecutorsNotApplying().get(1).getReasonNotApplying());
         
     }
 

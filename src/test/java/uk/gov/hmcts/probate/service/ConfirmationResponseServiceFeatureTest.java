@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -39,8 +40,8 @@ import static org.junit.Assert.assertThat;
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
 public class ConfirmationResponseServiceFeatureTest {
 
-    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
+    private static final String REASON_RENOUNCED = "Renunciation";
+    private static final String REASON_DIED_BEFORE = "DiedBefore";
     private static final String SOLICITOR_REFERENCE = "SOL_REF_X12345";
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
@@ -219,6 +220,47 @@ public class ConfirmationResponseServiceFeatureTest {
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
 
+    @Test
+    public void shouldGenerateCorrectPA15FormConfirmationBody() throws Exception {
+        List<Executor> notApplying = new ArrayList<>();
+        Executor notApplying1 = Executor.builder().applying(false).reasonNotApplying(REASON_RENOUNCED).build();
+        Executor notApplying2 = Executor.builder().applying(false).reasonNotApplying(REASON_DIED_BEFORE).build();
+        notApplying.add(notApplying1);
+        notApplying.add(notApplying2);
+
+        CCDData ccdData = createCCDataBuilder().otherExecutorExists("Yes")
+            .executorsNotApplying(notApplying)
+            .build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA15Form.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectPA16FormConfirmationBody() throws Exception {
+        CCDData ccdData = createCCDataBuilder().solsApplicantRelationshipToDeceased("ChildAdopted")
+            .solsApplicantSiblings("No")
+            .solsSpouseOrCivilRenouncing("Yes")
+            .build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA16Form.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectPA17FormConfirmationBody() throws Exception {
+        CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTPartOthersRenouncing").build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA17Form.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
     private CCDData.CCDDataBuilder createCCDataBuilder() {
         return CCDData.builder()
             .solicitorReference(SOLICITOR_REFERENCE)
@@ -291,7 +333,7 @@ public class ConfirmationResponseServiceFeatureTest {
         return Executor.builder()
             .forename(forename)
             .lastname(lastname)
-            .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
+            .reasonNotApplying(REASON_DIED_BEFORE)
             .build();
     }
 
@@ -300,7 +342,7 @@ public class ConfirmationResponseServiceFeatureTest {
         return Executor.builder()
             .forename(forename)
             .lastname(lastname)
-            .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
+            .reasonNotApplying(REASON_RENOUNCED)
             .build();
     }
 

@@ -22,7 +22,7 @@ import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -48,7 +48,6 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -327,22 +326,21 @@ public class ConfirmationResponseService {
             .primaryApplicantIsApplying(ccdData.getPrimaryApplicantIsApplying())
             .solsPrimaryExecutorNotApplyingReason(ccdData.getSolsPrimaryExecutorNotApplyingReason())
             .otherExecutorExists(ccdData.getOtherExecutorExists())
-            .solsAdditionalExecutorList(getSolsAdditionalExecutors(ccdData.getExecutors()))
+            .additionalExecutorsNotApplying(buildAddExecsNotApplying(ccdData.getExecutorsNotApplying()))
             .build();
         return markdownDecoratorService.getPA15FormLabel(caseData);
     }
 
-    private List<CollectionMember<AdditionalExecutor>>  getSolsAdditionalExecutors(List<Executor> executors) {
-        List<CollectionMember<AdditionalExecutor>> execs = new ArrayList<>();
-        for (Executor executor : executors) {
-            AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
-                .additionalApplying(executor.isApplying() ? YES : NO)
-                .additionalExecAddress(executor.getAddress())
-                .additionalExecForenames(executor.getForename())
-                .additionalExecLastname(executor.getLastname())
-                .additionalExecReasonNotApplying(executor.getReasonNotApplying())
-                .build();
-            execs.add(new CollectionMember(additionalExecutor));
+    private List<CollectionMember<AdditionalExecutorNotApplying>> buildAddExecsNotApplying(List<Executor> executors) {
+        List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList<>();
+        if (executors != null) {
+            for (Executor executor : executors) {
+                AdditionalExecutorNotApplying additionalExecutor = AdditionalExecutorNotApplying.builder()
+                    .notApplyingExecutorName(executor.getForename())
+                    .notApplyingExecutorReason(executor.getReasonNotApplying())
+                    .build();
+                execs.add(new CollectionMember(additionalExecutor));
+            }
         }
         
         return execs;

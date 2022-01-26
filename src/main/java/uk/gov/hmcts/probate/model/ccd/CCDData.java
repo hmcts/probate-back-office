@@ -46,4 +46,6 @@ public class CCDData implements Serializable {
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
+    private final List<Executor> executorsNotApplying;
+
 }
