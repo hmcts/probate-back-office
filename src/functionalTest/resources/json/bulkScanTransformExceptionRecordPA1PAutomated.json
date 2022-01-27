@@ -26,7 +26,7 @@
   "ocr_data_fields": [
     { "name": "extraCopiesOfGrant", "value": "5" },
     { "name": "outsideUKGrantCopies", "value": "0" },
-    { "name": "applicationFeePaperForm", "value": "215.00" },
+    { "name": "applicationFeePaperForm", "value": "273.00" },
     { "name": "feeForCopiesPaperForm", "value": "2.50" },
     { "name": "totalFeePaperForm", "value": "217.50" },
     { "name": "paperPaymentMethod", "value": "cheque" },
