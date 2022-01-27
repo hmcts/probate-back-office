@@ -56,8 +56,10 @@ import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
@@ -99,6 +101,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -169,8 +172,15 @@ public class CallbackResponseTransformerTest {
     private static final String GRANT_DELAYED_NOTIFICATION_SENT = YES;
     private static final String NUM_CODICILS = "9";
     private static final String IHT_FORM_ID = "IHT205";
+    private static final String IHT_FORM_ESTATE = "IHT400421";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
+    private static final BigDecimal IHT_ESTATE_GROSS = BigDecimal.valueOf(10000f);
+    private static final String IHT_ESTATE_GROSS_FIELD = "10000";
+    private static final BigDecimal IHT_ESTATE_NET = BigDecimal.valueOf(9000f);
+    private static final String IHT_ESTATE_NET_FIELD = "9000";
+    private static final BigDecimal IHT_ESTATE_NET_QUALIFYING = BigDecimal.valueOf(9000f);
+    private static final String IHT_ESTATE_NET_QUALIFYING_FIELD = "9000";
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
     private static final String FEE_ACCT_NUMBER = "1234";
@@ -370,6 +380,14 @@ public class CallbackResponseTransformerTest {
         .additionalApplying(NO)
         .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
         .build();
+    public static final String DAMAGE_TYPE_1 = "Type1";
+    public static final String DAMAGE_TYPE_2 = "Type2";
+    public static final String DAMAGE_TYPE_OTHER = "Other";
+    public static final String DAMAGE_DESC = "Damage Desc";
+    public static final String DAMAGE_REASON_DESC = "Damage reason";
+    public static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
+    public static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
+    public static final String DAMAGE_DATE = "9/2021";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -446,6 +464,10 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDataTransformer caseDataTransformerMock;
+    @Mock
+    private IhtEstateDefaulter ihtEstateDefaulter;
+    @Mock
+    private Iht400421Defaulter iht400421Defaulter;
 
     @Before
     public void setup() {
@@ -472,6 +494,16 @@ public class CallbackResponseTransformerTest {
             .ihtFormId(IHT_FORM_ID)
             .ihtGrossValue(IHT_GROSS)
             .ihtNetValue(IHT_NET)
+            .ihtFormEstateValuesCompleted(YES)
+            .ihtFormEstate(IHT_FORM_ESTATE)
+            .ihtEstateGrossValue(IHT_ESTATE_GROSS)
+            .ihtEstateGrossValueField(IHT_ESTATE_GROSS_FIELD)
+            .ihtEstateNetValue(IHT_ESTATE_NET)
+            .ihtEstateNetValueField(IHT_ESTATE_NET_FIELD)
+            .ihtEstateNetQualifyingValue(IHT_ESTATE_NET_QUALIFYING)
+            .ihtEstateNetQualifyingValueField(IHT_ESTATE_NET_QUALIFYING_FIELD)
+            .deceasedHadLateSpouseOrCivilPartner(YES)
+            .ihtUnusedAllowanceClaimed(YES)
             .primaryApplicantForenames(APPLICANT_FORENAME)
             .primaryApplicantSurname(APPLICANT_SURNAME)
             .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
@@ -564,7 +596,38 @@ public class CallbackResponseTransformerTest {
             .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
             .pcqId(APP_REF)
             .deceasedDiedEngOrWales(DECEASED_DIED_ENG_OR_WALES)
-            .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
+            .deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE)
+            .willHasVisibleDamage(YES)
+            .willDamage(Damage.builder()
+                .damageTypesList(Arrays.asList(
+                    DAMAGE_TYPE_1, DAMAGE_TYPE_2, DAMAGE_TYPE_OTHER))
+                .otherDamageDescription(DAMAGE_DESC)
+                .build())
+            .willDamageReasonKnown(YES)
+            .willDamageReasonDescription(DAMAGE_REASON_DESC)
+            .willDamageCulpritKnown(YES)
+            .willDamageCulpritName(CombinedName.builder()
+                .firstName(DAMAGE_CULPRIT_FN)
+                .lastName(DAMAGE_CULPRIT_LN)
+                .build())
+            .willDamageDateKnown(YES)
+            .willDamageDate(DAMAGE_DATE)
+            .codicilsHasVisibleDamage(YES)
+            .codicilsDamage(Damage.builder()
+                .damageTypesList(Arrays.asList(DAMAGE_TYPE_1, DAMAGE_TYPE_2, DAMAGE_TYPE_OTHER))
+                .otherDamageDescription(DAMAGE_DESC)
+                .build())
+            .codicilsDamageReasonKnown(YES)
+            .codicilsDamageReasonDescription(DAMAGE_REASON_DESC)
+            .codicilsDamageCulpritKnown(YES)
+            .codicilsDamageCulpritName(CombinedName.builder()
+                .firstName(DAMAGE_CULPRIT_FN)
+                .lastName(DAMAGE_CULPRIT_LN)
+                .build())
+            .codicilsDamageDateKnown(YES)
+            .codicilsDamageDate(DAMAGE_DATE)
+            .deceasedWrittenWishes(YES)
+        ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -1177,6 +1240,22 @@ public class CallbackResponseTransformerTest {
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetGrantIssuedDateForEdgeCase() {
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(EDGE_CASE)
+            .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String grantIssuedDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(document), null, null);
+        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
     @Test
@@ -2516,6 +2595,44 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplyingPrimaryApplicantNotApplying() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
+        AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
+            .applyingExecutorName("James smith").build();
+
+        additionalExecs.add(new CollectionMember<>(additionalExecutorApplyingSecond));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecs).build();
+
+        CaseData caseData = caseDataBuilder.primaryApplicantIsApplying(NO).build();
+
+        String professionalName = caseData.getSolsSOTName();
+
+        String executorNames = underTest.setExecutorNames(caseData, additionalExecs, professionalName);
+
+        assertEquals("The executor James Smith: ", executorNames);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextAdmonWill() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_ADMON).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
+    public void checkSolsReviewCheckBoxesTextIntestacy() {
+        CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
+        String professionalName = caseData.getSolsSOTName();
+        List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
+            solicitorExecutorTransformerMock.createCaseworkerApplyingList(caseDetailsMock.getData());
+        String applicantName = underTest.setExecutorNames(caseData, listOfApplyingExecs, professionalName);
+        assertEquals("The applicant applicant forename applicant surname: ", applicantName);
+    }
+
+    @Test
     public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
         caseDataBuilder.solsWillType("WillLeftAnnexed");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2837,6 +2954,18 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
+    @Test
+    public void shouldSetIhtEstateValues() {
+        underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        verify(ihtEstateDefaulter).defaultPageFlowIhtSwitchDate(any(), any());
+    }
+
+    @Test
+    public void shouldSetIht400421PageFlow() {
+        underTest.defaultIht400421DatePageFlow(callbackRequestMock);
+        verify(iht400421Defaulter).defaultPageFlowForIht400421(any(), any());
+    }
+    
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname,
                                                                         String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
@@ -2957,6 +3086,14 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
         Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        Assert.assertThat(new BigDecimal("10000"),
+            comparesEqualTo(callbackResponse.getData().getIhtEstateGrossValue()));
+        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
+        Assert.assertThat(new BigDecimal("9000"),
+            comparesEqualTo(callbackResponse.getData().getIhtEstateNetQualifyingValue()));
+        assertEquals("10000", callbackResponse.getData().getIhtEstateGrossValueField());
+        assertEquals("9000", callbackResponse.getData().getIhtEstateNetValueField());
+        assertEquals("9000", callbackResponse.getData().getIhtEstateNetQualifyingValueField());
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
@@ -3014,6 +3151,33 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
+        
+        assertEquals(YES, callbackResponse.getData().getWillHasVisibleDamage());
+        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getWillDamage().getDamageTypesList().get(0));
+        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getWillDamage().getDamageTypesList().get(1));
+        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getWillDamage().getDamageTypesList().get(2));
+        assertEquals(DAMAGE_DESC, callbackResponse.getData().getWillDamage().getOtherDamageDescription());
+        assertEquals(YES, callbackResponse.getData().getWillDamageReasonKnown());
+        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getWillDamageReasonDescription());
+        assertEquals(YES, callbackResponse.getData().getWillDamageCulpritKnown());
+        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getWillDamageCulpritName().getFirstName());
+        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getWillDamageCulpritName().getLastName());
+        assertEquals(YES, callbackResponse.getData().getWillDamageDateKnown());
+        assertEquals(DAMAGE_DATE, callbackResponse.getData().getWillDamageDate());
+
+        assertEquals(YES, callbackResponse.getData().getCodicilsHasVisibleDamage());
+        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(0));
+        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(1));
+        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(2));
+        assertEquals(DAMAGE_DESC, callbackResponse.getData().getCodicilsDamage().getOtherDamageDescription());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageReasonKnown());
+        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getCodicilsDamageReasonDescription());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageCulpritKnown());
+        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getCodicilsDamageCulpritName().getFirstName());
+        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getCodicilsDamageCulpritName().getLastName());
+        assertEquals(YES, callbackResponse.getData().getCodicilsDamageDateKnown());
+        assertEquals(DAMAGE_DATE, callbackResponse.getData().getCodicilsDamageDate());
+        assertEquals(YES, callbackResponse.getData().getDeceasedWrittenWishes());
     }
     
     private void assertCommonPayments(CallbackResponse callbackResponse) {

@@ -53,6 +53,12 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     }
 
     @Test
+    public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePartWithPA16Form() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04b-caseCreated.json", SOLS_VALIDATE_INTESTACY_URL,
+            "/deceased-dtls-entered-pa16-html.txt", getAddApplicationDetailsUrl());
+    }
+
+    @Test
     public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/04-caseCreated.json", CASE_PRINTED_URL,
             "/case-created-html.txt");

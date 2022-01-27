@@ -33,8 +33,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 
 public class CCDDataTransformerTest {
 
@@ -363,6 +366,46 @@ public class CCDDataTransformerTest {
 
         assertAll(ccdData);
         assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForPA16Form() {
+
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
+        when(caseDataMock.getSolsApplicantSiblings()).thenReturn(NO);
+        when(caseDataMock.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("ChildAdopted", ccdData.getSolsApplicantRelationshipToDeceased());
+        assertEquals("No", ccdData.getSolsApplicantSiblings());
+        assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
+
+    }
+    
+    @Test
+    public void shouldConvertRequestToDataBeanForPA17Form() {
+
+        when(caseDataMock.getTitleAndClearingType()).thenReturn("TCTPartAllRenouncing");
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("TCTPartAllRenouncing", ccdData.getTitleAndClearingType());
+    }
+    
+    @Test
+    public void shouldConvertRequestToDataBeanForIhtEstate() {
+
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals("Yes", ccdData.getIht().getIhtFormEstateValuesCompleted());
+        assertEquals("IHT207", ccdData.getIht().getIhtFormEstate());
     }
 
     private void assertAll(CCDData ccdData) {

@@ -89,13 +89,15 @@
                     <li>the original will</li>
                     {% endif %}
                 {% endif %}
-                {% if case_details.case_data.ihtFormId != "IHT400421" %}
-                    <li>
-                        the inheritance tax form
-                        {% if case_details.case_data.iht217 == "Yes" %}IHT205 and IHT217
-                        {% else %}{{ case_details.case_data.ihtFormId }}
-                        {% endif %}
-                    </li>
+                {% if case_details.case_data.ihtFormId != null %}
+                    {% if case_details.case_data.ihtFormId != "IHT400421" %}
+                        <li>
+                            the inheritance tax form
+                            {% if case_details.case_data.iht217 == "Yes" %}IHT205 and IHT217
+                            {% else %}{{ case_details.case_data.ihtFormId }}
+                            {% endif %}
+                        </li>
+                    {% endif %}
                 {% endif %}
                 {% if case_details.case_data.executorsNotApplyingLegalStatement != null %}
                     {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
@@ -105,6 +107,24 @@
                         </li>
                         {% endif %}
                     {% endfor %}
+                {% endif %}
+
+                {% if case_extras != null %}
+                    {% if case_extras.showPa16Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa16FormUrl }}" target="_blank">{{ case_extras.pa16FormText }}</a>
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showIhtEstate == "Yes" %}
+                    <li>
+                        {{ case_extras.ihtEstate207Text }}
+                    </li>
+                    {% endif %}
+                {% endif %}
+                {% if case_extras != null and case_extras.showPa17Form == "Yes" %}
+                <li>
+                    <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                </li>
                 {% endif %}
             </ul>
             <br /><br /><br />

@@ -12,8 +12,8 @@ const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/case
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 
-Feature('Solicitor - Apply Grant of probate').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Solicitor - Apply Grant of probate (Will left annexed) - Stopped';
+Feature('Solicitor - Apply Grant of probate Admon Will').retry(testConfig.TestRetryFeatures);
+const scenarioName = 'Solicitor - Apply Grant of probate Admon Will (Will left annexed) - Stopped';
 Scenario(scenarioName, async function ({I}) {
     const isSolicitorExecutor = true;
     const isSolicitorMainApplicant = true;
