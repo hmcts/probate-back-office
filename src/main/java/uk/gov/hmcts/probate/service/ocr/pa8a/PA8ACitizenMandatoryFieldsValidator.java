@@ -26,4 +26,5 @@ public class PA8ACitizenMandatoryFieldsValidator {
             }
         });
     }
+
 }

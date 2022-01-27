@@ -22,11 +22,11 @@ import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_U
 @RequiredArgsConstructor
 public class CitizenMandatoryFieldsValidatorV2 {
     public static final DefaultKeyValue IHT_207_COMPLETED = new DefaultKeyValue("iht207completed",
-        "Did you complete an IHT207 form?");
+            "Did you complete an IHT207 form?");
     public static final DefaultKeyValue IHT_205_COMPLETED_ONLINE = new DefaultKeyValue("iht205completedOnline",
-        "Did you complete the IHT205 online with HMRC?");
+            "Did you complete the IHT205 online with HMRC?");
     public static final DefaultKeyValue DIED_AFTER_SWITCH_DATE = new DefaultKeyValue("deceasedDiedOnAfterSwitchDate",
-        "Did the deceased die on or after 1 January 2022?");
+            "Did the deceased die on or after 1 January 2022?");
 
 
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
@@ -36,24 +36,24 @@ public class CitizenMandatoryFieldsValidatorV2 {
 
         if (!iht400421completed) {
             mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_207_COMPLETED);
-        }
+            boolean iht207completed = toBoolean(ocrFieldValues.get(IHT_207_COMPLETED.getKey()));
+            if (!iht207completed) {
+                mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, DIED_AFTER_SWITCH_DATE);
+                boolean deceasedDiedOnAfterSwitchDate = toBoolean(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()));
+                if (deceasedDiedOnAfterSwitchDate) {
+                    mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                            IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE, 
+                            DECEASED_LATE_SPOUSE);
+                } else {
+                    mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_205_COMPLETED_ONLINE);
+                }
 
-        boolean iht207completed = toBoolean(ocrFieldValues.get(IHT_207_COMPLETED.getKey()));
-        if (!iht207completed) {
-            mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, DIED_AFTER_SWITCH_DATE);
-        }
-
-        boolean deceasedDiedOnAfterSwitchDate = toBoolean(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()));
-        if (deceasedDiedOnAfterSwitchDate) {
-            mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings, IHT_ESTATE_GROSS,
-                IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE, DECEASED_LATE_SPOUSE);
-        } else {
-            mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_205_COMPLETED_ONLINE);
-        }
-
-        boolean iht205completedOnline = toBoolean(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()));
-        if (iht205completedOnline) {
-            mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings, IHT_IDENTIFIER);
+                boolean iht205completedOnline = toBoolean(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()));
+                if (iht205completedOnline) {
+                    mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings, 
+                            IHT_IDENTIFIER);
+                }
+            }
         }
     }
 }
