@@ -112,16 +112,31 @@ Bring up the environment:
 # build the jar
 ./gradlew assemble
 
+# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+XUI_LD_ID
+LD_SDK_BO_KEY
+LD_BO_USER_KEY
+LD_SDK_FE_KEY
+LD_FE_USER_KEY
+
 # first time only
 npx @hmcts/probate-dev-env --create
 
 # spin up the docker containers
 npx @hmcts/probate-dev-env
 
-# use local probate backoffice
+# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+
+# to use local probate backoffice
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
+
+# to clear out all images
+npx @hmcts/probate-dev-env --destroy
+docker container rm $(docker container ls -a -q)
+docker image rm $(docker image ls -a -q)
+docker volume rm $(docker volume ls -q)
 
 ```
 
@@ -248,7 +263,7 @@ For mac
 ```
 For Windows 10
 ```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh docker.for.win.localhost:4104
+   ./ccdImports/conversionScripts/createAllXLS.sh host.docker.internal:4104
 ```
 
 For linux (replace ip with your own ip)
@@ -516,17 +531,15 @@ Here are some other functionalities it provides:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
 # e2e Testing
-To run Probate Practitioner  tests on ExUI locally do the following:
+To run Probate Practitioner tests on ExUI locally do the following:
     1. Update the config.js file
         TestBackOfficeUrl -  http://localhost:3455
-        TestEnvProfUser - ProbateSolicitorXui1@gmail.com
-        TestEnvProfPassword - Pa55word11
-        TestForXUI: true
+        TestEnvProfUser - probatesolicitortestorgtest1@gmail.com
+        TestEnvProfPassword - Probate123
 
-To run Caseworker  tests on CCD locally do the following:
+To run Caseworker tests on XUI locally do the following:
     1. Update the config.js file
-        TestBackOfficeUrl -  http://localhost:3451
+        TestBackOfficeUrl -  http://localhost:3455
         TestEnvUser - ProbateSolCW1@gmail.com
         TestEnvPassword - Pa55word11
-        TestForXUI: true
     

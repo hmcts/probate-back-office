@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1542274092932452,
+    "id": 1542274092933333,
     "jurisdiction": "PROBATE",
     "case_type_id": "Caveat",
     "state": "SolAppUpdated",
@@ -49,96 +49,24 @@
         "Country": ""
       },
       "solsPaymentMethods": "fee account",
-      "solsFeeAccountNumber": "12345"
-    },
-    "data_classification": {
-      "applicationType": "Solicitor",
-      "registryLocation": "Leeds",
-      "solsSolicitorFirmName": "Alex & Co",
-      "caveatorEmailAddress": "caveator@probate-test.com",
-      "solsSolicitorPhoneNumber": "101010101010",
-      "caveatorAddress": {
-        "classification": "PUBLIC",
+      "solsFeeAccountNumber": "12345",    
+      "solsPBANumber": {
         "value": {
-          "AddressLine1": "AddressLine1",
-          "AddressLine2": "",
-          "AddressLine3": "",
-          "County": "",
-          "PostTown": "",
-          "PostCode": "",
-          "Country": ""
-        }
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
       },
-      "solsSolicitorAppReference": "solsSolicitorAppReference",
-      "caveatorForenames": "caveatorForenames",
-      "caveatorSurname": "caveatorSurname",
-      "deceasedForenames": "deceasedForenames",
-      "deceasedSurname": "deceasedSurname",
-      "deceasedDateOfDeath": "2020-01-01",
-      "deceasedDateOfBirth": "1900-01-01",
-      "deceasedAnyOtherNames": "",
-      "deceasedFullAliasNameList": "",
-      "deceasedAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "AddressLine1",
-          "AddressLine2": "",
-          "AddressLine3": "",
-          "County": "",
-          "PostTown": "",
-          "PostCode": "",
-          "Country": ""
-        }
-      },
-      "solsPaymentMethods": "",
-      "solsFeeAccountNumber": ""
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "delete_draft_response_status_code": null,
-    "delete_draft_response_status": null,
-    "security_classifications": {
-      "applicationType": "Solicitor",
-      "registryLocation": "Leeds",
-      "solsSolicitorFirmName": "Alex & Co",
-      "caveatorEmailAddress": "caveator@probate-test.com",
-      "solsSolicitorPhoneNumber": "011-9991919191",
-      "caveatorAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "Ad 1",
-          "AddressLine2": "",
-          "AddressLine3": "",
-          "County": "",
-          "PostTown": "",
-          "PostCode": "",
-          "Country": ""
-        }
-      },
-      "solsSolicitorAppReference": "Ref123",
-      "caveatorForenames": "caveatorForenames",
-      "caveatorSurname": "caveatorSurname",
-      "deceasedForenames": "deceasedForenames",
-      "deceasedSurname": "deceasedSurname",
-      "deceasedDateOfDeath": "2020-01-01",
-      "deceasedDateOfBirth": "1900-01-01",
-      "deceasedAnyOtherNames": "",
-      "deceasedFullAliasNameList": "",
-      "deceasedAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "AddressLine1",
-          "AddressLine2": "",
-          "AddressLine3": "",
-          "County": "",
-          "PostTown": "",
-          "PostCode": "",
-          "Country": ""
-        }
-      },
-      "solsPaymentMethods": "",
-      "solsFeeAccountNumber": ""
+      "solsPBAPaymentReference": "appref-PAY1"
     }
   }
 }

@@ -4,7 +4,16 @@
     "jurisdiction": "PROBATE",
     "state": "SolDraftCase",
     "case_type_id": "GrantOfRepresentation",
-    "last_modified": null,
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
     "security_classification": "PUBLIC",
     "case_data": {
       "deceasedDateOfDeath": "2017-09-11",

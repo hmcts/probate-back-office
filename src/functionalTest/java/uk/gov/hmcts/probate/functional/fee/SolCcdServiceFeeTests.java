@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.functional.fee;
 
-
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
@@ -21,31 +21,37 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         initialiseConfig();
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue10000() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "27300");
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyFeeForUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForUKCopies.json", "feeForUkCopies", "150");
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyFeeForNonUkCopies() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
+        validatePostRequestSuccessForFee("success.feeForNonUKCopies.json", "feeForNonUkCopies", "150");
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyTotal() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
+        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "27600");
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue5000() {
         validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
     }
 
+    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue1000() {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");
@@ -73,9 +79,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
-        given()
-            .config(config)
-            .headers(utils.getHeaders())
+
+        given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
@@ -86,9 +91,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
-        given()
-            .config(config)
-            .headers(utils.getHeaders())
+        given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .when().post("/nextsteps/validate").then()

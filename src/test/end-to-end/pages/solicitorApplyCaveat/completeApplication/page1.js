@@ -9,7 +9,8 @@ module.exports = async function () {
     await I.runAccessibilityTest();
 
     await I.selectOption('#solsPaymentMethods', completeApplicationConfig.page1_payment_type);
-    await I.fillField('#solsFeeAccountNumber', completeApplicationConfig.page1_pay_account_num);
+    await I.selectOption('#solsPBANumber', completeApplicationConfig.page1_pBAANumber);
+    await I.fillField('#solsPBAPaymentReference', completeApplicationConfig.page1_paymentReference);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

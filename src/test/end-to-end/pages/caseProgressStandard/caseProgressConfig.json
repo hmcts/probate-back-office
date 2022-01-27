@@ -1,4 +1,5 @@
 {
+    "solIsApplying": true,
     "solFirmName": "DummySolicitor",
     "solFirstname": "Billy",
     "solSurname": "Bloggs",
@@ -7,20 +8,18 @@
     "solAddrCounty": "Wilts",
     "solAddrCountry": "UK",
     "solAddrPostcode": "CN12JU",
-    "solIsMainApplicant": true,
     "ref": "ABC",
-    "solEmail": "bbloggs@test.com",
+    "solEmail": "bbloggs@probate-test.com",
     "solPhone": "07654321234",
     "solDtlsPage2_pageHeader": "Apply for probate",
-    "deceasedFirstname": "Jane",
-    "deceasedSurname": "Smith",
+    "deceasedFirstname": "Caseprogress",
+    "deceasedSurname": "Surname",
     "deathDay": "11",
     "deathMonth": "11",
     "deathYear": "2020",
     "deceasedDobDay": "09",
     "deceasedDobMonth": "09",
     "deceasedDobYear": "1978",
-    "groundsForApplication": "Test",
     "deceasedAddr1": "2 Main St",
     "deceasedAddrTown": "Cirencester",
     "deceasedAddrCounty": "Wilts",
@@ -35,6 +34,7 @@
     "IHTNet": "140000",
     "JobTitle": "Lawyer",
     "FeeAccount": "1: fee account",
-    "FeeAccountNumber": "001234"
+    "PBAANumber": "PBA0082126",
+    "PaymentReference": "E2E Case Progress PBA Payment Reference"
 }
 

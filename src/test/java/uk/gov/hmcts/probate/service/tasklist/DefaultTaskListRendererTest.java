@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -18,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.APPLICATION_FEE;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.APPLICATION_GROUNDS;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.DECEASED_ADDRESS;
@@ -53,7 +58,12 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class DefaultTaskListRendererTest {
 
-    private final DefaultTaskListRenderer renderer = new DefaultTaskListRenderer();
+    @InjectMocks
+    private DefaultTaskListRenderer renderer;
+    
+    @Mock
+    private TaskStateRenderer taskStateRendererMock;
+    
     private CaseData.CaseDataBuilder caseDataBuilder;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String FORENAME = "Andy";
@@ -95,11 +105,11 @@ public class DefaultTaskListRendererTest {
         + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n"
         + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
         + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">"
-        + "These steps are to be completed by the probate practitioner.</font></p></div><div class=\""
+        + "These steps are to be completed by the Probate practitioner.</font></p></div><div class=\""
         + "govuk-grid-column-one-third\">&nbsp;</div></div>\n"
         + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
         + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add "
-        + "solicitor details</p>"
+        + "Probate practitioner details</p>"
         + "</div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" "
         + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
         + TaskState.CODE_BRANCH
@@ -126,7 +136,7 @@ public class DefaultTaskListRendererTest {
         + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
         + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font "
         + "color=\"#505a5f\">"
-        + "These steps are to be completed by the probate practitioner.</font></p></div><div "
+        + "These steps are to be completed by the Probate practitioner.</font></p></div><div "
         + "class=\"govuk-grid-column-one-third\">&nbsp;"
         + "</div></div>\n"
         + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
@@ -152,9 +162,10 @@ public class DefaultTaskListRendererTest {
         + "    </span>\n"
         + "  </summary>\n"
         + "  <div class=\"govuk-details__text\">\n"
-        + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-        + "<li>a photocopy of the signed legal statement and declaration</li>"
-        + "</ul>\n"
+        + "    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab)"
+        + " or your reference number 1 written on a"
+        + " sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li>"
+        + "<li>the original will and any codicils</li><li>the inheritance tax form IHT207</li></ul>\n"
         + "  </div>\n"
         + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" "
         + "height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -225,6 +236,7 @@ public class DefaultTaskListRendererTest {
 
     @Before
     public void setup() {
+        initMocks(this);
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
         SolsAddress solsAddress = SolsAddress.builder()
                 .addressLine1(SOLICITOR_FIRM_LINE1)
@@ -264,7 +276,6 @@ public class DefaultTaskListRendererTest {
                 .solsSOTForenames(SOLICITOR_FORENAMES)
                 .solsSOTSurname(SOLICITOR_SURNAME)
                 .solsSolicitorIsExec(YES)
-                .solsSolicitorIsMainApplicant(YES)
                 .solsSolicitorIsApplying(YES)
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
@@ -282,6 +293,103 @@ public class DefaultTaskListRendererTest {
     public void shouldRenderDefaultCaseProgressHtmlCorrectly() {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState("BOExamining");
+        when(taskStateRendererMock.renderByReplace(TaskListState.TL_STATE_EXAMINE_APPLICATION,
+            "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
+                + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate " 
+                + "practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><addSolicitorLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-addSolicitor/></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><addDeceasedLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-addDeceasedDetails/></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><addAppLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-addApplicationDetails/></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<br/>\n"
+                + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate " 
+                + "practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><rvwLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-reviewAndSubmit/></div></div>\n"
+                + "<reviewAndSubmitDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p" 
+                + " class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, " 
+                + "change any details, then sign and submit your application.</font></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\">Send documents<br/><sendDocsLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-sendDocuments/></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<br/>\n"
+                + "<h2 class=\"govuk-heading-l\">3. Review application</h2>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and " 
+                + "Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><authDocsLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-authDocuments/></div></div>\n"
+                + "<authenticatedDate/><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them " 
+                + "with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;" 
+                + "</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><examAppLink/></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-examineApp/></div></div>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete " 
+                + "information or problems and validate it against other cases or caveats. After the review we " 
+                + "prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these " 
+                + "case states as it is reviewed by our team:</font></p></div><div " 
+                + "class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<ul class=\"govuk-list govuk-list--bullet\">\n"
+                + "<li>Examining</li>\n"
+                + "<li>Case Matching</li>\n"
+                + "<li>Case selected for Quality Assurance</li>\n"
+                + "<li>Ready to issue</li>\n"
+                + "</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals " 
+                + "Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><issueGrantLink/>/p></div><div " 
+                + "class=\"govuk-grid-column-one-third\"><status-issueGrant/></div></div>\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p " 
+                + "class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days " 
+                + "after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "</div>\n"
+                + "</div>\n",
+            ID, "WillLeft", null,
+            null, null, caseDetails)).thenReturn(expectedHtml);
         String result = renderer.renderHtml(caseDetails);
         assertEquals(expectedHtml, result);
     }

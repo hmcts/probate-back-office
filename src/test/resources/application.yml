@@ -34,6 +34,21 @@ pdf.service:
   grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
+payment:
+  url: ${PAYMENT_URL:http://localhost:8991}
+  api: /credit-account-payments
+  currency: GBP
+  pba:
+    siteId: ABA6
+  service: PROBATE
+
+pba:
+  retrieval:
+    url: ${PRD_API_URL:http://localhost:8991}
+    health.url: ${pba.retrieval.url}/health
+    api: /refdata/external/v1/organisations/pbas
+
+
 docmosis:
   service:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
@@ -373,7 +388,7 @@ smeeAndFordEmail: smeeAndFord@probate-test.com
 data-extract:
   block:
     size: 3000
-    numDaysInclusive: 2
+    numDaysInclusive: 0
   smee-and-ford:
     size: 2000
     
@@ -391,6 +406,9 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+iht-estate:
+  switch-date: "2022-01-01"
 
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:off}

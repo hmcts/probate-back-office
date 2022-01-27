@@ -90,7 +90,16 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseList() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -100,7 +109,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -164,7 +173,7 @@ public class CaseQueryServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
+        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate"))
             .isInstanceOf(CaseMatchingException.class);
     }
 
@@ -217,6 +226,6 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caseQueryService.findCasesWithDatedDocument("testDate");
+        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
     }
 }

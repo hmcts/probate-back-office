@@ -79,7 +79,7 @@ public class CaveatQueryService {
     }
 
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
-        log.info("CaveatMatchingService runQuery: " + jsonQuery);
+        log.debug("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, caseType.getCode())
