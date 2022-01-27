@@ -15,46 +15,67 @@ public class PA15FormBusinessRule implements BusinessRule {
     private static final String RENOUNCED = "Renunciation";
 
     public boolean isApplicable(CaseData caseData) {
-        boolean solIsExec = YES.equals(caseData.getSolsSolicitorIsExec());
-        boolean solNotApplying = NO.equals(caseData.getSolsSolicitorIsApplying());
-        boolean solRenounced = RENOUNCED.equals(caseData.getSolsSolicitorNotApplyingReason());
-        boolean solExecNotApplyingRenounced = solIsExec && solNotApplying && solRenounced;
-        if (solExecNotApplyingRenounced) {
+        if (isSolExecNotApplyingRenounced(caseData)) {
             return true;
         }
 
-        boolean primaryNotApplying = NO.equals(caseData.getPrimaryApplicantIsApplying());
-        boolean primaryRenounced = RENOUNCED.equals(caseData.getSolsPrimaryExecutorNotApplyingReason());
-        boolean primaryNotApplyingRenouced = primaryNotApplying && primaryRenounced;
-        if (primaryNotApplyingRenouced) {
+        if (isPrimaryNotApplyingRenouced(caseData)) {
             return true;
         }
 
         boolean otherExecs = YES.equals(caseData.getOtherExecutorExists());
         if (otherExecs) {
-            if (caseData.getSolsAdditionalExecutorList() != null) {
-                for (CollectionMember<AdditionalExecutor> cm : caseData.getSolsAdditionalExecutorList()) {
-                    boolean notApplying = NO.equals(cm.getValue().getAdditionalApplying());
-                    if (notApplying) {
-                        boolean renounced = RENOUNCED.equals(cm.getValue().getAdditionalExecReasonNotApplying());
-                        if (renounced) {
-                            return true;
-                        }
-                    }
-                }
+            if (anySolsAdditionalExecsRenouonced(caseData)) {
+                return true;
             }
 
-            if (caseData.getAdditionalExecutorsNotApplying() != null) {
-                for (CollectionMember<AdditionalExecutorNotApplying> cm :
-                    caseData.getAdditionalExecutorsNotApplying()) {
-                    boolean renounced = RENOUNCED.equals(cm.getValue().getNotApplyingExecutorReason());
+            if (anyAdditionalExecsNotApplyingRenouonced(caseData)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean anyAdditionalExecsNotApplyingRenouonced(CaseData caseData) {
+        if (caseData.getAdditionalExecutorsNotApplying() != null) {
+            for (CollectionMember<AdditionalExecutorNotApplying> cm :
+                caseData.getAdditionalExecutorsNotApplying()) {
+                boolean renounced = RENOUNCED.equals(cm.getValue().getNotApplyingExecutorReason());
+                if (renounced) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean anySolsAdditionalExecsRenouonced(CaseData caseData) {
+        if (caseData.getSolsAdditionalExecutorList() != null) {
+            for (CollectionMember<AdditionalExecutor> cm : caseData.getSolsAdditionalExecutorList()) {
+                boolean notApplying = NO.equals(cm.getValue().getAdditionalApplying());
+                if (notApplying) {
+                    boolean renounced = RENOUNCED.equals(cm.getValue().getAdditionalExecReasonNotApplying());
                     if (renounced) {
                         return true;
                     }
                 }
             }
         }
-
+        
         return false;
+    }
+
+    private boolean isPrimaryNotApplyingRenouced(CaseData caseData) {
+        boolean primaryNotApplying = NO.equals(caseData.getPrimaryApplicantIsApplying());
+        boolean primaryRenounced = RENOUNCED.equals(caseData.getSolsPrimaryExecutorNotApplyingReason());
+        return primaryNotApplying && primaryRenounced;
+    }
+
+    private boolean isSolExecNotApplyingRenounced(CaseData caseData) {
+        boolean solIsExec = YES.equals(caseData.getSolsSolicitorIsExec());
+        boolean solNotApplying = NO.equals(caseData.getSolsSolicitorIsApplying());
+        boolean solRenounced = RENOUNCED.equals(caseData.getSolsSolicitorNotApplyingReason());
+        return solIsExec && solNotApplying && solRenounced;
     }
 }
