@@ -12,11 +12,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorLegalStatementPDFDecorator;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 @Slf4j
@@ -25,10 +30,12 @@ public class PDFDecoratorService {
     private static final String CASE_EXTRAS_KEY = "\"case_extras\"";
     private final ObjectMapper objectMapper;
     private final SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
+    private final SolicitorLegalStatementPDFDecorator solicitorLegalStatementPDFDecorator;
 
     @Autowired
     public PDFDecoratorService(ObjectMapper objectMapper, 
-                               SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator) {
+                               SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator,
+                               SolicitorLegalStatementPDFDecorator solicitorLegalStatementPDFDecorator) {
         this.objectMapper = objectMapper.copy();
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
@@ -37,6 +44,7 @@ public class PDFDecoratorService {
         this.objectMapper.registerModule(module);
         
         this.solicitorCoversheetPDFDecorator = solicitorCoversheetPDFDecorator;
+        this.solicitorLegalStatementPDFDecorator = solicitorLegalStatementPDFDecorator;
     }
 
     public String decorate(Object data, DocumentType documentType) {
@@ -54,9 +62,18 @@ public class PDFDecoratorService {
 
     private String addExtraCaseData(String dataJson, Object data, DocumentType documentType) {
         String updatedJson = "";
-        if (data instanceof CallbackRequest && documentType.equals(SOLICITOR_COVERSHEET)) {
-            CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
-            updatedJson = solicitorCoversheetPDFDecorator.decorate(caseData);
+        if (data instanceof CallbackRequest) {
+            if (documentType.equals(SOLICITOR_COVERSHEET)) {
+                CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
+                updatedJson = solicitorCoversheetPDFDecorator.decorate(caseData);
+            } else if (documentType.equals(LEGAL_STATEMENT_PROBATE_TRUST_CORPS) 
+                || documentType.equals(LEGAL_STATEMENT_PROBATE)
+                || documentType.equals(LEGAL_STATEMENT_INTESTACY)
+                || documentType.equals(LEGAL_STATEMENT_ADMON) 
+            ) {
+                CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
+                updatedJson = solicitorLegalStatementPDFDecorator.decorate(caseData);
+            }
         }
 
         return mergeCaseExtrasJson(dataJson, updatedJson);

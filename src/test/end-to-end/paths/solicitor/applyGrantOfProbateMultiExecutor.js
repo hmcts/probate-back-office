@@ -11,7 +11,7 @@ const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorAp
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const applicantExecutorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfig');
-const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
+const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigMulti');
 const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
@@ -45,7 +45,7 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Grant of probate created';
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
-    await I.deceasedDetailsPage2();
+    await I.deceasedDetailsPage2('MultiExec');
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
@@ -85,7 +85,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
-    await I.completeApplicationPage2();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
