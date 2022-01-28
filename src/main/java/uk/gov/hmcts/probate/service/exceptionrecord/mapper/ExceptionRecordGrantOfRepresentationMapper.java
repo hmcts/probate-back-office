@@ -242,8 +242,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             && ocrFields.getIhtEstateNetQualifyingValue() != null) {
             caseData.setIhtFormEstateValuesCompleted(Boolean.FALSE);
         } else if (
-                "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate()) ||
-                        "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
+                "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate())
+                    || "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
                 
                 
         ) {
