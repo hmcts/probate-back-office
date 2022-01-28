@@ -46,12 +46,11 @@ public class CitizenMandatoryFieldsValidatorV2 {
                             DECEASED_LATE_SPOUSE);
                 } else {
                     mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_205_COMPLETED_ONLINE);
-                }
-
-                boolean iht205completedOnline = toBoolean(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()));
-                if (iht205completedOnline) {
-                    mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings, 
-                            IHT_IDENTIFIER);
+                    boolean iht205completedOnline = toBoolean(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()));
+                    if (iht205completedOnline) {
+                        mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                                IHT_IDENTIFIER);
+                    }
                 }
             }
         }
