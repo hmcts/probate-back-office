@@ -236,12 +236,17 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
     @AfterMapping
     default void setIhtFormEstateValuesCompleted(@MappingTarget GrantOfRepresentationData caseData,
-                                                 ExceptionRecordOCRFields ocrField) {
-        if (ocrField.getIhtEstateGrossValue() != null
-            && ocrField.getIhtEstateNetValue() != null
-            && ocrField.getIhtEstateNetQualifyingValue() != null) {
+                                                 ExceptionRecordOCRFields ocrFields) {
+        if (ocrFields.getIhtEstateGrossValue() != null
+            && ocrFields.getIhtEstateNetValue() != null
+            && ocrFields.getIhtEstateNetQualifyingValue() != null) {
             caseData.setIhtFormEstateValuesCompleted(Boolean.FALSE);
-        } else if ("TRUE".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())) {
+        } else if (
+                "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate()) ||
+                        "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
+                
+                
+        ) {
             caseData.setIhtFormEstateValuesCompleted(Boolean.TRUE);
         }
     }

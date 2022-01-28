@@ -525,14 +525,24 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
     
     @Test
-    public void testSetIhtFormEstateNotValuesCompletedIfIhtEstateValuesNotPresentAndDeceasedDiedOnAfterSwitchDate() {
+    public void testSetIhtFormEstateValuesCompletedIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .deceasedDiedOnAfterSwitchDate(TRUE)
+            .ihtFormEstate("IHT400421")
             .build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getIhtFormEstateValuesCompleted());
-    }  
+    }
+    
+    @Test
+    public void testSetIhtFormEstateValuesCompletedIHT400421() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .ihtFormEstate("IHT400421")
+            .build();
+        GrantOfRepresentationData response =
+            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertTrue(response.getIhtFormEstateValuesCompleted());
+    }
     
     @Configuration
     public static class Config {
