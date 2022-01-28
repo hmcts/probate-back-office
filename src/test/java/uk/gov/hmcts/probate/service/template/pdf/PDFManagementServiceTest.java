@@ -160,7 +160,7 @@ public class PDFManagementServiceTest {
 
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS);
 
-        String fileName = "legalStatementProbate.pdf";
+        String fileName = "legalStatementGrantOfProbate.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

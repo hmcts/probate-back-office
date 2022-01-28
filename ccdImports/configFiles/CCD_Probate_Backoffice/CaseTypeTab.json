@@ -268,4 +268,3 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "ihtTab", "TabLabel": "IHT", "TabDisplayOrder": 18, "CaseFieldID": "deceasedHadLateSpouseOrCivilPartner", "TabFieldDisplayOrder": 6},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "ihtTab", "TabLabel": "IHT", "TabDisplayOrder": 18, "CaseFieldID": "ihtUnusedAllowanceClaimed", "TabFieldDisplayOrder": 7}
 ]
-
