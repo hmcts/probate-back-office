@@ -2234,8 +2234,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final String response = getFirstProbateDocumentsText(payload, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
-        expectedText = expectedText.replaceAll("<TODAYS_DATE_EN>", utils.formatDate(LocalDate.now()));
-        expectedText = expectedText.replaceAll("<TODAYS_DATE_CY>", utils.convertToWelsh(LocalDate.now()));
+        expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
 
         assertEquals(expectedText.trim(), response.trim());
     }
