@@ -89,8 +89,8 @@ public class ConfirmationResponseService {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
     }
 
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData, caseData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
@@ -213,7 +213,7 @@ public class ConfirmationResponseService {
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
+    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData, CaseData caseData) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
         String caseSubmissionDate = "";
@@ -277,11 +277,10 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtText}}", getIhtText(ccdData));
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
-        keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
-        keyValue.put("{{pa15form}}", getPA15FormLabel(ccdData));
-        keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
-        keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
+        keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
+        keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
+        keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -318,16 +317,7 @@ public class ConfirmationResponseService {
         return ihtText;
     }
 
-    private String getPA15FormLabel(CCDData ccdData) {
-        CaseData caseData = CaseData.builder()
-            .solsSolicitorIsExec(ccdData.getSolsSolicitorIsExec())
-            .solsSolicitorIsApplying(ccdData.getSolsSolicitorIsApplying())
-            .solsSolicitorNotApplyingReason(ccdData.getSolsSolicitorNotApplyingReason())
-            .primaryApplicantIsApplying(ccdData.getPrimaryApplicantIsApplying())
-            .solsPrimaryExecutorNotApplyingReason(ccdData.getSolsPrimaryExecutorNotApplyingReason())
-            .otherExecutorExists(ccdData.getOtherExecutorExists())
-            .additionalExecutorsNotApplying(buildAddExecsNotApplying(ccdData.getExecutorsNotApplying()))
-            .build();
+    private String getPA15FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA15FormLabel(caseData);
     }
 
@@ -346,19 +336,11 @@ public class ConfirmationResponseService {
         return execs;
     }
 
-    private String getPA16FormLabel(CCDData ccdData) {
-        CaseData caseData = CaseData.builder()
-            .solsApplicantRelationshipToDeceased(ccdData.getSolsApplicantRelationshipToDeceased())
-            .solsApplicantSiblings(ccdData.getSolsApplicantSiblings())
-            .solsSpouseOrCivilRenouncing(ccdData.getSolsSpouseOrCivilRenouncing())
-            .build();
+    private String getPA16FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
 
-    private String getPA17FormLabel(CCDData ccdData) {
-        CaseData caseData = CaseData.builder()
-            .titleAndClearingType(ccdData.getTitleAndClearingType())
-            .build();
+    private String getPA17FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA17FormLabel(caseData);
     }
     

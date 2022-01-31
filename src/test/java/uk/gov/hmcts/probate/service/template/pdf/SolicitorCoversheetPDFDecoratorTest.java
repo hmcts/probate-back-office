@@ -8,7 +8,10 @@ import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -16,8 +19,12 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.CaseExtraDecorator;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -28,6 +35,10 @@ public class SolicitorCoversheetPDFDecoratorTest {
 
     @Mock
     private PA15FormBusinessRule pa15FormBusinessRuleMock;
+    @Mock
+    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    @Mock
+    private LinkFormatterService linkFormatterService;
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
     @Mock
@@ -60,10 +71,14 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+        List<AdditionalExecutorNotApplying> all = new ArrayList<>();
+        all.add(AdditionalExecutorNotApplying.builder().build());
+        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(all);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extra, json);
+        verify(linkFormatterService).formatLink(any(), any(), any(), any());
     }
 
     @Test

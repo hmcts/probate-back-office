@@ -25,7 +25,7 @@ public class PA15FormBusinessRule implements BusinessRule {
 
         boolean otherExecs = YES.equals(caseData.getOtherExecutorExists());
         if (otherExecs) {
-            if (anySolsAdditionalExecsRenouonced(caseData)) {
+            if (anySolsAdditionalExecsRenounced(caseData)) {
                 return true;
             }
 
@@ -50,8 +50,9 @@ public class PA15FormBusinessRule implements BusinessRule {
         return false;
     }
 
-    private boolean anySolsAdditionalExecsRenouonced(CaseData caseData) {
+    private boolean anySolsAdditionalExecsRenounced(CaseData caseData) {
         if (caseData.getSolsAdditionalExecutorList() != null) {
+            System.out.println("**** anySolsAdditionalExecsRenouonced");
             for (CollectionMember<AdditionalExecutor> cm : caseData.getSolsAdditionalExecutorList()) {
                 boolean notApplying = NO.equals(cm.getValue().getAdditionalApplying());
                 if (notApplying) {

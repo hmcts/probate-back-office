@@ -18,17 +18,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -51,6 +50,10 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    @Mock
+    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    @Mock
+    private LinkFormatterService linkFormatterService;
 
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
@@ -381,45 +384,6 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithRenouncingExecs() {
-        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
-        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
-
-        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorName()).thenReturn("Executor Two");
-        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorReason()).thenReturn("Renunciation");
-
-        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorName()).thenReturn("Executor Three");
-        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorReason()).thenReturn(
-            ExecutorNotApplyingReason.DIED_BEFORE.toString());
-
-        final CaseData caseData = CaseData.builder()
-            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-            .primaryApplicantIsApplying(NO)
-            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
-            .solsAdditionalExecutorList(null)
-            .ihtFormId(IHT_FORM_207)
-            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
-            .solsWillType(GRANT_TYPE_PROBATE)
-            .solsFeeAccountNumber("1")
-            .build();
-
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
-        String expectedHtml = fileSystemResourceService
-            .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocuments");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
-
-        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
-            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
-            LocalDate.of(2020,10,10),
-            LocalDate.of(2020,11, 1), caseDetails);
-
-        assertEquals(expectedHtml, result);
-    }
-
-    @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA17Form() {
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
@@ -486,13 +450,22 @@ public class TaskStateRendererTest {
             .titleAndClearingType("TCTPartAllRenouncing")
             .build();
 
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA15Form");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa15FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        List<AdditionalExecutorNotApplying> all = new ArrayList<>();
+        AdditionalExecutorNotApplying single =
+            AdditionalExecutorNotApplying.builder().notApplyingExecutorName("Tim Smith")
+                .notApplyingExecutorReason("Renunciation")
+                .build();
+        all.add(single);
+        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseData)).thenReturn(all);
+        when(linkFormatterService.formatLink(any(), any(), any(), any())).thenReturn("<a href=\"https://www.gov" 
+            + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up " 
+            + "probate administrator rights paper form</a> (PA15) for Tim Smith");
 
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),

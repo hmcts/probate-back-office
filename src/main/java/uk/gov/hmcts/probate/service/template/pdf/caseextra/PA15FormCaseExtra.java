@@ -10,7 +10,6 @@ import lombok.Data;
 public class PA15FormCaseExtra {
 
     private final String showPa15Form;
-    private final String pa15FormUrl;
     private final String pa15FormText;
 
 }

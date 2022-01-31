@@ -138,7 +138,7 @@ public class NextStepsController {
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
-            .getNextStepsConfirmation(ccdData);
+            .getNextStepsConfirmation(ccdData, callbackRequest.getCaseDetails().getData());
 
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }

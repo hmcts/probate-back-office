@@ -111,9 +111,7 @@
 
                 {% if case_extras != null %}
                     {% if case_extras.showPa15Form == "Yes" %}
-                    <li>
-                        <a href="{{ case_extras.pa15FormUrl }}" target="_blank">{{ case_extras.pa15FormText }}</a>
-                    </li>
+                    {{ case_extras.pa15FormText }}
                     {% endif %}
                     {% if case_extras.showPa16Form == "Yes" %}
                     <li>
