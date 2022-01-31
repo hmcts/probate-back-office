@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorney
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
@@ -51,7 +52,8 @@ import org.mapstruct.ReportingPolicy;
         OCRFieldIhtMoneyMapper.class,
         OCRFieldRelationshipMapper.class,
         OCRFieldPaymentMethodMapper.class,
-        OCRFieldNumberMapper.class
+        OCRFieldNumberMapper.class,
+        OCRFieldIhtFormEstateValuesCompletedMapper.class
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -232,24 +234,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             ToYesOrNo.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
         ToYesOrNo.class})
+    @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields", 
+        qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
-
-    @AfterMapping
-    default void setIhtFormEstateValuesCompleted(@MappingTarget GrantOfRepresentationData caseData,
-                                                 ExceptionRecordOCRFields ocrFields) {
-        if (ocrFields.getIhtEstateGrossValue() != null
-            && ocrFields.getIhtEstateNetValue() != null
-            && ocrFields.getIhtEstateNetQualifyingValue() != null) {
-            caseData.setIhtFormEstateValuesCompleted(Boolean.FALSE);
-        } else if (
-                "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate())
-                    || "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
-                
-                
-        ) {
-            caseData.setIhtFormEstateValuesCompleted(Boolean.TRUE);
-        }
-    }
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData,

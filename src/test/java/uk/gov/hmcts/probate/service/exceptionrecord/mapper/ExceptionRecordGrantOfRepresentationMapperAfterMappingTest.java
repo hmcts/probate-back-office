@@ -49,6 +49,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     private OCRFieldIhtFormEstateMapper ocrFieldIhtFormEstateMapper;
     @Autowired
+    private OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper;
+    @Autowired
     private OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper;
     @Autowired
     private OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
@@ -511,38 +513,6 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtUnusedAllowanceClaimed());
     }
-
-    @Test
-    public void testSetIhtFormEstateValuesCompletedIfIhtEstateValuesPresent() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtEstateGrossValue("1,000,000")
-            .ihtEstateNetValue("900,000")
-            .ihtEstateNetQualifyingValue("800,000")
-            .build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertFalse(response.getIhtFormEstateValuesCompleted());
-    }
-    
-    @Test
-    public void testSetIhtFormEstateValuesCompletedIHT207() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtFormEstate("IHT400421")
-            .build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertTrue(response.getIhtFormEstateValuesCompleted());
-    }
-    
-    @Test
-    public void testSetIhtFormEstateValuesCompletedIHT400421() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtFormEstate("IHT400421")
-            .build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertTrue(response.getIhtFormEstateValuesCompleted());
-    }
     
     @Configuration
     public static class Config {
@@ -586,7 +556,12 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         public OCRFieldIhtFormEstateMapper ocrFieldIhtFormEstateMapper() {
             return new OCRFieldIhtFormEstateMapper();
         }
-        
+
+        @Bean
+        public OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper() {
+            return new OCRFieldIhtFormEstateValuesCompletedMapper();
+        }
+
         @Bean
         public OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper() {
             return new OCRFieldIhtFormTypeMapper();
