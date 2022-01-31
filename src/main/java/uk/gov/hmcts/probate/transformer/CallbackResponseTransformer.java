@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate.transformer;
 
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -43,11 +46,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -56,8 +54,8 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -86,7 +84,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CallbackResponseTransformer {
@@ -812,9 +809,7 @@ public class CallbackResponseTransformer {
 
     private ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, boolean transform) {
         CaseData caseData = caseDetails.getData();
-        log.info("XXXX getResponseCaseData()");
-        log.info("XXXX IhtFormCompletedOnline: " + caseData.getIhtFormCompletedOnline());
-        log.info("XXXX IhtFormId: " + caseData.getIhtFormId());
+
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
             .schemaVersion(caseData.getSchemaVersion())
             .state(caseDetails.getState())
@@ -1267,9 +1262,6 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
-        log.info("XXXX updateCaseBuilder()");
-        log.info("XXXX IhtFormCompletedOnline: " + caseData.getIhtFormCompletedOnline());
-        log.info("XXXX IhtFormId: " + caseData.getIhtFormId());
         builder
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
 
