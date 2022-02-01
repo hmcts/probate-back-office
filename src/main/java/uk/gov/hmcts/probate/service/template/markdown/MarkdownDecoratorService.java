@@ -34,7 +34,6 @@ public class MarkdownDecoratorService {
 
     public String getPA15FormLabel(CaseData caseData) {
         String label = "";
-        System.out.println("**** getPA15FormLabel");
         if (pa15FormBusinessRule.isApplicable(caseData)) {
             List<AdditionalExecutorNotApplying> renouncedExecs =
                 renouncingExecutorsMapper.getAllRenouncingExecutors(caseData);

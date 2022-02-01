@@ -99,15 +99,6 @@
                         </li>
                     {% endif %}
                 {% endif %}
-                {% if case_details.case_data.executorsNotApplyingLegalStatement != null %}
-                    {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}
-                        <li>renunciation form for
-                            {{ executor.value.notApplyingExecutorName }}
-                        </li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
 
                 {% if case_extras != null %}
                     {% if case_extras.showPa15Form == "Yes" %}

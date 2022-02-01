@@ -52,7 +52,6 @@ public class PA15FormBusinessRule implements BusinessRule {
 
     private boolean anySolsAdditionalExecsRenounced(CaseData caseData) {
         if (caseData.getSolsAdditionalExecutorList() != null) {
-            System.out.println("**** anySolsAdditionalExecsRenouonced");
             for (CollectionMember<AdditionalExecutor> cm : caseData.getSolsAdditionalExecutorList()) {
                 boolean notApplying = NO.equals(cm.getValue().getAdditionalApplying());
                 if (notApplying) {

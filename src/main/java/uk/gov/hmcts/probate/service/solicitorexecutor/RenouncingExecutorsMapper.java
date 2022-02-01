@@ -19,7 +19,6 @@ public class RenouncingExecutorsMapper {
 
     public List<AdditionalExecutorNotApplying> getAllRenouncingExecutors(CaseData caseData) {
         List<AdditionalExecutorNotApplying> executors = new ArrayList<>();
-        System.out.println("**** getAllRenouncingExecutors");
         if (caseData.getSolsAdditionalExecutorList() != null) {
             executors.addAll(caseData.getSolsAdditionalExecutorList().stream()
                 .map(CollectionMember::getValue)

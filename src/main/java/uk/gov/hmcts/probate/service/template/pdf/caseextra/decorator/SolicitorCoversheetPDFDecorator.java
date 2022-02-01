@@ -43,7 +43,7 @@ public class SolicitorCoversheetPDFDecorator {
         String decoration = "";
         if (pa15FormBusinessRule.isApplicable(caseData)) {
             PA15FormCaseExtra pa15FormCaseExtra = PA15FormCaseExtra.builder()
-                .pa15FormText(buildRenouncingExecutorsLinks(caseData))
+                .pa15FormText(buildPA15RenouncingExecutorsLinks(caseData))
                 .showPa15Form(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
@@ -78,7 +78,7 @@ public class SolicitorCoversheetPDFDecorator {
         return decoration;
     }
 
-    private String buildRenouncingExecutorsLinks(CaseData caseData) {
+    private String buildPA15RenouncingExecutorsLinks(CaseData caseData) {
         List<AdditionalExecutorNotApplying> renouncedExecs =
             renouncingExecutorsMapper.getAllRenouncingExecutors(caseData);
         return renouncedExecs.stream()
