@@ -1,9 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
-import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -21,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -376,37 +373,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertFalse(response.getApplyingAsAnAttorney());
     }
-
-    @Test
-    public void testIhtFormEstateIHT400421() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtFormEstate("IHT400421").build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertEquals(IhtFormEstate.optionIHT400421, response.getIhtFormEstate());
-    }
-
-    @Test
-    public void testIhtFormEstateIHT207() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtFormEstate("IHT207").build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertEquals(IhtFormEstate.optionIHT207, response.getIhtFormEstate());
-    }
-
-
-    @Test
-    public void testIhtFormEstateIHT205() {
-        Exception exception = assertThrows(OCRMappingException.class, () -> {
-            ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtFormEstate("IHT205").build();
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        });
-
-        String expectedMessage = "Form type IHT207 or IHT400421 expected but got 'IHT205'";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
+    
     @Test
     public void testIhtFormEstateNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();

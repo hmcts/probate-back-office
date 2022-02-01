@@ -217,14 +217,14 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields.ihtFormCompletedOnline", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
-    @Mapping(target = "ihtFormId", source = "ocrFields.ihtFormId", qualifiedBy = {ToIHTFormId.class})
+    @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
     @Mapping(target = "ihtGrossValue", source = "ocrFields.ihtGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtNetValue", source = "ocrFields.ihtNetValue", qualifiedBy = {ToPennies.class})
 
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
-    @Mapping(target = "ihtFormEstate", source = "ocrFields.ihtFormEstate", qualifiedBy = {ToIHTFormEstate.class})
+    @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetQualifyingValue", 

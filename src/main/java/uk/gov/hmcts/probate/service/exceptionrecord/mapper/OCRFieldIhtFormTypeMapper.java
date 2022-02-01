@@ -1,10 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -17,12 +20,15 @@ public class OCRFieldIhtFormTypeMapper {
     private static final String FORM_IHT421 = "IHT421";
     private static final String FORM_IHT400 = "IHT400";
     
+    @Autowired
+    EeDateOfDeathChecker eeDateOfDeathChecker;
 
     @ToIHTFormId
-    public IhtFormType ihtFormType(String ihtFormId) {
+    public IhtFormType ihtFormType(ExceptionRecordOCRFields ocrFields) {
+        String ihtFormId = ocrFields.getIhtFormId();
         log.info("Beginning mapping for IHT Form Type value: {}", ihtFormId);
-
-        if (ihtFormId == null || ihtFormId.isEmpty()) {
+        if (ihtFormId == null || ihtFormId.isEmpty() 
+            || eeDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
             return null;
         } else {
             switch (ihtFormId.toUpperCase().trim()) {
