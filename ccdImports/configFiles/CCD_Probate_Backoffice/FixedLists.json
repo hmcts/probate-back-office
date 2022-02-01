@@ -202,7 +202,7 @@
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "LifeMinor", "ListElement": "Category 5 - Life and Minority Interest", "DisplayOrder":  "5"},
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "MissInfo", "ListElement": "Category 6 – Missing/Further information", "DisplayOrder":  "6"},
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "Will", "ListElement": "Category 7 - Will", "DisplayOrder":  "7"},
-  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "SOT", "ListElement": "Category 8 - Statement of truth incomplete", "DisplayOrder":  "8"},
+  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "Legal Statement", "ListElement": "Category 8 - Statement of truth incomplete", "DisplayOrder":  "8"},
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "Witness", "ListElement": "Category 9 - Witness", "DisplayOrder":  "9"},
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "SolGen", "ListElement": "Category 10 - Solicitor General", "DisplayOrder":  "10"},
   {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "SolCert", "ListElement": "Category 11 - Solicitor Certs", "DisplayOrder":  "11"},
