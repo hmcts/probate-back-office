@@ -480,6 +480,7 @@ services:
       LD_USER_KEY: "${LD_BO_USER_KEY}"
       PAYMENT_URL: http://wiremock:8080
       PRD_API_URL: http://wiremock:8080
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
     ports:
       - 4104:4104
     depends_on:
