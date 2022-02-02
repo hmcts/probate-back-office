@@ -42,6 +42,7 @@ import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
+import static uk.gov.hmcts.probate.model.PageTextConstants.TC_RESOLUTION_WITH_APP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -166,6 +167,8 @@ public class TaskStateRenderer {
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                .replaceFirst(TC_RESOLUTION_WITH_APP,
+                    keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
                 );
     }
 
@@ -277,6 +280,14 @@ public class TaskStateRenderer {
         keyValue.put("renouncingExecutors",
             (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
+
+        String titleAndClearingType = data.getTitleAndClearingType() == null ? "" : data.getTitleAndClearingType();
+        String tcResolutionLodgedWithApp = "<li>a certified copy of the resolution</li>";
+        if (!titleAndClearingType.equalsIgnoreCase("TCTTrustCorpResWithApp")) {
+            tcResolutionLodgedWithApp = "";
+        }
+        keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+
         return keyValue;
     }
 

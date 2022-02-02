@@ -817,4 +817,34 @@ public class TaskStateRendererTest {
 
         assertEquals(expectedHtml, result);
     }
+
+    @Test
+    public void shouldRenderCorrectDocumentForState_SendDocuments_GopTcResolutionLodgedWithApplication() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .ihtFormId(IHT_FORM_207)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
 }
