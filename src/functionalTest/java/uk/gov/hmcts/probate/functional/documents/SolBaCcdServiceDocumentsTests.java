@@ -205,6 +205,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
         + "The application has stated that the gross value";
 
+    private final String deceasedDomiciledInEngWalesText = "The application has stated that the gross value"
+        + " of the estate in the United Kingdom amounts to £10,000.00 and the net value amounts to £8,000.00";
+
     private static final String GRANT_DOC_NAME = "probateDocumentsGenerated[0].value.DocumentLink";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
     private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
@@ -312,6 +315,239 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
         assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
         assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        final String gopPayload = "/default/gop/personal/";
+
+        String response = generateGrantDocument(gopPayload + "gop.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(gopPayload + "gop.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(gopPayload + "gopReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        final String gopPayload = "/default/gop/personal/";
+
+        final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
+            "England and Wales");
+
+        final String payloadIssue = replaceAllInString(getJsonFromFile(gopPayload + "gop.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        final String payloadReissue = replaceAllInString(getJsonFromFile(gopPayload + "gopReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(payloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        final String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
+            "England and Wales");
+
+        String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        payload = replaceAllInString(payload,
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/personal/";
+
+        String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWillReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/personal/";
+
+        String admonWillPayloadIssue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWill.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String admonWillPayloadReissue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWillReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/solicitor/";
+
+        String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWillReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/solicitor/";
+
+        String admonWillPayloadIssue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWill.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String admonWillPayloadReissue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWillReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/personal/";
+
+        String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacyReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/personal/";
+
+        String intestacyPayloadIssue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacy.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String intestacyPayloadReissue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacyReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/solicitor/";
+
+        String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacyReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledNotInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/solicitor/";
+
+        String intestacyPayloadIssue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacy.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String intestacyPayloadReissue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacyReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
     }
 
     @Test
