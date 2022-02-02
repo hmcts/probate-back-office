@@ -280,7 +280,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
 
         if (ccdData.getTitleAndClearingType() != null) {
-            String tcResolutionLodgedWithApp = "\n*   a certified copy of the resolution";
+            String tcResolutionLodgedWithApp = "*   a certified copy of the resolution";
             if (!ccdData.getTitleAndClearingType().equals("TCTTrustCorpResWithApp")) {
                 tcResolutionLodgedWithApp = "";
             }

@@ -670,7 +670,7 @@ public class ConfirmationResponseServiceTest {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
-        assertEquals("a certified copy of the resolution",
+        assertEquals("*   a certified copy of the resolution",
                 nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
 
     }
