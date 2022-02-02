@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.exceptionrecord.utils;
+package uk.gov.hmcts.probate.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

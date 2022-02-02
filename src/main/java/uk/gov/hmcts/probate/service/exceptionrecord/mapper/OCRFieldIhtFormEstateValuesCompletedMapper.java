@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
