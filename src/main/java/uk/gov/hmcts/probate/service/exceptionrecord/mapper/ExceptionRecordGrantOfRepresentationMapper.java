@@ -1,13 +1,5 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import io.micrometer.core.instrument.util.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsNotApplying;
@@ -34,6 +26,15 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.util.List;
 
+import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.ReportingPolicy;
+
 @Mapper(componentModel = "spring",
     imports = {StringUtils.class, ApplicationType.class},
     uses = {ApplicationTypeMapper.class,
@@ -44,6 +45,7 @@ import java.util.List;
         OCRFieldYesOrNoMapper.class,
         OCRFieldMartialStatusMapper.class,
         OCRFieldAdoptiveRelativesMapper.class,
+        OCRFieldIhtFormTypeMapper.class,
         OCRFieldIhtMoneyMapper.class,
         OCRFieldRelationshipMapper.class,
         OCRFieldPaymentMethodMapper.class,
