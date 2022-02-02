@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -49,7 +49,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     private OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper;
     @Autowired
-    private EeDateOfDeathChecker eeDateOfDeathChecker;
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     @Autowired
     private OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper;
     @Autowired
@@ -533,8 +533,8 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         }
 
         @Bean
-        public EeDateOfDeathChecker eeDateOfDeathChecker() {
-            return new EeDateOfDeathChecker();
+        public ExceptedEstateDateOfDeathChecker eeDateOfDeathChecker() {
+            return new ExceptedEstateDateOfDeathChecker();
         }
         
         @Bean

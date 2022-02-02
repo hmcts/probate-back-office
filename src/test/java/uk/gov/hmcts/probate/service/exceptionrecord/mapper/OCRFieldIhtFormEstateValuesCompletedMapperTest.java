@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,15 +23,17 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
 
     @Mock
-    EeDateOfDeathChecker eeDateOfDeathChecker;
+    ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @InjectMocks
     OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper;
 
     @Before
     public void setUp() {
-        when(eeDateOfDeathChecker.isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
-        when(eeDateOfDeathChecker.isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
+        when(exceptedEstateDateOfDeathChecker
+            .isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
+        when(exceptedEstateDateOfDeathChecker
+            .isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
     }
 
     @Test

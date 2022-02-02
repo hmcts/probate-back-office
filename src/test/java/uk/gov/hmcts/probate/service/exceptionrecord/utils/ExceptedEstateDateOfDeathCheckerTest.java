@@ -11,21 +11,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class EeDateOfDeathCheckerTest {
+public class ExceptedEstateDateOfDeathCheckerTest {
 
     private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
 
     @Autowired
-    EeDateOfDeathChecker eeDateOfDeathChecker;
+    ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @Test
     public void shouldReturnFalse() {
-        assertFalse(eeDateOfDeathChecker.isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH));
+        assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH));
     }
 
     @Test
     public void shouldReturnTrue() {
-        assertTrue(eeDateOfDeathChecker.isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH));
+        assertTrue(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH));
     }
 }

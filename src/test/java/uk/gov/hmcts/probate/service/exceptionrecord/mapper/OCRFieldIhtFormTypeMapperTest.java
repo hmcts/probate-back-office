@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 
 import org.junit.Before;
@@ -24,7 +24,7 @@ public class OCRFieldIhtFormTypeMapperTest {
 
 
     @Mock
-    EeDateOfDeathChecker eeDateOfDeathChecker;
+    ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @InjectMocks
     OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper = new OCRFieldIhtFormTypeMapper();
@@ -43,8 +43,10 @@ public class OCRFieldIhtFormTypeMapperTest {
 
     @Before
     public void setUp() {
-        when(eeDateOfDeathChecker.isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
-        when(eeDateOfDeathChecker.isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
+        when(exceptedEstateDateOfDeathChecker
+            .isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
+        when(exceptedEstateDateOfDeathChecker
+            .isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
     }
     
     @Test

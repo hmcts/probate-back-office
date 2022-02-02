@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class EeDateOfDeathChecker {
+public class ExceptedEstateDateOfDeathChecker {
     
     @Value("${iht-estate.switch-date:2022-01-01}")
     String ihtEstateSwitchDate;

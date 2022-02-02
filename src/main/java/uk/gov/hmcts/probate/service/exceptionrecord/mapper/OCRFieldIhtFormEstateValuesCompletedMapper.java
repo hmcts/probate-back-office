@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class OCRFieldIhtFormEstateValuesCompletedMapper {
     
     @Autowired
-    EeDateOfDeathChecker eeDateOfDeathChecker;
+    ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @ToIHTFormEstateValuesCompleted
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
@@ -27,7 +27,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
             "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate())
                 || "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
         ) {
-            return eeDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()) 
+            return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()) 
                 ? Boolean.TRUE : null;
         }
         return null;

@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstate;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.EeDateOfDeathChecker;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ public class OCRFieldIhtFormEstateMapper {
     private static final String FORM_IHT400421 = "IHT400421";
 
     @Autowired
-    EeDateOfDeathChecker eeDateOfDeathChecker;
+    ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @ToIHTFormEstate
     public IhtFormEstate ihtFormEstate(ExceptionRecordOCRFields ocrFields) {
@@ -26,7 +26,7 @@ public class OCRFieldIhtFormEstateMapper {
         log.info("Beginning mapping for IHT Form Type value: {}", ihtFormEstate);
 
         if (ihtFormEstate == null || ihtFormEstate.isEmpty()
-            || !eeDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
+            || !exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
             return null;
         } else {
             switch (ihtFormEstate.toUpperCase().trim()) {
