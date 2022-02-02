@@ -16,7 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 public class SendDocumentsRenderer {
     private final LinkFormatterService linkFormatterService;
 
-    public String getSingleRenouncingExecutorText(String renouncingExecutorName) {
+    public String getPA15FormRenouncingExecutorText(String renouncingExecutorName) {
         return linkFormatterService.formatLink("", PA15_FORM_URL, PA15_FORM_TEXT,
             PA15_FORM_TEXT_AFTER + renouncingExecutorName);
     }

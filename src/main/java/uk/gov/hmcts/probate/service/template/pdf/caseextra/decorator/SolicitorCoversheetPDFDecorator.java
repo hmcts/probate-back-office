@@ -79,7 +79,7 @@ public class SolicitorCoversheetPDFDecorator {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "<li>" + sendDocumentsRenderer.getSingleRenouncingExecutorText(renouncingExecutorName) + "</li>";
+        return "<li>" + sendDocumentsRenderer.getPA15FormRenouncingExecutorText(renouncingExecutorName) + "</li>";
     }
 
 

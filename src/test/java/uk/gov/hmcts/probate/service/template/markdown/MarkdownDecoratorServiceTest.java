@@ -54,8 +54,8 @@ public class MarkdownDecoratorServiceTest {
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
         when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(allRenounced);
-        when(sendDocumentsRenderer.getSingleRenouncingExecutorText("name1")).thenReturn("formattedLink1");
-        when(sendDocumentsRenderer.getSingleRenouncingExecutorText("name2")).thenReturn("formattedLink2");
+        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("name2")).thenReturn("formattedLink2");
 
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);

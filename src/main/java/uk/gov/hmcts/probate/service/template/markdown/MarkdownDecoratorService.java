@@ -52,7 +52,7 @@ public class MarkdownDecoratorService {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "\n*   " + sendDocumentsRenderer.getSingleRenouncingExecutorText(renouncingExecutorName);
+        return "\n*   " + sendDocumentsRenderer.getPA15FormRenouncingExecutorText(renouncingExecutorName);
     }
 
 }

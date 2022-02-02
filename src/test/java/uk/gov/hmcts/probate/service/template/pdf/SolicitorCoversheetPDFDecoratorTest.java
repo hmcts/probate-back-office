@@ -73,7 +73,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         all.add(AdditionalExecutorNotApplying.builder().build());
         when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(all);
-        when(sendDocumentsRenderer.getSingleRenouncingExecutorText(any())).thenReturn("renouncing exec text");
+        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText(any())).thenReturn("renouncing exec text");
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
