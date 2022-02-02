@@ -279,6 +279,14 @@ public class ConfirmationResponseService {
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
 
+        if (ccdData.getTitleAndClearingType() != null) {
+            String tcResolutionLodgedWithApp = "\n*   a certified copy of the resolution";
+            if (!ccdData.getTitleAndClearingType().equals("TCTTrustCorpResWithApp")) {
+                tcResolutionLodgedWithApp = "";
+            }
+            keyValue.put("{{tcResolutionLodgedWithApp}}", tcResolutionLodgedWithApp);
+        }
+
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
