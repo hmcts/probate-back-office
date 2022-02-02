@@ -9,14 +9,13 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -38,7 +37,7 @@ public class MarkdownDecoratorServiceTest {
     private RenouncingExecutorsMapper renouncingExecutorsMapper;
 
     @Mock
-    private LinkFormatterService linkFormatterService;
+    private SendDocumentsRenderer sendDocumentsRenderer;
 
     @Mock
     private CaseData caseDataMock;
@@ -55,8 +54,11 @@ public class MarkdownDecoratorServiceTest {
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
         when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(allRenounced);
+        when(sendDocumentsRenderer.getSingleRenouncingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getSingleRenouncingExecutorText("name2")).thenReturn("formattedLink2");
+
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
-        assertEquals("\n*   null\n*   null", md);
+        assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
     }
 
     @Test
@@ -70,7 +72,7 @@ public class MarkdownDecoratorServiceTest {
     @Test
     public void shouldGetPA16FormLabel() {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
-        when(linkFormatterService.formatLink(any(), any(), any(), any())).thenReturn("formattedLink");
+        when(sendDocumentsRenderer.getPA16FormText()).thenReturn("formattedLink");
 
         String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink", md);
@@ -88,7 +90,7 @@ public class MarkdownDecoratorServiceTest {
     @Test
     public void shouldGetPA17FormLabel() {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
-        when(linkFormatterService.formatLink(any(), any(), any(), any())).thenReturn("formattedLink");
+        when(sendDocumentsRenderer.getPA17FormText()).thenReturn("formattedLink");
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink", md);

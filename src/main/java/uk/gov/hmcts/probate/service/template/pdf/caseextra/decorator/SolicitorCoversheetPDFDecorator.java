@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
@@ -19,13 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_AFTER;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -37,7 +30,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
     private final RenouncingExecutorsMapper renouncingExecutorsMapper;
-    private final LinkFormatterService linkFormatterService;
+    private final SendDocumentsRenderer sendDocumentsRenderer;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -51,8 +44,7 @@ public class SolicitorCoversheetPDFDecorator {
         }
         if (pa16FormBusinessRule.isApplicable(caseData)) {
             PA16FormCaseExtra pa16FormCaseExtra = PA16FormCaseExtra.builder()
-                .pa16FormText(PA16_FORM_TEXT)
-                .pa16FormUrl(PA16_FORM_URL)
+                .pa16FormText(sendDocumentsRenderer.getPA16FormText())
                 .showPa16Form(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
@@ -60,13 +52,12 @@ public class SolicitorCoversheetPDFDecorator {
         }
         if (pa17FormBusinessRule.isApplicable(caseData)) {
             PA17FormCaseExtra pa17FormCaseExtra = PA17FormCaseExtra.builder()
-                .pa17FormText(PA17_FORM_TEXT)
-                .pa17FormUrl(PA17_FORM_URL)
+                .pa17FormText(sendDocumentsRenderer.getPA17FormText())
                 .showPa17Form(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(pa17FormCaseExtra));
-        } 
+        }
         if (ihtEstate207BusinessRule.isApplicable(caseData)) {
             IhtEstate207CaseExtra ihtEstate207CaseExtra = IhtEstate207CaseExtra.builder()
                 .ihtEstate207Text(IHT_ESTATE_207_TEXT)
@@ -74,7 +65,7 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
-        }        
+        }
         return decoration;
     }
 
@@ -88,8 +79,7 @@ public class SolicitorCoversheetPDFDecorator {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "<li>" + linkFormatterService.formatLink("", PA15_FORM_URL, PA15_FORM_TEXT,
-            PA15_FORM_TEXT_AFTER + renouncingExecutorName) + "</li>";
+        return "<li>" + sendDocumentsRenderer.getSingleRenouncingExecutorText(renouncingExecutorName) + "</li>";
     }
 
 

@@ -18,7 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
@@ -53,7 +53,7 @@ public class TaskStateRendererTest {
     @Mock
     private RenouncingExecutorsMapper renouncingExecutorsMapper;
     @Mock
-    private LinkFormatterService linkFormatterService;
+    private SendDocumentsRenderer sendDocumentsRenderer;
 
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
@@ -408,13 +408,14 @@ public class TaskStateRendererTest {
             .solsFeeAccountNumber("1")
             .titleAndClearingType("TCTPartAllRenouncing")
             .build();
-
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA17Form");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov" 
+            + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" " 
+            + "target=\"_blank\">Give up probate executor rights for probate practitioners paper form (PA17)</a>");
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -461,8 +462,8 @@ public class TaskStateRendererTest {
                 .build();
         all.add(single);
         when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseData)).thenReturn(all);
-        when(linkFormatterService.formatLink(any(), any(), any(), any())).thenReturn("<a href=\"https://www.gov" 
-            + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up " 
+        when(sendDocumentsRenderer.getSingleRenouncingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+            + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
@@ -577,15 +578,17 @@ public class TaskStateRendererTest {
             .solsApplicantSiblings(NO)
             .solsSpouseOrCivilRenouncing(YES)
             .build();
-
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsWithPA16Form");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov" 
+            + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">Give up" 
+            + " probate administrator rights paper form (PA16)</a>");
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),

@@ -14,13 +14,12 @@ import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.htmltemplate.SendDocumentsDetailsHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmltemplate.StateChangeDateHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmltemplate.StatusTagHtmlTemplate;
-import uk.gov.hmcts.probate.service.LinkFormatterService;
+import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 
 import java.time.LocalDate;
@@ -33,13 +32,6 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_AFTER;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
@@ -79,7 +71,7 @@ public class TaskStateRenderer {
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
     private final RenouncingExecutorsMapper renouncingExecutorsMapper;
-    private final LinkFormatterService linkFormatterService;
+    private final SendDocumentsRenderer sendDocumentsRenderer;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -275,12 +267,12 @@ public class TaskStateRenderer {
         keyValue.put("pa15Form", pa15Form);
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
-            pa16Form = "<li><a href=\"" + PA16_FORM_URL + "\" target=\"_blank\">" + PA16_FORM_TEXT + "</a></li>";
+            pa16Form = "<li>" + sendDocumentsRenderer.getPA16FormText() + "</li>";
         }
         keyValue.put("pa16Form", pa16Form);
         String pa17Form = "";
         if (pa17FormBusinessRule.isApplicable(data)) {
-            pa17Form = "<li><a href=\"" + PA17_FORM_URL + "\" target=\"_blank\">" + PA17_FORM_TEXT + "</a></li>";
+            pa17Form = "<li>" + sendDocumentsRenderer.getPA17FormText() + "</li>";
         }
         keyValue.put("pa17Form", pa17Form);
         String ihtEstate207 = "";
@@ -288,9 +280,6 @@ public class TaskStateRenderer {
             ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";
         }
         keyValue.put("ihtEstate207", ihtEstate207);
-        keyValue.put("renouncingExecutors",
-            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
-                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 
@@ -304,16 +293,6 @@ public class TaskStateRenderer {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "<li>" + linkFormatterService.formatLink("", PA15_FORM_URL, PA15_FORM_TEXT,
-            PA15_FORM_TEXT_AFTER + renouncingExecutorName) +  "</li>";
-    }
-
-    private String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
-        return executors.stream()
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getNotApplyingExecutorReason()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-                + "</li>")
-            .collect(Collectors.joining());
+        return "<li>" + sendDocumentsRenderer.getSingleRenouncingExecutorText(renouncingExecutorName) +  "</li>";
     }
 }
