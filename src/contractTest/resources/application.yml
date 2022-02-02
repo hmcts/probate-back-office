@@ -481,7 +481,7 @@ iht-estate:
   switch-date: "2022-01-01"
   
 case_document_am:
-  url: ${CASE_DOCUMENT_AM_URL:http://ccd-case-document-am-api:4455}
+  url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
 
 document_management:
   fileupload:

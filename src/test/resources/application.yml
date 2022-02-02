@@ -423,7 +423,7 @@ azure:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
     
 case_document_am:
-  url: ${CASE_DOCUMENT_AM_URL:http://ccd-case-document-am-api:4455}
+  url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
 
 document_management:
   fileupload:
