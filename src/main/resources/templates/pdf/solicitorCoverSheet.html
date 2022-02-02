@@ -108,6 +108,13 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
+                {% if case_details.case_data.titleAndClearingType != null %}
+                    {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithApp" %}
+                    <li>
+                        a certified copy of the resolution
+                    </li>
+                    {% endif %}
+                {% endif %}
 
                 {% if case_extras != null %}
                     {% if case_extras.showPa16Form == "Yes" %}
