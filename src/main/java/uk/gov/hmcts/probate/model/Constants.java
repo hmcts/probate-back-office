@@ -63,6 +63,7 @@ public final class Constants {
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
+    public static final String TC_RESOLUTION_LODGED_WITH_APP = "a certified copy of the resolution";
 
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used

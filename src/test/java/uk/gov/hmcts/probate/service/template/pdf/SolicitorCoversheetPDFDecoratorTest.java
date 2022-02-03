@@ -7,13 +7,16 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.CaseExtraDecorator;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -29,6 +32,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
     private PA17FormBusinessRule pa17FormBusinessRuleMock;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
+    @Mock
+    private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRuleMock;
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
@@ -79,6 +84,18 @@ public class SolicitorCoversheetPDFDecoratorTest {
         String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+    }
+
+    @Test
+    public void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
+        when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
+        when(caseExtraDecorator.decorate(any())).thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
