@@ -102,11 +102,15 @@
 
                 {% if case_extras != null %}
                     {% if case_extras.showPa15Form == "Yes" %}
-                    {{ case_extras.pa15FormText }}
+                        {% for pa15FormPoint in case_extras.pa15FormPoints %}
+                        <li>
+                            <a href="{{ pa15FormPoint.url }}" target="_blank">{{ pa15FormPoint.text }}</a> (PA15) for {{ pa15FormPoint.executor }} 
+                        </li>
+                        {% endfor %}
                     {% endif %}
                     {% if case_extras.showPa16Form == "Yes" %}
                     <li>
-                        {{ case_extras.pa16FormText }}
+                        <a href="{{ case_extras.pa16FormUrl }}" target="_blank">{{ case_extras.pa16FormText }}</a>
                     </li>
                     {% endif %}
                     {% if case_extras.showPa17Form == "Yes" %}

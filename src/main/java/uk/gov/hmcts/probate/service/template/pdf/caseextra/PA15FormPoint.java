@@ -8,13 +8,13 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
-public class PA17FormCaseExtra {
+public class PA15FormPoint {
 
-    @JsonProperty(value = "showPa17Form")
-    private final String showPa17Form;
-    @JsonProperty(value = "pa17FormUrl")
-    private final String pa17FormUrl;
-    @JsonProperty(value = "pa17FormText")
-    private final String pa17FormText;
+    @JsonProperty(value = "url")
+    private final String url;
+    @JsonProperty(value = "text")
+    private final String text;
+    @JsonProperty(value = "executor")
+    private final String executor;
 
 }

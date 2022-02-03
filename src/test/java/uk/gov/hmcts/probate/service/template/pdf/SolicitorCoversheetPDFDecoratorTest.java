@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
@@ -36,8 +35,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
     private PA15FormBusinessRule pa15FormBusinessRuleMock;
     @Mock
     private RenouncingExecutorsMapper renouncingExecutorsMapper;
-    @Mock
-    private SendDocumentsRenderer sendDocumentsRenderer;
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
     @Mock
@@ -73,7 +70,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         all.add(AdditionalExecutorNotApplying.builder().build());
         when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(all);
-        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText(any())).thenReturn("renouncing exec text");
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -88,7 +84,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-        when(sendDocumentsRenderer.getPA16FormText()).thenReturn("exec text");
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -103,7 +98,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-        when(sendDocumentsRenderer.getPA17FormText()).thenReturn("exec text");
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
