@@ -38,13 +38,14 @@ public class MandatoryFieldsValidatorUtilsTest {
     @Test
     public void shouldAddWarningsForConditionalFields() {
         HashMap ocrFieldValues = new HashMap();
-        mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings, IHT_GROSS_VALUE, IHT_NET_VALUE);
+        mandatoryFieldsValidatorUtils
+            .addWarningsForConditionalFields(ocrFieldValues, warnings, IHT_GROSS_VALUE, IHT_NET_VALUE);
         assertEquals(2, warnings.size());
     }
     
     @Test
     public void shouldAddWarning() {
-        String warning ="Test";
+        String warning = "Test";
         mandatoryFieldsValidatorUtils.addWarning("Test", warnings);
         assertEquals(1, warnings.size());
         assertEquals(warning, warnings.get(0));
