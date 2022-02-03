@@ -3,14 +3,12 @@ package uk.gov.hmcts.probate.service.template.markdown;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.*;
 
 @Slf4j
 @Service
@@ -18,6 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 public class MarkdownDecoratorService {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
 
     public String getPA16FormLabel(CaseData caseData) {
         if (pa16FormBusinessRule.isApplicable(caseData)) {
@@ -29,6 +28,13 @@ public class MarkdownDecoratorService {
     public String getPA17FormLabel(CaseData caseData) {
         if (pa17FormBusinessRule.isApplicable(caseData)) {
             return "\n*   <a href=\"" + PA17_FORM_URL + "\" target=\"_blank\">" + PA17_FORM_TEXT + "</a>";
+        }
+        return "";
+    }
+
+    public String getAuthenticatedTranslationLabel(CaseData caseData) {
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            return "\n*" + AUTHENTICATED_TRANSLATION_WILL_TEXT;
         }
         return "";
     }
