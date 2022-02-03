@@ -278,14 +278,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
-
-        if (ccdData.getTitleAndClearingType() != null) {
-            String tcResolutionLodgedWithApp = "\n*   a certified copy of the resolution";
-            if (!ccdData.getTitleAndClearingType().equals("TCTTrustCorpResWithApp")) {
-                tcResolutionLodgedWithApp = "";
-            }
-            keyValue.put("{{tcResolutionLodgedWithApp}}", tcResolutionLodgedWithApp);
-        }
+        keyValue.put("{{getTcResolutionFormLabel}}", getTcResolutionFormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -336,6 +329,13 @@ public class ConfirmationResponseService {
             .titleAndClearingType(ccdData.getTitleAndClearingType())
             .build();
         return markdownDecoratorService.getPA17FormLabel(caseData);
+    }
+
+    private String getTcResolutionFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+                .titleAndClearingType(ccdData.getTitleAndClearingType())
+                .build();
+        return markdownDecoratorService.getTcResolutionFormLabel(caseData);
     }
     
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
