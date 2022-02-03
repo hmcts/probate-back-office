@@ -12,8 +12,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 public class AuthenticatedTranslationBusinessRuleTest {
 

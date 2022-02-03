@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -29,8 +28,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.Constants.*;
-import static uk.gov.hmcts.probate.model.PageTextConstants.*;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
+import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -64,8 +77,8 @@ public class TaskStateRenderer {
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
-                                         String willType, String solSOTNeedToUpdate,
-                                         LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+                                  String willType, String solSOTNeedToUpdate,
+                                  LocalDate authDate, LocalDate submitDate, CaseDetails details) {
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 solSOTNeedToUpdate);
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -116,8 +129,8 @@ public class TaskStateRenderer {
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                          String solSOTNeedToUpdate) {
-        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES)
+                                   String solSOTNeedToUpdate) {
+        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
                 return TaskState.COMPLETED;
@@ -149,29 +162,30 @@ public class TaskStateRenderer {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
-                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
-                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
-                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
-                .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
-                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
-                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
-                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
-                .replaceFirst(AUTHENTICATED_TRANSLATION, keyValues.getOrDefault("authenticatedTranslation", ""))
+                                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
+                                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                                .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
+                                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
+                                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                                .replaceFirst(AUTHENTICATED_TRANSLATION,
+                                        keyValues.getOrDefault("authenticatedTranslation", ""))
                 );
     }
 
     private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
-                                           TaskState currTaskState, String linkText, String caseId,
-                                           String willType, CaseDetails details) {
+                                    TaskState currTaskState, String linkText, String caseId,
+                                    String willType, CaseDetails details) {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
-            .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();
+                .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();
 
         if (linkUrlTemplate != null && currState == taskListState
-            && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
+                && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
             return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)
-                .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
+                    .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
         }
 
         return linkUrlTemplate != null && currState == taskListState
@@ -185,7 +199,7 @@ public class TaskStateRenderer {
         }
         String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
-                    format("Authenticated on %s", authDate.format(dateFormat)));
+                        format("Authenticated on %s", authDate.format(dateFormat)));
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
@@ -195,7 +209,7 @@ public class TaskStateRenderer {
         }
         String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
-                    format("Submitted on %s", submitDate.format(dateFormat)));
+                        format("Submitted on %s", submitDate.format(dateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
@@ -266,10 +280,11 @@ public class TaskStateRenderer {
         }
         keyValue.put("ihtEstate207", ihtEstate207);
         keyValue.put("renouncingExecutors",
-            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
-                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
+                (data.getAdditionalExecutorsNotApplying() != null)
+                        && (!data.getAdditionalExecutorsNotApplying().isEmpty())
+                        ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         String authenticatedTranslation = "";
-        if(authenticatedTranslationBusinessRule.isApplicable(data)) {
+        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
             authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
         }
         keyValue.put("authenticatedTranslation", authenticatedTranslation);
@@ -278,10 +293,10 @@ public class TaskStateRenderer {
 
     private String getRenouncingExecutors(List<CollectionMember<AdditionalExecutorNotApplying>> executors) {
         return executors.stream()
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
-                .getNotApplyingExecutorReason()))
-            .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
-                + "</li>")
-            .collect(Collectors.joining());
+                .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getValue()
+                        .getNotApplyingExecutorReason()))
+                .map(executor -> "<li>renunciation form for " + executor.getValue().getNotApplyingExecutorName()
+                        + "</li>")
+                .collect(Collectors.joining());
     }
 }

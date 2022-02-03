@@ -78,7 +78,7 @@ public class MarkdownDecoratorServiceTest {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
-        assertEquals("\n* an authenticated translation of the will",
+        assertEquals("\n*an authenticated translation of the will",
                 md);
     }
 
