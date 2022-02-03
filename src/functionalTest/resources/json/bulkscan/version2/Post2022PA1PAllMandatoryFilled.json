@@ -52,12 +52,12 @@
     },
     {
       "name": "deceasedDateOfBirth",
-      "value": "1900-01-01",
+      "value": "01011900",
       "description": "Deceased date of birth"
     },
     {
       "name": "deceasedDateOfDeath",
-      "value": "2022-01-01",
+      "value": "01012022",
       "description": "Deceased date of death"
     },
     {
