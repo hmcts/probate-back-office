@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -28,20 +29,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
-import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
-import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
-import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
-import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
-import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
-import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
-import static uk.gov.hmcts.probate.model.PageTextConstants.RENOUNCING_EXECUTORS;
+import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.PageTextConstants.*;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -68,6 +57,7 @@ public class TaskStateRenderer {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
@@ -166,6 +156,7 @@ public class TaskStateRenderer {
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                .replaceFirst(AUTHENTICATED_TRANSLATION, keyValues.getOrDefault("authenticatedTranslation", ""))
                 );
     }
 
@@ -277,6 +268,11 @@ public class TaskStateRenderer {
         keyValue.put("renouncingExecutors",
             (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
                 ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
+        String authenticatedTranslation = "";
+        if(authenticatedTranslationBusinessRule.isApplicable(data)) {
+            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
+        }
+        keyValue.put("authenticatedTranslation", authenticatedTranslation);
         return keyValue;
     }
 

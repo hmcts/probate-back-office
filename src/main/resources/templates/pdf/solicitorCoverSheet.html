@@ -126,6 +126,11 @@
                     <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
                 </li>
                 {% endif %}
+                {% if case_extras != null and case_extras.showAuthenticatedTranslation == "Yes" %}
+                <li>
+                    {{ case_extras.authenticatedTranslationText }}
+                </li>
+                {% endif %}
             </ul>
             <br /><br /><br />
         </td>

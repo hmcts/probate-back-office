@@ -3,19 +3,16 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 
-import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.*;
 
 @Component
 @AllArgsConstructor
@@ -24,6 +21,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -50,7 +48,15 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
-        }        
+        }
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            AuthenticatedTranslationCaseExtra authenticatedTranslationCaseExtra = AuthenticatedTranslationCaseExtra.builder()
+                    .authenticatedTranslationText(AUTHENTICATED_TRANSLATION_WILL_TEXT)
+                    .showAuthenticatedTranslation(YES)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(authenticatedTranslationCaseExtra));
+        }
         return decoration;
     }
 }
