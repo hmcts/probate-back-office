@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
@@ -48,6 +49,9 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    @Mock
+    private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+
 
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
@@ -839,6 +843,8 @@ public class TaskStateRendererTest {
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        when(tcResolutionLodgedWithApplicationRule.isApplicable(any(CaseData.class))).thenReturn(true);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",

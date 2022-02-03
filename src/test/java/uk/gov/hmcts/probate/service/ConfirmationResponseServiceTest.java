@@ -661,16 +661,18 @@ public class ConfirmationResponseServiceTest {
     @Test
     public void shouldGetNextStepsConfirmationForTcResolutionLodgedWithApp() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
-        when(ccdDataMock.getTitleAndClearingType()).thenReturn("TCTTrustCorpResWithApp");
 
         when(markdownSubstitutionServiceMock
                 .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
                 .thenReturn(willBodyTemplateResponseMock);
 
+        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
+            .thenReturn("a certified copy of the resolution");
+
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
-        assertEquals("\n*   a certified copy of the resolution",
+        assertEquals("a certified copy of the resolution",
                 nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
 
     }
