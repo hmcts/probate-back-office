@@ -20,6 +20,7 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -59,7 +60,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
     
     @Test
-    public void shouldIncludePA17Link() {
+    public void shouldIncludefPA17Link() {
         final String response = transformCase("solicitorValidateProbateExecutorsPA17.json", VALIDATE_URL);
         assertTrue(response.contains("(PA17)"));
     }
@@ -191,6 +192,16 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         Assert.assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
         Assert.assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
         Assert.assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
+    }
+
+    @Test
+    public void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() {
+        String dir = "/nextsteps/tcResolutionLodged/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+                Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
     }
 
     private String transformCase(String jsonFileName, String path) {

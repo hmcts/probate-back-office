@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
@@ -2117,6 +2118,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
         assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
+    public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() {
+        String payload = "/caseprogress/04e-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
 
     }
     
