@@ -848,13 +848,13 @@ public class TaskStateRendererTest {
                 .englishWill(NO)
                 .build();
 
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
         String expectedHtml = fileSystemResourceService
-                .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithAuthenticatedTranslationOfWill");
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/solicitorCaseProgressSendDocumentsWithAuthenticatedTranslationOfWill");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
         when(authenticatedTranslationBusinessRule.isApplicable(caseData)).thenReturn(true);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
                 LocalDate.of(2020,10,10),
