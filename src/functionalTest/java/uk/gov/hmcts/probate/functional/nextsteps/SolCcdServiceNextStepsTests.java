@@ -197,7 +197,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() {
         String dir = "/nextsteps/tcResolutionLodged/";
-        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
                 Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
