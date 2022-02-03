@@ -98,6 +98,21 @@ services:
       - sidam-api
       - service-auth-provider-api
 
+  ccd-case-management-web:
+    image: hmctspublic.azurecr.io/ccd/case-management-web:latest
+    environment:
+      IDAM_LOGIN_URL: http://localhost:3501/login
+      CCD_GATEWAY_BASE_URL: http://localhost:3453
+      CCD_ACTIVITY_BASE_URL:
+      DM_GATEWAY_BASE_URL: https://api-gateway.dev.dm.reform.hmcts.net
+      OAUTH2_CLIENT_ID: ccd_gateway
+      DM_URL: http://localhost:3453/documents
+      DM_URL_REMOTE: http://dm-store:8080/documents
+    ports:
+      - 3451:3451
+    depends_on:
+      - ccd-api-gateway
+
   ccd-api-gateway:
     image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
     environment:
