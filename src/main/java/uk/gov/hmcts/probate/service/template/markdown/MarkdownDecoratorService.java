@@ -8,7 +8,11 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 @Slf4j
 @Service
