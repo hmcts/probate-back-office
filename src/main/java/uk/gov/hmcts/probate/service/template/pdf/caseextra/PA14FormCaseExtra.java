@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 public class PA14FormCaseExtra {
 
-    @JsonProperty(value = "showPa14Form")
+    @JsonProperty(value = "showPa15Form")
     private final String showPa14Form;
-    @JsonProperty(value = "pa14FormPoints")
+    @JsonProperty(value = "pa15FormPoints")
     private final List<NotApplyingExecutorFormPoint> notApplyingExecutorFormPoints;
 
 }

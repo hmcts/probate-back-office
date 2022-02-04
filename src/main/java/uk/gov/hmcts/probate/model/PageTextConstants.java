@@ -10,6 +10,7 @@ public class PageTextConstants {
     public static final String ORIGINAL_WILL = "<originalWill/>";
     public static final String IHT_TEXT = "<ihtText/>";
     public static final String IHT_FORM = "<ihtForm/>";
+    public static final String PA14_FORM = "<pa14Form/>";
     public static final String PA15_FORM = "<pa15Form/>";
     public static final String PA16_FORM = "<pa16Form/>";
     public static final String PA17_FORM = "<pa17Form/>";

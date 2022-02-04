@@ -37,11 +37,11 @@ public class NotApplyingExecutorsMapper {
                 .collect(Collectors.toList()));
         }
 
-        if (caseData.getPrimaryApplicantForenames() != null && NO.equals(caseData.getPrimaryApplicantIsApplying()) 
+        if (caseData.getPrimaryApplicantForenames() != null && NO.equals(caseData.getPrimaryApplicantIsApplying())
             && notApplyingReason.equals(caseData.getSolsPrimaryExecutorNotApplyingReason())
         ) {
             executors.add(AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(caseData.getPrimaryApplicantForenames() + " " 
+                .notApplyingExecutorName(caseData.getPrimaryApplicantForenames() + " "
                     + caseData.getPrimaryApplicantSurname())
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .build());

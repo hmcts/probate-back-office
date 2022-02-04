@@ -48,6 +48,9 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_AFTER;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_BEFORE;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -58,9 +61,6 @@ public class ConfirmationResponseService {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
-    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
@@ -278,6 +278,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
+        keyValue.put("{{pa14form}}", getPA14FormLabel(caseData));
         keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
         keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
@@ -315,6 +316,10 @@ public class ConfirmationResponseService {
         }
 
         return ihtText;
+    }
+
+    private String getPA14FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA14FormLabel(caseData);
     }
 
     private String getPA15FormLabel(CaseData caseData) {

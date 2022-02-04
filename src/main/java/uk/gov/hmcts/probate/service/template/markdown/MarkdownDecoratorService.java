@@ -32,8 +32,8 @@ public class MarkdownDecoratorService {
     public String getPA14FormLabel(CaseData caseData) {
         String label = "";
         if (pa14FormBusinessRule.isApplicable(caseData)) {
-            List<AdditionalExecutorNotApplying> renouncedExecs =
-                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
+            List<AdditionalExecutorNotApplying> renouncedExecs = notApplyingExecutorsMapper
+                .getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
             label = renouncedExecs.stream()
                 .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
                 .collect(Collectors.joining());
@@ -70,7 +70,7 @@ public class MarkdownDecoratorService {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "\n*   " + sendDocumentsRenderer.getRenouncingExecutorText(renouncingExecutorName);
+        return "\n*   " + sendDocumentsRenderer.getNotApplyingExecutorText(renouncingExecutorName);
     }
 
 }

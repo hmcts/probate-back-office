@@ -627,6 +627,25 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationForPA14Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA14FormLabel(any(CaseData.class))).thenReturn("PA14Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA14Form text",
+            nextStepsValues.get("{{pa14form}}"));
+
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationForPA15Form() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
 

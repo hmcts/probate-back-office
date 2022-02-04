@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -10,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.NotApplyingExecutorFormPoint;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -25,6 +27,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -32,6 +35,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @AllArgsConstructor
 public class SolicitorCoversheetPDFDecorator {
     private final CaseExtraDecorator caseExtraDecorator;
+    private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
@@ -40,9 +44,19 @@ public class SolicitorCoversheetPDFDecorator {
 
     public String decorate(CaseData caseData) {
         String decoration = "";
+        if (pa14FormBusinessRule.isApplicable(caseData)) {
+            PA14FormCaseExtra pa14FormCaseExtra = PA14FormCaseExtra.builder()
+                .notApplyingExecutorFormPoints(buildRenouncingExecutorsLinks(caseData, 
+                    REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE))
+                .showPa14Form(YES)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(pa14FormCaseExtra));
+        }
         if (pa15FormBusinessRule.isApplicable(caseData)) {
             PA15FormCaseExtra pa15FormCaseExtra = PA15FormCaseExtra.builder()
-                .notApplyingExecutorFormPoints(buildPA15RenouncingExecutorsLinks(caseData))
+                .notApplyingExecutorFormPoints(buildRenouncingExecutorsLinks(caseData,
+                    REASON_FOR_NOT_APPLYING_RENUNCIATION))
                 .showPa15Form(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
@@ -74,13 +88,13 @@ public class SolicitorCoversheetPDFDecorator {
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
         }
-        System.out.println("decoration:" + decoration);
         return decoration;
     }
 
-    private List<NotApplyingExecutorFormPoint> buildPA15RenouncingExecutorsLinks(CaseData caseData) {
+    private List<NotApplyingExecutorFormPoint> buildRenouncingExecutorsLinks(CaseData caseData, 
+                                                                             String notApplyingReason) {
         List<AdditionalExecutorNotApplying> renouncedExecs =
-            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION);
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, notApplyingReason);
         return renouncedExecs.stream()
             .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.toList());
