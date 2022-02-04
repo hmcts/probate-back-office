@@ -75,6 +75,22 @@ public class NotApplyingExecutorsMapperTest {
         assertEquals(3, execsNotApplying.size());
     }
 
+    @Test
+    public void shouldGetNotApplyingExecsWithoutNullLists() {
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
+        when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(null);
+
+        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn("primaryFN");
+        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn("primarySN");
+        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn("No");
+        when(caseDataMock.getSolsPrimaryExecutorNotApplyingReason()).thenReturn("Reason1");
+
+        List<AdditionalExecutorNotApplying> execsNotApplying = underTest
+            .getAllExecutorsNotApplying(caseDataMock, "Reason1");
+
+        assertEquals(1, execsNotApplying.size());
+    }
+
     private AdditionalExecutor getSolsAddExec(int num, boolean applying, String reason) {
         return AdditionalExecutor.builder()
             .additionalExecForenames("solsAdditionalExecutor" + num + "FN")

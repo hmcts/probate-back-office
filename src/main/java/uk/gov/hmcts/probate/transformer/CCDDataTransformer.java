@@ -151,22 +151,6 @@ public class CCDDataTransformer {
         return addedDates;
     }
 
-    private List<Executor> getAllExecutorsNotApplying(CaseData caseData) {
-        List<Executor> executors = new ArrayList<>();
-        if (caseData.getAdditionalExecutorsNotApplying() != null) {
-            executors.addAll(caseData.getAdditionalExecutorsNotApplying().stream()
-                .map(CollectionMember::getValue)
-                .map(executor -> Executor.builder()
-                    .applying(false)
-                    .address(null)
-                    .reasonNotApplying(executor.getNotApplyingExecutorReason())
-                    .forename(executor.getNotApplyingExecutorName())
-                    .build())
-                .collect(Collectors.toList()));
-        }
-        return executors;
-    }
-    
     private List<Executor> getAllExecutors(CaseData caseData) {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {

@@ -74,7 +74,6 @@ public class SolicitorCoversheetPDFDecorator {
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
         }
-        System.out.println("decoration:" + decoration);
         return decoration;
     }
 
