@@ -149,6 +149,7 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+  enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
   after('test') {
@@ -179,6 +180,22 @@ withPipeline("java", product, component) {
 
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
+
+  after('highleveldatasetup') {
+    if (env.ENV != 'preview') {
+      // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
+      echo "CCD definition upload for environment: ${env.ENV}"
+      //setupShutteringSecret()
+      withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
+        withTeamSecrets(pipelineConf, env.ENV) {
+          archiveCoreCaseDataDefinitions(env.ENV)
+          uploadCoreCaseDataDefinitions(env.ENV)
+        }
+      }
+    } else {
+      echo "CCD definition upload SKIPPED for environment: ${env.ENV}"
+    }
   }
 
   onMaster() {
