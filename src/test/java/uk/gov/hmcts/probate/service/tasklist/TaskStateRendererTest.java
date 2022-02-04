@@ -863,4 +863,5 @@ public class TaskStateRendererTest {
 
         assertEquals(expectedHtml, result);
     }
+
 }

@@ -337,7 +337,7 @@ public class ConfirmationResponseService {
                 .build();
         return markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseData);
     }
-
+    
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
     } 
