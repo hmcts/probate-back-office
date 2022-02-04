@@ -183,14 +183,14 @@ withPipeline("java", product, component) {
   }
 
   after('highleveldatasetup') {
-    if (env.ENV != 'preview') {
+    if (env != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
-      echo "CCD definition upload for environment: ${env.ENV}"
+      echo "CCD definition upload for environment: ${env}"
       //setupShutteringSecret()
-      withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
-        withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
-          uploadCoreCaseDataDefinitions(env.ENV)
+      withSubscription(env != 'prod' ? 'nonprod' : 'prod') {
+        withTeamSecrets(pipelineConf, env) {
+          archiveCoreCaseDataDefinitions(env)
+          uploadCoreCaseDataDefinitions(env)
         }
       }
     } else {
