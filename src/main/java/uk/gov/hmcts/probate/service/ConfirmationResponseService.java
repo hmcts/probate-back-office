@@ -22,8 +22,6 @@ import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -36,7 +34,6 @@ import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionServic
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +47,6 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_AFTER;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_BEFORE;
-import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -326,21 +322,6 @@ public class ConfirmationResponseService {
         return markdownDecoratorService.getPA15FormLabel(caseData);
     }
 
-    private List<CollectionMember<AdditionalExecutorNotApplying>> buildAddExecsNotApplying(List<Executor> executors) {
-        List<CollectionMember<AdditionalExecutorNotApplying>> execs = new ArrayList<>();
-        if (executors != null) {
-            for (Executor executor : executors) {
-                AdditionalExecutorNotApplying additionalExecutor = AdditionalExecutorNotApplying.builder()
-                    .notApplyingExecutorName(executor.getForename())
-                    .notApplyingExecutorReason(executor.getReasonNotApplying())
-                    .build();
-                execs.add(new CollectionMember(additionalExecutor));
-            }
-        }
-        
-        return execs;
-    }
-
     private String getPA16FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
@@ -367,15 +348,6 @@ public class ConfirmationResponseService {
 
     private String defaultString(String value) {
         return value == null ? "" : value + ", ";
-    }
-
-    private String getRenouncingExecutors(List<Executor> executors) {
-        String renouncingExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
     }
 
     private String getDeadExecutors(List<Executor> executors) {

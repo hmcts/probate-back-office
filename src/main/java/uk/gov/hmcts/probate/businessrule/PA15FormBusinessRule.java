@@ -8,7 +8,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 
 @Component
-public class PA15FormBusinessRule extends NotApplyingExecutorsBusinessRule {
+public class PA15FormBusinessRule implements NotApplyingExecutorsBusinessRule {
 
     public boolean isApplicable(CaseData caseData) {
         if (isSolExecNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION)) {

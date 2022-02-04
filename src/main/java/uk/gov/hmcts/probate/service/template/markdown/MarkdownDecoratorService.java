@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUN
 @Service
 @RequiredArgsConstructor
 public class MarkdownDecoratorService {
+    public static final String BULLET = "\n*   ";
     private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
@@ -57,20 +58,20 @@ public class MarkdownDecoratorService {
 
     public String getPA16FormLabel(CaseData caseData) {
         if (pa16FormBusinessRule.isApplicable(caseData)) {
-            return "\n*   " + sendDocumentsRenderer.getPA16FormText();
+            return BULLET + sendDocumentsRenderer.getPA16FormText();
         }
         return "";
     }
 
     public String getPA17FormLabel(CaseData caseData) {
         if (pa17FormBusinessRule.isApplicable(caseData)) {
-            return "\n*   " + sendDocumentsRenderer.getPA17FormText();
+            return BULLET + sendDocumentsRenderer.getPA17FormText();
         }
         return "";
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "\n*   " + sendDocumentsRenderer.getNotApplyingExecutorText(renouncingExecutorName);
+        return BULLET + sendDocumentsRenderer.getNotApplyingExecutorText(renouncingExecutorName);
     }
 
 }
