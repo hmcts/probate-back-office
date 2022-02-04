@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -48,7 +49,8 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
-
+    @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -814,6 +816,50 @@ public class TaskStateRendererTest {
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNoticeSupportDocs() {
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
+
+        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorName()).thenReturn("Executor Two");
+        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorReason()).thenReturn("Renunciation");
+
+        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorName()).thenReturn("Executor Three");
+        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorReason()).thenReturn(
+                ExecutorNotApplyingReason.DIED_BEFORE.toString());
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .ihtFormId(IHT_FORM_207)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .solsWillType(GRANT_TYPE_PROBATE)
+                .solsFeeAccountNumber("1")
+                .titleAndClearingType("TCTPartAllRenouncing")
+                .englishWill(YES)
+                .dispenseWithNotice(YES)
+                .dispenseWithNoticeSupportingDocs("document1, document2")
+                .build();
+
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/solicitorCaseProgressSendDocumentsWithDispenseNoticeSupportDocs");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseData)).thenReturn(true);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+                testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
 
         assertEquals(expectedHtml, result);
     }

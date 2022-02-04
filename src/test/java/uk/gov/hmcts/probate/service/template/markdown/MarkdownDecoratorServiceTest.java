@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class MarkdownDecoratorServiceTest {
 
@@ -22,7 +24,10 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
-    
+
+    @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+
     @Mock
     private CaseData caseDataMock;
 
@@ -66,6 +71,28 @@ public class MarkdownDecoratorServiceTest {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String supportDocsText =
+                "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
+        String supportDocsEntry = "document1 document2";
+        String expectedText = "\n   " + supportDocsText + supportDocsEntry;
+        when(caseDataMock.getDispenseWithNotice()).thenReturn(YES);
+        when(caseDataMock.getDispenseWithNoticeSupportingDocs()).thenReturn("document1 document2");
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
+        assertEquals(expectedText, md);
+    }
+
+    @Test
+    public void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
         assertEquals("", md);
     }
 }

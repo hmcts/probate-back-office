@@ -16,7 +16,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -111,16 +110,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         response = removeCrLfs(response);
         String confirmationExpectedText = utils.getJsonFromFile(dir + "expectedConfirmation.txt");
         assertEquals(confirmationExpectedText, response);
-    }
-
-    @Test
-    public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
-        String dir = "/nextsteps/authenticatedTranslation/";
-        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
-                Collections.emptyList());
-        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
-        response = removeCrLfs(response);
-        assertTrue(response.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT));
     }
 
     @Test
