@@ -413,7 +413,7 @@ task fortifyScan(type: JavaExec)  {
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
-task highLevelDataSetup(type: JavaExec, description: 'High level data step mock implementation - DO NOTHING.') {
+task highLevelDataSetup(type: JavaExec) {
   onlyIf {
     return false
   }
