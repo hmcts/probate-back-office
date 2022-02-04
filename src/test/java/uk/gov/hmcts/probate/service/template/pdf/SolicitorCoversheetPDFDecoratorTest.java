@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -34,7 +34,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private PA15FormBusinessRule pa15FormBusinessRuleMock;
     @Mock
-    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
     @Mock
@@ -69,7 +69,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         all.add(AdditionalExecutorNotApplying.builder().build());
-        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(all);
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation")).thenReturn(all);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 

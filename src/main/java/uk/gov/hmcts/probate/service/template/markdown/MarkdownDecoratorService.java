@@ -9,10 +9,12 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 
 @Slf4j
 @Service
@@ -21,14 +23,14 @@ public class MarkdownDecoratorService {
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
-    private final RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
 
     public String getPA15FormLabel(CaseData caseData) {
         String label = "";
         if (pa15FormBusinessRule.isApplicable(caseData)) {
             List<AdditionalExecutorNotApplying> renouncedExecs =
-                renouncingExecutorsMapper.getAllRenouncingExecutors(caseData);
+                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION);
             label = renouncedExecs.stream()
                 .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
                 .collect(Collectors.joining());

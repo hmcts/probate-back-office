@@ -19,7 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
 import java.time.LocalDate;
@@ -35,6 +35,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -51,7 +52,7 @@ public class TaskStateRendererTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
     @Mock
-    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
     private SendDocumentsRenderer sendDocumentsRenderer;
 
@@ -461,7 +462,8 @@ public class TaskStateRendererTest {
                 .notApplyingExecutorReason("Renunciation")
                 .build();
         all.add(single);
-        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseData)).thenReturn(all);
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION))
+            .thenReturn(all);
         when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");

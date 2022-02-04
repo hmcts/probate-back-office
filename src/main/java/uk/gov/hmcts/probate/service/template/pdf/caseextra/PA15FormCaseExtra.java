@@ -15,6 +15,6 @@ public class PA15FormCaseExtra {
     @JsonProperty(value = "showPa15Form")
     private final String showPa15Form;
     @JsonProperty(value = "pa15FormPoints")
-    private final List<PA15FormPoint> pa15FormPoints;
+    private final List<NotApplyingExecutorFormPoint> notApplyingExecutorFormPoints;
 
 }

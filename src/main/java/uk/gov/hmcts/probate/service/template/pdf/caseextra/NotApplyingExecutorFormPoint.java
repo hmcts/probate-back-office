@@ -8,7 +8,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
-public class PA15FormPoint {
+public class NotApplyingExecutorFormPoint {
 
     @JsonProperty(value = "url")
     private final String url;
