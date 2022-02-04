@@ -101,6 +101,13 @@
                 {% endif %}
 
                 {% if case_extras != null %}
+                    {% if case_extras.showPa14Form == "Yes" %}
+                    {% for pa14FormPoint in case_extras.pa14FormPoints %}
+                    <li>
+                        <a href="{{ pa14FormPoint.url }}" target="_blank">{{ pa14FormPoint.text }}</a> (PA15) for {{ pa14FormPoint.executor }}
+                    </li>
+                    {% endfor %}
+                    {% endif %}
                     {% if case_extras.showPa15Form == "Yes" %}
                         {% for pa15FormPoint in case_extras.pa15FormPoints %}
                         <li>

@@ -14,16 +14,15 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @Service
-public class RenouncingExecutorsMapper {
-    private static final String RENOUNCED = "Renunciation";
+public class NotApplyingExecutorsMapper {
 
-    public List<AdditionalExecutorNotApplying> getAllRenouncingExecutors(CaseData caseData) {
+    public List<AdditionalExecutorNotApplying> getAllExecutorsNotApplying(CaseData caseData, String notApplyingReason) {
         List<AdditionalExecutorNotApplying> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
             executors.addAll(caseData.getSolsAdditionalExecutorList().stream()
                 .map(CollectionMember::getValue)
                 .filter(exec -> NO.equals(exec.getAdditionalApplying()))
-                .filter(exec -> RENOUNCED.equals(exec.getAdditionalExecReasonNotApplying()))
+                .filter(exec -> notApplyingReason.equals(exec.getAdditionalExecReasonNotApplying()))
                 .map(exec -> AdditionalExecutorNotApplying.builder()
                     .notApplyingExecutorName(exec.getAdditionalExecForenames() + " " + exec.getAdditionalExecLastname())
                     .notApplyingExecutorReason(exec.getAdditionalExecReasonNotApplying())
@@ -34,12 +33,12 @@ public class RenouncingExecutorsMapper {
         if (caseData.getAdditionalExecutorsNotApplying() != null) {
             executors.addAll(caseData.getAdditionalExecutorsNotApplying().stream()
                 .map(CollectionMember::getValue)
-                .filter(exec -> RENOUNCED.equals(exec.getNotApplyingExecutorReason()))
+                .filter(exec -> notApplyingReason.equals(exec.getNotApplyingExecutorReason()))
                 .collect(Collectors.toList()));
         }
 
         if (caseData.getPrimaryApplicantForenames() != null && NO.equals(caseData.getPrimaryApplicantIsApplying()) 
-            && RENOUNCED.equals(caseData.getSolsPrimaryExecutorNotApplyingReason())
+            && notApplyingReason.equals(caseData.getSolsPrimaryExecutorNotApplyingReason())
         ) {
             executors.add(AdditionalExecutorNotApplying.builder()
                 .notApplyingExecutorName(caseData.getPrimaryApplicantForenames() + " " 

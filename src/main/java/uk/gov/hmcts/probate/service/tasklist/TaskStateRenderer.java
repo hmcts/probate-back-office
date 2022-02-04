@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -20,7 +21,7 @@ import uk.gov.hmcts.probate.model.htmltemplate.SendDocumentsDetailsHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmltemplate.StateChangeDateHtmlTemplate;
 import uk.gov.hmcts.probate.model.htmltemplate.StatusTagHtmlTemplate;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +33,8 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
@@ -63,14 +66,14 @@ public class TaskStateRenderer {
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
     private static final String COVERSHEET = "coversheet";
     private static final String IHT_400421 = "IHT400421";
-    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
-    private final RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
 
     // isProbate - true if application for probate, false if for caveat
@@ -163,6 +166,7 @@ public class TaskStateRenderer {
                 .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
                 .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
                 .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa14Form", ""))
                 .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
@@ -260,9 +264,14 @@ public class TaskStateRenderer {
 
         keyValue.put("ihtText", ihtText);
         keyValue.put("ihtForm", ihtForm);
+        String pa14Form = "";
+        if (pa14FormBusinessRule.isApplicable(data)) {
+            pa14Form = buildRenouncingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
+        }
+        keyValue.put("pa14Form", pa14Form);
         String pa15Form = "";
         if (pa15FormBusinessRule.isApplicable(data)) {
-            pa15Form = buildRenouncingExecutorsLinks(data);
+            pa15Form = buildRenouncingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_RENUNCIATION);
         }
         keyValue.put("pa15Form", pa15Form);
         String pa16Form = "";
@@ -283,9 +292,9 @@ public class TaskStateRenderer {
         return keyValue;
     }
 
-    private String buildRenouncingExecutorsLinks(CaseData caseData) {
+    private String buildRenouncingExecutorsLinks(CaseData caseData, String reason) {
         List<AdditionalExecutorNotApplying> renouncedExecs =
-            renouncingExecutorsMapper.getAllRenouncingExecutors(caseData);
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
         return renouncedExecs.stream()
             .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.joining());
@@ -293,6 +302,6 @@ public class TaskStateRenderer {
     }
 
     private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return "<li>" + sendDocumentsRenderer.getPA15FormRenouncingExecutorText(renouncingExecutorName) +  "</li>";
+        return "<li>" + sendDocumentsRenderer.getRenouncingExecutorText(renouncingExecutorName) +  "</li>";
     }
 }

@@ -4,13 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class MarkdownDecoratorServiceTest {
     private MarkdownDecoratorService markdownDecoratorService;
 
     @Mock
+    private PA14FormBusinessRule pa14FormBusinessRule;
+    
+    @Mock
     private PA15FormBusinessRule pa15FormBusinessRule;
 
     @Mock
@@ -34,7 +38,7 @@ public class MarkdownDecoratorServiceTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
 
     @Mock
-    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
 
     @Mock
     private SendDocumentsRenderer sendDocumentsRenderer;
@@ -48,14 +52,36 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
+    public void shouldGetPA14FormLabel() {
+        when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+        List<AdditionalExecutorNotApplying> allIncapable = new ArrayList<>();
+        allIncapable.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
+        allIncapable.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "MentallyIncapable")).thenReturn(allIncapable);
+        when(sendDocumentsRenderer.getRenouncingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getRenouncingExecutorText("name2")).thenReturn("formattedLink2");
+
+        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
+        assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
+    }
+
+    @Test
+    public void shouldNotGetPA14FormLabel() {
+        when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
     public void shouldGetPA15FormLabel() {
         when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         List<AdditionalExecutorNotApplying> allRenounced = new ArrayList<>();
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
-        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseDataMock)).thenReturn(allRenounced);
-        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("name1")).thenReturn("formattedLink1");
-        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("name2")).thenReturn("formattedLink2");
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation")).thenReturn(allRenounced);
+        when(sendDocumentsRenderer.getRenouncingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getRenouncingExecutorText("name2")).thenReturn("formattedLink2");
 
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
@@ -68,7 +94,7 @@ public class MarkdownDecoratorServiceTest {
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
         assertEquals("", md);
     }
-    
+
     @Test
     public void shouldGetPA16FormLabel() {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);

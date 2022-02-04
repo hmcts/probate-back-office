@@ -19,7 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
 import java.time.LocalDate;
@@ -51,7 +51,7 @@ public class TaskStateRendererTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
     @Mock
-    private RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
     private SendDocumentsRenderer sendDocumentsRenderer;
 
@@ -461,8 +461,8 @@ public class TaskStateRendererTest {
                 .notApplyingExecutorReason("Renunciation")
                 .build();
         all.add(single);
-        when(renouncingExecutorsMapper.getAllRenouncingExecutors(caseData)).thenReturn(all);
-        when(sendDocumentsRenderer.getPA15FormRenouncingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, "Renunciation")).thenReturn(all);
+        when(sendDocumentsRenderer.getRenouncingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");
 

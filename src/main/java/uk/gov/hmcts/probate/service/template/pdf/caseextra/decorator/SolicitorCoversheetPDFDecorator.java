@@ -8,10 +8,10 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.solicitorexecutor.RenouncingExecutorsMapper;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormPoint;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.NotApplyingExecutorFormPoint;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 
@@ -25,6 +25,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -35,13 +36,13 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
-    private final RenouncingExecutorsMapper renouncingExecutorsMapper;
+    private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
         if (pa15FormBusinessRule.isApplicable(caseData)) {
             PA15FormCaseExtra pa15FormCaseExtra = PA15FormCaseExtra.builder()
-                .pa15FormPoints(buildPA15RenouncingExecutorsLinks(caseData))
+                .notApplyingExecutorFormPoints(buildPA15RenouncingExecutorsLinks(caseData))
                 .showPa15Form(YES)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
@@ -77,17 +78,17 @@ public class SolicitorCoversheetPDFDecorator {
         return decoration;
     }
 
-    private List<PA15FormPoint> buildPA15RenouncingExecutorsLinks(CaseData caseData) {
+    private List<NotApplyingExecutorFormPoint> buildPA15RenouncingExecutorsLinks(CaseData caseData) {
         List<AdditionalExecutorNotApplying> renouncedExecs =
-            renouncingExecutorsMapper.getAllRenouncingExecutors(caseData);
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION);
         return renouncedExecs.stream()
             .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.toList());
 
     }
 
-    private PA15FormPoint buildRenouncingExecLabel(String renouncingExecutorName) {
-        return PA15FormPoint.builder()
+    private NotApplyingExecutorFormPoint buildRenouncingExecLabel(String renouncingExecutorName) {
+        return NotApplyingExecutorFormPoint.builder()
             .url(PA15_FORM_URL)
             .text(PA15_FORM_TEXT)
             .executor(renouncingExecutorName)
