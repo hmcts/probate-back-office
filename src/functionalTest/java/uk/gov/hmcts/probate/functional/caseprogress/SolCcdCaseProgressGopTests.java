@@ -132,6 +132,12 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
             "/gop/04c-caseCreatedIHT217");
     }
 
+    @Test
+    public void shouldRenderSendDocumentsWithTcResolutionLodgedWithApplication() {
+        verifyCaseProgressHtmlSolPost("caseprogress/04e-caseCreated.json", TASKLIST_UPDATE_URL,
+                "/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
+    }
+
     private String getAddApplicationDetailsUrl() {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
                 "1528365719153338");

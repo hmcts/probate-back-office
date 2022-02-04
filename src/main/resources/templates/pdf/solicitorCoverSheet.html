@@ -119,16 +119,16 @@
                         {{ case_extras.ihtEstate207Text }}
                     </li>
                     {% endif %}
-                {% endif %}
-                {% if case_extras != null and case_extras.showPa17Form == "Yes" %}
-                <li>
-                    <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
-                </li>
-                {% endif %}
-                {% if case_extras != null and case_extras.showTcResolutionLodgedWithApp == "Yes" %}
-                <li>
-                    {{ case_extras.tcResolutionLodgedWithAppText }}
-                </li>
+                    {% if case_extras.showPa17Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showTcResolutionLodgedWithApp == "Yes" %}
+                    <li>
+                        {{ case_extras.tcResolutionLodgedWithAppText }}
+                    </li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <br /><br /><br />
