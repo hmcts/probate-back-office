@@ -135,7 +135,7 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     public void shouldRenderSendDocumentsWithTcResolutionLodgedWithApplication() {
         verifyCaseProgressHtmlSolPost("caseprogress/04e-caseCreated.json", TASKLIST_UPDATE_URL,
-                "/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
+                "/gop/04e-caseCreatedTcResolutionLodgedWithApp");
     }
 
     private String getAddApplicationDetailsUrl() {
