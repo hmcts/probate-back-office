@@ -258,8 +258,7 @@ public class ConfirmationResponseServiceFeatureTest {
         all.addAll(createAdditionalExecutor("John", "Smith", true));
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(all);
 
-        CCDData ccdData = createCCDataBuilder().otherExecutorExists("Yes")
-            .build();
+        CCDData ccdData = createCCDataBuilder().build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
             caseDataMock);
 

@@ -50,7 +50,6 @@ public class CCDDataTransformer {
             .fee(buildFeeDetails(caseData))
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .executors(getAllExecutors(caseData))
-            .executorsNotApplying(getAllExecutorsNotApplying(caseData))
             .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
             .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
             .willHasCodicils(caseData.getWillHasCodicils())
@@ -64,9 +63,6 @@ public class CCDDataTransformer {
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .titleAndClearingType(caseData.getTitleAndClearingType())
-            .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
-            .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
-            .otherExecutorExists(caseData.getOtherExecutorExists())
             .build();
     }
 

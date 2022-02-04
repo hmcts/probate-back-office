@@ -449,9 +449,6 @@ public class CCDDataTransformerTest {
         assertEquals(true, ccdData.getExecutors().get(0).isApplying());
         assertEquals(false, ccdData.getExecutors().get(1).isApplying());
         assertEquals("Renunciation", ccdData.getExecutors().get(1).getReasonNotApplying());
-
-        assertEquals("Renunciation", ccdData.getExecutorsNotApplying().get(1).getReasonNotApplying());
-        
     }
 
     private void assertCaseSubmissionDate(CCDData ccdData) {
