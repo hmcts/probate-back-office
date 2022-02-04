@@ -1,5 +1,6 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
+import uk.gov.hmcts.contino.AppPipelineConfig
 
 @Library("Infrastructure")
 
@@ -183,14 +184,14 @@ withPipeline("java", product, component) {
   }
 
   after('highleveldatasetup') {
-    if (env != 'preview') {
+    if (env.ENV != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
-      echo "CCD definition upload for environment: ${env}"
+      echo "CCD definition upload for environment: ${env.ENV}"
       //setupShutteringSecret()
-      withSubscription(env != 'prod' ? 'nonprod' : 'prod') {
-        withTeamSecrets(pipelineConf, env) {
-          archiveCoreCaseDataDefinitions(env)
-          uploadCoreCaseDataDefinitions(env)
+      withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
+        withTeamSecrets(pipelineConf, env.ENV) {
+          archiveCoreCaseDataDefinitions(env.ENV)
+          uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
     } else {
