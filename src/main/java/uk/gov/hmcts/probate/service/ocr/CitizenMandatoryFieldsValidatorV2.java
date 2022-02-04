@@ -27,22 +27,21 @@ public class CitizenMandatoryFieldsValidatorV2 {
         "Did you complete the IHT205 online with HMRC?");
     public static final DefaultKeyValue DIED_AFTER_SWITCH_DATE = new DefaultKeyValue("deceasedDiedOnAfterSwitchDate",
         "Did the deceased die on or after 1 January 2022?");
+    private static final String FALSE = "false";
+    private static final String TRUE = "true";
 
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        boolean iht400421completed = toBoolean(ocrFieldValues.get(IHT_400421_COMPLETED.getKey()));
-
-        if (!iht400421completed) {
+        if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_400421_COMPLETED.getKey()))) {
             mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_207_COMPLETED);
-            boolean iht207completed = toBoolean(ocrFieldValues.get(IHT_207_COMPLETED.getKey()));
-            if (!iht207completed) {
+            if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_207_COMPLETED.getKey()))) {
                 mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, DIED_AFTER_SWITCH_DATE);
 
                 boolean deceasedDiedOnAfterSwitchDate = toBoolean(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()));
 
-                if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey())) 
+                if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))
                     && deceasedDiedOnAfterSwitchDate != exceptedEstateDateOfDeathChecker
                     .isOnOrAfterSwitchDate(ocrFieldValues.get("deceasedDateOfDeath"))) {
                     mandatoryFieldsValidatorUtils.addWarning(
@@ -57,13 +56,36 @@ public class CitizenMandatoryFieldsValidatorV2 {
                         DECEASED_LATE_SPOUSE);
                 } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
                     mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_205_COMPLETED_ONLINE);
-                    boolean iht205completedOnline = toBoolean(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()));
-                    if (iht205completedOnline) {
+
+                    if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
                         mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                             IHT_IDENTIFIER);
+                        mandatoryFieldsValidatorUtils.addWarning(
+                            "IhtFormCompletedOnline expected to be set to true (IhtFormCompletedOnline)",
+                            warnings);
+                    } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
+                        mandatoryFieldsValidatorUtils.addWarning(
+                            "ihtFormId expected to be set to IHT205 (ihtFormId)",
+                            warnings);
                     }
                 }
+            } else if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_207_COMPLETED.getKey()))
+                && !"IHT207".equals(ocrFieldValues.get("ihtFormEstate"))) {
+                mandatoryFieldsValidatorUtils.addWarning(
+                    "ihtFormEstate expected to be set to IHT207 (ihtFormEstate)",
+                    warnings);
+                mandatoryFieldsValidatorUtils.addWarning(
+                    "ihtFormId expected to be set to IHT207 (ihtFormId)",
+                    warnings);
             }
+        } else if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_400421_COMPLETED.getKey()))
+            && !"IHT400421".equals(ocrFieldValues.get("ihtFormEstate"))) {
+            mandatoryFieldsValidatorUtils.addWarning(
+                "ihtFormEstate expected to be set to IHT400421 (ihtFormEstate)",
+                warnings);
+            mandatoryFieldsValidatorUtils.addWarning(
+                "ihtFormId expected to be set to IHT400421 (ihtFormId)",
+                warnings);
         }
     }
 }
