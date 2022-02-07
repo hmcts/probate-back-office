@@ -60,10 +60,14 @@ public class CitizenMandatoryFieldsValidatorV2 {
                     if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
                         mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                             IHT_IDENTIFIER);
-                        mandatoryFieldsValidatorUtils.addWarning(
-                            "IhtFormCompletedOnline expected to be set to true (IhtFormCompletedOnline)",
-                            warnings);
-                    } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
+                        if (!TRUE.equalsIgnoreCase(ocrFieldValues.get("ihtFormCompletedOnline"))) {
+                            mandatoryFieldsValidatorUtils.addWarning(
+                                "ihtFormCompletedOnline expected to be set to true (ihtFormCompletedOnline)",
+                                warnings);
+                        }
+
+                    } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))
+                        && !"IHT205".equals(ocrFieldValues.get("ihtFormId"))) {
                         mandatoryFieldsValidatorUtils.addWarning(
                             "ihtFormId expected to be set to IHT205 (ihtFormId)",
                             warnings);
