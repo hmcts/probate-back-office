@@ -47,7 +47,6 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#primaryApplicantAddress__detailCountry', createGrantOfProbateConfig.address_country);
 
         await I.click(`#otherExecutorExists_${createGrantOfProbateConfig.page1_otherExecutorExistsNo}`);
-        
         await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page1_bo_deceasedTitle);
 
         await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page1_deceasedForenames + '_' + unique_deceased_user);
