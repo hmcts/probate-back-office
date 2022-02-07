@@ -107,7 +107,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extra, json);
-        verify(pa14FormBusinessRuleMock).isApplicable(caseDataMock);
+        verify(pa16FormBusinessRuleMock).isApplicable(caseDataMock);
     }
 
     @Test

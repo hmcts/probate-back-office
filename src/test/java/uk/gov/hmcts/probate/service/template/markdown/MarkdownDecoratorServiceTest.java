@@ -59,8 +59,8 @@ public class MarkdownDecoratorServiceTest {
         allIncapable.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
         when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "MentallyIncapable"))
             .thenReturn(allIncapable);
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("name1")).thenReturn("formattedLink1");
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("name2")).thenReturn("formattedLink2");
+        when(sendDocumentsRenderer.getPA14NotApplyingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getPA14NotApplyingExecutorText("name2")).thenReturn("formattedLink2");
 
         String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
@@ -82,8 +82,8 @@ public class MarkdownDecoratorServiceTest {
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name2").build());
         when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation"))
             .thenReturn(allRenounced);
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("name1")).thenReturn("formattedLink1");
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("name2")).thenReturn("formattedLink2");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("name1")).thenReturn("formattedLink1");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("name2")).thenReturn("formattedLink2");
 
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);

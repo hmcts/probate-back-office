@@ -465,7 +465,7 @@ public class TaskStateRendererTest {
                 .build();
         all.add(single);
         when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, "Renunciation")).thenReturn(all);
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Medical " 
             + "certificate completed by a health professional</a> (PA14) for Tim Smith");
 
@@ -515,7 +515,7 @@ public class TaskStateRendererTest {
                 .build();
         all.add(single);
         when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, "Renunciation")).thenReturn(all);
-        when(sendDocumentsRenderer.getNotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");
 

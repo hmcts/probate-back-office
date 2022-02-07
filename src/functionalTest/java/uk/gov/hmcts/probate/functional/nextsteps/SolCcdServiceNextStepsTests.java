@@ -65,6 +65,12 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldIncludePA14Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA14.json", VALIDATE_URL);
+        assertTrue(response.contains("(PA14)"));
+    }
+
+    @Test
     public void shouldIncludePA15Link() {
         final String response = transformCase("solicitorValidateProbateExecutorsPA15.json", VALIDATE_URL);
         assertTrue(response.contains("(PA15)"));

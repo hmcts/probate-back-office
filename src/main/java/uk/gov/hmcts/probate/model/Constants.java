@@ -59,6 +59,9 @@ public final class Constants {
     public static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
+    public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
+    public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
+    public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
     public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";
     public static final String PA15_FORM_TEXT = "Give up probate administrator rights paper form";
     public static final String PA15_FORM_TEXT_AFTER = "(PA15) for ";

@@ -36,7 +36,7 @@ public class MarkdownDecoratorService {
             List<AdditionalExecutorNotApplying> renouncedExecs = notApplyingExecutorsMapper
                 .getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
             label = renouncedExecs.stream()
-                .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
+                .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
                 .collect(Collectors.joining());
 
         }
@@ -49,7 +49,7 @@ public class MarkdownDecoratorService {
             List<AdditionalExecutorNotApplying> renouncedExecs =
                 notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, REASON_FOR_NOT_APPLYING_RENUNCIATION);
             label = renouncedExecs.stream()
-                .map(executor -> buildRenouncingExecLabel(executor.getNotApplyingExecutorName()))
+                .map(executor -> buildPA15NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
                 .collect(Collectors.joining());
 
         }
@@ -70,8 +70,12 @@ public class MarkdownDecoratorService {
         return "";
     }
 
-    private String buildRenouncingExecLabel(String renouncingExecutorName) {
-        return BULLET + sendDocumentsRenderer.getNotApplyingExecutorText(renouncingExecutorName);
+    private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
+        return BULLET + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName);
+    }
+
+    private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
+        return BULLET + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName);
     }
 
 }

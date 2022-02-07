@@ -52,10 +52,9 @@ public class NotApplyingExecutorsMapperTest {
 
     @Test
     public void shouldGetNotApplyingExecsWithPrimary() {
-        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn("primaryFN");
-        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn("primarySN");
-        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn("No");
-        when(caseDataMock.getSolsPrimaryExecutorNotApplyingReason()).thenReturn("Reason1");
+        when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
 
         List<AdditionalExecutorNotApplying> execsNotApplying = underTest
             .getAllExecutorsNotApplying(caseDataMock, "Reason1");
@@ -64,10 +63,21 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithoutPrimary() {
-        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn("primaryFN");
-        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn("primarySN");
-        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn("Yes");
+    public void shouldGetNotApplyingExecsWithPrimaryIncuded() {
+        when(caseDataMock.getSolsSOTName()).thenReturn("solsAdditionalExecutorFN solsAdditionalExecutorLN");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
+
+        List<AdditionalExecutorNotApplying> execsNotApplying = underTest
+            .getAllExecutorsNotApplying(caseDataMock, "Reason1");
+
+        assertEquals(4, execsNotApplying.size());
+    }
+
+    @Test
+    public void shouldGetApplyingExecsWithoutPrimaryWithSOTName() {
+        when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
 
         List<AdditionalExecutorNotApplying> execsNotApplying = underTest
             .getAllExecutorsNotApplying(caseDataMock, "Reason1");
@@ -80,10 +90,9 @@ public class NotApplyingExecutorsMapperTest {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(null);
 
-        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn("primaryFN");
-        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn("primarySN");
-        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn("No");
-        when(caseDataMock.getSolsPrimaryExecutorNotApplyingReason()).thenReturn("Reason1");
+        when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
+        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+        when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
 
         List<AdditionalExecutorNotApplying> execsNotApplying = underTest
             .getAllExecutorsNotApplying(caseDataMock, "Reason1");
@@ -94,7 +103,7 @@ public class NotApplyingExecutorsMapperTest {
     private AdditionalExecutor getSolsAddExec(int num, boolean applying, String reason) {
         return AdditionalExecutor.builder()
             .additionalExecForenames("solsAdditionalExecutor" + num + "FN")
-            .additionalExecLastname("solsAdditionalExecutor\"+num+\"LN")
+            .additionalExecLastname("solsAdditionalExecutor" + num + "LN")
             .additionalApplying(applying ? "Yes" : "No")
             .additionalExecReasonNotApplying(applying ? null : reason)
             .build();

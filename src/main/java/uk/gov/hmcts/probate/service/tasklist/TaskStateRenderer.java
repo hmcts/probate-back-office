@@ -267,12 +267,12 @@ public class TaskStateRenderer {
         keyValue.put("ihtForm", ihtForm);
         String pa14Form = "";
         if (pa14FormBusinessRule.isApplicable(data)) {
-            pa14Form = buildNotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
+            pa14Form = buildPA14NotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
         }
         keyValue.put("pa14Form", pa14Form);
         String pa15Form = "";
         if (pa15FormBusinessRule.isApplicable(data)) {
-            pa15Form = buildNotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_RENUNCIATION);
+            pa15Form = buildPA15NotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_RENUNCIATION);
         }
         keyValue.put("pa15Form", pa15Form);
         String pa16Form = "";
@@ -293,16 +293,29 @@ public class TaskStateRenderer {
         return keyValue;
     }
 
-    private String buildNotApplyingExecutorsLinks(CaseData caseData, String reason) {
-        List<AdditionalExecutorNotApplying> renouncedExecs =
+    private String buildPA14NotApplyingExecutorsLinks(CaseData caseData, String reason) {
+        List<AdditionalExecutorNotApplying> notApplyingExecs =
             notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
-        return renouncedExecs.stream()
-            .map(executor -> buildNotApplyingExecLabel(executor.getNotApplyingExecutorName()))
+        return notApplyingExecs.stream()
+            .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.joining());
-        
+
     }
 
-    private String buildNotApplyingExecLabel(String renouncingExecutorName) {
-        return "<li>" + sendDocumentsRenderer.getNotApplyingExecutorText(renouncingExecutorName) +  "</li>";
+    private String buildPA15NotApplyingExecutorsLinks(CaseData caseData, String reason) {
+        List<AdditionalExecutorNotApplying> notApplyingExecs =
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
+        return notApplyingExecs.stream()
+            .map(executor -> buildPA15NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
+            .collect(Collectors.joining());
+
+    }
+
+    private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
+        return "<li>" + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName) +  "</li>";
+    }
+    
+    private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
+        return "<li>" + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName) +  "</li>";
     }
 }
