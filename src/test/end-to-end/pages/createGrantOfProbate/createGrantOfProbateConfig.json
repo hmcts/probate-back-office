@@ -173,5 +173,11 @@
 
     "amendCaseDetails_waitForText": "Amend case details",
     "amendApplicantDetails_update_option": "Applicant Details",
-    "domAndAssets_update_option": "Domicility and Assets"
+    "domAndAssets_update_option": "Domicility and Assets",
+
+    "EE_ihtFormEstateValueCompletedNo": "No",
+    "EE_ihtFormEstateValueCompletedYes": "Yes",
+    "EE_ihtFormEstate207": "IHT207",
+    "EE_ihtEstateGrossValue" : "500",
+    "EE_ihtEstateNetValue" : "400"
 }
