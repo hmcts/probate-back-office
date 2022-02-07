@@ -24,7 +24,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue10000() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "27300");
     }
 
     // currently failing after PBA merge - to be reinstated
@@ -42,7 +42,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyTotal() {
-        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "15800");
+        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "27600");
     }
 
     // currently failing after PBA merge - to be reinstated
