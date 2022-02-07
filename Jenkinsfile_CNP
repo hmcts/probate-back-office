@@ -1,6 +1,5 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
-import uk.gov.hmcts.contino.AppPipelineConfig
 
 @Library("Infrastructure")
 
@@ -184,7 +183,6 @@ withPipeline("java", product, component) {
   }
 
   after('highleveldatasetup') {
-    echo sh(script: 'env|sort', returnStdout: true)
     if (env.ENV != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
       echo "CCD definition upload for environment: ${env.ENV}"
