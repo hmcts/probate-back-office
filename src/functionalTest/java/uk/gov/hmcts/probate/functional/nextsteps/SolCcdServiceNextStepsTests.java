@@ -123,6 +123,16 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
+        String dir = "/nextsteps/authenticatedTranslation/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
+                Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("an authenticated translation of the will"));
+    }
+
+    @Test
     public void verifyEmptyDeceasedFirstNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"",
             "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");

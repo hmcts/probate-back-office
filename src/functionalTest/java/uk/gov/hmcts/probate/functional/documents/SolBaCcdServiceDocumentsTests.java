@@ -2151,6 +2151,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetAuthenticatedTranslationOfWill() {
+        String payload = "/caseprogress/04f-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        assertTrue(response.contains("an authenticated translation of the will"));
+
+    }
+
+    @Test
     public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";

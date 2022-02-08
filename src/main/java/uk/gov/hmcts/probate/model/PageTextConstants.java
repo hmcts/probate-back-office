@@ -8,6 +8,7 @@ public class PageTextConstants {
     public static final String DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY =
         "a photocopy of the signed legal statement and declaration";
     public static final String ORIGINAL_WILL = "<originalWill/>";
+    public static final String AUTHENTICATED_TRANSLATION = "<authenticatedTranslation/>";
     public static final String IHT_TEXT = "<ihtText/>";
     public static final String IHT_FORM = "<ihtForm/>";
     public static final String RENOUNCING_EXECUTORS = "<renouncingExecutors/>";

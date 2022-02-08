@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -22,6 +23,9 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
+
+    @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     
     @Mock
     private CaseData caseDataMock;
@@ -66,6 +70,23 @@ public class MarkdownDecoratorServiceTest {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        assertEquals("\n*   an authenticated translation of the will",
+                md);
+    }
+
+    @Test
+    public void shouldNotGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
         assertEquals("", md);
     }
 }
