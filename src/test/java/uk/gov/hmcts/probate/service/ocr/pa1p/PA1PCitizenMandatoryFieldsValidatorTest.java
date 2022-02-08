@@ -97,7 +97,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
 
         verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(1, warnings.size());
-        assertEquals("IHT 400421 completed (iht400421completed) is mandatory.", warnings.get(0));
+        assertEquals("Did you complete an IHT400 and IHT421 form? (iht400421completed) is mandatory.", warnings.get(0));
 
     }
 

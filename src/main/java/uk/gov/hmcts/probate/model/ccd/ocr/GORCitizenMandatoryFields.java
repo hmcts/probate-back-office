@@ -21,7 +21,7 @@ public enum GORCitizenMandatoryFields {
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate"),
     SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
-    IHT_400421_COMPLETED("iht400421completed", "IHT 400421 completed", "2"),
+    IHT_400421_COMPLETED("iht400421completed", "Did you complete an IHT400 and IHT421 form?", "2"),
     IHT_IDENTIFIER("ihtReferenceNumber", "IHT identifier", "0"),
     IHT_ESTATE_GROSS("ihtEstateGrossValue", "gross value of the estate for inheritance tax", "0"),
     IHT_ESTATE_NET("ihtEstateNetValue", "net value of the estate for inheritance tax", "0"),

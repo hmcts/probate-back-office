@@ -13,7 +13,6 @@ import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_4
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_ESTATE_GROSS;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_ESTATE_NET;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_ESTATE_NQV;
-import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_IDENTIFIER;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
@@ -48,29 +47,27 @@ public class CitizenMandatoryFieldsValidatorV2 {
                         "Deceased date of death not consistent with the question: "
                             + "Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate)",
                         warnings);
-                }
-
-                if (deceasedDiedOnAfterSwitchDate) {
-                    mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                        IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE,
-                        DECEASED_LATE_SPOUSE);
-                } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
-                    mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_205_COMPLETED_ONLINE);
-
-                    if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
+                } else {
+                    if (deceasedDiedOnAfterSwitchDate) {
                         mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                            IHT_IDENTIFIER);
-                        if (!TRUE.equalsIgnoreCase(ocrFieldValues.get("ihtFormCompletedOnline"))) {
+                            IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE,
+                            DECEASED_LATE_SPOUSE);
+                    } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
+                        mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
+                            IHT_205_COMPLETED_ONLINE);
+
+                        if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
+                            if (!TRUE.equalsIgnoreCase(ocrFieldValues.get("ihtFormCompletedOnline"))) {
+                                mandatoryFieldsValidatorUtils.addWarning(
+                                    "ihtFormCompletedOnline expected to be set to true (ihtFormCompletedOnline)",
+                                    warnings);
+                            }
+                        } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))
+                            && !"IHT205".equals(ocrFieldValues.get("ihtFormId"))) {
                             mandatoryFieldsValidatorUtils.addWarning(
-                                "ihtFormCompletedOnline expected to be set to true (ihtFormCompletedOnline)",
+                                "ihtFormId expected to be set to IHT205 (ihtFormId)",
                                 warnings);
                         }
-
-                    } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))
-                        && !"IHT205".equals(ocrFieldValues.get("ihtFormId"))) {
-                        mandatoryFieldsValidatorUtils.addWarning(
-                            "ihtFormId expected to be set to IHT205 (ihtFormId)",
-                            warnings);
                     }
                 }
             } else if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_207_COMPLETED.getKey()))
