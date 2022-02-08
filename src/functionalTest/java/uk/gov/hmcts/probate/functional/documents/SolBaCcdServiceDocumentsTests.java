@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
@@ -2155,7 +2154,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyGenerateSolsCoverSheetAuthenticatedTranslationOfWill() {
         String payload = "/caseprogress/04f-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
-        assertTrue(response.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT));
+        assertTrue(response.contains("an authenticated translation of the will"));
 
     }
 

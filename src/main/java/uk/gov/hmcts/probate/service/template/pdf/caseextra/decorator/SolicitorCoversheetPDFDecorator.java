@@ -44,7 +44,8 @@ public class SolicitorCoversheetPDFDecorator {
                 .pa17FormUrl(PA17_FORM_URL)
                 .showPa17Form(YES)
                 .build();
-            decoration =  caseExtraDecorator.decorate(pa17FormCaseExtra);
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(pa17FormCaseExtra));
         } 
         if (ihtEstate207BusinessRule.isApplicable(caseData)) {
             IhtEstate207CaseExtra ihtEstate207CaseExtra = IhtEstate207CaseExtra.builder()
