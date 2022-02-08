@@ -39,4 +39,8 @@ public class CCDData implements Serializable {
     private final List<CodicilAddedDate> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;
     private final DocumentLink solsCoversheetDocument;
+    private final String solsApplicantRelationshipToDeceased;
+    private final String solsApplicantSiblings;
+    private final String solsSpouseOrCivilRenouncing;
+    private final String titleAndClearingType;
 }

@@ -82,6 +82,7 @@ public class NotificationService {
     private final TemplateService templateService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final DocumentStoreClient documentStoreClient;
+    private final NotificationClientService notificationClientService;
     @Autowired
     private BusinessValidationMessageService businessValidationMessageService;
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -129,7 +130,8 @@ public class NotificationService {
         String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -152,7 +154,8 @@ public class NotificationService {
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
 
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -177,9 +180,9 @@ public class NotificationService {
         String reference = caveatDetails.getId().toString();
 
         SendEmailResponse response;
-
-        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
-        log.info("Sent email with template {} for case ", templateId, caveatDetails.getId());
+        response = notificationClientService.sendEmail(caveatDetails.getId(), templateId, emailAddress,
+            personalisation, reference);
+        log.info("Sent email with template {} for caveat number {}", templateId, caveatDetails.getId());
 
         DocumentType documentType;
         switch (state) {
@@ -207,9 +210,8 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response;
-
-        response =
-            notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
+        response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
+            personalisation, reference);
         log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
@@ -225,7 +227,8 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response =
-            notificationClient.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(), personalisation, reference);
+            notificationClientService.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(),
+                personalisation, reference);
         log.info("Smee And Ford email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getSmeeAndFordEmail(), SENT_EMAIL);
@@ -255,7 +258,8 @@ public class NotificationService {
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
 
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference);
+            getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
+                caseDetails.getId());
 
         return getSentEmailDocument(state, executor.getEmail(), response);
     }
@@ -306,8 +310,10 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
-        String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
-        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL)
+            ? caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
+        SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
+            personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
@@ -401,19 +407,21 @@ public class NotificationService {
 
     private SendEmailResponse getSendEmailResponse(State state, String templateId, String emailReplyToId,
                                                    String emailAddress, Map<String, Object> personalisation,
-                                                   String reference)
+                                                   String reference, Long caseId)
         throws NotificationClientException {
         SendEmailResponse response;
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
                 response =
-                    notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+                    notificationClientService.sendEmail(caseId, templateId, emailAddress,
+                        personalisation, reference, emailReplyToId);
                 break;
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
             default:
-                response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+                response = notificationClientService.sendEmail(caseId, templateId, emailAddress, personalisation,
+                    reference);
         }
         log.info("Return the SendEmailResponse");
         return response;

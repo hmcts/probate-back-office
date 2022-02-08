@@ -135,6 +135,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String REISSUE_ORIGINAL_ISSUE_DATE = "1st April 2021";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
+    private static final String GENERATE_GRANT_REISSUE = "/document/generate-grant-reissue";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE = "/document/generate-grant-draft-reissue";
@@ -197,10 +198,15 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
     private static final String NOT_NAMED_TC_POWER_RESERVED_PAYLOAD =
             "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
+    private static final String PARTNERS_FIRM_POWER_RESERVED_PAYLOAD =
+        "solicitorPayloadTrustCorpsPartnersInFirmPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
-        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdomof and "
+        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
         + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
         + "The application has stated that the gross value";
+
+    private final String deceasedDomiciledInEngWalesText = "The application has stated that the gross value"
+        + " of the estate in the United Kingdom amounts to £10,000.00 and the net value amounts to £8,000.00";
 
     private static final String GRANT_DOC_NAME = "probateDocumentsGenerated[0].value.DocumentLink";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
@@ -209,6 +215,41 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Before
     public void setUp() {
         initialiseConfig();
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshGrantGOP() {
+        verifyPersonalWelshGrantText("personalPayloadGrantGOPWelsh.json", "expectedDocumentGrantGOPWelsh.txt");
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshGrantAdmonWill() {
+        verifyPersonalWelshGrantText("personalPayloadGrantAdmonWillWelsh.json", 
+            "expectedDocumentGrantAdmonWillWelsh.txt");
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshGrantIntestacy() {
+        verifyPersonalWelshGrantText("personalPayloadGrantIntestacyWelsh.json", 
+            "expectedDocumentGrantIntestacyWelsh.txt");
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshReissueGOP() {
+        verifyPersonalWelshReissueText("personalPayloadReissueGOPDuplicateWelsh.json", 
+            "expectedDocumentReissueGOPWelsh.txt");
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshReissueAdmonWill() {
+        verifyPersonalWelshReissueText("personalPayloadReissueAdmonWillRegistrarsOrderWelsh.json",
+            "expectedDocumentReissueAdmonWillWelsh.txt");
+    }
+
+    @Test
+    public void verifyPersonalGenerateWelshReissueIntestacy() {
+        verifyPersonalWelshReissueText("personalPayloadReissueIntestacyRegistrarsDirectionWelsh.json",
+            "expectedDocumentReissueIntestacyWelsh.txt");
     }
 
     @Test
@@ -277,6 +318,239 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        final String gopPayload = "/default/gop/personal/";
+
+        String response = generateGrantDocument(gopPayload + "gop.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(gopPayload + "gop.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(gopPayload + "gopReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        final String gopPayload = "/default/gop/personal/";
+
+        final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
+            "England and Wales");
+
+        final String payloadIssue = replaceAllInString(getJsonFromFile(gopPayload + "gop.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        final String payloadReissue = replaceAllInString(getJsonFromFile(gopPayload + "gopReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(payloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        final String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
+            "England and Wales");
+
+        String payload = replaceAllInString(getJsonFromFile(DEFAULT_SOLS_PAYLOAD),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        payload = replaceAllInString(payload,
+            "\"case_data\": {","\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
+        response = generateReissueGrantDraftDocumentFromPayload(payload);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/personal/";
+
+        String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWillReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/personal/";
+
+        String admonWillPayloadIssue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWill.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String admonWillPayloadReissue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWillReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/solicitor/";
+
+        String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(admonWillPayload + "admonWillReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String admonWillPayload = "/default/admonwill/solicitor/";
+
+        String admonWillPayloadIssue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWill.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String admonWillPayloadReissue = replaceAllInString(
+            getJsonFromFile(admonWillPayload + "admonWillReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(admonWillPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/personal/";
+
+        String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacyReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/personal/";
+
+        String intestacyPayloadIssue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacy.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String intestacyPayloadReissue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacyReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/solicitor/";
+
+        String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+
+        response = generateGrantDocument(intestacyPayload + "intestacyReissue.json", GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(deceasedDomiciledInEngWalesText));
+    }
+
+    @Test
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledNotInEnglandOrWales() {
+        String intestacyPayload = "/default/intestacy/solicitor/";
+
+        String intestacyPayloadIssue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacy.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText,
+            "the United Kingdom", "England and Wales");
+
+        String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(expectedText));
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT);
+        assertTrue(response.contains(expectedText));
+
+        String intestacyPayloadReissue = replaceAllInString(
+            getJsonFromFile(intestacyPayload + "intestacyReissue.json"),
+            "\"deceasedDomicileInEngWales\": \"Yes\"","\"deceasedDomicileInEngWales\": \"No\"");
+
+        response = generateGrantDocumentFromPayload(intestacyPayloadReissue, GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(expectedText));
+    }
+
+    @Test
     public void verifyTrustCorpsShouldReturnOkResponseCode() {
         validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
     }
@@ -333,7 +607,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetAdmonWillGrantForCardiff() {
         final CaseData caseData = CaseData.builder().build();
 
-        final String response = generateGrantDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
@@ -344,7 +618,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
@@ -396,9 +670,65 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGenerateDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueDraftTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            GENERATE_GRANT_DRAFT_REISSUE);
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
+    public void verifySuccessForGenerateGrantReissueTCPartnerFirmPowerReserved() {
+        final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD),
+            "\"morePartnersHoldingPowerReserved\": \"No\"",
+            "\"morePartnersHoldingPowerReserved\": \"Yes\"");
+        final String responseWithMultiplePowerReserved = generateGrantDocumentFromPayload(payload,
+            "/document/generate-grant-reissue");
+        assertTrue(responseWithMultiplePowerReserved.contains("Power reserved to other Executors"));
+    }
+
+    @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("intestacyGrantForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
@@ -409,7 +739,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("intestacyGrantDraftForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("18th November 2020", caseData.convertDate(LocalDate.now()));
@@ -420,7 +750,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetGopGrantForCardiff() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -431,7 +761,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetGopGrantDraftForCardiff() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("gopGrantDraftForCardiffResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -453,7 +783,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForOxfordGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("oxfordGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -464,7 +794,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForManchesterGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("manchesterGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -475,7 +805,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForLeedsGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("leedsGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -486,7 +816,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForLiverpoolGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("liverpoolGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -497,7 +827,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForBrightonGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("brightonGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -508,7 +838,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForLondonGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("londonGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -519,7 +849,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForNewcastleGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("newcastleGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -530,7 +860,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForWinchesterGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("winchesterGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -541,7 +871,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyTelephoneForBristolGopGenerateGrant() {
         final CaseData caseData = CaseData.builder().build();
-        final String response = generateGrantDocument(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("bristolGopGenerateGrantResponse.txt"));
         expectedText = expectedText.replaceAll("5th July 2021", caseData.convertDate(LocalDate.now()));
@@ -594,7 +924,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetPdfLegalStatementAdmonWillSols() {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
@@ -652,7 +981,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -674,7 +1003,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() {
-        final String response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -815,7 +1144,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsMultipleExecutors.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -839,7 +1168,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsPowerReservedMultiple.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -860,7 +1189,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsPowerReserved.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -882,7 +1211,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithGrantInfoSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsGrantInfo.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -906,7 +1235,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -927,7 +1256,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() {
-        final String response = generateGrantDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -948,7 +1277,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsMultipleExecutors.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -974,7 +1303,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsPowerReservedMultiple.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
                     GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -995,7 +1324,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsPowerReserved.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -1016,7 +1345,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsGrantInfo.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -1039,7 +1368,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftDateFormat() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(DOD));
         assertTrue(response.contains(GOP));
@@ -1047,7 +1376,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDateFormat() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(DOD));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -1056,7 +1385,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftMoneyFormat() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -1067,7 +1396,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantMoneyFormat() {
-        final String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
+        final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(IHT_NET));
@@ -1077,7 +1406,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantMoneyFormatWithPence() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsIHTCurrencyFormat.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(IHT_GROSS_PENCE));
@@ -1088,7 +1417,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftMoneyFormatWithPence() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsIHTCurrencyFormat.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsIHTCurrencyFormat.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(IHT_GROSS_PENCE));
@@ -1098,9 +1427,21 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() {
+
+        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
+            "\"primaryApplicantIsApplying\": \"Yes\",", "");
+        final String response =
+            generateGrantDocumentFromPayload(payload,
+                GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+    }
+    
+
+    @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
         final String response =
-                generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                         GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -1116,7 +1457,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying() {
         final String response =
-            generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
 
@@ -1131,7 +1472,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() {
         final String response =
-            generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -1148,7 +1489,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() {
         final String response =
-            generateGrantDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -1165,7 +1506,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple() {
         final String response =
-            generateGrantDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -1182,7 +1523,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() {
         final String response =
-            generateGrantDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                     GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -1199,7 +1540,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantPartialSolsAddress() {
         final String response =
-                generateGrantDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
+            getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(SOLICITOR_INFO3));
@@ -1220,7 +1561,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDomiciledUK() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsPartialAddress.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -1245,7 +1586,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDomiciledForeignDomicile() {
-        final String response = generateGrantDocument("solicitorPayloadNotificationsForeignDomicile.json",
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsForeignDomicile.json",
                 GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -1277,7 +1618,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Ignore
     @Test
     public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
-        final String response = generateGrantDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+        final String response = getFirstProbateDocumentsText(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
         assertTrue(response.contains(ENGLAND_AND_WALES));
         assertTrue(response.contains(CASE_REFERENCE));
         assertTrue(response.contains(DECEASED_DETAILS));
@@ -1346,7 +1687,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorGenerateLetterReturnOkResponseCode() {
-        final String response = generateGrantDocument(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
+        final String response = getFirstProbateDocumentsText(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
         assertEquals(getJsonFromFile("/document/assembledLetter.txt"), response);
     }
 
@@ -1671,8 +2012,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySoTPartSuccAllRenouncingWording() {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will that had succeeded to and carried on the practice of the firm Successor firm at the "
+            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm" 
+                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will at the " 
                 + "date of death of the deceased have renounced probate."));
     }
 
@@ -1742,7 +2083,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() {
         String payload = "/caseprogress/04a-caseCreated.json";
-        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
         assertTrue(response.contains(expectedText));
@@ -1752,7 +2093,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsCoverSheetGopWillHasCodicils() {
         String payload = "/caseprogress/04b-caseCreated.json";
-        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillHasCodicils");
         assertTrue(response.contains(expectedText));
@@ -1762,7 +2103,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsCoverSheetGopIht217() {
         String payload = "/caseprogress/04c-caseCreated.json";
-        String response = generateDocument(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04c-caseCreatedIHT217");
         assertTrue(response.contains(expectedText));
@@ -1770,9 +2111,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetGopPA17Form() {
+        String payload = "/caseprogress/04d-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
+        assertTrue(response.contains(expectedText));
+
+    }
+    
+    @Test
     public void verifyGenerateSolsCoverSheetIntestacy() {
         String payload = "/caseprogressintestacy/04-caseCreated.json";
-        String response = generateDocument(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
+        String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogressintestacy/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
@@ -1780,13 +2131,173 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetIntestacyPA16Form() {
+        String payload = "/caseprogressintestacy/04b-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogressintestacy/expectedDocumentText/04b-caseCreated");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
     public void verifyGenerateSolsCoverSheetAdmonWill() {
         String payload = "/caseprogressadmonwill/04-caseCreated.json";
-        String response = generateDocument(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
+        String response = getDocumentTextAtPath(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
 
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
+        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesNo() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
+        String dir = "/exceptedEstates/ihtEstateCompletedNo/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
+        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
+        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    @Test
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
+        //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
+        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
+        String payload = dir + "caseCreate.json";
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
+        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+
+        String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
+        String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
+        assertEquals(coversheetExpectedText, coversheetText);
+
+        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
+        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        assertEquals(legalStatementExpectedText, legalStatementText);
+    }
+
+    private void verifyPersonalWelshReissueText(String payload, String expectedFile) {
+        final String response = getProbateDocumentsGeneratedTextAtIndex(payload, GENERATE_GRANT_REISSUE, "2");
+
+        String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
+
+        assertEquals(expectedText.trim(), response.trim());
+    }
+
+    private void verifyPersonalWelshGrantText(String payload, String expectedFile) {
+        final String response = getFirstProbateDocumentsText(payload, GENERATE_GRANT);
+
+        String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
+        expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
+        expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
+
+        assertEquals(expectedText.trim(), response.trim());
+    }
+
+    private String getFirstProbateDocumentsText(String jsonFileName, String path) {
+        return getDocumentTextAtPath(jsonFileName, path, "probateDocumentsGenerated[0].value.DocumentLink");
+    }
+
+    private String getProbateDocumentsGeneratedTextAtIndex(String jsonFileName, String path, String index) {
+        return getDocumentTextAtPath(jsonFileName, path, "probateDocumentsGenerated[" + index + "].value.DocumentLink");
+    }
+
+    private String getDocumentTextAtPath(String jsonFileName, String path, String documentName) {
+        final Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+
+        final String documentUrl =
+            jsonPath.get("data." + documentName + ".document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+    }
+
+    private JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) {
+
+        final Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        return JsonPath.from(jsonResponse.getBody().asString());
+    }
+
+    private String getDocumentText(JsonPath jsonPath, String documentName) {
+        final String documentUrl =
+            jsonPath.get("data." + documentName + ".document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
+
+    }
+
+    @Test
+    public void verifyWillAccessNoLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json",
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true"
+                + " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
+    }
+
+    @Test
+    public void verifyWillAccessYesLegalStatementAdmonWillSols() {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
+                + "I believe to be the true and original last will and"
+                + " testament of De Ceased"));
     }
 
 }

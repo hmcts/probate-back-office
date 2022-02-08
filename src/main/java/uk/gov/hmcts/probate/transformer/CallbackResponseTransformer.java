@@ -57,13 +57,13 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
@@ -122,9 +122,27 @@ public class CallbackResponseTransformer {
     private final PDFManagementService pdfManagementService;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final Iht400421Defaulter iht400421Defaulter;
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            true);
+        ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(), 
+            responseCaseDataBuilder);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse defaultIht400421DatePageFlow(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            true);
+        iht400421Defaulter.defaultPageFlowForIht400421(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -261,6 +279,10 @@ public class CallbackResponseTransformer {
 
             responseCaseDataBuilder.evidenceHandled(YES);
 
+        } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
+            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
+
+            responseCaseDataBuilder.grantIssuedDate(grantIssuedDate);
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -609,8 +631,10 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
                 solicitorExecutorTransformer.createCaseworkerApplyingList(caseDetails.getData());
 
+        var primaryApplicantIsApplying = caseDetails.getData().isPrimaryApplicantApplying();
         var believePlural = "s";
-        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
+        if (listOfApplyingExecs != null
+            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
             believePlural = "";
         }
 
@@ -623,17 +647,19 @@ public class CallbackResponseTransformer {
             confirmSOT = "By signing the statement of truth by ticking the boxes below, I, " + professionalName
                     + " confirm the following:\n\n"
                     + "I, " + professionalName + ", have provided a copy of this application to the executor"
-                    + returnPlural(listOfApplyingExecs) + " named below.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"  + returnPlural(listOfApplyingExecs)
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying) + " named below.\n\n"
+                    + "I, " + professionalName + ", have informed the executor"
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
                     + " that in signing the statement of truth I am confirming that the executor"
-                    + returnPlural(listOfApplyingExecs)
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
                     + " believe"  + believePlural + " the facts set out in this legal statement are true.\n\n"
-                    + "I, " + professionalName + ", have informed the executor"   + returnPlural(listOfApplyingExecs)
+                    + "I, " + professionalName + ", have informed the executor"
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
                     + " of the consequences if it should subsequently appear that the executor"
-                    + returnPlural(listOfApplyingExecs)
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
                     + " did not have an honest belief in the facts set out in the legal statement.\n\n"
                     + "I, " + professionalName + ", have been authorised by the executor"
-                    + returnPlural(listOfApplyingExecs)
+                    + returnPlural(listOfApplyingExecs, primaryApplicantIsApplying)
                     + " to sign the statement of truth.\n\n"
                     + "I, " + professionalName + ", understand that proceedings for contempt of court may be brought "
                     + "against anyone who makes, or causes to be made, a false statement in a document verified by a "
@@ -664,9 +690,11 @@ public class CallbackResponseTransformer {
         builder.solsReviewSOTConfirmCheckbox2Names(executorNames);
     }
 
-    private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs) {
+    private String returnPlural(List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
+                                Boolean primaryApplicantIsApplying) {
         var plural = "";
-        if (listOfApplyingExecs != null && listOfApplyingExecs.size() > 1) {
+        if (listOfApplyingExecs != null
+            && ((primaryApplicantIsApplying && listOfApplyingExecs.size() > 0) || listOfApplyingExecs.size() > 1)) {
             plural = "s";
         }
         return plural;
@@ -676,30 +704,36 @@ public class CallbackResponseTransformer {
                                 List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs,
                                 String professionalName) {
         String executorNames = "";
+        Boolean primaryApplicantIsApplying = caseData.isPrimaryApplicantApplying();
         if (caseData.getSolsWillType() != null
             && caseData.getSolsWillType().matches("WillLeft")) {
-            executorNames = "The executor" + returnPlural(listOfApplyingExecs) + " ";
+            executorNames = "The executor" + returnPlural(listOfApplyingExecs,
+                primaryApplicantIsApplying) + " ";
 
-            if (caseData.getSolsSolicitorIsApplying().matches(YES)
-                || getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
+            if (caseData.getSolsSolicitorIsApplying().matches(YES)) {
                 executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
+                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
             } else {
-                executorNames = listOfApplyingExecs.isEmpty() ? executorNames + professionalName + ": " :
-                    executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs);
-                if (caseData.getPrimaryApplicantForenames() != null && caseData.getPrimaryApplicantSurname() != null) {
-                    executorNames = executorNames + ", " + caseData.getPrimaryApplicantForenames()
+                // If only primary applicant as executor then they must be applying otherwise they get hard stopped
+                // so no need to check if primary applicant is applying
+                if (listOfApplyingExecs.isEmpty()) {
+                    executorNames = executorNames + caseData.getPrimaryApplicantForenames()
                         + " " + caseData.getPrimaryApplicantSurname() + ": ";
+
+                // If more than one executor, check if primary applicant is applying to show on sot else show list
+                // of applying executors
+                } else {
+                    executorNames = primaryApplicantIsApplying ? executorNames
+                        + caseData.getPrimaryApplicantForenames() + " " + caseData.getPrimaryApplicantSurname()
+                        + ", " + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": " :
+                        executorNames + FormattingService.createExecsApplyingNames(listOfApplyingExecs) + ": ";
                 }
             }
-            return executorNames;
         } else {
-            executorNames = "The applicant" + returnPlural(listOfApplyingExecs) + " ";
-
-            executorNames = executorNames + caseData.getPrimaryApplicantForenames()
-                + " " + caseData.getPrimaryApplicantSurname();
-            return executorNames;
+            executorNames = "The applicant " + caseData.getPrimaryApplicantForenames()
+                + " " + caseData.getPrimaryApplicantSurname() + ": ";
         }
+        return executorNames;
     }
     
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
@@ -814,6 +848,16 @@ public class CallbackResponseTransformer {
             .ihtGrossValue(caseData.getIhtGrossValue())
             .ihtNetValue(caseData.getIhtNetValue())
             .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
+            .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
+            .ihtFormEstate(caseData.getIhtFormEstate())
+            .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
+            .ihtEstateGrossValueField(caseData.getIhtEstateGrossValueField())
+            .ihtEstateNetValue(caseData.getIhtEstateNetValue())
+            .ihtEstateNetValueField(caseData.getIhtEstateNetValueField())
+            .ihtEstateNetQualifyingValue(caseData.getIhtEstateNetQualifyingValue())
+            .ihtEstateNetQualifyingValueField(caseData.getIhtEstateNetQualifyingValueField())
+            .deceasedHadLateSpouseOrCivilPartner(caseData.getDeceasedHadLateSpouseOrCivilPartner())
+            .ihtUnusedAllowanceClaimed(caseData.getIhtUnusedAllowanceClaimed())
 
             .solsPaymentMethods(caseData.getSolsPaymentMethods())
             .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
@@ -997,7 +1041,24 @@ public class CallbackResponseTransformer {
             .codicilAddedDateList(caseData.getCodicilAddedDateList())
             .furtherEvidenceForApplication(caseData.getFurtherEvidenceForApplication())
             .caseHandedOffToLegacySite(caseData.getCaseHandedOffToLegacySite())
-            .deathRecords(caseData.getDeathRecords());
+            .deathRecords(caseData.getDeathRecords())
+            .willHasVisibleDamage(caseData.getWillHasVisibleDamage())
+            .willDamage(caseData.getWillDamage())
+            .willDamageReasonKnown(caseData.getWillDamageReasonKnown())
+            .willDamageReasonDescription(caseData.getWillDamageReasonDescription())
+            .willDamageCulpritKnown(caseData.getWillDamageCulpritKnown())
+            .willDamageCulpritName(caseData.getWillDamageCulpritName())
+            .willDamageDateKnown(caseData.getWillDamageDateKnown())
+            .willDamageDate(caseData.getWillDamageDate())
+            .codicilsHasVisibleDamage(caseData.getCodicilsHasVisibleDamage())
+            .codicilsDamage(caseData.getCodicilsDamage())
+            .codicilsDamageReasonKnown(caseData.getCodicilsDamageReasonKnown())
+            .codicilsDamageReasonDescription(caseData.getCodicilsDamageReasonDescription())
+            .codicilsDamageCulpritKnown(caseData.getCodicilsDamageCulpritKnown())
+            .codicilsDamageCulpritName(caseData.getCodicilsDamageCulpritName())
+            .codicilsDamageDateKnown(caseData.getCodicilsDamageDateKnown())
+            .codicilsDamageDate(caseData.getCodicilsDamageDate())
+            .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1008,6 +1069,7 @@ public class CallbackResponseTransformer {
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
+
 
         return builder;
     }
@@ -1318,28 +1380,22 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (shouldNullifyAliasNamesList(caseData)) {
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
+        }
+        if (deceasedAliasNames.isEmpty()) {
             builder
-                .solsDeceasedAliasNamesList(null)
-                .deceasedAliasNamesList(null);
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
         } else {
-            List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
-            if (caseData.getDeceasedAliasNameList() != null) {
-                deceasedAliasNames = caseData.getDeceasedAliasNameList()
-                        .stream()
-                        .map(CollectionMember::getValue)
-                        .map(this::buildDeceasedAliasNameExecutor)
-                        .map(alias -> new CollectionMember<>(null, alias))
-                        .collect(Collectors.toList());
-            }
-            if (deceasedAliasNames.isEmpty()) {
-                builder
-                        .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-            } else {
-                builder
-                        .solsDeceasedAliasNamesList(deceasedAliasNames)
-                        .deceasedAliasNamesList(null);
-            }
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(null);
         }
 
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
@@ -1353,8 +1409,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsDeceasedAliasNamesList(shouldNullifyAliasNamesList(caseData) ? null
-                        : caseData.getSolsDeceasedAliasNamesList());
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder
@@ -1429,12 +1484,6 @@ public class CallbackResponseTransformer {
             builder
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-    }
-
-    private boolean shouldNullifyAliasNamesList(CaseData caseData) {
-        return (caseData.getDeceasedAliasNameList() == null
-                || caseData.getDeceasedAliasNameList().isEmpty())
-                && !YES.equals(caseData.getDeceasedAnyOtherNames());
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

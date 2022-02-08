@@ -153,6 +153,9 @@
         <td colspan="2">
             <p>The gross value for the estate in {% if case_details.case_data.deceasedDomicileInEngWales == "Yes"%}the United Kingdom {% else %}England and Wales {% endif %}
                 amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            {% if case_extras != null %}
+                {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% endif %}
             <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
@@ -229,8 +232,8 @@
                 The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% endif %}</p>
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
