@@ -422,13 +422,14 @@ registry:
       town: South Wales
       postcode: CF24 0RZ
     newcastle:
-      name: Newcastle-Upon-Tyne Probate Registry
+      name: Newcastle District Probate Registry
       phone: 0300 303 0648
       emailReplyToId: "21106760-70e7-4b61-adb8-7df6f653f8db"
-      addressline1: Newcastle DPR
-      addressline2: No 1 Waterloo Square
-      town: Newcastle-Upon-Tyne
-      postcode: NE1 4DR
+      addressline1: 2nd Floor
+      addressline2: Kings Court
+      addressline3: Earl Grey Way
+      town: North Shields
+      postcode: NE29 6AR
     winchester:
       name: Winchester Probate Registry
       phone: 0300 303 0648
