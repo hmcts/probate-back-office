@@ -39,7 +39,7 @@ public class MarkdownDecoratorService {
 
     public String getAuthenticatedTranslationLabel(CaseData caseData) {
         if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
-            return "\n*" + AUTHENTICATED_TRANSLATION_WILL_TEXT;
+            return "\n*   " + "an authenticated translation of the will";
         }
         return "";
     }

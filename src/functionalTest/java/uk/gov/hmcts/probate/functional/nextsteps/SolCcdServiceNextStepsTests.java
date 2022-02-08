@@ -16,7 +16,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -120,7 +119,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
                 Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
-        assertTrue(response.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT));
+        assertTrue(response.contains("an authenticated translation of the will"));
     }
 
     @Test

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.CaseExtraDecorator;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
@@ -41,11 +42,18 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Before
     public void setup() {
         initMocks(this);
+        setBusinessRuleMocksApplicable(false);
+    }
+
+    private void setBusinessRuleMocksApplicable(boolean isApplicable) {
+        when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
     }
     
     @Test
     public void shouldNotProvideAdditionalDecoration() {
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(false);
         String caseJson = "";
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
         
@@ -55,7 +63,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Test
     public void shouldProvidePA16Decoration() {
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(false);
         String extra = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
         when(caseExtraDecorator.decorate(any()))
@@ -69,12 +76,12 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Test
     public void shouldProvideAdditionalDecorationPA17() {
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(false);
         String extra = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
             + "\"pa17FormText\":\"PA17FormTEXT\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
-
+        when(caseExtraDecorator.combineDecorations("", caseExtraDecorator.decorate(extra)))
+                .thenReturn(extra);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extra, json);
@@ -83,7 +90,6 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Test
     public void shouldProvideIhtEstate207Decoration() {
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(false);
         String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
@@ -96,13 +102,15 @@ public class SolicitorCoversheetPDFDecoratorTest {
 
     @Test
     public void shouldProvideAllDecorations() {
-        when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        setBusinessRuleMocksApplicable(true);
         String extraPA16 = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
         when(caseExtraDecorator.decorate(any(PA16FormCaseExtra.class)))
             .thenReturn(extraPA16);
+        String extraPA17 = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
+                + "\"pa17FormText\":\"PA17FormTEXT\"}";
+        when(caseExtraDecorator.decorate(any(PA17FormCaseExtra.class)))
+                .thenReturn(extraPA17);
         String extraIht = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
             .thenReturn(extraIht);
@@ -110,14 +118,17 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any(AuthenticatedTranslationCaseExtra.class)))
                 .thenReturn(extraAuthTranslation);
 
-        String extraTwo = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
-                + "\"pa16FormText\":\"PA16FormTEXT\",\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
 
-        String extraAll = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
-            + "\"pa16FormText\":\"PA16FormTEXT\",\"ihtEstate207Text\":\"the inheritance tax form IHT 207\","
-            + "\"authTranWillText\"}";
-        when(caseExtraDecorator.combineDecorations(extraPA16, extraIht)).thenReturn(extraTwo);
-        when(caseExtraDecorator.combineDecorations(extraTwo, extraAuthTranslation)).thenReturn(extraAll);
+
+        String extraTwo = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
+                + "\"pa16FormText\":\"PA16FormTEXT\","
+                + "\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
+                + "\"pa17FormText\":\"PA17FormTEXT\"}";
+        String extraThree =  extraTwo + ", \"the inheritance tax form IHT 207\"";
+        String extraAll = extraThree + ",\"authTranWillText\"}";
+        when(caseExtraDecorator.combineDecorations(extraPA16, extraPA17)).thenReturn(extraTwo);
+        when(caseExtraDecorator.combineDecorations(extraTwo, extraIht)).thenReturn(extraThree);
+        when(caseExtraDecorator.combineDecorations(extraThree, extraAuthTranslation)).thenReturn(extraAll);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extraAll, json);
