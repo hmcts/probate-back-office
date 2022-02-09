@@ -10,11 +10,16 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.equalTo;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
+
+    private static final int APP_FEE = 27300; //15500
+    private static final int COPIES_FEE = 150;
+    private static final double MAX_UK_COPIES = 50;
+    private static final double MAX_NON_UK_COPIES = 50;
 
     @Before
     public void setUp() {
@@ -22,33 +27,13 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNetValue10000() {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "27300");
+    public void verifyAllFeesAboveThreshold() {
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", true);
     }
 
     @Test
-    public void verifyFeeForUkCopies() {
-        validatePostRequestSuccessForFee("success.feeForUKCopies.json", "feeForUkCopies", "150");
-    }
-
-    @Test
-    public void verifyFeeForNonUkCopies() {
-        validatePostRequestSuccessForFee("success.feeForNonUKCopies.json", "feeForNonUkCopies", "150");
-    }
-
-    @Test
-    public void verifyTotal() {
-        validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "27600");
-    }
-
-    @Test
-    public void verifyNetValue5000() {
-        validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
-    }
-
-    @Test
-    public void verifyNetValue1000() {
-        validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");
+    public void verifyAllFeesBelowThreshold() {
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false);
     }
 
     @Test
@@ -68,20 +53,33 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyNegativeOverseasCopiesFeeReturns400() {
-        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be " 
+        verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be "
             + "negative");
     }
 
-    private void validatePostRequestSuccessForFee(String fileName, String param, String expectedValue) {
-
+    private void validatePostRequestSuccessForFee(String fileName, boolean hasApplication) {
+        int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
+        int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
+        int applicationFee = hasApplication ? APP_FEE : 0;
+        int ukFee = rndUkCopies * COPIES_FEE;
+        int nonUkFee = rndNonUkCopies * COPIES_FEE;
+        int totalFee = applicationFee + ukFee + nonUkFee;
+        String payload = utils.replaceAnyCaseNumberWithRandom(utils.getJsonFromFile(fileName));
+        payload = payload.replaceAll("<UK_COPIES>", "" + rndUkCopies);
+        payload = payload.replaceAll("<NON_UK_COPIES>", "" + rndNonUkCopies);
         given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
-            .body(utils.replaceAnyCaseNumberWithRandom(utils.getJsonFromFile(fileName)))
+            .body(payload)
             .contentType(JSON)
             .when().post("/nextsteps/validate")
             .then().assertThat()
             .statusCode(200)
-            .and().body("data." + param, equalToIgnoringCase(expectedValue));
+            .and().body("data.applicationFee", equalTo("" + applicationFee))
+            .and().body("data.feeForUkCopies", equalTo("" + ukFee))
+            .and().body("data.feeForNonUkCopies", equalTo("" + nonUkFee))
+            .and().body("data.totalFee", equalTo("" + totalFee));
+        
+        
     }
 
     private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
