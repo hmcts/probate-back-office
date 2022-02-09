@@ -284,6 +284,9 @@ public class ExceptionRecordRequest {
             .deceasedHadLateSpouseOrCivilPartner(get(ocrFields, "deceasedHadLateSpouseOrCivilPartner"))
             .ihtUnusedAllowanceClaimed(get(ocrFields, "ihtUnusedAllowanceClaimed"))
             .deceasedDiedOnAfterSwitchDate(get(ocrFields, "deceasedDiedOnAfterSwitchDate"))
+            .iht400421Completed(get(ocrFields, "iht400421completed"))
+            .iht207Completed(get(ocrFields, "iht207completed"))
+            .formVersion(get(ocrFields, "formVersion"))
             .build();
     }
 }

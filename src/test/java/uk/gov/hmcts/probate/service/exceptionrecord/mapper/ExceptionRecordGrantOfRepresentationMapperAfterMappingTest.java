@@ -49,6 +49,10 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     private OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper;
     @Autowired
+    private OCRFieldIhtFormCompletedOnlineMapper ocrFieldIhtFormCompletedOnlineMapper;
+    @Autowired
+    private OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper;
+    @Autowired
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     @Autowired
     private OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper;
@@ -423,8 +427,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(80000000), response.getIhtEstateNetQualifyingValue());
     }
-
-
+    
     @Test
     public void testIhtEstateNetQualifyingValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
@@ -432,33 +435,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateNetQualifyingValue());
     }
-
-    @Test
-    public void testDeceasedHadLateSpouseOrCivilPartnerTrue() {
-        ExceptionRecordOCRFields ocrFields =
-            ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(TRUE).build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertTrue(response.getDeceasedHadLateSpouseOrCivilPartner());
-    }
-
-    @Test
-    public void testDeceasedHadLateSpouseOrCivilPartnerFalse() {
-        ExceptionRecordOCRFields ocrFields =
-            ExceptionRecordOCRFields.builder().deceasedHadLateSpouseOrCivilPartner(FALSE).build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertFalse(response.getDeceasedHadLateSpouseOrCivilPartner());
-    }
-
-    @Test
-    public void testDeceasedHadLateSpouseOrCivilPartnerNull() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
-        GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertNull(response.getDeceasedHadLateSpouseOrCivilPartner());
-    }
-
+    
     @Test
     public void testIhtUnusedAllowanceClaimedTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(TRUE).build();
@@ -531,7 +508,17 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         public OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper() {
             return new OCRFieldIhtFormEstateValuesCompletedMapper();
         }
+        
+        @Bean
+        public OCRFieldIhtFormCompletedOnlineMapper ocrFieldIhtFormCompletedOnlineMapper() {
+            return new OCRFieldIhtFormCompletedOnlineMapper();
+        }
 
+        @Bean
+        public OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper() {
+            return new OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper();
+        }
+        
         @Bean
         public ExceptedEstateDateOfDeathChecker eeDateOfDeathChecker() {
             return new ExceptedEstateDateOfDeathChecker();
