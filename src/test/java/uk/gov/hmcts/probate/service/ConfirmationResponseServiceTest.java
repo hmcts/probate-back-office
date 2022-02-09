@@ -673,7 +673,7 @@ public class ConfirmationResponseServiceTest {
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("a certified copy of the resolution",
-                nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));x
+                nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
 
     }
 
