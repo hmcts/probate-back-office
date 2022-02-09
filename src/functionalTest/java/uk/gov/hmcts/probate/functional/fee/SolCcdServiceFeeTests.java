@@ -21,37 +21,31 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         initialiseConfig();
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue10000() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "27300");
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyFeeForUkCopies() {
         validatePostRequestSuccessForFee("success.feeForUKCopies.json", "feeForUkCopies", "150");
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyFeeForNonUkCopies() {
         validatePostRequestSuccessForFee("success.feeForNonUKCopies.json", "feeForNonUkCopies", "150");
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyTotal() {
         validatePostRequestSuccessForFee("success.feeTotal.json", "totalFee", "27600");
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue5000() {
         validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
     }
 
-    // currently failing after PBA merge - to be reinstated
     @Test
     public void verifyNetValue1000() {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");

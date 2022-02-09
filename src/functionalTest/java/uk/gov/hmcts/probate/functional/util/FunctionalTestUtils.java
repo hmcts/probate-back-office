@@ -90,7 +90,12 @@ public class FunctionalTestUtils {
     }
 
     public String replaceAnyCaseNumberWithRandom(String caseData) {
-        return caseData.replaceAll("\"id\": [0-9]{16}", "\"id\": " + ((int)(Math.random() * 1000000000000000L)));
+        String replace = "" + System.currentTimeMillis() +System.currentTimeMillis();
+        replace = replace.substring(0, 16);
+        String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
+            "\"id\": " + replace);
+        System.out.println("replacement: " + replacement);
+        return replacement;
     }
 
     public String getJsonFromFile(String fileName) {
