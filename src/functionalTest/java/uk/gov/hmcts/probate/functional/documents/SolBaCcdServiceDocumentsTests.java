@@ -1634,7 +1634,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(response.asString());
         final List paragraphDetails = jsonPath.get("data.paragraphDetails");
         final String templateName = jsonPath.get("data.paragraphDetails[1].value.templateName");
-        response.prettyPrint();
 
         assertEquals(paragraphDetails.size(), 3);
         assertEquals(templateName, ParagraphCode.MissInfoWill.getTemplateName());
@@ -1652,7 +1651,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .andReturn();
 
         final JsonPath jsonPath = JsonPath.from(response.asString());
-        response.prettyPrint();
         response.then().assertThat().statusCode(200);
         assertEquals(jsonPath.get("data.ihtReferenceNumber"), "ONLINE-123434");
     }
@@ -1662,7 +1660,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         final ResponseBody response =
             validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
 
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertEquals(jsonPath.get("data.reprintDocument.list_items[0].label"), "Grant");
         assertEquals(jsonPath.get("data.reprintDocument.list_items[0].code"), "WelshGrantFileName");
@@ -1695,7 +1692,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
         final ResponseBody responseBody =
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
-        responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
         assertNull(jsonPath.get("data.errors"));
@@ -1709,7 +1705,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile("/document/generateLetter.json"))
             .when().post(PREVIEW_LETTER).andReturn();
-        jsonResponse.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         final String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
 
@@ -1721,7 +1716,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
                 PREVIEW_LETTER);
-        responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
         assertNull(jsonPath.get("data.errors"));

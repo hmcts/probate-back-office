@@ -89,6 +89,10 @@ public class FunctionalTestUtils {
         }
     }
 
+    public String replaceAnyCaseNumber(String caseData) {
+        return caseData.replaceAll("\"id\": [0-9]{16}", "\"id\": "+((int)(Math.random()*1000000000000000L)));
+    }
+
     public String getJsonFromFile(String fileName) {
         try {
             final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));

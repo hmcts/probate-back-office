@@ -82,7 +82,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
         given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
-            .body(utils.getJsonFromFile(fileName))
+            .body(utils.replaceAnyCaseNumber(utils.getJsonFromFile(fileName)))
             .contentType(JSON)
             .when().post("/nextsteps/validate")
             .then().assertThat()
@@ -93,7 +93,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
         given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
-            .body(utils.getJsonFromFile(fileName))
+            .body(utils.replaceAnyCaseNumber(utils.getJsonFromFile(fileName)))
             .when().post("/nextsteps/validate").then()
             .statusCode(400)
             .and().body(containsString(errorMessage));
