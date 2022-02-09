@@ -90,7 +90,7 @@ public class FunctionalTestUtils {
     }
 
     public String replaceAnyCaseNumberWithRandom(String caseData) {
-        String replace = "" + System.currentTimeMillis() +System.currentTimeMillis();
+        String replace = "" + System.currentTimeMillis() + System.currentTimeMillis();
         replace = replace.substring(0, 16);
         String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
             "\"id\": " + replace);
