@@ -55,38 +55,9 @@ public class CitizenMandatoryFieldsValidatorV2 {
                     } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
                         mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
                             IHT_205_COMPLETED_ONLINE);
-
-                        if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))) {
-                            if (!TRUE.equalsIgnoreCase(ocrFieldValues.get("ihtFormCompletedOnline"))) {
-                                mandatoryFieldsValidatorUtils.addWarning(
-                                    "ihtFormCompletedOnline expected to be set to true (ihtFormCompletedOnline)",
-                                    warnings);
-                            }
-                        } else if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_205_COMPLETED_ONLINE.getKey()))
-                            && !"IHT205".equals(ocrFieldValues.get("ihtFormId"))) {
-                            mandatoryFieldsValidatorUtils.addWarning(
-                                "ihtFormId expected to be set to IHT205 (ihtFormId)",
-                                warnings);
-                        }
                     }
                 }
-            } else if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_207_COMPLETED.getKey()))
-                && !"IHT207".equals(ocrFieldValues.get("ihtFormEstate"))) {
-                mandatoryFieldsValidatorUtils.addWarning(
-                    "ihtFormEstate expected to be set to IHT207 (ihtFormEstate)",
-                    warnings);
-                mandatoryFieldsValidatorUtils.addWarning(
-                    "ihtFormId expected to be set to IHT207 (ihtFormId)",
-                    warnings);
-            }
-        } else if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_400421_COMPLETED.getKey()))
-            && !"IHT400421".equals(ocrFieldValues.get("ihtFormEstate"))) {
-            mandatoryFieldsValidatorUtils.addWarning(
-                "ihtFormEstate expected to be set to IHT400421 (ihtFormEstate)",
-                warnings);
-            mandatoryFieldsValidatorUtils.addWarning(
-                "ihtFormId expected to be set to IHT400421 (ihtFormId)",
-                warnings);
+            } 
         }
     }
 }

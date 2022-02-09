@@ -7,7 +7,9 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdoptive
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicationTypeGrantOfRepresentation;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedHadLateSpouseOrCivilPartner;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormCompletedOnline;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
@@ -53,7 +55,9 @@ import org.mapstruct.ReportingPolicy;
         OCRFieldRelationshipMapper.class,
         OCRFieldPaymentMethodMapper.class,
         OCRFieldNumberMapper.class,
-        OCRFieldIhtFormEstateValuesCompletedMapper.class
+        OCRFieldIhtFormEstateValuesCompletedMapper.class,
+        OCRFieldIhtFormCompletedOnlineMapper.class,
+        OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -214,8 +218,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "willGiftUnderEighteen", source = "ocrFields.willGiftUnderEighteen", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "notifiedApplicants", source = "ocrFields.notifiedApplicants", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields.ihtFormCompletedOnline", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields", qualifiedBy = {
+        ToIHTFormCompletedOnline.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
     @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
     @Mapping(target = "ihtGrossValue", source = "ocrFields.ihtGrossValue", qualifiedBy = {ToPennies.class})
@@ -230,8 +234,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtEstateNetQualifyingValue", 
         source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", 
-        source = "ocrFields.deceasedHadLateSpouseOrCivilPartner", qualifiedBy = {
-            ToYesOrNo.class})
+        source = "ocrFields", qualifiedBy = {
+            ToDeceasedHadLateSpouseOrCivilPartner.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields", 
