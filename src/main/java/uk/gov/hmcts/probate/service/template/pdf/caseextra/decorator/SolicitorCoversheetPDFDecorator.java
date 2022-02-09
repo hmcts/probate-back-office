@@ -37,7 +37,8 @@ public class SolicitorCoversheetPDFDecorator {
                 .pa16FormUrl(PA16_FORM_URL)
                 .showPa16Form(YES)
                 .build();
-            decoration = caseExtraDecorator.decorate(pa16FormCaseExtra);
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(pa16FormCaseExtra));
         }  
         if (pa17FormBusinessRule.isApplicable(caseData)) {
             PA17FormCaseExtra pa17FormCaseExtra = PA17FormCaseExtra.builder()
@@ -45,7 +46,8 @@ public class SolicitorCoversheetPDFDecorator {
                 .pa17FormUrl(PA17_FORM_URL)
                 .showPa17Form(YES)
                 .build();
-            decoration =  caseExtraDecorator.decorate(pa17FormCaseExtra);
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(pa17FormCaseExtra));
         } 
         if (ihtEstate207BusinessRule.isApplicable(caseData)) {
             IhtEstate207CaseExtra ihtEstate207CaseExtra = IhtEstate207CaseExtra.builder()

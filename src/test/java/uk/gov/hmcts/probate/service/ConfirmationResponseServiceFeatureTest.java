@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -155,6 +155,16 @@ public class ConfirmationResponseServiceFeatureTest {
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT400421.md");
 
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
+        CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTTrustCorpResWithApp").build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithTcResolutionLodged.md");
+
+        assertEquals(stopConfirmation.getConfirmationBody(), expectedConfirmationBody);
     }
 
     @Test

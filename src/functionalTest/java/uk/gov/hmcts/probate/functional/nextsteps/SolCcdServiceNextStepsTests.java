@@ -201,7 +201,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
                 Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
-        assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
+        assertTrue(response.contains("a certified copy of the resolution"));
     }
 
     private String transformCase(String jsonFileName, String path) {
