@@ -114,7 +114,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
-        String dir = "/nextsteps/authenticatedTranslation/";
+        String dir = "/authenticatedTranslation/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
                 Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
