@@ -2,13 +2,8 @@ package uk.gov.hmcts.probate.functional.casematch;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-@Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
 public class CaseSearchTestBase extends IntegrationTestBase {
     protected static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
     protected static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";

@@ -1,8 +1,11 @@
 package uk.gov.hmcts.probate.functional.fee;
 
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +13,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -44,6 +48,26 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldValidatePaymentAccountDeleted() {
+        validatePostRequestFailureForPBAs(1, "solicitorPDFPayloadProbateAccountDeleted.json",
+            "Your account is deleted");
+    }
+
+    @Test
+    public void shouldValidatePaymentInsufficientFunds() {
+        validatePostRequestFailureForPBAs(1000, "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
+            "have insufficient funds available");
+    }
+
+    @Pending
+    @Test
+    public void shouldValidatePaymentAountOnHold() {
+        //this test cannot be automated on a deployed env - leaving it for local checking
+        validatePostRequestFailureForPBAsForSolicitor2(1, "solicitorPDFPayloadProbateAccountOnHold.json",
+            "Your account is on hold");
+    }
+
+    @Test
     public void verifyIncorrectJsonReturns400() {
         verifyIncorrectPostRequestReturns400("failure.fee.json", "Invalid Request");
     }
@@ -72,9 +96,9 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         int ukFee = rndUkCopies * COPIES_FEE;
         int nonUkFee = rndNonUkCopies * COPIES_FEE;
         int totalFee = applicationFee + ukFee + nonUkFee;
-        
-        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies);
-        
+
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
+
         response.then().assertThat().statusCode(200);
         if (hasApplication) {
             response.then().assertThat().body("data.applicationFee", equalTo("" + applicationFee));
@@ -89,13 +113,13 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
         }
     }
-    
-    private Response getResponse(String fileName, int rndUkCopies, int rndNonUkCopies) {
+
+    private Response getResponse(String fileName, int rndUkCopies, int rndNonUkCopies, Headers headers) {
         String payload = utils.replaceAnyCaseNumberWithRandom(utils.getJsonFromFile(fileName));
         payload = payload.replaceAll("<UK_COPIES>", "" + rndUkCopies);
         payload = payload.replaceAll("<NON_UK_COPIES>", "" + rndNonUkCopies);
 
-        return given().headers(utils.getHeadersWithCaseworkerUser())
+        return given().headers(headers)
             .relaxedHTTPSValidation()
             .body(payload)
             .contentType(JSON)
@@ -110,4 +134,28 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             .statusCode(400)
             .and().body(containsString(errorMessage));
     }
+
+    private String validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
+                                                     String... expectedValues) {
+
+        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
+        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
+        for (String expectedValue : expectedValues) {
+            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
+        }
+        return response.getBody().asString();
+    }
+
+    private void validatePostRequestFailureForPBAsForSolicitor2(int copiesMultiplier, String fileName,
+                                                                String... expectedValues) {
+        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
+        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitor2User());
+
+        for (String expectedValue : expectedValues) {
+            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
+        }
+    }
+
 }

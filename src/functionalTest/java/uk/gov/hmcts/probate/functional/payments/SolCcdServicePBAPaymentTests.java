@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.payments;
 
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,41 +25,18 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     @Test
     public void shouldValidateDefaultPBAs() {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba",
-                "solicitorPDFPayloadProbate.json",
-            "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}", 
+            "solicitorPDFPayloadProbate.json",
+            "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}",
             "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
             "\"solsNeedsPBAPayment\":\"Yes\"");
     }
 
     @Test
     public void shouldValidateDefaultPBAPaymentsNoFee() {
-        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-pba", 
+        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-pba",
             "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
         assertFalse(responseBody.contains("\"payments\": ["));
-    }
-
-    @Pending
-    @Test
-    public void shouldValidatePaymentAountOnHold() {
-        //this test cannot be automated on a deployed env - leaving it for local checking
-        validatePostRequestSuccessForPBAsForSolicitor2("/nextsteps/validate",
-            "solicitorPDFPayloadProbateAccountOnHold.json",
-            "Your account is on hold");
-    }
-
-    @Test
-    public void shouldValidatePaymentAccountDeleted() {
-        validatePostRequestSuccessForPBAs("/nextsteps/validate",
-            "solicitorPDFPayloadProbateAccountDeleted.json",
-            "Your account is deleted");
-    }
-
-    @Test
-    public void shouldValidatePaymentInsufficientFunds() {
-        validatePostRequestSuccessForPBAs("/nextsteps/validate",
-            "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
-            "have insufficient funds available");
     }
 
     private String validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
@@ -75,17 +51,5 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
         }
         return body;
     }
-    
-    private void validatePostRequestSuccessForPBAsForSolicitor2(String path, String fileName,
-                                                                String... expectedValues) {
 
-        String body = given().headers(utils.getHeadersWithSolicitor2User())
-            .relaxedHTTPSValidation()
-            .body(utils.getJsonFromFile(fileName))
-            .contentType(JSON)
-            .when().post(path).getBody().asString();
-        for (String expectedValue : expectedValues) {
-            assertThat(body, containsString(expectedValue));
-        }
-    }
 }
