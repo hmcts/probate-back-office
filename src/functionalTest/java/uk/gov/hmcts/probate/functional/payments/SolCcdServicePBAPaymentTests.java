@@ -40,19 +40,6 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
         assertFalse(responseBody.contains("\"payments\": ["));
     }
 
-    @Test
-    public void shouldValidatePBAPayment() {
-        validatePostRequestSuccessForPBAs("/nextsteps/validate", "solicitorPDFPayloadProbateAccountSuccess.json",
-            "\"payments\":[", "\"reference\":\"RC-", "\"method\":\"pba\"");
-    }
-
-    @Test
-    public void shouldValidatePBAPaymentNoFees() {
-        String responseBody = validatePostRequestSuccessForPBAs("/nextsteps/validate",
-            "solicitorPDFPayloadProbateAccountSuccessNoFees.json");
-        assertFalse(responseBody.contains("\"payments\":["));
-    }
-
     @Pending
     @Test
     public void shouldValidatePaymentAountOnHold() {
