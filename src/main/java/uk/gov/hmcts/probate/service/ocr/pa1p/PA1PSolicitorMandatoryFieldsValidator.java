@@ -22,6 +22,10 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 public class PA1PSolicitorMandatoryFieldsValidator {
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
+        addWarningsFormVersion1(ocrFieldValues, warnings);
+    }
+
+    private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORSolicitorMandatoryFields.values()).forEach(field -> {
             log.info("Checking {} against ocr fields", field.getKey());
             if (!ocrFieldValues.containsKey(field.getKey())) {
@@ -39,5 +43,4 @@ public class PA1PSolicitorMandatoryFieldsValidator {
                 DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER, DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER));
         }
     }
-
 }

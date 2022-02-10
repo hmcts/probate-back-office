@@ -1,0 +1,1 @@
+What was the marital status of the person who has died when they died? WIDOWED (deceasedHadLateSpouseOrCivilPartner) is mandatory.

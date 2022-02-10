@@ -1,11 +1,12 @@
 package uk.gov.hmcts.probate.model.exceptionrecord;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
 
@@ -26,18 +27,18 @@ public class ExceptionRecordRequest {
     private final Boolean isAutomatedProcess;
 
     public ExceptionRecordRequest(
-            @JsonProperty("exception_record_id") String exceptionRecordId,
-            @JsonProperty("exception_record_case_type_id") String exceptionRecordCaseTypeId,
-            @JsonProperty("po_box") String poBox,
-            @JsonProperty("po_box_jurisdiction") String jurisdiction,
-            @JsonProperty("form_type") String formType,
-            @JsonProperty("journey_classification") JourneyClassification journeyClassification,
-            @JsonProperty("delivery_date") LocalDateTime deliveryDate,
-            @JsonProperty("opening_date") LocalDateTime openingDate,
-            @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
-            @JsonProperty("ocr_data_fields") List<OCRField> ocrFields,
-            @JsonProperty("envelope_id") String envelopeId,
-            @JsonProperty("is_automated_process") Boolean isAutomatedProcess
+        @JsonProperty("exception_record_id") String exceptionRecordId,
+        @JsonProperty("exception_record_case_type_id") String exceptionRecordCaseTypeId,
+        @JsonProperty("po_box") String poBox,
+        @JsonProperty("po_box_jurisdiction") String jurisdiction,
+        @JsonProperty("form_type") String formType,
+        @JsonProperty("journey_classification") JourneyClassification journeyClassification,
+        @JsonProperty("delivery_date") LocalDateTime deliveryDate,
+        @JsonProperty("opening_date") LocalDateTime openingDate,
+        @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
+        @JsonProperty("ocr_data_fields") List<OCRField> ocrFields,
+        @JsonProperty("envelope_id") String envelopeId,
+        @JsonProperty("is_automated_process") Boolean isAutomatedProcess
     ) {
         this.exceptionRecordId = exceptionRecordId;
         this.exceptionRecordCaseTypeId = exceptionRecordCaseTypeId;
@@ -276,6 +277,16 @@ public class ExceptionRecordRequest {
             .ihtFormId(get(ocrFields, "ihtFormId"))
             .ihtGrossValue(get(ocrFields, "ihtGrossValue"))
             .ihtNetValue(get(ocrFields, "ihtNetValue"))
+            .ihtFormEstate(get(ocrFields, "ihtFormEstate"))
+            .ihtEstateGrossValue(get(ocrFields, "ihtEstateGrossValue"))
+            .ihtEstateNetValue(get(ocrFields, "ihtEstateNetValue"))
+            .ihtEstateNetQualifyingValue(get(ocrFields, "ihtEstateNetQualifyingValue"))
+            .deceasedHadLateSpouseOrCivilPartner(get(ocrFields, "deceasedHadLateSpouseOrCivilPartner"))
+            .ihtUnusedAllowanceClaimed(get(ocrFields, "ihtUnusedAllowanceClaimed"))
+            .deceasedDiedOnAfterSwitchDate(get(ocrFields, "deceasedDiedOnAfterSwitchDate"))
+            .iht400421Completed(get(ocrFields, "iht400421completed"))
+            .iht207Completed(get(ocrFields, "iht207completed"))
+            .formVersion(get(ocrFields, "formVersion"))
             .build();
     }
 }
