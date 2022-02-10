@@ -86,7 +86,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         }
         if (hasPayments) {
             response.then().assertThat().body("data.payments[0].value.status", equalTo("Success"));
-            response.then().assertThat().body("data.payments[0].value.reference", equalTo("RC-1590-6786-1063-9991"));
+            response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
         }
     }
     
