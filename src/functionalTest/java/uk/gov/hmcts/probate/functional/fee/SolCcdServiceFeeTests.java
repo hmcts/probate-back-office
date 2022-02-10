@@ -43,19 +43,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false, false);
     }
 
-    //    @Test
-//    public void shouldValidatePBAPayment() {
-//        validatePostRequestSuccessForPBAs("/nextsteps/validate", "solicitorPDFPayloadProbateAccountSuccess.json",
-//            "\"payments\":[", "\"reference\":\"RC-", "\"method\":\"pba\"");
-//    }
-
-//    @Test
-//    public void shouldValidatePBAPaymentNoFees() {
-//        String responseBody = validatePostRequestSuccessForPBAs("/nextsteps/validate",
-//            "solicitorPDFPayloadProbateAccountSuccessNoFees.json");
-//        assertFalse(responseBody.contains("\"payments\":["));
-//    }
-
     @Test
     public void verifyIncorrectJsonReturns400() {
         verifyIncorrectPostRequestReturns400("failure.fee.json", "Invalid Request");
