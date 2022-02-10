@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -26,7 +26,7 @@ import static junit.framework.TestCase.assertTrue;
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/nextsteps/validate";
 
-    @Test
+    @RepeatedTest(3)
     public void verifyAllDataInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement("success.nextsteps.json",
             "deceasedFirstName",
@@ -39,7 +39,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         initialiseConfig();
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded"
@@ -49,7 +49,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertFalse(fullResponse.contains("(PA16)"));
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA16Form() {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA16"
@@ -58,27 +58,27 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
     
-    @Test
+    @RepeatedTest(3)
     public void shouldIncludePA17Link() {
         final String response = transformCase("solicitorValidateProbateExecutorsPA17.json", VALIDATE_URL);
         assertTrue(response.contains("(PA17)"));
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() {
         validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA17"
                 + ".json",  "(PA17)");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyAllDetailsInTheReturnedMarkdown() {
         validatePostRequestSuccessForLegalStatement(Arrays.asList("deceasedFirstName", "deceasedLastName",
             "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln",
             "firmpc", "appref-PAY1"));
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -89,7 +89,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertEquals(confirmationExpectedText, response);
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyGenerateSolsGopExpectedEstatesNo() {
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -100,7 +100,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertEquals(confirmationExpectedText, response);
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -111,7 +111,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertEquals(confirmationExpectedText, response);
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
         String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -122,49 +122,49 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         assertEquals(confirmationExpectedText, response);
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptyDeceasedFirstNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"",
             "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptyDeceasedSurNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedSurname\": \"deceasedLastName\"",
             "\"deceasedSurname\": \"\"", "caseDetails.data.deceasedSurname");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptySolicitorFirmNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"solsSolicitorFirmName\": \"SolicitorFirmName\"",
             "\"solsSolicitorFirmName\": \"\"", "caseDetails.data.solsSolicitorFirmName");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptySolicitorSOTForenamesReturnsError() {
         validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"",
             "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptySolicitorSOTSurnameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"solsSOTSurname\": \"Solicitor_ln\"", "\"solsSOTSurname\": \"\"",
             "caseDetails.data.solsSOTSurname");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptySolicitorFirmAddressLine1ReturnsError() {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorAddressLine1.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.addressLine1");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
-    @Test
+    @RepeatedTest(3)
     public void shouldTransformSolicitorExecutorFields() {
         final String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
 
