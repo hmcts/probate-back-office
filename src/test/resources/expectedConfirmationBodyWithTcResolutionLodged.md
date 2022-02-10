@@ -1,7 +1,7 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-Legal Service Ltd, Sols Add Line 1, SW1E 6EA,
+Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
 Peter Crouch
 
@@ -36,14 +36,15 @@ ADDITIONAL INFO
 What you need to do now
 ==================================================
 
-Print a copy of this page for your records.
-
+Print a copy of this page for your records. 
+ 
 You now need to send us:
 
-* the original will
-* the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
-* a photocopy of the signed legal statement and declaration
-* a certified copy of the resolution
+*   the original will
+*   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
+*   the inheritance tax form IHT207
+*   a photocopy of the signed legal statement and declaration
+*   a certified copy of the resolution
 
 Where to send us your documents
 -------------------------------
@@ -52,7 +53,7 @@ You should:
 
 *   use recorded delivery
 *   keep copies of all documents
-*   if you are providing a notarial copy or a court sealed copy of the will please also provide a cover letter with the application indicating where the original will is and why it cannot be released.
+*   if you are providing a notarial copy or a court sealed copy of the will please also provide a cover letter with the application indicating where the original will is and why it cannot be released. 
 
 Send all documents to:
 

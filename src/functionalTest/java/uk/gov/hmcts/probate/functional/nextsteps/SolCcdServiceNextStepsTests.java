@@ -20,8 +20,6 @@ import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
-
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {

@@ -57,6 +57,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
         
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -70,6 +71,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
             + "\"pa17FormText\":\"PA17FormTEXT\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -109,9 +111,11 @@ public class SolicitorCoversheetPDFDecoratorTest {
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
         when(caseExtraDecorator.decorate(any(PA16FormCaseExtra.class)))
             .thenReturn(extraPA16);
+        when(caseExtraDecorator.combineDecorations("", extraPA16)).thenReturn(extraPA16);
         String extraIht = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
             .thenReturn(extraIht);
+        when(caseExtraDecorator.combineDecorations("", extraIht)).thenReturn(extraIht);
 
         String extraAll = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
             + "\"pa16FormText\":\"PA16FormTEXT\",\"ihtEstate207Text\":\"the inheritance tax form IHT 207\"}";
