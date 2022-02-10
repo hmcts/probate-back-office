@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CoversheetGenerationTests extends DocumentGenerationTestBase {
+    
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";

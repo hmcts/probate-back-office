@@ -19,8 +19,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-public class SolBaCcdServiceDocumentsTests extends DocumentGenerationTestBase {
-
+public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
     private static final String DEFAULT_PRINT_VALUES = "/document/default-reprint-values";
@@ -28,10 +27,7 @@ public class SolBaCcdServiceDocumentsTests extends DocumentGenerationTestBase {
     private static final String PREVIEW_LETTER = "/document/previewLetter";
     private static final String RE_PRINT = "/document/reprint";
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
-
-
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
-
     private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
 
     @Before

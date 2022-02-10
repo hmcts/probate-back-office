@@ -11,16 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
-    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
-    private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
-        "solicitorPDFPayloadProbateMultipleExecutors.json";
-    private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
-    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
-    private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
-    private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
-        "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
 
-    private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
         "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
@@ -65,8 +56,18 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String PART_ALL_OTHERS_RENOUNCING = "solicitorPartOtherRenouncing.json";
     private static final String SOLE_PRIN_OTHER_PARTNERS = "solicitorSolPartner.json";
     private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
+    private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
+        "solicitorPDFPayloadProbateMultipleExecutors.json";
+    private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
+    private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
+    private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
+        "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
 
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
+    private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
+
 
     @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() {

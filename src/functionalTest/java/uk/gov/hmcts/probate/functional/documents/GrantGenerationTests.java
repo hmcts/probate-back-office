@@ -94,7 +94,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String REISSUE_ORIGINAL_ISSUE_DATE = "1st April 2021";
 
     private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
-
     private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
     private static final String DEFAULT_ADMON_CARDIFF_PAYLOAD = "solicitorPayloadNotificationsAdmonWillCardiff.json";
     private static final String DEFAULT_INTESTACY_CARDIFF_PAYLOAD =
@@ -109,7 +108,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
-
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
