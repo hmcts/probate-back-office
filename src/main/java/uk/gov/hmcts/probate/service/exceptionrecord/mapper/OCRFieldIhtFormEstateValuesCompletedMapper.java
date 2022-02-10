@@ -24,8 +24,8 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
             && ocrFields.getIhtEstateNetQualifyingValue() != null) {
             return Boolean.FALSE;
         } else if (
-            "IHT207".equalsIgnoreCase(ocrFields.getIhtFormEstate())
-                || "IHT400421".equalsIgnoreCase(ocrFields.getIhtFormEstate())
+            "true".equalsIgnoreCase(ocrFields.getIht207Completed())
+                || "true".equalsIgnoreCase(ocrFields.getIht400421Completed())
         ) {
             return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()) 
                 ? Boolean.TRUE : null;
