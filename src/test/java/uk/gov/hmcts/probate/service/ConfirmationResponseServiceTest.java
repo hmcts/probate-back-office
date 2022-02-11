@@ -631,7 +631,7 @@ public class ConfirmationResponseServiceTest {
             .thenReturn(willBodyTemplateResponseMock);
 
         when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
-        
+
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
@@ -810,6 +810,33 @@ public class ConfirmationResponseServiceTest {
         assertEquals("0.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 
+    @Test
+    public void shouldGetNextStepsConfirmationWithDiedBeforeOrDiedAfterThenShouldNotShowDeathCertificate() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(deadBeforeExecutorMock.isApplying()).thenReturn(false);
+        when(deadBeforeExecutorMock.getReasonNotApplying()).thenReturn("DiedBefore");
+        when(deadBeforeExecutorMock.getForename()).thenReturn("deadBeforeExecutorFirstname");
+        when(deadBeforeExecutorMock.getLastname()).thenReturn("deadBeforeExecutorLastname");
+
+        when(deadAfterExecutorMock.isApplying()).thenReturn(false);
+        when(deadAfterExecutorMock.getReasonNotApplying()).thenReturn("DiedAfter");
+        when(deadAfterExecutorMock.getForename()).thenReturn("deadAfterExecutorFirstname");
+        when(deadAfterExecutorMock.getLastname()).thenReturn("deadAfterExecutorLastname");
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertConfirmationValues(nextStepsValues);
+        assertNull(nextStepsValues.get("{{deadExecutors}}"));
+        assertIHT207(nextStepsValues);
+    }
+
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
         assertEquals("Sol Firm Name", nextStepsValues.get("{{solsSolicitorFirmName}}"));
@@ -825,11 +852,11 @@ public class ConfirmationResponseServiceTest {
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
     }
-    
+
     private void assertIHT207(Map<String, String> nextStepsValues) {
         assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
     }
-    
+
     private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }

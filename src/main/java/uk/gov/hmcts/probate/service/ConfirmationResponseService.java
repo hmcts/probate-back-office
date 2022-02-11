@@ -258,9 +258,9 @@ public class ConfirmationResponseService {
         } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*   the original will and any codicils";
         }
-        
+
         keyValue.put("{{originalWill}}", originalWill);
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -275,7 +275,6 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
-        keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
 
@@ -322,18 +321,18 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
-    
+
     private String getPA17FormLabel(CCDData ccdData) {
         CaseData caseData = CaseData.builder()
             .titleAndClearingType(ccdData.getTitleAndClearingType())
             .build();
         return markdownDecoratorService.getPA17FormLabel(caseData);
     }
-    
+
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
-    } 
-    
+    }
+
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
@@ -357,16 +356,6 @@ public class ConfirmationResponseService {
             .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
         return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
-    }
-
-    private String getDeadExecutors(List<Executor> executors) {
-        String deadExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
-                || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
     private String getOptionalAmountAsString(BigDecimal amount) {
