@@ -166,7 +166,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
                 gorCitizenMandatoryFieldsArgumentCaptor.capture());
         List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
             gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(5, citizenMandatoryFieldsArgumentCaptorAllValues.size());
+        assertEquals(4, citizenMandatoryFieldsArgumentCaptorAllValues.size());
         assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
             citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
         assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
@@ -175,8 +175,6 @@ public class CitizenMandatoryFieldsValidatorV2Test {
             citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
         assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE.getValue(),
             citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
-        assertEquals(GORCitizenMandatoryFields.DECEASED_LATE_SPOUSE.getValue(),
-            citizenMandatoryFieldsArgumentCaptorAllValues.get(4).getValue());
     }
 
     @Test

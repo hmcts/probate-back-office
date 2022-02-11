@@ -8,7 +8,6 @@ import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import static org.apache.commons.lang3.BooleanUtils.toBoolean;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import org.springframework.stereotype.Service;
-import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.DECEASED_LATE_SPOUSE;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_400421_COMPLETED;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_ESTATE_GROSS;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_ESTATE_NET;
@@ -50,8 +49,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
                 } else {
                     if (deceasedDiedOnAfterSwitchDate) {
                         mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                            IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE,
-                            DECEASED_LATE_SPOUSE);
+                            IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV, IHT_UNUSED_ALLOWANCE);
                     } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
                         mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
                             IHT_205_COMPLETED_ONLINE);
