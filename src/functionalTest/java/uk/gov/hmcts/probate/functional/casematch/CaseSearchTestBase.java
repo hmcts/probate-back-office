@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-public class CaseSearchTestBase extends IntegrationTestBase {
+public abstract class CaseSearchTestBase extends IntegrationTestBase {
     protected static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
     protected static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     protected static final String CAVEAT_MATCH_CASE_JSON = "casematch/caveatFlowSearchMatchCase.json";
