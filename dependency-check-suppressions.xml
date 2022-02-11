@@ -32,4 +32,8 @@
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
     </suppress>
+    <suppress>
+        <vulnerabilityName>CVE-2021-22060</vulnerabilityName>
+        <vulnerabilityName>CVE-2022-23181</vulnerabilityName>
+    </suppress>
 </suppressions>
