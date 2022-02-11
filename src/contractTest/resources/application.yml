@@ -48,7 +48,7 @@ pdf.service:
 docmosis:
   service:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
-    accessKey: ${PDF_SERVICE_ACCESS_KEY:Jbj2ayP7Gh4yzkLTxSd65H4dAmAjoSajgM2Tyq6I7Xpdbe0iFBvYlijUPl5}
+    accessKey: ${PDF_SERVICE_ACCESS_KEY:dyVv8pXwQ03RRyJZQIPX2RWP9LgJJGTU08kc9dA8ATJoA9EZXQEWe7L1Uwe}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   templates:
     caveatRaised:
