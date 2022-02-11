@@ -26,8 +26,6 @@ public enum GORCitizenMandatoryFields {
     IHT_ESTATE_GROSS("ihtEstateGrossValue", "gross value of the estate for inheritance tax", "0"),
     IHT_ESTATE_NET("ihtEstateNetValue", "net value of the estate for inheritance tax", "0"),
     IHT_ESTATE_NQV("ihtEstateNetQualifyingValue", "net qualifying value of the estate", "0"),
-    DECEASED_LATE_SPOUSE("deceasedHadLateSpouseOrCivilPartner", "What was the marital status of the person who has " 
-        + "died when they died? WIDOWED", "0"),
     IHT_UNUSED_ALLOWANCE("ihtUnusedAllowanceClaimed", "Are you claiming against this estate the unused proportion of " 
         + "the inheritance tax nil-rate band of a pre-deceased spouse or civil partner of the deceased?", "0")
         ;
