@@ -59,12 +59,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
     
     @Test
-    public void shouldIncludePA17Link() {
-        final String response = transformCase("solicitorValidateProbateExecutorsPA17.json", VALIDATE_URL);
-        assertTrue(response.contains("(PA17)"));
-    }
-
-    @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() {
         validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA17"
@@ -162,46 +156,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
-    }
-
-    @Test
-    public void shouldTransformSolicitorExecutorFields() {
-        final String response = transformCase("solicitorValidateProbateExecutors.json", VALIDATE_URL);
-
-        final JsonPath jsonPath = JsonPath.from(response);
-
-        final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
-        Assert.assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
-        Assert.assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
-        Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
-
-        final HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
-        Assert.assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
-
-        final HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
-        Assert.assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
-        Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
-        Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine1"));
-        Assert.assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine2"));
-        Assert.assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
-                .get("AddressLine3"));
-        Assert.assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
-        Assert.assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
-        Assert.assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
-        Assert.assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
-    }
-
-    private String transformCase(String jsonFileName, String path) {
-
-        final Response jsonResponse = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(path).andReturn();
-        
-        return jsonResponse.getBody().asString();
     }
 
     private Response validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {

@@ -1,18 +1,23 @@
 package uk.gov.hmcts.probate.functional.fee;
 
 import io.restassured.http.Headers;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.core.annotations.Pending;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,8 +26,8 @@ import static org.hamcrest.Matchers.equalTo;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    private static final int APP_FEE = 27300; //comment this out for local tests - keep for commits
-    //private static final int APP_FEE = 15500;
+    //private static final int APP_FEE = 27300; //comment this out for local tests - keep for commits
+    private static final int APP_FEE = 15500;
     private static final int COPIES_FEE = 150;
     private static final double MAX_UK_COPIES = 50;
     private static final double MAX_NON_UK_COPIES = 50;
@@ -30,6 +35,43 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     @Before
     public void setUp() {
         initialiseConfig();
+    }
+
+    @Test
+    public void shouldIncludePA17Link() {
+        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
+            true, true, true);
+        assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
+    }
+
+    @Test
+    public void shouldTransformSolicitorExecutorFields() {
+        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true, true,
+            true);
+
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asPrettyString());
+
+        final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
+        Assert.assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
+        Assert.assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
+        Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
+
+        final HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
+        Assert.assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
+
+        final HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
+        Assert.assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
+        Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
+        Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+            .get("AddressLine1"));
+        Assert.assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+            .get("AddressLine2"));
+        Assert.assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+            .get("AddressLine3"));
+        Assert.assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
+        Assert.assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
+        Assert.assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
+        Assert.assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
     }
 
     @Test
@@ -88,8 +130,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             + "negative");
     }
 
-    private void validatePostRequestSuccessForFee(String fileName, boolean hasApplication, boolean hasFees,
-                                                  boolean hasPayments) {
+    private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication, boolean hasFees,
+                                                      boolean hasPayments) {
         int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
         int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
         int applicationFee = hasApplication ? APP_FEE : 0;
@@ -112,6 +154,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             response.then().assertThat().body("data.payments[0].value.status", equalTo("Success"));
             response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
         }
+        
+        return response;
     }
 
     private Response getResponse(String fileName, int rndUkCopies, int rndNonUkCopies, Headers headers) {
@@ -135,8 +179,8 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             .and().body(containsString(errorMessage));
     }
 
-    private String validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
-                                                     String... expectedValues) {
+    private Response validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
+                                                       String... expectedValues) {
 
         int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
         int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
@@ -144,7 +188,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         for (String expectedValue : expectedValues) {
             assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
         }
-        return response.getBody().asString();
+        return response;
     }
 
     private void validatePostRequestFailureForPBAsForSolicitor2(int copiesMultiplier, String fileName,
