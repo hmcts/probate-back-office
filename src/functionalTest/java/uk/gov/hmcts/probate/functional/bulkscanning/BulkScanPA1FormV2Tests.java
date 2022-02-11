@@ -98,18 +98,7 @@ public class BulkScanPA1FormV2Tests extends IntegrationTestBase {
             utils.getLinesFromFile("/json/bulkscan/version2/expectedWarnings/wrongDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
-
-    @Test
-    public void shouldWarnForMissingDeceasedHadLateSpouseOrCivilPartner() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/requestPayload/"
-                + "Post2022PA1PMissingDeceasedHadLateSpouseOrCivilPartner.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/expectedWarnings/"
-                + "missingDeceasedHadLateSpouseOrCivilPartner.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-
+    
     @Test
     public void shouldWarnForMissingEstateValues() {
         String jsonRequest =
