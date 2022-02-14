@@ -36,39 +36,4 @@
         <vulnerabilityName>CVE-2021-22060</vulnerabilityName>
         <vulnerabilityName>CVE-2022-23181</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: log4j-api-2.16.0.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
-        <cpe>cpe:/a:apache:log4j</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: log4j-to-slf4j-2.16.0.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-to\-slf4j@.*$</packageUrl>
-        <cpe>cpe:/a:apache:log4j</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: logback-classic-1.2.6.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/ch\.qos\.logback/logback\-classic@.*$</packageUrl>
-        <cpe>cpe:/a:qos:logback</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: logback-core-1.2.6.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/ch\.qos\.logback/logback\-core@.*$</packageUrl>
-        <cpe>cpe:/a:qos:logback</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: logback-core-1.2.6.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/ch\.qos\.logback/logback\-core@.*$</packageUrl>
-        <cve>CVE-2021-42550</cve>
-    </suppress>
 </suppressions>
