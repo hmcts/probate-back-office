@@ -5,11 +5,13 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
@@ -35,6 +37,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRuleMock;
     @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+    @Mock
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
     private CaseData caseDataMock;
@@ -50,6 +54,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
         when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(isApplicable);
     }
     
     @Test
@@ -117,6 +122,9 @@ public class SolicitorCoversheetPDFDecoratorTest {
         String extraAuthTranslation = "{\"authTranWillText\"}";
         when(caseExtraDecorator.decorate(any(AuthenticatedTranslationCaseExtra.class)))
                 .thenReturn(extraAuthTranslation);
+        String extraDispenseNoticeDocs = "{\"dispenseNoticeText\"}";
+        when(caseExtraDecorator.decorate(any(DispenseNoticeCaseExtra.class)))
+                .thenReturn(extraDispenseNoticeDocs);
 
 
 
@@ -125,10 +133,12 @@ public class SolicitorCoversheetPDFDecoratorTest {
                 + "\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
                 + "\"pa17FormText\":\"PA17FormTEXT\"}";
         String extraThree =  extraTwo + ", \"the inheritance tax form IHT 207\"";
-        String extraAll = extraThree + ",\"authTranWillText\"}";
+        String extraFour = extraThree + ",\"authTranWillText\"";
+        String extraAll = extraFour + ",\"dispenseNoticeText\"}";
         when(caseExtraDecorator.combineDecorations(extraPA16, extraPA17)).thenReturn(extraTwo);
         when(caseExtraDecorator.combineDecorations(extraTwo, extraIht)).thenReturn(extraThree);
-        when(caseExtraDecorator.combineDecorations(extraThree, extraAuthTranslation)).thenReturn(extraAll);
+        when(caseExtraDecorator.combineDecorations(extraThree, extraAuthTranslation)).thenReturn(extraFour);
+        when(caseExtraDecorator.combineDecorations(extraFour, extraDispenseNoticeDocs)).thenReturn(extraAll);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(extraAll, json);

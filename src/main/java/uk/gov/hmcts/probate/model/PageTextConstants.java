@@ -15,6 +15,7 @@ public class PageTextConstants {
     public static final String PA16_FORM = "<pa16Form/>";
     public static final String PA17_FORM = "<pa17Form/>";
     public static final String IHT_ESTATE_207 = "<ihtEstate207/>";
+    public static final String DISPENSE_NOTICE_SUPPORT_DOCS = "<dispenseWithNoticeSupportingDocs/>";
 
     private PageTextConstants() {
         throw new IllegalStateException("Utility class");

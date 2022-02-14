@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -31,12 +32,14 @@ import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
@@ -74,6 +77,7 @@ public class TaskStateRenderer {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -171,6 +175,8 @@ public class TaskStateRenderer {
                                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
                                 .replaceFirst(AUTHENTICATED_TRANSLATION,
                                         keyValues.getOrDefault("authenticatedTranslation", ""))
+                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 
@@ -288,6 +294,14 @@ public class TaskStateRenderer {
             authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
         }
         keyValue.put("authenticatedTranslation", authenticatedTranslation);
+        String dispenseWithNoticeSupportingDocs = "";
+        String dispenseWithNotice = NO;
+        if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
+            dispenseWithNotice = YES;
+            dispenseWithNoticeSupportingDocs = "<li>" + data.getDispenseWithNoticeSupportingDocs() + "</li>";
+        }
+        keyValue.put("dispenseWithNotice", dispenseWithNotice);
+        keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
         return keyValue;
     }
 
