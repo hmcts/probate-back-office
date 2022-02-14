@@ -859,7 +859,6 @@ public class TaskStateRendererTest {
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
                 LocalDate.of(2020,10,10),
                 LocalDate.of(2020,11, 1), caseDetails);
-
         assertEquals(expectedHtml, result);
     }
 
